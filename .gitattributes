@@ -1,0 +1,18 @@
+.gitattributes text
+.gitignore text
+
+*.txt text
+
+*.cxx text
+*.hxx text
+*.hxx text
+
+*.cpp text
+*.hpp text
+*.ipp text
+
+*.cc text
+*.hh text
+*.ii text
+
+*.md text

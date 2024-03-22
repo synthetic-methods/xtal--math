@@ -1,0 +1,95 @@
+#pragma once
+#include "./any.ii"
+
+
+
+
+
+
+XTAL_ENV_(push)
+namespace xtal::math::taylor
+{/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
+template <int N_iso=1, int N_car=0> XTAL_NYM sine;
+template <int N_iso=1, int N_car=0> XTAL_USE sine_t = process::confined_t<sine<N_iso, N_car>>;
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <int N_iso>
+struct sine<N_iso, 0>: atom::compose<discard, sine<N_iso, 1>> {};
+
+template <int N_iso> requires (0 < N_iso)
+struct sine<N_iso, 1>
+{
+	template <class S>
+	class subtype: public atom::compose_s<S>
+	{
+		using S_ = atom::compose_s<S>;
+
+	public:
+		using S_::S_;
+
+		template <int N_lim>
+		XTAL_FN2 function(auto &&u)
+		XTAL_0EX
+		{
+			int constexpr I_lim = N_lim&0xF;
+			int constexpr I_sgn = sign_n<N_iso&1^1, -1>;
+
+			using U = XTAL_TYP_(u); using re = atom::realize<U>;
+			U const w = re::square_f(u);
+			U       x = re::alpha_1;
+
+			atom::seek_backward_f<I_lim>([&] (auto i)
+				XTAL_0FN_(x = horner::term_f<I_sgn>(re::alpha_1
+				,	re::ratio_f((i*2 + 2)*(i*2 + 3))
+				,	w
+				,	x
+				)
+			));
+			return x;
+		}
+
+	};
+};
+template <int N_iso> requires (N_iso < 0)
+struct sine<N_iso, 1>
+{
+	template <class S>
+	class subtype: public atom::compose_s<S>
+	{
+		using S_ = atom::compose_s<S>;
+
+	public:
+		using S_::S_;
+
+		template <int N_lim>
+		XTAL_FN2 function(auto &&u)
+		XTAL_0EX
+		{
+			int constexpr I_lim = N_lim&0xF;
+			int constexpr I_sgn = sign_n<N_iso&1^0, -1>;
+
+			using U = XTAL_TYP_(u); using re = atom::realize<U>;
+			U const w = re::square_f(u);
+			U       x = re::ratio_f(I_lim*2 + 1);
+
+			atom::seek_backward_f<I_lim>([&] (auto i)
+				XTAL_0FN_(x = horner::term_f<I_sgn>(re::ratio_f(i*2 + 1)
+				,	re::template ratio_f<i*2 + 1>(i + 1 << 1)
+				,	w
+				,	x
+				)
+			));
+			return x;
+		}
+
+	};
+};
+
+
+///////////////////////////////////////////////////////////////////////////////
+}/////////////////////////////////////////////////////////////////////////////
+XTAL_ENV_(pop)

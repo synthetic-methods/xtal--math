@@ -1,0 +1,26 @@
+name: Conan Create
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  create:
+    strategy:
+      matrix:
+        bt: [Debug, Release]
+        os: [macos, ubuntu]
+    
+    runs-on: ${{matrix.os}}-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: turtlebrowser/get-conan@main
+
+    - name: Run `conan config...`
+      run:  conan config install ${{github.workspace}}/.conan2
+
+    - name: Run `conan create...`
+      run:  conan create ${{github.workspace}} --build=missing -s build_type=${{matrix.bt}} --profile=${{matrix.os}}

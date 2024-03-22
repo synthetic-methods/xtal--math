@@ -1,0 +1,54 @@
+#pragma once
+#include "./any.ii"
+
+
+
+
+
+
+XTAL_ENV_(push)
+namespace xtal::math::horner
+{/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
+template <int N_sign=1> XTAL_NYM term;
+template <int N_sign=1> XTAL_USE term_t = process::confined_t<term<N_sign>>;
+template <int N_sign=1> XTAL_FN2 term_f(auto &&...oo) {return term_t<N_sign>::function(XTAL_FWD_(oo)...);}
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <int N_sign>
+struct term
+{
+//	static_assert(xtal::sign_p<N_sign, 1>);
+
+	template <class S>
+	class subtype: public atom::compose_s<S>
+	{
+		using S_ = atom::compose_s<S>;
+
+	public:
+		using S_::S_;
+
+		template <auto ...>
+		XTAL_FN2 function(auto &&a, auto &&x, auto &&...xs)
+		XTAL_0EX
+		{
+			using Xn = atom::seek_back_t<decltype(xs)...>;
+			using re = atom::realize<Xn>;
+			if (re::N_fused and not std::is_constant_evaluated()) {
+				return std::fma((XTAL_FWD_(xs) *...* XTAL_FWD_(x)), N_sign, XTAL_FWD_(a));
+			}
+			else {
+				return XTAL_FWD_(a) + N_sign*(XTAL_FWD_(x) *...* XTAL_FWD_(xs));
+			}
+		}
+
+	};
+};
+
+
+///////////////////////////////////////////////////////////////////////////////
+}/////////////////////////////////////////////////////////////////////////////
+XTAL_ENV_(pop)
