@@ -11,48 +11,10 @@ namespace xtal::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int N_car>
-struct discard;
-
-
 ////////////////////////////////////////////////////////////////////////////////
 
-template <>
-struct discard<0>
-{
-	template <class S>
-	using subtype = S;
-
-};
-template <>
-struct discard<1>
-{
-	template <class S>
-	class subtype: public bond::compose_s<S>
-	{
-		using S_ = bond::compose_s<S>;
-
-	public:
-		using S_::S_;
-
-		template <auto ...Is>
-		XTAL_FN2 function(auto &&u)
-		XTAL_0EX
-		{
-			auto const v = S_::template function<Is...>(u);
-			using V = decltype(v);
-			if constexpr (complex_field_q<V>) {
-				return V {v.real(), v.imag()*XTAL_FWD_(u)};
-			}
-			else {
-				return v*XTAL_FWD_(u);
-			}
-		};
-
-	};
-};
-template <>
-struct discard<2>
+template <int N_base>
+struct base
 {
 	template <class S>
 	class subtype: public bond::compose_s<S>
@@ -67,7 +29,26 @@ struct discard<2>
 		XTAL_0EX
 		{
 			using U = XTAL_TYP_(u); using re = bond::realize<U>;
-			return S_::template function<Is...>(re::square_f(XTAL_FWD_(u)));
+			XTAL_LET N_domain = re::argue_n<N_base>;
+			return S_::template function<Is...>(N_domain*u);
+		};
+
+	};
+	template <class S> requires antimorphism_q<S>
+	class subtype<S>: public bond::compose_s<S>
+	{
+		using S_ = bond::compose_s<S>;
+
+	public:
+		using S_::S_;
+
+		template <auto ...Is>
+		XTAL_FN2 function(auto &&u)
+		XTAL_0EX
+		{
+			using U = XTAL_TYP_(u); using re = bond::realize<U>;
+			XTAL_LET N_comain = re::argue_n<N_base>;
+			return S_::template function<Is...>(u)*re::ratio_f(N_comain);
 		};
 
 	};

@@ -18,46 +18,20 @@ TAG_("sine")
 {
 	TRY_("task")
 	{
-		int constexpr N_lim = 0b11;
+		double constexpr N_2pi = 6.283185307179586476925286766559005768L;
+		int constexpr N_lim = 0b1111;
 		int constexpr N_bas = 0;// e
-		double w = 0.123;
-
-		xtal::echo(std::sin(w));
-		xtal::echo(sine_t< 1, 0>::template function<N_lim>(w));
-		xtal::echo();
-
-		xtal::echo(std::sin(w)/w);
-		xtal::echo(sine_t< 1, 1>::template function<N_lim>(w));
-		xtal::echo();
-
-		xtal::echo(std::sinh(w));
-		xtal::echo(sine_t< 2, 0>::template function<N_lim>(w));
-		xtal::echo();
-
-		xtal::echo(std::sinh(w)/w);
-		xtal::echo(sine_t< 2, 1>::template function<N_lim>(w));
-		xtal::echo();
 		
-		xtal::echo();
+		double const t = 0.11111, t_2pi = N_2pi*t;
 
-		xtal::echo(std::asin(w));
-		xtal::echo(sine_t<-1, 0>::template function<N_lim>(w));
-		xtal::echo();
-
-		xtal::echo(std::asin(w)/w);
-		xtal::echo(sine_t<-1, 1>::template function<N_lim>(w));
-		xtal::echo();
-
-		xtal::echo(std::asinh(w));
-		xtal::echo(sine_t<-2, 0>::template function<N_lim>(w));
-		xtal::echo();
-
-		xtal::echo(std::asinh(w)/w);
-		xtal::echo(sine_t<-2, 1>::template function<N_lim>(w));
-		xtal::echo();
-
-
-		TRUE_(true);
+		TRUE_(check_f<22>(std:: sin (t_2pi)/(N_2pi), sine_t<+1, 0, 0, (-0)>::template function<N_lim>(t)));
+		TRUE_(check_f<22>(std:: sin (t_2pi)/(t_2pi), sine_t<+1, 0, 0, (-1)>::template function<N_lim>(t)));
+		TRUE_(check_f<22>(std:: sinh(t_2pi)/(N_2pi), sine_t<+1, 1, 0, (-0)>::template function<N_lim>(t)));
+		TRUE_(check_f<22>(std:: sinh(t_2pi)/(t_2pi), sine_t<+1, 1, 0, (-1)>::template function<N_lim>(t)));
+		TRUE_(check_f<22>(std::asin (t_2pi)/(N_2pi), sine_t<-1, 0, 0, (-0)>::template function<N_lim>(t)));
+		TRUE_(check_f<22>(std::asin (t_2pi)/(t_2pi), sine_t<-1, 0, 0, (-1)>::template function<N_lim>(t)));
+		TRUE_(check_f<22>(std::asinh(t_2pi)/(N_2pi), sine_t<-1, 1, 0, (-0)>::template function<N_lim>(t)));
+		TRUE_(check_f<22>(std::asinh(t_2pi)/(t_2pi), sine_t<-1, 1, 0, (-1)>::template function<N_lim>(t)));
 
 	}
 }

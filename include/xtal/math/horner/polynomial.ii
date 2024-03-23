@@ -1,6 +1,6 @@
 #pragma once
 #include "./any.ii"
-
+#include "./term.ii"
 
 
 
@@ -11,19 +11,17 @@ namespace xtal::math::horner
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int N_sign=1> XTAL_NYM term;
-template <int N_sign=1> XTAL_USE term_t = process::confined_t<term<N_sign>>;
+template <int N_sign=1> XTAL_NYM polynomial;
+template <int N_sign=1> XTAL_USE polynomial_t = process::confined_t<polynomial<N_sign>>;
 template <int N_sign=1>
-XTAL_LET term_f = [] (auto &&w, auto &&...xs)
-XTAL_0FN
+XTAL_FN2 polynomial_f(auto &&w, auto &&k, auto &&...ks)
+XTAL_0EX
 {
-	using re = bond::realize<bond::seek_back_t<decltype(xs)...>>;
-
-	if (re::N_fused and not _std::is_constant_evaluated()) {
-		return _std::fma((XTAL_FWD_(xs) *...* 1), N_sign, XTAL_FWD_(w));
+	if constexpr (0 == sizeof...(ks)) {
+		return k;
 	}
 	else {
-		return (XTAL_FWD_(xs) *...* N_sign) + XTAL_FWD_(w);
+		return term_f<N_sign>(k, w, polynomial_f<N_sign>(w, ks...));
 	}
 };
 
@@ -40,7 +38,7 @@ starting from the kernel `a[N_limit]`. \
 Co/domain scaling can be effected by multiplying `a`/`b`, respectively. \
 
 template <int N_sign>
-struct term
+struct polynomial
 {
 //	static_assert(xtal::sign_p<N_sign, 1>);
 
@@ -53,21 +51,7 @@ struct term
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_LET function = term_f<N_sign>;
-
-//		template <auto ...>
-//		XTAL_FN2 function(auto &&w, auto &&x, auto &&...xs)
-//		XTAL_0EX
-//		{
-//			using Xn = bond::seek_back_t<decltype(xs)...>;
-//			using re = bond::realize<Xn>;
-//			if (re::N_fused and not std::is_constant_evaluated()) {
-//				return std::fma((XTAL_FWD_(xs) *...* XTAL_FWD_(x)), N_sign, XTAL_FWD_(w));
-//			}
-//			else {
-//				return XTAL_FWD_(w) + N_sign*(XTAL_FWD_(x) *...* XTAL_FWD_(xs));
-//			}
-//		}
+		XTAL_LET function = polynomial_f<N_sign>;
 
 	};
 };

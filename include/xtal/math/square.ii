@@ -1,0 +1,133 @@
+#pragma once
+#include "./any.ii"
+
+
+
+
+
+
+XTAL_ENV_(push)
+namespace xtal::math
+{/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
+template <int N_f=1, int N_i=0> XTAL_NYM square;
+template <int N_f=1, int N_i=0> XTAL_USE square_t = process::confined_t<square<N_f, N_i>>;
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <int N_i>
+struct square<0, N_i>
+{
+	template <class S>
+	class subtype: public bond::compose_s<S>
+	{
+		using S_ = bond::compose_s<S>;
+
+	public:
+		using S_::S_;
+
+		template <auto ...Is>
+		XTAL_FN2 function(auto &&o)
+		XTAL_0EX
+		{
+			return XTAL_FWD_(o);
+		}
+
+	};
+};
+template <int N_f, int N_i> requires (0 < N_f)
+struct square<N_f, N_i>
+{
+	template <class S>
+	class subtype: public bond::compose_s<S>
+	{
+		using S_ = bond::compose_s<S>;
+
+	public:
+		using S_::S_;
+
+		template <auto ...Is>
+		XTAL_FN2 function(simplex_field_p auto o)
+		XTAL_0EX
+		{
+		//	using W = XTAL_TYP_(o); using re = bond::realized<W>;
+
+			seek_forward_f<+N_f>([&] (auto)
+				XTAL_0FN_(o *= o)
+			);
+			return XTAL_MOV_(o);
+		}
+		template <auto ...Is>
+		XTAL_FN2 function(complex_field_q auto const &o)
+		XTAL_0EX
+		{
+		//	using W = XTAL_TYP_(o); using re = bond::realized<W>;
+
+			int constexpr I_sgn = sign_n<N_i&1^1, -1>;
+
+			auto x = o.real();
+			auto y = o.imag();
+			seek_forward_f<+N_f>([&] (auto) XTAL_0FN {
+				auto const xx = function<1>(x);
+				auto const yy = function<1>(y);
+				y = 2*x*y;
+				x = xx - yy*I_sgn;
+			});
+			return XTAL_TYP_(o) {x, y};
+		}
+
+	};
+};
+template <int N_f, int N_i> requires (N_f < 0)
+struct square<N_f, N_i>
+{
+	template <class S>
+	class subtype: public bond::compose_s<S>
+	{
+		using S_ = bond::compose_s<S>;
+
+	public:
+		using S_::S_;
+
+		template <auto ...Is>
+		XTAL_FN2 function(simplex_field_p auto o)
+		XTAL_0EX
+		{
+		//	using W = XTAL_TYP_(o); using re = bond::realized<W>;
+
+			seek_forward_f<-N_f>([&] (auto)
+				XTAL_0FN_(o = _std::sqrt(o))
+			);
+			return XTAL_MOV_(o);
+		}
+		template <auto ...Is>
+		XTAL_FN2 function(complex_field_q auto const &o)
+		XTAL_0EX
+		{
+			using W = XTAL_TYP_(o); using re = bond::realized<W>;
+
+			int constexpr I_sgn = sign_n<N_i&1^1, -1>;
+
+			auto x = o.real();
+			auto y = o.imag();
+			seek_forward_f<-N_f>([&] (auto) XTAL_0FN {
+				y *= re::haplo_f(1);
+				x *= re::haplo_f(1);
+				auto const m = function<1>(x*x + y*y);
+				//\
+				y *= function<1>(m - x)/_std::abs(y);
+				y  = function<1>(m - x);
+				x  = function<1>(m + x);
+			});
+			return W {x, y};
+		}
+
+	};
+};
+
+
+///////////////////////////////////////////////////////////////////////////////
+}/////////////////////////////////////////////////////////////////////////////
+XTAL_ENV_(pop)

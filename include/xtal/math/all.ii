@@ -1,4 +1,7 @@
-#pragma once
+//#pragma once
 #include "./discard.ii"
+#include "./square.ii"
+#include "./square1.ii"
 #include "./horner/all.ii"
+#include "./pade/all.ii"
 #include "./taylor/all.ii"

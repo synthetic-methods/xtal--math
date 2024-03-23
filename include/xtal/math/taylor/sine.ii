@@ -11,40 +11,53 @@ namespace xtal::math::taylor
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int N_iso=1, int N_car=0> XTAL_NYM sine;
-template <int N_iso=1, int N_car=0> XTAL_USE sine_t = process::confined_t<sine<N_iso, N_car>>;
+template <int N_fix=1, int N_hyp=0, int N_div=0, int N_car=0> XTAL_NYM sine {static_assert(N_fix);};
+template <int N_fix=1, int N_hyp=0, int N_div=0, int N_car=0> XTAL_USE sine_t = process::confined_t<sine<N_fix, N_hyp, N_div, N_car>>;
+
+template <int N_fix, int N_hyp, int N_div> XTAL_NYM sine<N_fix, N_hyp, N_div, -0>: bond::compose<discard<1>, sine<N_fix, N_hyp, N_div, -1>> {};
+template <int N_fix, int N_hyp, int N_div> XTAL_NYM sine<N_fix, N_hyp, N_div, -1>: bond::compose<discard<2>, sine<N_fix, N_hyp, N_div, -2>> {};
 
 
 ////////////////////////////////////////////////////////////////////////////////
+/*/
+template <int N_fix, int N_hyp, int N_div> requires (1 == N_fix)
+struct sine<N_fix, N_hyp, N_div, 1>
+:	process::chain<void
+	,	patio<2>
+	,	sine<0, N_fix, N_hyp, N_div, 1>
+	>
+{};
 
-template <int N_iso>
-struct sine<N_iso, 0>: atom::compose<discard, sine<N_iso, 1>> {};
+/***/
+////////////////////////////////////////////////////////////////////////////////
 
-template <int N_iso> requires (0 < N_iso)
-struct sine<N_iso, 1>
+template <int N_fix, int N_hyp, int N_div> requires (0 < N_fix)
+struct sine<N_fix, N_hyp, N_div, -2>
 {
 	template <class S>
-	class subtype: public atom::compose_s<S>
+	class subtype: public bond::compose_s<S>
 	{
-		using S_ = atom::compose_s<S>;
+		using S_ = bond::compose_s<S>;
 
 	public:
 		using S_::S_;
 
-		template <int N_lim>
-		XTAL_FN2 function(auto &&u)
+		template <int N_limit>
+		XTAL_FN2 function(auto &&w)
 		XTAL_0EX
 		{
-			int constexpr I_lim = N_lim&0xF;
-			int constexpr I_sgn = sign_n<N_iso&1^1, -1>;
+			int constexpr I_lim = N_limit&0xF;
+			int constexpr I_sgn = sign_n<N_hyp&1^0, -1>;
 
-			using U = XTAL_TYP_(u); using re = atom::realize<U>;
-			U const w = re::square_f(u);
-			U       x = re::alpha_1;
+			using W = XTAL_TYP_(w); using re = bond::realize<W>;
+			auto constexpr n = re::patio_2*re::haplo_f(N_div);
+			auto constexpr m = re::square_f(n);
+			
+			W x = re::alpha_1;
 
-			atom::seek_backward_f<I_lim>([&] (auto i)
+			bond::seek_backward_f<I_lim>([&] (auto i)
 				XTAL_0FN_(x = horner::term_f<I_sgn>(re::alpha_1
-				,	re::ratio_f((i*2 + 2)*(i*2 + 3))
+				,	m*re::ratio_f((i*2 + 2)*(i*2 + 3))
 				,	w
 				,	x
 				)
@@ -54,31 +67,33 @@ struct sine<N_iso, 1>
 
 	};
 };
-template <int N_iso> requires (N_iso < 0)
-struct sine<N_iso, 1>
+template <int N_fix, int N_hyp, int N_div> requires (N_fix < 0)
+struct sine<N_fix, N_hyp, N_div, -2>
 {
 	template <class S>
-	class subtype: public atom::compose_s<S>
+	class subtype: public bond::compose_s<S>
 	{
-		using S_ = atom::compose_s<S>;
+		using S_ = bond::compose_s<S>;
 
 	public:
 		using S_::S_;
 
-		template <int N_lim>
-		XTAL_FN2 function(auto &&u)
+		template <int N_limit>
+		XTAL_FN2 function(auto &&w)
 		XTAL_0EX
 		{
-			int constexpr I_lim = N_lim&0xF;
-			int constexpr I_sgn = sign_n<N_iso&1^0, -1>;
+			int constexpr I_lim = N_limit&0xF;
+			int constexpr I_sgn = sign_n<N_hyp&1^1, -1>;
 
-			using U = XTAL_TYP_(u); using re = atom::realize<U>;
-			U const w = re::square_f(u);
-			U       x = re::ratio_f(I_lim*2 + 1);
+			using W = XTAL_TYP_(w); using re = bond::realize<W>;
+			auto constexpr n = re::patio_2*re::haplo_f(N_div);
+			auto constexpr m = re::square_f(n);
+			
+			W x = re::ratio_f(I_lim*2 + 1);
 
-			atom::seek_backward_f<I_lim>([&] (auto i)
+			bond::seek_backward_f<I_lim>([&] (auto i)
 				XTAL_0FN_(x = horner::term_f<I_sgn>(re::ratio_f(i*2 + 1)
-				,	re::template ratio_f<i*2 + 1>(i + 1 << 1)
+				,	m*re::template ratio_f<i*2 + 1>(i + 1 << 1)
 				,	w
 				,	x
 				)
