@@ -20,10 +20,10 @@ XTAL_0FN
 	using re = bond::realize<bond::seek_back_t<decltype(xs)...>>;
 
 	if (re::N_fused and not _std::is_constant_evaluated()) {
-		return _std::fma((XTAL_FWD_(xs) *...* 1), N_sign, XTAL_FWD_(w));
+		return _std::fma((XTAL_REF_(xs) *...* 1), N_sign, XTAL_REF_(w));
 	}
 	else {
-		return (XTAL_FWD_(xs) *...* N_sign) + XTAL_FWD_(w);
+		return (XTAL_REF_(xs) *...* N_sign) + XTAL_REF_(w);
 	}
 };
 
@@ -62,10 +62,10 @@ struct term
 //			using Xn = bond::seek_back_t<decltype(xs)...>;
 //			using re = bond::realize<Xn>;
 //			if (re::N_fused and not std::is_constant_evaluated()) {
-//				return std::fma((XTAL_FWD_(xs) *...* XTAL_FWD_(x)), N_sign, XTAL_FWD_(w));
+//				return std::fma((XTAL_REF_(xs) *...* XTAL_REF_(x)), N_sign, XTAL_REF_(w));
 //			}
 //			else {
-//				return XTAL_FWD_(w) + N_sign*(XTAL_FWD_(x) *...* XTAL_FWD_(xs));
+//				return XTAL_REF_(w) + N_sign*(XTAL_REF_(x) *...* XTAL_REF_(xs));
 //			}
 //		}
 

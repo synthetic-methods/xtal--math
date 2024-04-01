@@ -10,35 +10,42 @@ XTAL_ENV_(push)
 namespace xtal::math::pade
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
+///\
+Defines `function` as `Exp[2 Pi I*#]`. \
+Philosophically, this is equivalent to `1^(1#). \
+An `N_div` of `1` or `2` is equivalent to `(-1)^#` or `I^#`, respectively. \
 
-template <int N_fun=1, int N_hyp=0, int N_div=0, int N_car=0> XTAL_NYM circle1 {static_assert(N_fun);};
-template <int N_fun=1, int N_hyp=0, int N_div=0, int N_car=0> XTAL_USE circle1_t = process::confined_t<circle1<N_fun, N_hyp, N_div, N_car>>;
+template <int N_fun=1, int N_hyp=0, int N_div=0, int N_car=0>
+struct unity {static_assert(N_fun);};
+
+template <int N_fun=1, int N_hyp=0, int N_div=0, int N_car=0>
+using unity_t = process::confined_t<unity<N_fun, N_hyp, N_div, N_car>>;
 
 //template <int N_fun, int N_hyp>
-//struct circle1<N_fun, N_hyp, 0, +1>
-//:	bond::compose<patio<-2>, circle1<N_fun, N_hyp, 0, 0>>
+//struct unity<N_fun, N_hyp, 0, +1>
+//:	bond::compose<patio<-2>, unity<N_fun, N_hyp, 0, 0>>
 //{};
 /*/
 template <int N_fun, int N_hyp, int N_div>
-struct circle1<N_fun, N_hyp, N_div, -0>
-:	bond::compose<discard<1>, circle1<N_fun, N_hyp, N_div, -1>>
+struct unity<N_fun, N_hyp, N_div, -0>
+:	bond::compose<discard<1>, unity<N_fun, N_hyp, N_div, -1>>
 {};
 /*/
 template <int N_fun, int N_hyp>
-struct circle1<N_fun, N_hyp, 1, -0>
-:	bond::compose<discard<1>, circle1<N_fun, N_hyp, 1, -1>>
+struct unity<N_fun, N_hyp, 1, -0>
+:	bond::compose<discard<1>, unity<N_fun, N_hyp, 1, -1>>
 {};
 /***/
 
 /*/
 template <int N_fun, int N_hyp, int N_div>
-struct circle1<N_fun, N_hyp, N_div, -1>
-:	bond::compose<discard<2>, circle1<N_fun, N_hyp, N_div, -2>>
+struct unity<N_fun, N_hyp, N_div, -1>
+:	bond::compose<discard<2>, unity<N_fun, N_hyp, N_div, -2>>
 {};
 /*/
 template <int N_fun, int N_hyp>
-struct circle1<N_fun, N_hyp, 1, -1>
-:	bond::compose<discard<2>, circle1<N_fun, N_hyp, 1, -2>>
+struct unity<N_fun, N_hyp, 1, -1>
+:	bond::compose<discard<2>, unity<N_fun, N_hyp, 1, -2>>
 {};
 /***/
 
@@ -46,9 +53,9 @@ struct circle1<N_fun, N_hyp, 1, -1>
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int N_fun, int N_hyp, int N_div> requires in_p<N_fun, 1>
-struct circle1<N_fun, N_hyp, N_div, 0>
+struct unity<N_fun, N_hyp, N_div, 0>
 {
-	using subkind = circle1<N_fun, N_hyp, 0, 0>;
+	using subkind = unity<N_fun, N_hyp, 0, 0>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S, subkind>
@@ -75,9 +82,9 @@ struct circle1<N_fun, N_hyp, N_div, 0>
 	};
 };
 template <int N_fun, int N_hyp> requires in_p<N_fun, 1>
-struct circle1<N_fun, N_hyp, 0, 0>
+struct unity<N_fun, N_hyp, 0, 0>
 {
-	using subkind = process::lifted<square1_t<1, N_hyp>, circle1_t<N_fun, N_hyp, 1, 0>>;
+	using subkind = process::inferred<square1_t<1, N_hyp>, unity_t<N_fun, N_hyp, 1, 0>>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S, subkind>
@@ -139,7 +146,7 @@ struct circle1<N_fun, N_hyp, 0, 0>
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int N_fun, int N_hyp> requires in_p<N_fun, 1>
-struct circle1<N_fun, N_hyp, 1, -2>
+struct unity<N_fun, N_hyp, 1, -2>
 {
 	template <class S>
 	class subtype: public bond::compose_s<S>

@@ -1,6 +1,6 @@
 #pragma once
 #include "./any.cc"
-#include "./circle1.ii"// testing...
+#include "./unity.ii"// testing...
 
 
 
@@ -13,19 +13,19 @@ namespace xtal::math::pade::__test
 /////////////////////////////////////////////////////////////////////////////////
 
 template <int N_lim=0, int N_trim=0>
-XTAL_FN2 circle1__check_f(auto const &t)
+XTAL_FN2 unity__check_f(auto const &t)
 XTAL_0EX
 {
 	int constexpr N_inf = -1;
-	auto const u = circle1_t<+1, 0, 0>::template function<N_lim>(t);
-	auto const v = circle1_t<+1, 0, 0>::template function<N_inf>(t);
+	auto const u = unity_t<+1, 0, 0>::template function<N_lim>(t);
+	auto const v = unity_t<+1, 0, 0>::template function<N_inf>(t);
 	return bond::computrim_f<N_trim>(u) == bond::computrim_f<N_trim>(v);
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
 /**/
-TAG_("circle1")
+TAG_("unity")
 {
 	using re = bond::realized;
 
@@ -47,7 +47,7 @@ TAG_("circle1")
 		T_aphex z {1, 0};
 
 		for (T_sigma i = 0x100; ~--i;) {
-			z *= circle1_t<+1, 0, 0>::template function<-1>(t);
+			z *= unity_t<+1, 0, 0>::template function<-1>(t);
 			t += _t;
 			t -= _std::round(t);
 		}
@@ -63,7 +63,7 @@ TAG_("circle1")
 		for (T_sigma i = 0x100; ~--i;) {
 			t += _t;
 			t -= _std::round(t);
-			z *= circle1_t<+1, 0, 0>::template function<4>(t);
+			z *= unity_t<+1, 0, 0>::template function<4>(t);
 		}
 		return z;
 
@@ -72,14 +72,14 @@ TAG_("circle1")
 	{
 		double const t = 1.125;
 
-		TRUE_(circle1__check_f<0,  2>(t));
-		TRUE_(circle1__check_f<1,  6>(t));
-		TRUE_(circle1__check_f<2, 14>(t));
-		TRUE_(circle1__check_f<3, 20>(t));
-		TRUE_(circle1__check_f<4, 28>(t));
-		TRUE_(circle1__check_f<5, 37>(t));
-		TRUE_(circle1__check_f<6, 47>(t));
-		TRUE_(circle1__check_f<7, 49>(t));
+		TRUE_(unity__check_f<0,  2>(t));
+		TRUE_(unity__check_f<1,  6>(t));
+		TRUE_(unity__check_f<2, 14>(t));
+		TRUE_(unity__check_f<3, 20>(t));
+		TRUE_(unity__check_f<4, 28>(t));
+		TRUE_(unity__check_f<5, 37>(t));
+		TRUE_(unity__check_f<6, 47>(t));
+		TRUE_(unity__check_f<7, 49>(t));
 
 	}
 
@@ -89,7 +89,7 @@ TAG_("circle1")
 		T_aphex z {1, 0};
 
 		for (T_sigma i = 0x100; ~--i; ++t) {
-			z *= circle1_t<+1, 0, 0>::template function<4>(t);
+			z *= unity_t<+1, 0, 0>::template function<4>(t);
 		}
 		return z;
 
@@ -98,14 +98,14 @@ TAG_("circle1")
 	{
 		double const t = group::cycle_t<T_alpha[2]> {1.125, 0};
 
-		TRUE_(circle1__check_f<0,  2>(t));
-		TRUE_(circle1__check_f<1,  6>(t));
-		TRUE_(circle1__check_f<2, 14>(t));
-		TRUE_(circle1__check_f<3, 20>(t));
-		TRUE_(circle1__check_f<4, 28>(t));
-		TRUE_(circle1__check_f<5, 37>(t));
-		TRUE_(circle1__check_f<6, 47>(t));
-		TRUE_(circle1__check_f<7, 49>(t));
+		TRUE_(unity__check_f<0,  2>(t));
+		TRUE_(unity__check_f<1,  6>(t));
+		TRUE_(unity__check_f<2, 14>(t));
+		TRUE_(unity__check_f<3, 20>(t));
+		TRUE_(unity__check_f<4, 28>(t));
+		TRUE_(unity__check_f<5, 37>(t));
+		TRUE_(unity__check_f<6, 47>(t));
+		TRUE_(unity__check_f<7, 49>(t));
 
 	}
 }

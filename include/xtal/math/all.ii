@@ -1,7 +1,16 @@
-//#pragma once
+#pragma once
 #include "./discard.ii"
 #include "./square.ii"
 #include "./square1.ii"
+#include "./bernoulli/all.ii"
+#include "./euler/all.ii"
+#include "./gudermannian/all.ii"
 #include "./horner/all.ii"
+#include "./jacobi/all.ii"
+#include "./jonquiere/all.ii"
+#include "./lambert/all.ii"
+#include "./landen/all.ii"
+#include "./mystran/all.ii"
+#include "./newton/all.ii"
 #include "./pade/all.ii"
 #include "./taylor/all.ii"

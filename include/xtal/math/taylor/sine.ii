@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.ii"
 
-
+#include "../square.ii"
 
 
 
@@ -14,61 +14,79 @@ namespace xtal::math::taylor
 template <int N_fix=1, int N_hyp=0, int N_div=0, int N_car=0> XTAL_NYM sine {static_assert(N_fix);};
 template <int N_fix=1, int N_hyp=0, int N_div=0, int N_car=0> XTAL_USE sine_t = process::confined_t<sine<N_fix, N_hyp, N_div, N_car>>;
 
-template <int N_fix, int N_hyp, int N_div> XTAL_NYM sine<N_fix, N_hyp, N_div, -0>: bond::compose<discard<1>, sine<N_fix, N_hyp, N_div, -1>> {};
-template <int N_fix, int N_hyp, int N_div> XTAL_NYM sine<N_fix, N_hyp, N_div, -1>: bond::compose<discard<2>, sine<N_fix, N_hyp, N_div, -2>> {};
-
-
-////////////////////////////////////////////////////////////////////////////////
-/*/
-template <int N_fix, int N_hyp, int N_div> requires (1 == N_fix)
-struct sine<N_fix, N_hyp, N_div, 1>
-:	process::chain<void
-	,	patio<2>
-	,	sine<0, N_fix, N_hyp, N_div, 1>
-	>
-{};
-
-/***/
-////////////////////////////////////////////////////////////////////////////////
-
-template <int N_fix, int N_hyp, int N_div> requires (0 < N_fix)
-struct sine<N_fix, N_hyp, N_div, -2>
+template <int N_fix, int N_hyp, int N_div> requires in_p<N_fix, 1, -1>
+struct sine<N_fix, N_hyp, N_div, +1>
+:	bond::compose<dilate<0, -1>, sine<N_fix, N_hyp, N_div, -0>>
 {
+};
+template <int N_fix, int N_hyp, int N_div> requires in_p<N_fix, 1, -1>
+struct sine<N_fix, N_hyp, N_div, -0>
+{
+	using subkind = bond::compose<discard<1>, sine<N_fix, N_hyp, N_div, -1>>;
+
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype: public bond::compose_s<S, subkind>
 	{
-		using S_ = bond::compose_s<S>;
+		using S_ = bond::compose_s<S, subkind>;
 
 	public:
 		using S_::S_;
 
-		template <int N_limit>
-		XTAL_FN2 function(auto &&w)
+		template <int N_lim=-1>
+		XTAL_FN2 function(auto &&u)
 		XTAL_0EX
 		{
-			int constexpr I_lim = N_limit&0xF;
-			int constexpr I_sgn = sign_n<N_hyp&1^0, -1>;
-
-			using W = XTAL_TYP_(w); using re = bond::realize<W>;
-			auto constexpr n = re::patio_2*re::haplo_f(N_div);
-			auto constexpr m = re::square_f(n);
-			
-			W x = re::alpha_1;
-
-			bond::seek_backward_f<I_lim>([&] (auto i)
-				XTAL_0FN_(x = horner::term_f<I_sgn>(re::alpha_1
-				,	m*re::ratio_f((i*2 + 2)*(i*2 + 3))
-				,	w
-				,	x
-				)
-			));
-			return x;
+			if constexpr (N_lim < 0) {
+				XTAL_IF0
+				XTAL_0IF_(N_fix ==  1 and N_hyp&1^1) {return _std:: sin (XTAL_REF_(u));}
+				XTAL_0IF_(N_fix ==  1 and N_hyp&1^0) {return _std:: sinh(XTAL_REF_(u));}
+				XTAL_0IF_(N_fix == -1 and N_hyp&1^1) {return _std::asin (XTAL_REF_(u));}
+				XTAL_0IF_(N_fix == -1 and N_hyp&1^0) {return _std::asinh(XTAL_REF_(u));}
+			}
+			else {
+				return S_::template function<N_lim>(XTAL_REF_(u));
+			}
 		}
 
 	};
 };
-template <int N_fix, int N_hyp, int N_div> requires (N_fix < 0)
-struct sine<N_fix, N_hyp, N_div, -2>
+template <int N_fix, int N_hyp, int N_div> requires in_p<N_fix, 1, -1>
+struct sine<N_fix, N_hyp, N_div, -1>
+{
+	using subkind = bond::compose<discard<2>, sine<N_fix, N_hyp, N_div, -2>>;
+
+	template <class S>
+	class subtype: public bond::compose_s<S, subkind>
+	{
+		using S_ = bond::compose_s<S, subkind>;
+
+	public:
+		using S_::S_;
+
+		template <int N_lim=-1>
+		XTAL_FN2 function(auto &&u)
+		XTAL_0EX
+		{
+			if constexpr (N_lim < 0) {
+				XTAL_IF0
+				XTAL_0IF_(N_fix ==  1 and N_hyp&1^1) {return _std:: sin (u)/XTAL_REF_(u);}
+				XTAL_0IF_(N_fix ==  1 and N_hyp&1^0) {return _std:: sinh(u)/XTAL_REF_(u);}
+				XTAL_0IF_(N_fix == -1 and N_hyp&1^1) {return _std::asin (u)/XTAL_REF_(u);}
+				XTAL_0IF_(N_fix == -1 and N_hyp&1^0) {return _std::asinh(u)/XTAL_REF_(u);}
+			}
+			else {
+				return S_::template function<N_lim>(XTAL_REF_(u));
+			}
+		}
+
+	};
+};
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <int N_hyp, int N_div>
+struct sine<(+1), N_hyp, N_div, -2>
 {
 	template <class S>
 	class subtype: public bond::compose_s<S>
@@ -78,27 +96,75 @@ struct sine<N_fix, N_hyp, N_div, -2>
 	public:
 		using S_::S_;
 
-		template <int N_limit>
+		template <int N_lim=-1>
 		XTAL_FN2 function(auto &&w)
 		XTAL_0EX
 		{
-			int constexpr I_lim = N_limit&0xF;
-			int constexpr I_sgn = sign_n<N_hyp&1^1, -1>;
+			if constexpr (N_lim < 0) {
+				XTAL_IF0
+				XTAL_0IF_(N_hyp&1^1) {return _std::sin (square_f<-1>(w))/XTAL_REF_(w);}
+				XTAL_0IF_(N_hyp&1^0) {return _std::sinh(square_f<-1>(w))/XTAL_REF_(w);}
+			}
+			else {
+				int constexpr I_lim = (N_lim << 1) - (0 < N_lim);
+				int constexpr I_sgn = sign_n<N_hyp&1^0, -1>;
 
-			using W = XTAL_TYP_(w); using re = bond::realize<W>;
-			auto constexpr n = re::patio_2*re::haplo_f(N_div);
-			auto constexpr m = re::square_f(n);
-			
-			W x = re::ratio_f(I_lim*2 + 1);
+				using W = XTAL_TYP_(w); using re = bond::realize<W>;
+				auto constexpr m = re::haplo_f(N_div << 1);
+				
+				W x = re::alpha_1;
 
-			bond::seek_backward_f<I_lim>([&] (auto i)
-				XTAL_0FN_(x = horner::term_f<I_sgn>(re::ratio_f(i*2 + 1)
-				,	m*re::template ratio_f<i*2 + 1>(i + 1 << 1)
-				,	w
-				,	x
-				)
-			));
-			return x;
+				bond::seek_backward_f<I_lim>([&] (auto i)
+					XTAL_0FN_(x = horner::term_f<I_sgn>(re::alpha_1
+					,	m*re::ratio_f((i*2 + 2)*(i*2 + 3))
+					,	w
+					,	x
+					)
+				));
+				return x;
+			}
+		}
+
+	};
+};
+template <int N_hyp, int N_div>
+struct sine<(-1), N_hyp, N_div, -2>
+{
+	template <class S>
+	class subtype: public bond::compose_s<S>
+	{
+		using S_ = bond::compose_s<S>;
+
+	public:
+		using S_::S_;
+
+		template <int N_lim=-1>
+		XTAL_FN2 function(auto &&w)
+		XTAL_0EX
+		{
+			if constexpr (N_lim < 0) {
+				XTAL_IF0
+				XTAL_0IF_(N_hyp&1^1) {return _std::asin (square_f<-1>(XTAL_REF_(w)));}
+				XTAL_0IF_(N_hyp&1^0) {return _std::asinh(square_f<-1>(XTAL_REF_(w)));}
+			}
+			else {
+				int constexpr I_lim = (N_lim << 1) - (0 < N_lim);
+				int constexpr I_sgn = sign_n<N_hyp&1^1, -1>;
+
+				using W = XTAL_TYP_(w); using re = bond::realize<W>;
+				auto constexpr m = re::haplo_f(N_div << 1);
+				
+				W x = re::ratio_f(I_lim*2 + 1);
+
+				bond::seek_backward_f<I_lim>([&] (auto i)
+					XTAL_0FN_(x = horner::term_f<I_sgn>(re::ratio_f(i*2 + 1)
+					,	m*re::template ratio_f<i*2 + 1>(i + 1 << 1)
+					,	w
+					,	x
+					)
+				));
+				return x;
+			}
 		}
 
 	};

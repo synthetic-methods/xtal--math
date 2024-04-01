@@ -1,6 +1,6 @@
 #pragma once
 #include "./any.ii"
-#include "./square.ii"
+
 
 
 
@@ -11,65 +11,37 @@ namespace xtal::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int N_car>
-struct discard;
-
-
 ////////////////////////////////////////////////////////////////////////////////
 
+template <int N_two=0, int N_tau=0>
+struct dilate
+{
+	template <class S>
+	class subtype: public bond::compose_s<S>
+	{
+		using S_ = bond::compose_s<S>;
+
+	public:
+		using S_::S_;
+
+		template <auto ...Is>
+		XTAL_FN2 function(auto &&o)
+		XTAL_0EX
+		{
+			using re = bond::realize<decltype(o)>;
+			auto constexpr n = re::diplo_f(-N_two)*re::template patio_f<-N_tau>(2, 1);
+			auto constexpr u = re::diplo_f(+N_two)*re::template patio_f<+N_tau>(2, 1);
+			return S_::template function<Is...>(o*n)*(u);
+		};
+
+	};
+};
 template <>
-struct discard<0>
+struct dilate<0>
 {
 	template <class S>
 	using subtype = S;
 
-};
-template <>
-struct discard<1>
-{
-	template <class S>
-	class subtype: public bond::compose_s<S>
-	{
-		using S_ = bond::compose_s<S>;
-
-	public:
-		using S_::S_;
-
-		template <auto ...Is>
-		XTAL_FN2 function(auto &&o)
-		XTAL_0EX
-		{
-			auto const v = S_::template function<Is...>(o); using V = XTAL_TYP_(v);
-			if constexpr (complex_field_q<V>) {
-				return V {v.real(), v.imag()*XTAL_REF_(o)};
-			}
-			else {
-				return v*XTAL_REF_(o);
-			}
-		};
-
-	};
-};
-template <>
-struct discard<2>
-{
-	template <class S>
-	class subtype: public bond::compose_s<S>
-	{
-		using S_ = bond::compose_s<S>;
-
-	public:
-		using S_::S_;
-
-		template <auto ...Is>
-		XTAL_FN2 function(auto &&o)
-		XTAL_0EX
-		{
-			using U = XTAL_TYP_(o); using re = bond::realize<U>;
-			return S_::template function<Is...>(square_f<1>(XTAL_REF_(o)));
-		};
-
-	};
 };
 
 

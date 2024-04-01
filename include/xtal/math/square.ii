@@ -11,14 +11,20 @@ namespace xtal::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int N_f=1, int N_i=0> XTAL_NYM square;
-template <int N_f=1, int N_i=0> XTAL_USE square_t = process::confined_t<square<N_f, N_i>>;
+template <int N_fix=1, int N_pow=1> XTAL_NYM square;
+template <int N_fix=1, int N_pow=1> XTAL_USE square_t = process::confined_t<square<N_fix, N_pow>>;
+template <int N_fix=1, int N_pow=1>
+XTAL_FN2 square_f(auto &&o)
+XTAL_0EX
+{
+	return square_t<N_fix, N_pow>::function(XTAL_REF_(o));
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int N_i>
-struct square<0, N_i>
+template <int N_pow>
+struct square<0, N_pow>
 {
 	template <class S>
 	class subtype: public bond::compose_s<S>
@@ -32,14 +38,16 @@ struct square<0, N_i>
 		XTAL_FN2 function(auto &&o)
 		XTAL_0EX
 		{
-			return XTAL_FWD_(o);
+			return XTAL_REF_(o);
 		}
 
 	};
 };
-template <int N_f, int N_i> requires (0 < N_f)
-struct square<N_f, N_i>
+template <int N_fix> requires (0 < N_fix)
+struct square<N_fix, +1>
 {
+	XTAL_LET_(int) I_fix = +N_fix;
+
 	template <class S>
 	class subtype: public bond::compose_s<S>
 	{
@@ -52,37 +60,31 @@ struct square<N_f, N_i>
 		XTAL_FN2 function(simplex_field_p auto o)
 		XTAL_0EX
 		{
-		//	using W = XTAL_TYP_(o); using re = bond::realized<W>;
-
-			seek_forward_f<+N_f>([&] (auto)
-				XTAL_0FN_(o *= o)
-			);
-			return XTAL_MOV_(o);
+			bond::seek_forward_f<I_fix>([&] (auto) XTAL_0FN {o *= o;});
+			return o;
 		}
 		template <auto ...Is>
 		XTAL_FN2 function(complex_field_q auto const &o)
 		XTAL_0EX
 		{
-		//	using W = XTAL_TYP_(o); using re = bond::realized<W>;
-
-			int constexpr I_sgn = sign_n<N_i&1^1, -1>;
-
 			auto x = o.real();
 			auto y = o.imag();
-			seek_forward_f<+N_f>([&] (auto) XTAL_0FN {
+			bond::seek_forward_f<I_fix>([&] (auto) XTAL_0FN {
 				auto const xx = function<1>(x);
 				auto const yy = function<1>(y);
 				y = 2*x*y;
-				x = xx - yy*I_sgn;
+				x = xx - yy;
 			});
 			return XTAL_TYP_(o) {x, y};
 		}
 
 	};
 };
-template <int N_f, int N_i> requires (N_f < 0)
-struct square<N_f, N_i>
+template <int N_fix> requires (N_fix < 0)
+struct square<N_fix, +1>
 {
+	XTAL_LET_(int) I_fix = -N_fix;
+
 	template <class S>
 	class subtype: public bond::compose_s<S>
 	{
@@ -95,33 +97,58 @@ struct square<N_f, N_i>
 		XTAL_FN2 function(simplex_field_p auto o)
 		XTAL_0EX
 		{
-		//	using W = XTAL_TYP_(o); using re = bond::realized<W>;
-
-			seek_forward_f<-N_f>([&] (auto)
-				XTAL_0FN_(o = _std::sqrt(o))
-			);
-			return XTAL_MOV_(o);
+			bond::seek_forward_f<I_fix>([&] (auto) XTAL_0FN {o = _std::sqrt(XTAL_MOV_(o));});
+			return o;
 		}
 		template <auto ...Is>
 		XTAL_FN2 function(complex_field_q auto const &o)
 		XTAL_0EX
 		{
-			using W = XTAL_TYP_(o); using re = bond::realized<W>;
-
-			int constexpr I_sgn = sign_n<N_i&1^1, -1>;
+			using W = XTAL_TYP_(o); using re = bond::realize<W>;
 
 			auto x = o.real();
 			auto y = o.imag();
-			seek_forward_f<-N_f>([&] (auto) XTAL_0FN {
+			bond::seek_forward_f<I_fix>([&] (auto) XTAL_0FN {
 				y *= re::haplo_f(1);
 				x *= re::haplo_f(1);
-				auto const m = function<1>(x*x + y*y);
+				auto const m = function(square_f(x) + square_f(y));
 				//\
 				y *= function<1>(m - x)/_std::abs(y);
 				y  = function<1>(m - x);
 				x  = function<1>(m + x);
 			});
 			return W {x, y};
+		}
+
+	};
+};
+template <int N_fix> requires (N_fix < 0)
+struct square<N_fix, -1>
+{
+	XTAL_LET_(int) I_fix = -N_fix;
+
+	template <class S>
+	class subtype: public bond::compose_s<S>
+	{
+		using S_ = bond::compose_s<S>;
+
+	public:
+		using S_::S_;
+
+		template <auto ...Is>
+		XTAL_FN2 function(simplex_field_p auto o)
+		XTAL_0EX
+		{
+			auto constexpr I_fix = -N_fix;
+		//	using W = XTAL_TYP_(o); using re = bond::realized<W>;
+
+			if constexpr (1 <= I_fix) {
+				o = 1/_std::sqrt(XTAL_MOV_(o));
+			}
+			if constexpr (2 <= I_fix) {
+				bond::seek_forward_f<I_fix - 1>([&] (auto) XTAL_0FN {o = _std::sqrt(XTAL_MOV_(o));});
+			}
+			return o;
 		}
 
 	};
