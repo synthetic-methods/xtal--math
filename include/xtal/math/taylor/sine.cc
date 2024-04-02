@@ -1,6 +1,6 @@
 #pragma once
 #include "./any.cc"
-#include "./sine.ii"// testing...
+#include "./sine.hh"// testing...
 
 
 
@@ -32,19 +32,19 @@ TAG_("sine")
 		
 		double const t = 0.11111, t_2pi = N_2pi*t;
 
-		TRUE_(check_f<15>(std:: sin (t)/(1), sine_t<+1, 0, 0, (-0)>::template function<N_lim>(t)));
-		TRUE_(check_f<15>(std:: sin (t)/(t), sine_t<+1, 0, 0, (-1)>::template function<N_lim>(t)));
-		TRUE_(check_f<15>(std:: sinh(t)/(1), sine_t<+1, 1, 0, (-0)>::template function<N_lim>(t)));
-		TRUE_(check_f<15>(std:: sinh(t)/(t), sine_t<+1, 1, 0, (-1)>::template function<N_lim>(t)));
-		TRUE_(check_f<15>(std::asin (t)/(1), sine_t<-1, 0, 0, (-0)>::template function<N_lim>(t)));
-		TRUE_(check_f<15>(std::asin (t)/(t), sine_t<-1, 0, 0, (-1)>::template function<N_lim>(t)));
-		TRUE_(check_f<15>(std::asinh(t)/(1), sine_t<-1, 1, 0, (-0)>::template function<N_lim>(t)));
-		TRUE_(check_f<15>(std::asinh(t)/(t), sine_t<-1, 1, 0, (-1)>::template function<N_lim>(t)));
+		TRUE_(check_f<15>(std:: sin (t)/(1), sine_t<+1, -0>::template function<N_lim>(t)));
+		TRUE_(check_f<15>(std:: sin (t)/(t), sine_t<+1, -1>::template function<N_lim>(t)));
+		TRUE_(check_f<15>(std:: sinh(t)/(1), sine_t<+2, -0>::template function<N_lim>(t)));
+		TRUE_(check_f<15>(std:: sinh(t)/(t), sine_t<+2, -1>::template function<N_lim>(t)));
+		TRUE_(check_f<15>(std::asin (t)/(1), sine_t<-1, -0>::template function<N_lim>(t)));
+		TRUE_(check_f<15>(std::asin (t)/(t), sine_t<-1, -1>::template function<N_lim>(t)));
+		TRUE_(check_f<15>(std::asinh(t)/(1), sine_t<-2, -0>::template function<N_lim>(t)));
+		TRUE_(check_f<15>(std::asinh(t)/(t), sine_t<-2, -1>::template function<N_lim>(t)));
 
-		TRUE_(check_f<15>(std:: sin (t_2pi)/(N_2pi), sine_t<+1, 0, 0, (+1)>::template function<N_lim>(t)));
-		TRUE_(check_f<15>(std:: sinh(t_2pi)/(N_2pi), sine_t<+1, 1, 0, (+1)>::template function<N_lim>(t)));
-		TRUE_(check_f<15>(std::asin (t_2pi)/(N_2pi), sine_t<-1, 0, 0, (+1)>::template function<N_lim>(t)));
-		TRUE_(check_f<15>(std::asinh(t_2pi)/(N_2pi), sine_t<-1, 1, 0, (+1)>::template function<N_lim>(t)));
+		TRUE_(check_f<15>(std:: sin (t_2pi)/(N_2pi), sine_t<+1, +1>::template function<N_lim>(t)));
+		TRUE_(check_f<15>(std:: sinh(t_2pi)/(N_2pi), sine_t<+2, +1>::template function<N_lim>(t)));
+		TRUE_(check_f<15>(std::asin (t_2pi)/(N_2pi), sine_t<-1, +1>::template function<N_lim>(t)));
+		TRUE_(check_f<15>(std::asinh(t_2pi)/(N_2pi), sine_t<-2, +1>::template function<N_lim>(t)));
 
 	}
 }

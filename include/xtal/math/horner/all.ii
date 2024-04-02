@@ -1,3 +1,0 @@
-#include "./any.ii"
-#include "./polynomial.ii"
-#include "./term.ii"

@@ -1,6 +1,6 @@
 #pragma once
 #include "./any.cc"
-#include "./square.ii"// testing...
+#include "./square.hh"// testing...
 
 
 
@@ -27,8 +27,9 @@ TAG_("square")
 
 	TRY_("task")
 	{
-		TRUE_(check_f<22>(_std::pow(T_aphex {1, 1}, 2.0), square_f<(+1), 1>(T_aphex {1, 1})));
-		TRUE_(check_f<22>(_std::pow(T_aphex {1, 1}, 0.5), square_f<(-1), 1>(T_aphex {1, 1})));
+		TRUE_(check_f<22>(square_f<-1, -1>(_std::pow(T_aphex {2, 3}, -2.0)), T_aphex {2, 3}));
+		TRUE_(check_f<22>(_std::pow(T_aphex {2, 3}, 2.0), square_f<(+1), 1>(T_aphex {2, 3})));
+		TRUE_(check_f<22>(_std::pow(T_aphex {2, 3}, 0.5), square_f<(-1), 1>(T_aphex {2, 3})));
 
 	}
 }

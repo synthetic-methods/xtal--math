@@ -1,0 +1,172 @@
+#pragma once
+#include "./any.hh"
+
+#include "../square.hh"
+
+
+
+
+XTAL_ENV_(push)
+namespace xtal::math::taylor
+{/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
+template <int M_ism=1, int N_car=0> XTAL_NEW sine {static_assert(M_ism);};
+template <int M_ism=1, int N_car=0> XTAL_USE sine_t = process::confined_t<sine<M_ism, N_car>>;
+
+template <int M_ism>
+struct sine<M_ism, +1>
+:	bond::compose<dilate<0, -1>, sine<M_ism, -0>>
+{
+};
+template <int M_ism>
+struct sine<M_ism, -0>
+{
+	using subkind = bond::compose<discard<1>, sine<M_ism, -1>>;
+
+	template <class S>
+	class subtype: public bond::compose_s<S, subkind>
+	{
+		using S_ = bond::compose_s<S, subkind>;
+
+	public:
+		using S_::S_;
+
+		template <int N_lim=-1>
+		XTAL_FN2 function(auto &&u)
+		XTAL_0EX
+		{
+			if constexpr (N_lim < 0) {
+				XTAL_IF0
+				XTAL_0IF_(M_ism ==  2) {return _std:: sinh(XTAL_REF_(u));}
+				XTAL_0IF_(M_ism ==  1) {return _std:: sin (XTAL_REF_(u));}
+				XTAL_0IF_(M_ism == -1) {return _std::asin (XTAL_REF_(u));}
+				XTAL_0IF_(M_ism == -2) {return _std::asinh(XTAL_REF_(u));}
+			}
+			else {
+				return S_::template function<N_lim>(XTAL_REF_(u));
+			}
+		}
+
+	};
+};
+template <int M_ism>
+struct sine<M_ism, -1>
+{
+	using subkind = bond::compose<discard<2>, sine<M_ism, -2>>;
+
+	template <class S>
+	class subtype: public bond::compose_s<S, subkind>
+	{
+		using S_ = bond::compose_s<S, subkind>;
+
+	public:
+		using S_::S_;
+
+		template <int N_lim=-1>
+		XTAL_FN2 function(auto &&u)
+		XTAL_0EX
+		{
+			if constexpr (N_lim < 0) {
+				XTAL_IF0
+				XTAL_0IF_(M_ism ==  2) {return _std:: sinh(u)/XTAL_REF_(u);}
+				XTAL_0IF_(M_ism ==  1) {return _std:: sin (u)/XTAL_REF_(u);}
+				XTAL_0IF_(M_ism == -1) {return _std::asin (u)/XTAL_REF_(u);}
+				XTAL_0IF_(M_ism == -2) {return _std::asinh(u)/XTAL_REF_(u);}
+			}
+			else {
+				return S_::template function<N_lim>(XTAL_REF_(u));
+			}
+		}
+
+	};
+};
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <int M_ism> requires (0 < M_ism)
+struct sine<M_ism, -2>
+{
+	template <class S>
+	class subtype: public bond::compose_s<S>
+	{
+		using S_ = bond::compose_s<S>;
+
+	public:
+		using S_::S_;
+
+		template <int N_lim=-1>
+		XTAL_FN2 function(auto &&w)
+		XTAL_0EX
+		{
+			if constexpr (N_lim < 0) {
+				XTAL_IF0
+				XTAL_0IF_(M_ism ==  2) {return _std::sinh(square_f<-1>(w))/XTAL_REF_(w);}
+				XTAL_0IF_(M_ism ==  1) {return _std::sin (square_f<-1>(w))/XTAL_REF_(w);}
+			}
+			else {
+				int constexpr I_lim = (N_lim << 1) - (0 < N_lim);
+				int constexpr I_sgn = sign_n<M_ism&1^1, -1>;
+
+				using W = XTAL_TYP_(w); using re = bond::realize<W>;
+				W x = re::alpha_1;
+
+				bond::seek_backward_f<I_lim>([&] (auto i)
+					XTAL_0FN_(x = horner::term_f<I_sgn>(re::alpha_1
+					,	re::ratio_f(1, (2 + 2*i)*(3 + 2*i))
+					,	w
+					,	x
+					)
+				));
+				return x;
+			}
+		}
+
+	};
+};
+template <int M_ism> requires (M_ism < 0)
+struct sine<M_ism, -2>
+{
+	template <class S>
+	class subtype: public bond::compose_s<S>
+	{
+		using S_ = bond::compose_s<S>;
+
+	public:
+		using S_::S_;
+
+		template <int N_lim=-1>
+		XTAL_FN2 function(auto &&w)
+		XTAL_0EX
+		{
+			if constexpr (N_lim < 0) {
+				XTAL_IF0
+				XTAL_0IF_(M_ism == 1) {return _std::asin (square_f<-1>(XTAL_REF_(w)));}
+				XTAL_0IF_(M_ism == 2) {return _std::asinh(square_f<-1>(XTAL_REF_(w)));}
+			}
+			else {
+				int constexpr I_lim = (N_lim << 1) - (0 < N_lim);
+				int constexpr I_sgn = sign_n<M_ism&1^0, -1>;
+
+				using W = XTAL_TYP_(w); using re = bond::realize<W>;
+				W x = re::ratio_f(1, 1 + 2*I_lim);
+
+				bond::seek_backward_f<I_lim>([&] (auto i)
+					XTAL_0FN_(x = horner::term_f<I_sgn>(re::ratio_f(1, 1 + 2*i)
+					,	re::template ratio_f(1 + 2*i, 2 + 2*i)
+					,	w
+					,	x
+					)
+				));
+				return x;
+			}
+		}
+
+	};
+};
+
+
+///////////////////////////////////////////////////////////////////////////////
+}/////////////////////////////////////////////////////////////////////////////
+XTAL_ENV_(pop)

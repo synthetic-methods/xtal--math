@@ -1,0 +1,18 @@
+#pragma once
+#include "./dilate.hh"
+#include "./dilute.hh"
+#include "./discard.hh"
+
+#include "./square.hh"
+#include "./bernoulli/all.hh"
+#include "./euler/all.hh"
+#include "./gudermannian/all.hh"
+#include "./horner/all.hh"
+#include "./jacobi/all.hh"
+#include "./jonquiere/all.hh"
+#include "./lambert/all.hh"
+#include "./landen/all.hh"
+#include "./mystran/all.hh"
+#include "./newton/all.hh"
+#include "./pade/all.hh"
+#include "./taylor/all.hh"

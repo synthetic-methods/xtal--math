@@ -1,7 +1,9 @@
 //#pragma once
+#include "./dilate.cc"
+#include "./dilute.cc"
 #include "./discard.cc"
+
 #include "./square.cc"
-#include "./square1.cc"
 #include "./bernoulli/all.cc"
 #include "./euler/all.cc"
 #include "./gudermannian/all.cc"
