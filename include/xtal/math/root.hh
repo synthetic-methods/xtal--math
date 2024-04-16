@@ -11,14 +11,21 @@ namespace xtal::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int N_two=0, int N_two_pi=0> struct dilute;
-template <int N_two=0, int N_two_pi=0> using  dilute_t = process::confined_t<dilute<N_two, N_two_pi>>;
+template <int N_pow=1> struct root;
+template <int N_pow=1> using  root_t = process::confined_t<root<N_pow>>;
+template <int N_pow=1>
+XTAL_FN2 root_f(auto &&o)
+XTAL_0EX
+{
+	return root_t<N_pow>::function(XTAL_REF_(o));
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
-template <int N_two, int N_two_pi>
-struct dilute
+template <int N_pow>
+struct root//<N_pow>
 {
 	template <class S>
 	class subtype: public bond::compose_s<S>
@@ -28,25 +35,15 @@ struct dilute
 	public:
 		using S_::S_;
 
-		template <auto ...Is>
-		XTAL_FN2 function(auto &&o)
+		template <int N_lim=-1>// requires sign_p<N_pow, 0>
+		XTAL_FN2 function(auto const &w)
 		XTAL_0EX
 		{
-			using re = bond::realize<decltype(o)>;
-			auto constexpr n = re::diplo_f(-N_two)*re::template patio_f<-N_two_pi>(2, 1);
-		//	auto constexpr u = re::diplo_f(+N_two)*re::template patio_f<+N_two_pi>(2, 1);
-			
-			return XTAL_REF_(o)*(n);
-		};
+			using re = bond::realize<decltype(w)>;
+			return re::template root_f<N_pow, N_lim>(w);
+		}
 
 	};
-};
-template <>
-struct dilute<0>
-{
-	template <class S>
-	using subtype = S;
-
 };
 
 

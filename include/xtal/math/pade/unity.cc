@@ -37,7 +37,7 @@ TAG_("unity")
 	XTAL_LET_(T_alpha) two =  2;
 	XTAL_LET_(T_alpha) ten = 10;
 
-	using U_phi = atom::phase_t<T_alpha[2]>;
+	using U_phi = algebra::differential::modular_t<T_alpha[2]>;
 
 	auto mt19937_f = typename re::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
@@ -84,7 +84,7 @@ TAG_("unity")
 	}
 	TRY_("evaluation (fixed-point)")
 	{
-		double const t0 = atom::phase_t<T_alpha[2]> {1.125, 0};
+		double const t0 = algebra::differential::modular_t<T_alpha[2]> {1.125, 0};
 
 		TRUE_(unity__check_f<0,  2>(t0));
 		TRUE_(unity__check_f<1,  6>(t0));
@@ -116,8 +116,8 @@ TAG_("unity")
 
 		auto z = unity_t<1>::template function<N_lim>(t1);
 
-		TRUE_(check_f<-1>(z, unity_t<1, 0           >::template function<N_lim>(t1)));
-		TRUE_(check_f<-1>(z, unity_t<1, 0, dilute<1>>::template function<N_lim>(t2)));
+		TRUE_(check_f<-1>(z, unity_t<1           >::template function<N_lim>(t1)));
+		TRUE_(check_f<-1>(z, unity_t<1, dilute<1>>::template function<N_lim>(t2)));
 		
 		TRUE_(check_f<-1>(z, process::chain_t<unity<1>, dilute<1>>::template function<N_lim>(t2)));
 		TRUE_(check_f<-1>(z, process::chain_t<unity<1>           >::template function<N_lim>(t1)));

@@ -11,20 +11,28 @@ namespace xtal::math::horner
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int N_sign=1> XTAL_NEW term;
-template <int N_sign=1> XTAL_USE term_t = process::confined_t<term<N_sign>>;
-template <int N_sign=1>
+template <int N_sign=1> struct term;
+template <int N_sign=1> using  term_t = process::confined_t<term<N_sign>>;
+template <int N_sign=1, additive_group_q W, multiplicative_group_q X, multiplicative_group_q ...Xs>
 XTAL_DEF_(return,inline)
-XTAL_LET term_f(auto &&w, auto &&x, auto &&...xs)
+XTAL_LET term_f(W &&w, X &&x, Xs &&...xs)
 XTAL_0EX -> decltype(auto)
 {
-	using re = bond::realize<bond::seek_back_t<decltype(xs)...>>;
+	using Xn = bond::seek_back_t<Xs...>;
+	using re = bond::realize<Xn>;
 
-	if (re::N_fused and not _std::is_constant_evaluated()) {
-		return _std::fma((XTAL_REF_(xs) *...* N_sign), XTAL_REF_(x), XTAL_REF_(w));
+	based_t<Xn> constexpr _s = N_sign; 
+
+	if constexpr (re::N_fused and requires {_std::fma((xs *...* _s), (x), w);}) {
+		if (not _std::is_constant_evaluated()) {
+			return _std::fma((XTAL_REF_(xs) *...* _s), XTAL_REF_(x), XTAL_REF_(w));
+		}
+		else {
+			return (XTAL_REF_(xs) *...* (_s*XTAL_REF_(x))) + XTAL_REF_(w);
+		}
 	}
 	else {
-		return (XTAL_REF_(xs) *...* (N_sign*XTAL_REF_(x))) + XTAL_REF_(w);
+		return (XTAL_REF_(xs) *...* (_s*XTAL_REF_(x))) + XTAL_REF_(w);
 	}
 };
 

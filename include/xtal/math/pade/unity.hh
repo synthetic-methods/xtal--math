@@ -16,16 +16,11 @@ Defines `function` by `(-1)^(2 #) &`; spiritually equivalent to `1^# &`. \
 ///\param M_ism \f$\in {1, 2}\f$ specifies the underlying morphism, \
 generating either circular or hyperbolic `{cosine, sine}` pairs. \
 
-///\param N_card \f$\in {-0, -1, -2}\f$ selects the corresponding function, \
-invoking either `f[#]`, `f[#]/#`, or `f[Sqrt@#]/#`. \
+template <int M_ism=1, typename ...As> struct unity {static_assert(M_ism);};
+template <int M_ism=1, typename ...As> using  unity_t = process::confined_t<unity<M_ism, As...>>;
 
-///\param N_half \f$\in {0, 1}\f$ selects between full-period and half-period implementations. \
-
-template <int M_ism=1, int N_card=0, typename ...As> struct unity {static_assert(M_ism);};
-template <int M_ism=1, int N_card=0, typename ...As> using  unity_t = process::confined_t<unity<M_ism, N_card, As...>>;
-
-template <int M_ism, int N_card, bond::compose_q ...As> requires some_q<As...>
-struct unity<M_ism, N_card, As...>: process::chain<unity<M_ism, N_card>, As...> {};
+template <int M_ism, bond::compose_q ...As> requires some_q<As...>
+struct unity<M_ism, As...>: process::chain<unity<M_ism>, As...> {};
 
 
 namespace _detail
@@ -34,11 +29,11 @@ namespace _detail
 Serves as the mathematical definition of the approximant, \
 which is argument-restricted by the main definition. \
 
-template <int M_ism=1, int N_card=0> struct disunity {static_assert(M_ism);};
-template <int M_ism                > struct disunity<M_ism,-0>: bond::compose<discard<1>, disunity<M_ism,-1>> {};
-template <int M_ism                > struct disunity<M_ism,-1>: bond::compose<discard<2>, disunity<M_ism,-2>> {};
-template <int M_ism                >
-struct disunity<M_ism,-2>
+template <int M_ism=1, int N_car=0> struct semiunity {static_assert(M_ism);};
+template <int M_ism               > struct semiunity<M_ism,-0>: bond::compose<discard<1>, semiunity<M_ism,-1>> {};
+template <int M_ism               > struct semiunity<M_ism,-1>: bond::compose<discard<2>, semiunity<M_ism,-2>> {};
+template <int M_ism               >
+struct semiunity<M_ism,-2>
 {
 	XTAL_LET_(int) I_sgn = sign_n<M_ism&1^1, -1>;
 
@@ -157,11 +152,11 @@ struct disunity<M_ism,-2>
 }///////////////////////////////////////////////////////////////////////////////
 
 template <int M_ism> requires (0 < M_ism)
-struct unity<M_ism,-0>
+struct unity<M_ism>
 {
 //	XTAL_LET_(int) I_sgn = sign_n<M_ism&1^1, -1>;
 
-	using subkind = process::chain<square<M_ism, 0>, _detail::disunity<M_ism,-0>>;
+	using subkind = process::chain<square<M_ism, 0>, _detail::semiunity<M_ism,-0>>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S, subkind>
@@ -172,31 +167,31 @@ struct unity<M_ism,-0>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_FN2 function(auto &&x, simplex_field_q auto &&y)
+		XTAL_FN2 function(complex_field_q auto const &t)
 		XTAL_0EX
 		{
-			using re = bond::realize<decltype(y)>;
-			return function<N_lim>(XTAL_REF_(x)) * _std::exp(XTAL_REF_(y)*re::patio_f(-2));
+			return function<N_lim>(t.real(), t.imag());
 		}
 		template <int N_lim=-1>
-		XTAL_FN2 function(complex_field_q auto const &w)
+		XTAL_FN2 function(auto &&t_re, simplex_field_q auto &&t_im)
 		XTAL_0EX
 		{
-			return function<N_lim>(w.real(), w.imag());
+		//	using T_re = XTAL_TYP_(t_re);
+			using T_im = XTAL_TYP_(t_im);
+			return function<N_lim>(XTAL_REF_(t_re))*
+				_std::exp(XTAL_REF_(t_im)*bond::realize<T_im>::patio_f(-2));
 		}
 
 		template <int N_lim=-1>
 		XTAL_FN2 function(simplex_field_q auto w)
 		XTAL_0EX
 		{
-			using W = decltype(w); using re = bond::realize<W>;
-			using Z = _std::complex<W>;
-
+			using re = bond::realize<decltype(w)>;
 			if constexpr (N_lim < 0) {
 				w *= re::patio_2;
 				XTAL_IF0
-				XTAL_0IF_(1 == M_ism) {return Z {_std::cos (w), _std::sin (w)};}
-				XTAL_0IF_(2 == M_ism) {return Z {_std::cosh(w), _std::sinh(w)};}
+				XTAL_0IF_(1 == M_ism) {return _std::complex{_std::cos (w), _std::sin (w)};}
+				XTAL_0IF_(2 == M_ism) {return _std::complex{_std::cosh(w), _std::sinh(w)};}
 			}
 			else {
 				w -= _std::round(w);
@@ -208,7 +203,7 @@ struct unity<M_ism,-0>
 			}
 		}
 		template <int N_lim=-1>
-		XTAL_FN2 function(atom::phase_q auto w)
+		XTAL_FN2 function(algebra::differential::modular_q auto w)
 		XTAL_0EX
 		{
 			using re = bond::realize<decltype(w.size())>;

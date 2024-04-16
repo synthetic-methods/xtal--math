@@ -11,8 +11,8 @@ namespace xtal::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism=1, int N_pow=1> requires sign_p<N_pow> XTAL_NEW square;
-template <int M_ism=1, int N_pow=1> requires sign_p<N_pow> XTAL_USE square_t = process::confined_t<square<M_ism, N_pow>>;
+template <int M_ism=1, int N_pow=1> requires sign_p<N_pow> struct square;
+template <int M_ism=1, int N_pow=1> requires sign_p<N_pow> using  square_t = process::confined_t<square<M_ism, N_pow>>;
 template <int M_ism=1, int N_pow=1> requires sign_p<N_pow>
 XTAL_FN2 square_f(auto &&o)
 XTAL_0EX

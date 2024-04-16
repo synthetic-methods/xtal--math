@@ -2,8 +2,10 @@
 #include "./dilate.hh"
 #include "./dilute.hh"
 #include "./discard.hh"
-
+#include "./root.hh"
+#include "./roots.hh"
 #include "./square.hh"
+
 #include "./bernoulli/all.hh"
 #include "./euler/all.hh"
 #include "./gudermannian/all.hh"

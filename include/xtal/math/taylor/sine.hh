@@ -11,8 +11,8 @@ namespace xtal::math::taylor
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism=1, int N_car=0> XTAL_NEW sine {static_assert(M_ism);};
-template <int M_ism=1, int N_car=0> XTAL_USE sine_t = process::confined_t<sine<M_ism, N_car>>;
+template <int M_ism=1, int N_car=0> struct sine {static_assert(M_ism);};
+template <int M_ism=1, int N_car=0> using  sine_t = process::confined_t<sine<M_ism, N_car>>;
 
 template <int M_ism>
 struct sine<M_ism, +1>
