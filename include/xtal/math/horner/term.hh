@@ -18,21 +18,23 @@ XTAL_DEF_(return,inline)
 XTAL_LET term_f(W &&w, X &&x, Xs &&...xs)
 XTAL_0EX -> decltype(auto)
 {
+	using _std::fma;
+
 	using Xn = bond::seek_back_t<Xs...>;
 	using re = bond::realize<Xn>;
 
-	based_t<Xn> constexpr _s = N_sign; 
+//	based_t<Xn> const _s = N_sign; 
 
-	if constexpr (re::N_fused and requires {_std::fma((xs *...* _s), (x), w);}) {
+	if constexpr (re::N_fused and requires {fma((xs *...* N_sign), (x), w);}) {
 		if (not _std::is_constant_evaluated()) {
-			return _std::fma((XTAL_REF_(xs) *...* _s), XTAL_REF_(x), XTAL_REF_(w));
+			return fma((XTAL_REF_(xs) *...* N_sign), XTAL_REF_(x), XTAL_REF_(w));
 		}
 		else {
-			return (XTAL_REF_(xs) *...* (_s*XTAL_REF_(x))) + XTAL_REF_(w);
+			return (XTAL_REF_(xs) *...* (N_sign*XTAL_REF_(x))) + XTAL_REF_(w);
 		}
 	}
 	else {
-		return (XTAL_REF_(xs) *...* (_s*XTAL_REF_(x))) + XTAL_REF_(w);
+		return (XTAL_REF_(xs) *...* (N_sign*XTAL_REF_(x))) + XTAL_REF_(w);
 	}
 };
 

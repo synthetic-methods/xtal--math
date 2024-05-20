@@ -45,12 +45,14 @@ struct logarithm<N_ism, -0>
 		XTAL_FN2 function(auto &&o)
 		XTAL_0EX
 		{
+			using _std::log;
+
 			using re = bond::realize<decltype(o)>;
 			auto constexpr _1 = re::alpha_1;
 			auto constexpr _i = re::alpha_1*sign_n<N_ism&1^1, -1>;
 
 			if constexpr (N_lim < 0) {
-				return _i*_std::log(_1 + _i*XTAL_REF_(o));
+				return _i*log(_1 + _i*XTAL_REF_(o));
 			}
 			else {
 				return S_::template function<N_lim>(typename re::alpha_t(XTAL_REF_(o)));
@@ -83,12 +85,14 @@ struct logarithm<N_ism, -0>
 		XTAL_FN2 function(auto &&o)
 		XTAL_0EX
 		{
+			using _std::exp;
+
 			using re = bond::realize<decltype(o)>;
 			auto constexpr _1 = re::alpha_1;
 			auto constexpr _i = re::alpha_1*sign_n<N_ism&1^1, -1>;
 
 			if constexpr (N_lim < 0) {
-				return _std::exp(XTAL_REF_(o)*_i)*_i - _i;
+				return exp(XTAL_REF_(o)*_i)*_i - _i;
 			}
 			else {
 				return S_::template function<N_lim>(XTAL_REF_(o));

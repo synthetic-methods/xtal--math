@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 #include "../square.hh"
-
+#include "../wrap.hh"
 
 
 
@@ -32,6 +32,7 @@ which is argument-restricted by the main definition. \
 template <int M_ism=1, int N_car=0> struct semiunity {static_assert(M_ism);};
 template <int M_ism               > struct semiunity<M_ism,-0>: bond::compose<discard<1>, semiunity<M_ism,-1>> {};
 template <int M_ism               > struct semiunity<M_ism,-1>: bond::compose<discard<2>, semiunity<M_ism,-2>> {};
+template <int M_ism=1, int N_car=0> using  semiunity_t = process::confined_t<semiunity<M_ism, N_car>>;
 template <int M_ism               >
 struct semiunity<M_ism,-2>
 {
@@ -51,8 +52,7 @@ struct semiunity<M_ism,-2>
 		{
 			int constexpr I_lim = N_lim&0x7;
 
-			using W = XTAL_TYP_(w); using re = bond::realize<W>;
-			using Z = _std::complex<W>;
+			using X = XTAL_TYP_(w); using re = bond::realize<X>;
 
 			using alpha_t = typename re::alpha_t;
 			using sigma_t = typename re::sigma_t;
@@ -64,7 +64,7 @@ struct semiunity<M_ism,-2>
 				alpha_t constexpr y0 = 3.141592653589793238462643383279502884L;
 				auto x = horner::polynomial_f<I_sgn>(w, x0);
 				auto y = horner::polynomial_f<I_sgn>(w, y0);
-				return Z {x, y};
+				return complexion_f(x, y);
 			}
 			XTAL_0IF_(I_lim == 0x1) {// 2:1 D[...1]@0 && D[...0]@¼
 				alpha_t constexpr x0 = 1.000000000000000000000000000000000000L;// 1
@@ -72,7 +72,7 @@ struct semiunity<M_ism,-2>
 				alpha_t constexpr y0 = 3.141592653589793238462643383279502884L;
 				auto x = horner::polynomial_f<I_sgn>(w, x0, x1);
 				auto y = horner::polynomial_f<I_sgn>(w, y0);
-				return Z {x, y};
+				return complexion_f(x, y);
 			}
 			XTAL_0IF_(I_lim == 0x2) {// 2:3 D[...1]@0 && D[...1]@¼
 				alpha_t constexpr x0 = 1.000000000000000000000000000000000000L;// 1
@@ -81,7 +81,7 @@ struct semiunity<M_ism,-2>
 				alpha_t constexpr y1 = 2.141425248853737498352073235738997875L;
 				auto x = horner::polynomial_f<I_sgn>(w, x0, x1);
 				auto y = horner::polynomial_f<I_sgn>(w, y0, y1);
-				return Z {x, y};
+				return complexion_f(x, y);
 			}
 			XTAL_0IF_(I_lim == 0x3) {// 4:3 D[...2]@0 && D[...2]@¼
 				alpha_t constexpr x0 = 1.000000000000000000000000000000000000L;// 1
@@ -91,7 +91,7 @@ struct semiunity<M_ism,-2>
 				alpha_t constexpr y1 = 2.978283337663136395120335432185471337L;
 				auto x = horner::polynomial_f<I_sgn>(w, x0, x1, x2);
 				auto y = horner::polynomial_f<I_sgn>(w, y0, y1);
-				return Z {x, y};
+				return complexion_f(x, y);
 			}
 			XTAL_0IF_(I_lim == 0x4) {// 4:5 D[...2]@0 && D[...3]@¼
 				alpha_t constexpr x0 = 1.000000000000000000000000000000000000L;// 1
@@ -102,7 +102,7 @@ struct semiunity<M_ism,-2>
 				alpha_t constexpr y2 = 0.331996058066891068754049734988584509L;
 				auto x = horner::polynomial_f<I_sgn>(w, x0, x1, x2);
 				auto y = horner::polynomial_f<I_sgn>(w, y0, y1, y2);
-				return Z {x, y};
+				return complexion_f(x, y);
 			}
 			XTAL_0IF_(I_lim == 0x5) {// 6:5 D[...3]@0 && D[...3]@¼
 				alpha_t constexpr x0 = 1.000000000000000000000000000000000000L;// 1
@@ -114,7 +114,7 @@ struct semiunity<M_ism,-2>
 				alpha_t constexpr y2 = 0.623295934882939155479821936321002832L;
 				auto x = horner::polynomial_f<I_sgn>(w, x0, x1, x2, x3);
 				auto y = horner::polynomial_f<I_sgn>(w, y0, y1, y2);
-				return Z {x, y};
+				return complexion_f(x, y);
 			}
 			XTAL_0IF_(I_lim == 0x6) {// 6:7 D[...3]@0 && D[...4]@¼
 				alpha_t constexpr x0 = 1.000000000000000000000000000000000000L;// 1
@@ -127,7 +127,7 @@ struct semiunity<M_ism,-2>
 				alpha_t constexpr y3 = 0.022706582386768037080226242510354953L;
 				auto x = horner::polynomial_f<I_sgn>(w, x0, x1, x2, x3);
 				auto y = horner::polynomial_f<I_sgn>(w, y0, y1, y2, y3);
-				return Z {x, y};
+				return complexion_f(x, y);
 			}
 			XTAL_0IF_(I_lim == 0x7) {// 8:7 D[...4]@0 && D[...5]@¼
 				alpha_t constexpr x0 = 1.000000000000000000000000000000000000L;// 1
@@ -141,7 +141,7 @@ struct semiunity<M_ism,-2>
 				alpha_t constexpr y3 = 0.054095324243024101847331195900039153L;
 				auto x = horner::polynomial_f<I_sgn>(w, x0, x1, x2, x3, x4);
 				auto y = horner::polynomial_f<I_sgn>(w, y0, y1, y2, y3);
-				return Z {x, y};
+				return complexion_f(x, y);
 			}
 		}
 
@@ -173,33 +173,33 @@ struct unity<M_ism>
 			return function<N_lim>(t.real(), t.imag());
 		}
 		template <int N_lim=-1>
-		XTAL_FN2 function(auto &&t_re, simplex_field_q auto &&t_im)
+		XTAL_FN2 function(auto &&t_1, simplex_field_q auto &&t_i)
 		XTAL_0EX
 		{
-		//	using T_re = XTAL_TYP_(t_re);
-			using T_im = XTAL_TYP_(t_im);
-			return function<N_lim>(XTAL_REF_(t_re))*
-				_std::exp(XTAL_REF_(t_im)*bond::realize<T_im>::patio_f(-2));
+			using _std::exp;
+
+			using T_i = XTAL_TYP_(t_i); using re = bond::realize<T_i>;
+			return function<N_lim>(XTAL_REF_(t_1))*exp(XTAL_REF_(t_i)*re::patio_f(-2));
 		}
 
 		template <int N_lim=-1>
-		XTAL_FN2 function(simplex_field_q auto w)
+		XTAL_FN2 function(simplex_field_q auto o)
 		XTAL_0EX
 		{
-			using re = bond::realize<decltype(w)>;
+			using X = XTAL_TYP_(o); using re = bond::realize<X>;
+
 			if constexpr (N_lim < 0) {
-				w *= re::patio_2;
+				using namespace _std;
+
+				auto w = o*re::patio_2;
 				XTAL_IF0
-				XTAL_0IF_(1 == M_ism) {return _std::complex{_std::cos (w), _std::sin (w)};}
-				XTAL_0IF_(2 == M_ism) {return _std::complex{_std::cosh(w), _std::sinh(w)};}
+				XTAL_0IF_(1 == M_ism) {return complexion_f(cos (w), sin (w));}
+				XTAL_0IF_(2 == M_ism) {return complexion_f(cosh(w), sinh(w));}
 			}
 			else {
-				w -= _std::round(w);
-				auto u = w;
-				u *=   re::diplo_1;
-				u -= _std::round(u);
-				u *=   re::haplo_1;
-				return S_::template function<N_lim>(u)*re::assign_f(u != w);
+				auto w = wrap_f(o);
+				auto u = wrap_f(w*re::diplo_1)*re::haplo_1;
+				return S_::template function<N_lim>(u)*flex_f<[] XTAL_1FN_(re::assign_f)>(u != w);
 			}
 		}
 		template <int N_lim=-1>
@@ -215,7 +215,7 @@ struct unity<M_ism>
 				auto const v = w[0] & re::sign.mask;
 				w[0] &= re::positive.mask >> 1;
 				w[0] |=                 v >> 1;
-				return S_::template function<N_lim>(w(0))*re::assign_f(v);
+				return S_::template function<N_lim>(w(0))*flex_f<[] XTAL_1FN_(re::assign_f)>(v);
 			}
 		}
 

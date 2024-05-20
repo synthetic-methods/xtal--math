@@ -5,6 +5,7 @@
 #include "./root.hh"
 #include "./roots.hh"
 #include "./square.hh"
+#include "./wrap.hh"
 
 #include "./bernoulli/all.hh"
 #include "./euler/all.hh"

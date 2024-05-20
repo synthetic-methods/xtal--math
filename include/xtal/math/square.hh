@@ -75,9 +75,7 @@ struct square<M_ism, 0>
 			auto const x_ = xx - I_sgn*yy;
 			auto const w_ = xx + I_sgn*yy;
 			auto const m_ = 1/w_;
-			y = y_*m_;
-			x = x_*m_;
-			return O {x, y};
+			return complexion_f(x_, y_)*(m_);
 		}
 
 	};
@@ -111,9 +109,9 @@ struct square<M_ism, 1>
 		{
 			using O = XTAL_TYP_(o); using re = bond::realize<O>;
 
-			auto const x = o.real(), xx = x*x;
-			auto const y = o.imag(), yy = y*y;
-			return O {xx - I_sgn*yy, 2*x*y};
+			auto const x = o.real(); auto xx = x*x;
+			auto const y = o.imag(); auto yy = y*y;
+			return complexion_f(xx - I_sgn*yy, 2*x*y);
 		}
 
 	};
@@ -169,7 +167,7 @@ struct square<M_ism, 1>
 			auto  x = o.real();
 			auto  y = o.imag();
 			auto const n = function(x*x + y*y);
-			return O_k*O {function(n + x), function(n - x)*re::sign_f(y)};
+			return O_k*complexion_f(function(n + x), function(n - x)*re::sign_f(y));
 		}
 
 	};
@@ -203,7 +201,7 @@ struct square<M_ism,-1>
 			auto  x = o.real();
 			auto  y = o.imag();
 			auto  u = function(x*x + y*y); x *= u*u;
-			return O_k*O {dis::function(u + x), dis::function(u - x)*-re::sign_f(y)};
+			return O_k*complexion_f(dis::function(u + x), dis::function(u - x)*-re::sign_f(y));
 		}
 
 	};

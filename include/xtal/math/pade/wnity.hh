@@ -16,15 +16,17 @@ Defines `function` as the pair `1^{#,-#} &`. \
 ///\note\
 Pronounced "double-unity". \
 
-template <int M_ism=1, typename ...As> struct wnity {static_assert(M_ism);};
-template <int M_ism=1, typename ...As> using  wnity_t = process::confined_t<wnity<M_ism, As...>>;
-
-template <int M_ism, bond::compose_q ...As> requires some_q<As...>
-struct wnity<M_ism, As...>: process::chain<wnity<M_ism>, As...> {};
+template <int M_ism=1, typename ...As> XTAL_TYP wnity {static_assert(M_ism);};
+template <int M_ism=1, typename ...As> XTAL_USE wnity_t = process::confined_t<wnity<M_ism, As...>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
+template <int M_ism, bond::compose_q ...As> requires some_q<As...>
+struct wnity<M_ism, As...>
+:	process::chain<wnity<M_ism>, As...>
+{
+};
 template <>
 struct wnity<1>
 {
@@ -43,15 +45,24 @@ struct wnity<1>
 			return function<N_lim>(t.real(), t.imag());
 		}
 		template <int N_lim=-1>
-		XTAL_FN2 function(auto &&t_re, simplex_field_q auto &&t_im)
+		XTAL_FN2 function(auto &&t_1, simplex_field_q auto &&t_i)
 		XTAL_0EX
 		{
-		//	using T_re = XTAL_TYP_(t_re);
-			using T_im = XTAL_TYP_(t_im);
-			auto constexpr f = bond::realize<T_im>::patio_f(-2);
-			auto const     o = unity_t<1>::template function<N_lim>(XTAL_REF_(t_re));
-			return algebra::scalar_f(o, _std::conj(o))*
-				roots_t<1>::template function(_std::exp(f*XTAL_REF_(t_im)));
+			using _std::exp;
+
+			using T_i = XTAL_TYP_(t_i); using re = bond::realize<T_i>;
+
+			return function(XTAL_REF_(t_1))*
+				roots_t<1>::template function(exp(XTAL_REF_(t_i)*re::patio_f(-2)));
+		}
+		template <int N_lim=-1>
+		XTAL_FN2 function(simplex_field_q auto &&t_1)
+		XTAL_0EX
+		{
+			using _std::conj;
+
+			auto const o = unity_t<1>::template function<N_lim>(XTAL_REF_(t_1));
+			return bond::couple_f(o, conj(o));
 		}
 
 	};

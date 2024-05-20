@@ -43,7 +43,9 @@ struct discard<1>
 		{
 			auto const v = S_::template function<Is...>(o); using V = XTAL_TYP_(v);
 			if constexpr (complex_field_q<V>) {
-				return V {v.real(), v.imag()*XTAL_REF_(o)};
+			//	TODO: Cast `imag` and operate in-place? \
+
+				return complexion_f(v.real(), v.imag()*XTAL_REF_(o));
 			}
 			else {
 				return v*XTAL_REF_(o);

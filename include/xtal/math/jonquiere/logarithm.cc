@@ -32,29 +32,32 @@ TAG_("whatever")
 
 	TRY_("stuff")
 	{
-		TRUE_(check_f<7>(logarithm_t<+1>::template function<-1>(0.123), -_std::log(1 - 0.123)));
-		TRUE_(check_f<7>(logarithm_t<+1>::template function< 3>(0.123), -_std::log(1 - 0.123)));
-		TRUE_(check_f<7>(logarithm_t<+1>::template function< 2>(0.123), -_std::log(1 - 0.123)));
-		TRUE_(check_f<7>(logarithm_t<+1>::template function< 1>(0.123), -_std::log(1 - 0.123)));
-		TRUE_(check_f<7>(logarithm_t<+1>::template function< 0>(0.123), -_std::log(1 - 0.123)));
+		using _std::exp;
+		using _std::log;
 
-		TRUE_(check_f<7>(logarithm_t<+2>::template function<-1>(0.123), +_std::log(1 + 0.123)));
-		TRUE_(check_f<7>(logarithm_t<+2>::template function< 3>(0.123), +_std::log(1 + 0.123)));
-		TRUE_(check_f<7>(logarithm_t<+2>::template function< 2>(0.123), +_std::log(1 + 0.123)));
-		TRUE_(check_f<7>(logarithm_t<+2>::template function< 1>(0.123), +_std::log(1 + 0.123)));
-		TRUE_(check_f<7>(logarithm_t<+2>::template function< 0>(0.123), +_std::log(1 + 0.123)));
+		TRUE_(check_f<7>(logarithm_t<+1>::template function<-1>(0.123), -log(1 - 0.123)));
+		TRUE_(check_f<7>(logarithm_t<+1>::template function< 3>(0.123), -log(1 - 0.123)));
+		TRUE_(check_f<7>(logarithm_t<+1>::template function< 2>(0.123), -log(1 - 0.123)));
+		TRUE_(check_f<7>(logarithm_t<+1>::template function< 1>(0.123), -log(1 - 0.123)));
+		TRUE_(check_f<7>(logarithm_t<+1>::template function< 0>(0.123), -log(1 - 0.123)));
 
-		TRUE_(check_f<7>(logarithm_t<-1>::template function<-1>(0.123), 1 - _std::exp(-0.123)));
-		TRUE_(check_f<7>(logarithm_t<-1>::template function< 3>(0.123), 1 - _std::exp(-0.123)));
-		TRUE_(check_f<7>(logarithm_t<-1>::template function< 2>(0.123), 1 - _std::exp(-0.123)));
-		TRUE_(check_f<7>(logarithm_t<-1>::template function< 1>(0.123), 1 - _std::exp(-0.123)));
-		TRUE_(check_f<7>(logarithm_t<-1>::template function< 0>(0.123), 1 - _std::exp(-0.123)));
+		TRUE_(check_f<7>(logarithm_t<+2>::template function<-1>(0.123), +log(1 + 0.123)));
+		TRUE_(check_f<7>(logarithm_t<+2>::template function< 3>(0.123), +log(1 + 0.123)));
+		TRUE_(check_f<7>(logarithm_t<+2>::template function< 2>(0.123), +log(1 + 0.123)));
+		TRUE_(check_f<7>(logarithm_t<+2>::template function< 1>(0.123), +log(1 + 0.123)));
+		TRUE_(check_f<7>(logarithm_t<+2>::template function< 0>(0.123), +log(1 + 0.123)));
 
-		TRUE_(check_f<7>(logarithm_t<-2>::template function<-1>(0.123), _std::exp(+0.123) - 1));
-		TRUE_(check_f<7>(logarithm_t<-2>::template function< 3>(0.123), _std::exp(+0.123) - 1));
-		TRUE_(check_f<7>(logarithm_t<-2>::template function< 2>(0.123), _std::exp(+0.123) - 1));
-		TRUE_(check_f<7>(logarithm_t<-2>::template function< 1>(0.123), _std::exp(+0.123) - 1));
-		TRUE_(check_f<7>(logarithm_t<-2>::template function< 0>(0.123), _std::exp(+0.123) - 1));
+		TRUE_(check_f<7>(logarithm_t<-1>::template function<-1>(0.123), 1 - exp(-0.123)));
+		TRUE_(check_f<7>(logarithm_t<-1>::template function< 3>(0.123), 1 - exp(-0.123)));
+		TRUE_(check_f<7>(logarithm_t<-1>::template function< 2>(0.123), 1 - exp(-0.123)));
+		TRUE_(check_f<7>(logarithm_t<-1>::template function< 1>(0.123), 1 - exp(-0.123)));
+		TRUE_(check_f<7>(logarithm_t<-1>::template function< 0>(0.123), 1 - exp(-0.123)));
+
+		TRUE_(check_f<7>(logarithm_t<-2>::template function<-1>(0.123), exp(+0.123) - 1));
+		TRUE_(check_f<7>(logarithm_t<-2>::template function< 3>(0.123), exp(+0.123) - 1));
+		TRUE_(check_f<7>(logarithm_t<-2>::template function< 2>(0.123), exp(+0.123) - 1));
+		TRUE_(check_f<7>(logarithm_t<-2>::template function< 1>(0.123), exp(+0.123) - 1));
+		TRUE_(check_f<7>(logarithm_t<-2>::template function< 0>(0.123), exp(+0.123) - 1));
 
 		TRUE_(check_f<24>(0.61803398874989490, logarithm_f<-1,-1>(1L)));
 		TRUE_(check_f<24>(1.61803398874989490, logarithm_f<-2,-1>(1L)));

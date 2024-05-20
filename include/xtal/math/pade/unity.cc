@@ -34,6 +34,10 @@ TAG_("unity")
 	using T_delta = typename re::delta_t;
 	using T_alpha = typename re::alpha_t;
 	using T_aphex = typename re::aphex_t;
+
+	using A_alpha = Eigen::Array<T_alpha,-1, 1>;
+	using A_aphex = Eigen::Array<T_aphex,-1, 1>;
+
 	XTAL_LET_(T_alpha) two =  2;
 	XTAL_LET_(T_alpha) ten = 10;
 
@@ -42,6 +46,40 @@ TAG_("unity")
 	auto mt19937_f = typename re::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
 
+	/**/
+	TRY_("vector evaluation")
+	{
+		T_aphex x0{ 0.0000000000000000, 0.0000000000000000};
+		T_aphex x1{ 0.1111111111111111, 0.1111111111111111};
+		T_aphex x2{ 0.2222222222222222, 0.2222222222222222};
+		T_aphex x3{ 0.3333333333333333, 0.3333333333333333};
+		T_aphex x4{ 0.4444444444444444, 0.4444444444444444};
+		T_aphex x5{ 0.5555555555555555, 0.5555555555555555};
+		T_aphex x6{ 0.6666666666666666, 0.6666666666666666};
+		T_aphex x7{ 0.7777777777777777, 0.7777777777777777};
+		A_aphex xs{{x0, x1, x2, x3, x4, x5, x6, x7}};
+
+		auto y0 = unity_t<1>::template function<4>(x0);
+		auto y1 = unity_t<1>::template function<4>(x1);
+		auto y2 = unity_t<1>::template function<4>(x2);
+		auto y3 = unity_t<1>::template function<4>(x3);
+		auto y4 = unity_t<1>::template function<4>(x4);
+		auto y5 = unity_t<1>::template function<4>(x5);
+		auto y6 = unity_t<1>::template function<4>(x6);
+		auto y7 = unity_t<1>::template function<4>(x7);
+		auto ys = unity_t<1>::template function<4>(xs);
+
+		TRUE_(check_f<19>(y0, ys(0)));
+		TRUE_(check_f<19>(y1, ys(1)));
+		TRUE_(check_f<19>(y2, ys(2)));
+		TRUE_(check_f<19>(y3, ys(3)));
+		TRUE_(check_f<19>(y4, ys(4)));
+		TRUE_(check_f<19>(y5, ys(5)));
+		TRUE_(check_f<19>(y6, ys(6)));
+		TRUE_(check_f<19>(y7, ys(7)));
+
+	};
+	/***/
 	TRY_("evaluation (floating-point)")
 	{
 		double const t0 = 1.125;
@@ -57,25 +95,29 @@ TAG_("unity")
 
 		EST_("evaluation <N_lim=-1>")
 		{
+			using _std::round;
+
 			T_alpha t = 0.618, _t = 0.414;
 			T_aphex z {1, 0};
 
 			for (T_sigma i = 0x100; ~--i;) {
 				z *= unity_t<1>::template function<-1>(t);
 				t += _t;
-				t -= _std::round(t);
+				t -= round(t);
 			}
 			return z;
 
 		};
 		EST_("bench <N_lim=4>")
 		{
+			using _std::round;
+
 			T_alpha t = 0.618, _t = 0.414;
 			T_aphex z {1, 0};
 
 			for (T_sigma i = 0x100; ~--i;) {
 				t += _t;
-				t -= _std::round(t);
+				t -= round(t);
 				z *= unity_t<1>::template function<4>(t);
 			}
 			return z;

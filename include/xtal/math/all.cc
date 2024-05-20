@@ -5,6 +5,7 @@
 #include "./root.cc"
 #include "./roots.cc"
 #include "./square.cc"
+#include "./wrap.cc"
 
 #include "./bernoulli/all.cc"
 #include "./euler/all.cc"
