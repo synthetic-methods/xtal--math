@@ -21,11 +21,11 @@ XTAL_0EX -> decltype(auto)
 	using _std::fma;
 
 	using Xn = bond::seek_back_t<Xs...>;
-	using re = bond::realize<Xn>;
+	using op = bond::operate<Xn>;
 
 //	based_t<Xn> const _s = N_sign; 
 
-	if constexpr (re::N_fused and requires {fma((xs *...* N_sign), (x), w);}) {
+	if constexpr (op::N_fused and requires {fma((xs *...* N_sign), (x), w);}) {
 		if (not _std::is_constant_evaluated()) {
 			return fma((XTAL_REF_(xs) *...* N_sign), XTAL_REF_(x), XTAL_REF_(w));
 		}

@@ -16,18 +16,18 @@ namespace xtal::math::jonquiere::__test
 /**/
 TAG_("whatever")
 {
-	using re = bond::realized;
+	using op = bond::operating;
 
-	using T_sigma = typename re::sigma_t;
-	using T_delta = typename re::delta_t;
-	using T_alpha = typename re::alpha_t;
-	using T_aphex = typename re::aphex_t;
+	using T_sigma = typename op::sigma_t;
+	using T_delta = typename op::delta_t;
+	using T_alpha = typename op::alpha_t;
+	using T_aphex = typename op::aphex_t;
 	XTAL_LET_(T_alpha) two =  2;
 	XTAL_LET_(T_alpha) ten = 10;
 
-	using U_phi = algebra::differential::modular_t<T_alpha[2]>;
+	using U_phi = algebra::differential::circular_t<T_alpha[2]>;
 
-	auto mt19937_f = typename re::mt19937_t();
+	auto mt19937_f = typename op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
 
 	TRY_("stuff")

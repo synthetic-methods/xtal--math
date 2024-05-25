@@ -28,12 +28,12 @@ XTAL_0EX
 /**/
 TAG_("unity")
 {
-	using re = bond::realized;
+	using op = bond::operating;
 
-	using T_sigma = typename re::sigma_t;
-	using T_delta = typename re::delta_t;
-	using T_alpha = typename re::alpha_t;
-	using T_aphex = typename re::aphex_t;
+	using T_sigma = typename op::sigma_t;
+	using T_delta = typename op::delta_t;
+	using T_alpha = typename op::alpha_t;
+	using T_aphex = typename op::aphex_t;
 
 	using A_alpha = Eigen::Array<T_alpha,-1, 1>;
 	using A_aphex = Eigen::Array<T_aphex,-1, 1>;
@@ -41,9 +41,9 @@ TAG_("unity")
 	XTAL_LET_(T_alpha) two =  2;
 	XTAL_LET_(T_alpha) ten = 10;
 
-	using U_phi = algebra::differential::modular_t<T_alpha[2]>;
+	using U_phi = algebra::differential::circular_t<T_alpha[2]>;
 
-	auto mt19937_f = typename re::mt19937_t();
+	auto mt19937_f = typename op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
 
 	/**/
@@ -126,7 +126,9 @@ TAG_("unity")
 	}
 	TRY_("evaluation (fixed-point)")
 	{
-		double const t0 = algebra::differential::modular_t<T_alpha[2]> {1.125, 0};
+		//\
+		auto const [t0, t1] = algebra::differential::circular_t<T_alpha[2]> {1.125, 0.0};
+		T_alpha t0{1.125};
 
 		TRUE_(unity__check_f<0,  2>(t0));
 		TRUE_(unity__check_f<1,  6>(t0));

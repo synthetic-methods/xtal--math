@@ -27,7 +27,7 @@ XTAL_0EX
 template <int N_pow>
 struct roots
 {
-	XTAL_LET_(int) K_pow = -bond::realized::designed_f(N_pow);
+	XTAL_LET_(int) K_pow = -bond::operate<int>::designed_f(N_pow);
 
 	template <class S>
 	class subtype: public bond::compose_s<S>
@@ -43,10 +43,10 @@ struct roots
 		{
 			using _std::sqrt;
 
-			using re = bond::realize<decltype(o)>;
-			auto constexpr _1 = re::alpha_1;
+			using op = bond::operate<decltype(o)>;
+			auto constexpr _1 = op::alpha_1;
 			/*/
-			auto const q = re::template root_f<K_pow, N_lim>(o);
+			auto const q = op::template root_f<K_pow, N_lim>(o);
 			XTAL_IF0
 			XTAL_0IF_(N_pow ==  2) {return bond::couple_f(o*q, q);}
 			XTAL_0IF_(N_pow ==  1) {return bond::couple_f(o,   q);}

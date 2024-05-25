@@ -46,9 +46,9 @@ struct zeta<0>
 			using W_s = algebra::scalar_t<U_s[2]>;
 			using M_s = algebra::series_t<W_s[2 + 2*M_lim]>;
 
-			using re = bond::realize<U_s>;
+			using op = bond::operate<U_s>;
 
-			auto const e = exp(s.imag() * -re::patio_1);
+			auto const e = exp(s.imag() * -op::patio_1);
 			auto const o = pade::unity_t<1, dilute<1>>::template function<4>(s.real());
 
 			return function<N_lim>(XTAL_REF_(t), XTAL_REF_(s), M_s(o, e));
@@ -67,17 +67,17 @@ struct zeta<0>
 			auto constexpr V_1 = V_s{1};
 
 			namespace diff_ = algebra::differential;
-			using re = bond::realize<U_t>;
-			using U_alpha = typename re::alpha_t;
-			using U_sigma = typename re::sigma_t;
-			using U_delta = typename re::delta_t;
+			using op = bond::operate<U_t>;
+			using U_alpha = typename op::alpha_t;
+			using U_sigma = typename op::sigma_t;
+			using U_delta = typename op::delta_t;
 
-			if constexpr (diff_::modular_q<V_t>) {
+			if constexpr (diff_::circular_q<V_t>) {
 				auto  s0_i = -s.imag();
 				auto  s0_1 = -s.real();
 				auto  const &[t2_1, t2_i] = reinterpret_cast<const V_t(&)[2]>(t);
-				auto &t1_i = reinterpret_cast<const diff_::modular_t<iteratee_t<V_t>[1]> &>(t2_i);
-				auto &t1_1 = reinterpret_cast<const diff_::modular_t<iteratee_t<V_t>[1]> &>(t2_1);
+				auto &t1_i = reinterpret_cast<const diff_::circular_t<iteratee_t<V_t>[1]> &>(t2_i);
+				auto &t1_1 = reinterpret_cast<const diff_::circular_t<iteratee_t<V_t>[1]> &>(t2_1);
 			//	auto  t0_i = t1_i(0);
 				auto  t0_1 = t1_1(0);
 				auto  w0_i = (t0_1*s0_i);

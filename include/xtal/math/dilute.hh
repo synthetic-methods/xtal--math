@@ -32,9 +32,9 @@ struct dilute
 		XTAL_FN2 function(auto &&o)
 		XTAL_0EX
 		{
-			using re = bond::realize<decltype(o)>;
-			auto constexpr n = re::diplo_f(-N_two)*re::template patio_f<-N_two_pi>(2, 1);
-		//	auto constexpr u = re::diplo_f(+N_two)*re::template patio_f<+N_two_pi>(2, 1);
+			using op = bond::operate<decltype(o)>;
+			auto constexpr n = op::diplo_f(-N_two)*op::template patio_f<-N_two_pi>(2, 1);
+		//	auto constexpr u = op::diplo_f(+N_two)*op::template patio_f<+N_two_pi>(2, 1);
 			
 			return XTAL_REF_(o)*(n);
 		};

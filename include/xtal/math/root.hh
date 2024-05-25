@@ -39,8 +39,8 @@ struct root//<N_pow>
 		XTAL_FN2 function(auto const &w)
 		XTAL_0EX
 		{
-			using re = bond::realize<decltype(w)>;
-			return re::template root_f<N_pow, N_lim>(w);
+			using op = bond::operate<decltype(w)>;
+			return op::template root_f<N_pow, N_lim>(w);
 		}
 
 	};

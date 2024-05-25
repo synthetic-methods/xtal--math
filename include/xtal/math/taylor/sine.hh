@@ -112,12 +112,12 @@ struct sine<M_ism, -2>
 				int constexpr I_lim = (N_lim << 1) - (0 < N_lim);
 				int constexpr I_sgn = sign_n<M_ism&1^1, -1>;
 
-				using W = XTAL_TYP_(w); using re = bond::realize<W>;
-				W x = re::alpha_1;
+				using W = XTAL_TYP_(w); using op = bond::operate<W>;
+				W x = op::alpha_1;
 
 				bond::seek_backward_f<I_lim>([&] (auto i)
-					XTAL_0FN_(x = horner::term_f<I_sgn>(re::alpha_1
-					,	re::ratio_f(1, (2 + 2*i)*(3 + 2*i))
+					XTAL_0FN_(x = horner::term_f<I_sgn>(op::alpha_1
+					,	op::ratio_f(1, (2 + 2*i)*(3 + 2*i))
 					,	w
 					,	x
 					)
@@ -153,12 +153,12 @@ struct sine<M_ism, -2>
 				int constexpr I_lim = (N_lim << 1) - (0 < N_lim);
 				int constexpr I_sgn = sign_n<M_ism&1^0, -1>;
 
-				using W = XTAL_TYP_(w); using re = bond::realize<W>;
-				W x = re::ratio_f(1, 1 + 2*I_lim);
+				using W = XTAL_TYP_(w); using op = bond::operate<W>;
+				W x = op::ratio_f(1, 1 + 2*I_lim);
 
 				bond::seek_backward_f<I_lim>([&] (auto i)
-					XTAL_0FN_(x = horner::term_f<I_sgn>(re::ratio_f(1, 1 + 2*i)
-					,	re::template ratio_f(1 + 2*i, 2 + 2*i)
+					XTAL_0FN_(x = horner::term_f<I_sgn>(op::ratio_f(1, 1 + 2*i)
+					,	op::template ratio_f(1 + 2*i, 2 + 2*i)
 					,	w
 					,	x
 					)

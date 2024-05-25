@@ -21,6 +21,8 @@ namespace xtal
 ///\returns the result of applying `std::complex` to the given arguments, \
 zipping them together if vectorized. \
 
+/*/
+
 template <class X>
 XTAL_FN2 complexion_f(X &&x)
 XTAL_0EX
@@ -42,15 +44,46 @@ XTAL_FN2 complexion_f(X &&x)
 XTAL_0EX
 {
 	using W = _std::complex<eigenvalue_t<X>>;
-	return flex_f<[] XTAL_1FN_(W)>(XTAL_REF_(x));
+	return zop_f<W>(XTAL_REF_(x));
 }
 template <eigenvalue_q X, eigenvalue_q Y>
 XTAL_FN2 complexion_f(X &&x, Y &&y)
 XTAL_0EX
 {
 	using W = _std::complex<eigenvalue_t<X, Y>>;
-	return flex_f<[] XTAL_1FN_(W)>(XTAL_REF_(x), XTAL_REF_(y));
+	return zop_f<W>(XTAL_REF_(x), XTAL_REF_(y));
 }
+/*/
+
+
+template <template <class> class Y, class ...Xs>
+XTAL_DEF_(return,inline)
+XTAL_FN1 construxion_f(Xs &&...xs)
+XTAL_0EX
+{
+	using W = common_t<Xs...>;
+	return zop_f<Y<W>>(XTAL_REF_(xs)...);
+}
+template <template <class> class Y, class ...Xs> requires eigenvalue_q<Xs...>
+XTAL_DEF_(return,inline)
+XTAL_FN1 construxion_f(Xs &&...xs)
+XTAL_0EX
+{
+	using W = common_t<eigenvalue_t<Xs>...>;
+	return zop_f<Y<W>>(XTAL_REF_(xs)...);
+}
+
+XTAL_DEF_(return,inline)
+XTAL_FN1 complexion_f(auto &&...xs)
+XTAL_0EX
+{
+	return construxion_f<_std::complex>(XTAL_REF_(xs)...);
+}
+/***/
+
+
+//template <class ...Xs> requires     common_q<Xs...> XTAL_FN2 complexion_f(Xs &&...xs) XTAL_0EX {return zop_f<_std::complex<    common_t<Xs...>>>(XTAL_REF_(xs)...);}
+//template <class ...Xs> requires eigenvalue_q<Xs...> XTAL_FN2 complexion_f(Xs &&...xs) XTAL_0EX {return zop_f<_std::complex<eigenvalue_t<Xs...>>>(XTAL_REF_(xs)...);}
 //#endif
 
 ///////////////////////////////////////////////////////////////////////////////

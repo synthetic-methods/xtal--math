@@ -52,11 +52,11 @@ struct semiunity<M_ism,-2>
 		{
 			int constexpr I_lim = N_lim&0x7;
 
-			using X = XTAL_TYP_(w); using re = bond::realize<X>;
+			using X = XTAL_TYP_(w); using op = bond::operate<X>;
 
-			using alpha_t = typename re::alpha_t;
-			using sigma_t = typename re::sigma_t;
-			using delta_t = typename re::delta_t;
+			using alpha_t = typename op::alpha_t;
+			using sigma_t = typename op::sigma_t;
+			using delta_t = typename op::delta_t;
 
 			XTAL_IF0
 			XTAL_0IF_(I_lim == 0x0) {// 0:1 D[...0]@0 && D[...0]@¼
@@ -178,44 +178,49 @@ struct unity<M_ism>
 		{
 			using _std::exp;
 
-			using T_i = XTAL_TYP_(t_i); using re = bond::realize<T_i>;
-			return function<N_lim>(XTAL_REF_(t_1))*exp(XTAL_REF_(t_i)*re::patio_f(-2));
+			using T_i = XTAL_TYP_(t_i); using op = bond::operate<T_i>;
+			return function<N_lim>(XTAL_REF_(t_1))*exp(XTAL_REF_(t_i)*op::patio_f(-2));
 		}
 
 		template <int N_lim=-1>
 		XTAL_FN2 function(simplex_field_q auto o)
 		XTAL_0EX
 		{
-			using X = XTAL_TYP_(o); using re = bond::realize<X>;
+			using Op = XTAL_TYP_(o); using op = bond::operate<Op>;
 
 			if constexpr (N_lim < 0) {
 				using namespace _std;
 
-				auto w = o*re::patio_2;
+				auto w = o*op::patio_2;
 				XTAL_IF0
 				XTAL_0IF_(1 == M_ism) {return complexion_f(cos (w), sin (w));}
 				XTAL_0IF_(2 == M_ism) {return complexion_f(cosh(w), sinh(w));}
 			}
 			else {
+				XTAL_VAL f_assign = [] XTAL_1FN_(op::assign_f);
+				XTAL_USE F_assign = decltype(f_assign);
+				
 				auto w = wrap_f(o);
-				auto u = wrap_f(w*re::diplo_1)*re::haplo_1;
-				return S_::template function<N_lim>(u)*flex_f<[] XTAL_1FN_(re::assign_f)>(u != w);
+				auto m = wrap_f(w*op::diplo_1)*op::haplo_1;
+				return S_::template function<N_lim>(m)*zop_f(f_assign, m != w);
 			}
 		}
 		template <int N_lim=-1>
-		XTAL_FN2 function(algebra::differential::modular_q auto w)
+		XTAL_FN2 function(algebra::differential::circular_q auto w)
 		XTAL_0EX
 		{
-			using re = bond::realize<decltype(w.size())>;
+			using Op = XTAL_TYP_(w); using op = bond::operate<Op>;
+			XTAL_USE T_alpha = typename op::alpha_t;
+			XTAL_USE F_alpha = decltype([] XTAL_1FN_(_std::bit_cast<T_alpha>));
 
 			if constexpr (N_lim < 0) {
 				return function<N_lim>(w(0));
 			}
 			else {
-				auto const v = w[0] & re::sign.mask;
-				w[0] &= re::positive.mask >> 1;
-				w[0] |=                 v >> 1;
-				return S_::template function<N_lim>(w(0))*flex_f<[] XTAL_1FN_(re::assign_f)>(v);
+				auto const bit_sign = w[0] & op::sign.mask;
+				w[0] &= op::positive.mask >> 1;
+				w[0] |=          bit_sign >> 1;
+				return S_::template function<N_lim>(w(0))*zop_f<F_alpha>(bit_sign|op::unit.mask);
 			}
 		}
 

@@ -65,7 +65,7 @@ struct square<M_ism, 0>
 		XTAL_FN2 function(complex_field_q auto const &o)
 		XTAL_0EX
 		{
-			using O = XTAL_TYP_(o); using re = bond::realize<O>;
+			using O = XTAL_TYP_(o); using op = bond::operate<O>;
 
 			auto y = o.imag();
 			auto x = o.real();
@@ -107,7 +107,7 @@ struct square<M_ism, 1>
 		XTAL_FN2 function(complex_field_q auto const &o)
 		XTAL_0EX
 		{
-			using O = XTAL_TYP_(o); using re = bond::realize<O>;
+			using O = XTAL_TYP_(o); using op = bond::operate<O>;
 
 			auto const x = o.real(); auto xx = x*x;
 			auto const y = o.imag(); auto yy = y*y;
@@ -155,19 +155,19 @@ struct square<M_ism, 1>
 		XTAL_FN2 function(simplex_field_q auto const &o)
 		XTAL_0EX
 		{
-			using O = XTAL_TYP_(o); using re = bond::realize<O>;
-			return re::template root_f<+2>(o);
+			using O = XTAL_TYP_(o); using op = bond::operate<O>;
+			return op::template root_f<+2>(o);
 		}
 		template <auto ...Is>
 		XTAL_FN2 function(complex_field_q auto const &o)
 		XTAL_0EX
 		{
-			using O = XTAL_TYP_(o); using re = bond::realize<O>;
-			auto constexpr O_k = re::unsquare_f(re::haplo_1);
+			using O = XTAL_TYP_(o); using op = bond::operate<O>;
+			auto constexpr O_k = op::unsquare_f(op::haplo_1);
 			auto  x = o.real();
 			auto  y = o.imag();
 			auto const n = function(x*x + y*y);
-			return O_k*complexion_f(function(n + x), function(n - x)*re::sign_f(y));
+			return O_k*complexion_f(function(n + x), function(n - x)*op::sign_f(y));
 		}
 
 	};
@@ -189,19 +189,19 @@ struct square<M_ism,-1>
 		XTAL_FN2 function(simplex_field_q auto const &o)
 		XTAL_0EX
 		{
-			using O = XTAL_TYP_(o); using re = bond::realize<O>;
-			return re::template root_f<-2>(o);
+			using O = XTAL_TYP_(o); using op = bond::operate<O>;
+			return op::template root_f<-2>(o);
 		}
 		template <auto ...Is>
 		XTAL_FN2 function(complex_field_q auto const &o)
 		XTAL_0EX
 		{
-			using O = XTAL_TYP_(o); using re = bond::realize<O>;
-			auto constexpr O_k = re::unsquare_f(re::haplo_1);
+			using O = XTAL_TYP_(o); using op = bond::operate<O>;
+			auto constexpr O_k = op::unsquare_f(op::haplo_1);
 			auto  x = o.real();
 			auto  y = o.imag();
 			auto  u = function(x*x + y*y); x *= u*u;
-			return O_k*complexion_f(dis::function(u + x), dis::function(u - x)*-re::sign_f(y));
+			return O_k*complexion_f(dis::function(u + x), dis::function(u - x)*-op::sign_f(y));
 		}
 
 	};

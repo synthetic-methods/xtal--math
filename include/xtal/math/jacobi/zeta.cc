@@ -16,12 +16,12 @@ namespace xtal::math::jacobi::__test
 
 TAG_("whatever")
 {
-	using re = bond::realized;
+	using op = bond::operating;
 
-	using U_sigma = typename re::sigma_t;
-	using U_delta = typename re::delta_t;
-	using U_alpha = typename re::alpha_t;
-	using U_aphex = typename re::aphex_t;
+	using U_sigma = typename op::sigma_t;
+	using U_delta = typename op::delta_t;
+	using U_alpha = typename op::alpha_t;
+	using U_aphex = typename op::aphex_t;
 
 	using W_alpha = Eigen::Array<U_alpha, -1, 1>;
 	using W_aphex = Eigen::Array<U_aphex, -1, 1>;
@@ -31,12 +31,12 @@ TAG_("whatever")
 //	static_assert(equality_p<2, W_aphex>);
 	static_assert(complex_field_q<W_aphex>);
 
-	auto mt19937_f = typename re::mt19937_t();
+	auto mt19937_f = typename op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
 
 	TRY_("scalar evaluation")
 	{
-		using V_phi = algebra::differential::modular_t<U_alpha[2]>;
+		using V_phi = algebra::differential::circular_t<U_alpha[2]>;
 		using U_phi = _std::complex<V_phi>;
 
 		//\
