@@ -202,7 +202,7 @@ struct unity<M_ism>
 				
 				auto w = wrap_f(o);
 				auto m = wrap_f(w*op::diplo_1)*op::haplo_1;
-				return S_::template function<N_lim>(m)*zop_f(f_assign, m != w);
+				return S_::template function<N_lim>(m)*hoist_f(f_assign, m != w);
 			}
 		}
 		template <int N_lim=-1>
@@ -220,7 +220,7 @@ struct unity<M_ism>
 				auto const bit_sign = w[0] & op::sign.mask;
 				w[0] &= op::positive.mask >> 1;
 				w[0] |=          bit_sign >> 1;
-				return S_::template function<N_lim>(w(0))*zop_f<F_alpha>(bit_sign|op::unit.mask);
+				return S_::template function<N_lim>(w(0))*hoist_f<F_alpha>(bit_sign|op::unit.mask);
 			}
 		}
 
