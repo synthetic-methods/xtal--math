@@ -48,16 +48,16 @@ struct roots
 			/*/
 			auto const q = op::template root_f<K_pow, N_lim>(o);
 			XTAL_IF0
-			XTAL_0IF_(N_pow ==  2) {return bond::couple_f(o*q, q);}
-			XTAL_0IF_(N_pow ==  1) {return bond::couple_f(o,   q);}
-			XTAL_0IF_(N_pow == -1) {return bond::couple_f(q,   o);}
-			XTAL_0IF_(N_pow == -2) {return bond::couple_f(q, q*o);}
+			XTAL_0IF (N_pow ==  2) {return bond::couple_f(o*q, q);}
+			XTAL_0IF (N_pow ==  1) {return bond::couple_f(o,   q);}
+			XTAL_0IF (N_pow == -1) {return bond::couple_f(q,   o);}
+			XTAL_0IF (N_pow == -2) {return bond::couple_f(q, q*o);}
 			/*/
 			XTAL_IF0
-			XTAL_0IF_(N_pow ==  2) {auto const q = _1/sqrt(o); return bond::couple_f(o*q, q);}
-			XTAL_0IF_(N_pow ==  1) {auto const q = _1/    (o); return bond::couple_f(o,   q);}
-			XTAL_0IF_(N_pow == -1) {auto const q = _1/    (o); return bond::couple_f(q,   o);}
-			XTAL_0IF_(N_pow == -2) {auto const q = _1/sqrt(o); return bond::couple_f(q, q*o);}
+			XTAL_0IF (N_pow ==  2) {auto const q = _1/sqrt(o); return bond::couple_f(o*q, q);}
+			XTAL_0IF (N_pow ==  1) {auto const q = _1/    (o); return bond::couple_f(o,   q);}
+			XTAL_0IF (N_pow == -1) {auto const q = _1/    (o); return bond::couple_f(q,   o);}
+			XTAL_0IF (N_pow == -2) {auto const q = _1/sqrt(o); return bond::couple_f(q, q*o);}
 			/***/
 		}
 

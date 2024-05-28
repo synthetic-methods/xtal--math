@@ -20,8 +20,7 @@ XTAL_0EX -> decltype(auto)
 {
 	using _std::fma;
 
-	using Xn = bond::seek_back_t<Xs...>;
-	using op = bond::operate<Xn>;
+	using op = bond::operate<devalue_u<Xs...>>;
 
 //	based_t<Xn> const _s = N_sign; 
 

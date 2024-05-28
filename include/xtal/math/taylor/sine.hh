@@ -39,10 +39,10 @@ struct sine<M_ism, -0>
 			if constexpr (N_lim < 0) {
 				using namespace _std;
 				XTAL_IF0
-				XTAL_0IF_(M_ism ==  2) {return  sinh(XTAL_REF_(u));}
-				XTAL_0IF_(M_ism ==  1) {return  sin (XTAL_REF_(u));}
-				XTAL_0IF_(M_ism == -1) {return asin (XTAL_REF_(u));}
-				XTAL_0IF_(M_ism == -2) {return asinh(XTAL_REF_(u));}
+				XTAL_0IF (M_ism ==  2) {return  sinh(XTAL_REF_(u));}
+				XTAL_0IF (M_ism ==  1) {return  sin (XTAL_REF_(u));}
+				XTAL_0IF (M_ism == -1) {return asin (XTAL_REF_(u));}
+				XTAL_0IF (M_ism == -2) {return asinh(XTAL_REF_(u));}
 			}
 			else {
 				return S_::template function<N_lim>(XTAL_REF_(u));
@@ -71,10 +71,10 @@ struct sine<M_ism, -1>
 			if constexpr (N_lim < 0) {
 				using namespace _std;
 				XTAL_IF0
-				XTAL_0IF_(M_ism ==  2) {return  sinh(u)/XTAL_REF_(u);}
-				XTAL_0IF_(M_ism ==  1) {return  sin (u)/XTAL_REF_(u);}
-				XTAL_0IF_(M_ism == -1) {return asin (u)/XTAL_REF_(u);}
-				XTAL_0IF_(M_ism == -2) {return asinh(u)/XTAL_REF_(u);}
+				XTAL_0IF (M_ism ==  2) {return  sinh(u)/XTAL_REF_(u);}
+				XTAL_0IF (M_ism ==  1) {return  sin (u)/XTAL_REF_(u);}
+				XTAL_0IF (M_ism == -1) {return asin (u)/XTAL_REF_(u);}
+				XTAL_0IF (M_ism == -2) {return asinh(u)/XTAL_REF_(u);}
 			}
 			else {
 				return S_::template function<N_lim>(XTAL_REF_(u));
@@ -105,8 +105,8 @@ struct sine<M_ism, -2>
 			if constexpr (N_lim < 0) {
 				using namespace _std;
 				XTAL_IF0
-				XTAL_0IF_(M_ism ==  2) {return sinh(square_f<-1>(w))/XTAL_REF_(w);}
-				XTAL_0IF_(M_ism ==  1) {return sin (square_f<-1>(w))/XTAL_REF_(w);}
+				XTAL_0IF (M_ism ==  2) {return sinh(square_f<-1>(w))/XTAL_REF_(w);}
+				XTAL_0IF (M_ism ==  1) {return sin (square_f<-1>(w))/XTAL_REF_(w);}
 			}
 			else {
 				int constexpr I_lim = (N_lim << 1) - (0 < N_lim);
@@ -146,8 +146,8 @@ struct sine<M_ism, -2>
 			if constexpr (N_lim < 0) {
 				using namespace _std;
 				XTAL_IF0
-				XTAL_0IF_(M_ism == 1) {return asin (square_f<-1>(XTAL_REF_(w)));}
-				XTAL_0IF_(M_ism == 2) {return asinh(square_f<-1>(XTAL_REF_(w)));}
+				XTAL_0IF (M_ism == 1) {return asin (square_f<-1>(XTAL_REF_(w)));}
+				XTAL_0IF (M_ism == 2) {return asinh(square_f<-1>(XTAL_REF_(w)));}
 			}
 			else {
 				int constexpr I_lim = (N_lim << 1) - (0 < N_lim);

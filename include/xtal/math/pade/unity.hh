@@ -59,14 +59,14 @@ struct semiunity<M_ism,-2>
 			using delta_t = typename op::delta_t;
 
 			XTAL_IF0
-			XTAL_0IF_(I_lim == 0x0) {// 0:1 D[...0]@0 && D[...0]@¼
+			XTAL_0IF (I_lim == 0x0) {// 0:1 D[...0]@0 && D[...0]@¼
 				alpha_t constexpr x0 = 1.000000000000000000000000000000000000L;// 1
 				alpha_t constexpr y0 = 3.141592653589793238462643383279502884L;
 				auto x = horner::polynomial_f<I_sgn>(w, x0);
 				auto y = horner::polynomial_f<I_sgn>(w, y0);
 				return complexion_f(x, y);
 			}
-			XTAL_0IF_(I_lim == 0x1) {// 2:1 D[...1]@0 && D[...0]@¼
+			XTAL_0IF (I_lim == 0x1) {// 2:1 D[...1]@0 && D[...0]@¼
 				alpha_t constexpr x0 = 1.000000000000000000000000000000000000L;// 1
 				alpha_t constexpr x1 = 3.433629385640827046149426466881988463L;
 				alpha_t constexpr y0 = 3.141592653589793238462643383279502884L;
@@ -74,7 +74,7 @@ struct semiunity<M_ism,-2>
 				auto y = horner::polynomial_f<I_sgn>(w, y0);
 				return complexion_f(x, y);
 			}
-			XTAL_0IF_(I_lim == 0x2) {// 2:3 D[...1]@0 && D[...1]@¼
+			XTAL_0IF (I_lim == 0x2) {// 2:3 D[...1]@0 && D[...1]@¼
 				alpha_t constexpr x0 = 1.000000000000000000000000000000000000L;// 1
 				alpha_t constexpr x1 = 3.968985697854261420737444775816737932L;
 				alpha_t constexpr y0 = 3.141592653589793238462643383279502884L;// pi
@@ -83,7 +83,7 @@ struct semiunity<M_ism,-2>
 				auto y = horner::polynomial_f<I_sgn>(w, y0, y1);
 				return complexion_f(x, y);
 			}
-			XTAL_0IF_(I_lim == 0x3) {// 4:3 D[...2]@0 && D[...2]@¼
+			XTAL_0IF (I_lim == 0x3) {// 4:3 D[...2]@0 && D[...2]@¼
 				alpha_t constexpr x0 = 1.000000000000000000000000000000000000L;// 1
 				alpha_t constexpr x1 = 4.237909660449236428693854535224051104L;
 				alpha_t constexpr x2 = 0.955351046282004540229507364731116905L;
@@ -93,7 +93,7 @@ struct semiunity<M_ism,-2>
 				auto y = horner::polynomial_f<I_sgn>(w, y0, y1);
 				return complexion_f(x, y);
 			}
-			XTAL_0IF_(I_lim == 0x4) {// 4:5 D[...2]@0 && D[...3]@¼
+			XTAL_0IF (I_lim == 0x4) {// 4:5 D[...2]@0 && D[...3]@¼
 				alpha_t constexpr x0 = 1.000000000000000000000000000000000000L;// 1
 				alpha_t constexpr x1 = 4.390338960642080575102860479411085957L;
 				alpha_t constexpr x2 = 1.561426046129173147274250250239938996L;
@@ -104,7 +104,7 @@ struct semiunity<M_ism,-2>
 				auto y = horner::polynomial_f<I_sgn>(w, y0, y1, y2);
 				return complexion_f(x, y);
 			}
-			XTAL_0IF_(I_lim == 0x5) {// 6:5 D[...3]@0 && D[...3]@¼
+			XTAL_0IF (I_lim == 0x5) {// 6:5 D[...3]@0 && D[...3]@¼
 				alpha_t constexpr x0 = 1.000000000000000000000000000000000000L;// 1
 				alpha_t constexpr x1 = 4.487894813803155707106642350629568074L;
 				alpha_t constexpr x2 = 1.975104599215236121543726210642557678L;
@@ -116,7 +116,7 @@ struct semiunity<M_ism,-2>
 				auto y = horner::polynomial_f<I_sgn>(w, y0, y1, y2);
 				return complexion_f(x, y);
 			}
-			XTAL_0IF_(I_lim == 0x6) {// 6:7 D[...3]@0 && D[...4]@¼
+			XTAL_0IF (I_lim == 0x6) {// 6:7 D[...3]@0 && D[...4]@¼
 				alpha_t constexpr x0 = 1.000000000000000000000000000000000000L;// 1
 				alpha_t constexpr x1 = 4.556288946308768410678019439942678932L;
 				alpha_t constexpr x2 = 2.275378023833944536636939235400154936L;
@@ -129,7 +129,7 @@ struct semiunity<M_ism,-2>
 				auto y = horner::polynomial_f<I_sgn>(w, y0, y1, y2, y3);
 				return complexion_f(x, y);
 			}
-			XTAL_0IF_(I_lim == 0x7) {// 8:7 D[...4]@0 && D[...5]@¼
+			XTAL_0IF (I_lim == 0x7) {// 8:7 D[...4]@0 && D[...5]@¼
 				alpha_t constexpr x0 = 1.000000000000000000000000000000000000L;// 1
 				alpha_t constexpr x1 = 4.606547402370024772724248519073301565L;
 				alpha_t constexpr x2 = 2.500953736670776238483254500604284293L;
@@ -193,11 +193,11 @@ struct unity<M_ism>
 
 				auto w = o*op::patio_2;
 				XTAL_IF0
-				XTAL_0IF_(1 == M_ism) {return complexion_f(cos (w), sin (w));}
-				XTAL_0IF_(2 == M_ism) {return complexion_f(cosh(w), sinh(w));}
+				XTAL_0IF (1 == M_ism) {return complexion_f(cos (w), sin (w));}
+				XTAL_0IF (2 == M_ism) {return complexion_f(cosh(w), sinh(w));}
 			}
 			else {
-				XTAL_VAL f_assign = [] XTAL_1FN_(op::assign_f);
+				XTAL_SET f_assign = [] XTAL_1FN_(op::assign_f);
 				XTAL_USE F_assign = decltype(f_assign);
 				
 				auto w = wrap_f(o);
