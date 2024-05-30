@@ -12,8 +12,9 @@ namespace xtal::occur::math
 /////////////////////////////////////////////////////////////////////////////////
 
 XTAL_TYP LIMIT;
-XTAL_USE limit   = inferred  <int, LIMIT>;
-XTAL_USE limit_t = inferred_t<int, LIMIT>;
+
+template <size_t N_shift=0>
+XTAL_USE limit_t = inferred_t<size_t, LIMIT, bond::assay<(1 << N_shift)>>;
 
 
 ///////////////////////////////////////////////////////////////////////////////

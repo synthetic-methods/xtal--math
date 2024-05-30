@@ -12,8 +12,9 @@ namespace xtal::occur::math
 /////////////////////////////////////////////////////////////////////////////////
 
 XTAL_TYP ORDER;
-XTAL_USE order   = inferred  <int, ORDER>;
-XTAL_USE order_t = inferred_t<int, ORDER>;
+
+template <size_t N_shift=0>
+XTAL_USE order_t = inferred_t<size_t, ORDER, bond::assay<(1 << N_shift)>>;
 
 
 ///////////////////////////////////////////////////////////////////////////////
