@@ -2,7 +2,7 @@
 #include "./any.hh"
 #include "../square.hh"
 #include "../wrap.hh"
-
+#include "../../occur-math/all.hh"
 
 
 
@@ -22,6 +22,8 @@ template <int M_ism=1, typename ...As> using  unity_t = process::confined_t<unit
 template <int M_ism, bond::compose_q ...As> requires some_q<As...>
 struct unity<M_ism, As...>: process::chain<unity<M_ism>, As...> {};
 
+using V_unity_limit = occur::math::limit_t<2>;
+
 
 namespace _detail
 {///////////////////////////////////////////////////////////////////////////////
@@ -36,7 +38,7 @@ template <int M_ism=1, int N_car=0> using  semiunity_t = process::confined_t<sem
 template <int M_ism               >
 struct semiunity<M_ism,-2>
 {
-	XTAL_LET_(int) I_sgn = sign_n<M_ism&1^1, -1>;
+	XTAL_LET_(int) I_sgn = sign_n<(M_ism&1)^1, -1>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S>
@@ -154,10 +156,17 @@ struct semiunity<M_ism,-2>
 template <int M_ism> requires (0 < M_ism)
 struct unity<M_ism>
 {
-//	XTAL_LET_(int) I_sgn = sign_n<M_ism&1^1, -1>;
+//	XTAL_LET_(int) I_sgn = sign_n<(M_ism&1)^1, -1>;
 
-	using subkind = process::chain<square<M_ism, 0>, _detail::semiunity<M_ism,-0>>;
+//	using subkind = bond::compose<void
+//	,	process::chain<square<M_ism, 0>, _detail::semiunity<M_ism,-0>>
+//	,	V_unity_limit::dispatch<>
+//	>;
+	using subprocess = process::chain_t<square<M_ism, 0>, _detail::semiunity<M_ism,-0>>;
 
+	using subkind = bond::compose<void
+	,	V_unity_limit::dispatch<>
+	>;
 	template <class S>
 	class subtype: public bond::compose_s<S, subkind>
 	{
@@ -202,11 +211,11 @@ struct unity<M_ism>
 				
 				auto w = wrap_f(o);
 				auto m = wrap_f(w*op::diplo_1)*op::haplo_1;
-				return S_::template function<N_lim>(m)*hoist_f(f_assign, m != w);
+				return subprocess::template function<N_lim>(m)*operative_f(f_assign, m != w);
 			}
 		}
 		template <int N_lim=-1>
-		XTAL_FN2 function(algebra::differential::circular_q auto w)
+		XTAL_FN2 function(algebra::d_::circular_q auto w)
 		XTAL_0EX
 		{
 			using Op = XTAL_TYP_(w); using op = bond::operate<Op>;
@@ -220,7 +229,7 @@ struct unity<M_ism>
 				auto const bit_sign = w[0] & op::sign.mask;
 				w[0] &= op::positive.mask >> 1;
 				w[0] |=          bit_sign >> 1;
-				return S_::template function<N_lim>(w(0))*hoist_f<F_alpha>(bit_sign|op::unit.mask);
+				return subprocess::template function<N_lim>(w(0))*operative_f<F_alpha>(bit_sign|op::unit.mask);
 			}
 		}
 

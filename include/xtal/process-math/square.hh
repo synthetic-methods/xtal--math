@@ -51,7 +51,7 @@ struct square<0, N_pow>
 template <int M_ism> requires (0 < M_ism)
 struct square<M_ism, 0>
 {
-	XTAL_LET_(int) I_sgn = sign_n<M_ism&1^0, -1>;
+	XTAL_LET_(int) I_sgn = sign_n<(M_ism&1)^0, -1>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S>
@@ -87,7 +87,7 @@ struct square<M_ism, 0>
 template <int M_ism> requires (0 < M_ism)
 struct square<M_ism, 1>
 {
-	XTAL_LET_(int) I_sgn = sign_n<M_ism&1^0, -1>;
+	XTAL_LET_(int) I_sgn = sign_n<(M_ism&1)^0, -1>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S>

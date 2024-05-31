@@ -110,7 +110,7 @@ struct sine<M_ism, -2>
 			}
 			else {
 				int constexpr I_lim = (N_lim << 1) - (0 < N_lim);
-				int constexpr I_sgn = sign_n<M_ism&1^1, -1>;
+				int constexpr I_sgn = sign_n<(M_ism&1)^1, -1>;
 
 				using W = XTAL_TYP_(w); using op = bond::operate<W>;
 				W x = op::alpha_1;
@@ -151,7 +151,7 @@ struct sine<M_ism, -2>
 			}
 			else {
 				int constexpr I_lim = (N_lim << 1) - (0 < N_lim);
-				int constexpr I_sgn = sign_n<M_ism&1^0, -1>;
+				int constexpr I_sgn = sign_n<(M_ism&1)^0, -1>;
 
 				using W = XTAL_TYP_(w); using op = bond::operate<W>;
 				W x = op::ratio_f(1, 1 + 2*I_lim);

@@ -43,7 +43,7 @@ struct wrap<As...>
 			return o - round(o);
 		}
 		template <auto ...>
-		XTAL_FN2 function(algebra::differential::circular_q auto &&o)
+		XTAL_FN2 function(algebra::d_::circular_q auto &&o)
 		XTAL_0EX
 		{
 			return XTAL_REF_(o);

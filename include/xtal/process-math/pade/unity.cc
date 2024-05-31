@@ -41,7 +41,7 @@ TAG_("unity")
 	XTAL_LET_(T_alpha) two =  2;
 	XTAL_LET_(T_alpha) ten = 10;
 
-	using U_phi = algebra::differential::circular_t<T_alpha[2]>;
+	using U_phi = algebra::d_::circular_t<T_alpha[2]>;
 
 	auto mt19937_f = typename op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
@@ -59,6 +59,7 @@ TAG_("unity")
 		T_aphex x7{ 0.7777777777777777, 0.7777777777777777};
 		A_aphex xs{{x0, x1, x2, x3, x4, x5, x6, x7}};
 
+	//	unity_t<1> _y1{}; _y1 <<= V_unity_limit(3); echo(_y1(x1));
 		auto y0 = unity_t<1>::template function<4>(x0);
 		auto y1 = unity_t<1>::template function<4>(x1);
 		auto y2 = unity_t<1>::template function<4>(x2);
@@ -127,7 +128,7 @@ TAG_("unity")
 	TRY_("evaluation (fixed-point)")
 	{
 		//\
-		auto const [t0, t1] = algebra::differential::circular_t<T_alpha[2]> {1.125, 0.0};
+		auto const [t0, t1] = algebra::d_::circular_t<T_alpha[2]> {1.125, 0.0};
 		T_alpha t0{1.125};
 
 		TRUE_(unity__check_f<0,  2>(t0));

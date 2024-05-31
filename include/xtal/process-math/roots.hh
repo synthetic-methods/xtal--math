@@ -38,15 +38,17 @@ struct roots
 		using S_::S_;
 
 		template <int N_lim=-1>// requires sign_p<N_pow, 0>
-		XTAL_FN2 function(auto const &o)
+		XTAL_FN2 function(auto &&w)
 		XTAL_0EX
 		{
 			using _std::sqrt;
 
-			using op = bond::operate<decltype(o)>;
-			auto constexpr _1 = op::alpha_1;
+			auto const o = reductive_f(XTAL_REF_(w));
+
+			using Op = bond::operate<decltype(o)>;
+			auto constexpr _1 = Op::alpha_1;
 			/*/
-			auto const q = op::template root_f<K_pow, N_lim>(o);
+			auto const q = Op::template root_f<K_pow, N_lim>(o);
 			XTAL_IF0
 			XTAL_0IF (N_pow ==  2) {return bond::couple_f(o*q, q);}
 			XTAL_0IF (N_pow ==  1) {return bond::couple_f(o,   q);}

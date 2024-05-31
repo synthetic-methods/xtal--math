@@ -25,7 +25,7 @@ TAG_("whatever")
 	XTAL_LET_(T_alpha) two =  2;
 	XTAL_LET_(T_alpha) ten = 10;
 
-	using U_phi = algebra::differential::circular_t<T_alpha[2]>;
+	using U_phi = algebra::d_::circular_t<T_alpha[2]>;
 
 	auto mt19937_f = typename op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());

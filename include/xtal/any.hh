@@ -28,7 +28,7 @@ template <class      T >	XTAL_ASK  eigenvalue_q =	false;
 #endif
 
 template <eigenvalue_q T>
-XTAL_TYP devolve<T> {using value_type = eigenvalue_t<T>;};
+XTAL_TYP devolve<T> : devolve<eigenvalue_t<T>> {};
 
 
 }///////////////////////////////////////////////////////////////////////////////

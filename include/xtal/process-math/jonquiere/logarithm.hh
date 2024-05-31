@@ -11,13 +11,13 @@ namespace xtal::process::math::jonquiere
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int N_ism=1, int N_car=0> struct logarithm {static_assert(N_ism);};
-template <int N_ism=1, int N_car=0> using  logarithm_t = process::confined_t<logarithm<N_ism, N_car>>;
-template <int N_ism=1, int N_car=0>
+template <int M_ism=1, int M_car=0> struct logarithm {static_assert(M_ism);};
+template <int M_ism=1, int M_car=0> using  logarithm_t = process::confined_t<logarithm<M_ism, M_car>>;
+template <int M_ism=1, int M_car=0>
 XTAL_FN2 logarithm_f(auto &&o)
 XTAL_0EX
 {
-	return logarithm_t<N_ism, N_car>::function(XTAL_REF_(o));
+	return logarithm_t<M_ism, M_car>::function(XTAL_REF_(o));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -25,12 +25,12 @@ XTAL_0EX
 Defines `function` as the polylogarithm `-Log[1 - #]`, \
 approximated by `#/Sqrt[1 - #]`. \
 
-template <int N_ism> requires (0 < N_ism)
-struct logarithm<N_ism, -0>
+template <int M_ism> requires (0 < M_ism)
+struct logarithm<M_ism, -0>
 {
 	using subkind = process::chain<void
 	,	bond::compose<dilate<+1>, taylor::sine<-2>>
-	,	bond::compose<discard<1>, logarithm<N_ism, -1>>
+	,	bond::compose<discard<1>, logarithm<M_ism, -1>>
 	>;
 
 	template <class S>
@@ -49,7 +49,7 @@ struct logarithm<N_ism, -0>
 
 			using op = bond::operate<decltype(o)>;
 			auto constexpr _1 = op::alpha_1;
-			auto constexpr _i = op::alpha_1*sign_n<N_ism&1^1, -1>;
+			auto constexpr _i = op::alpha_1*sign_n<(M_ism&1)^1, -1>;
 
 			if constexpr (N_lim < 0) {
 				return _i*log(_1 + _i*XTAL_REF_(o));
@@ -65,11 +65,11 @@ struct logarithm<N_ism, -0>
 Defines `function` as the antipolylogarithm `1 - Exp[-#]`, \
 approximated by `(Sqrt[1 + (#/2)^2] - (#/2))*(#)`. \
 
-template <int N_ism> requires (N_ism < 0)
-struct logarithm<N_ism, -0>
+template <int M_ism> requires (M_ism < 0)
+struct logarithm<M_ism, -0>
 {
 	using subkind = process::chain<void
-	,	bond::compose<discard<1>, logarithm<N_ism, -1>>
+	,	bond::compose<discard<1>, logarithm<M_ism, -1>>
 	,	bond::compose<dilate<+1>, taylor::sine<+2>>
 	>;
 
@@ -89,7 +89,7 @@ struct logarithm<N_ism, -0>
 
 			using op = bond::operate<decltype(o)>;
 			auto constexpr _1 = op::alpha_1;
-			auto constexpr _i = op::alpha_1*sign_n<N_ism&1^1, -1>;
+			auto constexpr _i = op::alpha_1*sign_n<(M_ism&1)^1, -1>;
 
 			if constexpr (N_lim < 0) {
 				return exp(XTAL_REF_(o)*_i)*_i - _i;
@@ -108,8 +108,8 @@ struct logarithm<N_ism, -0>
 Defines `function` as the cardinal polylogarithm `-Log[1 - #]/#`, \
 approximated by `1/Sqrt[1 - #]`. \
 
-template <int N_ism> requires (0 < N_ism)
-struct logarithm<N_ism, -1>
+template <int M_ism> requires (0 < M_ism)
+struct logarithm<M_ism, -1>
 {
 	template <class S>
 	class subtype: public bond::compose_s<S>
@@ -125,10 +125,10 @@ struct logarithm<N_ism, -1>
 		{
 			using op = bond::operate<decltype(u)>;
 			auto constexpr _1 = op::alpha_1;
-			auto constexpr _i = op::alpha_1*sign_n<N_ism&1^1, -1>;
+			auto constexpr _i = op::alpha_1*sign_n<(M_ism&1)^1, -1>;
 
 			if constexpr (N_lim < 0) {
-				return logarithm_t<N_ism, -0>::template function<-1>(u)/XTAL_REF_(u);
+				return logarithm_t<M_ism, -0>::template function<-1>(u)/XTAL_REF_(u);
 			}
 			else {
 				return square_f<-1,-1>(_1 + _i*XTAL_REF_(u));
@@ -141,8 +141,8 @@ struct logarithm<N_ism, -1>
 Defines `function` as the cardinal antipolylogarithm `(1 - Exp[-#])/#`, \
 approximated by `Sqrt[1 + (#/2)^2] + (#/2)`. \
 
-template <int N_ism> requires (N_ism < 0)
-struct logarithm<N_ism, -1>
+template <int M_ism> requires (M_ism < 0)
+struct logarithm<M_ism, -1>
 {
 	template <class S>
 	class subtype: public bond::compose_s<S>
@@ -158,10 +158,10 @@ struct logarithm<N_ism, -1>
 		{
 			using op = bond::operate<decltype(o)>;
 			auto constexpr _1 = op::alpha_1;
-			auto constexpr _i = op::alpha_1*sign_n<N_ism&1^1, -1>;
+			auto constexpr _i = op::alpha_1*sign_n<(M_ism&1)^1, -1>;
 
 			if constexpr (N_lim < 0) {
-				return logarithm_t<N_ism, -0>::template function<-1>(o)/XTAL_REF_(o);
+				return logarithm_t<M_ism, -0>::template function<-1>(o)/XTAL_REF_(o);
 			}
 			else {
 				auto u = XTAL_REF_(o)*op::haplo_f(1);
