@@ -3,7 +3,7 @@
 #include "./unity.hh"// testing...
 
 #include "../dilate.hh"
-
+#include "../dilute.hh"
 
 
 
@@ -47,6 +47,27 @@ TAG_("unity")
 	mt19937_f.seed(Catch::rngSeed());
 
 	/**/
+	TRY_("scalar evaluation")
+	{
+		T_alpha x0{-0.4444444444444444};
+		T_alpha x1{-0.3333333333333333};
+		T_alpha x2{-0.2222222222222222};
+		T_alpha x3{-0.1111111111111111};
+		T_alpha x4{ 0.1111111111111111};
+		T_alpha x5{ 0.2222222222222222};
+		T_alpha x6{ 0.3333333333333333};
+		T_alpha x7{ 0.4444444444444444};
+
+		TRUE_(check_f<18>(unity_t<1>::template function<4>(x0), unity_t<1>::template function<4>(U_phi{x0, 0.})));
+		TRUE_(check_f<18>(unity_t<1>::template function<4>(x1), unity_t<1>::template function<4>(U_phi{x1, 0.})));
+		TRUE_(check_f<18>(unity_t<1>::template function<4>(x2), unity_t<1>::template function<4>(U_phi{x2, 0.})));
+		TRUE_(check_f<18>(unity_t<1>::template function<4>(x3), unity_t<1>::template function<4>(U_phi{x3, 0.})));
+		TRUE_(check_f<18>(unity_t<1>::template function<4>(x4), unity_t<1>::template function<4>(U_phi{x4, 0.})));
+		TRUE_(check_f<18>(unity_t<1>::template function<4>(x5), unity_t<1>::template function<4>(U_phi{x5, 0.})));
+		TRUE_(check_f<18>(unity_t<1>::template function<4>(x6), unity_t<1>::template function<4>(U_phi{x6, 0.})));
+		TRUE_(check_f<18>(unity_t<1>::template function<4>(x7), unity_t<1>::template function<4>(U_phi{x7, 0.})));
+
+	};
 	TRY_("vector evaluation")
 	{
 		T_aphex x0{ 0.0000000000000000, 0.0000000000000000};
