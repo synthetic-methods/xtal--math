@@ -11,8 +11,8 @@ namespace xtal::process::math::horner
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int N_sign=1> struct term;
-template <int N_sign=1> using  term_t = process::confined_t<term<N_sign>>;
+template <int N_sign=1> XTAL_TYP term;
+template <int N_sign=1> XTAL_USE term_t = process::confined_t<term<N_sign>>;
 template <int N_sign=1, additive_group_q W, multiplicative_group_q X, multiplicative_group_q ...Xs>
 XTAL_DEF_(return,inline)
 XTAL_LET term_f(W &&w, X &&x, Xs &&...xs)
@@ -20,23 +20,20 @@ XTAL_0EX -> decltype(auto)
 {
 	using _std::fma;
 
-	using op = bond::operate<devalue_u<Xs...>>;
+	using Q = devolve_u<X>;
+	using Op = bond::operate<Q>;
+	based_t<Q> constexpr n_sign = N_sign;
 
-//	based_t<Xn> const _s = N_sign; 
-
-	if constexpr (op::N_fused and requires {fma((xs *...* N_sign), (x), w);}) {
-		if (not _std::is_constant_evaluated()) {
-			return fma((XTAL_REF_(xs) *...* N_sign), XTAL_REF_(x), XTAL_REF_(w));
-		}
-		else {
-			return (XTAL_REF_(xs) *...* (N_sign*XTAL_REF_(x))) + XTAL_REF_(w);
-		}
+	if constexpr (requires {fma((xs *...* n_sign), x, w);}) {if (Op::use_FMA()) {
+		return fma((XTAL_REF_(xs) *...* n_sign), XTAL_REF_(x), XTAL_REF_(w));
 	}
 	else {
-		return (XTAL_REF_(xs) *...* (N_sign*XTAL_REF_(x))) + XTAL_REF_(w);
+		return (XTAL_REF_(xs) *...* (n_sign*XTAL_REF_(x))) + XTAL_REF_(w);
+	}}
+	else {
+		return (XTAL_REF_(xs) *...* (n_sign*XTAL_REF_(x))) + XTAL_REF_(w);
 	}
 };
-
 
 ////////////////////////////////////////////////////////////////////////////////
 ///\

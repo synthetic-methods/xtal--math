@@ -62,7 +62,7 @@ struct wnity<1>
 			using _std::conj;
 
 			auto const o = reductive_f(unity_t<1>::template function<N_lim>(XTAL_REF_(t_1)));
-			return bond::couple_f(o, conj(o));
+			return algebra::scalar_f<[] XTAL_1FN_(objective_f)>(o, conj(o));
 		}
 
 	};

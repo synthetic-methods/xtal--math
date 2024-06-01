@@ -51,10 +51,10 @@ TAG_("wnity")
 	auto mt19937_f = typename op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
 
-	/*/
+	/**/
 	TRY_("vector evaluation")
 	{
-		using _std::get;
+	//	using _std::get;
 
 		T_aphex x0{ 0.000000000000000, 0.000000000000000};
 		T_aphex x1{ 0.111111111111111, 0.111111111111111};
@@ -77,14 +77,14 @@ TAG_("wnity")
 		auto ys = wnity_t<1>::template function<4>(xs);
 		auto [ys_0, ys_1] = ys;
 
-		TRUE_(check_f<19>(y0.get<0>(), ys_0(0)));
-		TRUE_(check_f<19>(y1.get<0>(), ys_0(1)));
-		TRUE_(check_f<19>(y2.get<0>(), ys_0(2)));
-		TRUE_(check_f<19>(y3.get<0>(), ys_0(3)));
-		TRUE_(check_f<19>(y4.get<0>(), ys_0(4)));
-		TRUE_(check_f<19>(y5.get<0>(), ys_0(5)));
-		TRUE_(check_f<19>(y6.get<0>(), ys_0(6)));
-		TRUE_(check_f<19>(y7.get<0>(), ys_0(7)));
+		TRUE_(check_f<19>(get<0>(y0), ys_0(0)));
+		TRUE_(check_f<19>(get<0>(y1), ys_0(1)));
+		TRUE_(check_f<19>(get<0>(y2), ys_0(2)));
+		TRUE_(check_f<19>(get<0>(y3), ys_0(3)));
+		TRUE_(check_f<19>(get<0>(y4), ys_0(4)));
+		TRUE_(check_f<19>(get<0>(y5), ys_0(5)));
+		TRUE_(check_f<19>(get<0>(y6), ys_0(6)));
+		TRUE_(check_f<19>(get<0>(y7), ys_0(7)));
 
 	//	TODO: Compare performance of `processor` vs `Eigen`. \
 	

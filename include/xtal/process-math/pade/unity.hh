@@ -19,9 +19,6 @@ generating either circular or hyperbolic `{cosine, sine}` pairs. \
 template <int M_ism=1, typename ...As> struct unity {static_assert(M_ism);};
 template <int M_ism=1, typename ...As> using  unity_t = process::confined_t<unity<M_ism, As...>>;
 
-template <int M_ism, bond::compose_q ...As> requires some_q<As...>
-struct unity<M_ism, As...>: process::chain<unity<M_ism>, As...> {};
-
 using V_unity_limit = occur::math::limit_t<2>;
 
 
@@ -153,6 +150,11 @@ struct semiunity<M_ism,-2>
 
 }///////////////////////////////////////////////////////////////////////////////
 
+template <int M_ism, bond::compose_q ...As> requires some_q<As...>
+struct unity<M_ism, As...>
+:	process::chain<unity<M_ism>, As...>
+{
+};
 template <int M_ism> requires (0 < M_ism)
 struct unity<M_ism>
 {

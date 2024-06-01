@@ -35,7 +35,7 @@ struct wrap<As...>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_FN2 function(auto const &o)
+		XTAL_FN2 function(auto &&o)
 		XTAL_0EX
 		{
 			using _std::round;
@@ -47,6 +47,18 @@ struct wrap<As...>
 		XTAL_0EX
 		{
 			return XTAL_REF_(o);
+		}
+		template <auto ...>
+		XTAL_FN2 function(complex_field_q auto &&o)
+		XTAL_0EX
+		{
+			if constexpr (complex_number_q<decltype(o)>) {
+				auto &xy = devolve_f(o);
+				return complexion_f(function(xy[0]), function(xy[1]));
+			}
+			else {
+				return complexion_f(function(o.real()), function(o.imag()));
+			}
 		}
 
 	};

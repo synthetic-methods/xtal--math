@@ -42,25 +42,18 @@ struct roots
 		XTAL_0EX
 		{
 			using _std::sqrt;
+			using algebra::scalar_f;
 
-			auto const o = reductive_f(XTAL_REF_(w));
-
-			using Op = bond::operate<decltype(o)>;
+			using Op = bond::operate<decltype(w)>;
 			auto constexpr _1 = Op::alpha_1;
-			/*/
-			auto const q = Op::template root_f<K_pow, N_lim>(o);
+
+			auto const o = objective_f(XTAL_REF_(w));
+
 			XTAL_IF0
-			XTAL_0IF (N_pow ==  2) {return bond::couple_f(o*q, q);}
-			XTAL_0IF (N_pow ==  1) {return bond::couple_f(o,   q);}
-			XTAL_0IF (N_pow == -1) {return bond::couple_f(q,   o);}
-			XTAL_0IF (N_pow == -2) {return bond::couple_f(q, q*o);}
-			/*/
-			XTAL_IF0
-			XTAL_0IF (N_pow ==  2) {auto const q = _1/sqrt(o); return bond::couple_f(o*q, q);}
-			XTAL_0IF (N_pow ==  1) {auto const q = _1/    (o); return bond::couple_f(o,   q);}
-			XTAL_0IF (N_pow == -1) {auto const q = _1/    (o); return bond::couple_f(q,   o);}
-			XTAL_0IF (N_pow == -2) {auto const q = _1/sqrt(o); return bond::couple_f(q, q*o);}
-			/***/
+			XTAL_0IF (N_pow ==  2) {auto const q = _1/sqrt(o); return scalar_f<[] XTAL_1FN_(objective_f)>(o*q, q);}
+			XTAL_0IF (N_pow ==  1) {auto const q = _1/    (o); return scalar_f<[] XTAL_1FN_(objective_f)>(o,   q);}
+			XTAL_0IF (N_pow == -1) {auto const q = _1/    (o); return scalar_f<[] XTAL_1FN_(objective_f)>(q,   o);}
+			XTAL_0IF (N_pow == -2) {auto const q = _1/sqrt(o); return scalar_f<[] XTAL_1FN_(objective_f)>(q, q*o);}
 		}
 
 	};
