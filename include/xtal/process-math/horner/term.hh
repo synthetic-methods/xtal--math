@@ -20,9 +20,9 @@ XTAL_0EX -> decltype(auto)
 {
 	using _std::fma;
 
-	using Q = devolve_u<X>;
-	using Op = bond::operate<Q>;
-	based_t<Q> constexpr n_sign = N_sign;
+	using Y = devolve_t<X>;
+	using Op = bond::operate<Y>;
+	based_t<Y> constexpr n_sign = N_sign;
 
 	if constexpr (requires {fma((xs *...* n_sign), x, w);}) {if (Op::use_FMA()) {
 		return fma((XTAL_REF_(xs) *...* n_sign), XTAL_REF_(x), XTAL_REF_(w));
