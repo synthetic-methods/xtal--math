@@ -21,13 +21,13 @@ template <>
 struct discard<0>
 {
 	template <class S>
-	using subtype = bond::compose_s<S, bond::tag<process::chain>>;
+	using subtype = bond::compose_s<S, bond::tag<process::link>>;
 
 };
 template <>
 struct discard<1>
 {
-	using subkind = bond::tag<process::chain>;
+	using subkind = bond::tag<process::link>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S, subkind>
@@ -38,17 +38,23 @@ struct discard<1>
 		using S_::S_;
 
 		template <auto ...Is>
-		XTAL_FN2 function(auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_FN1 function(auto &&o)
 		XTAL_0EX
 		{
-			auto const v = S_::template function<Is...>(o); using V = XTAL_TYP_(v);
-			if constexpr (complex_field_q<V>) {
-			//	TODO: Cast `imag` and operate in-place? \
-
-				return complexion_f(v.real(), v.imag()*XTAL_REF_(o));
+			auto z = S_::template function<Is...>(o); using Z = XTAL_TYP_(z);
+			XTAL_IF0
+			XTAL_0IF (complex_number_q<Z>) {
+				//\
+				devolved_f(z)[1] *= XTAL_REF_(o);
+				get<1>(z) *= XTAL_REF_(o);
+				return z;
 			}
-			else {
-				return v*XTAL_REF_(o);
+			XTAL_0IF (complex_field_q<Z>) {
+				return complexion_f(z.real(), z.imag()*XTAL_REF_(o));
+			}
+			XTAL_0IF_(else) {
+				return z*XTAL_REF_(o);
 			}
 		};
 
@@ -57,7 +63,7 @@ struct discard<1>
 template <>
 struct discard<2>
 {
-	using subkind = bond::tag<process::chain>;
+	using subkind = bond::tag<process::link>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S, subkind>
@@ -68,7 +74,8 @@ struct discard<2>
 		using S_::S_;
 
 		template <auto ...Is>
-		XTAL_FN2 function(auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_FN1 function(auto &&o)
 		XTAL_0EX
 		{
 			using U = XTAL_TYP_(o); using op = bond::operate<U>;

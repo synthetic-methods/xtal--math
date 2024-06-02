@@ -137,7 +137,8 @@ struct square<M_ism,-1>
 		XTAL_FN1 function(auto &&o)
 		XTAL_0EX
 		{
-			return 1/square_f<M_ism, +1>(XTAL_REF_(o));
+			using Op = bond::operate<decltype(o)>;
+			return Op::alpha_1/square_f<M_ism, +1>(XTAL_REF_(o));
 		}
 
 	};

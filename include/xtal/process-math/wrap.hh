@@ -21,7 +21,7 @@ template <typename ...As> XTAL_FN2 wrap_f(auto &&o)
 
 template <typename ...As> requires (1 <= sizeof...(As))
 struct wrap<As...>
-:	process::chain<wrap<>, As...>
+:	process::link<wrap<>, As...>
 {};
 template <typename ...As> requires (0 == sizeof...(As))
 struct wrap<As...>
@@ -35,7 +35,8 @@ struct wrap<As...>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_FN2 function(auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_FN1 function(auto &&o)
 		XTAL_0EX
 		{
 			using _std::round;
@@ -43,17 +44,19 @@ struct wrap<As...>
 			return o - round(o);
 		}
 		template <auto ...>
-		XTAL_FN2 function(algebra::d_::circular_q auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_FN1 function(algebra::d_::circular_q auto &&o)
 		XTAL_0EX
 		{
 			return XTAL_REF_(o);
 		}
 		template <auto ...>
-		XTAL_FN2 function(complex_field_q auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_FN1 function(complex_field_q auto &&o)
 		XTAL_0EX
 		{
 			if constexpr (complex_number_q<decltype(o)>) {
-				auto &xy = devolve_f(o);
+				auto &xy = devolved_f(o);
 				return complexion_f(function(xy[0]), function(xy[1]));
 			}
 			else {

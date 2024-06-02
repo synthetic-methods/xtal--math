@@ -152,7 +152,7 @@ struct semiunity<M_ism,-2>
 
 template <int M_ism, bond::compose_q ...As> requires some_q<As...>
 struct unity<M_ism, As...>
-:	process::chain<unity<M_ism>, As...>
+:	process::link<unity<M_ism>, As...>
 {
 };
 template <int M_ism> requires (0 < M_ism)
@@ -161,10 +161,10 @@ struct unity<M_ism>
 //	XTAL_LET_(int) I_sgn = sign_n<(M_ism&1)^1, -1>;
 
 //	using subkind = bond::compose<void
-//	,	process::chain<square<M_ism, 0>, _detail::semiunity<M_ism,-0>>
+//	,	process::link<square<M_ism, 0>, _detail::semiunity<M_ism,-0>>
 //	,	V_unity_limit::dispatch<>
 //	>;
-	using subprocess = process::chain_t<square<M_ism, 0>, _detail::semiunity<M_ism,-0>>;
+	using subprocess = process::link_t<square<M_ism, 0>, _detail::semiunity<M_ism,-0>>;
 
 	using subkind = bond::compose<void
 	,	V_unity_limit::dispatch<>
@@ -178,13 +178,15 @@ struct unity<M_ism>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_FN2 function(complex_field_q auto const &t)
+		XTAL_DEF_(return,inline)
+		XTAL_FN1 function(complex_field_q auto const &t)
 		XTAL_0EX
 		{
 			return function<N_lim>(t.real(), t.imag());
 		}
 		template <int N_lim=-1>
-		XTAL_FN2 function(auto &&t_1, simplex_field_q auto &&t_i)
+		XTAL_DEF_(return,inline)
+		XTAL_FN1 function(auto &&t_1, simplex_field_q auto &&t_i)
 		XTAL_0EX
 		{
 			using _std::exp;

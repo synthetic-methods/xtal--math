@@ -185,8 +185,8 @@ TAG_("unity")
 		TRUE_(check_f<-1>(z, unity_t<1           >::template function<N_lim>(t1)));
 		TRUE_(check_f<-1>(z, unity_t<1, dilute<1>>::template function<N_lim>(t2)));
 		
-		TRUE_(check_f<-1>(z, process::chain_t<unity<1>, dilute<1>>::template function<N_lim>(t2)));
-		TRUE_(check_f<-1>(z, process::chain_t<unity<1>           >::template function<N_lim>(t1)));
+		TRUE_(check_f<-1>(z, process::link_t<unity<1>, dilute<1>>::template function<N_lim>(t2)));
+		TRUE_(check_f<-1>(z, process::link_t<unity<1>           >::template function<N_lim>(t1)));
 
 
 	}

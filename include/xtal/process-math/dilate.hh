@@ -20,7 +20,7 @@ template <int N_two=0, int N_two_pi=0> using  dilate_t = process::confined_t<dil
 template <int N_two, int N_two_pi>
 struct dilate
 {
-	using subkind = bond::tag<process::chain>;
+	using subkind = bond::tag<process::link>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S, subkind>
@@ -31,7 +31,8 @@ struct dilate
 		using S_::S_;
 
 		template <auto ...Is>
-		XTAL_FN2 function(auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_FN1 function(auto &&o)
 		XTAL_0EX
 		{
 			using op = bond::operate<decltype(o)>;

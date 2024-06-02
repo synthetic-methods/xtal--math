@@ -28,7 +28,7 @@ approximated by `#/Sqrt[1 - #]`. \
 template <int M_ism> requires (0 < M_ism)
 struct logarithm<M_ism, -0>
 {
-	using subkind = process::chain<void
+	using subkind = process::link<void
 	,	bond::compose<dilate<+1>, taylor::sine<-2>>
 	,	bond::compose<discard<1>, logarithm<M_ism, -1>>
 	>;
@@ -68,7 +68,7 @@ approximated by `(Sqrt[1 + (#/2)^2] - (#/2))*(#)`. \
 template <int M_ism> requires (M_ism < 0)
 struct logarithm<M_ism, -0>
 {
-	using subkind = process::chain<void
+	using subkind = process::link<void
 	,	bond::compose<discard<1>, logarithm<M_ism, -1>>
 	,	bond::compose<dilate<+1>, taylor::sine<+2>>
 	>;

@@ -15,25 +15,28 @@ template <int N_sign=1> XTAL_TYP term;
 template <int N_sign=1> XTAL_USE term_t = process::confined_t<term<N_sign>>;
 template <int N_sign=1, additive_group_q W, multiplicative_group_q X, multiplicative_group_q ...Xs>
 XTAL_DEF_(return,inline)
-XTAL_LET term_f(W &&w, X &&x, Xs &&...xs)
-XTAL_0EX -> decltype(auto)
+XTAL_FN1 term_f(W &&w, X &&x, Xs &&...xs)
+XTAL_0EX
 {
 	using _std::fma;
 
-	using Y = devolve_t<X>;
+	using Y = devolved_t<X>;
 	using Op = bond::operate<Y>;
 	based_t<Y> constexpr n_sign = N_sign;
 
-	if constexpr (requires {fma((xs *...* n_sign), x, w);}) {if (Op::use_FMA()) {
-		return fma((XTAL_REF_(xs) *...* n_sign), XTAL_REF_(x), XTAL_REF_(w));
+	XTAL_IF0_(static) {
+		if constexpr (Op::use_FMA() and requires {fma((xs *...* n_sign), x, w);}) {
+			return fma((XTAL_REF_(xs) *...* n_sign), XTAL_REF_(x), XTAL_REF_(w));
+		}
+		else {
+			return (XTAL_REF_(xs) *...* (n_sign*XTAL_REF_(x))) + XTAL_REF_(w);
+		}
 	}
-	else {
-		return (XTAL_REF_(xs) *...* (n_sign*XTAL_REF_(x))) + XTAL_REF_(w);
-	}}
-	else {
+	XTAL_0IF_(else) {
 		return (XTAL_REF_(xs) *...* (n_sign*XTAL_REF_(x))) + XTAL_REF_(w);
 	}
 };
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ///\
@@ -60,7 +63,8 @@ struct term
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_FN2 function( auto &&...oo)
+		XTAL_DEF_(return,inline)
+		XTAL_FN1 function( auto &&...oo)
 		XTAL_0EX
 		{
 			return term_f(XTAL_REF_(oo)...);

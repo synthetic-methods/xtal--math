@@ -18,7 +18,7 @@ template <class      T >	XTAL_ASK  eigenclass_q =	complete_q<eigenclass_t<T>>;
 template <class      T >	XTAL_ASK  eigenvalue_q =	complete_q<eigenvalue_t<T>>;//TODO: Restrict to `Array`-derived.
 
 template <eigenvalue_q T>
-XTAL_TYP devolve<T> : devolve<eigenvalue_t<T>> {};
+XTAL_TYP devolved<T> : devolved<eigenvalue_t<T>> {};
 
 
 }///////////////////////////////////////////////////////////////////////////////

@@ -38,7 +38,8 @@ struct roots
 		using S_::S_;
 
 		template <int N_lim=-1>// requires sign_p<N_pow, 0>
-		XTAL_FN2 function(auto &&w)
+		XTAL_DEF_(return,inline)
+		XTAL_FN1 function(auto &&w)
 		XTAL_0EX
 		{
 			using _std::sqrt;
@@ -49,10 +50,10 @@ struct roots
 			auto const o = objective_f(XTAL_REF_(w));
 
 			XTAL_IF0
-			XTAL_0IF (N_pow ==  2) {auto const q = _1/sqrt(o); return algebra::scalar_f(o*q, q);}
-			XTAL_0IF (N_pow ==  1) {auto const q = _1/    (o); return algebra::scalar_f(o,   q);}
-			XTAL_0IF (N_pow == -1) {auto const q = _1/    (o); return algebra::scalar_f(q,   o);}
-			XTAL_0IF (N_pow == -2) {auto const q = _1/sqrt(o); return algebra::scalar_f(q, q*o);}
+			XTAL_0IF (N_pow ==  2) {auto const q = _1/sqrt(o); return duple_f(o*q, q);}
+			XTAL_0IF (N_pow ==  1) {auto const q = _1/    (o); return duple_f(o,   q);}
+			XTAL_0IF (N_pow == -1) {auto const q = _1/    (o); return duple_f(q,   o);}
+			XTAL_0IF (N_pow == -2) {auto const q = _1/sqrt(o); return duple_f(q, q*o);}
 		}
 
 	};

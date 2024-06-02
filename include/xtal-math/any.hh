@@ -13,16 +13,21 @@ namespace xtal::math
 
 ////////////////////////////////////////////////////////////////////////////////
 
-///\returns the result of applying the `f` to `...xs`, \
-zipping them together if vectorized. \
-
-///\note\
-Provides experimental support for `Eigen` (via `\.(?:un|bin|tern)aryExpr`), \
-but can be specialized to support additional/custom data-types. \
-
-///\todo\
-Restrict `eigenvalue_q` to `Array`-derived types.
-
+/*/
+XTAL_DEF_(return,inline)
+XTAL_FN1 duple_f(auto &&...xs)
+XTAL_0EX
+{
+	return bond::couple_f(XTAL_REF_(xs)...);
+}
+/*/
+XTAL_DEF_(return,inline)
+XTAL_FN1 duple_f(auto &&...xs)
+XTAL_0EX
+{
+	return algebra::scalar_f(XTAL_REF_(xs)...);
+}
+/***/
 
 
 ///////////////////////////////////////////////////////////////////////////////

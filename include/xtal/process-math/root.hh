@@ -36,11 +36,20 @@ struct root//<N_pow>
 		using S_::S_;
 
 		template <int N_lim=-1>// requires sign_p<N_pow, 0>
-		XTAL_FN2 function(auto const &w)
+		XTAL_DEF_(return,inline)
+		XTAL_FN1 function(auto const &o)
 		XTAL_0EX
 		{
-			using op = bond::operate<decltype(w)>;
-			return op::template root_f<N_pow, N_lim>(w);
+			using Op = bond::operate<decltype(o)>;
+			/*/
+			return Op::template root_f<N_pow, N_lim>(o);
+			/*/
+			XTAL_IF0
+			XTAL_0IF (N_pow ==  2) {return             sqrt(o);}
+			XTAL_0IF (N_pow ==  1) {return                 (o);}
+			XTAL_0IF (N_pow == -1) {return Op::alpha_1/    (o);}
+			XTAL_0IF (N_pow == -2) {return Op::alpha_1/sqrt(o);}
+			/***/
 		}
 
 	};
