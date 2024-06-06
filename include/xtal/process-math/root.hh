@@ -40,12 +40,12 @@ struct root//<N_pow>
 		XTAL_FN1 function(auto const &o)
 		XTAL_0EX
 		{
-			using Op = bond::operate<decltype(o)>;
+			using _op = bond::operate<decltype(o)>;
 			XTAL_IF0
 			XTAL_0IF (N_pow ==  2) {return             sqrt(o);}
 			XTAL_0IF (N_pow ==  1) {return                 (o);}
-			XTAL_0IF (N_pow == -1) {return Op::alpha_1/    (o);}
-			XTAL_0IF (N_pow == -2) {return Op::alpha_1/sqrt(o);}
+			XTAL_0IF (N_pow == -1) {return _op::alpha_1/    (o);}
+			XTAL_0IF (N_pow == -2) {return _op::alpha_1/sqrt(o);}
 			/***/
 		}
 

@@ -35,9 +35,9 @@ struct dilating
 		XTAL_FN1 function(auto &&o)
 		XTAL_0EX
 		{
-			using op = bond::operate<decltype(o)>;
-			auto constexpr n = op::diplo_f(-N_two)*op::template patio_f<-N_two_pi>(2, 1);
-			auto constexpr u = op::diplo_f(+N_two)*op::template patio_f<+N_two_pi>(2, 1);
+			using _op = bond::operate<decltype(o)>;
+			auto constexpr n = _op::diplo_f(-N_two)*_op::template patio_f<-N_two_pi>(2, 1);
+			auto constexpr u = _op::diplo_f(+N_two)*_op::template patio_f<+N_two_pi>(2, 1);
 			
 			return S_::template function<Is...>(XTAL_REF_(o)*(n))*(u);
 		};

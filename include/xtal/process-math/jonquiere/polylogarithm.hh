@@ -47,15 +47,15 @@ struct polylogarithm<M_ism, -0>
 		{
 			using _std::log;
 
-			using op = bond::operate<decltype(o)>;
-			auto constexpr _1 = op::alpha_1;
-			auto constexpr _i = op::alpha_1*sign_n<(M_ism&1)^1, -1>;
+			using _op = bond::operate<decltype(o)>;
+			auto constexpr _1 = _op::alpha_1;
+			auto constexpr _i = _op::alpha_1*sign_n<(M_ism&1)^1, -1>;
 
 			if constexpr (N_lim < 0) {
 				return _i*log(_1 + _i*XTAL_REF_(o));
 			}
 			else {
-				return subprocess::template function<N_lim>(typename op::alpha_t(XTAL_REF_(o)));
+				return subprocess::template function<N_lim>(typename _op::alpha_t(XTAL_REF_(o)));
 			}
 		}
 
@@ -87,9 +87,9 @@ struct polylogarithm<M_ism, -0>
 		{
 			using _std::exp;
 
-			using op = bond::operate<decltype(o)>;
-			auto constexpr _1 = op::alpha_1;
-			auto constexpr _i = op::alpha_1*sign_n<(M_ism&1)^1, -1>;
+			using _op = bond::operate<decltype(o)>;
+			auto constexpr _1 = _op::alpha_1;
+			auto constexpr _i = _op::alpha_1*sign_n<(M_ism&1)^1, -1>;
 
 			if constexpr (N_lim < 0) {
 				return exp(XTAL_REF_(o)*_i)*_i - _i;
@@ -123,9 +123,9 @@ struct polylogarithm<M_ism, -1>
 		XTAL_FN2 function(auto &&u)
 		XTAL_0EX
 		{
-			using op = bond::operate<decltype(u)>;
-			auto constexpr _1 = op::alpha_1;
-			auto constexpr _i = op::alpha_1*sign_n<(M_ism&1)^1, -1>;
+			using _op = bond::operate<decltype(u)>;
+			auto constexpr _1 = _op::alpha_1;
+			auto constexpr _i = _op::alpha_1*sign_n<(M_ism&1)^1, -1>;
 
 			if constexpr (N_lim < 0) {
 				return polylogarithm_t<M_ism, -0>::template function<-1>(u)/XTAL_REF_(u);
@@ -156,15 +156,15 @@ struct polylogarithm<M_ism, -1>
 		XTAL_FN2 function(auto &&o)
 		XTAL_0EX
 		{
-			using op = bond::operate<decltype(o)>;
-			auto constexpr _1 = op::alpha_1;
-			auto constexpr _i = op::alpha_1*sign_n<(M_ism&1)^1, -1>;
+			using _op = bond::operate<decltype(o)>;
+			auto constexpr _1 = _op::alpha_1;
+			auto constexpr _i = _op::alpha_1*sign_n<(M_ism&1)^1, -1>;
 
 			if constexpr (N_lim < 0) {
 				return polylogarithm_t<M_ism, -0>::template function<-1>(o)/XTAL_REF_(o);
 			}
 			else {
-				auto u = XTAL_REF_(o)*op::haplo_f(1);
+				auto u = XTAL_REF_(o)*_op::haplo_f(1);
 				return square_f<-1>(horner::term_f<1>(_1, u, u)) + _i*u;
 			}
 		}

@@ -44,8 +44,8 @@ struct roots
 		{
 			using _std::sqrt;
 
-			using Op = bond::operate<decltype(w)>;
-			auto constexpr _1 = Op::alpha_1;
+			using _op = bond::operate<decltype(w)>;
+			auto constexpr _1 = _op::alpha_1;
 
 			auto const o = objective_f(XTAL_REF_(w));
 

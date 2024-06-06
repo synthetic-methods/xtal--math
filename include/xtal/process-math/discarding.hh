@@ -78,7 +78,7 @@ struct discarding<2>
 		XTAL_FN1 function(auto &&o)
 		XTAL_0EX
 		{
-			using U = XTAL_TYP_(o); using op = bond::operate<U>;
+			using U = XTAL_TYP_(o); using _op = bond::operate<U>;
 			return S_::template function<Is...>(square_f<1>(XTAL_REF_(o)));
 		};
 
