@@ -53,7 +53,7 @@ struct discard<1>
 			XTAL_0IF (complex_field_q<Z>) {
 				return complexion_f(z.real(), z.imag()*XTAL_REF_(o));
 			}
-			XTAL_0IF_(else) {
+			XTAL_0IF_(default) {
 				return z*XTAL_REF_(o);
 			}
 		};

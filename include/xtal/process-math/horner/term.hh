@@ -24,7 +24,11 @@ XTAL_0EX
 	using Op = bond::operate<Y>;
 	based_t<Y> constexpr n_sign = N_sign;
 
-	XTAL_IF0_(static) {
+	XTAL_IF0
+	XTAL_0IF (none_q<Xs...>) {
+		return XTAL_REF_(w) + n_sign*XTAL_REF_(x);
+	}
+	XTAL_0IF_(dynamic) {
 		if constexpr (Op::use_FMA() and requires {fma((xs *...* n_sign), x, w);}) {
 			return fma((XTAL_REF_(xs) *...* n_sign), XTAL_REF_(x), XTAL_REF_(w));
 		}
@@ -32,7 +36,7 @@ XTAL_0EX
 			return (XTAL_REF_(xs) *...* (n_sign*XTAL_REF_(x))) + XTAL_REF_(w);
 		}
 	}
-	XTAL_0IF_(else) {
+	XTAL_0IF_(default) {
 		return (XTAL_REF_(xs) *...* (n_sign*XTAL_REF_(x))) + XTAL_REF_(w);
 	}
 };
