@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-#include "../dilate.hh"
+#include "../dilating.hh"
 #include "../square.hh"
 #include "../root.hh"
 
@@ -11,8 +11,8 @@ namespace xtal::process::math::gudermannian
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism=1, int M_car=0> struct tangent {static_assert(M_ism);};
-template <int M_ism=1, int M_car=0> using  tangent_t = process::confined_t<tangent<M_ism, M_car>>;
+template <int M_ism=1, int M_car=0> XTAL_TYP tangent {static_assert(M_ism);};
+template <int M_ism=1, int M_car=0> XTAL_USE tangent_t = process::confined_t<tangent<M_ism, M_car>>;
 template <int M_ism=1, int M_car=0>
 XTAL_FN2 tangent_f(auto &&o)
 XTAL_0EX
@@ -38,7 +38,7 @@ where `+/- 1` and `+/- 2` respectively indicate circular and hyperbolic evaluati
 template <int M_ism>
 struct tangent<M_ism, -0>
 {
-	using subkind = bond::compose<discard<1>, tangent<M_ism, -1>>;
+	using subkind = bond::compose<discarding<1>, tangent<M_ism, -1>>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S, subkind>
@@ -73,7 +73,7 @@ struct tangent<M_ism, -0>
 };
 template <int M_ism>
 struct tangent<M_ism, -1>
-:	bond::compose<discard<2>, tangent<M_ism, -2>>
+:	bond::compose<discarding<2>, tangent<M_ism, -2>>
 {
 };
 template <int M_ism>
@@ -102,8 +102,8 @@ struct tangent<M_ism, -2>
 				auto const _4 = Op::alpha_1*4;
 				auto const _8 = Op::alpha_1*8;
 				XTAL_IF0
-				XTAL_0IF (M_ism ==  1) {return root_f<2>(horner::term_f<-1>(_1, _2, w))/horner::term_f<-1>(_1, _4, XTAL_REF_(w));}
 				XTAL_0IF (M_ism ==  2) {return root_f<2>(horner::term_f<  >(_1,     w))/horner::term_f<  >(_1, _2, XTAL_REF_(w));}
+				XTAL_0IF (M_ism ==  1) {return root_f<2>(horner::term_f<-1>(_1, _2, w))/horner::term_f<-1>(_1, _4, XTAL_REF_(w));}
 				XTAL_0IF (M_ism == -1) {auto const m = horner::term_f<  >(_1, _8, XTAL_REF_(w)); return _1/root_f<2>(Op::haplo_1*(root_f<2>(m) + m));}
 				XTAL_0IF (M_ism == -2) {auto const m = horner::term_f<-1>(_1, _4, XTAL_REF_(w)); return _1/root_f<2>(Op::haplo_1*(root_f<2>(m) + m));}
 			}

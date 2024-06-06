@@ -11,18 +11,18 @@ namespace xtal::process::math::taylor
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism=1, int N_car=0> struct sine {static_assert(M_ism);};
-template <int M_ism=1, int N_car=0> using  sine_t = process::confined_t<sine<M_ism, N_car>>;
+template <int M_ism=1, int N_car=0> XTAL_TYP sine {static_assert(M_ism);};
+template <int M_ism=1, int N_car=0> XTAL_USE sine_t = process::confined_t<sine<M_ism, N_car>>;
 
 template <int M_ism>
 struct sine<M_ism, +1>
-:	bond::compose<dilate<0, -1>, sine<M_ism, -0>>
+:	bond::compose<dilating<0, -1>, sine<M_ism, -0>>
 {
 };
 template <int M_ism>
 struct sine<M_ism, -0>
 {
-	using subkind = bond::compose<discard<1>, sine<M_ism, -1>>;
+	using subkind = bond::compose<discarding<1>, sine<M_ism, -1>>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S, subkind>
@@ -54,7 +54,7 @@ struct sine<M_ism, -0>
 template <int M_ism>
 struct sine<M_ism, -1>
 {
-	using subkind = bond::compose<discard<2>, sine<M_ism, -2>>;
+	using subkind = bond::compose<discarding<2>, sine<M_ism, -2>>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S, subkind>

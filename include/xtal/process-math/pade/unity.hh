@@ -16,8 +16,8 @@ Defines `function` by `(-1)^(2 #) &`; spiritually equivalent to `1^# &`. \
 ///\param M_ism \f$\in {1, 2}\f$ specifies the underlying morphism, \
 generating either circular or hyperbolic `{cosine, sine}` pairs. \
 
-template <int M_ism=1, typename ...As> struct unity {static_assert(M_ism);};
-template <int M_ism=1, typename ...As> using  unity_t = process::confined_t<unity<M_ism, As...>>;
+template <int M_ism=1, typename ...As> XTAL_TYP unity {static_assert(M_ism);};
+template <int M_ism=1, typename ...As> XTAL_USE unity_t = process::confined_t<unity<M_ism, As...>>;
 
 using V_unity_limit = occur::math::limit_t<2>;
 
@@ -28,10 +28,10 @@ namespace _detail
 Serves as the mathematical definition of the approximant, \
 which is argument-restricted by the main definition. \
 
-template <int M_ism=1, int N_car=0> struct semiunity {static_assert(M_ism);};
-template <int M_ism               > struct semiunity<M_ism,-0>: bond::compose<discard<1>, semiunity<M_ism,-1>> {};
-template <int M_ism               > struct semiunity<M_ism,-1>: bond::compose<discard<2>, semiunity<M_ism,-2>> {};
-template <int M_ism=1, int N_car=0> using  semiunity_t = process::confined_t<semiunity<M_ism, N_car>>;
+template <int M_ism=1, int N_car=0> XTAL_TYP semiunity {static_assert(M_ism);};
+template <int M_ism               > XTAL_TYP semiunity<M_ism,-0>: bond::compose<discarding<1>, semiunity<M_ism,-1>> {};
+template <int M_ism               > XTAL_TYP semiunity<M_ism,-1>: bond::compose<discarding<2>, semiunity<M_ism,-2>> {};
+template <int M_ism=1, int N_car=0> XTAL_USE semiunity_t = process::confined_t<semiunity<M_ism, N_car>>;
 template <int M_ism               >
 struct semiunity<M_ism,-2>
 {

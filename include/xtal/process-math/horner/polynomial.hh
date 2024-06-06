@@ -11,8 +11,8 @@ namespace xtal::process::math::horner
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int N_sign=1> struct polynomial;
-template <int N_sign=1> using  polynomial_t = process::confined_t<polynomial<N_sign>>;
+template <int N_sign=1> XTAL_TYP polynomial;
+template <int N_sign=1> XTAL_USE polynomial_t = process::confined_t<polynomial<N_sign>>;
 template <int N_sign=1>
 XTAL_DEF_(return,inline)
 XTAL_FN1 polynomial_f(auto &&w, auto &&k, auto &&...ks)

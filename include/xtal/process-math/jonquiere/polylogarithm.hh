@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-#include "../dilate.hh"
+#include "../dilating.hh"
 #include "../square.hh"
 #include "../taylor/sine.hh"
 
@@ -11,8 +11,8 @@ namespace xtal::process::math::jonquiere
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism=1, int M_car=0> struct polylogarithm {static_assert(M_ism);};
-template <int M_ism=1, int M_car=0> using  polylogarithm_t = process::confined_t<polylogarithm<M_ism, M_car>>;
+template <int M_ism=1, int M_car=0> XTAL_TYP polylogarithm {static_assert(M_ism);};
+template <int M_ism=1, int M_car=0> XTAL_USE polylogarithm_t = process::confined_t<polylogarithm<M_ism, M_car>>;
 template <int M_ism=1, int M_car=0>
 XTAL_FN2 polylogarithm_f(auto &&o)
 XTAL_0EX
@@ -29,8 +29,8 @@ template <int M_ism> requires (0 < M_ism)
 struct polylogarithm<M_ism, -0>
 {
 	using subprocess = process::link_t<void
-	,	bond::compose<dilate<+1>, taylor::sine<-2>>
-	,	bond::compose<discard<1>, polylogarithm<M_ism, -1>>
+	,	bond::compose<dilating<+1>, taylor::sine<-2>>
+	,	bond::compose<discarding<1>, polylogarithm<M_ism, -1>>
 	>;
 
 	template <class S>
@@ -69,8 +69,8 @@ template <int M_ism> requires (M_ism < 0)
 struct polylogarithm<M_ism, -0>
 {
 	using subprocess = process::link_t<void
-	,	bond::compose<discard<1>, polylogarithm<M_ism, -1>>
-	,	bond::compose<dilate<+1>, taylor::sine<+2>>
+	,	bond::compose<discarding<1>, polylogarithm<M_ism, -1>>
+	,	bond::compose<dilating<+1>, taylor::sine<+2>>
 	>;
 
 	template <class S>

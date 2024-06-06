@@ -13,21 +13,14 @@ namespace xtal::math
 
 ////////////////////////////////////////////////////////////////////////////////
 
-/*/
 XTAL_DEF_(return,inline)
 XTAL_FN1 duple_f(auto &&...xs)
 XTAL_0EX
 {
+	//\
+	return algebra::scalar_f(XTAL_REF_(xs)...);
 	return bond::couple_f(XTAL_REF_(xs)...);
 }
-/*/
-XTAL_DEF_(return,inline)
-XTAL_FN1 duple_f(auto &&...xs)
-XTAL_0EX
-{
-	return algebra::scalar_f(XTAL_REF_(xs)...);
-}
-/***/
 
 
 ///////////////////////////////////////////////////////////////////////////////

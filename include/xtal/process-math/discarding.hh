@@ -12,20 +12,20 @@ namespace xtal::process::math
 /////////////////////////////////////////////////////////////////////////////////
 
 template <int N_car>
-struct discard;
+struct discarding;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <>
-struct discard<0>
+struct discarding<0>
 {
 	template <class S>
 	using subtype = bond::compose_s<S, bond::tag<process::link>>;
 
 };
 template <>
-struct discard<1>
+struct discarding<1>
 {
 	using subkind = bond::tag<process::link>;
 
@@ -61,7 +61,7 @@ struct discard<1>
 	};
 };
 template <>
-struct discard<2>
+struct discarding<2>
 {
 	using subkind = bond::tag<process::link>;
 

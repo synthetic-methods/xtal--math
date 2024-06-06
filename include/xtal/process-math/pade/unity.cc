@@ -2,8 +2,8 @@
 #include "./any.cc"
 #include "./unity.hh"// testing...
 
+#include "../dilating.hh"
 #include "../dilate.hh"
-#include "../dilute.hh"
 
 
 
@@ -183,9 +183,9 @@ TAG_("unity")
 		auto z = unity_t<1>::template function<N_lim>(t1);
 
 		TRUE_(check_f<-1>(z, unity_t<1           >::template function<N_lim>(t1)));
-		TRUE_(check_f<-1>(z, unity_t<1, dilute<1>>::template function<N_lim>(t2)));
+		TRUE_(check_f<-1>(z, unity_t<1, dilate<1>>::template function<N_lim>(t2)));
 		
-		TRUE_(check_f<-1>(z, process::link_t<unity<1>, dilute<1>>::template function<N_lim>(t2)));
+		TRUE_(check_f<-1>(z, process::link_t<unity<1>, dilate<1>>::template function<N_lim>(t2)));
 		TRUE_(check_f<-1>(z, process::link_t<unity<1>           >::template function<N_lim>(t1)));
 
 

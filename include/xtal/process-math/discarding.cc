@@ -1,6 +1,6 @@
 #pragma once
 #include "./any.cc"
-#include "./dilute.hh"// testing...
+#include "./discarding.hh"// testing...
 
 
 
@@ -13,7 +13,7 @@ namespace xtal::process::math::_test
 
 ////////////////////////////////////////////////////////////////////////////////
 /*/
-TAG_("dilute")
+TAG_("discarding")
 {
 	TRY_("task")
 	{

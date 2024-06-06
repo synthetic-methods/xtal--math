@@ -11,8 +11,8 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int N_pow=1> struct roots;
-template <int N_pow=1> using  roots_t = process::confined_t<roots<N_pow>>;
+template <int N_pow=1> XTAL_TYP roots;
+template <int N_pow=1> XTAL_USE roots_t = process::confined_t<roots<N_pow>>;
 template <int N_pow=1>
 XTAL_FN2 roots_f(auto &&o)
 XTAL_0EX
@@ -37,7 +37,7 @@ struct roots
 	public:
 		using S_::S_;
 
-		template <int N_lim=-1>// requires sign_p<N_pow, 0>
+		template <auto ...>
 		XTAL_DEF_(return,inline)
 		XTAL_FN1 function(auto &&w)
 		XTAL_0EX
