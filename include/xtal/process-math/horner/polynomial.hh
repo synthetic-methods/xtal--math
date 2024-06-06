@@ -19,7 +19,7 @@ XTAL_FN1 polynomial_f(auto &&w, auto &&k, auto &&...ks)
 XTAL_0EX
 {
 	if constexpr (0 == sizeof...(ks)) {
-		return k;
+		return static_cast<XTAL_TYP_(k)>(XTAL_REF_(k));
 	}
 	else {
 		return term_f<N_sign>(k, w, polynomial_f<N_sign>(w, ks...));

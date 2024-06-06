@@ -13,8 +13,13 @@ namespace xtal::process::math
 
 template <typename ...As> XTAL_TYP wrap;
 template <typename ...As> XTAL_USE wrap_t = process::confined_t<wrap<As...>>;
-template <typename ...As> XTAL_FN2 wrap_f(auto &&o)
-	XTAL_0EX {return wrap_t<As...>::function(XTAL_REF_(o));};
+template <typename ...As>
+XTAL_DEF_(return,inline)
+XTAL_FN1 wrap_f(auto &&o)
+XTAL_0EX
+{
+	return wrap_t<As...>::function(XTAL_REF_(o));
+};
 
 
 ////////////////////////////////////////////////////////////////////////////////
