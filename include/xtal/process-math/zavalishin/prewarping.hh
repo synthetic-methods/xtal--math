@@ -7,7 +7,7 @@
 
 
 XTAL_ENV_(push)
-namespace xtal::process::math
+namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -20,7 +20,7 @@ struct prewarping;
 template <typename ...As>
 struct prewarping
 {
-	using subkind = bond::compose<As..., resource::example<>, bond::tag<process::prewarping>>;
+	using subkind = bond::compose<As..., resource::example<>, bond::tag<prewarping>>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S, subkind>
@@ -35,7 +35,7 @@ struct prewarping
 		XTAL_TN1 functor(auto &&u, auto f, auto &&...oo)
 		XTAL_0EX
 		{
-			auto const t = gudermannian::tangent_f< 1, 0, 0>(S_::sample().period()*f);
+			auto const t = gudermannian::tangent_f< 1, 0>(S_::sample().period()*f);
 			return S_::template functor<Is...>(XTAL_REF_(u), t, XTAL_REF_(oo)...);
 		};
 

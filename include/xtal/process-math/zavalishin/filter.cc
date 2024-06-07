@@ -2,8 +2,7 @@
 #include "./any.cc"
 #include "./filter.hh"// testing...
 
-
-
+#include "./prewarping.hh"
 
 
 
@@ -13,29 +12,32 @@ namespace xtal::process::math::zavalishin::_test
 /////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-/*/
-TAG_("whatever")
+/**/
+TAG_("filter")
 {
-	using _op = bond::operating;
-
-	using T_sigma = typename _op::sigma_t;
-	using T_delta = typename _op::delta_t;
-	using T_alpha = typename _op::alpha_t;
-	using T_aphex = typename _op::aphex_t;
-	XTAL_LET_(T_alpha) pie =  3.1415926535897932384626433832795028841971693993751058209749445923;
-	XTAL_LET_(T_alpha) two =  2;
-	XTAL_LET_(T_alpha) ten = 10;
-
-	using U_phi = algebra::d_::circular_t<T_alpha[2]>;
-
-	auto mt19937_f = typename _op::mt19937_t();
-	mt19937_f.seed(Catch::rngSeed());
-
-	TRY_("stuff")
+	TRY_("instantiation")
 	{
-		TRUE_(true);
+		using U = double;
+		//\
+		using Y = filter_t<U[2]>;
+		using Y = filter_t<prewarping<>, U[2]>;
+		//\
+		using Z = processor::monomer_t<prewarping<>, Y>;
+		using Z = processor::monomer_t<Y>;
 
-	};
+		Y y{}; y <<= occur::sample_t<>{44100};
+
+//		echo(y(0.5, 1.0));
+
+		_std::array<U, 4> u_{1, 2, 0, 1};
+		_std::array<U, 4> f_{3, 3, 3, 3};
+
+		//\
+		auto z = Z::bind_f(let_f(u_), let_f(f_));
+		auto z = Z::bind_f(u_, f_);
+//		TRUE_(true);
+
+	}
 }
 /***/
 
