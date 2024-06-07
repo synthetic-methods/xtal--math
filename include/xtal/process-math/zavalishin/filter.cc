@@ -27,7 +27,7 @@ TAG_("filter")
 
 		Y y{}; y <<= occur::sample_t<>{44100};
 
-//		echo(y(0.5, 1.0));
+		echo(y(0.5, 1.0));
 
 		_std::array<U, 4> u_{1, 2, 0, 1};
 		_std::array<U, 4> f_{3, 3, 3, 3};
