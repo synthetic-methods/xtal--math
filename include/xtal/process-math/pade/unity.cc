@@ -28,12 +28,12 @@ XTAL_0EX
 /**/
 TAG_("unity")
 {
-	using op = bond::operating;
+	using _op = bond::operating;
 
-	using T_sigma = typename op::sigma_t;
-	using T_delta = typename op::delta_t;
-	using T_alpha = typename op::alpha_t;
-	using T_aphex = typename op::aphex_t;
+	using T_sigma = typename _op::sigma_t;
+	using T_delta = typename _op::delta_t;
+	using T_alpha = typename _op::alpha_t;
+	using T_aphex = typename _op::aphex_t;
 
 	using A_alpha = Eigen::Array<T_alpha,-1, 1>;
 	using A_aphex = Eigen::Array<T_aphex,-1, 1>;
@@ -43,7 +43,7 @@ TAG_("unity")
 
 	using U_phi = algebra::d_::circular_t<T_alpha[2]>;
 
-	auto mt19937_f = typename op::mt19937_t();
+	auto mt19937_f = typename _op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
 
 	/**/

@@ -1,37 +1,18 @@
 #pragma once
-#include "./any.cc"
-#include "./wrap.hh"// testing...
-
-
+#include "../any.hh"
+#include "../discarding.hh"
+#include "../horner/all.hh"
 
 
 
 
 XTAL_ENV_(push)
-namespace xtal::process::math::_test
+namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-/*/
-TAG_("wrap")
-{
-	using _op = bond::operating;
-	using T_sigma = typename _op::sigma_t;
-	using T_delta = typename _op::delta_t;
-	using T_alpha = typename _op::alpha_t;
-	using T_aphex = typename _op::aphex_t;
-	XTAL_LET_(T_alpha) one =  1;
-	XTAL_LET_(T_alpha) two =  2;
-	XTAL_LET_(T_alpha) ten = 10;
 
-	TRY_("task")
-	{
-		TRUE_(true);
-
-	}
-}
-/***/
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////

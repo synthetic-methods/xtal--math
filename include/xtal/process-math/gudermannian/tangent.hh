@@ -57,9 +57,9 @@ struct tangent<M_ism, -0>
 				return S_::template function<N_lim>(XTAL_REF_(u));
 			}
 			XTAL_0IF (N_lim <  0) {
-				using Op = bond::operate<decltype(u)>;
-				auto const up =   Op::patio_1;
-				auto const dn = 1/Op::patio_1;
+				using _op = bond::operate<decltype(u)>;
+				auto const up =   _op::patio_1;
+				auto const dn = 1/_op::patio_1;
 				using namespace _std;
 				XTAL_IF0
 				XTAL_0IF (M_ism ==  2) {return atan(sinh(XTAL_REF_(u)*up))*dn;}// `Gudermannian`
@@ -96,16 +96,16 @@ struct tangent<M_ism, -2>
 				return tangent<M_ism, -0>::template function<N_lim>(u)/(u);
 			}
 			else {
-				using Op = bond::operate<decltype(w)>;
-				auto const _1 = Op::alpha_1*1;
-				auto const _2 = Op::alpha_1*2;
-				auto const _4 = Op::alpha_1*4;
-				auto const _8 = Op::alpha_1*8;
+				using _op = bond::operate<decltype(w)>;
+				auto const _1 = _op::alpha_1*1;
+				auto const _2 = _op::alpha_1*2;
+				auto const _4 = _op::alpha_1*4;
+				auto const _8 = _op::alpha_1*8;
 				XTAL_IF0
 				XTAL_0IF (M_ism ==  2) {return root_f<2>(horner::term_f<  >(_1,     w))/horner::term_f<  >(_1, _2, XTAL_REF_(w));}
 				XTAL_0IF (M_ism ==  1) {return root_f<2>(horner::term_f<-1>(_1, _2, w))/horner::term_f<-1>(_1, _4, XTAL_REF_(w));}
-				XTAL_0IF (M_ism == -1) {auto const m = horner::term_f<  >(_1, _8, XTAL_REF_(w)); return _1/root_f<2>(Op::haplo_1*(root_f<2>(m) + m));}
-				XTAL_0IF (M_ism == -2) {auto const m = horner::term_f<-1>(_1, _4, XTAL_REF_(w)); return _1/root_f<2>(Op::haplo_1*(root_f<2>(m) + m));}
+				XTAL_0IF (M_ism == -1) {auto const m = horner::term_f<  >(_1, _8, XTAL_REF_(w)); return _1/root_f<2>(_op::haplo_1*(root_f<2>(m) + m));}
+				XTAL_0IF (M_ism == -2) {auto const m = horner::term_f<-1>(_1, _4, XTAL_REF_(w)); return _1/root_f<2>(_op::haplo_1*(root_f<2>(m) + m));}
 			}
 		}
 

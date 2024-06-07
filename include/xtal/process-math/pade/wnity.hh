@@ -52,10 +52,10 @@ struct wnity<1>
 		{
 			using _std::exp;
 
-			using T_i = XTAL_TYP_(t_i); using op = bond::operate<T_i>;
+			using T_i = XTAL_TYP_(t_i); using _op = bond::operate<T_i>;
 
 			return function(XTAL_REF_(t_1))*
-				roots_t<1>::template function(exp(XTAL_REF_(t_i)*op::patio_f(-2)));
+				roots_t<1>::template function(exp(XTAL_REF_(t_i)*_op::patio_f(-2)));
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline)

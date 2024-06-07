@@ -16,11 +16,11 @@ namespace xtal::process::math::_test
 /**/
 TAG_("square")
 {
-	using op = bond::operating;
-	using T_sigma = typename op::sigma_t;
-	using T_delta = typename op::delta_t;
-	using T_alpha = typename op::alpha_t;
-	using T_aphex = typename op::aphex_t;
+	using _op = bond::operating;
+	using T_sigma = typename _op::sigma_t;
+	using T_delta = typename _op::delta_t;
+	using T_alpha = typename _op::alpha_t;
+	using T_aphex = typename _op::aphex_t;
 	XTAL_LET_(T_alpha) one =  1;
 	XTAL_LET_(T_alpha) two =  2;
 	XTAL_LET_(T_alpha) ten = 10;

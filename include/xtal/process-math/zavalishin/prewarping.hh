@@ -1,26 +1,26 @@
 #pragma once
 #include "./any.hh"
 
-
+#include "../gudermannian/all.hh"
 
 
 
 
 XTAL_ENV_(push)
-namespace xtal::process::math
+namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int N_two=0, int N_two_pi=0>
-struct dilating;
+template <typename ...As>
+struct prewarping;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int N_two, int N_two_pi>
-struct dilating
+template <typename ...As>
+struct prewarping
 {
-	using subkind = bond::tag<process::link>;
+	using subkind = bond::compose<As..., resource::example<>, bond::tag<prewarping>>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S, subkind>
@@ -32,24 +32,14 @@ struct dilating
 
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(auto &&o)
+		XTAL_TN1 functor(auto &&u, auto f, auto &&...oo)
 		XTAL_0EX
 		{
-			using _op = bond::operate<decltype(o)>;
-			auto constexpr n = _op::diplo_f(-N_two)*_op::template patio_f<-N_two_pi>(2, 1);
-			auto constexpr u = _op::diplo_f(+N_two)*_op::template patio_f<+N_two_pi>(2, 1);
-			
-			return S_::template function<Is...>(XTAL_REF_(o)*(n))*(u);
+			auto const t = gudermannian::tangent_f< 1, 0>(S_::sample().period()*f);
+			return S_::template functor<Is...>(XTAL_REF_(u), t, XTAL_REF_(oo)...);
 		};
 
 	};
-};
-template <>
-struct dilating<0>
-{
-	template <class S>
-	using subtype = S;
-
 };
 
 
