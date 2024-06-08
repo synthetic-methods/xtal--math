@@ -27,10 +27,10 @@ struct filter<A>
 :	bond::compose<A>
 {
 };
-template <class Z_value>
-struct filter<Z_value[2]>
+template <class U_data> requires is_q<devolved_t<U_data>, U_data>
+struct filter<U_data[2]>
 {
-	using _op = bond::operate<Z_value>;
+	using _op = bond::operate<U_data>;
 	using Z_sigma = typename _op::sigma_t;
 	using Z_alpha = typename _op::alpha_t;
 	XTAL_LET_(Z_alpha) Z_1{1};
@@ -40,60 +40,52 @@ struct filter<Z_value[2]>
 	{
 		using S_ = bond::compose_s<S>;
 
-		using Z_source = algebra::scalar_t<Z_value[8]>;
-		using Z_target = _std::span<Z_value>;
+		using Z_source = _std::array<U_data, 8>;
+		using Z_target = algebra::scalar_t<U_data(&)[3]>;
 
 		Z_source cache{0, 0, 0, 0, 1, 1, 1, 0};
 		Z_target y_{point_f<0>(cache), point_f<3>(cache)};
-		Z_target x_{point_f<4>(cache), point_f<7>(cache)};
+		Z_target a_{point_f<4>(cache), point_f<7>(cache)};
 
 	public:
 		using S_::S_;
 
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_TN1 solver(Z_value u, Z_alpha t)
+		XTAL_TN1 solver(U_data u, Z_alpha t)
 		XTAL_0EX
 		{
-			using namespace horner;
-
-			auto &y0 = cache[0];
-			auto &y1 = cache[1];
-			auto &y2 = cache[2];
-			auto &v0 = cache[3];
-			auto &v1 = cache[7];
 		}
 		template <auto ...Is>
-		XTAL_TN2 functor(Z_value u, Z_alpha t)
+		XTAL_TN2 functor(U_data u, Z_alpha t)
 		XTAL_0EX
 		{
 			using namespace horner;
+			U_data &ys_0_ = cache[0b011];
+			U_data &ys_1_ = cache[0b111];
 
-			auto &y0 = cache[0];
-			auto &y1 = cache[1];
-			auto &y2 = cache[2];
-			auto &v0 = cache[3];
-			auto &v1 = cache[7];
-
-			Z_alpha const x0 = x_[0];
-			Z_alpha const x1 = term_f(x_[1], t, x0);
-			Z_alpha const x2 = term_f(x_[2], t, x1);
-			y2 = term_f<-1>(term_f<-1>((u), v0, x0), v1, x1)/x2;
+			Z_alpha const _a0 =        a_[0];
+			Z_alpha const _a1 = term_f(a_[1], t, _a0);
+			Z_alpha const _a2 = term_f(a_[2], t, _a1);
+			y_[2] = term_f<-1>(term_f<-1>((u), ys_0_, _a0), ys_1_, _a1)/_a2;
 			
-			solver<Is...>(u, t);// TODO: Save current `y1`!
+			solver<Is...>(u, t);// TODO: Save current `y_[1]`!
 			
-			y1  = term_f(v1, t, y2); y0 = term_f(v0, t, y1);
-			v1  = term_f(y1, t, y2); v0 = term_f(y0, t, y1);
+			y_[1] = term_f(ys_1_, t, y_[2]);
+			y_[0] = term_f(ys_0_, t, y_[1]);
+			
+			ys_1_ = term_f(y_[1], t, y_[2]);
+			ys_0_ = term_f(y_[0], t, y_[1]);
 
 			return static_cast<Z_target const &>(y_);
 		}
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_TN1 functor(Z_value u, Z_alpha t, Z_alpha x_1)
+		XTAL_TN1 functor(U_data u, Z_alpha t, Z_alpha a)
 		XTAL_0EX
 		{
-			x_[1] = x_1;
-			return functor<Is...>(XTAL_REF_(u), t, x_1);
+			a_[1] = a;
+			return functor<Is...>(XTAL_REF_(u), t, a);
 		}
 
 	};

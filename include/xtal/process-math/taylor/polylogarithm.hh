@@ -1,18 +1,23 @@
 #pragma once
 #include "./any.hh"
 
+#include "./sine.hh"
 #include "../dilating.hh"
 #include "../square.hh"
-#include "../taylor/sine.hh"
-
+#include "../root.hh"
 
 XTAL_ENV_(push)
-namespace xtal::process::math::jonquiere
+namespace xtal::process::math::taylor
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism=1, int M_car=0> XTAL_TYP polylogarithm {static_assert(M_ism);};
-template <int M_ism=1, int M_car=0> XTAL_USE polylogarithm_t = process::confined_t<polylogarithm<M_ism, M_car>>;
+template <int M_ism=1, int M_car=0>
+XTAL_REQ inclusive_q<M_ism, 1, 2,-1,-2> and inclusive_q<M_car,-0,-1>
+XTAL_TYP polylogarithm;
+
+template <int M_ism=1, int M_car=0>
+XTAL_USE polylogarithm_t = process::confined_t<polylogarithm<M_ism, M_car>>;
+
 template <int M_ism=1, int M_car=0>
 XTAL_FN2 polylogarithm_f(auto &&o)
 XTAL_0EX
@@ -20,12 +25,13 @@ XTAL_0EX
 	return polylogarithm_t<M_ism, M_car>::function(XTAL_REF_(o));
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
 ///\
-Defines `function` as the polypolylogarithm `-Log[1 - #]`, \
+Defines `function` as the polylogarithm `-Log[1 - #]`, \
 approximated by `#/Sqrt[1 - #]`. \
 
-template <int M_ism> requires (0 < M_ism)
+template <int M_ism> requires inclusive_q<M_ism, 1, 2>
 struct polylogarithm<M_ism, -0>
 {
 	using subprocess = process::link_t<void
@@ -62,10 +68,10 @@ struct polylogarithm<M_ism, -0>
 	};
 };
 ///\
-Defines `function` as the antipolypolylogarithm `1 - Exp[-#]`, \
+Defines `function` as the antipolylogarithm `1 - Exp[-#]`, \
 approximated by `(Sqrt[1 + (#/2)^2] - (#/2))*(#)`. \
 
-template <int M_ism> requires (M_ism < 0)
+template <int M_ism> requires inclusive_q<M_ism,-1,-2>
 struct polylogarithm<M_ism, -0>
 {
 	using subprocess = process::link_t<void
@@ -105,10 +111,10 @@ struct polylogarithm<M_ism, -0>
 
 ////////////////////////////////////////////////////////////////////////////////
 ///\
-Defines `function` as the cardinal polypolylogarithm `-Log[1 - #]/#`, \
+Defines `function` as the cardinal polylogarithm `-Log[1 - #]/#`, \
 approximated by `1/Sqrt[1 - #]`. \
 
-template <int M_ism> requires (0 < M_ism)
+template <int M_ism> requires inclusive_q<M_ism, 1, 2>
 struct polylogarithm<M_ism, -1>
 {
 	template <class S>
@@ -131,17 +137,17 @@ struct polylogarithm<M_ism, -1>
 				return polylogarithm_t<M_ism, -0>::template function<-1>(u)/XTAL_REF_(u);
 			}
 			else {
-				return square_f<-1,-1>(_1 + _i*XTAL_REF_(u));
+				return root_f<-2>(_1 + _i*XTAL_REF_(u));
 			}
 		}
 
 	};
 };
 ///\
-Defines `function` as the cardinal antipolypolylogarithm `(1 - Exp[-#])/#`, \
+Defines `function` as the cardinal antipolylogarithm `(1 - Exp[-#])/#`, \
 approximated by `Sqrt[1 + (#/2)^2] + (#/2)`. \
 
-template <int M_ism> requires (M_ism < 0)
+template <int M_ism> requires inclusive_q<M_ism,-1,-2>
 struct polylogarithm<M_ism, -1>
 {
 	template <class S>
@@ -165,7 +171,7 @@ struct polylogarithm<M_ism, -1>
 			}
 			else {
 				auto u = XTAL_REF_(o)*_op::haplo_f(1);
-				return square_f<-1>(horner::term_f<1>(_1, u, u)) + _i*u;
+				return root_f< 2>(horner::term_f<1>(_1, u, u)) + _i*u;
 			}
 		}
 

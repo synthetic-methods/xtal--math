@@ -38,10 +38,10 @@
 
 	auto const curve_add_1 = curve + 1;
 	auto const curve_sub_1 = curve - 1;
-	auto const     a_sub_2 =    a1 - 2;
+	auto const     a_sub_2 =    x1 - 2;
 	for (i = 0; i < ${saturation}; i += 1) {
-		y1 = s1 + g*y2;
-		y0 = s0 + g*y1;
+		y1 = term_f(v1, y2, t);
+		y0 = term_f(v0, y1, t);
 		auto const u_y1 = u*y1;
 		auto const [exp_u_y1, inv_exp_u_y1] = f__exp_1x_inv_1x__1x__approximation_1 (u_y1, ${precision});
 		
@@ -51,8 +51,9 @@
 		auto const d_add_q = p1 + q1;
 		auto const d_sub_q = p1 - q1;
 		auto const k1 = d_sub_q +  a_sub_2;
-		y0 *= a0;
-		y1 *= k1;
-		y2 -= (a0*y0 + k1*y1 + y2 - x)/(1 + g*(g*a0 + k1 + u_y1*d_add_q));
+
+		auto const num = term_f<-1>(u, x0, y0) - term_f(y2, y1, k1);
+
+		y2 += (u - x0*y0 - k1*y1 - y2)/(1 + t*(t*x0 + k1 + u_y1*d_add_q));
 	}
 	return y0, y1, y2;
