@@ -11,21 +11,22 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int N_car>
-struct discarding;
+template <int M_pow=1, int M_car=0>
+XTAL_REQ inclusive_q<M_pow, 1, -1> and inclusive_q<M_car, 0, 1, 2>
+XTAL_TYP discarding;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <>
-struct discarding<0>
+template <int M_pow>
+struct discarding<M_pow, +0>
 {
 	template <class S>
 	using subtype = bond::compose_s<S, bond::tag<process::link>>;
 
 };
-template <>
-struct discarding<1>
+template <int M_pow>
+struct discarding<M_pow, +1>
 {
 	using subkind = bond::tag<process::link>;
 
@@ -39,29 +40,59 @@ struct discarding<1>
 
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(auto &&o)
+		XTAL_FN1 function(auto &&u)
 		XTAL_0EX
 		{
-			auto z = S_::template function<Is...>(o); using Z = XTAL_TYP_(z);
+			auto  v = S_::template function<Is...>(u);
+			using V = XTAL_TYP_(v);
+			using U = XTAL_TYP_(u);
+			static_assert(is_q<U, V>);
+
 			XTAL_IF0
-			XTAL_0IF (complex_number_q<Z>) {
-				//\
-				devolved_f(z)[1] *= XTAL_REF_(o);
-				get<1>(z) *= XTAL_REF_(o);
-				return z;
+			XTAL_0IF (M_pow ==  1) {return v*XTAL_REF_(u);}
+			XTAL_0IF (M_pow == -1) {return v/XTAL_REF_(u);}
+		};
+
+	};
+};
+template <>
+struct discarding<1, +1>
+{
+	using subkind = bond::tag<process::link>;
+
+	template <class S>
+	class subtype: public bond::compose_s<S, subkind>
+	{
+		using S_ = bond::compose_s<S, subkind>;
+
+	public:
+		using S_::S_;
+
+		template <auto ...Is>
+		XTAL_DEF_(return,inline)
+		XTAL_FN1 function(auto &&u)
+		XTAL_0EX
+		{
+			auto  v = S_::template function<Is...>(u);
+			using V = XTAL_TYP_(v);
+			using U = XTAL_TYP_(u);
+
+			XTAL_IF0
+			XTAL_0IF (is_q<U, V>) {
+				return v*XTAL_REF_(u);
 			}
-			XTAL_0IF (complex_field_q<Z>) {
-				return complexion_f(z.real(), z.imag()*XTAL_REF_(o));
+			XTAL_0IF (complex_number_q<V>) {
+				devolved_f(v)[1] *= XTAL_REF_(u); return v;
 			}
-			XTAL_0IF_(default) {
-				return z*XTAL_REF_(o);
+			XTAL_0IF (complex_field_q<V>) {
+				return complexion_f(v.real(), v.imag()*XTAL_REF_(u));
 			}
 		};
 
 	};
 };
 template <>
-struct discarding<2>
+struct discarding<1, +2>
 {
 	using subkind = bond::tag<process::link>;
 
@@ -78,7 +109,6 @@ struct discarding<2>
 		XTAL_FN1 function(auto &&o)
 		XTAL_0EX
 		{
-			using U = XTAL_TYP_(o); using _op = bond::operate<U>;
 			return S_::template function<Is...>(square_f<1>(XTAL_REF_(o)));
 		};
 

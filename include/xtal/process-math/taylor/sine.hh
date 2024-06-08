@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-#include "../square.hh"
+#include "../root.hh"
 
 
 
@@ -22,7 +22,7 @@ struct sine<M_ism, +1>
 template <int M_ism>
 struct sine<M_ism, -0>
 {
-	using subkind = bond::compose<discarding<1>, sine<M_ism, -1>>;
+	using subkind = bond::compose<discarding<1, +1>, sine<M_ism, -1>>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S, subkind>
@@ -54,7 +54,7 @@ struct sine<M_ism, -0>
 template <int M_ism>
 struct sine<M_ism, -1>
 {
-	using subkind = bond::compose<discarding<2>, sine<M_ism, -2>>;
+	using subkind = bond::compose<discarding<1, +2>, sine<M_ism, -2>>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S, subkind>
@@ -105,8 +105,8 @@ struct sine<M_ism, -2>
 			if constexpr (N_lim < 0) {
 				using namespace _std;
 				XTAL_IF0
-				XTAL_0IF (M_ism ==  2) {return sinh(square_f<-1>(w))/XTAL_REF_(w);}
-				XTAL_0IF (M_ism ==  1) {return sin (square_f<-1>(w))/XTAL_REF_(w);}
+				XTAL_0IF (M_ism ==  2) {return sinh(root_f<2>(w))/XTAL_REF_(w);}
+				XTAL_0IF (M_ism ==  1) {return sin (root_f<2>(w))/XTAL_REF_(w);}
 			}
 			else {
 				int constexpr I_lim = (N_lim << 1) - (0 < N_lim);
@@ -146,8 +146,8 @@ struct sine<M_ism, -2>
 			if constexpr (N_lim < 0) {
 				using namespace _std;
 				XTAL_IF0
-				XTAL_0IF (M_ism == 1) {return asin (square_f<-1>(XTAL_REF_(w)));}
-				XTAL_0IF (M_ism == 2) {return asinh(square_f<-1>(XTAL_REF_(w)));}
+				XTAL_0IF (M_ism == 1) {return asin (root_f<2>(XTAL_REF_(w)));}
+				XTAL_0IF (M_ism == 2) {return asinh(root_f<2>(XTAL_REF_(w)));}
 			}
 			else {
 				int constexpr I_lim = (N_lim << 1) - (0 < N_lim);

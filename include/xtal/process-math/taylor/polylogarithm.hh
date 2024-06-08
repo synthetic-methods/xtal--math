@@ -11,18 +11,18 @@ namespace xtal::process::math::taylor
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism=1, int M_car=0>
-XTAL_REQ inclusive_q<M_ism, 1, 2,-1,-2> and inclusive_q<M_car,-0,-1>
+template <int M_ism=1, int M_pow=1, int M_car=0>
+XTAL_REQ inclusive_q<M_ism, 1, 2, -1, -2> and inclusive_q<M_pow, 1, -1> and inclusive_q<M_car, -0, -1>
 XTAL_TYP polylogarithm;
 
-template <int M_ism=1, int M_car=0>
-XTAL_USE polylogarithm_t = process::confined_t<polylogarithm<M_ism, M_car>>;
+template <int M_ism=1, int M_pow=1, int M_car=0>
+XTAL_USE polylogarithm_t = process::confined_t<polylogarithm<M_ism, M_pow, M_car>>;
 
-template <int M_ism=1, int M_car=0>
+template <int M_ism=1, int M_pow=1, int M_car=0, int ...Ns>
 XTAL_FN2 polylogarithm_f(auto &&o)
 XTAL_0EX
 {
-	return polylogarithm_t<M_ism, M_car>::function(XTAL_REF_(o));
+	return polylogarithm_t<M_ism, M_pow, M_car>::template function<Ns...>(XTAL_REF_(o));
 }
 
 
@@ -31,12 +31,12 @@ XTAL_0EX
 Defines `function` as the polylogarithm `-Log[1 - #]`, \
 approximated by `#/Sqrt[1 - #]`. \
 
-template <int M_ism> requires inclusive_q<M_ism, 1, 2>
-struct polylogarithm<M_ism, -0>
+template <int M_ism, int M_pow> requires inclusive_q<M_ism, 1, 2>
+struct polylogarithm<M_ism, M_pow, -0>
 {
 	using subprocess = process::link_t<void
-	,	bond::compose<dilating<+1>, taylor::sine<-2>>
-	,	bond::compose<discarding<1>, polylogarithm<M_ism, -1>>
+	,	bond::compose<dilating<1>, taylor::sine<-2>>
+	,	bond::compose<discarding<M_pow, +1>, polylogarithm<M_ism, M_pow, -1>>
 	>;
 
 	template <class S>
@@ -55,13 +55,13 @@ struct polylogarithm<M_ism, -0>
 
 			using _op = bond::operate<decltype(o)>;
 			auto constexpr _1 = _op::alpha_1;
-			auto constexpr _i = _op::alpha_1*sign_n<(M_ism&1)^1, -1>;
+			auto constexpr _i = _op::alpha_1*-sign_n<M_ism&1, -1>;
 
 			if constexpr (N_lim < 0) {
-				return _i*log(_1 + _i*XTAL_REF_(o));
+				return root_f<M_pow>(_i*log(_1 + _i*XTAL_REF_(o)));
 			}
 			else {
-				return subprocess::template function<N_lim>(typename _op::alpha_t(XTAL_REF_(o)));
+				return subprocess::template function<N_lim>(XTAL_REF_(o));
 			}
 		}
 
@@ -71,12 +71,12 @@ struct polylogarithm<M_ism, -0>
 Defines `function` as the antipolylogarithm `1 - Exp[-#]`, \
 approximated by `(Sqrt[1 + (#/2)^2] - (#/2))*(#)`. \
 
-template <int M_ism> requires inclusive_q<M_ism,-1,-2>
-struct polylogarithm<M_ism, -0>
+template <int M_ism, int M_pow> requires inclusive_q<M_ism,-1,-2>
+struct polylogarithm<M_ism, M_pow, -0>
 {
 	using subprocess = process::link_t<void
-	,	bond::compose<discarding<1>, polylogarithm<M_ism, -1>>
-	,	bond::compose<dilating<+1>, taylor::sine<+2>>
+	,	bond::compose<discarding<M_pow, +1>, polylogarithm<M_ism, M_pow, -1>>
+	,	bond::compose<dilating<1>, taylor::sine<+2>>
 	>;
 
 	template <class S>
@@ -95,10 +95,10 @@ struct polylogarithm<M_ism, -0>
 
 			using _op = bond::operate<decltype(o)>;
 			auto constexpr _1 = _op::alpha_1;
-			auto constexpr _i = _op::alpha_1*sign_n<(M_ism&1)^1, -1>;
+			auto constexpr _i = _op::alpha_1*-sign_n<M_ism&1, -1>;
 
 			if constexpr (N_lim < 0) {
-				return exp(XTAL_REF_(o)*_i)*_i - _i;
+				return root_f<M_pow>(exp(XTAL_REF_(o)*_i)*_i - _i);
 			}
 			else {
 				return subprocess::template function<N_lim>(XTAL_REF_(o));
@@ -114,8 +114,8 @@ struct polylogarithm<M_ism, -0>
 Defines `function` as the cardinal polylogarithm `-Log[1 - #]/#`, \
 approximated by `1/Sqrt[1 - #]`. \
 
-template <int M_ism> requires inclusive_q<M_ism, 1, 2>
-struct polylogarithm<M_ism, -1>
+template <int M_ism, int M_pow> requires inclusive_q<M_ism, 1, 2>
+struct polylogarithm<M_ism, M_pow, -1>
 {
 	template <class S>
 	class subtype: public bond::compose_s<S>
@@ -131,13 +131,15 @@ struct polylogarithm<M_ism, -1>
 		{
 			using _op = bond::operate<decltype(u)>;
 			auto constexpr _1 = _op::alpha_1;
-			auto constexpr _i = _op::alpha_1*sign_n<(M_ism&1)^1, -1>;
+			auto constexpr _i = _op::alpha_1*-sign_n<M_ism&1, -1>;
 
 			if constexpr (N_lim < 0) {
-				return polylogarithm_t<M_ism, -0>::template function<-1>(u)/XTAL_REF_(u);
+				XTAL_IF0
+				XTAL_0IF (M_pow ==  1) {return polylogarithm_f<M_ism, M_pow, -0, N_lim>(u)/XTAL_REF_(u);}
+				XTAL_0IF (M_pow == -1) {return XTAL_REF_(u)/polylogarithm_f<M_ism, M_pow, -0, N_lim>(u);}
 			}
 			else {
-				return root_f<-2>(_1 + _i*XTAL_REF_(u));
+				return root_f<M_pow*-2>(_1 + _i*XTAL_REF_(u));
 			}
 		}
 
@@ -147,8 +149,8 @@ struct polylogarithm<M_ism, -1>
 Defines `function` as the cardinal antipolylogarithm `(1 - Exp[-#])/#`, \
 approximated by `Sqrt[1 + (#/2)^2] + (#/2)`. \
 
-template <int M_ism> requires inclusive_q<M_ism,-1,-2>
-struct polylogarithm<M_ism, -1>
+template <int M_ism, int M_pow> requires inclusive_q<M_ism,-1,-2>
+struct polylogarithm<M_ism, M_pow, -1>
 {
 	template <class S>
 	class subtype: public bond::compose_s<S>
@@ -164,14 +166,16 @@ struct polylogarithm<M_ism, -1>
 		{
 			using _op = bond::operate<decltype(o)>;
 			auto constexpr _1 = _op::alpha_1;
-			auto constexpr _i = _op::alpha_1*sign_n<(M_ism&1)^1, -1>;
+			auto constexpr _i = _op::alpha_1*-sign_n<M_ism&1, -1>;
 
 			if constexpr (N_lim < 0) {
-				return polylogarithm_t<M_ism, -0>::template function<-1>(o)/XTAL_REF_(o);
+				XTAL_IF0
+				XTAL_0IF (M_pow ==  1) {return polylogarithm_f<M_ism, M_pow, -0, N_lim>(o)/XTAL_REF_(o);}
+				XTAL_0IF (M_pow == -1) {return XTAL_REF_(o)/polylogarithm_f<M_ism, M_pow, -0, N_lim>(o);}
 			}
 			else {
 				auto u = XTAL_REF_(o)*_op::haplo_f(1);
-				return root_f< 2>(horner::term_f<1>(_1, u, u)) + _i*u;
+				return root_f<M_pow>(root_f<2>(horner::term_f<1>(_1, u, u)) + _i*u);
 			}
 		}
 

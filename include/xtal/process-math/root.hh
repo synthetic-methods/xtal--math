@@ -11,21 +11,21 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int N_pow=1> XTAL_TYP root;
-template <int N_pow=1> XTAL_USE root_t = process::confined_t<root<N_pow>>;
-template <int N_pow=1>
+template <int M_pow=1> XTAL_TYP root;
+template <int M_pow=1> XTAL_USE root_t = process::confined_t<root<M_pow>>;
+template <int M_pow=1>
 XTAL_FN2 root_f(auto &&o)
 XTAL_0EX
 {
-	return root_t<N_pow>::function(XTAL_REF_(o));
+	return root_t<M_pow>::function(XTAL_REF_(o));
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int N_pow>
-struct root//<N_pow>
+template <int M_pow>
+struct root//<M_pow>
 {
 	template <class S>
 	class subtype: public bond::compose_s<S>
@@ -37,16 +37,15 @@ struct root//<N_pow>
 
 		template <auto ...>
 		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(auto const &o)
+		XTAL_FN1_(auto) function(auto &&o)
 		XTAL_0EX
 		{
-			using _op = bond::operate<decltype(o)>;
+			using _op = bond::operate<XTAL_TYP_(o)>;
 			XTAL_IF0
-			XTAL_0IF (N_pow ==  2) {return             sqrt(o);}
-			XTAL_0IF (N_pow ==  1) {return                 (o);}
-			XTAL_0IF (N_pow == -1) {return _op::alpha_1/    (o);}
-			XTAL_0IF (N_pow == -2) {return _op::alpha_1/sqrt(o);}
-			/***/
+			XTAL_0IF (M_pow ==  2) {return              sqrt(XTAL_REF_(o));}
+			XTAL_0IF (M_pow ==  1) {return                  (XTAL_REF_(o));}
+			XTAL_0IF (M_pow == -1) {return _op::alpha_1/    (XTAL_REF_(o));}
+			XTAL_0IF (M_pow == -2) {return _op::alpha_1/sqrt(XTAL_REF_(o));}
 		}
 
 	};

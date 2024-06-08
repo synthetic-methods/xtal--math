@@ -29,8 +29,8 @@ Serves as the mathematical definition of the approximant, \
 which is argument-restricted by the main definition. \
 
 template <int M_ism=1, int N_car=0> XTAL_TYP semiunity {static_assert(M_ism);};
-template <int M_ism               > XTAL_TYP semiunity<M_ism,-0>: bond::compose<discarding<1>, semiunity<M_ism,-1>> {};
-template <int M_ism               > XTAL_TYP semiunity<M_ism,-1>: bond::compose<discarding<2>, semiunity<M_ism,-2>> {};
+template <int M_ism               > XTAL_TYP semiunity<M_ism,-0>: bond::compose<discarding<1, +1>, semiunity<M_ism,-1>> {};
+template <int M_ism               > XTAL_TYP semiunity<M_ism,-1>: bond::compose<discarding<1, +2>, semiunity<M_ism,-2>> {};
 template <int M_ism=1, int N_car=0> XTAL_USE semiunity_t = process::confined_t<semiunity<M_ism, N_car>>;
 template <int M_ism               >
 struct semiunity<M_ism,-2>

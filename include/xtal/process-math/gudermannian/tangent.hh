@@ -38,7 +38,7 @@ where `+/- 1` and `+/- 2` respectively indicate circular and hyperbolic evaluati
 template <int M_ism>
 struct tangent<M_ism, -0>
 {
-	using subkind = bond::compose<discarding<1>, tangent<M_ism, -1>>;
+	using subkind = bond::compose<discarding<1, +1>, tangent<M_ism, -1>>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S, subkind>
@@ -73,7 +73,7 @@ struct tangent<M_ism, -0>
 };
 template <int M_ism>
 struct tangent<M_ism, -1>
-:	bond::compose<discarding<2>, tangent<M_ism, -2>>
+:	bond::compose<discarding<1, +2>, tangent<M_ism, -2>>
 {
 };
 template <int M_ism>
