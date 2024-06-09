@@ -164,7 +164,7 @@ struct unity<M_ism>
 //	,	process::link<square<M_ism, 0>, _detail::semiunity<M_ism,-0>>
 //	,	V_unity_limit::dispatch<>
 //	>;
-	using subprocess = process::link_t<square<M_ism, 0>, _detail::semiunity<M_ism,-0>>;
+	using superprocess = process::link_t<square<M_ism, 0>, _detail::semiunity<M_ism,-0>>;
 
 	using subkind = bond::compose<void
 	,	V_unity_limit::dispatch<>
@@ -211,15 +211,11 @@ struct unity<M_ism>
 				XTAL_0IF (2 == M_ism) {return complexion_f(cosh(w), sinh(w));}
 			}
 			else {
-				//\
-				XTAL_SET f_assign = [] XTAL_1FN_(_op::assigned_f);
-				XTAL_SET t_assign = [] (int i) XTAL_0FN -> Op_alpha {return (i << 1) - 1;};
+				XTAL_SET assigned_f = [] (int i) XTAL_0FN -> Op_alpha {return (i << 1) - 1;};
 				
 				auto w = wrap_f(o);
 				auto m = wrap_f(w*_op::diplo_1)*_op::haplo_1;
-				//\
-				return subprocess::template function<N_lim>(m)*operative_f(f_assign, m != w);
-				return subprocess::template function<N_lim>(m)*operative_f(t_assign, m == w);
+				return superprocess::template function<N_lim>(m)*operative_f(assigned_f, m == w);
 			}
 		}
 		template <int N_lim=-1>
@@ -239,7 +235,7 @@ struct unity<M_ism>
 				auto  s1 = d0 << 1;
 				auto  sn = s0^s1; sn &= _op::sign.mask;
 				d0 ^= sn;
-				return subprocess::template function<N_lim>(d(0))*inoperative_f<Fn_alpha>(_op::unit.mask|sn);
+				return superprocess::template function<N_lim>(d(0))*inoperative_f<Fn_alpha>(_op::unit.mask|sn);
 			}
 		}
 

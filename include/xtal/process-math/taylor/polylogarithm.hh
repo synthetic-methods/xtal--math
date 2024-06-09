@@ -35,11 +35,10 @@ approximated by `#/Sqrt[1 - #]`. \
 template <int M_ism, int M_pow> requires inclusive_q<M_ism, 1, 2>
 struct polylogarithm<M_ism, M_pow, -0>
 {
-	using subprocess = process::link_t<void
+	using superprocess = process::link_t<void
 	,	bond::compose<dilated<1>, taylor::sine<-2>>
 	,	bond::compose<discarded<M_pow, +1>, polylogarithm<M_ism, M_pow, -1>>
 	>;
-
 	template <class S>
 	class subtype: public bond::compose_s<S>
 	{
@@ -63,7 +62,7 @@ struct polylogarithm<M_ism, M_pow, -0>
 				return root_f<M_pow>(_i*log(_1 + _i*XTAL_REF_(o)));
 			}
 			else {
-				return subprocess::template function<N_lim>(XTAL_REF_(o));
+				return superprocess::template function<N_lim>(XTAL_REF_(o));
 			}
 		}
 
@@ -76,7 +75,7 @@ approximated by `(Sqrt[1 + (#/2)^2] - (#/2))*(#)`. \
 template <int M_ism, int M_pow> requires inclusive_q<M_ism,-1,-2>
 struct polylogarithm<M_ism, M_pow, -0>
 {
-	using subprocess = process::link_t<void
+	using superprocess = process::link_t<void
 	,	bond::compose<discarded<M_pow, +1>, polylogarithm<M_ism, M_pow, -1>>
 	,	bond::compose<dilated<1>, taylor::sine<+2>>
 	>;
@@ -104,7 +103,7 @@ struct polylogarithm<M_ism, M_pow, -0>
 				return root_f<M_pow>(exp(XTAL_REF_(o)*_i)*_i - _i);
 			}
 			else {
-				return subprocess::template function<N_lim>(XTAL_REF_(o));
+				return superprocess::template function<N_lim>(XTAL_REF_(o));
 			}
 		}
 
