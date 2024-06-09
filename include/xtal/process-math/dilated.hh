@@ -10,15 +10,21 @@ XTAL_ENV_(push)
 namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
+///\
+Wraps the super-`function`, unscaling/scaling the domain/codomain by `2^$1 Pi*$2`. \
+
+///\note\
+Because it invokes the super-`function` directly, \
+it must be applied via `{compose,confined}` (etc) rather than `process::{lift,link}`.
 
 template <int N_two=0, int N_two_pi=0>
-struct dilating;
+struct dilated;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int N_two, int N_two_pi>
-struct dilating
+struct dilated
 {
 	using subkind = bond::tag<process::link>;
 
@@ -45,7 +51,7 @@ struct dilating
 	};
 };
 template <>
-struct dilating<0>
+struct dilated<0>
 {
 	template <class S>
 	using subtype = S;

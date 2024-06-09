@@ -10,23 +10,30 @@ XTAL_ENV_(push)
 namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
+///\
+Wraps the super-`function`, applying domain/codomain transformations \
+associated with partial implementations (cf. `Sin` vs `Sinc`). \
+
+///\note\
+Because it invokes the super-`function` directly, \
+it must be applied via `{compose,confined}` (etc) rather than `process::{lift,link}`.
 
 template <int M_pow=1, int M_car=0>
 XTAL_REQ inclusive_q<M_pow, 1, -1> and inclusive_q<M_car, 0, 1, 2>
-XTAL_TYP discarding;
+XTAL_TYP discarded;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int M_pow>
-struct discarding<M_pow, +0>
+struct discarded<M_pow, +0>
 {
 	template <class S>
 	using subtype = bond::compose_s<S, bond::tag<process::link>>;
 
 };
 template <int M_pow>
-struct discarding<M_pow, +1>
+struct discarded<M_pow, +1>
 {
 	using subkind = bond::tag<process::link>;
 
@@ -56,7 +63,7 @@ struct discarding<M_pow, +1>
 	};
 };
 template <>
-struct discarding<1, +1>
+struct discarded<1, +1>
 {
 	using subkind = bond::tag<process::link>;
 
@@ -92,7 +99,7 @@ struct discarding<1, +1>
 	};
 };
 template <>
-struct discarding<1, +2>
+struct discarded<1, +2>
 {
 	using subkind = bond::tag<process::link>;
 

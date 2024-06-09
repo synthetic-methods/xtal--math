@@ -37,13 +37,13 @@ struct root//<M_pow>
 
 		template <auto ...>
 		XTAL_DEF_(return,inline)
-		XTAL_FN1_(auto) function(auto &&o)
+		XTAL_FN1 function(auto &&o)
 		XTAL_0EX
 		{
 			using _op = bond::operate<XTAL_TYP_(o)>;
 			XTAL_IF0
 			XTAL_0IF (M_pow ==  2) {return              sqrt(XTAL_REF_(o));}
-			XTAL_0IF (M_pow ==  1) {return                  (XTAL_REF_(o));}
+			XTAL_0IF (M_pow ==  1) {return     XTAL_TYP_(o) (XTAL_REF_(o));}
 			XTAL_0IF (M_pow == -1) {return _op::alpha_1/    (XTAL_REF_(o));}
 			XTAL_0IF (M_pow == -2) {return _op::alpha_1/sqrt(XTAL_REF_(o));}
 		}

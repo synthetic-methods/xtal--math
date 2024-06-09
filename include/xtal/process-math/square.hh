@@ -176,7 +176,7 @@ struct square<M_ism, 1>
 			auto  x = o.real();
 			auto  y = o.imag();
 			auto const n = function(x*x + y*y);
-			return O_k*complexion_f(function(n + x), function(n - x)*_op::sign_f(y));
+			return O_k*complexion_f(function(n + x), function(n - x)*_op::assigned_f(y));
 		}
 
 	};
@@ -212,7 +212,7 @@ struct square<M_ism,-1>
 			auto  x = o.real();
 			auto  y = o.imag();
 			auto  u = function(x*x + y*y); x *= u*u;
-			return O_k*complexion_f(dis::function(u + x), dis::function(u - x)*-_op::sign_f(y));
+			return O_k*complexion_f(dis::function(u + x), dis::function(u - x)*-_op::assigned_f(y));
 		}
 
 	};

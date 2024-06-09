@@ -40,6 +40,12 @@ TAG_("whatever")
 		TRUE_(check_f<7>(tangent_t<-1>::template function<-1>(0.25), tangent_t<-1>::template function< 0>(0.25)));
 		TRUE_(check_f<7>(tangent_t< 2>::template function<-1>(0.25), tangent_t< 2>::template function< 0>(0.25)));
 		TRUE_(check_f<7>(tangent_t<-2>::template function<-1>(0.25), tangent_t<-2>::template function< 0>(0.25)));
+		
+//		using foo = process::confined_t<dilated<1>, tangent< 2>>;
+//		using bar = process::confined_t<dilated<1>, tangent<-2>>;
+//
+//		echo(foo::function(bar::function(0.50) + bar::function(0.75)));
+//		echo(_std::tanh(_std::atanh(0.50) + _std::atanh(0.75)));
 
 	};
 }

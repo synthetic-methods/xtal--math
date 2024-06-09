@@ -22,6 +22,8 @@ TAG_("polylogarithm")
 	using T_delta = typename _op::delta_t;
 	using T_alpha = typename _op::alpha_t;
 	using T_aphex = typename _op::aphex_t;
+	XTAL_LET_(T_alpha) egg =  0.123456789;
+	XTAL_LET_(T_alpha) one =  1;
 	XTAL_LET_(T_alpha) two =  2;
 	XTAL_LET_(T_alpha) ten = 10;
 
@@ -32,10 +34,15 @@ TAG_("polylogarithm")
 
 	TRY_("inversion")
 	{
-		TRUE_(1 == polylogarithm_t< 1,  1>::template function<0>(0.123)*polylogarithm_t< 1, -1>::template function<0>(0.123));
-		TRUE_(1 == polylogarithm_t< 2,  1>::template function<0>(0.123)*polylogarithm_t< 2, -1>::template function<0>(0.123));
-		TRUE_(1 == polylogarithm_t<-1,  1>::template function<0>(0.123)*polylogarithm_t<-1, -1>::template function<0>(0.123));
-		TRUE_(1 == polylogarithm_t<-2,  1>::template function<0>(0.123)*polylogarithm_t<-2, -1>::template function<0>(0.123));
+		TRUE_(check_f<-1>(one, polylogarithm_t< 1,  1>::template function<0>(egg)*polylogarithm_t< 1, -1>::template function<0>(egg)));
+		TRUE_(check_f<-1>(one, polylogarithm_t< 2,  1>::template function<0>(egg)*polylogarithm_t< 2, -1>::template function<0>(egg)));
+		TRUE_(check_f<-1>(one, polylogarithm_t<-1,  1>::template function<0>(egg)*polylogarithm_t<-1, -1>::template function<0>(egg)));
+		TRUE_(check_f<-1>(one, polylogarithm_t<-2,  1>::template function<0>(egg)*polylogarithm_t<-2, -1>::template function<0>(egg)));
+
+		TRUE_(check_f<19>(egg, polylogarithm_t< 1,  1>::template function<0>(polylogarithm_t<-1,  1>::template function<0>(egg))));
+		TRUE_(check_f<19>(egg, polylogarithm_t< 2,  1>::template function<0>(polylogarithm_t<-2,  1>::template function<0>(egg))));
+		TRUE_(check_f<19>(egg, polylogarithm_t<-1,  1>::template function<0>(polylogarithm_t< 1,  1>::template function<0>(egg))));
+		TRUE_(check_f<19>(egg, polylogarithm_t<-2,  1>::template function<0>(polylogarithm_t< 2,  1>::template function<0>(egg))));
 
 	}
 	TRY_("evaluation")
@@ -43,29 +50,29 @@ TAG_("polylogarithm")
 		using _std::exp;
 		using _std::log;
 
-		TRUE_(check_f<7>(polylogarithm_t< 1>::template function<-1>(0.123), -log(1 - 0.123)));
-		TRUE_(check_f<7>(polylogarithm_t< 1>::template function< 3>(0.123), -log(1 - 0.123)));
-		TRUE_(check_f<7>(polylogarithm_t< 1>::template function< 2>(0.123), -log(1 - 0.123)));
-		TRUE_(check_f<7>(polylogarithm_t< 1>::template function< 1>(0.123), -log(1 - 0.123)));
-		TRUE_(check_f<7>(polylogarithm_t< 1>::template function< 0>(0.123), -log(1 - 0.123)));
+		TRUE_(check_f<7>(polylogarithm_t< 1>::template function<-1>(egg), -log(1 - egg)));
+		TRUE_(check_f<7>(polylogarithm_t< 1>::template function< 3>(egg), -log(1 - egg)));
+		TRUE_(check_f<7>(polylogarithm_t< 1>::template function< 2>(egg), -log(1 - egg)));
+		TRUE_(check_f<7>(polylogarithm_t< 1>::template function< 1>(egg), -log(1 - egg)));
+		TRUE_(check_f<7>(polylogarithm_t< 1>::template function< 0>(egg), -log(1 - egg)));
 
-		TRUE_(check_f<7>(polylogarithm_t< 2>::template function<-1>(0.123), +log(1 + 0.123)));
-		TRUE_(check_f<7>(polylogarithm_t< 2>::template function< 3>(0.123), +log(1 + 0.123)));
-		TRUE_(check_f<7>(polylogarithm_t< 2>::template function< 2>(0.123), +log(1 + 0.123)));
-		TRUE_(check_f<7>(polylogarithm_t< 2>::template function< 1>(0.123), +log(1 + 0.123)));
-		TRUE_(check_f<7>(polylogarithm_t< 2>::template function< 0>(0.123), +log(1 + 0.123)));
+		TRUE_(check_f<7>(polylogarithm_t< 2>::template function<-1>(egg), +log(1 + egg)));
+		TRUE_(check_f<7>(polylogarithm_t< 2>::template function< 3>(egg), +log(1 + egg)));
+		TRUE_(check_f<7>(polylogarithm_t< 2>::template function< 2>(egg), +log(1 + egg)));
+		TRUE_(check_f<7>(polylogarithm_t< 2>::template function< 1>(egg), +log(1 + egg)));
+		TRUE_(check_f<7>(polylogarithm_t< 2>::template function< 0>(egg), +log(1 + egg)));
 
-		TRUE_(check_f<7>(polylogarithm_t<-1>::template function<-1>(0.123), 1 - exp(-0.123)));
-		TRUE_(check_f<7>(polylogarithm_t<-1>::template function< 3>(0.123), 1 - exp(-0.123)));
-		TRUE_(check_f<7>(polylogarithm_t<-1>::template function< 2>(0.123), 1 - exp(-0.123)));
-		TRUE_(check_f<7>(polylogarithm_t<-1>::template function< 1>(0.123), 1 - exp(-0.123)));
-		TRUE_(check_f<7>(polylogarithm_t<-1>::template function< 0>(0.123), 1 - exp(-0.123)));
+		TRUE_(check_f<7>(polylogarithm_t<-1>::template function<-1>(egg), 1 - exp(-egg)));
+		TRUE_(check_f<7>(polylogarithm_t<-1>::template function< 3>(egg), 1 - exp(-egg)));
+		TRUE_(check_f<7>(polylogarithm_t<-1>::template function< 2>(egg), 1 - exp(-egg)));
+		TRUE_(check_f<7>(polylogarithm_t<-1>::template function< 1>(egg), 1 - exp(-egg)));
+		TRUE_(check_f<7>(polylogarithm_t<-1>::template function< 0>(egg), 1 - exp(-egg)));
 
-		TRUE_(check_f<7>(polylogarithm_t<-2>::template function<-1>(0.123), exp(+0.123) - 1));
-		TRUE_(check_f<7>(polylogarithm_t<-2>::template function< 3>(0.123), exp(+0.123) - 1));
-		TRUE_(check_f<7>(polylogarithm_t<-2>::template function< 2>(0.123), exp(+0.123) - 1));
-		TRUE_(check_f<7>(polylogarithm_t<-2>::template function< 1>(0.123), exp(+0.123) - 1));
-		TRUE_(check_f<7>(polylogarithm_t<-2>::template function< 0>(0.123), exp(+0.123) - 1));
+		TRUE_(check_f<7>(polylogarithm_t<-2>::template function<-1>(egg), exp(+egg) - 1));
+		TRUE_(check_f<7>(polylogarithm_t<-2>::template function< 3>(egg), exp(+egg) - 1));
+		TRUE_(check_f<7>(polylogarithm_t<-2>::template function< 2>(egg), exp(+egg) - 1));
+		TRUE_(check_f<7>(polylogarithm_t<-2>::template function< 1>(egg), exp(+egg) - 1));
+		TRUE_(check_f<7>(polylogarithm_t<-2>::template function< 0>(egg), exp(+egg) - 1));
 
 		TRUE_(check_f<24>(0.61803398874989490, polylogarithm_f<-1, 1,-1>(1L)));
 		TRUE_(check_f<24>(1.61803398874989490, polylogarithm_f<-2, 1,-1>(1L)));
@@ -78,16 +85,14 @@ TAG_("polylogarithm")
 	TRY_("mapping")
 	{
 		T_alpha zoom = _op::patio_f(1, 2);
-		T_alpha tau_im  = 0.88;
+		T_alpha tau_abs = 0.88;
 		T_alpha tau_arg = 0.11;
 
 		T_aphex w = pade::unity_t<1, dilate<1>>::template function<4>(tau_arg);
-		T_alpha u = _op::alpha_1/tau_im;
+		T_alpha u = _op::alpha_1/tau_abs;
 		
-		u *= zoom;
-		w *= taylor::polylogarithm_t<-2, +1>::template function<0>(u);
-		w  = taylor::polylogarithm_t<+2, -1>::template function<0>(w);
-		w *= zoom;
+		w *= taylor::polylogarithm_t<-2, +1>::template function<0>(u*zoom);
+		w  = taylor::polylogarithm_t<+2, -1>::template function<0>(w)*zoom;
 		w  = imagine_f<1>(w);
 
 		TRUE_(check_f<16>(w, _std::complex{0.18009502457651236, 0.8570821020168073}));

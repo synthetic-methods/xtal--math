@@ -29,8 +29,8 @@ Serves as the mathematical definition of the approximant, \
 which is argument-restricted by the main definition. \
 
 template <int M_ism=1, int N_car=0> XTAL_TYP semiunity {static_assert(M_ism);};
-template <int M_ism               > XTAL_TYP semiunity<M_ism,-0>: bond::compose<discarding<1, +1>, semiunity<M_ism,-1>> {};
-template <int M_ism               > XTAL_TYP semiunity<M_ism,-1>: bond::compose<discarding<1, +2>, semiunity<M_ism,-2>> {};
+template <int M_ism               > XTAL_TYP semiunity<M_ism,-0>: bond::compose<discarded<1, +1>, semiunity<M_ism,-1>> {};
+template <int M_ism               > XTAL_TYP semiunity<M_ism,-1>: bond::compose<discarded<1, +2>, semiunity<M_ism,-2>> {};
 template <int M_ism=1, int N_car=0> XTAL_USE semiunity_t = process::confined_t<semiunity<M_ism, N_car>>;
 template <int M_ism               >
 struct semiunity<M_ism,-2>
@@ -212,7 +212,7 @@ struct unity<M_ism>
 			}
 			else {
 				//\
-				XTAL_SET f_assign = [] XTAL_1FN_(_op::assign_f);
+				XTAL_SET f_assign = [] XTAL_1FN_(_op::assigned_f);
 				XTAL_SET t_assign = [] (int i) XTAL_0FN -> Op_alpha {return (i << 1) - 1;};
 				
 				auto w = wrap_f(o);
@@ -228,7 +228,7 @@ struct unity<M_ism>
 		{
 			using _op = bond::operate<decltype(d)>;
 			XTAL_USE Op_alpha = typename _op::alpha_t;
-			XTAL_USE Fn_alpha = decltype([] XTAL_1FN_(_std::bit_cast<Op_alpha>));
+			XTAL_USE Fn_alpha = decltype([] XTAL_1FN_(_xtd::bit_cast<Op_alpha>));
 
 			if constexpr (N_lim < 0) {
 				return function<N_lim>(d(0));

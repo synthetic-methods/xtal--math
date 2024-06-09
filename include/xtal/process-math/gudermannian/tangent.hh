@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-#include "../dilating.hh"
+#include "../dilated.hh"
 #include "../square.hh"
 #include "../root.hh"
 
@@ -10,35 +10,43 @@ XTAL_ENV_(push)
 namespace xtal::process::math::gudermannian
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
+///\
+Defines a class of Gudermannian-related function/approximations indexed by `M_ism`: \
+	 1 ->                 Tan[#*Pi]/Pi -> # * Sqrt[(1 - 2 #^2)]/(1 - 4 #^2)\
+	 2 ->        Gudermannian[#*Pi]/Pi -> # * Sqrt[(1 +   #^2)]/(1 + 2 #^2)\
+	-1 ->              ArcTan[#*Pi]/Pi -> # * Sqrt[2]/Sqrt[(1 + 8 #^2) + Sqrt[(1 + 8 #^2)]]\
+	-2 -> InverseGudermannian[#*Pi]/Pi -> # * Sqrt[2]/Sqrt[(1 - 4 #^2) + Sqrt[(1 - 4 #^2)]]\
 
-template <int M_ism=1, int M_car=0> XTAL_TYP tangent {static_assert(M_ism);};
-template <int M_ism=1, int M_car=0> XTAL_USE tangent_t = process::confined_t<tangent<M_ism, M_car>>;
-template <int M_ism=1, int M_car=0>
+///\note\
+The (co)domain is normalized around `+/- 1/2`, with derivative `1` at `0`. \
+
+///\example\
+	using   Tanh = process::confined_t<dilated<1>, tangent< 2>>;\
+	using ArTanh = process::confined_t<dilated<1>, tangent<-2>>;\
+
+template <int M_ism=1, int M_car=0, typename ...As>
+XTAL_REQ inclusive_q<M_ism, 1, 2, -1, -2> and inclusive_q<M_car, -0, -1, -2>
+XTAL_TYP tangent
+:	process::link<tangent<M_ism, M_car>, As...>
+{
+};
+template <int M_ism=1, typename ...As>
+XTAL_USE tangent_t = process::confined_t<tangent<M_ism, bond::seek_constant_n<As..., Ordinal_0>, As...>>;
+
+template <int M_ism=1, typename ...As>
 XTAL_FN2 tangent_f(auto &&o)
 XTAL_0EX
 {
-	return tangent_t<M_ism, M_car>::function(XTAL_REF_(o));
+	return tangent_t<M_ism, As...>::function(XTAL_REF_(o));
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///\
-Defines a class of square-root-based-approximations of Gudermannian-related functions, \
-indexed by `M_ism`: \
-\
-	-2 -> InverseGudermannian[#*Pi]/Pi&\
-	 2 ->        Gudermannian[#*Pi]/Pi&\
-	-1 ->              ArcTan[#*Pi]/Pi&\
-	 1 ->                 Tan[#*Pi]/Pi&\
-
-///\note\
-The indexing is intended to reflect that used by the trigonometric functions, \
-where `+/- 1` and `+/- 2` respectively indicate circular and hyperbolic evaluations. \
 
 template <int M_ism>
 struct tangent<M_ism, -0>
 {
-	using subkind = bond::compose<discarding<1, +1>, tangent<M_ism, -1>>;
+	using subkind = bond::compose<discarded<1, +1>, tangent<M_ism, -1>>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S, subkind>
@@ -58,8 +66,9 @@ struct tangent<M_ism, -0>
 			}
 			XTAL_0IF (N_lim <  0) {
 				using _op = bond::operate<decltype(u)>;
-				auto const up =   _op::patio_1;
-				auto const dn = 1/_op::patio_1;
+				auto constexpr _1 =    _op::alpha_1;
+				auto constexpr up =    _op::patio_1;
+				auto constexpr dn = _1/_op::patio_1;
 				using namespace _std;
 				XTAL_IF0
 				XTAL_0IF (M_ism ==  2) {return atan(sinh(XTAL_REF_(u)*up))*dn;}// `Gudermannian`
@@ -73,7 +82,7 @@ struct tangent<M_ism, -0>
 };
 template <int M_ism>
 struct tangent<M_ism, -1>
-:	bond::compose<discarding<1, +2>, tangent<M_ism, -2>>
+:	bond::compose<discarded<1, +2>, tangent<M_ism, -2>>
 {
 };
 template <int M_ism>
