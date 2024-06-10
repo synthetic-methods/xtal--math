@@ -35,7 +35,7 @@ template <int M_ism=1, int N_car=0> XTAL_USE semiunity_t = process::confined_t<s
 template <int M_ism               >
 struct semiunity<M_ism,-2>
 {
-	XTAL_LET_(int) I_sgn = sign_n<(M_ism&1)^1, -1>;
+	static constexpr int I_sgn = sign_n<(M_ism&1)^1, -1>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S>
@@ -46,7 +46,8 @@ struct semiunity<M_ism,-2>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_FN2 function(simplex_field_q auto const &w)
+		XTAL_DEF_(return,static)
+		XTAL_REF function(simplex_field_q auto const &w)
 		XTAL_0EX
 		{
 			int constexpr I_lim = N_lim&0x7;
@@ -158,12 +159,6 @@ struct unity<M_ism, As...>
 template <int M_ism> requires (0 < M_ism)
 struct unity<M_ism>
 {
-//	XTAL_LET_(int) I_sgn = sign_n<(M_ism&1)^1, -1>;
-
-//	using subkind = bond::compose<void
-//	,	process::link<square<M_ism, 0>, _detail::semiunity<M_ism,-0>>
-//	,	V_unity_limit::dispatch<>
-//	>;
 	using superprocess = process::link_t<square<M_ism, 0>, _detail::semiunity<M_ism,-0>>;
 
 	using subkind = bond::compose<void
@@ -178,15 +173,15 @@ struct unity<M_ism>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(complex_field_q auto const &t)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(complex_field_q auto const &t)
 		XTAL_0EX
 		{
 			return function<N_lim>(t.real(), t.imag());
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(auto &&t_1, simplex_field_q auto &&t_i)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(auto &&t_1, simplex_field_q auto &&t_i)
 		XTAL_0EX
 		{
 			using _std::exp;
@@ -196,7 +191,8 @@ struct unity<M_ism>
 		}
 
 		template <int N_lim=-1>
-		XTAL_FN2 function(simplex_field_q auto o)
+		XTAL_DEF_(return,static)
+		XTAL_REF function(simplex_field_q auto o)
 		XTAL_0EX
 		{
 			using _op = bond::operate<decltype(o)>;
@@ -211,15 +207,15 @@ struct unity<M_ism>
 				XTAL_0IF (2 == M_ism) {return complexion_f(cosh(w), sinh(w));}
 			}
 			else {
-				XTAL_SET assigned_f = [] (int i) XTAL_0FN -> Op_alpha {return (i << 1) - 1;};
-				
+				auto constexpr assigned_f = [] (int i) XTAL_0FN -> Op_alpha {return (i << 1) - 1;};
 				auto w = wrap_f(o);
 				auto m = wrap_f(w*_op::diplo_1)*_op::haplo_1;
 				return superprocess::template function<N_lim>(m)*operative_f(assigned_f, m == w);
 			}
 		}
 		template <int N_lim=-1>
-		XTAL_FN2 function(algebra::d_::circular_q auto d)
+		XTAL_DEF_(return,static)
+		XTAL_REF function(algebra::d_::circular_q auto d)
 		XTAL_0EX
 		{
 			using _op = bond::operate<decltype(d)>;

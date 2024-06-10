@@ -15,7 +15,7 @@ template <int N_sign=1> XTAL_TYP term;
 template <int N_sign=1> XTAL_USE term_t = process::confined_t<term<N_sign>>;
 template <int N_sign=1, additive_group_q W, multiplicative_group_q X, multiplicative_group_q ...Xs>
 XTAL_DEF_(return,inline)
-XTAL_FN1 term_f(W &&w, X &&x, Xs &&...xs)
+XTAL_REF term_f(W &&w, X &&x, Xs &&...xs)
 XTAL_0EX
 {
 	using _std::fma;
@@ -67,8 +67,8 @@ struct term
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function( auto &&...oo)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function( auto &&...oo)
 		XTAL_0EX
 		{
 			return term_f(XTAL_REF_(oo)...);

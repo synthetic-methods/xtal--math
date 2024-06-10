@@ -13,7 +13,8 @@ namespace xtal::process::math
 
 template <int N_two=0, int N_two_pi=0> XTAL_TYP dilate;
 template <int N_two=0, int N_two_pi=0> XTAL_USE dilate_t = process::confined_t<dilate<N_two, N_two_pi>>;
-template <int N_two=0, int N_two_pi=0> XTAL_LET dilate_f = [] (auto &&o)
+template <int N_two=0, int N_two_pi=0>
+XTAL_LET dilate_f = [] (auto &&o)
 XTAL_0FN {
 	using _op = bond::operate<decltype(o)>;
 	auto constexpr n = _op::diplo_f(-N_two)*_op::template patio_f<-N_two_pi>(2, 1);
@@ -38,7 +39,8 @@ struct dilate
 //		using S_::S_;
 //
 //		template <auto ...>
-//		XTAL_FN2 function(auto &&o)
+//		XTAL_DEF_(return,inline,static)
+//		XTAL_REF function(auto &&o)
 //		XTAL_0EX
 //		{
 //			using _op = bond::operate<decltype(o)>;

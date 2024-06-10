@@ -31,10 +31,11 @@ XTAL_TYP tangent
 {
 };
 template <int M_ism=1, typename ...As>
-XTAL_USE tangent_t = process::confined_t<tangent<M_ism, bond::seek_constant_n<As..., Ordinal_0>, As...>>;
+XTAL_USE tangent_t = process::confined_t<tangent<M_ism, bond::seek_constant_n<As..., nominal_t<0>>, As...>>;
 
 template <int M_ism=1, typename ...As>
-XTAL_FN2 tangent_f(auto &&o)
+XTAL_DEF_(return,inline)
+XTAL_REF tangent_f(auto &&o)
 XTAL_0EX
 {
 	return tangent_t<M_ism, As...>::function(XTAL_REF_(o));
@@ -57,7 +58,8 @@ struct tangent<M_ism, -0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_FN2 function(auto &&u)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(auto &&u)
 		XTAL_0EX
 		{
 			XTAL_IF0
@@ -97,7 +99,8 @@ struct tangent<M_ism, -2>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_FN2 function(auto &&w)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(auto &&w)
 		XTAL_0EX
 		{
 			if constexpr (N_lim < 0) {

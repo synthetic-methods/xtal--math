@@ -21,9 +21,9 @@ TAG_("wrap")
 	using T_delta = typename _op::delta_t;
 	using T_alpha = typename _op::alpha_t;
 	using T_aphex = typename _op::aphex_t;
-	XTAL_LET_(T_alpha) one =  1;
-	XTAL_LET_(T_alpha) two =  2;
-	XTAL_LET_(T_alpha) ten = 10;
+	static constexpr T_alpha one =  1;
+	static constexpr T_alpha two =  2;
+	static constexpr T_alpha ten = 10;
 
 	TRY_("task")
 	{

@@ -28,20 +28,20 @@ template <class   ...Ts>	XTAL_USE  eigenvalue_t =	common_t<_entail::eigenvalue_t
 template <class   ...Ts>	XTAL_ASK  eigenclass_q =	(...and  _entail::eigenclass_q<Ts>);
 template <class   ...Ts>	XTAL_ASK  eigenvalue_q =	(...and  _entail::eigenvalue_q<Ts>);
 
-template <class F,                        class ...Xs> XTAL_DEF_(inline) XTAL_FN1   operative_f(F &&f,        Xs &&...xs) XTAL_0EX;
-template <class F,        class X,        class ...Xs> XTAL_DEF_(inline) XTAL_FN1   operative_f(F &&f, X &&x, Xs &&...xs) XTAL_0EX {return                                          XTAL_REF_(f) (XTAL_REF_(x), XTAL_REF_(xs)...);}
-template <class F                                    > XTAL_DEF_(inline) XTAL_FN1   operative_f(F &&f                   ) XTAL_0EX {return                                                              [] XTAL_1FN_(operative_f);}
-template <class F, eigenvalue_q X, eigenvalue_q ...Xs> XTAL_DEF_(inline) XTAL_FN1   operative_f(F &&f, X &&x, Xs &&...xs) XTAL_0EX XTAL_REQ (0 == sizeof...(Xs)) {return XTAL_REF_(x).  unaryExpr(XTAL_REF_(xs)..., XTAL_REF_(f));}
-template <class F, eigenvalue_q X, eigenvalue_q ...Xs> XTAL_DEF_(inline) XTAL_FN1   operative_f(F &&f, X &&x, Xs &&...xs) XTAL_0EX XTAL_REQ (1 == sizeof...(Xs)) {return XTAL_REF_(x). binaryExpr(XTAL_REF_(xs)..., XTAL_REF_(f));}
-template <class F, eigenvalue_q X, eigenvalue_q ...Xs> XTAL_DEF_(inline) XTAL_FN1   operative_f(F &&f, X &&x, Xs &&...xs) XTAL_0EX XTAL_REQ (2 == sizeof...(Xs)) {return XTAL_REF_(x).ternaryExpr(XTAL_REF_(xs)..., XTAL_REF_(f));}
+template <class F,                        class ...Xs> XTAL_DEF_(inline) XTAL_REF   operative_f(F &&f,        Xs &&...xs) XTAL_0EX;
+template <class F,        class X,        class ...Xs> XTAL_DEF_(inline) XTAL_REF   operative_f(F &&f, X &&x, Xs &&...xs) XTAL_0EX {return                                          XTAL_REF_(f) (XTAL_REF_(x), XTAL_REF_(xs)...);}
+template <class F                                    > XTAL_DEF_(inline) XTAL_REF   operative_f(F &&f                   ) XTAL_0EX {return                                                              [] XTAL_1FN_(operative_f);}
+template <class F, eigenvalue_q X, eigenvalue_q ...Xs> XTAL_DEF_(inline) XTAL_REF   operative_f(F &&f, X &&x, Xs &&...xs) XTAL_0EX XTAL_REQ (0 == sizeof...(Xs)) {return XTAL_REF_(x).  unaryExpr(XTAL_REF_(xs)..., XTAL_REF_(f));}
+template <class F, eigenvalue_q X, eigenvalue_q ...Xs> XTAL_DEF_(inline) XTAL_REF   operative_f(F &&f, X &&x, Xs &&...xs) XTAL_0EX XTAL_REQ (1 == sizeof...(Xs)) {return XTAL_REF_(x). binaryExpr(XTAL_REF_(xs)..., XTAL_REF_(f));}
+template <class F, eigenvalue_q X, eigenvalue_q ...Xs> XTAL_DEF_(inline) XTAL_REF   operative_f(F &&f, X &&x, Xs &&...xs) XTAL_0EX XTAL_REQ (2 == sizeof...(Xs)) {return XTAL_REF_(x).ternaryExpr(XTAL_REF_(xs)..., XTAL_REF_(f));}
 
-template <class F,        class X,        class ...Xs> XTAL_DEF_(inline) XTAL_FN1 inoperative_f(       X &&x, Xs &&...xs) XTAL_0EX {return operative_f(invoke_f<F>, XTAL_REF_(x), XTAL_REF_(xs)...);}
-template <class F                                    > XTAL_DEF_(inline) XTAL_FN1 inoperative_f(                        ) XTAL_0EX {return operative_f(invoke_f<F>                                );}
+template <class F,        class X,        class ...Xs> XTAL_DEF_(inline) XTAL_REF inoperative_f(       X &&x, Xs &&...xs) XTAL_0EX {return operative_f(invoke_f<F>, XTAL_REF_(x), XTAL_REF_(xs)...);}
+template <class F                                    > XTAL_DEF_(inline) XTAL_REF inoperative_f(                        ) XTAL_0EX {return operative_f(invoke_f<F>                                );}
 
 
 template <eigenvalue_q W>
 XTAL_DEF_(inline)
-XTAL_FN1 objective_f(W &&w)
+XTAL_REF objective_f(W &&w)
 XTAL_0EX
 {
 	return XTAL_REF_(w).eval();
@@ -50,7 +50,7 @@ XTAL_0EX
 
 template <template <class> class Y, eigenvalue_q ...Xs>
 XTAL_DEF_(return,inline)
-XTAL_FN1 construxion_f(Xs &&...xs)
+XTAL_REF construxion_f(Xs &&...xs)
 XTAL_0EX
 {
 	using W = common_t<eigenvalue_t<Xs>...>;
@@ -59,14 +59,14 @@ XTAL_0EX
 /**/
 template <template <class> class Y, class ...Xs>
 XTAL_DEF_(return,inline)
-XTAL_FN1 construxion_f(Xs &&...xs)
+XTAL_REF construxion_f(Xs &&...xs)
 XTAL_0EX
 {
 	using W = common_t<Xs...>;
 	return inoperative_f<Y<W>>(XTAL_REF_(xs)...);
 }
 XTAL_DEF_(return,inline)
-XTAL_FN1 complexion_f(auto &&...xs)
+XTAL_REF complexion_f(auto &&...xs)
 XTAL_0EX
 {
 	return construxion_f<_std::complex>(XTAL_REF_(xs)...);

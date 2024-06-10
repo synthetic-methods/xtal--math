@@ -22,10 +22,10 @@ TAG_("polylogarithm")
 	using T_delta = typename _op::delta_t;
 	using T_alpha = typename _op::alpha_t;
 	using T_aphex = typename _op::aphex_t;
-	XTAL_LET_(T_alpha) egg =  0.123456789;
-	XTAL_LET_(T_alpha) one =  1;
-	XTAL_LET_(T_alpha) two =  2;
-	XTAL_LET_(T_alpha) ten = 10;
+	static constexpr T_alpha egg =  0.123456789;
+	static constexpr T_alpha one =  1;
+	static constexpr T_alpha two =  2;
+	static constexpr T_alpha ten = 10;
 
 	using U_phi = algebra::d_::circular_t<T_alpha[2]>;
 
@@ -85,11 +85,11 @@ TAG_("polylogarithm")
 	TRY_("mapping")
 	{
 		T_alpha zoom = _op::patio_f(1, 2);
-		T_alpha tau_abs = 0.88;
-		T_alpha tau_arg = 0.11;
+		T_alpha s_abs = 0.88;
+		T_alpha s_arg = 0.11;
 
-		T_aphex w = pade::unity_t<1, dilate<1>>::template function<4>(tau_arg);
-		T_alpha u = _op::alpha_1/tau_abs;
+		T_aphex w = pade::unity_t<1, dilate<1>>::template function<4>(s_arg);
+		T_alpha u = _op::alpha_1/s_abs;
 		
 		w *= taylor::polylogarithm_t<-2, +1>::template function<0>(u*zoom);
 		w  = taylor::polylogarithm_t<+2, -1>::template function<0>(w)*zoom;

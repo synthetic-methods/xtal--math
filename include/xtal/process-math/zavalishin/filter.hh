@@ -33,7 +33,7 @@ struct filter<U_data[2]>
 	using _op = bond::operate<U_data>;
 	using Z_sigma = typename _op::sigma_t;
 	using Z_alpha = typename _op::alpha_t;
-	XTAL_LET_(Z_alpha) Z_1{1};
+	static constexpr Z_alpha Z_1{1};
 
 	template <class S>
 	class subtype: public bond::compose_s<S>
@@ -51,13 +51,14 @@ struct filter<U_data[2]>
 		using S_::S_;
 
 		template <auto ...Is>
-		XTAL_DEF_(return,inline)
-		XTAL_TN1 solver(U_data u, Z_alpha t)
-		XTAL_0EX
+		XTAL_DEF_(inline)
+		XTAL_LET solver(U_data u, Z_alpha t)
+		XTAL_0EX -> void
 		{
 		}
 		template <auto ...Is>
-		XTAL_TN2 functor(U_data u, Z_alpha t)
+		XTAL_DEF_(return)
+		XTAL_REF functor(U_data u, Z_alpha t)
 		XTAL_0EX
 		{
 			using namespace horner;
@@ -81,7 +82,7 @@ struct filter<U_data[2]>
 		}
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_TN1 functor(U_data u, Z_alpha t, Z_alpha a)
+		XTAL_REF functor(U_data u, Z_alpha t, Z_alpha a)
 		XTAL_0EX
 		{
 			a_[1] = a;

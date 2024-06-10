@@ -12,8 +12,9 @@ namespace xtal::math::_test
 /////////////////////////////////////////////////////////////////////////////////
 
 template <int N_trim=0>
-XTAL_FN2 check_f(auto const &u, auto const &v)
-XTAL_0EX
+XTAL_DEF_(return)
+XTAL_LET check_f(auto const &u, auto const &v)
+XTAL_0EX -> bool
 {
 	return bond::computrim_f<N_trim>(u) == bond::computrim_f<N_trim>(v);
 }

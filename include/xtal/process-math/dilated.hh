@@ -37,8 +37,8 @@ struct dilated
 		using S_::S_;
 
 		template <auto ...Is>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(auto &&o)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(auto &&o)
 		XTAL_0EX
 		{
 			using _op = bond::operate<decltype(o)>;

@@ -32,7 +32,7 @@ struct prewarping
 
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_TN1 functor(auto &&u, auto f, auto &&...oo)
+		XTAL_REF functor(auto &&u, auto f, auto &&...oo)
 		XTAL_0EX
 		{
 			auto const t = gudermannian::tangent_f<1>(S_::sample().period()*f);

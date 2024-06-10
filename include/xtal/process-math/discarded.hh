@@ -46,8 +46,8 @@ struct discarded<M_pow, +1>
 		using S_::S_;
 
 		template <auto ...Is>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(auto &&u)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(auto &&u)
 		XTAL_0EX
 		{
 			auto  v = S_::template function<Is...>(u);
@@ -76,8 +76,8 @@ struct discarded<1, +1>
 		using S_::S_;
 
 		template <auto ...Is>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(auto &&u)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(auto &&u)
 		XTAL_0EX
 		{
 			auto  v = S_::template function<Is...>(u);
@@ -112,8 +112,8 @@ struct discarded<1, +2>
 		using S_::S_;
 
 		template <auto ...Is>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(auto &&o)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(auto &&o)
 		XTAL_0EX
 		{
 			return S_::template function<Is...>(square_f<1>(XTAL_REF_(o)));

@@ -15,7 +15,7 @@ template <int M_ism=1, int N_pow=1> requires sign_p<N_pow> XTAL_TYP square;
 template <int M_ism=1, int N_pow=1> requires sign_p<N_pow> XTAL_USE square_t = process::confined_t<square<M_ism, N_pow>>;
 template <int M_ism=1, int N_pow=1> requires sign_p<N_pow>
 XTAL_DEF_(return,inline)
-XTAL_FN1 square_f(auto &&o)
+XTAL_REF square_f(auto &&o)
 XTAL_0EX
 {
 	return square_t<M_ism, N_pow>::function(XTAL_REF_(o));
@@ -36,8 +36,8 @@ struct square<0, N_pow>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(auto &&o)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(auto &&o)
 		XTAL_0EX
 		{
 			return XTAL_REF_(o);
@@ -53,7 +53,7 @@ struct square<0, N_pow>
 template <int M_ism> requires (0 < M_ism)
 struct square<M_ism, 0>
 {
-	XTAL_LET_(int) I_sgn = sign_n<(M_ism&1)^0, -1>;
+	static constexpr int I_sgn = sign_n<(M_ism&1)^0, -1>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S>
@@ -64,8 +64,8 @@ struct square<M_ism, 0>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(complex_field_q auto const &o)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(complex_field_q auto const &o)
 		XTAL_0EX
 		{
 			using O = XTAL_TYP_(o); using _op = bond::operate<O>;
@@ -90,7 +90,7 @@ struct square<M_ism, 0>
 template <int M_ism> requires (0 < M_ism)
 struct square<M_ism, 1>
 {
-	XTAL_LET_(int) I_sgn = sign_n<(M_ism&1)^0, -1>;
+	static constexpr int I_sgn = sign_n<(M_ism&1)^0, -1>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S>
@@ -101,15 +101,15 @@ struct square<M_ism, 1>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(auto const &o)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(auto const &o)
 		XTAL_0EX
 		{
 			return o*o;
 		}
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(complex_field_q auto const &o)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(complex_field_q auto const &o)
 		XTAL_0EX
 		{
 			using _op = bond::operate<decltype(o)>;
@@ -133,8 +133,8 @@ struct square<M_ism,-1>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(auto &&o)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(auto &&o)
 		XTAL_0EX
 		{
 			using _op = bond::operate<decltype(o)>;
@@ -159,16 +159,16 @@ struct square<M_ism, 1>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(simplex_field_q auto &&o)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(simplex_field_q auto &&o)
 		XTAL_0EX
 		{
 			using _op = bond::operate<decltype(o)>;
 			return _op::template root_f<+2>(XTAL_REF_(o));
 		}
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(complex_field_q auto &&o)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(complex_field_q auto &&o)
 		XTAL_0EX
 		{
 			using O = XTAL_TYP_(o); using _op = bond::operate<O>;
@@ -195,16 +195,16 @@ struct square<M_ism,-1>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(simplex_field_q auto const &o)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(simplex_field_q auto const &o)
 		XTAL_0EX
 		{
 			using O = XTAL_TYP_(o); using _op = bond::operate<O>;
 			return _op::template root_f<-2>(o);
 		}
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(complex_field_q auto const &o)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(complex_field_q auto const &o)
 		XTAL_0EX
 		{
 			using O = XTAL_TYP_(o); using _op = bond::operate<O>;

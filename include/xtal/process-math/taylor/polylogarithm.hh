@@ -20,7 +20,7 @@ XTAL_USE polylogarithm_t = process::confined_t<polylogarithm<M_ism, M_pow, M_car
 
 template <int M_ism=1, int M_pow=1, int M_car=0, int ...Ns>
 XTAL_DEF_(return,inline)
-XTAL_FN1 polylogarithm_f(auto &&o)
+XTAL_REF polylogarithm_f(auto &&o)
 XTAL_0EX
 {
 	return polylogarithm_t<M_ism, M_pow, M_car>::template function<Ns...>(XTAL_REF_(o));
@@ -48,8 +48,8 @@ struct polylogarithm<M_ism, M_pow, -0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(auto &&o)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(auto &&o)
 		XTAL_0EX
 		{
 			using _std::log;
@@ -89,8 +89,8 @@ struct polylogarithm<M_ism, M_pow, -0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(auto &&o)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(auto &&o)
 		XTAL_0EX
 		{
 			using _std::exp;
@@ -129,8 +129,8 @@ struct polylogarithm<M_ism, M_pow, -1>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(auto &&u)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(auto &&u)
 		XTAL_0EX
 		{
 			using _op = bond::operate<decltype(u)>;
@@ -166,8 +166,8 @@ struct polylogarithm<M_ism, M_pow, -1>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(auto &&u)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(auto &&u)
 		XTAL_0EX
 		{
 			using _op = bond::operate<decltype(u)>;

@@ -15,7 +15,7 @@ template <typename ...As> XTAL_TYP wrap;
 template <typename ...As> XTAL_USE wrap_t = process::confined_t<wrap<As...>>;
 template <typename ...As>
 XTAL_DEF_(return,inline)
-XTAL_FN1 wrap_f(auto &&o)
+XTAL_REF wrap_f(auto &&o)
 XTAL_0EX
 {
 	return wrap_t<As...>::function(XTAL_REF_(o));
@@ -40,8 +40,8 @@ struct wrap<As...>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(auto &&o)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(auto &&o)
 		XTAL_0EX
 		{
 			using _std::round;
@@ -49,15 +49,15 @@ struct wrap<As...>
 			return o - round(o);
 		}
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(algebra::d_::circular_q auto &&o)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(algebra::d_::circular_q auto &&o)
 		XTAL_0EX
 		{
 			return XTAL_REF_(o);
 		}
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_FN1 function(complex_field_q auto &&o)
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(complex_field_q auto &&o)
 		XTAL_0EX
 		{
 			if constexpr (complex_number_q<decltype(o)>) {

@@ -15,7 +15,7 @@ template <int N_sign=1> XTAL_TYP polynomial;
 template <int N_sign=1> XTAL_USE polynomial_t = process::confined_t<polynomial<N_sign>>;
 template <int N_sign=1>
 XTAL_DEF_(return,inline)
-XTAL_FN1 polynomial_f(auto &&w, auto &&k, auto &&...ks)
+XTAL_REF polynomial_f(auto &&w, auto &&k, auto &&...ks)
 XTAL_0EX
 {
 	if constexpr (0 == sizeof...(ks)) {
@@ -52,7 +52,12 @@ struct polynomial
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_LET function = polynomial_f<N_sign>;
+		XTAL_DEF_(return,inline,static)
+		XTAL_REF function(auto &&...oo)
+		XTAL_0EX
+		{
+			return polynomial_f<N_sign>(XTAL_REF_(oo)...);
+		}
 
 	};
 };
