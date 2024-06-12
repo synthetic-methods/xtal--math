@@ -31,8 +31,8 @@ template <class U_data> requires is_q<devolved_t<U_data>, U_data>
 struct filter<U_data[2]>
 {
 	using _op = bond::operate<U_data>;
-	using Z_sigma = typename _op::sigma_t;
-	using Z_alpha = typename _op::alpha_t;
+	using Z_sigma = typename _op::sigma_type;
+	using Z_alpha = typename _op::alpha_type;
 	static constexpr Z_alpha Z_1{1};
 
 	template <class S>
@@ -58,7 +58,7 @@ struct filter<U_data[2]>
 		}
 		template <auto ...Is>
 		XTAL_DEF_(return)
-		XTAL_REF functor(U_data u, Z_alpha t)
+		XTAL_RET functor(U_data u, Z_alpha t)
 		XTAL_0EX
 		{
 			using namespace horner;
@@ -82,7 +82,7 @@ struct filter<U_data[2]>
 		}
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_REF functor(U_data u, Z_alpha t, Z_alpha a)
+		XTAL_RET functor(U_data u, Z_alpha t, Z_alpha a)
 		XTAL_0EX
 		{
 			a_[1] = a;

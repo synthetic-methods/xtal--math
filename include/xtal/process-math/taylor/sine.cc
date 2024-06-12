@@ -16,10 +16,10 @@ namespace xtal::process::math::taylor::_test
 /**/
 TAG_("sine")
 {
-	using _op = bond::operate<size_t>;
-	using T_sigma = typename _op::sigma_t;
-	using T_delta = typename _op::delta_t;
-	using T_alpha = typename _op::alpha_t;
+	using _op = bond::operate<size_type>;
+	using T_sigma = typename _op::sigma_type;
+	using T_delta = typename _op::delta_type;
+	using T_alpha = typename _op::alpha_type;
 	static constexpr T_alpha one =  1;
 	static constexpr T_alpha two =  2;
 	static constexpr T_alpha ten = 10;

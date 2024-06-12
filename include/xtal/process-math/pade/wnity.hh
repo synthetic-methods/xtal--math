@@ -40,26 +40,26 @@ struct wnity<1>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,static)
-		XTAL_REF function(complex_field_q auto const &t)
+		XTAL_RET function(complex_field_q auto const &t)
 		XTAL_0EX
 		{
 			return function<N_lim>(t.real(), t.imag());
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,static)
-		XTAL_REF function(auto &&t_1, simplex_field_q auto &&t_i)
+		XTAL_RET function(auto &&t_1, simplex_field_q auto &&t_i)
 		XTAL_0EX
 		{
 			using _std::exp;
 
-			using T_i = XTAL_TYP_(t_i); using _op = bond::operate<T_i>;
+			using T_i = XTAL_ALL_(t_i); using _op = bond::operate<T_i>;
 
 			return function(XTAL_REF_(t_1))*
 				roots_t<1>::template function(exp(XTAL_REF_(t_i)*_op::patio_f(-2)));
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,static)
-		XTAL_REF function(simplex_field_q auto &&t_1)
+		XTAL_RET function(simplex_field_q auto &&t_1)
 		XTAL_0EX
 		{
 			using _std::conj;

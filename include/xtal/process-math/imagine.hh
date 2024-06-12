@@ -15,7 +15,7 @@ template <int M_rot=0, int M_con=0> XTAL_TYP imagine;
 template <int M_rot=0, int M_con=0> XTAL_USE imagine_t = process::confined_t<imagine<M_rot, M_con>>;
 template <int M_rot=0, int M_con=0>
 XTAL_DEF_(return,inline)
-XTAL_REF imagine_f(complex_field_q auto &&o)
+XTAL_RET imagine_f(complex_field_q auto &&o)
 XTAL_0EX
 {
 	return imagine_t<M_rot, M_con>::function(XTAL_REF_(o));
@@ -27,8 +27,8 @@ XTAL_0EX
 template <int M_rot, int M_con>
 struct imagine
 {
-	static constexpr size_t N_rot = M_rot&0b11;
-	static constexpr size_t N_con = M_con&1;
+	static constexpr size_type N_rot = M_rot&0b11;
+	static constexpr size_type N_con = M_con&1;
 
 	template <class S>
 	class subtype: public bond::compose_s<S>
@@ -40,7 +40,7 @@ struct imagine
 
 		template <auto ...>
 		XTAL_DEF_(return,inline,static)
-		XTAL_REF function(complex_number_q auto &&o)
+		XTAL_RET function(complex_number_q auto &&o)
 		XTAL_0EX
 		{
 			auto &xy = devolved_f(XTAL_REF_(o));

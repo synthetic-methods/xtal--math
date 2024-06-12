@@ -14,7 +14,7 @@ namespace xtal::math
 ////////////////////////////////////////////////////////////////////////////////
 
 XTAL_DEF_(return,inline)
-XTAL_REF duple_f(auto &&...xs)
+XTAL_RET duple_f(auto &&...xs)
 XTAL_0EX
 {
 	//\

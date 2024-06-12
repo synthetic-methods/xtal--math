@@ -40,7 +40,7 @@ struct dilate
 //
 //		template <auto ...>
 //		XTAL_DEF_(return,inline,static)
-//		XTAL_REF function(auto &&o)
+//		XTAL_RET function(auto &&o)
 //		XTAL_0EX
 //		{
 //			using _op = bond::operate<decltype(o)>;

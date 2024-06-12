@@ -25,7 +25,7 @@ The (co)domain is normalized around `+/- 1/2`, with derivative `1` at `0`. \
 	using ArTanh = process::confined_t<dilated<1>, tangent<-2>>;\
 
 template <int M_ism=1, int M_car=0, typename ...As>
-XTAL_REQ inclusive_q<M_ism, 1, 2, -1, -2> and inclusive_q<M_car, -0, -1, -2>
+	requires inclusive_q<M_ism, 1, 2, -1, -2> and inclusive_q<M_car, -0, -1, -2>
 XTAL_TYP tangent
 :	process::link<tangent<M_ism, M_car>, As...>
 {
@@ -35,7 +35,7 @@ XTAL_USE tangent_t = process::confined_t<tangent<M_ism, bond::seek_constant_n<As
 
 template <int M_ism=1, typename ...As>
 XTAL_DEF_(return,inline)
-XTAL_REF tangent_f(auto &&o)
+XTAL_RET tangent_f(auto &&o)
 XTAL_0EX
 {
 	return tangent_t<M_ism, As...>::function(XTAL_REF_(o));
@@ -59,7 +59,7 @@ struct tangent<M_ism, -0>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,static)
-		XTAL_REF function(auto &&u)
+		XTAL_RET function(auto &&u)
 		XTAL_0EX
 		{
 			XTAL_IF0
@@ -100,7 +100,7 @@ struct tangent<M_ism, -2>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,static)
-		XTAL_REF function(auto &&w)
+		XTAL_RET function(auto &&w)
 		XTAL_0EX
 		{
 			if constexpr (N_lim < 0) {

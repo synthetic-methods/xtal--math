@@ -15,7 +15,7 @@ template <int N_pow=1> XTAL_TYP roots;
 template <int N_pow=1> XTAL_USE roots_t = process::confined_t<roots<N_pow>>;
 template <int N_pow=1>
 XTAL_DEF_(return,inline)
-XTAL_REF roots_f(auto &&o)
+XTAL_RET roots_f(auto &&o)
 XTAL_0EX
 {
 	return roots_t<N_pow>::function(XTAL_REF_(o));
@@ -40,7 +40,7 @@ struct roots
 
 		template <auto ...>
 		XTAL_DEF_(return,inline,static)
-		XTAL_REF function(auto &&w)
+		XTAL_RET function(auto &&w)
 		XTAL_0EX
 		{
 			using _std::sqrt;

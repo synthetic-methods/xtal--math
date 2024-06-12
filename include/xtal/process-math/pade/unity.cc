@@ -31,10 +31,10 @@ TAG_("unity")
 {
 	using _op = bond::operating;
 
-	using T_sigma = typename _op::sigma_t;
-	using T_delta = typename _op::delta_t;
-	using T_alpha = typename _op::alpha_t;
-	using T_aphex = typename _op::aphex_t;
+	using T_sigma = typename _op::sigma_type;
+	using T_delta = typename _op::delta_type;
+	using T_alpha = typename _op::alpha_type;
+	using T_aphex = typename _op::aphex_type;
 
 	using A_alpha = Eigen::Array<T_alpha,-1, 1>;
 	using A_aphex = Eigen::Array<T_aphex,-1, 1>;
