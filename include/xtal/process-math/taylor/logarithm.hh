@@ -3,7 +3,7 @@
 
 #include "./sine.hh"
 #include "./monologarithm.hh"
-#include "../dilated.hh"
+#include "../dilating.hh"
 #include "../root.hh"
 
 XTAL_ENV_(push)
@@ -83,7 +83,7 @@ template <>
 struct logarithm< 1, 1, 0>
 {
 	using superprocess = process::link_t<void
-	,	bond::compose<dilated<1>, taylor::sine<-2>>
+	,	bond::compose<dilating<1>, taylor::sine<-2>>
 	>;
 	template <class S>
 	class subtype: public bond::compose_s<S>
@@ -126,7 +126,7 @@ template <>
 struct logarithm<-1, 1, 0>
 {
 	using superprocess = process::link_t<void
-	,	bond::compose<dilated<1>, taylor::sine<+2>>
+	,	bond::compose<dilating<1>, taylor::sine<+2>>
 	>;
 	template <class S>
 	class subtype: public bond::compose_s<S>

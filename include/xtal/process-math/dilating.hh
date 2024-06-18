@@ -18,13 +18,13 @@ Because it invokes the super-`function` directly, \
 it must be applied via `{compose,confined}` (etc) rather than `process::{lift,link}`.
 
 template <int N_two=0, int N_two_pi=0>
-struct dilated;
+struct dilating;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int N_two, int N_two_pi>
-struct dilated
+struct dilating
 {
 	using subkind = bond::tag<process::link>;
 
@@ -51,7 +51,7 @@ struct dilated
 	};
 };
 template <>
-struct dilated<0>
+struct dilating<0>
 {
 	template <class S>
 	using subtype = S;

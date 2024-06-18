@@ -20,20 +20,20 @@ it must be applied via `{compose,confined}` (etc) rather than `process::{lift,li
 
 template <int M_pow=1, int M_car=0>
 	requires inclusive_q<M_pow, 1, -1> and inclusive_q<M_car, 0, 1, 2>
-XTAL_TYP discarded;
+XTAL_TYP discarding;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int M_pow>
-struct discarded<M_pow, +0>
+struct discarding<M_pow, +0>
 {
 	template <class S>
 	using subtype = bond::compose_s<S, bond::tag<process::link>>;
 
 };
 template <int M_pow>
-struct discarded<M_pow, +1>
+struct discarding<M_pow, +1>
 {
 	using subkind = bond::tag<process::link>;
 
@@ -63,7 +63,7 @@ struct discarded<M_pow, +1>
 	};
 };
 template <>
-struct discarded<1, +1>
+struct discarding<1, +1>
 {
 	using subkind = bond::tag<process::link>;
 
@@ -99,7 +99,7 @@ struct discarded<1, +1>
 	};
 };
 template <>
-struct discarded<1, +2>
+struct discarding<1, +2>
 {
 	using subkind = bond::tag<process::link>;
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-#include "../dilated.hh"
+#include "../dilating.hh"
 #include "../square.hh"
 #include "../root.hh"
 
@@ -21,8 +21,8 @@ Defines a class of Gudermannian-related function/approximations indexed by `M_is
 The (co)domain is normalized around `+/- 1/2`, with derivative `1` at `0`. \
 
 ///\example\
-	using   Tanh = process::confined_t<dilated<1>, tangent< 2>>;\
-	using ArTanh = process::confined_t<dilated<1>, tangent<-2>>;\
+	using   Tanh = process::confined_t<dilating<1>, tangent< 2>>;\
+	using ArTanh = process::confined_t<dilating<1>, tangent<-2>>;\
 
 template <int M_ism=1, int M_car=0, typename ...As>
 	requires inclusive_q<M_ism, 1, 2, -1, -2> and inclusive_q<M_car, -0, -1, -2>
@@ -47,7 +47,7 @@ XTAL_0EX
 template <int M_ism>
 struct tangent<M_ism, -0>
 {
-	using subkind = bond::compose<discarded<1, +1>, tangent<M_ism, -1>>;
+	using subkind = bond::compose<discarding<1, +1>, tangent<M_ism, -1>>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S, subkind>
@@ -84,7 +84,7 @@ struct tangent<M_ism, -0>
 };
 template <int M_ism>
 struct tangent<M_ism, -1>
-:	bond::compose<discarded<1, +2>, tangent<M_ism, -2>>
+:	bond::compose<discarding<1, +2>, tangent<M_ism, -2>>
 {
 };
 template <int M_ism>

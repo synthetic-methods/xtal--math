@@ -2,7 +2,7 @@
 #include "./any.cc"
 #include "./unity.hh"// testing...
 
-#include "../dilated.hh"
+#include "../dilating.hh"
 #include "../dilate.hh"
 
 
