@@ -1,3 +1,4 @@
 #include "./any.cc"
-#include "./polylogarithm.cc"
+#include "./logarithm.cc"
+#include "./monologarithm.cc"
 #include "./sine.cc"
