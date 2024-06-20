@@ -18,8 +18,8 @@ XTAL_RET duple_f(auto &&...xs)
 XTAL_0EX
 {
 	//\
-	return algebra::scalar_f(XTAL_REF_(xs)...);
 	return bond::couple_f(XTAL_REF_(xs)...);
+	return algebra::scalar_f(XTAL_REF_(xs)...);
 }
 
 

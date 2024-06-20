@@ -50,7 +50,7 @@ XTAL_0EX
 
 template <template <class> class Y, eigenvalue_q ...Xs>
 XTAL_DEF_(return,inline)
-XTAL_RET construxion_f(Xs &&...xs)
+XTAL_LET construxion_f(Xs &&...xs)
 XTAL_0EX
 {
 	using W = common_t<eigenvalue_t<Xs>...>;
@@ -59,14 +59,14 @@ XTAL_0EX
 /**/
 template <template <class> class Y, class ...Xs>
 XTAL_DEF_(return,inline)
-XTAL_RET construxion_f(Xs &&...xs)
+XTAL_LET construxion_f(Xs &&...xs)
 XTAL_0EX
 {
 	using W = common_t<Xs...>;
 	return inoperative_f<Y<W>>(XTAL_REF_(xs)...);
 }
 XTAL_DEF_(return,inline)
-XTAL_RET complexion_f(auto &&...xs)
+XTAL_LET complexion_f(auto &&...xs)
 XTAL_0EX
 {
 	return construxion_f<_std::complex>(XTAL_REF_(xs)...);

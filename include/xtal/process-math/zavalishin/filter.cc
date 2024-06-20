@@ -33,8 +33,8 @@ TAG_("filter")
 		_std::array<U, 4> f_{3, 3, 3, 3};
 
 		//\
-		auto z = Z::binding_f(u_, f_);
-		auto z = Z::binding_f(processor::let_f(u_), processor::let_f(f_));
+		auto z = Z::binds_f(u_, f_);
+		auto z = Z::binds_f(processor::let_f(u_), processor::let_f(f_));
 //		TRUE_(true);
 
 	}
