@@ -50,11 +50,60 @@ struct filter<U_data[2]>
 	public:
 		using S_::S_;
 
-		template <auto ...Is>
+		template <int N_ord=0, int N_two=0>
 		XTAL_DEF_(inline)
-		XTAL_LET solver(U_data u, Z_alpha t)
+		XTAL_LET antisaturator(U_data y1)
 		XTAL_0EX -> void
 		{
+			return y1;
+
+//			U_alpha const n_drive = S_::template head<0>();
+//			U_alpha const n_curve = S_::template head<1>();
+//
+//			XTAL_IF0
+//			XTAL_0IF (N_ord == 0) {
+//				return F (y1, n_drive, n_curve)*_op::diplo_f(N_two - 1);
+//			}
+//			XTAL_0IF (N_ord == 1) {
+//				return F'(y1, n_drive, n_curve)*_op::diplo_f(N_two - 1);
+//			}
+		}
+		template <int N_ord=0>
+		XTAL_DEF_(inline)
+		XTAL_LET shape(U_data y1)
+		XTAL_0EX
+		{
+//			U_data &y0 = cache[0], &a0 = cache[4];
+//			U_data &y1 = cache[1], &a1 = cache[5];
+//			U_data &y2 = cache[2], &a2 = cache[6];
+//			U_data &v0 = cache[3], &v1 = cache[7];
+//
+//			XTAL_IF0
+//			XTAL_0IF (N_ord == 0) {
+//				return y1*(a1 - 2) + antisaturator< 1, 1>(y1);
+//			}
+//			XTAL_0IF (N_ord == 1) {
+//				return    (a1 - 2) + antisaturator<-1, 1>(y1);
+//			}
+		}
+		template <auto ...Is>
+		XTAL_DEF_(inline)
+		XTAL_LET solve(U_data u, Z_alpha t)
+		XTAL_0EX -> void
+		{
+//		With:
+//			f(y[1]) = y1*(a1 - 2) + 2*F[y1, u, v]
+//		
+//		Fixed-point:
+//			y1 = term_f< 1>(v1, y2, t);
+//			y0 = term_f< 1>(v0, y1, t);
+//			y2 = term_f<-1>(u, a0, y0) - shape(y1);
+
+//		Newton's method:
+//			auto const num = term_f<-1>(u, a0, y0) - y2 - shape<0>(y1);
+//			auto const nom = term_f< 1>(1, t, term_f< 1>(shape<1>(y1), t, a0);
+//			y2 += num/nom;
+
 		}
 		template <auto ...Is>
 		XTAL_DEF_(return)
@@ -62,21 +111,21 @@ struct filter<U_data[2]>
 		XTAL_0EX
 		{
 			using namespace horner;
-			U_data &ys_0_ = cache[0b011];
-			U_data &ys_1_ = cache[0b111];
 
-			Z_alpha const _a0 =        a_[0];
-			Z_alpha const _a1 = term_f(a_[1], t, _a0);
-			Z_alpha const _a2 = term_f(a_[2], t, _a1);
-			y_[2] = term_f<-1>(term_f<-1>((u), ys_0_, _a0), ys_1_, _a1)/_a2;
+			U_data &y0 = cache[0], &a0 = cache[4];
+			U_data &y1 = cache[1], &a1 = cache[5];
+			U_data &y2 = cache[2], &a2 = cache[6];
+			U_data &v0 = cache[3], &v1 = cache[7];
+
+			Z_alpha const t_a0 =        a0          ;// a0
+			Z_alpha const t_a1 = term_f(a1, t, t_a0);// a1 + t %
+			Z_alpha const t_a2 = term_f(a2, t, t_a1);// a2 + t %
+			y2 = term_f<-1>(term_f<-1>((u), v0, t_a0), v1, t_a1)/t_a2;
 			
-			solver<Is...>(u, t);// TODO: Save current `y_[1]`!
+			solve<Is...>(u, t);// TODO: Save current `y1`!
 			
-			y_[1] = term_f(ys_1_, t, y_[2]);
-			y_[0] = term_f(ys_0_, t, y_[1]);
-			
-			ys_1_ = term_f(y_[1], t, y_[2]);
-			ys_0_ = term_f(y_[0], t, y_[1]);
+			y1 = term_f(v1, t, y2); v1 = term_f(y1, t, y2);
+			y0 = term_f(v0, t, y1); v0 = term_f(y0, t, y1);
 
 			return static_cast<Z_target const &>(y_);
 		}
