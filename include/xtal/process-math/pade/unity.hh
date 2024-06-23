@@ -28,12 +28,12 @@ namespace _detail
 Serves as the mathematical definition of the approximant, \
 which is argument-restricted by the main definition. \
 
-template <int M_ism=1, int N_car=0> XTAL_TYP semiunity {static_assert(M_ism);};
-template <int M_ism               > XTAL_TYP semiunity<M_ism,-0>: bond::compose<discarding<1, +1>, semiunity<M_ism,-1>> {};
-template <int M_ism               > XTAL_TYP semiunity<M_ism,-1>: bond::compose<discarding<1, +2>, semiunity<M_ism,-2>> {};
-template <int M_ism=1, int N_car=0> XTAL_USE semiunity_t = process::confined_t<semiunity<M_ism, N_car>>;
+template <int M_ism=1, int N_car=0> XTAL_TYP subunity {static_assert(M_ism);};
+template <int M_ism               > XTAL_TYP subunity<M_ism,-0>: bond::compose<discarding<1, +1>, subunity<M_ism,-1>> {};
+template <int M_ism               > XTAL_TYP subunity<M_ism,-1>: bond::compose<discarding<1, +2>, subunity<M_ism,-2>> {};
+template <int M_ism=1, int N_car=0> XTAL_USE subunity_t = process::confined_t<subunity<M_ism, N_car>>;
 template <int M_ism               >
-struct semiunity<M_ism,-2>
+struct subunity<M_ism,-2>
 {
 	static constexpr int I_sgn = sign_n<(M_ism&1)^1, -1>;
 
@@ -159,7 +159,7 @@ struct unity<M_ism, As...>
 template <int M_ism> requires (0 < M_ism)
 struct unity<M_ism>
 {
-	using superprocess = process::link_t<square<M_ism, 0>, _detail::semiunity<M_ism,-0>>;
+	using superprocess = process::link_t<square<M_ism, 0>, _detail::subunity<M_ism,-0>>;
 
 	using subkind = bond::compose<void
 	,	V_unity_limit::dispatch<>

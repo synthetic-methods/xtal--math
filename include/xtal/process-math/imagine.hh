@@ -42,10 +42,10 @@ struct imagine
 
 		template <auto ...>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(complex_number_q auto &&o)
+		XTAL_RET function(complex_number_q auto const &o)
 		XTAL_0EX
 		{
-			auto &xy = devolved_f(XTAL_REF_(o));
+			auto &xy = devolved_f(o);
 			auto const &x = xy[0];
 			auto const &y = xy[1];
 			XTAL_IF0

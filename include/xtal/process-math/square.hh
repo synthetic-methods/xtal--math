@@ -90,7 +90,7 @@ struct square<M_ism, 0>
 template <int M_ism> requires (0 < M_ism)
 struct square<M_ism, 1>
 {
-	static constexpr int I_sgn = sign_n<(M_ism&1)^0, -1>;
+	static constexpr int I_sgn = sign_n<M_ism&1, -1>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S>
@@ -116,7 +116,7 @@ struct square<M_ism, 1>
 
 			auto const x = o.real(); auto xx = x*x;
 			auto const y = o.imag(); auto yy = y*y;
-			return complexion_f(xx - I_sgn*yy, 2*x*y);
+			return complexion_f(xx - I_sgn*yy, _op::diplo_1*x*y);
 		}
 
 	};

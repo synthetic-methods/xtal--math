@@ -53,7 +53,7 @@ struct dilate
 //	};
 };
 template <>
-struct dilate<0>
+struct dilate<0, 0>
 {
 	template <class S>
 	using subtype = S;
