@@ -50,29 +50,29 @@ TAG_("monologarithm")
 		using _std::exp;
 		using _std::log;
 
-		TRUE_(check_f<7>(monologarithm_t< 2>::template function<-1>(egg), -log(1 - egg)));
-		TRUE_(check_f<7>(monologarithm_t< 2>::template function< 3>(egg), -log(1 - egg)));
-		TRUE_(check_f<7>(monologarithm_t< 2>::template function< 2>(egg), -log(1 - egg)));
-		TRUE_(check_f<7>(monologarithm_t< 2>::template function< 1>(egg), -log(1 - egg)));
-		TRUE_(check_f<7>(monologarithm_t< 2>::template function< 0>(egg), -log(1 - egg)));
+		TRUE_(check_f< 7>(monologarithm_t< 2>::template function<-1>(egg), -log(1 - egg)));
+		TRUE_(check_f< 7>(monologarithm_t< 2>::template function< 3>(egg), -log(1 - egg)));
+		TRUE_(check_f< 7>(monologarithm_t< 2>::template function< 2>(egg), -log(1 - egg)));
+		TRUE_(check_f< 7>(monologarithm_t< 2>::template function< 1>(egg), -log(1 - egg)));
+		TRUE_(check_f< 7>(monologarithm_t< 2>::template function< 0>(egg), -log(1 - egg)));
 
-		TRUE_(check_f<7>(monologarithm_t< 1>::template function<-1>(egg), +log(1 + egg)));
-		TRUE_(check_f<7>(monologarithm_t< 1>::template function< 3>(egg), +log(1 + egg)));
-		TRUE_(check_f<7>(monologarithm_t< 1>::template function< 2>(egg), +log(1 + egg)));
-		TRUE_(check_f<7>(monologarithm_t< 1>::template function< 1>(egg), +log(1 + egg)));
-		TRUE_(check_f<7>(monologarithm_t< 1>::template function< 0>(egg), +log(1 + egg)));
+		TRUE_(check_f<- 1>(monologarithm_t< 1>::template function<-1>(egg), +log(1 + egg)));
+		TRUE_(check_f<- 2>(monologarithm_t< 1>::template function< 3>(egg), +log(1 + egg)));
+		TRUE_(check_f<-13>(monologarithm_t< 1>::template function< 2>(egg), +log(1 + egg)));
+		TRUE_(check_f< 18>(monologarithm_t< 1>::template function< 1>(egg), +log(1 + egg)));
+		TRUE_(check_f< 10>(monologarithm_t< 1>::template function< 0>(egg), +log(1 + egg)));
+		
+		TRUE_(check_f<-1>(monologarithm_t<-1>::template function<-1>(egg), exp(+egg) - 1));
+		TRUE_(check_f<-2>(monologarithm_t<-1>::template function< 3>(egg), exp(+egg) - 1));
+		TRUE_(check_f<-3>(monologarithm_t<-1>::template function< 2>(egg), exp(+egg) - 1));
+		TRUE_(check_f<24>(monologarithm_t<-1>::template function< 1>(egg), exp(+egg) - 1));
+		TRUE_(check_f< 9>(monologarithm_t<-1>::template function< 0>(egg), exp(+egg) - 1));
 
-		TRUE_(check_f<7>(monologarithm_t<-2>::template function<-1>(egg), 1 - exp(-egg)));
-		TRUE_(check_f<7>(monologarithm_t<-2>::template function< 3>(egg), 1 - exp(-egg)));
-		TRUE_(check_f<7>(monologarithm_t<-2>::template function< 2>(egg), 1 - exp(-egg)));
-		TRUE_(check_f<7>(monologarithm_t<-2>::template function< 1>(egg), 1 - exp(-egg)));
-		TRUE_(check_f<7>(monologarithm_t<-2>::template function< 0>(egg), 1 - exp(-egg)));
-
-		TRUE_(check_f<7>(monologarithm_t<-1>::template function<-1>(egg), exp(+egg) - 1));
-		TRUE_(check_f<7>(monologarithm_t<-1>::template function< 3>(egg), exp(+egg) - 1));
-		TRUE_(check_f<7>(monologarithm_t<-1>::template function< 2>(egg), exp(+egg) - 1));
-		TRUE_(check_f<7>(monologarithm_t<-1>::template function< 1>(egg), exp(+egg) - 1));
-		TRUE_(check_f<7>(monologarithm_t<-1>::template function< 0>(egg), exp(+egg) - 1));
+		TRUE_(check_f< 7>(monologarithm_t<-2>::template function<-1>(egg), 1 - exp(-egg)));
+		TRUE_(check_f< 7>(monologarithm_t<-2>::template function< 3>(egg), 1 - exp(-egg)));
+		TRUE_(check_f< 7>(monologarithm_t<-2>::template function< 2>(egg), 1 - exp(-egg)));
+		TRUE_(check_f< 7>(monologarithm_t<-2>::template function< 1>(egg), 1 - exp(-egg)));
+		TRUE_(check_f< 7>(monologarithm_t<-2>::template function< 0>(egg), 1 - exp(-egg)));
 
 		TRUE_(check_f<24>(0.61803398874989490, monologarithm_f<-2, 1,-1>(1L)));
 		TRUE_(check_f<24>(1.61803398874989490, monologarithm_f<-1, 1,-1>(1L)));
