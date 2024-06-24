@@ -28,7 +28,7 @@ XTAL_0EX
 template <int N_pow>
 struct roots
 {
-	static constexpr int K_pow = -bond::operate<int>::designed_f(N_pow);
+	static constexpr int pow_type = -bond::operate<int>::designed_f(N_pow);
 
 	template <class S>
 	class subtype: public bond::compose_s<S>

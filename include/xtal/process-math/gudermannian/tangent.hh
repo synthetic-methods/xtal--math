@@ -109,10 +109,10 @@ struct tangent<M_ism, -2>
 			}
 			else {
 				using _op = bond::operate<decltype(w)>;
-				auto const _1 = _op::alpha_1*1;
-				auto const _2 = _op::alpha_1*2;
-				auto const _4 = _op::alpha_1*4;
-				auto const _8 = _op::alpha_1*8;
+				auto const _1 = _op::diplo_f(0);
+				auto const _2 = _op::diplo_f(1);
+				auto const _4 = _op::diplo_f(2);
+				auto const _8 = _op::diplo_f(3);
 				XTAL_IF0
 				XTAL_0IF (M_ism ==  2) {return root_f<2>(horner::term_f<  >(_1,     w))/horner::term_f<  >(_1, _2, XTAL_REF_(w));}
 				XTAL_0IF (M_ism ==  1) {return root_f<2>(horner::term_f<-1>(_1, _2, w))/horner::term_f<-1>(_1, _4, XTAL_REF_(w));}

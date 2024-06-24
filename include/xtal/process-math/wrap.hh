@@ -61,7 +61,7 @@ struct wrap<As...>
 		XTAL_0EX
 		{
 			if constexpr (complex_number_q<decltype(o)>) {
-				auto &xy = devolved_f(o);
+				auto &xy = involved_f(o);
 				return complexion_f(function(xy[0]), function(xy[1]));
 			}
 			else {
