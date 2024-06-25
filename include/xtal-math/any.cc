@@ -42,6 +42,12 @@ XTAL_0EX -> int
 		return check_f<N_limit>(u, v)? N_limit: check_f<N_index, N_limit - Z_limit>(u, v);
 	}
 }
+XTAL_DEF_(return)
+XTAL_LET check_f(auto const &u, auto const &v)
+XTAL_0EX -> int
+{
+	return check_f<-1, 1 - (int) bond::operating::fraction.depth>(u, v);
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
