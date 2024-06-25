@@ -47,10 +47,10 @@ struct discarding<M_pow, +1>
 
 		template <auto ...Is>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&u)
+		XTAL_RET function(auto &&u, auto &&...oo)
 		XTAL_0EX
 		{
-			auto  v = S_::template function<Is...>(u);
+			auto  v = S_::template function<Is...>(u, XTAL_REF_(oo)...);
 			using V = XTAL_ALL_(v);
 			using U = XTAL_ALL_(u);
 			static_assert(is_q<U, V>);
@@ -77,10 +77,10 @@ struct discarding<1, +1>
 
 		template <auto ...Is>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&u)
+		XTAL_RET function(auto &&u, auto &&...oo)
 		XTAL_0EX
 		{
-			auto  v = S_::template function<Is...>(u);
+			auto  v = S_::template function<Is...>(u, XTAL_REF_(oo)...);
 			using V = XTAL_ALL_(v);
 			using U = XTAL_ALL_(u);
 
@@ -113,10 +113,10 @@ struct discarding<1, +2>
 
 		template <auto ...Is>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&o)
+		XTAL_RET function(auto &&u, auto &&...oo)
 		XTAL_0EX
 		{
-			return S_::template function<Is...>(square_f<1>(XTAL_REF_(o)));
+			return S_::template function<Is...>(square_f<1>(XTAL_REF_(u)), XTAL_REF_(oo)...);
 		};
 
 	};
