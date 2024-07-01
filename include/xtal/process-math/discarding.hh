@@ -45,11 +45,12 @@ struct discarding<M_pow, +1>
 	public:
 		using S_::S_;
 
+	//	TODO: Account for `const &` and `&`, or find a cleaner way to express...
 		XTAL_DO2_(template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_LET functor(auto &&u, auto &&...oo), -> decltype(auto)
+		XTAL_LET method(auto &&u, auto &&...oo), -> decltype(auto)
 		{
-			auto  v = S_::template functor<Is...>(u, XTAL_REF_(oo)...);
+			auto  v = S_::template method<Is...>(u, XTAL_REF_(oo)...);
 			using V = XTAL_ALL_(v);
 			using U = XTAL_ALL_(u);
 			static_assert(is_q<U, V>);
@@ -90,9 +91,9 @@ struct discarding<1, +1>
 
 		XTAL_DO2_(template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_LET functor(auto &&u, auto &&...oo), -> decltype(auto)
+		XTAL_LET method(auto &&u, auto &&...oo), -> decltype(auto)
 		{
-			auto  v = S_::template functor<Is...>(u, XTAL_REF_(oo)...);
+			auto  v = S_::template method<Is...>(u, XTAL_REF_(oo)...);
 			using V = XTAL_ALL_(v);
 			using U = XTAL_ALL_(u);
 
@@ -145,9 +146,9 @@ struct discarding<1, +2>
 
 		XTAL_DO2_(template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_LET functor(auto &&u, auto &&...oo), -> decltype(auto)
+		XTAL_LET method(auto &&u, auto &&...oo), -> decltype(auto)
 		{
-			return S_::template functor<Is...>(square_f<1>(XTAL_REF_(u)), XTAL_REF_(oo)...);
+			return S_::template method<Is...>(square_f<1>(XTAL_REF_(u)), XTAL_REF_(oo)...);
 		})
 		template <auto ...Is>
 		XTAL_DEF_(return,inline,static)

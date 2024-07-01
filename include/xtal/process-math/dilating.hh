@@ -37,20 +37,34 @@ struct dilating
 		using S_::S_;
 
 		template <auto ...Is>
-		XTAL_DEF_(return,inline,static)
-		XTAL_RET functor(auto &&o)
-		XTAL_0EX
+		XTAL_DEF_(return,inline)
+		XTAL_LET method(auto &&o)
+		XTAL_0EX -> decltype(auto)
+			requires (not XTAL_TRY_(S::template function<Is...>(XTAL_REF_(o))))
 		{
 			using _op = bond::operate<decltype(o)>;
 			auto constexpr n = _op::diplo_f(-N_two)*_op::template patio_f<-N_two_pi>(2, 1);
 			auto constexpr u = _op::diplo_f(+N_two)*_op::template patio_f<+N_two_pi>(2, 1);
 			
-			return S_::template functor<Is...>(XTAL_REF_(o)*n)*u;
+			return S_::template method<Is...>(XTAL_REF_(o)*n)*u;
+		};
+		template <auto ...Is>
+		XTAL_DEF_(return,inline)
+		XTAL_LET method(auto &&o)
+		XTAL_0FX -> decltype(auto)
+			requires (not XTAL_TRY_(S::template function<Is...>(XTAL_REF_(o))))
+			and XTAL_TRY_(XTAL_ANY_(S_ const &).template method<Is...>(XTAL_REF_(o)))
+		{
+			using _op = bond::operate<decltype(o)>;
+			auto constexpr n = _op::diplo_f(-N_two)*_op::template patio_f<-N_two_pi>(2, 1);
+			auto constexpr u = _op::diplo_f(+N_two)*_op::template patio_f<+N_two_pi>(2, 1);
+			
+			return S_::template method<Is...>(XTAL_REF_(o)*n)*u;
 		};
 		template <auto ...Is>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&o)
-		XTAL_0EX
+		XTAL_LET function(auto &&o)
+		XTAL_0EX -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 			auto constexpr n = _op::diplo_f(-N_two)*_op::template patio_f<-N_two_pi>(2, 1);

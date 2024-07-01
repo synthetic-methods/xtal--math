@@ -39,7 +39,7 @@ struct filter<>
 
 		template <auto ...Is>
 		XTAL_DEF_(return)
-		XTAL_LET functor(auto &&o, auto &&f)
+		XTAL_LET method(auto &&o, auto &&f)
 		XTAL_0EX
 		{
 			using namespace horner;
@@ -75,7 +75,7 @@ struct filter<>
 		}
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_LET functor(auto &&o, auto &&f, auto &&_R)
+		XTAL_LET method(auto &&o, auto &&f, auto &&_R)
 		XTAL_0EX
 		{
 			using V  = XTAL_ALL_(o); using _op = bond::operate<V>;
@@ -88,11 +88,11 @@ struct filter<>
 			V_   &v_ = reinterpret_cast<V_ &>(m_cache[maligned_f<V_>(i)]);
 			A_   &a_ = reinterpret_cast<V_ &>(m_cache[maligned_f<A_>(i)]);
 			new (&a_) A_{_op::alpha_1, _op::alpha_2*_R};
-			return functor<Is...>(XTAL_REF_(o), f);
+			return method<Is...>(XTAL_REF_(o), f);
 		}
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_LET functor(auto &&o, auto &&f, complex_number_q auto &&_S)
+		XTAL_LET method(auto &&o, auto &&f, complex_number_q auto &&_S)
 		XTAL_0EX
 		{
 			//\todo\
@@ -106,7 +106,7 @@ struct filter<>
 			using _std::exp;// Can approximate?
 			auto constexpr N_lnH = (A) -0.6931471805599453094172321214581765681e+0L;
 			
-			return functor(XTAL_REF_(o), XTAL_REF_(f), exp(N_lnH*XTAL_REF_(_S).imag()));
+			return method(XTAL_REF_(o), XTAL_REF_(f), exp(N_lnH*XTAL_REF_(_S).imag()));
 		}
 		template <auto ...Is>
 		XTAL_DEF_(inline)
@@ -121,7 +121,7 @@ struct filter<>
 //			y0 = term_f< 1>(v_[0], y1, f);
 //			y2 = term_f<-1>(o, a_[0], y0) - shape(y1);
 
-//		Newton's functor:
+//		Newton's method:
 //			auto const num = term_f<-1>(o, a_[0], y0) - y2 - shape<0>(y1);
 //			auto const nom = term_f< 1>(1, f, term_f< 1>(shape<1>(y1), f, a_[0]);
 //			y2 += num/nom;
