@@ -17,17 +17,58 @@ TAG_("filter")
 {
 	TRY_("instantiation")
 	{
-		using U = double;
+		using _op = bond::operating;
+		using U = typename _op::alpha_type;
 		//\
-		using Y = filter_t<U[2]>;
-		using Y = filter_t<prewarping<>, U[2]>;
+		using SVF = confined_t<filter<>>;
+		using SVF = confined_t<prewarping<>, filter<>>;
 		//\
-		using Z = processor::monomer_t<prewarping<>, Y>;
-		using Z = processor::monomer_t<Y>;
+		using Z = processor::monomer_t<prewarping<>, SVF>;
+		using Z = processor::monomer_t<SVF>;
 
-		Y y{}; y <<= occur::sample_t<>{44100};
+		SVF svf{};
+		svf <<= occur::sample_t<>{44100};
+		
+		U constexpr omega = 2*2*3*3*5*5*7;
+		U constexpr    up = 1;
+		U constexpr    dn = 0;
 
-	//	echo(y(0.5, 1.0));
+		U _LP0{};
+		U _LP1{};
+
+		_LP1 = get<0>(svf(up, omega, _op::aphex_0)); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(up, omega, _op::aphex_0)); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(up, omega, _op::aphex_0)); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(up, omega, _op::aphex_0)); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(up, omega, _op::aphex_0)); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(up, omega, _op::aphex_0)); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(up, omega, _op::aphex_0)); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(up, omega, _op::aphex_0)); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(up, omega, _op::aphex_0)); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(up, omega, _op::aphex_0)); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(up, omega, _op::aphex_0)); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(up, omega, _op::aphex_0)); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(up, omega, _op::aphex_0)); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(up, omega, _op::aphex_0)); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(up, omega, _op::aphex_0)); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(up, omega, _op::aphex_0)); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		
+		_LP1 = get<0>(svf(dn, omega, _op::aphex_0)); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(dn, omega, _op::aphex_0)); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(dn, omega, _op::aphex_0)); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(dn, omega, _op::aphex_0)); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(dn, omega, _op::aphex_0)); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(dn, omega, _op::aphex_0)); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(dn, omega, _op::aphex_0)); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(dn, omega, _op::aphex_0)); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(dn, omega, _op::aphex_0)); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(dn, omega, _op::aphex_0)); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(dn, omega, _op::aphex_0)); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(dn, omega, _op::aphex_0)); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(dn, omega, _op::aphex_0)); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(dn, omega, _op::aphex_0)); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(dn, omega, _op::aphex_0)); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = get<0>(svf(dn, omega, _op::aphex_0)); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
 
 		_std::array<U, 4> u_{1, 2, 0, 1};
 		_std::array<U, 4> f_{3, 3, 3, 3};

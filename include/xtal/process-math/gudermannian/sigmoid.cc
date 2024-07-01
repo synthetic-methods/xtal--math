@@ -1,6 +1,6 @@
 #pragma once
 #include "./any.cc"
-#include "./tangent.hh"// testing...
+#include "./sigmoid.hh"// testing...
 
 
 
@@ -36,13 +36,13 @@ TAG_("whatever")
 		using _std:: tan;
 		using _std::atan;
 
-		TRUE_(check_f<6>(tangent_t< 1>::template function<-1>(0.25), tangent_t< 1>::template function< 0>(0.25)));
-		TRUE_(check_f<7>(tangent_t<-1>::template function<-1>(0.25), tangent_t<-1>::template function< 0>(0.25)));
-		TRUE_(check_f<7>(tangent_t< 2>::template function<-1>(0.25), tangent_t< 2>::template function< 0>(0.25)));
-		TRUE_(check_f<7>(tangent_t<-2>::template function<-1>(0.25), tangent_t<-2>::template function< 0>(0.25)));
-		
-//		using foo = process::confined_t<dilating<1>, tangent< 2>>;
-//		using bar = process::confined_t<dilating<1>, tangent<-2>>;
+		TRUE_(check_f<6>(sigmoid_t< 1>::template function<-1>(0.25), sigmoid_t< 1>::template function< 0>(0.25)));
+		TRUE_(check_f<7>(sigmoid_t<-1>::template function<-1>(0.25), sigmoid_t<-1>::template function< 0>(0.25)));
+		TRUE_(check_f<7>(sigmoid_t< 2>::template function<-1>(0.25), sigmoid_t< 2>::template function< 0>(0.25)));
+		TRUE_(check_f<7>(sigmoid_t<-2>::template function<-1>(0.25), sigmoid_t<-2>::template function< 0>(0.25)));
+
+//		using foo = process::confined_t<dilating<1>, sigmoid< 2>>;
+//		using bar = process::confined_t<dilating<1>, sigmoid<-2>>;
 //
 //		echo(foo::function(bar::function(0.50) + bar::function(0.75)));
 //		echo(_std::tanh(_std::atanh(0.50) + _std::atanh(0.75)));

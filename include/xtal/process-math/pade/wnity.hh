@@ -11,7 +11,7 @@ namespace xtal::process::math::pade
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 ///\
-Defines `function` as the pair `1^{#,-#} &`. \
+Defines the pair `1^{#,-#} &`. \
 
 ///\note\
 Pronounced "double-unity". \
@@ -40,15 +40,15 @@ struct wnity<1>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(complex_field_q auto const &t)
-		XTAL_0EX
+		XTAL_LET function(complex_field_q auto const &t)
+		XTAL_0EX -> decltype(auto)
 		{
 			return function<N_lim>(t.real(), t.imag());
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&t_1, simplex_field_q auto &&t_i)
-		XTAL_0EX
+		XTAL_LET function(auto &&t_1, simplex_field_q auto &&t_i)
+		XTAL_0EX -> decltype(auto)
 		{
 			using _std::exp;
 
@@ -59,8 +59,8 @@ struct wnity<1>
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(simplex_field_q auto &&t_1)
-		XTAL_0EX
+		XTAL_LET function(simplex_field_q auto &&t_1)
+		XTAL_0EX -> decltype(auto)
 		{
 			using _std::conj;
 

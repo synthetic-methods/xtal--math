@@ -14,11 +14,12 @@ namespace xtal::process::math::horner::_test
 
 ////////////////////////////////////////////////////////////////////////////////
 /**/
-TAG_("term")
+TAG_("horner")
 {
-	TRY_("task")
+	TRY_("term")
 	{
-		TRUE_(true);
+		TRUE_(term_f(1.0, 2.0, 3.0) == 7.0);
+		TRUE_(term_f(1.0, 2.0, 3.0, 5.0, 7.0) == 211.0);
 
 	}
 }

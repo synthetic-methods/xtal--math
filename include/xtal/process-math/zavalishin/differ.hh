@@ -32,7 +32,7 @@ struct differ<>
 	{
 		using S_ = bond::compose_s<S, subkind>;
 
-	//	NOTE: Expected maximum is 64/8 = 8 doubles = 4 complex doubles...
+	//	NOTE: Expected maximum is 64/8: 7 doubles not including phase...
 		XTAL_SET N_cache = bond::operating::alignment{}*sizeof(size_type);
 		alignas (N_cache) _std::byte m_cache[N_cache];
 
@@ -87,11 +87,11 @@ struct differ<>
 			XTAL_LET N_zap = _op::exponent.depth;
 			using _std::round;
 			_std::swap(v1, v0); V v_ = v1 - v0; v_ -= round(v_);
-			_std::swap(u1, u0); U u_ = u1 - u0; u_ *= root_f<-1, N_zap>(v_);
+			_std::swap(u1, u0); U u_ = u1 - u0; u_ *= root_f<-1, N_zap>(v_ - round(v_));
 
 		//	Resets the state to zero if a phase/frequency discontinuity is detected:
 			using _std::abs;
-			u_ *= abs(v_ - w_) < _op::haplo_f(N_zap);
+		//	u_ *= abs(v_ - w_) < _op::haplo_f(N_zap);
 			//\
 			return imagine_f<-complex_field_q<U>>(u_);// Should be imaginary division, right?
 			return imagine_f<+complex_field_q<U>>(u_);

@@ -1,9 +1,9 @@
 #pragma once
 #include "./any.hh"
 
-#include "../dilating.hh"
-#include "../square.hh"
-#include "../root.hh"
+
+
+
 
 
 XTAL_ENV_(push)
@@ -21,33 +21,33 @@ Defines a class of Gudermannian-related function/approximations indexed by `M_is
 The (co)domain is normalized around `+/- 1/2`, with derivative `1` at `0`. \
 
 ///\example\
-	using   Tanh = process::confined_t<dilating<1>, tangent< 2>>;\
-	using ArTanh = process::confined_t<dilating<1>, tangent<-2>>;\
+	using   Tanh = process::confined_t<dilating<1>, sigmoid< 2>>;\
+	using ArTanh = process::confined_t<dilating<1>, sigmoid<-2>>;\
 
 template <int M_ism=1, int M_car=0, typename ...As>
 	requires inclusive_q<M_ism, 1, 2, -1, -2> and inclusive_q<M_car, -0, -1, -2>
-XTAL_TYP tangent
-:	process::link<tangent<M_ism, M_car>, As...>
+XTAL_TYP sigmoid
+:	process::link<sigmoid<M_ism, M_car>, As...>
 {
 };
 template <int M_ism=1, typename ...As>
-XTAL_USE tangent_t = process::confined_t<tangent<M_ism, bond::seek_constant_n<As..., nominal_t<0>>, As...>>;
+XTAL_USE sigmoid_t = process::confined_t<sigmoid<M_ism, bond::seek_constant_n<As..., nominal_t<0>>, As...>>;
 
 template <int M_ism=1, typename ...As>
 XTAL_DEF_(return,inline)
-XTAL_RET tangent_f(auto &&o)
+XTAL_RET sigmoid_f(auto &&o)
 XTAL_0EX
 {
-	return tangent_t<M_ism, As...>::function(XTAL_REF_(o));
+	return sigmoid_t<M_ism, As...>::function(XTAL_REF_(o));
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int M_ism>
-struct tangent<M_ism, -0>
+struct sigmoid<M_ism, -0>
 {
-	using subkind = bond::compose<discarding<1, +1>, tangent<M_ism, -1>>;
+	using subkind = bond::compose<discarding<1, +1>, sigmoid<M_ism, -1>>;
 
 	template <class S>
 	class subtype: public bond::compose_s<S, subkind>
@@ -59,9 +59,11 @@ struct tangent<M_ism, -0>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&u)
-		XTAL_0EX
+		XTAL_LET function(auto &&u)
+		XTAL_0EX -> decltype(auto)
 		{
+			static_assert(N_lim <= 0);
+
 			XTAL_IF0
 			XTAL_0IF (0 <= N_lim) {
 				return S_::template function<N_lim>(XTAL_REF_(u));
@@ -83,12 +85,12 @@ struct tangent<M_ism, -0>
 	};
 };
 template <int M_ism>
-struct tangent<M_ism, -1>
-:	bond::compose<discarding<1, +2>, tangent<M_ism, -2>>
+struct sigmoid<M_ism, -1>
+:	bond::compose<discarding<1, +2>, sigmoid<M_ism, -2>>
 {
 };
 template <int M_ism>
-struct tangent<M_ism, -2>
+struct sigmoid<M_ism, -2>
 {
 	template <class S>
 	class subtype: public bond::compose_s<S>
@@ -100,12 +102,14 @@ struct tangent<M_ism, -2>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&w)
-		XTAL_0EX
+		XTAL_LET function(auto &&w)
+		XTAL_0EX -> decltype(auto)
 		{
+			static_assert(N_lim <= 0);
+
 			if constexpr (N_lim < 0) {
 				auto const u = root_f<2>(XTAL_REF_(w));
-				return tangent<M_ism, -0>::template function<N_lim>(u)/(u);
+				return sigmoid<M_ism, -0>::template function<N_lim>(u)/(u);
 			}
 			else {
 				using _op = bond::operate<decltype(w)>;

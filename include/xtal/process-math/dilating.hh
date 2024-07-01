@@ -38,6 +38,17 @@ struct dilating
 
 		template <auto ...Is>
 		XTAL_DEF_(return,inline,static)
+		XTAL_RET functor(auto &&o)
+		XTAL_0EX
+		{
+			using _op = bond::operate<decltype(o)>;
+			auto constexpr n = _op::diplo_f(-N_two)*_op::template patio_f<-N_two_pi>(2, 1);
+			auto constexpr u = _op::diplo_f(+N_two)*_op::template patio_f<+N_two_pi>(2, 1);
+			
+			return S_::template functor<Is...>(XTAL_REF_(o)*n)*u;
+		};
+		template <auto ...Is>
+		XTAL_DEF_(return,inline,static)
 		XTAL_RET function(auto &&o)
 		XTAL_0EX
 		{
@@ -45,7 +56,7 @@ struct dilating
 			auto constexpr n = _op::diplo_f(-N_two)*_op::template patio_f<-N_two_pi>(2, 1);
 			auto constexpr u = _op::diplo_f(+N_two)*_op::template patio_f<+N_two_pi>(2, 1);
 			
-			return S_::template function<Is...>(XTAL_REF_(o)*(n))*(u);
+			return S_::template function<Is...>(XTAL_REF_(o)*n)*u;
 		};
 
 	};

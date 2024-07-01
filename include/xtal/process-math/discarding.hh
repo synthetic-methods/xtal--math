@@ -45,10 +45,23 @@ struct discarding<M_pow, +1>
 	public:
 		using S_::S_;
 
+		XTAL_DO2_(template <auto ...Is>
+		XTAL_DEF_(return,inline)
+		XTAL_LET functor(auto &&u, auto &&...oo), -> decltype(auto)
+		{
+			auto  v = S_::template functor<Is...>(u, XTAL_REF_(oo)...);
+			using V = XTAL_ALL_(v);
+			using U = XTAL_ALL_(u);
+			static_assert(is_q<U, V>);
+
+			XTAL_IF0
+			XTAL_0IF (M_pow ==  1) {return v*XTAL_REF_(u);}
+			XTAL_0IF (M_pow == -1) {return v/XTAL_REF_(u);}
+		})
 		template <auto ...Is>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&u, auto &&...oo)
-		XTAL_0EX
+		XTAL_LET function(auto &&u, auto &&...oo)
+		XTAL_0EX -> decltype(auto)
 		{
 			auto  v = S_::template function<Is...>(u, XTAL_REF_(oo)...);
 			using V = XTAL_ALL_(v);
@@ -58,7 +71,7 @@ struct discarding<M_pow, +1>
 			XTAL_IF0
 			XTAL_0IF (M_pow ==  1) {return v*XTAL_REF_(u);}
 			XTAL_0IF (M_pow == -1) {return v/XTAL_REF_(u);}
-		};
+		}
 
 	};
 };
@@ -75,10 +88,29 @@ struct discarding<1, +1>
 	public:
 		using S_::S_;
 
+		XTAL_DO2_(template <auto ...Is>
+		XTAL_DEF_(return,inline)
+		XTAL_LET functor(auto &&u, auto &&...oo), -> decltype(auto)
+		{
+			auto  v = S_::template functor<Is...>(u, XTAL_REF_(oo)...);
+			using V = XTAL_ALL_(v);
+			using U = XTAL_ALL_(u);
+
+			XTAL_IF0
+			XTAL_0IF (is_q<U, V>) {
+				return v*XTAL_REF_(u);
+			}
+			XTAL_0IF (complex_number_q<V>) {
+				involved_f(v)[1] *= XTAL_REF_(u); return v;
+			}
+			XTAL_0IF (complex_field_q<V>) {
+				return complexion_f(v.real(), v.imag()*XTAL_REF_(u));
+			}
+		})
 		template <auto ...Is>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&u, auto &&...oo)
-		XTAL_0EX
+		XTAL_LET function(auto &&u, auto &&...oo)
+		XTAL_0EX -> decltype(auto)
 		{
 			auto  v = S_::template function<Is...>(u, XTAL_REF_(oo)...);
 			using V = XTAL_ALL_(v);
@@ -94,7 +126,7 @@ struct discarding<1, +1>
 			XTAL_0IF (complex_field_q<V>) {
 				return complexion_f(v.real(), v.imag()*XTAL_REF_(u));
 			}
-		};
+		}
 
 	};
 };
@@ -111,10 +143,16 @@ struct discarding<1, +2>
 	public:
 		using S_::S_;
 
+		XTAL_DO2_(template <auto ...Is>
+		XTAL_DEF_(return,inline)
+		XTAL_LET functor(auto &&u, auto &&...oo), -> decltype(auto)
+		{
+			return S_::template functor<Is...>(square_f<1>(XTAL_REF_(u)), XTAL_REF_(oo)...);
+		})
 		template <auto ...Is>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&u, auto &&...oo)
-		XTAL_0EX
+		XTAL_LET function(auto &&u, auto &&...oo)
+		XTAL_0EX -> decltype(auto)
 		{
 			return S_::template function<Is...>(square_f<1>(XTAL_REF_(u)), XTAL_REF_(oo)...);
 		};

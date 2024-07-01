@@ -47,8 +47,8 @@ struct subunity<M_ism,-2>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,static)
-		XTAL_RET function(simplex_field_q auto const &w)
-		XTAL_0EX
+		XTAL_LET function(simplex_field_q auto const &w)
+		XTAL_0EX -> decltype(auto)
 		{
 			int constexpr I_lim = N_lim&0x7;
 
@@ -159,7 +159,10 @@ struct unity<M_ism, As...>
 template <int M_ism> requires (0 < M_ism)
 struct unity<M_ism>
 {
-	using superprocess = process::link_t<square<M_ism, 0>, _detail::subunity<M_ism,-0>>;
+	//\
+	using duperprocess = square<M_ism, 0>;
+	using duperprocess = decltype([] XTAL_1FN_(square_f<M_ism, 0>));
+	using superprocess = process::lift_t<duperprocess, _detail::subunity<M_ism,-0>>;
 
 	using subkind = bond::compose<void
 	,	V_unity_limit::dispatch<>
@@ -174,15 +177,15 @@ struct unity<M_ism>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(complex_field_q auto const &t)
-		XTAL_0EX
+		XTAL_LET function(complex_field_q auto const &t)
+		XTAL_0EX -> decltype(auto)
 		{
 			return function<N_lim>(t.real(), t.imag());
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&t_1, simplex_field_q auto &&t_i)
-		XTAL_0EX
+		XTAL_LET function(auto &&t_1, simplex_field_q auto &&t_i)
+		XTAL_0EX -> decltype(auto)
 		{
 			using _std::exp;
 
@@ -192,8 +195,8 @@ struct unity<M_ism>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,static)
-		XTAL_RET function(simplex_field_q auto o)
-		XTAL_0EX
+		XTAL_LET function(simplex_field_q auto o)
+		XTAL_0EX -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 			using Op_alpha = typename _op::alpha_type;
@@ -215,8 +218,8 @@ struct unity<M_ism>
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return,static)
-		XTAL_RET function(algebra::d_::circular_q auto d)
-		XTAL_0EX
+		XTAL_LET function(algebra::d_::circular_q auto d)
+		XTAL_0EX -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(d)>;
 			XTAL_USE Op_alpha = typename _op::alpha_type;
