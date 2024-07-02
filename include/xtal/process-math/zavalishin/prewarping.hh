@@ -32,8 +32,8 @@ struct prewarping
 
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_RET method(auto &&u, auto &&f, auto &&...oo)
-		XTAL_0EX
+		XTAL_LET method(auto &&u, auto &&f, auto &&...oo)
+		XTAL_0EX -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(u)>;
 			//\

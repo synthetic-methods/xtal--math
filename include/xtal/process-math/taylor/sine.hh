@@ -34,8 +34,8 @@ struct sine<M_ism, -0>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&u)
-		XTAL_0EX
+		XTAL_LET function(auto &&u)
+		XTAL_0EX -> decltype(auto)
 		{
 			if constexpr (N_lim < 0) {
 				using namespace _std;
@@ -67,8 +67,8 @@ struct sine<M_ism, -1>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&u)
-		XTAL_0EX
+		XTAL_LET function(auto &&u)
+		XTAL_0EX -> decltype(auto)
 		{
 			if constexpr (N_lim < 0) {
 				using namespace _std;
@@ -102,8 +102,8 @@ struct sine<M_ism, -2>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,static)
-		XTAL_RET function(auto &&w)
-		XTAL_0EX
+		XTAL_LET function(auto &&w)
+		XTAL_0EX -> auto
 		{
 			if constexpr (N_lim < 0) {
 				using namespace _std;
@@ -144,8 +144,8 @@ struct sine<M_ism, -2>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,static)
-		XTAL_RET function(auto &&w)
-		XTAL_0EX
+		XTAL_LET function(auto &&w)
+		XTAL_0EX -> auto
 		{
 			if constexpr (N_lim < 0) {
 				using namespace _std;

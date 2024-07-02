@@ -16,7 +16,7 @@ template <int N_two=0, int N_two_pi=0> XTAL_USE dilate_t = process::confined_t<d
 template <int N_two=0, int N_two_pi=0>
 XTAL_DEF_(return,inline)
 XTAL_LET dilate_f(auto &&o)
-XTAL_0EX
+XTAL_0EX -> decltype(auto)
 {
 	return dilate_t<N_two, N_two_pi>::template function(XTAL_REF_(o));
 }
@@ -37,8 +37,8 @@ struct dilate
 
 		template <auto ...>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&o)
-		XTAL_0EX
+		XTAL_LET function(auto &&o)
+		XTAL_0EX -> auto
 		{
 			using _op = bond::operate<decltype(o)>;
 			auto constexpr n = _op::diplo_f(-N_two)*_op::template patio_f<-N_two_pi>(2, 1);

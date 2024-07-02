@@ -19,8 +19,8 @@ XTAL_USE root_t = process::confined_t<root<M_pow, M_zap>>;
 
 template <int M_pow=1, int M_zap=-1> requires inclusive_q<M_pow, 1, 2,-1,-2>
 XTAL_DEF_(return,inline)
-XTAL_RET root_f(auto &&o)
-XTAL_0EX
+XTAL_LET root_f(auto &&o)
+XTAL_0EX -> decltype(auto)
 {
 	return root_t<M_pow, M_zap>::function(XTAL_REF_(o));
 }
@@ -42,8 +42,8 @@ struct root//<M_pow, M_zap>
 
 		template <auto ...>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&o)
-		XTAL_0EX
+		XTAL_LET function(auto &&o)
+		XTAL_0EX -> auto
 		{
 			using _op = bond::operate<XTAL_ALL_(o)>;
 			XTAL_IF0

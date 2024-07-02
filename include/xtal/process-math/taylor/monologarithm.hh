@@ -20,8 +20,8 @@ XTAL_USE monologarithm_t = process::confined_t<monologarithm<M_ism, M_pow, M_car
 
 template <int M_ism=1, int M_pow=1, int M_car=0, int ...Ns>
 XTAL_DEF_(return,inline)
-XTAL_RET monologarithm_f(auto &&o)
-XTAL_0EX
+XTAL_LET monologarithm_f(auto &&o)
+XTAL_0EX -> decltype(auto)
 {
 	return monologarithm_t<M_ism, M_pow, M_car>::template function<Ns...>(XTAL_REF_(o));
 }
@@ -49,8 +49,8 @@ struct monologarithm<M_ism, M_pow, -0>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&o)
-		XTAL_0EX
+		XTAL_LET function(auto &&o)
+		XTAL_0EX -> decltype(auto)
 		{
 			using _std::log;
 
@@ -89,8 +89,8 @@ struct monologarithm<M_ism, M_pow, -0>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&o)
-		XTAL_0EX
+		XTAL_LET function(auto &&o)
+		XTAL_0EX -> decltype(auto)
 		{
 			using _std::exp;
 
@@ -129,8 +129,8 @@ struct monologarithm<M_ism, M_pow, -1>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&u)
-		XTAL_0EX
+		XTAL_LET function(auto &&u)
+		XTAL_0EX -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(u)>;
 			auto constexpr _1 = _op::alpha_1;
@@ -166,8 +166,8 @@ struct monologarithm<M_ism, M_pow, -1>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&u)
-		XTAL_0EX
+		XTAL_LET function(auto &&u)
+		XTAL_0EX -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(u)>;
 			auto constexpr _1 = _op::alpha_1;

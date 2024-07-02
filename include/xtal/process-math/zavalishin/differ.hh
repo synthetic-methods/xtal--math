@@ -44,7 +44,7 @@ struct differ<>
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
 		XTAL_LET method(auto &&u)
-		XTAL_0EX
+		XTAL_0EX -> auto
 		{
 			using _op = bond::operate<decltype(u)>;
 			
@@ -63,8 +63,8 @@ struct differ<>
 		}
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_RET method(auto &&u, algebra::d_::circular_q auto &&z)
-		XTAL_0EX
+		XTAL_LET method(auto &&u, algebra::d_::circular_q auto &&z)
+		XTAL_0EX -> auto
 		{
 			using _op = bond::operate<decltype(u)>;
 			
@@ -98,16 +98,16 @@ struct differ<>
 		}
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_RET method(algebra::d_::circular_q auto &&z, auto &&u)
-		XTAL_0EX
+		XTAL_LET method(algebra::d_::circular_q auto &&z, auto &&u)
+		XTAL_0EX -> decltype(auto)
 		{
 			return method(XTAL_REF_(u), XTAL_REF_(z));
 		}
 
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_RET method(algebra::d_::circular_q auto &&z)
-		XTAL_0EX
+		XTAL_LET method(algebra::d_::circular_q auto &&z)
+		XTAL_0EX -> decltype(auto)
 		{
 			return wrap_f(method(XTAL_REF_(z) (0)));
 		}

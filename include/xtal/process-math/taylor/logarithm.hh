@@ -20,8 +20,8 @@ XTAL_USE logarithm_t = process::confined_t<logarithm<M_ism, M_pow, M_car>>;
 
 template <int M_ism=1, int M_pow=1, int M_car=0, int ...Ns>
 XTAL_DEF_(return,inline)
-XTAL_RET logarithm_f(auto &&o)
-XTAL_0EX
+XTAL_LET logarithm_f(auto &&o)
+XTAL_0EX -> decltype(auto)
 {
 	return logarithm_t<M_ism, M_pow, M_car>::template function<Ns...>(XTAL_REF_(o));
 }
@@ -57,8 +57,8 @@ struct logarithm<-1,-1, M_car>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,static)
-		XTAL_RET function(auto &&o)
-		XTAL_0EX
+		XTAL_LET function(auto &&o)
+		XTAL_0EX -> decltype(auto)
 		{
 			XTAL_IF0
 			XTAL_0IF (N_lim <  0) {
@@ -96,8 +96,8 @@ struct logarithm< 1, 1, 0>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&o)
-		XTAL_0EX
+		XTAL_LET function(auto &&o)
+		XTAL_0EX -> decltype(auto)
 		{
 			using _std::log;
 
@@ -136,8 +136,8 @@ struct logarithm<-1, 1, 0>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&o)
-		XTAL_0EX
+		XTAL_LET function(auto &&o)
+		XTAL_0EX -> decltype(auto)
 		{
 			using _std::exp;
 
@@ -153,7 +153,7 @@ struct logarithm<-1, 1, 0>
 				return horner::term_f(_1, XTAL_REF_(o), u + root_f<2>(horner::term_f(_1, u, u)));
 			}
 			XTAL_0IF (1 <= N_lim) {
-				return monologarithm_t<-1>::template function<N_lim>(XTAL_REF_(o)) + 1;
+				return monologarithm_t<-1>::template function<N_lim>(XTAL_REF_(o)) + _1;
 			}
 		}
 
@@ -180,8 +180,8 @@ struct logarithm< 1, 1, 1>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(real_number_q auto o)
-		XTAL_0EX
+		XTAL_LET function(real_number_q auto o)
+		XTAL_0EX -> decltype(auto)
 		{
 			using _std::log;
 
@@ -212,7 +212,7 @@ struct logarithm< 1, 1, 1>
 				n     |= 1;
 				auto w = N_sqrt_half*_xtd::bit_cast<U_alpha>(m);
 				auto u = N_half_log2*               U_alpha (n);
-				return logarithm_t<1, 1, 0>::template function<N_lim>(w) + (u);
+				return logarithm_t<1, 1, 0>::template function<N_lim>(w) + u;
 			}
 		}
 
@@ -236,8 +236,8 @@ struct logarithm<-1, 1, 1>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(real_number_q auto o)
-		XTAL_0EX
+		XTAL_LET function(real_number_q auto o)
+		XTAL_0EX -> decltype(auto)
 		{
 			using _std::log;
 

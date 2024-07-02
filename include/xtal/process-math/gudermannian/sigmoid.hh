@@ -35,8 +35,8 @@ XTAL_USE sigmoid_t = process::confined_t<sigmoid<M_ism, bond::seek_constant_n<As
 
 template <int M_ism=1, typename ...As>
 XTAL_DEF_(return,inline)
-XTAL_RET sigmoid_f(auto &&o)
-XTAL_0EX
+XTAL_LET sigmoid_f(auto &&o)
+XTAL_0EX -> decltype(auto)
 {
 	return sigmoid_t<M_ism, As...>::function(XTAL_REF_(o));
 }

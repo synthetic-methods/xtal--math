@@ -17,8 +17,8 @@ template <int M_rot=0, int M_con=0> XTAL_TYP imagine;
 template <int M_rot=0, int M_con=0> XTAL_USE imagine_t = process::confined_t<imagine<M_rot, M_con>>;
 template <int M_rot=0, int M_con=0>
 XTAL_DEF_(return,inline)
-XTAL_RET imagine_f(auto &&o)
-XTAL_0EX
+XTAL_LET imagine_f(auto &&o)
+XTAL_0EX -> decltype(auto)
 {
 	return imagine_t<M_rot, M_con>::function(XTAL_REF_(o));
 }
@@ -42,8 +42,8 @@ struct imagine
 
 		template <auto ...>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(auto &&x)
-		XTAL_0EX
+		XTAL_LET function(auto &&x)
+		XTAL_0EX -> decltype(auto)
 		{
 			if constexpr (N_rot == 0 and N_con == 0) {
 				return XTAL_REF_(x);
@@ -54,8 +54,8 @@ struct imagine
 		};
 		template <auto ...>
 		XTAL_DEF_(return,inline,static)
-		XTAL_RET function(complex_field_q auto &&o)
-		XTAL_0EX
+		XTAL_LET function(complex_field_q auto &&o)
+		XTAL_0EX -> decltype(auto)
 		{
 			auto const x = o.real();
 			auto const y = o.imag();
