@@ -26,7 +26,7 @@ XTAL_0EX
 
 template <typename ...As> requires (1 <= sizeof...(As))
 struct wrap<As...>
-:	process::link<wrap<>, As...>
+:	process::lift<wrap<>, bond::compose<As...>>
 {};
 template <typename ...As> requires (0 == sizeof...(As))
 struct wrap<As...>

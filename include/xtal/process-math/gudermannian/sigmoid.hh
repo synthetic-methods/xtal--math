@@ -27,7 +27,7 @@ The (co)domain is normalized around `+/- 1/2`, with derivative `1` at `0`. \
 template <int M_ism=1, int M_car=0, typename ...As>
 	requires inclusive_q<M_ism, 1, 2, -1, -2> and inclusive_q<M_car, -0, -1, -2>
 XTAL_TYP sigmoid
-:	process::link<sigmoid<M_ism, M_car>, As...>
+:	process::lift<sigmoid<M_ism, M_car>, bond::compose<As...>>
 {
 };
 template <int M_ism=1, typename ...As>

@@ -29,18 +29,16 @@ template <int M_pow>
 struct discarding<M_pow, +0>
 {
 	template <class S>
-	using subtype = bond::compose_s<S, bond::tag<process::link>>;
+	using subtype = bond::compose_s<S>;
 
 };
 template <int M_pow>
 struct discarding<M_pow, +1>
 {
-	using subkind = bond::tag<process::link>;
-
 	template <class S>
-	class subtype: public bond::compose_s<S, subkind>
+	class subtype: public bond::compose_s<S>
 	{
-		using S_ = bond::compose_s<S, subkind>;
+		using S_ = bond::compose_s<S>;
 
 	public:
 		using S_::S_;
@@ -79,12 +77,10 @@ struct discarding<M_pow, +1>
 template <>
 struct discarding<1, +1>
 {
-	using subkind = bond::tag<process::link>;
-
 	template <class S>
-	class subtype: public bond::compose_s<S, subkind>
+	class subtype: public bond::compose_s<S>
 	{
-		using S_ = bond::compose_s<S, subkind>;
+		using S_ = bond::compose_s<S>;
 
 	public:
 		using S_::S_;
@@ -134,12 +130,10 @@ struct discarding<1, +1>
 template <>
 struct discarding<1, +2>
 {
-	using subkind = bond::tag<process::link>;
-
 	template <class S>
-	class subtype: public bond::compose_s<S, subkind>
+	class subtype: public bond::compose_s<S>
 	{
-		using S_ = bond::compose_s<S, subkind>;
+		using S_ = bond::compose_s<S>;
 
 	public:
 		using S_::S_;

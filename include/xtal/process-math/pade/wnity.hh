@@ -24,7 +24,7 @@ template <int M_ism=1, typename ...As> XTAL_USE wnity_t = process::confined_t<wn
 
 template <int M_ism, bond::compose_q ...As> requires some_q<As...>
 struct wnity<M_ism, As...>
-:	process::link<wnity<M_ism>, As...>
+:	process::lift<wnity<M_ism>, bond::compose<As...>>
 {
 };
 template <>

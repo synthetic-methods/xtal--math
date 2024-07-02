@@ -35,7 +35,7 @@ approximated by `#/Sqrt[1 - #]`. \
 template <int M_ism, int M_pow> requires inclusive_q<M_ism, 1, 2>
 struct monologarithm<M_ism, M_pow, -0>
 {
-	using superprocess = process::link_t<void
+	using superprocess = process::lift_t<void
 	,	bond::compose<dilating<1>, taylor::sine<-2>>
 	,	bond::compose<discarding<M_pow, +1>, monologarithm<M_ism, M_pow, -1>>
 	>;
@@ -75,11 +75,10 @@ approximated by `(Sqrt[1 + (#/2)^2] - (#/2))*(#)`. \
 template <int M_ism, int M_pow> requires inclusive_q<M_ism,-1,-2>
 struct monologarithm<M_ism, M_pow, -0>
 {
-	using superprocess = process::link_t<void
+	using superprocess = process::lift_t<void
 	,	bond::compose<discarding<M_pow, +1>, monologarithm<M_ism, M_pow, -1>>
 	,	bond::compose<dilating<1>, taylor::sine<+2>>
 	>;
-
 	template <class S>
 	class subtype: public bond::compose_s<S>
 	{

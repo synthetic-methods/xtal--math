@@ -153,16 +153,13 @@ struct subunity<M_ism,-2>
 
 template <int M_ism, bond::compose_q ...As> requires some_q<As...>
 struct unity<M_ism, As...>
-:	process::link<unity<M_ism>, As...>
+:	process::lift<unity<M_ism>, bond::compose<As...>>
 {
 };
 template <int M_ism> requires (0 < M_ism)
 struct unity<M_ism>
 {
-	//\
-	using duperprocess = square<M_ism, 0>;
-	using duperprocess = decltype([] XTAL_1FN_(square_f<M_ism, 0>));
-	using superprocess = process::lift_t<duperprocess, _detail::subunity<M_ism,-0>>;
+	using superprocess = process::lift_t<square<M_ism, 0>, _detail::subunity<M_ism,-0>>;
 
 	using subkind = bond::compose<void
 	,	V_unity_limit::dispatch<>

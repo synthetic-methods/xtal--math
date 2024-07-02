@@ -31,13 +31,13 @@ XTAL_0EX
 /*/
 template <int M_ism, int M_car>
 struct logarithm<M_ism,-1, M_car>
-:	process::link<root<-1>, logarithm<M_ism, 1, M_car>>
+:	process::lift<root<-1>, logarithm<M_ism, 1, M_car>>
 {
 };
 /*/
 template <int M_car>
 struct logarithm< 1,-1, M_car>
-:	process::link<root<-1>, logarithm< 1, 1, M_car>>
+:	process::lift<root<-1>, logarithm< 1, 1, M_car>>
 {
 };
 template <int M_car>
@@ -82,9 +82,8 @@ approximated by `(# - 1)/Sqrt[#]`. \
 template <>
 struct logarithm< 1, 1, 0>
 {
-	using superprocess = process::link_t<void
-	,	bond::compose<dilating<1>, taylor::sine<-2>>
-	>;
+	using superprocess = process::confined_t<dilating<1>, taylor::sine<-2>>;
+	
 	template <class S>
 	class subtype: public bond::compose_s<S>
 	{
@@ -125,9 +124,8 @@ approximated by `(Sqrt[(#/2)^2 + 1] + (#/2))*# + 1`. \
 template <>
 struct logarithm<-1, 1, 0>
 {
-	using superprocess = process::link_t<void
-	,	bond::compose<dilating<1>, taylor::sine<+2>>
-	>;
+	using superprocess = process::confined_t<dilating<1>, taylor::sine<+2>>;
+	
 	template <class S>
 	class subtype: public bond::compose_s<S>
 	{

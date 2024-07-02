@@ -26,12 +26,10 @@ struct dilating;
 template <int N_two, int N_two_pi>
 struct dilating
 {
-	using subkind = bond::tag<process::link>;
-
 	template <class S>
-	class subtype: public bond::compose_s<S, subkind>
+	class subtype: public bond::compose_s<S>
 	{
-		using S_ = bond::compose_s<S, subkind>;
+		using S_ = bond::compose_s<S>;
 
 	public:
 		using S_::S_;

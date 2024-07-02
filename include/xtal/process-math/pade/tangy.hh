@@ -24,7 +24,7 @@ template <int M_ism=1, typename ...As> XTAL_USE tangy_t = process::confined_t<ta
 
 template <int M_ism, bond::compose_q ...As> requires some_q<As...>
 struct tangy<M_ism, As...>
-:	process::link<tangy<M_ism>, As...>
+:	process::lift<tangy<M_ism>, bond::compose<As...>>
 {
 };
 template <int M_ism> requires (0 < M_ism)
