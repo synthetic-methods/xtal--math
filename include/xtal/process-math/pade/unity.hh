@@ -172,6 +172,16 @@ struct unity<M_ism>
 	public:
 		using S_::S_;
 
+		template <int N_lim=-1, class U>
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(_std::initializer_list<U> o)
+		XTAL_0EX -> decltype(auto)
+		{
+			using _op = bond::operate<decltype(o)>;
+			_std::complex<U> w; auto &m = involved_f(w);
+			_std::copy_n(point_f(o), 2, m);
+			return function<N_lim>(w);
+		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,static)
 		XTAL_LET function(complex_field_q auto const &t)
@@ -181,13 +191,13 @@ struct unity<M_ism>
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(auto &&t_1, simplex_field_q auto &&t_i)
+		XTAL_LET function(auto &&t_re, simplex_field_q auto &&t_im)
 		XTAL_0EX -> decltype(auto)
 		{
 			using _std::exp;
 
-			using _op = bond::operate<decltype(t_i)>;
-			return function<N_lim>(XTAL_REF_(t_1))*exp(XTAL_REF_(t_i)*_op::patio_f(-2));
+			using _op = bond::operate<decltype(t_re), decltype(t_im)>;
+			return function<N_lim>(XTAL_REF_(t_re))*exp(XTAL_REF_(t_im)*_op::patio_f(-2));
 		}
 
 		template <int N_lim=-1>

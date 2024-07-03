@@ -12,12 +12,53 @@ namespace xtal::process::math::_test
 /////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-/*/
+/**/
 TAG_("imagine")
 {
-	TRY_("task")
+	using _op = bond::operating;
+	using T_sigma = typename _op::sigma_type;
+	using T_delta = typename _op::delta_type;
+	using T_alpha = typename _op::alpha_type;
+	using T_aphex = typename _op::aphex_type;
+	static constexpr T_alpha one =  1;
+	static constexpr T_alpha two =  2;
+	static constexpr T_alpha ten = 10;
+
+	TRY_("imagine `complex_field_q auto const &`")
 	{
-		TRUE_(true);
+		T_alpha x{1};
+		T_alpha y{2};
+		T_aphex o{x, y};
+
+		TRUE_(imagine_f<0, 0>(o) == T_aphex{ x,  y});
+		TRUE_(imagine_f<0, 1>(o) == T_aphex{ x, -y});
+
+		TRUE_(imagine_f<1, 0>(o) == T_aphex{-y,  x});
+		TRUE_(imagine_f<1, 1>(o) == T_aphex{-y, -x});
+
+		TRUE_(imagine_f<2, 0>(o) == T_aphex{-x, -y});
+		TRUE_(imagine_f<2, 1>(o) == T_aphex{-x,  y});
+
+		TRUE_(imagine_f<3, 0>(o) == T_aphex{ y, -x});
+		TRUE_(imagine_f<3, 1>(o) == T_aphex{ y,  x});
+
+	}
+	TRY_("imagine `complex_number_q auto &&`")
+	{
+		T_alpha x{1};
+		T_alpha y{2};
+
+		TRUE_(imagine_f<0, 0>(T_aphex{x, y}) == T_aphex{ x,  y});
+		TRUE_(imagine_f<0, 1>(T_aphex{x, y}) == T_aphex{ x, -y});
+
+		TRUE_(imagine_f<1, 0>(T_aphex{x, y}) == T_aphex{-y,  x});
+		TRUE_(imagine_f<1, 1>(T_aphex{x, y}) == T_aphex{-y, -x});
+
+		TRUE_(imagine_f<2, 0>(T_aphex{x, y}) == T_aphex{-x, -y});
+		TRUE_(imagine_f<2, 1>(T_aphex{x, y}) == T_aphex{-x,  y});
+
+		TRUE_(imagine_f<3, 0>(T_aphex{x, y}) == T_aphex{ y, -x});
+		TRUE_(imagine_f<3, 1>(T_aphex{x, y}) == T_aphex{ y,  x});
 
 	}
 }

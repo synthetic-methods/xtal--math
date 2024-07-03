@@ -99,14 +99,6 @@ struct root<M_pow, M_zap>
 				auto const rhs = function<Ns...>(n - x);
 				return N_sqrt_half*complexion_f(lhs, rhs*_op::assigned_f(y));
 			}
-			XTAL_0IF (M_pow ==  2) {
-			//	return sqrt(XTAL_REF_(o));
-				auto const x   = o.real();
-				auto const y   = o.imag();
-				auto const lhs = root_f(_op::alpha_1 + x);
-				auto const rhs = root_f(_op::alpha_1 - x);
-				return N_sqrt_half*complexion_f(root_f(_op::alpha_1 + x), root_f(_op::alpha_1 - x));
-			}
 			XTAL_0IF (M_pow == -1) {
 				return _op::alpha_1/XTAL_REF_(o);
 			}

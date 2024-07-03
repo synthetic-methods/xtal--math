@@ -29,8 +29,10 @@ XTAL_0EX -> decltype(auto)
 template <int M_rot, int M_con>
 struct imagine
 {
-	static constexpr size_type N_rot = M_rot&0b11;
-	static constexpr size_type N_con = M_con&1;
+	static constexpr size_type N_rot = M_rot&0b11U;
+	static constexpr size_type N_con = M_con&0b01U;
+	static constexpr size_type X_con = N_con << 1U;
+	static constexpr size_type X_rot = N_rot^X_con;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -42,26 +44,28 @@ struct imagine
 
 		template <auto ...>
 		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(auto &&x)
+		XTAL_LET function(auto &&o)
 		XTAL_0EX -> decltype(auto)
+			requires un_n<complex_field_q<decltype(o)>>
 		{
 			if constexpr (N_rot == 0 and N_con == 0) {
-				return XTAL_REF_(x);
+				return XTAL_REF_(o);
 			}
 			else {
-				return function(complexion_f(x));
+				return function(complexion_f(o));
 			}
 		};
 		template <auto ...>
 		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(complex_field_q auto &&o)
+		XTAL_LET function(complex_field_q auto const &o)
 		XTAL_0EX -> decltype(auto)
+			requires un_n<complex_number_q<decltype(o)>>
 		{
 			auto const x = o.real();
 			auto const y = o.imag();
 			XTAL_IF0
 
-			XTAL_0IF (N_rot == 0b00 and N_con == 0) {return         XTAL_REF_(o);}
+			XTAL_0IF (N_rot == 0b00 and N_con == 0) {return                    o;}
 			XTAL_0IF (N_rot == 0b00 and N_con == 1) {return complexion_f( x, -y);}
 
 			XTAL_0IF (N_rot == 0b01 and N_con == 0) {return complexion_f(-y,  x);}
@@ -72,6 +76,17 @@ struct imagine
 
 			XTAL_0IF (N_rot == 0b11 and N_con == 0) {return complexion_f( y, -x);}
 			XTAL_0IF (N_rot == 0b11 and N_con == 1) {return complexion_f( y,  x);}
+		};
+		template <auto ...>
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(complex_number_q auto o)
+		XTAL_0EX -> decltype(auto)
+		{
+			auto &[x, y] = involved_f(o);
+			if constexpr (N_rot == 0b01 or N_rot == 0b11) {_std::swap(x, y);}
+			if constexpr (N_rot == 0b01 or N_rot == 0b10) {x = -x;}
+			if constexpr (X_rot == 0b11 or X_rot == 0b10) {y = -y;}
+			return o;
 		};
 
 	};

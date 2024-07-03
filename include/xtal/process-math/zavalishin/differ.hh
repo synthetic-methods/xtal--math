@@ -58,12 +58,12 @@ struct differ<>
 			U  u0 = XTAL_REF_(u);
 			_std::swap(u0, u1);
 			//\
-			return imagine_f<-complex_field_q<U>>(u1 - u0);// Should be imaginary division, right?
+			return imagine_f<-complex_field_q<U>>(u1 - u0);// Should be imaginary division?
 			return imagine_f<+complex_field_q<U>>(u1 - u0);
 		}
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_LET method(auto &&u, algebra::d_::circular_q auto &&z)
+		XTAL_LET method(algebra::d_::circular_q auto &&z, auto &&u)
 		XTAL_0EX -> auto
 		{
 			using _op = bond::operate<decltype(u)>;
@@ -91,25 +91,10 @@ struct differ<>
 
 		//	Resets the state to zero if a phase/frequency discontinuity is detected:
 			using _std::abs;
-		//	u_ *= abs(v_ - w_) < _op::haplo_f(N_zap);
+			u_ *= abs(v_ - w_) < _op::haplo_f(N_zap);
 			//\
-			return imagine_f<-complex_field_q<U>>(u_);// Should be imaginary division, right?
+			return imagine_f<-complex_field_q<U>>(u_);// Should be imaginary division?
 			return imagine_f<+complex_field_q<U>>(u_);
-		}
-		template <auto ...Is>
-		XTAL_DEF_(return,inline)
-		XTAL_LET method(algebra::d_::circular_q auto &&z, auto &&u)
-		XTAL_0EX -> decltype(auto)
-		{
-			return method(XTAL_REF_(u), XTAL_REF_(z));
-		}
-
-		template <auto ...Is>
-		XTAL_DEF_(return,inline)
-		XTAL_LET method(algebra::d_::circular_q auto &&z)
-		XTAL_0EX -> decltype(auto)
-		{
-			return wrap_f(method(XTAL_REF_(z) (0)));
 		}
 
 	};

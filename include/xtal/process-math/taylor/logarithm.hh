@@ -219,7 +219,7 @@ struct logarithm< 1, 1, 1>
 	};
 };
 ///\
-Defines argument-reduced approximation of the logarithm `Exp[#]`. \
+Defines argument-reduced approximation of the antilogarithm `Exp[#]`. \
 
 template <>
 struct logarithm<-1, 1, 1>
