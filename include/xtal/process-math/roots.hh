@@ -31,7 +31,7 @@ struct roots
 	static constexpr int pow_type = -bond::operate<int>::designed_f(N_pow);
 
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 

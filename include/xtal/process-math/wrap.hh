@@ -32,7 +32,7 @@ template <typename ...As> requires (0 == sizeof...(As))
 struct wrap<As...>
 {
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 

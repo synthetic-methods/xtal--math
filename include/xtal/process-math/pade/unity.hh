@@ -38,7 +38,7 @@ struct subunity<M_ism,-2>
 	static constexpr int I_sgn = sign_n<(M_ism&1)^1, -1>;
 
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 
@@ -165,7 +165,7 @@ struct unity<M_ism>
 	,	V_unity_limit::dispatch<>
 	>;
 	template <class S>
-	class subtype: public bond::compose_s<S, subkind>
+	class subtype : public bond::compose_s<S, subkind>
 	{
 		using S_ = bond::compose_s<S, subkind>;
 

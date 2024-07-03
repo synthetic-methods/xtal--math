@@ -28,7 +28,7 @@ template <int N_pow>
 struct square<0, N_pow>
 {
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 
@@ -56,7 +56,7 @@ struct square<M_ism, 0>
 	static constexpr int I_sgn = sign_n<(M_ism&1)^0, -1>;
 
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 
@@ -93,7 +93,7 @@ struct square<M_ism, 1>
 	static constexpr int I_sgn = sign_n<M_ism&1, -1>;
 
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 
@@ -125,7 +125,7 @@ template <int M_ism> requires (0 < M_ism)
 struct square<M_ism,-1>
 {
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 
@@ -151,7 +151,7 @@ template <int M_ism> requires (M_ism < 0)
 struct square<M_ism, 1>
 {
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 
@@ -187,7 +187,7 @@ struct square<M_ism,-1>
 	using dis = square_t<-1, 1>;
 
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 

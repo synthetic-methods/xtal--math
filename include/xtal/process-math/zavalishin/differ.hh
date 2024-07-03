@@ -28,7 +28,7 @@ struct differ<>
 	using subkind = bond::tag<differ>;
 
 	template <class S>
-	class subtype: public bond::compose_s<S, subkind>
+	class subtype : public bond::compose_s<S, subkind>
 	{
 		using S_ = bond::compose_s<S, subkind>;
 

@@ -11,13 +11,13 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_pow=1, int M_zap=-1> requires inclusive_q<M_pow, 1, 2,-1,-2>
+template <int M_pow=1, int M_zap=-1> requires in_n<M_pow, 1, 2,-1,-2>
 XTAL_TYP root;
 
-template <int M_pow=1, int M_zap=-1> requires inclusive_q<M_pow, 1, 2,-1,-2>
+template <int M_pow=1, int M_zap=-1> requires in_n<M_pow, 1, 2,-1,-2>
 XTAL_USE root_t = process::confined_t<root<M_pow, M_zap>>;
 
-template <int M_pow=1, int M_zap=-1> requires inclusive_q<M_pow, 1, 2,-1,-2>
+template <int M_pow=1, int M_zap=-1> requires in_n<M_pow, 1, 2,-1,-2>
 XTAL_DEF_(return,inline)
 XTAL_LET root_f(auto &&o)
 XTAL_0EX -> decltype(auto)
@@ -29,11 +29,11 @@ XTAL_0EX -> decltype(auto)
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_pow, int M_zap> requires inclusive_q<M_pow, 1, 2,-1,-2>
+template <int M_pow, int M_zap> requires in_n<M_pow, 1, 2,-1,-2>
 struct root//<M_pow, M_zap>
 {
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 

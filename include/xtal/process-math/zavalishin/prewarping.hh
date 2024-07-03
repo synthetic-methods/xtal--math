@@ -23,7 +23,7 @@ struct prewarping
 	using subkind = bond::compose<As..., resource::example<>, bond::tag<prewarping>>;
 
 	template <class S>
-	class subtype: public bond::compose_s<S, subkind>
+	class subtype : public bond::compose_s<S, subkind>
 	{
 		using S_ = bond::compose_s<S, subkind>;
 

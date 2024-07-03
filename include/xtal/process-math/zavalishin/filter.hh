@@ -26,7 +26,7 @@ template <>
 struct filter<>
 {
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 

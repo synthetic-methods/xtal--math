@@ -12,18 +12,18 @@ namespace xtal::process::math::taylor
 /////////////////////////////////////////////////////////////////////////////////
 
 template <int M_ism=1, int M_pow=1, int M_car=0>
-	requires inclusive_q<M_ism, 1,-1> and inclusive_q<M_pow, 1,-1> and inclusive_q<M_car, 0, 1>
+	requires in_n<M_ism, 1,-1> and in_n<M_pow, 1,-1> and in_n<M_car, 0, 1>
 XTAL_TYP logarithm;
 
-template <int M_ism=1, int M_pow=1, int M_car=0>
-XTAL_USE logarithm_t = process::confined_t<logarithm<M_ism, M_pow, M_car>>;
+template <int ...Ms>
+XTAL_USE logarithm_t = process::confined_t<logarithm<Ms...>>;
 
-template <int M_ism=1, int M_pow=1, int M_car=0, int ...Ns>
+template <int ...Ms>
 XTAL_DEF_(return,inline)
-XTAL_LET logarithm_f(auto &&o)
+XTAL_LET logarithm_f(auto &&o, nominal_q auto ...oo)
 XTAL_0EX -> decltype(auto)
 {
-	return logarithm_t<M_ism, M_pow, M_car>::template function<Ns...>(XTAL_REF_(o));
+	return logarithm_t<Ms...>::template function<oo...>(XTAL_REF_(o));
 }
 
 
@@ -46,7 +46,7 @@ struct logarithm<-1,-1, M_car>
 	using superprocess = logarithm_t<-1, 1, M_car>;
 
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 
@@ -85,7 +85,7 @@ struct logarithm< 1, 1, 0>
 	using superprocess = process::confined_t<dilating<1>, taylor::sine<-2>>;
 	
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 
@@ -127,7 +127,7 @@ struct logarithm<-1, 1, 0>
 	using superprocess = process::confined_t<dilating<1>, taylor::sine<+2>>;
 	
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 
@@ -169,7 +169,7 @@ template <>
 struct logarithm< 1, 1, 1>
 {
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 
@@ -225,7 +225,7 @@ template <>
 struct logarithm<-1, 1, 1>
 {
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 

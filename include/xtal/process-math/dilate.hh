@@ -28,7 +28,7 @@ template <int N_two, int N_two_pi>
 struct dilate
 {
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 

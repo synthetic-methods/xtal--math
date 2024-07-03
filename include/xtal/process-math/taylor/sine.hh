@@ -25,7 +25,7 @@ struct sine<M_ism, -0>
 	using subkind = bond::compose<discarding<1, +1>, sine<M_ism, -1>>;
 
 	template <class S>
-	class subtype: public bond::compose_s<S, subkind>
+	class subtype : public bond::compose_s<S, subkind>
 	{
 		using S_ = bond::compose_s<S, subkind>;
 
@@ -58,7 +58,7 @@ struct sine<M_ism, -1>
 	using subkind = bond::compose<discarding<1, +2>, sine<M_ism, -2>>;
 
 	template <class S>
-	class subtype: public bond::compose_s<S, subkind>
+	class subtype : public bond::compose_s<S, subkind>
 	{
 		using S_ = bond::compose_s<S, subkind>;
 
@@ -93,7 +93,7 @@ template <int M_ism> requires (0 < M_ism)
 struct sine<M_ism, -2>
 {
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 
@@ -135,7 +135,7 @@ template <int M_ism> requires (M_ism < 0)
 struct sine<M_ism, -2>
 {
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 

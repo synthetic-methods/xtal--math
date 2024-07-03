@@ -19,7 +19,7 @@ Because it invokes the super-`function` directly, \
 it must be applied via `{compose,confined}` (etc) rather than `process::{lift,link}`.
 
 template <int M_pow=1, int M_car=0>
-	requires inclusive_q<M_pow, 1, -1> and inclusive_q<M_car, 0, 1, 2>
+	requires in_n<M_pow, 1, -1> and in_n<M_car, 0, 1, 2>
 XTAL_TYP discarding;
 
 
@@ -36,7 +36,7 @@ template <int M_pow>
 struct discarding<M_pow, +1>
 {
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 
@@ -78,7 +78,7 @@ template <>
 struct discarding<1, +1>
 {
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 
@@ -131,7 +131,7 @@ template <>
 struct discarding<1, +2>
 {
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 

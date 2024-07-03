@@ -12,18 +12,18 @@ namespace xtal::process::math::taylor
 /////////////////////////////////////////////////////////////////////////////////
 
 template <int M_ism=1, int M_pow=1, int M_car=0>
-	requires inclusive_q<M_ism, 1, 2, -1, -2> and inclusive_q<M_pow, 1, -1> and inclusive_q<M_car, -0, -1>
+	requires in_n<M_ism, 1, 2, -1, -2> and in_n<M_pow, 1, -1> and in_n<M_car, -0, -1>
 XTAL_TYP monologarithm;
 
-template <int M_ism=1, int M_pow=1, int M_car=0>
-XTAL_USE monologarithm_t = process::confined_t<monologarithm<M_ism, M_pow, M_car>>;
+template <int ...Ms>
+XTAL_USE monologarithm_t = process::confined_t<monologarithm<Ms...>>;
 
-template <int M_ism=1, int M_pow=1, int M_car=0, int ...Ns>
+template <int ...Ms>
 XTAL_DEF_(return,inline)
-XTAL_LET monologarithm_f(auto &&o)
+XTAL_LET monologarithm_f(auto &&o, nominal_q auto ...oo)
 XTAL_0EX -> decltype(auto)
 {
-	return monologarithm_t<M_ism, M_pow, M_car>::template function<Ns...>(XTAL_REF_(o));
+	return monologarithm_t<Ms...>::template function<oo...>(XTAL_REF_(o));
 }
 
 
@@ -32,7 +32,7 @@ XTAL_0EX -> decltype(auto)
 Defines `function` as the monologarithm `-Log[1 - #]`, \
 approximated by `#/Sqrt[1 - #]`. \
 
-template <int M_ism, int M_pow> requires inclusive_q<M_ism, 1, 2>
+template <int M_ism, int M_pow> requires in_n<M_ism, 1, 2>
 struct monologarithm<M_ism, M_pow, -0>
 {
 	using superprocess = process::lift_t<void
@@ -40,7 +40,7 @@ struct monologarithm<M_ism, M_pow, -0>
 	,	bond::compose<discarding<M_pow, +1>, monologarithm<M_ism, M_pow, -1>>
 	>;
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 
@@ -72,7 +72,7 @@ struct monologarithm<M_ism, M_pow, -0>
 Defines `function` as the antimonologarithm `1 - Exp[-#]`, \
 approximated by `(Sqrt[1 + (#/2)^2] - (#/2))*(#)`. \
 
-template <int M_ism, int M_pow> requires inclusive_q<M_ism,-1,-2>
+template <int M_ism, int M_pow> requires in_n<M_ism,-1,-2>
 struct monologarithm<M_ism, M_pow, -0>
 {
 	using superprocess = process::lift_t<void
@@ -80,7 +80,7 @@ struct monologarithm<M_ism, M_pow, -0>
 	,	bond::compose<dilating<1>, taylor::sine<+2>>
 	>;
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 
@@ -115,11 +115,11 @@ struct monologarithm<M_ism, M_pow, -0>
 Defines `function` as the cardinal monologarithm `-Log[1 - #]/#`, \
 approximated by `1/Sqrt[1 - #]`. \
 
-template <int M_ism, int M_pow> requires inclusive_q<M_ism, 1, 2>
+template <int M_ism, int M_pow> requires in_n<M_ism, 1, 2>
 struct monologarithm<M_ism, M_pow, -1>
 {
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 		using S0 = bond::compose_s<S, monologarithm<M_ism, M_pow, -0>>;
@@ -152,11 +152,11 @@ struct monologarithm<M_ism, M_pow, -1>
 Defines `function` as the cardinal antimonologarithm `(1 - Exp[-#])/#`, \
 approximated by `Sqrt[1 + (#/2)^2] + (#/2)`. \
 
-template <int M_ism, int M_pow> requires inclusive_q<M_ism,-1,-2>
+template <int M_ism, int M_pow> requires in_n<M_ism,-1,-2>
 struct monologarithm<M_ism, M_pow, -1>
 {
 	template <class S>
-	class subtype: public bond::compose_s<S>
+	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
 		using S0 = bond::compose_s<S, monologarithm<M_ism, M_pow, -0>>;
