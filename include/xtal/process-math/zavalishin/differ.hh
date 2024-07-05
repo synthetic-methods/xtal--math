@@ -10,6 +10,15 @@ XTAL_ENV_(push)
 namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
+///\
+Differentiates the incoming signal. \
+
+///\note\
+The `method` uses local arena-like allocation to manage state, so `sizeof(input) <= 56`. \
+
+///\todo\
+Define a `brace`d version with static-state, \
+possibly invoking the parent with the same `template method` parameters (e.g. `N_ord`er). \
 
 template <typename ...As> XTAL_TYP differ;
 template <typename ...As> XTAL_USE differ_t = process::confined_t<differ<As...>>;
