@@ -42,15 +42,15 @@ struct dot//<M_pow, M_zap>
 		using S_::S_;
 
 		template <auto ...Is>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(simplex_field_q auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(simplex_field_q auto &&o)
 		XTAL_0EX -> auto
 		{
 			return root_f<M_pow, M_zap>(square_f(XTAL_REF_(o)));
 		}
 		template <auto ...Is>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(complex_field_q auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(complex_field_q auto &&o)
 		XTAL_0EX -> auto
 		{
 			return root_f<M_pow, M_zap>(square_f(o.real()) + square_f(o.imag()));

@@ -46,8 +46,8 @@ struct subunity<M_ism,-2>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,static)
-		XTAL_LET function(simplex_field_q auto const &w)
+		XTAL_DEF_(return)
+		XTAL_SET function(simplex_field_q auto const &w)
 		XTAL_0EX -> decltype(auto)
 		{
 			int constexpr I_lim = N_lim&0x7;
@@ -173,8 +173,8 @@ struct unity<M_ism>
 		using S_::S_;
 
 		template <int N_lim=-1, class U>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(_std::initializer_list<U> o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(_std::initializer_list<U> o)
 		XTAL_0EX -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
@@ -183,15 +183,15 @@ struct unity<M_ism>
 			return function<N_lim>(w);
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(complex_field_q auto const &t)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(complex_field_q auto const &t)
 		XTAL_0EX -> decltype(auto)
 		{
 			return function<N_lim>(t.real(), t.imag());
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(auto &&t_re, simplex_field_q auto &&t_im)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(auto &&t_re, simplex_field_q auto &&t_im)
 		XTAL_0EX -> decltype(auto)
 		{
 			using _std::exp;
@@ -201,8 +201,8 @@ struct unity<M_ism>
 		}
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,static)
-		XTAL_LET function(simplex_field_q auto o)
+		XTAL_DEF_(return)
+		XTAL_SET function(simplex_field_q auto o)
 		XTAL_0EX -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
@@ -224,8 +224,8 @@ struct unity<M_ism>
 			}
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,static)
-		XTAL_LET function(algebra::d_::circular_q auto d)
+		XTAL_DEF_(return)
+		XTAL_SET function(algebra::d_::circular_q auto d)
 		XTAL_0EX -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(d)>;

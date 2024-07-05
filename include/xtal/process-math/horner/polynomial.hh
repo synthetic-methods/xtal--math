@@ -52,8 +52,8 @@ struct polynomial
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(auto &&...oo)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(auto &&...oo)
 		XTAL_0EX -> decltype(auto)
 		{
 			return polynomial_f<N_sign>(XTAL_REF_(oo)...);

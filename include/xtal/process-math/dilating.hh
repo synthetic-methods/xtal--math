@@ -60,8 +60,8 @@ struct dilating
 			return S_::template method<Is...>(XTAL_REF_(o)*n)*u;
 		};
 		template <auto ...Is>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(auto &&o)
 		XTAL_0EX -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;

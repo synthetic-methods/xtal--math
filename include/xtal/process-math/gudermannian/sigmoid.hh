@@ -58,8 +58,8 @@ struct sigmoid<M_ism, -0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(auto &&u)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(auto &&u)
 		XTAL_0EX -> decltype(auto)
 		{
 			static_assert(N_lim <= 0);
@@ -101,8 +101,8 @@ struct sigmoid<M_ism, -2>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(auto &&w)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(auto &&w)
 		XTAL_0EX -> decltype(auto)
 		{
 			static_assert(N_lim <= 0);

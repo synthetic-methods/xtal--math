@@ -56,8 +56,8 @@ struct logarithm<-1,-1, M_car>
 	//	TODO: Define `complex` variant!
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,static)
-		XTAL_LET function(auto &&o)
+		XTAL_DEF_(return)
+		XTAL_SET function(auto &&o)
 		XTAL_0EX -> decltype(auto)
 		{
 			XTAL_IF0
@@ -95,8 +95,8 @@ struct logarithm< 1, 1, 0>
 	//	TODO: Define `complex` variant?
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(auto &&o)
 		XTAL_0EX -> decltype(auto)
 		{
 			using _std::log;
@@ -135,8 +135,8 @@ struct logarithm<-1, 1, 0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(auto &&o)
 		XTAL_0EX -> decltype(auto)
 		{
 			using _std::exp;
@@ -179,8 +179,8 @@ struct logarithm< 1, 1, 1>
 	//	TODO: Define `complex` variant!
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(real_number_q auto o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(real_number_q auto o)
 		XTAL_0EX -> decltype(auto)
 		{
 			using _std::log;
@@ -235,8 +235,8 @@ struct logarithm<-1, 1, 1>
 	//	TODO: Define `complex` variant!
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(real_number_q auto o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(real_number_q auto o)
 		XTAL_0EX -> decltype(auto)
 		{
 			using _std::log;

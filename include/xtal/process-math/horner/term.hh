@@ -67,8 +67,8 @@ struct term
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function( auto &&...oo)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function( auto &&...oo)
 		XTAL_0EX -> decltype(auto)
 		{
 			return term_f(XTAL_REF_(oo)...);

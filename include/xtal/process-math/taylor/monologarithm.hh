@@ -48,8 +48,8 @@ struct monologarithm<M_ism, M_pow, -0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(auto &&o)
 		XTAL_0EX -> decltype(auto)
 		{
 			using _std::log;
@@ -88,8 +88,8 @@ struct monologarithm<M_ism, M_pow, -0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(auto &&o)
 		XTAL_0EX -> decltype(auto)
 		{
 			using _std::exp;
@@ -128,8 +128,8 @@ struct monologarithm<M_ism, M_pow, -1>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(auto &&u)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(auto &&u)
 		XTAL_0EX -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(u)>;
@@ -165,8 +165,8 @@ struct monologarithm<M_ism, M_pow, -1>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(auto &&u)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(auto &&u)
 		XTAL_0EX -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(u)>;

@@ -46,8 +46,8 @@ struct tangy<M_ism>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,static)
-		XTAL_LET function(simplex_field_q auto &&o)
+		XTAL_DEF_(return)
+		XTAL_SET function(simplex_field_q auto &&o)
 		XTAL_0EX
 		{
 			using _op = bond::operate<decltype(o)>;

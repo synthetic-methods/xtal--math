@@ -40,8 +40,8 @@ struct wrap<As...>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(auto &&o)
 		XTAL_0EX -> auto
 		{
 			using _std::round;
@@ -49,15 +49,15 @@ struct wrap<As...>
 			return o - round(o);
 		}
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(algebra::d_::circular_q auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(algebra::d_::circular_q auto &&o)
 		XTAL_0EX -> decltype(auto)
 		{
 			return XTAL_REF_(o);
 		}
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(complex_field_q auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(complex_field_q auto &&o)
 		XTAL_0EX -> decltype(auto)
 		{
 			if constexpr (complex_number_q<decltype(o)>) {

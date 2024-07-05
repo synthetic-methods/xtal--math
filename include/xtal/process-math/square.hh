@@ -36,8 +36,8 @@ struct square<0, N_pow>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(auto &&o)
 		XTAL_0EX -> decltype(auto)
 		{
 			return XTAL_REF_(o);
@@ -64,8 +64,8 @@ struct square<M_ism, 0>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(complex_field_q auto const &o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(complex_field_q auto const &o)
 		XTAL_0EX -> decltype(auto)
 		{
 			using O = XTAL_ALL_(o); using _op = bond::operate<O>;
@@ -101,15 +101,15 @@ struct square<M_ism, 1>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(auto const &o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(auto const &o)
 		XTAL_0EX -> decltype(auto)
 		{
 			return o*o;
 		}
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(complex_field_q auto const &o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(complex_field_q auto const &o)
 		XTAL_0EX -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
@@ -133,8 +133,8 @@ struct square<M_ism,-1>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(auto &&o)
 		XTAL_0EX -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
@@ -159,16 +159,16 @@ struct square<M_ism, 1>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(simplex_field_q auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(simplex_field_q auto &&o)
 		XTAL_0EX -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 			return _op::template root_f<+2>(XTAL_REF_(o));
 		}
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(complex_field_q auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(complex_field_q auto &&o)
 		XTAL_0EX -> decltype(auto)
 		{
 			using O = XTAL_ALL_(o); using _op = bond::operate<O>;
@@ -195,16 +195,16 @@ struct square<M_ism,-1>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(simplex_field_q auto const &o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(simplex_field_q auto const &o)
 		XTAL_0EX -> decltype(auto)
 		{
 			using O = XTAL_ALL_(o); using _op = bond::operate<O>;
 			return _op::template root_f<-2>(o);
 		}
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(complex_field_q auto const &o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(complex_field_q auto const &o)
 		XTAL_0EX -> auto
 		{
 			using O = XTAL_ALL_(o); using _op = bond::operate<O>;

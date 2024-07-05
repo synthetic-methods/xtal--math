@@ -43,8 +43,8 @@ struct imagine
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(auto &&o)
 		XTAL_0EX -> decltype(auto)
 			requires un_n<complex_field_q<decltype(o)>>
 		{
@@ -56,8 +56,8 @@ struct imagine
 			}
 		};
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(complex_field_q auto const &o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(complex_field_q auto const &o)
 		XTAL_0EX -> decltype(auto)
 			requires un_n<complex_number_q<decltype(o)>>
 		{
@@ -78,8 +78,8 @@ struct imagine
 			XTAL_0IF (N_rot == 0b11 and N_con == 1) {return complexion_f( y,  x);}
 		};
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(complex_number_q auto o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(complex_number_q auto o)
 		XTAL_0EX -> decltype(auto)
 		{
 			auto &[x, y] = involved_f(o);

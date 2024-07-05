@@ -43,8 +43,8 @@ struct root<M_pow, M_zap>
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(auto &&o)
 		XTAL_0EX -> auto
 		{
 			using _op = bond::operate<XTAL_ALL_(o)>;
@@ -65,8 +65,8 @@ struct root<M_pow, M_zap>
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(auto &&o)
 		XTAL_0EX -> auto
 		{
 			using _op = bond::operate<XTAL_ALL_(o)>;
@@ -78,8 +78,8 @@ struct root<M_pow, M_zap>
 			XTAL_0IF (M_pow == -2) {return _op::alpha_1/sqrt(XTAL_REF_(o));}
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,static)
-		XTAL_LET function(complex_number_q auto &&o)
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(complex_number_q auto &&o)
 		XTAL_0EX -> auto
 		{
 			using _op = bond::operate<XTAL_ALL_(o)>;
