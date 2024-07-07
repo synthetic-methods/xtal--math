@@ -14,6 +14,11 @@ namespace xtal::math
 template <class T>
 XTAL_REQ duple_q = bond::pack_q<T> and bond::pack_size_n<T> == 2;
 
+template <class U>
+//\
+XTAL_USE duple_t = algebra::scalar_t<U[2]>;
+XTAL_USE duple_t = bond::couple_t<U, U>;
+
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -22,8 +27,8 @@ XTAL_LET duple_f(auto &&...xs)
 XTAL_0EX -> decltype(auto)
 {
 	//\
-	return bond::couple_f(XTAL_REF_(xs)...);
 	return algebra::scalar_f(XTAL_REF_(xs)...);
+	return bond::couple_f(XTAL_REF_(xs)...);
 }
 
 
