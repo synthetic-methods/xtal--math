@@ -81,7 +81,6 @@ TAG_("unity")
 		T_aphex x7{ 0.7777777777777777, 0.7777777777777777};
 		A_aphex xs{{x0, x1, x2, x3, x4, x5, x6, x7}};
 
-	//	unity_t<1> _y1{}; _y1 <<= V_unity_limit(3); echo(_y1(x1));
 		auto y0 = unity_t<1>::template function<4>(x0);
 		auto y1 = unity_t<1>::template function<4>(x1);
 		auto y2 = unity_t<1>::template function<4>(x2);

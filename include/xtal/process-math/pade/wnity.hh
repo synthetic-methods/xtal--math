@@ -16,19 +16,30 @@ Defines the pair `1^{#,-#} &`. \
 ///\note\
 Pronounced "double-unity". \
 
-template <int M_ism=1, typename ...As> XTAL_TYP wnity {static_assert(M_ism);};
-template <int M_ism=1, typename ...As> XTAL_USE wnity_t = process::confined_t<wnity<M_ism, As...>>;
-
-
-////////////////////////////////////////////////////////////////////////////////
-
-template <int M_ism, bond::compose_q ...As> requires some_q<As...>
-struct wnity<M_ism, As...>
+template <int M_ism=0, typename ...As> requires in_n<M_ism, 0, 1, 2>
+struct wnity
 :	process::lift<wnity<M_ism>, bond::compose<As...>>
 {
 };
 template <>
-struct wnity<1>
+XTAL_TYP wnity<>
+{
+	using limit_type = occur::math::limit_t<(1<<3)>;
+
+	template <class S>
+	using subtype = bond::compose_s<S, resource::voiced<void
+	,	typename limit_type::template dispatch<>
+	>>;
+
+};
+template <int M_ism=1, typename ...As>
+XTAL_USE wnity_t = process::confined_t<wnity<M_ism, As...>, wnity<>>;
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <>
+struct wnity<1> : wnity<>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>

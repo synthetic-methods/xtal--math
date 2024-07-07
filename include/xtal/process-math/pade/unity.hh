@@ -16,10 +16,24 @@ Defines `function` by `(-1)^(2 #) &`; spiritually equivalent to `1^# &`. \
 ///\param M_ism \f$\in {1, 2}\f$ specifies the underlying morphism, \
 generating either circular or hyperbolic `{cosine, sine}` pairs. \
 
-template <int M_ism=1, typename ...As> XTAL_TYP unity {static_assert(M_ism);};
-template <int M_ism=1, typename ...As> XTAL_USE unity_t = process::confined_t<unity<M_ism, As...>>;
+template <int M_ism=0, typename ...As> requires in_n<M_ism, 0, 1, 2>
+struct unity
+:	process::lift<unity<M_ism>, bond::compose<As...>>
+{
+};
+template <>
+XTAL_TYP unity<>
+{
+	using limit_type = occur::math::limit_t<(1<<3)>;
 
-using V_unity_limit = occur::math::limit_t<2>;
+	template <class S>
+	using subtype = bond::compose_s<S, resource::voiced<void
+	,	typename limit_type::template dispatch<>
+	>>;
+
+};
+template <int M_ism=1, typename ...As>
+XTAL_USE unity_t = process::confined_t<unity<M_ism, As...>, unity<>>;
 
 
 namespace _detail
@@ -151,23 +165,15 @@ struct subunity<M_ism,-2>
 
 }///////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism, bond::compose_q ...As> requires some_q<As...>
-struct unity<M_ism, As...>
-:	process::lift<unity<M_ism>, bond::compose<As...>>
-{
-};
-template <int M_ism> requires (0 < M_ism)
-struct unity<M_ism>
+template <int M_ism> requires in_n<M_ism, 0, 1, 2>
+struct unity<M_ism> : unity<>
 {
 	using superprocess = process::lift_t<square<M_ism, 0>, _detail::subunity<M_ism,-0>>;
 
-	using subkind = bond::compose<void
-	,	V_unity_limit::dispatch<>
-	>;
 	template <class S>
-	class subtype : public bond::compose_s<S, subkind>
+	class subtype : public bond::compose_s<S>
 	{
-		using S_ = bond::compose_s<S, subkind>;
+		using S_ = bond::compose_s<S>;
 
 	public:
 		using S_::S_;

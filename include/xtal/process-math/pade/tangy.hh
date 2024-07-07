@@ -16,31 +16,37 @@ Defines `(-1)^(2 #) &`; spiritually equivalent to `1^# &`. \
 ///\param M_ism \f$\in {1, 2}\f$ specifies the underlying morphism, \
 generating either circular or hyperbolic `{cosine, sine}` pairs. \
 
-template <int M_ism=1, typename ...As> XTAL_TYP tangy {static_assert(M_ism);};
-template <int M_ism=1, typename ...As> XTAL_USE tangy_t = process::confined_t<tangy<M_ism, As...>>;
+template <int M_ism=0, typename ...As> requires in_n<M_ism, 0, 1, 2>
+struct tangy
+:	process::lift<tangy<M_ism>, bond::compose<As...>>
+{
+};
+template <>
+XTAL_TYP tangy<>
+{
+	using limit_type = occur::math::limit_t<(1<<3)>;
+
+	template <class S>
+	using subtype = bond::compose_s<S, resource::voiced<void
+	,	typename limit_type::template dispatch<>
+	>>;
+
+};
+template <int M_ism=1, typename ...As>
+XTAL_USE tangy_t = process::confined_t<tangy<M_ism, As...>, tangy<>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism, bond::compose_q ...As> requires some_q<As...>
-struct tangy<M_ism, As...>
-:	process::lift<tangy<M_ism>, bond::compose<As...>>
-{
-};
 template <int M_ism> requires (0 < M_ism)
-struct tangy<M_ism>
+struct tangy<M_ism> : tangy<>
 {
 	static constexpr int I_sgn = sign_n<(M_ism&1)^1, -1>;
 
-	using limit_type = occur::math::limit_t<2>;
-
-	using subkind = bond::compose<void
-	,	limit_type::dispatch<>
-	>;
 	template <class S>
-	class subtype : public bond::compose_s<S, subkind>
+	class subtype : public bond::compose_s<S>
 	{
-		using S_ = bond::compose_s<S, subkind>;
+		using S_ = bond::compose_s<S>;
 
 	public:
 		using S_::S_;

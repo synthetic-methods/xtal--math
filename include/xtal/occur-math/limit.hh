@@ -13,8 +13,8 @@ namespace xtal::occur::math
 
 XTAL_TYP LIMIT;
 
-template <size_type N_shift=0>
-XTAL_USE limit_t = inferred_t<size_type, LIMIT, bond::word<(1 << N_shift)>>;
+template <size_type N=0>
+XTAL_USE limit_t = inferred_t<size_type, LIMIT, bond::word<N>>;
 
 
 ///////////////////////////////////////////////////////////////////////////////
