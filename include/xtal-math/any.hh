@@ -22,8 +22,8 @@ XTAL_LET duple_f(auto &&...xs)
 XTAL_0EX -> decltype(auto)
 {
 	//\
-	return algebra::scalar_f(XTAL_REF_(xs)...);
 	return bond::couple_f(XTAL_REF_(xs)...);
+	return algebra::scalar_f(XTAL_REF_(xs)...);
 }
 
 
