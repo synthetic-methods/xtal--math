@@ -48,6 +48,8 @@ XTAL_0EX -> decltype(auto)
 }
 
 
+
+
 template <template <class> class Y, eigenvalue_q ...Xs>
 XTAL_DEF_(return,inline)
 XTAL_LET construxion_f(Xs &&...xs)
@@ -66,6 +68,12 @@ XTAL_0EX
 	return inoperative_f<Y<W>>(XTAL_REF_(xs)...);
 }
 XTAL_DEF_(return,inline)
+XTAL_LET complexion_f(eigenvalue_q auto &&...xs)
+XTAL_0EX
+{
+	return _std::complex<Eigen::ArrayXd>{XTAL_REF_(xs)...};
+}
+XTAL_DEF_(return,inline)
 XTAL_LET complexion_f(auto &&...xs)
 XTAL_0EX
 {
@@ -76,4 +84,15 @@ XTAL_0EX
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////
+namespace std
+{
+XTAL_DEF_(return,inline)
+auto conj(xtal::eigenclass_q auto &&x)
+{
+	using X = XTAL_ALL_(x);
+	using Y = typename  X::target_type;
+	return Y{x.re, -x.im};
+}
+
+}
 XTAL_ENV_(pop)

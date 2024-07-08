@@ -1,8 +1,8 @@
 #pragma once
 #include "./any.hh"
-#include "./unity.hh"
-#include "../roots.hh"
 
+#include "./unity.hh"
+#include "../taylor/logarithm.hh"
 
 
 
@@ -65,8 +65,11 @@ struct wnity<1> : wnity<>
 
 			using T_i = XTAL_ALL_(t_i); using _op = bond::operate<T_i>;
 
-			return function(XTAL_REF_(t_1))*
-				roots_t<1>::template function(exp(XTAL_REF_(t_i)*_op::patio_f(-2)));
+			auto const o = function(XTAL_REF_(t_1));
+			//\
+			auto const e = taylor::logarithm_t<-1>::template function<2>(XTAL_REF_(t_i)*_op::patio_f(-2));
+			auto const e = exp(XTAL_REF_(t_i)*_op::patio_f(-2));
+			return o*roots_t<1>::template function(e);
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline)
@@ -76,7 +79,11 @@ struct wnity<1> : wnity<>
 			using _std::conj;
 
 			auto const o = objective_f(unity_t<1>::template function<N_lim>(XTAL_REF_(t_1)));
+			auto const p = complexion_f(o.real(),  o.imag());
+			auto const q = complexion_f(o.real(), -o.imag());
+			//\
 			return duple_f(o, conj(o));
+			return duple_f(p, q);
 		}
 
 	};

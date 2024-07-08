@@ -61,16 +61,18 @@ struct subunity<M_ism,-2>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return)
-		XTAL_SET function(simplex_field_q auto const &w)
+		XTAL_SET function(simplex_field_q auto const &o)
 		XTAL_0EX -> decltype(auto)
 		{
 			int constexpr I_lim = N_lim&0x7;
 
-			using X = XTAL_ALL_(w); using _op = bond::operate<X>;
+			using X = XTAL_ALL_(o); using _op = bond::operate<X>;
 
 			using alpha_type = typename _op::alpha_type;
 			using sigma_type = typename _op::sigma_type;
 			using delta_type = typename _op::delta_type;
+
+			auto const w = objective_f(o);
 
 			XTAL_IF0
 			XTAL_0IF (I_lim == 0x0) {// 0:1 D[...0]@0 && D[...0]@¼
@@ -225,7 +227,7 @@ struct unity<M_ism> : unity<>
 			else {
 				auto constexpr assigned_f = [] (int i) XTAL_0FN -> Op_alpha {return (i << 1) - 1;};
 				auto w = wrap_f(o);
-				auto m = wrap_f(w*_op::diplo_1)*_op::haplo_1;
+				auto m = objective_f(wrap_f(w*_op::diplo_1)*_op::haplo_1);
 				return superprocess::template function<N_lim>(m)*operative_f(assigned_f, m == w);
 			}
 		}

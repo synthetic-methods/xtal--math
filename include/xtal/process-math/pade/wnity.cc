@@ -52,7 +52,7 @@ TAG_("wnity")
 	auto mt19937_f = typename _op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
 
-	/**/
+	/*/
 	TRY_("vector evaluation")
 	{
 	//	using _std::get;
@@ -88,6 +88,65 @@ TAG_("wnity")
 		TRUE_(check_f<19>(get<0>(y7), ys_0(7)));
 
 	//	TODO: Compare performance of `processor` vs `Eigen`. \
+	
+	};
+	/***/
+	/*/
+	TRY_("vector evaluation")
+	{
+	//	using _std::get;
+
+		T_aphex x0{ 0.0000000000000000, 0.0000000000000000};
+		T_aphex x1{ 0.1111111111111111, 0.1111111111111111};
+		T_aphex x2{ 0.2222222222222222, 0.2222222222222222};
+		T_aphex x3{ 0.3333333333333333, 0.3333333333333333};
+		T_aphex x4{ 0.4444444444444444, 0.4444444444444444};
+		T_aphex x5{ 0.5555555555555555, 0.5555555555555555};
+		T_aphex x6{ 0.6666666666666666, 0.6666666666666666};
+		T_aphex x7{ 0.7777777777777777, 0.7777777777777777};
+		T_alpha xs_co[2][8]
+		{	{	0.0000000000000000,
+				0.1111111111111111,
+				0.2222222222222222,
+				0.3333333333333333,
+				0.4444444444444444,
+				0.5555555555555555,
+				0.6666666666666666,
+				0.7777777777777777
+			},
+			{	0.0000000000000000,
+				0.1111111111111111,
+				0.2222222222222222,
+				0.3333333333333333,
+				0.4444444444444444,
+				0.5555555555555555,
+				0.6666666666666666,
+				0.7777777777777777
+			}
+		};
+		Eigen::Map<A_alpha> xs_re(xs_co[0], 8);
+		Eigen::Map<A_alpha> xs_im(xs_co[1], 8);
+
+		_std::complex<A_alpha> xs{xs_re, xs_im};
+
+		auto y0 = wnity_t<1>::template function<4>(x0);
+		auto y1 = wnity_t<1>::template function<4>(x1);
+		auto y2 = wnity_t<1>::template function<4>(x2);
+		auto y3 = wnity_t<1>::template function<4>(x3);
+		auto y4 = wnity_t<1>::template function<4>(x4);
+		auto y5 = wnity_t<1>::template function<4>(x5);
+		auto y6 = wnity_t<1>::template function<4>(x6);
+		auto y7 = wnity_t<1>::template function<4>(x7);
+		auto ys = wnity_t<1>::template function<4>(xs);
+
+		TRUE_(get<0>(y0).real(), get<0>(ys).real(0));
+		TRUE_(get<0>(y1).real(), get<0>(ys).real(1));
+		TRUE_(get<0>(y2).real(), get<0>(ys).real(2));
+		TRUE_(get<0>(y3).real(), get<0>(ys).real(3));
+		TRUE_(get<0>(y4).real(), get<0>(ys).real(4));
+		TRUE_(get<0>(y5).real(), get<0>(ys).real(5));
+		TRUE_(get<0>(y6).real(), get<0>(ys).real(6));
+		TRUE_(get<0>(y7).real(), get<0>(ys).real(7));
 	
 	};
 	/***/
