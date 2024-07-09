@@ -27,7 +27,7 @@ XTAL_TYP unity<>
 	using limit_type = occur::math::limit_t<(1<<3)>;
 
 	template <class S>
-	using subtype = bond::compose_s<S, resource::voiced<void
+	using subtype = bond::compose_s<S, resource::invoice<void
 	,	typename limit_type::template dispatch<>
 	>>;
 

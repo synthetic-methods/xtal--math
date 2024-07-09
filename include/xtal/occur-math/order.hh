@@ -13,8 +13,8 @@ namespace xtal::occur::math
 
 XTAL_TYP ORDER;
 
-template <size_type N=0>
-XTAL_USE order_t = inferred_t<size_type, ORDER, bond::word<N>>;
+template <unsigned int N=0, typename ...As>
+XTAL_USE order_t = inferred_t<unsigned int, ORDER, bond::word<N>, As...>;
 
 
 ///////////////////////////////////////////////////////////////////////////////
