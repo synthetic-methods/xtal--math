@@ -5,3 +5,4 @@
 #include "./index.cc"
 #include "./limit.cc"
 #include "./order.cc"
+#include "./shape.cc"

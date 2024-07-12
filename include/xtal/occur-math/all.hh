@@ -5,3 +5,4 @@
 #include "./index.hh"
 #include "./limit.hh"
 #include "./order.hh"
+#include "./shape.hh"
