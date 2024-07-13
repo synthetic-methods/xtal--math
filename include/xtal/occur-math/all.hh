@@ -3,6 +3,7 @@
 #include "./arity.hh"
 #include "./count.hh"
 #include "./index.hh"
+#include "./level.hh"
 #include "./limit.hh"
 #include "./order.hh"
 #include "./shape.hh"
