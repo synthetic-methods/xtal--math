@@ -11,7 +11,7 @@ namespace xtal::process::math::pade
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 ///\
-Defines `(-1)^(2 #) &`; spiritually equivalent to `1^# &`. \
+Defines `Tan[Pi #] &`. \
 
 ///\param M_ism \f$\in {1, 2}\f$ specifies the underlying morphism, \
 generating either circular or hyperbolic `{cosine, sine}` pairs. \

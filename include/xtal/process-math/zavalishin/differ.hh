@@ -93,14 +93,14 @@ struct differ<>
 			V  w_ = z(1);
 			
 		//	Divides the difference by the derived slope of the phasor:
-			XTAL_LET N_zap = _op::exponent.depth;
+			XTAL_LET N_zap = _op::negative.width;
 			using _std::round;
 			_std::swap(v1, v0); V v_ = v1 - v0; v_ -= round(v_);
 			_std::swap(u1, u0); U u_ = u1 - u0; u_ *= root_f<-1, N_zap>(v_ - round(v_));
 
 		//	Resets the state to zero if a phase/frequency discontinuity is detected:
-			using _std::abs;
-			u_ *= abs(v_ - w_) < _op::haplo_f(N_zap);
+		//	using _std::abs;
+		//	u_ *= abs(v_ - w_) < _op::haplo_f(N_zap);
 			//\
 			return imagine_f<-complex_field_q<U>>(u_);// Should be imaginary division?
 			return imagine_f<+complex_field_q<U>>(u_);

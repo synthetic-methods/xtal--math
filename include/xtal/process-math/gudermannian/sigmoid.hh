@@ -76,8 +76,8 @@ struct sigmoid<M_ism, -0>
 				using namespace _std;
 				XTAL_IF0
 				XTAL_0IF (M_ism ==  2) {return atan(sinh(XTAL_REF_(u)*up))*dn;}// `Gudermannian`
-				XTAL_0IF (M_ism ==  1) {return      (tan(XTAL_REF_(u)*up))*dn;}
-				XTAL_0IF (M_ism == -1) {return     (atan(XTAL_REF_(u)*up))*dn;}
+				XTAL_0IF (M_ism ==  1) {return       tan(XTAL_REF_(u)*up) *dn;}
+				XTAL_0IF (M_ism == -1) {return      atan(XTAL_REF_(u)*up) *dn;}
 				XTAL_0IF (M_ism == -2) {return asinh(tan(XTAL_REF_(u)*up))*dn;}// `InverseGudermannian`
 			}
 		}

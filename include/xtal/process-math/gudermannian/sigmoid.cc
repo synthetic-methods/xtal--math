@@ -2,7 +2,7 @@
 #include "./any.cc"
 #include "./sigmoid.hh"// testing...
 
-
+#include "../pade/tangy.hh"
 
 
 
@@ -35,18 +35,45 @@ TAG_("whatever")
 	{
 		using _std:: tan;
 		using _std::atan;
+		using _std::sinh;
 
 		TRUE_(check_f<6>(sigmoid_t< 1>::template function<-1>(0.25), sigmoid_t< 1>::template function< 0>(0.25)));
 		TRUE_(check_f<7>(sigmoid_t<-1>::template function<-1>(0.25), sigmoid_t<-1>::template function< 0>(0.25)));
 		TRUE_(check_f<7>(sigmoid_t< 2>::template function<-1>(0.25), sigmoid_t< 2>::template function< 0>(0.25)));
 		TRUE_(check_f<7>(sigmoid_t<-2>::template function<-1>(0.25), sigmoid_t<-2>::template function< 0>(0.25)));
 
-//		using foo = process::confined_t<dilating<1>, sigmoid< 2>>;
-//		using bar = process::confined_t<dilating<1>, sigmoid<-2>>;
-//
-//		echo(foo::function(bar::function(0.50) + bar::function(0.75)));
-//		echo(_std::tanh(_std::atanh(0.50) + _std::atanh(0.75)));
+		TRUE_(check_f<- 2>(sinh(_op::patio_1*0.33), pade::tangy_t<1>::template function<~0>(sigmoid_t<2>::template function<~0>(0.33))));
+		TRUE_(check_f<-46>(sinh(_op::patio_1*0.33), pade::tangy_t<1>::template function< 0>(sigmoid_t<2>::template function< 0>(0.33))));
+		TRUE_(check_f<-47>(sinh(_op::patio_1*0.33), pade::tangy_t<1>::template function< 1>(sigmoid_t<2>::template function< 0>(0.33))));
+		TRUE_(check_f<-47>(sinh(_op::patio_1*0.33), sigmoid_t<1>::template function<~0>(sigmoid_t<2>::template function< 0>(0.33))*_op::patio_1));
 
+	};
+	EST_("Computing `sinh`.")
+	{
+		T_alpha w{};
+		for (T_sigma i = 0x10; ~--i;) {
+			auto x = _op::mantissa_f(mt19937_f);// x = _std::pow(two, x);
+			w *= sinh(x);
+		}
+		return w;
+	};
+	EST_("Computing `sinh` via `tangy`/`sigmoid` composition.")
+	{
+		T_alpha w{};
+		for (T_sigma i = 0x10; ~--i;) {
+			auto x = _op::mantissa_f(mt19937_f);// x = _std::pow(two, x);
+			w *= pade::tangy_t<1>::template function< 1>(sigmoid_t<2>::template function< 0>(x));
+		}
+		return w;
+	};
+	EST_("Computing `sinh` via `sigmoid`/`sigmoid` composition.")
+	{
+		T_alpha w{};
+		for (T_sigma i = 0x10; ~--i;) {
+			auto x = _op::mantissa_f(mt19937_f);// x = _std::pow(two, x);
+			w *= sigmoid_t<1>::template function<~0>(sigmoid_t<2>::template function< 0>(x))*_op::patio_1;
+		}
+		return w;
 	};
 }
 /***/
