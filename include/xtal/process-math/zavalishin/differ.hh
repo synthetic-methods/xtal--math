@@ -88,7 +88,7 @@ struct differ<>
 			U &u1 = reinterpret_cast<U &>(m_cache[maligned_f<U>(i)]);
 			V &v1 = reinterpret_cast<V &>(m_cache[maligned_f<V>(i)]);
 			
-			U  u0 = XTAL_REF_(u);
+			U  u0 = imagine_f<-complex_field_q<U>>(XTAL_REF_(u));
 			V  v0 = z(0);
 			V  w_ = z(1);
 			
@@ -101,9 +101,7 @@ struct differ<>
 		//	Resets the state to zero if a phase/frequency discontinuity is detected:
 		//	using _std::abs;
 		//	u_ *= abs(v_ - w_) < _op::haplo_f(N_zap);
-			//\
-			return imagine_f<-complex_field_q<U>>(u_);// Should be imaginary division?
-			return imagine_f<+complex_field_q<U>>(u_);
+			return u_;
 		}
 
 	};
