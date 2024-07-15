@@ -5,5 +5,5 @@
 #include "./index.hh"
 #include "./level.hh"
 #include "./limit.hh"
+#include "./mode.hh"
 #include "./order.hh"
-#include "./shape.hh"

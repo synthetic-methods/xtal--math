@@ -5,5 +5,5 @@
 #include "./index.cc"
 #include "./level.cc"
 #include "./limit.cc"
+#include "./mode.cc"
 #include "./order.cc"
-#include "./shape.cc"
