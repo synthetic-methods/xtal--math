@@ -46,20 +46,20 @@ TAG_("logarithm")
 	}
 	TRY_("evaluation")
 	{
-		TRUE_(check_f<19>(logarithm_t< 1, 1, 1>::template function<2>(egg), log(egg)));
-		TRUE_(check_f<19>(logarithm_t<-1, 1, 1>::template function<2>(egg), exp(egg)));
+		TRUE_(check_f<-13>(logarithm_t< 1, 1, 1>::template function<2>(egg), log(egg)));
+		TRUE_(check_f<- 4>(logarithm_t<-1, 1, 1>::template function<2>(egg), exp(egg)));
 
-		TRUE_(check_f<7>(logarithm_t< 1>::template function<-1>(egg), log(egg)));
-		TRUE_(check_f<7>(logarithm_t< 1>::template function< 3>(egg), log(egg)));
-		TRUE_(check_f<7>(logarithm_t< 1>::template function< 2>(egg), log(egg)));
-		TRUE_(check_f<7>(logarithm_t< 1>::template function< 1>(egg), log(egg)));
-		TRUE_(check_f<7>(logarithm_t< 1>::template function< 0>(egg), log(egg)));
+		TRUE_(check_f<- 1>(logarithm_t< 1>::template function<-1>(egg), log(egg)));
+		TRUE_(check_f<- 5>(logarithm_t< 1>::template function< 3>(egg), log(egg)));
+		TRUE_(check_f<-19>(logarithm_t< 1>::template function< 2>(egg), log(egg)));
+		TRUE_(check_f<-33>(logarithm_t< 1>::template function< 1>(egg), log(egg)));
+		TRUE_(check_f<-40>(logarithm_t< 1>::template function< 0>(egg), log(egg)));
 
-		TRUE_(check_f<7>(logarithm_t<-1>::template function<-1>(egg), exp(egg)));
-		TRUE_(check_f<7>(logarithm_t<-1>::template function< 3>(egg), exp(egg)));
-		TRUE_(check_f<7>(logarithm_t<-1>::template function< 2>(egg), exp(egg)));
-		TRUE_(check_f<6>(logarithm_t<-1>::template function< 1>(egg), exp(egg)));
-	//	TRUE_(check_f<5>(logarithm_t<-1>::template function< 0>(egg), exp(egg)));
+		TRUE_(check_f<- 1>(logarithm_t<-1>::template function<-1>(egg), exp(egg)));
+		TRUE_(check_f<-14>(logarithm_t<-1>::template function< 3>(egg), exp(egg)));
+		TRUE_(check_f<-29>(logarithm_t<-1>::template function< 2>(egg), exp(egg)));
+		TRUE_(check_f<-45>(logarithm_t<-1>::template function< 1>(egg), exp(egg)));
+	//	UNTRUE_(check_f(logarithm_t<-1>::template function< 0>(egg), exp(egg)));
 
 	}
 
