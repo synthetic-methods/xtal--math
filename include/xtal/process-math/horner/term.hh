@@ -30,9 +30,14 @@ XTAL_0EX
 		auto const y_re = term_f(XTAL_REF_(w), XTAL_REF_(x), xs_re);
 		return _std::complex{y_re, y_im};
 	}
+	XTAL_0IF (complex_number_q<W> and simplex_number_q<X, decltype(x_sign)>) {
+		auto const y_im = w.imag();
+		auto const y_re = term_f(XTAL_REF_(w).real(), XTAL_REF_(x), x_sign);
+		return _std::complex{y_re, y_im};
+	}
 	XTAL_0IF_(dynamic) {
-		if constexpr (bond::operate<V>::use_FMA() and requires {fma((xs *...* n_sign), x, w);}) {
-			using _std::fma;
+		using _std::fma;
+		if constexpr (bond::operate<V>::use_FMA() and requires {fma(x_sign, x, w);}) {
 			return fma(x_sign, XTAL_REF_(x), XTAL_REF_(w));
 		}
 		else {
