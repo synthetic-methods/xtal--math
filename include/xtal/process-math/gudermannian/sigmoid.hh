@@ -79,6 +79,10 @@ struct sigmoid<M_ism, -0>
 				XTAL_0IF (M_ism ==  1) {return       tan(XTAL_REF_(u)*up) *dn;}
 				XTAL_0IF (M_ism == -1) {return      atan(XTAL_REF_(u)*up) *dn;}
 				XTAL_0IF (M_ism == -2) {return asinh(tan(XTAL_REF_(u)*up))*dn;}// `InverseGudermannian`
+			//	Alternative formulations...
+			//	`M_ism == -1`: `function[2]@Log[x + Sqrt[x^2 + 1]]`
+			//	`M_ism == -2`: `ArSinh[Tan[x]] = Log[(1 + Sin[up x])/Cos[up x]]*dn`
+
 			}
 		}
 

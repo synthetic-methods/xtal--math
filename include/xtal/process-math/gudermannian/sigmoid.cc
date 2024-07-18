@@ -48,9 +48,27 @@ TAG_("whatever")
 		TRUE_(check_f<-47>(sinh(_op::patio_1*0.33), sigmoid_t<1>::template function<~0>(sigmoid_t<2>::template function< 0>(0.33))*_op::patio_1));
 
 	};
+	EST_("Computing `ArcTan`.")
+	{
+		T_alpha w{0};
+		for (T_sigma i = 0x10; ~--i;) {
+			auto x = _op::mantissa_f(mt19937_f);// x = _std::pow(two, x);
+			w += sigmoid_t<-1>::template function<-1>(x);
+		}
+		return w;
+	};
+	EST_("Computing `ArcTan` via `sigmoid`.")
+	{
+		T_alpha w{0};
+		for (T_sigma i = 0x10; ~--i;) {
+			auto x = _op::mantissa_f(mt19937_f);// x = _std::pow(two, x);
+			w += sigmoid_t<-1>::template function< 0>(x);
+		}
+		return w;
+	};
 	EST_("Computing `sinh`.")
 	{
-		T_alpha w{};
+		T_alpha w{1};
 		for (T_sigma i = 0x10; ~--i;) {
 			auto x = _op::mantissa_f(mt19937_f);// x = _std::pow(two, x);
 			w *= sinh(x);
@@ -59,7 +77,7 @@ TAG_("whatever")
 	};
 	EST_("Computing `sinh` via `tangy`/`sigmoid` composition.")
 	{
-		T_alpha w{};
+		T_alpha w{1};
 		for (T_sigma i = 0x10; ~--i;) {
 			auto x = _op::mantissa_f(mt19937_f);// x = _std::pow(two, x);
 			w *= pade::tangy_t<1>::template function< 1>(sigmoid_t<2>::template function< 0>(x));
@@ -68,7 +86,7 @@ TAG_("whatever")
 	};
 	EST_("Computing `sinh` via `sigmoid`/`sigmoid` composition.")
 	{
-		T_alpha w{};
+		T_alpha w{1};
 		for (T_sigma i = 0x10; ~--i;) {
 			auto x = _op::mantissa_f(mt19937_f);// x = _std::pow(two, x);
 			w *= sigmoid_t<1>::template function<~0>(sigmoid_t<2>::template function< 0>(x))*_op::patio_1;

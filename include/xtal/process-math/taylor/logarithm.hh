@@ -3,8 +3,8 @@
 
 #include "./sine.hh"
 #include "./monologarithm.hh"
-#include "../dilating.hh"
-#include "../root.hh"
+#include "../gudermannian/sigmoid.hh"
+
 
 XTAL_ENV_(push)
 namespace xtal::process::math::taylor
@@ -180,6 +180,24 @@ struct logarithm< 1, 1, 1>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline)
+		XTAL_SET function(complex_number_q auto u)
+		XTAL_0EX -> decltype(auto)
+		{
+			using _op = bond::operate<decltype(u)>;
+
+			auto constexpr up = _op::alpha_1/_op::patio_1;
+			auto constexpr dn =              _op::patio_1;
+
+			auto const [u_re, u_im] = invalued_f(XTAL_REF_(u));
+			auto const w_re = square_f(u_re);
+			auto const w_im = square_f(u_im);
+
+			auto const y_re = _op::haplo_1*function<N_lim>(w_re + w_im);
+			auto const y_im = gudermannian::sigmoid_t<-1>::template function<-!!N_lim>(up*u_im/u_re)*dn;
+			return complexion_f(y_re, y_im);
+		}
+		template <int N_lim=0>
+		XTAL_DEF_(return,inline)
 		XTAL_SET function(real_number_q auto o)
 		XTAL_0EX -> decltype(auto)
 		{
@@ -187,6 +205,7 @@ struct logarithm< 1, 1, 1>
 
 			using _op = bond::operate<decltype(o)>;
 			using U_alpha = typename _op::alpha_type;
+			using U_sigma = typename _op::sigma_type;
 			using U_delta = typename _op::delta_type;
 
 			XTAL_IF0
@@ -204,14 +223,14 @@ struct logarithm< 1, 1, 1>
 				U_alpha constexpr N_sqrt_half = 0.7071067811865475244008443621048490393e+0L;
 				U_alpha constexpr N_half_log2 = 0.3465735902799726547086160607290882840e+0L;
 
-				auto m = _xtd::bit_cast<U_delta>(o);
-				auto n = m - _op::unit.mask;
+				U_sigma m = _xtd::bit_cast<U_sigma>(o);
+				U_delta n = (m << 1) - (_op::unit.mask << 1);
 				m     &= _op::fraction.mask;
 				m     |= _op::unit.mask;
-				n    >>= _op::unit.shift - 1;
+				n    >>= _op::unit.shift;
 				n     |= 1;
 				auto w = N_sqrt_half*_xtd::bit_cast<U_alpha>(m);
-				auto u = N_half_log2*               U_alpha (n);
+				auto u = N_half_log2*   static_cast<U_alpha>(n);
 				return logarithm_t<1, 1, 0>::template function<N_lim>(w) + u;
 			}
 		}

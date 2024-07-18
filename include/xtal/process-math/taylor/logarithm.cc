@@ -46,6 +46,9 @@ TAG_("logarithm")
 	}
 	TRY_("evaluation")
 	{
+		TRUE_(check_f<- 1>(logarithm_t< 1, 1, 1>::template function<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1, 1>::template function< 2>(T_aphex{0.3, 0.8})));
+		TRUE_(check_f<-46>(logarithm_t< 1, 1, 1>::template function<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1, 1>::template function< 0>(T_aphex{0.3, 0.8})));
+
 		TRUE_(check_f<-13>(logarithm_t< 1, 1, 1>::template function<2>(egg), log(egg)));
 		TRUE_(check_f<- 4>(logarithm_t<-1, 1, 1>::template function<2>(egg), exp(egg)));
 
