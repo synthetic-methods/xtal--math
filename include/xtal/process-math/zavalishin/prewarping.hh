@@ -20,7 +20,7 @@ struct prewarping;
 template <typename ...As>
 struct prewarping
 {
-	using subkind = bond::compose<As..., resource::example<>, bond::tag<prewarping>>;
+	using subkind = bond::compose<As..., bond::tag<prewarping>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, subkind>

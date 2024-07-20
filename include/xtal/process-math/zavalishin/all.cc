@@ -2,4 +2,4 @@
 #include "./differ.cc"
 #include "./filter.cc"
 #include "./prewarping.cc"
-
+#include "./vactrol.cc"

@@ -25,14 +25,14 @@ struct filter
 template <>
 struct filter<>
 {
+	using subkind = bond::compose<void
+	,	resource::cached<>
+	,	resource::example<>
+	>;
 	template <class S>
-	class subtype : public bond::compose_s<S>
+	class subtype : public bond::compose_s<S, subkind>
 	{
-		using S_ = bond::compose_s<S>;
-
-	//	NOTE: Expected maximum is 64/8: 6 doubles not including coefficients...
-		XTAL_SET N_cache = bond::operating::alignment{}*sizeof(size_type);
-		alignas (N_cache) _std::byte m_cache[N_cache];
+		using S_ = bond::compose_s<S, subkind>;
 
 	public:
 		using S_::S_;
@@ -43,20 +43,14 @@ struct filter<>
 		XTAL_0EX
 		{
 			using namespace horner;
-			using V  = XTAL_ALL_(o); using _op = bond::operate<V>;
-			using A  = typename bond::operate<V>::alpha_type;
+			using V = XTAL_ALL_(o); using _op = bond::operate<V>;
+			using A = typename bond::operate<V>::alpha_type;
 			
 			using Y_ = algebra::scalar_t<V[3]>;
 			using V_ = algebra::scalar_t<V[2]>;
 			using A_ = algebra::scalar_t<A[2]>;
 			
-			static_assert(aligned_n<V_, A_> <= N_cache);
-			static_assert(_std::is_trivially_destructible_v<V>);
-			
-			size_type i{};
-			V_ &v_ = reinterpret_cast<V_ &>(m_cache[maligned_f<V_>(i)]);
-			A_ &a_ = reinterpret_cast<V_ &>(m_cache[maligned_f<A_>(i)]);
-
+			auto [v_, a_] = S_::template cache<V_, A_>();
 			A const &a0 = a_[0];
 			A const &a1 = a_[1];
 			A const  a2 =    1 ;
@@ -78,15 +72,15 @@ struct filter<>
 		XTAL_LET method(auto &&o, auto &&f, auto &&_R)
 		XTAL_0EX
 		{
-			using V  = XTAL_ALL_(o); using _op = bond::operate<V>;
-			using A  = typename _op::alpha_type;
+			using V = XTAL_ALL_(o); using _op = bond::operate<V>;
+			using A = typename _op::alpha_type;
 
 			using V_ = algebra::scalar_t<V[2]>;
 			using A_ = algebra::scalar_t<A[2]>;
 
-			size_type i{};
-			V_   &v_ = reinterpret_cast<V_ &>(m_cache[maligned_f<V_>(i)]);
-			A_   &a_ = reinterpret_cast<V_ &>(m_cache[maligned_f<A_>(i)]);
+			auto [v_, a_] = S_::template cache<V_, A_>();
+
+		//	a1 = 2*cos(1.5707963267948966*alpha);
 			new (&a_) A_{_op::alpha_1, _op::alpha_2*_R};
 			return method<Is...>(XTAL_REF_(o), f);
 		}
@@ -100,8 +94,8 @@ struct filter<>
 			combining relative-frequency and resonance as the complex `s`, \
 			where frequency is given by `Abs[s]`, and `Q = Sqrt[# - ¼]@?`. \
 
-			using V  = XTAL_ALL_(o); using _op = bond::operate<V>;
-			using A  = typename _op::alpha_type;
+			using V = XTAL_ALL_(o); using _op = bond::operate<V>;
+			using A = typename _op::alpha_type;
 
 			using _std::exp;// Can approximate?
 			auto constexpr N_lnH = (A) -0.6931471805599453094172321214581765681e+0L;
