@@ -25,12 +25,18 @@ TAG_("root")
 	static constexpr T_alpha two =  2;
 	static constexpr T_alpha ten = 10;
 
-	TRY_("task")
+	TRY_("evaluation")
 	{
 		using _std::pow;
 
 		TRUE_(check_f<22>(root_f<-2>(pow(T_aphex {2, 3}, -2.0)), T_aphex {2, 3}));
 		TRUE_(check_f<22>(pow(T_aphex {2, 3}, 0.5), root_f< 2>(T_aphex {2, 3})));
+
+	}
+	TRY_("punctured evaluation")
+	{
+		TRUE_(1.0 + root_f<-1, 0>(0.0) == 1.0 + root_f<-1, 0>(0.0));
+		TRUE_(1.0 + root_f<-2, 0>(0.0) == 1.0 + root_f<-2, 0>(0.0));
 
 	}
 }

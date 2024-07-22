@@ -29,7 +29,7 @@ XTAL_0EX -> decltype(auto)
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_pow, int M_zap> requires in_n<M_pow, 1, 2,-1,-2> and (0 <  M_zap)
+template <int M_pow, int M_zap> requires in_n<M_pow, 1, 2,-1,-2> and (0 <= M_zap)
 struct root<M_pow, M_zap>
 {
 	using subkind = root<M_pow>;
@@ -53,7 +53,7 @@ struct root<M_pow, M_zap>
 
 	};
 };
-template <int M_pow, int M_zap> requires in_n<M_pow, 1, 2,-1,-2> and (M_zap <= 0)
+template <int M_pow, int M_zap> requires in_n<M_pow, 1, 2,-1,-2> and (M_zap < 0)
 struct root<M_pow, M_zap>
 {
 	template <class S>

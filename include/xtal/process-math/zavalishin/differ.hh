@@ -12,6 +12,9 @@ namespace xtal::process::math::zavalishin
 /////////////////////////////////////////////////////////////////////////////////
 ///\
 Differentiates the incoming signal. \
+When the modulating signal and/or phasor are supplied, \
+and/or if the value is `std::complex`, \
+the result is renormalized w.r.t. the chain-rule of differentiation. \
 
 ///\note\
 The `method` uses local arena-like allocation to manage state, so `sizeof(input) <= 56`. \
@@ -75,7 +78,7 @@ struct differ<>
 			U u0 = XTAL_REF_(u);
 			
 		//	Divides the difference by the derived slope of the phasor:
-			_std::swap(u1, u0); U u10 = u1 - u0; u10 *= root_f<-1, (1)>(z_(1));
+			_std::swap(u1, u0); U u10 = u1 - u0; u10 *= root_f<-1, 0>(z_(1));
 
 		//	Resets the state to zero if a phase/frequency discontinuity is detected:
 		//	using _std::abs;
@@ -99,7 +102,7 @@ struct differ<>
 		//	Divides the difference by the derived slope of the phasor:
 			using _std::round;
 			_std::swap(v1, v0); V v10 = v1 - v0; v10 += z_(1);
-			_std::swap(u1, u0); U u10 = u1 - u0; u10 *= root_f<-1, (8)>(v10);
+			_std::swap(u1, u0); U u10 = u1 - u0; u10 *= root_f<-1, 0>(v10);
 
 			return imagine_f<-complex_field_q<U>>(u10);
 		}
