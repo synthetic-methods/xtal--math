@@ -43,8 +43,8 @@ Serves as the mathematical definition of the approximant, \
 which is argument-restricted by the main definition. \
 
 template <int M_ism=1, int N_car=0> XTAL_TYP subunity {static_assert(M_ism);};
-template <int M_ism               > XTAL_TYP subunity<M_ism,-0>: bond::compose<discarding<1, +1>, subunity<M_ism,-1>> {};
-template <int M_ism               > XTAL_TYP subunity<M_ism,-1>: bond::compose<discarding<1, +2>, subunity<M_ism,-2>> {};
+template <int M_ism               > XTAL_TYP subunity<M_ism,-0>: bond::compose<discarded<1, +1>, subunity<M_ism,-1>> {};
+template <int M_ism               > XTAL_TYP subunity<M_ism,-1>: bond::compose<discarded<1, +2>, subunity<M_ism,-2>> {};
 template <int M_ism=1, int N_car=0> XTAL_USE subunity_t = process::confined_t<subunity<M_ism, N_car>>;
 template <int M_ism               >
 struct subunity<M_ism,-2>

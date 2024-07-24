@@ -2,7 +2,7 @@
 #include "./any.cc"
 #include "./filter.hh"// testing...
 
-#include "./prewarping.hh"
+#include "./prewarped.hh"
 
 
 
@@ -21,9 +21,9 @@ TAG_("filter")
 		using U = typename _op::alpha_type;
 		//\
 		using SVF = confined_t<filter<>>;
-		using SVF = confined_t<prewarping<>, filter<>>;
+		using SVF = confined_t<prewarped<>, filter<>>;
 		//\
-		using Z = processor::monomer_t<prewarping<>, SVF>;
+		using Z = processor::monomer_t<prewarped<>, SVF>;
 		using Z = processor::monomer_t<SVF>;
 
 		SVF svf{};

@@ -21,8 +21,8 @@ Defines a class of Gudermannian-related function/approximations indexed by `M_is
 The (co)domain is normalized around `+/- 1/2`, with derivative `1` at `0`. \
 
 ///\example\
-	using   Tanh = process::confined_t<dilating<1>, sigmoid< 2>>;\
-	using ArTanh = process::confined_t<dilating<1>, sigmoid<-2>>;\
+	using   Tanh = process::confined_t<dilated<1>, sigmoid< 2>>;\
+	using ArTanh = process::confined_t<dilated<1>, sigmoid<-2>>;\
 
 template <int M_ism=1, int M_car=0, typename ...As>
 	requires in_n<M_ism, 1, 2, -1, -2> and in_n<M_car, -0, -1, -2>
@@ -47,7 +47,7 @@ XTAL_0EX -> decltype(auto)
 template <int M_ism>
 struct sigmoid<M_ism, -0>
 {
-	using subkind = bond::compose<discarding<1, +1>, sigmoid<M_ism, -1>>;
+	using subkind = bond::compose<discarded<1, +1>, sigmoid<M_ism, -1>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, subkind>
@@ -90,7 +90,7 @@ struct sigmoid<M_ism, -0>
 };
 template <int M_ism>
 struct sigmoid<M_ism, -1>
-:	bond::compose<discarding<1, +2>, sigmoid<M_ism, -2>>
+:	bond::compose<discarded<1, +2>, sigmoid<M_ism, -2>>
 {
 };
 template <int M_ism>

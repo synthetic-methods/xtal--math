@@ -20,20 +20,20 @@ it must be applied via `{compose,confined}` (etc) rather than `process::{lift,li
 
 template <int M_pow=1, int M_car=0>
 	requires in_n<M_pow, 1, -1> and in_n<M_car, 0, 1, 2>
-XTAL_TYP discarding;
+XTAL_TYP discarded;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int M_pow>
-struct discarding<M_pow, +0>
+struct discarded<M_pow, +0>
 {
 	template <class S>
 	using subtype = bond::compose_s<S>;
 
 };
 template <int M_pow>
-struct discarding<M_pow, +1>
+struct discarded<M_pow, +1>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -75,7 +75,7 @@ struct discarding<M_pow, +1>
 	};
 };
 template <>
-struct discarding<1, +1>
+struct discarded<1, +1>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -128,7 +128,7 @@ struct discarding<1, +1>
 	};
 };
 template <>
-struct discarding<1, +2>
+struct discarded<1, +2>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>

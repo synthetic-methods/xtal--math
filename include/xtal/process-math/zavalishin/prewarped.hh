@@ -12,15 +12,15 @@ namespace xtal::process::math::zavalishin
 /////////////////////////////////////////////////////////////////////////////////
 
 template <typename ...As>
-struct prewarping;
+struct prewarped;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename ...As>
-struct prewarping
+struct prewarped
 {
-	using subkind = bond::compose<As..., bond::tag<prewarping>>;
+	using subkind = bond::compose<As..., bond::tag<prewarped>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, subkind>
