@@ -81,7 +81,6 @@ struct differ<>
 			_std::swap(u1, u0); U u10 = u1 - u0; u10 *= root_f<-1, 0>(z_(1));
 
 		//	Resets the state to zero if a phase/frequency discontinuity is detected:
-		//	using _std::abs;
 		//	u10 *= abs(z10 - z_(1)) < _op::haplo_f(N_zap);
 			return imagine_f<-complex_field_q<U>>(u10);
 		}

@@ -18,8 +18,6 @@ XTAL_DEF_(return)
 XTAL_LET wnity_check_f(auto const &t)
 XTAL_0EX -> bool
 {
-	using _std::get;
-
 	int constexpr N_inf = -1;
 	auto const u = wnity_t<1>::template function<N_lim>(t);
 	auto const v = wnity_t<1>::template function<N_inf>(t);
@@ -55,8 +53,6 @@ TAG_("wnity")
 	/*/
 	TRY_("vector evaluation")
 	{
-	//	using _std::get;
-
 		T_aphex x0{ 0.000000000000000, 0.000000000000000};
 		T_aphex x1{ 0.111111111111111, 0.111111111111111};
 		T_aphex x2{ 0.222222222222222, 0.222222222222222};
@@ -94,8 +90,6 @@ TAG_("wnity")
 	/*/
 	TRY_("vector evaluation")
 	{
-	//	using _std::get;
-
 		T_aphex x0{ 0.0000000000000000, 0.0000000000000000};
 		T_aphex x1{ 0.1111111111111111, 0.1111111111111111};
 		T_aphex x2{ 0.2222222222222222, 0.2222222222222222};
