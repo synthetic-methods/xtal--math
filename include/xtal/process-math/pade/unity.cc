@@ -215,8 +215,6 @@ TAG_("unity")
 
 		EST_("evaluation <N_lim=-1>")
 		{
-			using _std::round;
-
 			T_alpha t = 0.618, _t = 0.414;
 			T_aphex z {1, 0};
 
@@ -230,8 +228,6 @@ TAG_("unity")
 		};
 		EST_("bench <N_lim=4>")
 		{
-			using _std::round;
-
 			T_alpha t = 0.618, _t = 0.414;
 			T_aphex z {1, 0};
 

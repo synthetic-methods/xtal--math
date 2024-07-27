@@ -202,8 +202,6 @@ struct unity<M_ism> : unity<>
 		XTAL_SET function(auto &&t_re, simplex_field_q auto &&t_im)
 		XTAL_0EX -> decltype(auto)
 		{
-			using _std::exp;
-
 			using _op = bond::operate<decltype(t_re), decltype(t_im)>;
 			return function<N_lim>(XTAL_REF_(t_re))*exp(XTAL_REF_(t_im)*_op::patio_f(-2));
 		}

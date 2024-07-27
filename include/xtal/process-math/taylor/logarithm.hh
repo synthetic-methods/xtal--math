@@ -99,8 +99,6 @@ struct logarithm< 1, 1, 0>
 		XTAL_SET function(auto &&o)
 		XTAL_0EX -> decltype(auto)
 		{
-			using _std::log;
-
 			using _op = bond::operate<decltype(o)>;
 			auto constexpr _1 = _op::alpha_1;
 
@@ -139,8 +137,6 @@ struct logarithm<-1, 1, 0>
 		XTAL_SET function(auto &&o)
 		XTAL_0EX -> decltype(auto)
 		{
-			using _std::exp;
-
 			using _op = bond::operate<decltype(o)>;
 			auto constexpr _1 =   _op::alpha_1;
 			auto const      u = o*_op::haplo_1;
@@ -201,8 +197,6 @@ struct logarithm< 1, 1, 1>
 		XTAL_SET function(real_number_q auto o)
 		XTAL_0EX -> decltype(auto)
 		{
-			using _std::log;
-
 			using _op = bond::operate<decltype(o)>;
 			using U_alpha = typename _op::alpha_type;
 			using U_sigma = typename _op::sigma_type;
@@ -258,8 +252,6 @@ struct logarithm<-1, 1, 1>
 		XTAL_SET function(real_number_q auto o)
 		XTAL_0EX -> decltype(auto)
 		{
-			using _std::log;
-
 			using _op = bond::operate<decltype(o)>;
 			using U_alpha = typename _op::alpha_type;
 

@@ -99,7 +99,6 @@ struct differ<>
 			V v0 = XTAL_REF_(v);
 			
 		//	Divides the difference by the derived slope of the phasor:
-			using _std::round;
 			_std::swap(v1, v0); V v10 = v1 - v0; v10 += z_(1);
 			_std::swap(u1, u0); U u10 = u1 - u0; u10 *= root_f<-1, 0>(v10);
 

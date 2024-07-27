@@ -97,7 +97,6 @@ struct filter<>
 			using V = XTAL_ALL_(o); using _op = bond::operate<V>;
 			using A = typename _op::alpha_type;
 
-			using _std::exp;// Can approximate?
 			auto constexpr N_lnH = (A) -0.6931471805599453094172321214581765681e+0L;
 			
 			return method(XTAL_REF_(o), XTAL_REF_(f), exp(N_lnH*XTAL_REF_(_S).imag()));

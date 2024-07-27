@@ -33,10 +33,6 @@ TAG_("whatever")
 
 	TRY_("stuff")
 	{
-		using _std:: tan;
-		using _std::atan;
-		using _std::sinh;
-
 		TRUE_(check_f<6>(sigmoid_t< 1>::template function<-1>(0.25), sigmoid_t< 1>::template function< 0>(0.25)));
 		TRUE_(check_f<7>(sigmoid_t<-1>::template function<-1>(0.25), sigmoid_t<-1>::template function< 0>(0.25)));
 		TRUE_(check_f<7>(sigmoid_t< 2>::template function<-1>(0.25), sigmoid_t< 2>::template function< 0>(0.25)));

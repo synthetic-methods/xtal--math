@@ -47,9 +47,6 @@ TAG_("monologarithm")
 	}
 	TRY_("evaluation")
 	{
-		using _std::exp;
-		using _std::log;
-
 		TRUE_(check_f< 7>(monologarithm_t< 2>::template function<-1>(egg), -log(1 - egg)));
 		TRUE_(check_f< 7>(monologarithm_t< 2>::template function< 3>(egg), -log(1 - egg)));
 		TRUE_(check_f< 7>(monologarithm_t< 2>::template function< 2>(egg), -log(1 - egg)));

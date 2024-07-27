@@ -27,8 +27,6 @@ TAG_("square")
 
 	TRY_("task")
 	{
-		using _std::pow;
-
 		TRUE_(check_f<22>(square_f<-1, -1>(pow(T_aphex {2, 3}, -2.0)), T_aphex {2, 3}));
 		TRUE_(check_f<22>(pow(T_aphex {2, 3}, 2.0), square_f<(+1), 1>(T_aphex {2, 3})));
 		TRUE_(check_f<22>(pow(T_aphex {2, 3}, 0.5), square_f<(-1), 1>(T_aphex {2, 3})));

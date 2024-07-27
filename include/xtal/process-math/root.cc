@@ -27,8 +27,6 @@ TAG_("root")
 
 	TRY_("evaluation")
 	{
-		using _std::pow;
-
 		TRUE_(check_f<22>(root_f<-2>(pow(T_aphex {2, 3}, -2.0)), T_aphex {2, 3}));
 		TRUE_(check_f<22>(pow(T_aphex {2, 3}, 0.5), root_f< 2>(T_aphex {2, 3})));
 

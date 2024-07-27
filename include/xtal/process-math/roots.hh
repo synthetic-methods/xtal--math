@@ -43,8 +43,6 @@ struct roots
 		XTAL_SET function(auto &&w)
 		XTAL_0EX -> auto
 		{
-			using _std::sqrt;
-
 			using _op = bond::operate<decltype(w)>;
 			auto constexpr _1 = _op::alpha_1;
 

@@ -44,8 +44,6 @@ struct wrap<As...>
 		XTAL_SET function(auto &&o)
 		XTAL_0EX -> auto
 		{
-			using _std::round;
-
 			return o - round(o);
 		}
 		template <auto ...>

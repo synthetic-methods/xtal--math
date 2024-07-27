@@ -16,9 +16,6 @@ namespace xtal::process::math::taylor::_test
 /**/
 TAG_("logarithm")
 {
-	using _std::log;
-	using _std::exp;
-
 	using _op = bond::operating;
 
 	using T_sigma = typename _op::sigma_type;

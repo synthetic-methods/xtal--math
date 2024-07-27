@@ -52,8 +52,6 @@ struct monologarithm<M_ism, M_pow, -0>
 		XTAL_SET function(auto &&o)
 		XTAL_0EX -> decltype(auto)
 		{
-			using _std::log;
-
 			using _op = bond::operate<decltype(o)>;
 			auto constexpr _1 = _op::alpha_1;
 			auto constexpr _i = _op::alpha_1*sign_n<M_ism&1, -1>;
@@ -92,8 +90,6 @@ struct monologarithm<M_ism, M_pow, -0>
 		XTAL_SET function(auto &&o)
 		XTAL_0EX -> decltype(auto)
 		{
-			using _std::exp;
-
 			using _op = bond::operate<decltype(o)>;
 			auto constexpr _1 = _op::alpha_1;
 			auto constexpr _i = _op::alpha_1*sign_n<M_ism&1, -1>;

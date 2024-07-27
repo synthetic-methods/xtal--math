@@ -36,9 +36,8 @@ XTAL_0EX
 		return _std::complex{y_re, y_im};
 	}
 	XTAL_0IF_(dynamic) {
-		using _std::fma;
-		if constexpr (bond::operate<V>::use_FMA() and requires {fma(x_sign, x, w);}) {
-			return fma(x_sign, XTAL_REF_(x), XTAL_REF_(w));
+		if constexpr (bond::operate<V>::use_FMA() and requires {_std::fma(x_sign, x, w);}) {
+			return _std::fma(x_sign, XTAL_REF_(x), XTAL_REF_(w));
 		}
 		else {
 			return x_sign*XTAL_REF_(x) + XTAL_REF_(w);

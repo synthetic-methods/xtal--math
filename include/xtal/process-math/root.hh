@@ -70,7 +70,6 @@ struct root<M_pow, M_zap>
 		XTAL_0EX -> auto
 		{
 			using _op = bond::operate<XTAL_ALL_(o)>;
-			using _std::sqrt;
 			XTAL_IF0
 			XTAL_0IF (M_pow ==  1) {return                   XTAL_REF_(o) ;}
 			XTAL_0IF (M_pow ==  2) {return              sqrt(XTAL_REF_(o));}
@@ -83,7 +82,6 @@ struct root<M_pow, M_zap>
 		XTAL_0EX -> auto
 		{
 			using _op = bond::operate<XTAL_ALL_(o)>;
-			using _std::sqrt;
 			auto constexpr N_sqrt_half = (typename _op::alpha_type) 0.7071067811865475244008443621048490393L;
 
 			XTAL_IF0

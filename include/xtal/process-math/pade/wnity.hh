@@ -61,8 +61,6 @@ struct wnity<1> : wnity<>
 		XTAL_SET function(auto &&t_1, simplex_field_q auto &&t_i)
 		XTAL_0EX -> decltype(auto)
 		{
-			using _std::exp;
-
 			using T_i = XTAL_ALL_(t_i); using _op = bond::operate<T_i>;
 
 			auto const o = function(XTAL_REF_(t_1));
@@ -76,8 +74,6 @@ struct wnity<1> : wnity<>
 		XTAL_SET function(simplex_field_q auto &&t_1)
 		XTAL_0EX -> decltype(auto)
 		{
-			using _std::conj;
-
 			auto const o = objective_f(unity_t<1>::template function<N_lim>(XTAL_REF_(t_1)));
 			auto const p = complexion_f(o.real(),  o.imag());
 			auto const q = complexion_f(o.real(), -o.imag());
