@@ -15,6 +15,15 @@ else ()
 	add_executable (test ${xtal-math_SOURCE_DIR}/include/xtal-math/all.cc)
 endif ()
 
+
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+	set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -ffp-contract=fast")
+	set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -ffinite-math-only")
+	set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -fapprox-func")
+#	set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast")
+#	set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -m64")
+endif ()
+
 target_link_libraries (test xtal-math::xtal-math Catch2::Catch2WithMain Eigen3::Eigen)
 
 target_precompile_headers (test INTERFACE xtal-math::xtal-math Catch2::Catch2WithMain Eigen3::Eigen)

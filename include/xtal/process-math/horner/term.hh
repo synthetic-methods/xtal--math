@@ -22,19 +22,44 @@ XTAL_0EX
 	using V = based_t<devolved_u<X>>;
 	auto constexpr n_sign = V{N_sign};
 	auto const     x_sign =  (n_sign *...* XTAL_REF_(xs));
+	using X_sign = XTAL_ALL_(x_sign);
 
 	XTAL_IF0
-	XTAL_0IF (simplex_number_q<W, X> and complex_number_q<decltype(x_sign)>) {
-		auto const &[xs_re, xs_im] = involved_f(x_sign);
-		auto const y_im = x*xs_im;
-		auto const y_re = term_f(XTAL_REF_(w), XTAL_REF_(x), xs_re);
-		return _std::complex{y_re, y_im};
+	XTAL_0IF (simplex_number_q<W, X> and complex_number_q<X_sign>) {
+	//	auto const &[w_re, w_im] = involved_f(XTAL_REF_(w));
+	//	auto const &[x_re, x_im] = involved_f(XTAL_REF_(x));
+		auto const &[y_re, y_im] = involved_f(x_sign);
+		auto const   z_im = x*y_im;
+		auto const   z_re = term_f(XTAL_REF_(w), XTAL_REF_(x), y_re);
+		return _std::complex{z_re, z_im};
 	}
-	XTAL_0IF (complex_number_q<W> and simplex_number_q<X, decltype(x_sign)>) {
-		auto const y_im = w.imag();
-		auto const y_re = term_f(XTAL_REF_(w).real(), XTAL_REF_(x), x_sign);
-		return _std::complex{y_re, y_im};
+	XTAL_0IF (complex_number_q<W> and simplex_number_q<X, X_sign>) {
+		auto const &[w_re, w_im] = involved_f(XTAL_REF_(w));
+	//	auto const &[x_re, x_im] = involved_f(XTAL_REF_(x));
+	//	auto const &[y_re, y_im] = involved_f(x_sign);
+		auto const & z_im = w_im;
+		auto const   z_re = term_f(w_re, XTAL_REF_(x), x_sign);
+		return _std::complex{z_re, z_im};
 	}
+	/**/
+	XTAL_0IF (simplex_number_q<X> and complex_number_q<W, X_sign>) {
+		return term_f(XTAL_REF_(w), _std::complex{XTAL_REF_(x)}, x_sign);
+		auto const &[w_re, w_im] = involved_f(XTAL_REF_(w));
+	//	auto const &[x_re, x_im] = involved_f(XTAL_REF_(x));
+		auto const &[y_re, y_im] = involved_f(x_sign);
+		auto const   z_re = term_f(w_re, x, y_re);
+		auto const   z_im = term_f(w_im, x, y_im);
+		return _std::complex{z_re, z_im};
+	}
+	XTAL_0IF (complex_number_q<W, X, X_sign>) {
+		auto const &[w_re, w_im] = involved_f(XTAL_REF_(w));
+		auto const &[x_re, x_im] = involved_f(XTAL_REF_(x));
+		auto const &[y_re, y_im] = involved_f(x_sign);
+		auto const   z_re = term_f(term_f(w_re, x_re, y_re),-x_im, y_im);
+		auto const   z_im = term_f(term_f(w_im, x_im, y_re), x_re, y_im);
+		return _std::complex{z_re, z_im};
+	}
+	/***/
 	XTAL_0IF_(dynamic) {
 		if constexpr (bond::operate<V>::use_FMA() and requires {_std::fma(x_sign, x, w);}) {
 			return _std::fma(x_sign, XTAL_REF_(x), XTAL_REF_(w));
