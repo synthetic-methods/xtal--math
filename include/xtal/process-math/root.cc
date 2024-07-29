@@ -30,6 +30,8 @@ TAG_("root")
 		TRUE_(check_f<22>(root_f<-2>(pow(T_aphex {2, 3}, -2.0)), T_aphex {2, 3}));
 		TRUE_(check_f<22>(pow(T_aphex {2, 3}, 0.5), root_f< 2>(T_aphex {2, 3})));
 
+		TRUE_(check_f<-1>(one/sqrt(2.2345268795805384), root_f<-2>(_std::complex{2.2345268795805384,0.0}).real()));
+
 	}
 	TRY_("punctured evaluation")
 	{

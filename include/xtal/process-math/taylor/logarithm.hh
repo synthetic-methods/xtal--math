@@ -56,7 +56,7 @@ struct logarithm<-1,-1, M_car>
 	//	TODO: Define `complex` variant!
 
 		template <int N_lim=0>
-		XTAL_DEF_(return)
+		XTAL_DEF_(return,inline)
 		XTAL_SET function(auto &&o)
 		XTAL_0EX -> decltype(auto)
 		{
@@ -92,9 +92,7 @@ struct logarithm< 1, 1, 0>
 	public:
 		using S_::S_;
 
-	//	TODO: Define `complex` variant?
-
-		template <int N_lim=0>
+		template <int N_lim=0, int N_div=0>
 		XTAL_DEF_(return,inline)
 		XTAL_SET function(auto &&o)
 		XTAL_0EX -> decltype(auto)
@@ -107,7 +105,12 @@ struct logarithm< 1, 1, 0>
 				return log(XTAL_REF_(o));
 			}
 			XTAL_0IF (0 <= N_lim) {
-				return superprocess::template function<N_lim>(
+				auto u = XTAL_REF_(o);
+				#pragma unroll
+				for (int i{0}; i < N_div; ++i) {
+					u = root_f<2>(u);
+				}
+				return _op::diplo_f(N_div)*superprocess::template function<N_lim>(
 					(o - _1)*root_f<-2>(XTAL_REF_(o))
 				);
 			}
@@ -132,7 +135,7 @@ struct logarithm<-1, 1, 0>
 	public:
 		using S_::S_;
 
-		template <int N_lim=0>
+		template <int N_lim=0, int N_div=0>//TODO: Handle `N_div` with iterating `square_f`.
 		XTAL_DEF_(return,inline)
 		XTAL_SET function(auto &&o)
 		XTAL_0EX -> decltype(auto)
@@ -159,7 +162,7 @@ struct logarithm<-1, 1, 0>
 
 ////////////////////////////////////////////////////////////////////////////////
 ///\
-Defines argument-reduced approximation of the logarithm `Log[#]`. \
+Defines the argument-restricted approximation of the logarithm `Log[#]`. \
 
 template <>
 struct logarithm< 1, 1, 1>
@@ -210,8 +213,9 @@ struct logarithm< 1, 1, 1>
 			//	Log[m 2^x]
 			//	Log[m] + Log[2^x]
 			//	Log[m] + Log[2]*x
-			//	Log[m/Sqrt[2]] + Log[2]*(x + 1/2)
-			//	Log[m/Sqrt[2]] + Log[2]*(x*2 + 1)/2
+			//	Log[m/2^(1/2)] + Log[2]*x + Log[2^(1/2)]
+			//	Log[m/2^(1/2)] + Log[2]*(x + 1/2)
+			//	Log[m/2^(1/2)] + Log[2]*(x*2 + 1)/2
 
 				U_alpha constexpr          _1 = 1;
 				U_alpha constexpr N_sqrt_half = 0.7071067811865475244008443621048490393e+0L;
@@ -232,7 +236,7 @@ struct logarithm< 1, 1, 1>
 	};
 };
 ///\
-Defines argument-reduced approximation of the antilogarithm `Exp[#]`. \
+Defines argument-restricted approximation of the antilogarithm `Exp[#]`. \
 
 template <>
 struct logarithm<-1, 1, 1>

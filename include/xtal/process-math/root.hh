@@ -89,26 +89,29 @@ struct root<M_pow, M_zap>
 				return XTAL_REF_(o);
 			}
 			XTAL_0IF (M_pow ==  2) {
-			//	return sqrt(XTAL_REF_(o));
-				auto const x   = o.real();
-				auto const y   = o.imag();
-				auto const n   = function<Ns...>(x*x + y*y);
-				auto const lhs = function<Ns...>(n + x);
-				auto const rhs = function<Ns...>(n - x);
-				return N_sqrt_half*complexion_f(lhs, rhs*_op::assigned_f(y));
+				return sqrt(XTAL_REF_(o));
+//				auto const x   = o.real();
+//				auto const y   = o.imag();
+//				auto const n   = function<Ns...>(x*x + y*y);
+//				auto const lhs = function<Ns...>(n + x);
+//				auto const rhs = function<Ns...>(n - x);
+//				return N_sqrt_half*complexion_f(lhs, rhs*_op::assigned_f(y));
 			}
 			XTAL_0IF (M_pow == -1) {
 				return _op::alpha_1/XTAL_REF_(o);
 			}
 			XTAL_0IF (M_pow == -2) {
-			//	return _op::alpha_1/sqrt(XTAL_REF_(o));
-				using dis = root_t<2>;
-				auto       x   =  o.real();
-				auto       y   =  o.imag();
-				auto       u   =  function(x*x + y*y); x *= u*u;
-				auto const lhs =  dis::template function<Ns...>(u + x);
-				auto const rhs = -dis::template function<Ns...>(u - x);
-				return N_sqrt_half*complexion_f(lhs, rhs*_op::assigned_f(y));
+				return _op::alpha_1/sqrt(XTAL_REF_(o));
+//				using dis = root_t<2>;
+//				auto       x   =  o.real();
+//				auto       y   =  o.imag();
+//				auto const w    =  x*x + y*y;
+//				auto const u_dn =  function<Ns...>(w);
+//				auto const u_up =  u_dn*w;
+//				auto const v_re =  u_dn*dis::template function<Ns...>(u_up + x);
+//				auto const v_im = -u_dn*dis::template function<Ns...>(u_up - x);
+//
+//				return N_sqrt_half*complexion_f(v_re, v_im*_op::assigned_f(y));
 			}
 		}
 

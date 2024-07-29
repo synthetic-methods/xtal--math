@@ -282,8 +282,60 @@ TAG_("unity")
 		TRUE_(check_f<-1>(z, process::lift_t<unity<1>, dilate<1>>::template function<N_lim>(t2)));
 		TRUE_(check_f<-1>(z, process::lift_t<unity<1>           >::template function<N_lim>(t1)));
 
+	}
+	TRY_("inversion<-1> (native)")
+	{
+		T_aphex const x{0.123, 0.456};
+		T_aphex const y = unity_t< 1>::template function<-1>(x);
+		T_aphex const z = unity_t<-1>::template function<-1>(y);
+
+		//\
+		echo(check_f(x, z));
+		TRUE_(check_f<-16>(x, z));
 
 	}
+	TRY_("inversion< 5> (native)")
+	{
+		T_aphex const x{0.123, 0.456};
+		T_aphex const y = unity_t< 1>::template function< 5>(x);
+		T_aphex const z = unity_t<-1>::template function< 5>(y);
+
+		//\
+		echo(check_f(x, z));
+		TRUE_(check_f<-16>(x, z));
+
+	}
+	EST_("unity inversion<-1> (native)")
+	{
+		T_aphex y{};
+		for (int i = 0x20; ~--i;) {
+			T_aphex const x{_op::mantissa_f(mt19937_f), _op::mantissa_f(mt19937_f)};
+			y += unity_t<-1>::template function<-1>(y);
+		}
+		return y;
+
+	};
+	EST_("unity inversion< 3> (approximation)")
+	{
+		T_aphex y{};
+		for (int i = 0x20; ~--i;) {
+			T_aphex const x{_op::mantissa_f(mt19937_f), _op::mantissa_f(mt19937_f)};
+			y += unity_t<-1>::template function< 3>(y);
+		}
+		return y;
+
+	};
+//	EST_("inversion (approximation)")
+//	{
+//		T_aphex const x{0.123, 0.456};
+//		T_aphex const y = unity_t< 1>::template function<5>(x);
+//		T_aphex const z = unity_t<-1>::template function<5>(y);
+//
+//		//\
+//		echo(check_f(x, z));
+//		TRUE_(check_f<-16>(x, z));
+//
+//	};
 }
 /***/
 

@@ -62,7 +62,7 @@ struct differ<>
 			auto [u1] = S_::template cache<U>(); U u0 = XTAL_REF_(u);
 
 			_std::swap(u0, u1);
-			return imagine_f<-complex_field_q<U>>(u1 - u0);
+			return u1 - u0;
 		}
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
@@ -82,7 +82,7 @@ struct differ<>
 
 		//	Resets the state to zero if a phase/frequency discontinuity is detected:
 		//	u10 *= abs(z10 - z_(1)) < _op::haplo_f(N_zap);
-			return imagine_f<-complex_field_q<U>>(u10);
+			return u10;
 		}
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
@@ -102,7 +102,7 @@ struct differ<>
 			_std::swap(v1, v0); V v10 = v1 - v0; v10 += z_(1);
 			_std::swap(u1, u0); U u10 = u1 - u0; u10 *= root_f<-1, 0>(v10);
 
-			return imagine_f<-complex_field_q<U>>(u10);
+			return u10;
 		}
 
 	};

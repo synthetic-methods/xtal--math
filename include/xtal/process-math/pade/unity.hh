@@ -1,8 +1,8 @@
 #pragma once
 #include "./any.hh"
-#include "../square.hh"
-#include "../wrap.hh"
-#include "../../occur-math/all.hh"
+
+#include "./tangy.hh"
+#include "../taylor/logarithm.hh"
 
 
 
@@ -16,7 +16,7 @@ Defines `function` by `(-1)^(2 #) &`; spiritually equivalent to `1^# &`. \
 ///\param M_ism \f$\in {1, 2}\f$ specifies the underlying morphism, \
 generating either circular or hyperbolic `{cosine, sine}` pairs. \
 
-template <int M_ism=0, typename ...As> requires in_n<M_ism, 0, 1, 2>
+template <int M_ism=0, typename ...As> requires in_n<M_ism, 0, 1,-1, 2,-2>
 struct unity
 :	process::lift<unity<M_ism>, bond::compose<As...>>
 {
@@ -36,136 +36,7 @@ template <int M_ism=1, typename ...As>
 XTAL_USE unity_t = process::confined_t<unity<M_ism, As...>, unity<>>;
 
 
-namespace _detail
-{///////////////////////////////////////////////////////////////////////////////
-///\
-Serves as the mathematical definition of the approximant, \
-which is argument-restricted by the main definition. \
-
-template <int M_ism=1, int N_car=0> XTAL_TYP subunity {static_assert(M_ism);};
-template <int M_ism               > XTAL_TYP subunity<M_ism,-0>: bond::compose<discarded<1, +1>, subunity<M_ism,-1>> {};
-template <int M_ism               > XTAL_TYP subunity<M_ism,-1>: bond::compose<discarded<1, +2>, subunity<M_ism,-2>> {};
-template <int M_ism=1, int N_car=0> XTAL_USE subunity_t = process::confined_t<subunity<M_ism, N_car>>;
-template <int M_ism               >
-struct subunity<M_ism,-2>
-{
-	static constexpr int I_sgn = sign_n<(M_ism&1)^1, -1>;
-
-	template <class S>
-	class subtype : public bond::compose_s<S>
-	{
-		using S_ = bond::compose_s<S>;
-
-	public:
-		using S_::S_;
-
-		template <int N_lim=-1>
-		XTAL_DEF_(return)
-		XTAL_SET function(simplex_field_q auto const &o)
-		XTAL_0EX -> decltype(auto)
-		{
-			int constexpr I_lim = N_lim&0x7;
-
-			using X = XTAL_ALL_(o); using _op = bond::operate<X>;
-
-			using alpha_type = typename _op::alpha_type;
-			using sigma_type = typename _op::sigma_type;
-			using delta_type = typename _op::delta_type;
-
-			auto const w = objective_f(o);
-
-			XTAL_IF0
-			XTAL_0IF (I_lim == 0x0) {// 0:1 D[...0]@0 && D[...0]@¼
-				alpha_type constexpr x0 = 1.000000000000000000000000000000000000L;// 1
-				alpha_type constexpr y0 = 3.141592653589793238462643383279502884L;
-				auto x = horner::polynomial_f<I_sgn>(w, x0);
-				auto y = horner::polynomial_f<I_sgn>(w, y0);
-				return complexion_f(x, y);
-			}
-			XTAL_0IF (I_lim == 0x1) {// 2:1 D[...1]@0 && D[...0]@¼
-				alpha_type constexpr x0 = 1.000000000000000000000000000000000000L;// 1
-				alpha_type constexpr x1 = 3.433629385640827046149426466881988463L;
-				alpha_type constexpr y0 = 3.141592653589793238462643383279502884L;
-				auto x = horner::polynomial_f<I_sgn>(w, x0, x1);
-				auto y = horner::polynomial_f<I_sgn>(w, y0);
-				return complexion_f(x, y);
-			}
-			XTAL_0IF (I_lim == 0x2) {// 2:3 D[...1]@0 && D[...1]@¼
-				alpha_type constexpr x0 = 1.000000000000000000000000000000000000L;// 1
-				alpha_type constexpr x1 = 3.968985697854261420737444775816737932L;
-				alpha_type constexpr y0 = 3.141592653589793238462643383279502884L;// pi
-				alpha_type constexpr y1 = 2.141425248853737498352073235738997875L;
-				auto x = horner::polynomial_f<I_sgn>(w, x0, x1);
-				auto y = horner::polynomial_f<I_sgn>(w, y0, y1);
-				return complexion_f(x, y);
-			}
-			XTAL_0IF (I_lim == 0x3) {// 4:3 D[...2]@0 && D[...2]@¼
-				alpha_type constexpr x0 = 1.000000000000000000000000000000000000L;// 1
-				alpha_type constexpr x1 = 4.237909660449236428693854535224051104L;
-				alpha_type constexpr x2 = 0.955351046282004540229507364731116905L;
-				alpha_type constexpr y0 = 3.141592653589793238462643383279502884L;// pi
-				alpha_type constexpr y1 = 2.978283337663136395120335432185471337L;
-				auto x = horner::polynomial_f<I_sgn>(w, x0, x1, x2);
-				auto y = horner::polynomial_f<I_sgn>(w, y0, y1);
-				return complexion_f(x, y);
-			}
-			XTAL_0IF (I_lim == 0x4) {// 4:5 D[...2]@0 && D[...3]@¼
-				alpha_type constexpr x0 = 1.000000000000000000000000000000000000L;// 1
-				alpha_type constexpr x1 = 4.390338960642080575102860479411085957L;
-				alpha_type constexpr x2 = 1.561426046129173147274250250239938996L;
-				alpha_type constexpr y0 = 3.141592653589793238462643383279502884L;// pi
-				alpha_type constexpr y1 = 3.457231542101901520792301595993191760L;
-				alpha_type constexpr y2 = 0.331996058066891068754049734988584509L;
-				auto x = horner::polynomial_f<I_sgn>(w, x0, x1, x2);
-				auto y = horner::polynomial_f<I_sgn>(w, y0, y1, y2);
-				return complexion_f(x, y);
-			}
-			XTAL_0IF (I_lim == 0x5) {// 6:5 D[...3]@0 && D[...3]@¼
-				alpha_type constexpr x0 = 1.000000000000000000000000000000000000L;// 1
-				alpha_type constexpr x1 = 4.487894813803155707106642350629568074L;
-				alpha_type constexpr x2 = 1.975104599215236121543726210642557678L;
-				alpha_type constexpr x3 = 0.094096528134246695768752645930262507L;
-				alpha_type constexpr y0 = 3.141592653589793238462643383279502884L;// pi
-				alpha_type constexpr y1 = 3.763711817027786915281807613442402050L;
-				alpha_type constexpr y2 = 0.623295934882939155479821936321002832L;
-				auto x = horner::polynomial_f<I_sgn>(w, x0, x1, x2, x3);
-				auto y = horner::polynomial_f<I_sgn>(w, y0, y1, y2);
-				return complexion_f(x, y);
-			}
-			XTAL_0IF (I_lim == 0x6) {// 6:7 D[...3]@0 && D[...4]@¼
-				alpha_type constexpr x0 = 1.000000000000000000000000000000000000L;// 1
-				alpha_type constexpr x1 = 4.556288946308768410678019439942678932L;
-				alpha_type constexpr x2 = 2.275378023833944536636939235400154936L;
-				alpha_type constexpr x3 = 0.200888908030920297664420149309522799L;
-				alpha_type constexpr y0 = 3.141592653589793238462643383279502884L;// pi
-				alpha_type constexpr y1 = 3.978578321256066662987441200793155884L;
-				alpha_type constexpr y2 = 0.859750287076040352418274981236440341L;
-				alpha_type constexpr y3 = 0.022706582386768037080226242510354953L;
-				auto x = horner::polynomial_f<I_sgn>(w, x0, x1, x2, x3);
-				auto y = horner::polynomial_f<I_sgn>(w, y0, y1, y2, y3);
-				return complexion_f(x, y);
-			}
-			XTAL_0IF (I_lim == 0x7) {// 8:7 D[...4]@0 && D[...5]@¼
-				alpha_type constexpr x0 = 1.000000000000000000000000000000000000L;// 1
-				alpha_type constexpr x1 = 4.606547402370024772724248519073301565L;
-				alpha_type constexpr x2 = 2.500953736670776238483254500604284293L;
-				alpha_type constexpr x3 = 0.300243870518009486091801923099845388L;
-				alpha_type constexpr x4 = 0.004749448374844164315053279863807317L;
-				alpha_type constexpr y0 = 3.141592653589793238462643383279502884L;// pi
-				alpha_type constexpr y1 = 4.136469917598875065501883380414805209L;
-				alpha_type constexpr y2 = 1.048974757862995076084471175276645114L;
-				alpha_type constexpr y3 = 0.054095324243024101847331195900039153L;
-				auto x = horner::polynomial_f<I_sgn>(w, x0, x1, x2, x3, x4);
-				auto y = horner::polynomial_f<I_sgn>(w, y0, y1, y2, y3);
-				return complexion_f(x, y);
-			}
-		}
-
-	};
-};
-
-
-}///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 template <int M_ism> requires in_n<M_ism, 0, 1, 2>
 struct unity<M_ism> : unity<>
@@ -249,6 +120,44 @@ struct unity<M_ism> : unity<>
 				d0 ^= sn;
 				return superprocess::template function<N_lim>(d(0))*inoperative_f<Fn_alpha>(_op::unit.mask|sn);
 			}
+		}
+
+	};
+};
+template <int M_ism> requires in_n<M_ism,-1,-2>
+struct unity<M_ism> : unity<>
+{
+	using superprocess = process::lift_t<square<M_ism, 0>, _detail::subunity<M_ism,-0>>;
+
+	template <class S>
+	class subtype : public bond::compose_s<S>
+	{
+		using S_ = bond::compose_s<S>;
+
+	public:
+		using S_::S_;
+
+		template <int N_lim=-1>
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(complex_field_q auto &&o)
+		XTAL_0EX -> decltype(auto)
+		{
+			using horner::term_f;
+			using _op = bond::operate<decltype(o)>;
+
+			XTAL_LET N_lim_tan = N_lim;
+			XTAL_LET N_lim_log = 2;
+
+			XTAL_LET _1 = _op::haplo_0, _2pi = _1/_op::patio_2;
+			XTAL_LET _2 = _op::haplo_1, _4pi = _2/_op::patio_2;
+
+			auto const &[x_re, x_im] = involved_f(o);
+			auto const   y_re = tangy_t<-1, 1>::template function<N_lim_tan>(x_im, x_re);
+			auto const   w_im = term_f(x_im*x_im, x_re, x_re);
+			//\
+			auto const   y_im = log(w_im);
+			auto const   y_im = taylor::logarithm_t< 1, 1, 1>::template function<N_lim_log>(w_im);
+			return complexion_f(y_re*_2, y_im*-_4pi);
 		}
 
 	};
