@@ -11,10 +11,10 @@ namespace xtal::process::math::pade
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 ///\
-Defines `Tan[Pi #] &`. \
+Defines `Tan[Pi #] &` and `Tanh[Pi #] &`. \
 
 ///\param M_ism \f$\in {1, 2}\f$ specifies the underlying morphism, \
-generating either circular or hyperbolic `{cosine, sine}` pairs. \
+generating either the circular or hyperbolic tangent. \
 
 template <int M_ism=0, int M_car=0, typename ...As>// requires in_n<M_ism, 0, 1,-1, 2,-2> and in_n<M_car, 1,-0,-1,-2>
 struct tangy

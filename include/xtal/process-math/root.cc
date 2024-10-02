@@ -27,6 +27,12 @@ TAG_("root")
 
 	TRY_("evaluation")
 	{
+		TRUE_(check_f<-1>(root_f< 4>(0.5),     sqrt(sqrt(0.5))));
+		TRUE_(check_f<-1>(root_f<-4>(0.5), one/sqrt(sqrt(0.5))));
+
+		TRUE_(check_f<-1>(root_f< 8>(0.5),     sqrt(sqrt(sqrt(0.5)))));
+		TRUE_(check_f<-1>(root_f<-8>(0.5), one/sqrt(sqrt(sqrt(0.5)))));
+
 		TRUE_(check_f<22>(root_f<-2>(pow(T_aphex {2, 3}, -2.0)), T_aphex {2, 3}));
 		TRUE_(check_f<22>(pow(T_aphex {2, 3}, 0.5), root_f< 2>(T_aphex {2, 3})));
 

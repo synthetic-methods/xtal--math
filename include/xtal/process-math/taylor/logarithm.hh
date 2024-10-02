@@ -111,7 +111,7 @@ struct logarithm< 1, 1, 0>
 					u = root_f<2>(u);
 				}
 				return _op::diplo_f(N_div)*superprocess::template function<N_lim>(
-					(o - _1)*root_f<-2>(XTAL_REF_(o))
+					roots_f<2>(XTAL_REF_(o)).template sum<-1>()
 				);
 			}
 		}

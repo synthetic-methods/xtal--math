@@ -34,19 +34,19 @@ struct sine<M_ism, -0>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&u)
+		XTAL_SET function(auto &&w)
 		XTAL_0EX -> decltype(auto)
 		{
 			if constexpr (N_lim < 0) {
 				using namespace _std;
 				XTAL_IF0
-				XTAL_0IF (M_ism ==  2) {return  sinh(XTAL_REF_(u));}
-				XTAL_0IF (M_ism ==  1) {return  sin (XTAL_REF_(u));}
-				XTAL_0IF (M_ism == -1) {return asin (XTAL_REF_(u));}
-				XTAL_0IF (M_ism == -2) {return asinh(XTAL_REF_(u));}
+				XTAL_0IF (M_ism ==  2) {return  sinh(XTAL_REF_(w));}
+				XTAL_0IF (M_ism ==  1) {return  sin (XTAL_REF_(w));}
+				XTAL_0IF (M_ism == -1) {return asin (XTAL_REF_(w));}
+				XTAL_0IF (M_ism == -2) {return asinh(XTAL_REF_(w));}
 			}
 			else {
-				return S_::template function<N_lim>(XTAL_REF_(u));
+				return S_::template function<N_lim>(XTAL_REF_(w));
 			}
 		}
 
@@ -67,19 +67,25 @@ struct sine<M_ism, -1>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&u)
+		XTAL_SET function(auto &&o)
 		XTAL_0EX -> decltype(auto)
 		{
+			using horner::term_f;
+			using _op = bond::operate<decltype(o)>;
+
+			auto const w = XTAL_REF_(o)*_op::haplo_f(N_lim);
+			auto const u = w*_op::haplo_1;
+
 			if constexpr (N_lim < 0) {
 				using namespace _std;
 				XTAL_IF0
-				XTAL_0IF (M_ism ==  2) {return  sinh(u)/XTAL_REF_(u);}
-				XTAL_0IF (M_ism ==  1) {return  sin (u)/XTAL_REF_(u);}
-				XTAL_0IF (M_ism == -1) {return asin (u)/XTAL_REF_(u);}
-				XTAL_0IF (M_ism == -2) {return asinh(u)/XTAL_REF_(u);}
+				XTAL_0IF (M_ism ==  2) {return  sinh(o)/XTAL_REF_(o);}
+				XTAL_0IF (M_ism ==  1) {return  sin (o)/XTAL_REF_(o);}
+				XTAL_0IF (M_ism == -1) {return asin (o)/XTAL_REF_(o);}
+				XTAL_0IF (M_ism == -2) {return asinh(o)/XTAL_REF_(o);}
 			}
 			else {
-				return S_::template function<N_lim>(XTAL_REF_(u));
+				return S_::template function<N_lim>(XTAL_REF_(o));
 			}
 		}
 
