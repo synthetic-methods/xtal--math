@@ -64,7 +64,7 @@ struct root<M_pow, M_zap>
 	public:
 		using S_::S_;
 
-		template <auto ...Ns>
+		template <auto ...Ns> requires un_n<M_pow, -3>
 		XTAL_DEF_(return,inline)
 		XTAL_SET function(auto &&o)
 		XTAL_0EX -> auto
@@ -96,6 +96,50 @@ struct root<M_pow, M_zap>
 				return root_f<(M_pow >> 1)>(sqrt(XTAL_REF_(o)));
 			}
 
+		}
+		template <int N_lim=2> requires in_n<M_pow, -3>
+		XTAL_DEF_(return,inline)
+		XTAL_SET function(auto &&o)
+		XTAL_0EX -> auto
+		{
+			if constexpr (real_number_q<decltype(o)>) {
+				using _op = bond::operate<decltype(o)>;
+				using X_delta = typename _op::delta_type;
+				using X_sigma = typename _op::sigma_type;
+				using X_alpha = typename _op::alpha_type;
+
+				X_sigma constexpr N     = _op::sign.mask >> 11;    // {64,32} -> {52,20}
+				X_sigma constexpr K_pow = 3*_op::full.depth/4 - 1; // {64,32} -> {47,23}
+				X_sigma constexpr K_num = 37;
+				X_sigma constexpr K_nom = 30;
+				X_sigma constexpr K     = (K_num << K_pow)/K_nom;// 4/3 - 1/10 // Together
+			//	X_sigma constexpr K     = 0x9DDDDD;// 32-bit
+			//	X_sigma constexpr K     = 0x9DDDDDDDDDDD;// 64-bit
+
+			//	X_sigma constexpr magic = 0x3FF*(1/3)*(3 - 1)*(5 - 3)*N - K;
+				X_sigma constexpr magic = 0x554*N - K;
+
+				auto m = _xtd::bit_cast<X_sigma>(o);
+				auto v = _op::sign.mask&m;
+				m ^= v;
+				m /= 3;
+				m  = magic - m;
+				m ^= v;
+				auto y = _xtd::bit_cast<X_alpha>(m);
+				
+				auto constexpr w = _op::ratio_f( 4, 3);
+				auto const     x = _op::ratio_f(-1, 3)*XTAL_REF_(o);
+				auto constexpr i_lim = stop_n<N_lim, 0x3>;
+			//	#pragma unroll
+				for (int i{0}; i < i_lim; ++i) {
+					y *= _op::accumulate_f(w, x, y*y*y);
+				}
+				return y;
+			}
+			else {
+				using _op = bond::operate<decltype(o)>;
+				return _op::alpha_1/cbrt(XTAL_REF_(o));
+			}
 		}
 		/*/
 		template <auto ...Ns>
