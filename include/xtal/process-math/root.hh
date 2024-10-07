@@ -17,12 +17,12 @@ XTAL_TYP root;
 template <int M_pow=1, int M_zap=-1>
 XTAL_USE root_t = process::confined_t<root<M_pow, M_zap>>;
 
-template <int M_pow=1, int M_zap=-1>
+template <int M_pow=1, int M_zap=-1, int ...Ns>
 XTAL_DEF_(return,inline)
 XTAL_LET root_f(auto &&o)
 XTAL_0EX -> decltype(auto)
 {
-	return root_t<M_pow, M_zap>::function(XTAL_REF_(o));
+	return root_t<M_pow, M_zap>::template function<Ns...>(XTAL_REF_(o));
 }
 
 

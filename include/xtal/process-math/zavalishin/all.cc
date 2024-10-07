@@ -2,4 +2,5 @@
 #include "./differ.cc"
 #include "./filter.cc"
 #include "./prewarped.cc"
+#include "./sigmoid.cc"
 #include "./vactrol.cc"

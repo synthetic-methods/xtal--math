@@ -36,7 +36,7 @@ struct roots
 	public:
 		using S_::S_;
 
-		template <auto ...>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline)
 		XTAL_SET function(auto &&w)
 		XTAL_0EX -> auto
@@ -47,8 +47,8 @@ struct roots
 			auto const o = objective_f(XTAL_REF_(w));
 
 			XTAL_IF0
-			XTAL_0IF (0 <  M_pow) {auto const q = root_f<-M_pow, M_zap>(o); return duple_f(o *_op::template explo_f<+M_pow - 1>(q), q);}
-			XTAL_0IF (M_pow <  0) {auto const q = root_f<+M_pow, M_zap>(o); return duple_f(q, _op::template explo_f<-M_pow - 1>(q)* o);}
+			XTAL_0IF (0 <  M_pow) {auto const q = root_f<-M_pow, M_zap, Ns...>(o); return duple_f(o *_op::template explo_f<+M_pow - 1>(q), q);}
+			XTAL_0IF (M_pow <  0) {auto const q = root_f<+M_pow, M_zap, Ns...>(o); return duple_f(q, _op::template explo_f<-M_pow - 1>(q)* o);}
 		//	XTAL_0IF (M_pow ==  1) {auto const q = root_f<-1, M_zap>(o); return duple_f(o,       q);}
 		//	XTAL_0IF (M_pow ==  2) {auto const q = root_f<-2, M_zap>(o); return duple_f(o*q,     q);}
 		//	XTAL_0IF (M_pow ==  3) {auto const q = root_f<-3, M_zap>(o); return duple_f(o*q*q,   q);}

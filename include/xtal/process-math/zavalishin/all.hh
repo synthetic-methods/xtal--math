@@ -2,4 +2,5 @@
 #include "./differ.hh"
 #include "./filter.hh"
 #include "./prewarped.hh"
+#include "./sigmoid.hh"
 #include "./vactrol.hh"
