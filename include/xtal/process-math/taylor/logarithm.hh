@@ -3,7 +3,7 @@
 
 #include "./sine.hh"
 #include "./monologarithm.hh"
-#include "../gudermannian/sigmoid.hh"
+#include "../gudermannian/tang.hh"
 
 
 XTAL_ENV_(push)
@@ -192,7 +192,7 @@ struct logarithm< 1, 1, 1>
 			auto const w_im = square_f(u_im);
 
 			auto const y_re = _op::haplo_1*function<N_lim>(w_re + w_im);
-			auto const y_im = gudermannian::sigmoid_t<-1>::template function<-!!N_lim>(up*u_im/u_re)*dn;
+			auto const y_im = gudermannian::tang_t<-1>::template function<-!!N_lim>(up*u_im/u_re)*dn;
 			return complexion_f(y_re, y_im);
 		}
 		template <int N_lim=0>

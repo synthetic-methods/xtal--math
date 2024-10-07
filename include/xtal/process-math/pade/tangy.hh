@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-#include "../gudermannian/sigmoid.hh"
+#include "../gudermannian/tang.hh"
 
 
 
@@ -64,7 +64,7 @@ struct tangy<M_ism,-0>
 				XTAL_0IF (2 == M_ism) {return tanh(XTAL_REF_(o)*_op::patio_1);}
 			}
 			XTAL_0IF (N_lim == 0) {
-				return _op::patio_1*gudermannian::sigmoid_t<M_ism>::template function<N_lim>(XTAL_REF_(o));
+				return _op::patio_1*gudermannian::tang_t<M_ism>::template function<N_lim>(XTAL_REF_(o));
 			}
 			XTAL_0IF (0 == (N_lim&1)) {
 				auto const [x1, y1] = involved_f(_detail::subunity_t<M_ism,-0>::template function<N_lim>(o*_op::haplo_1));

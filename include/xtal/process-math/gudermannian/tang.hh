@@ -21,33 +21,33 @@ Defines a class of Gudermannian-related function/approximations indexed by `M_is
 The (co)domain is normalized around `+/- 1/2`, with derivative `1` at `0`. \
 
 ///\example\
-	using   Tanh = process::confined_t<dilated<1>, sigmoid< 2>>;\
-	using ArTanh = process::confined_t<dilated<1>, sigmoid<-2>>;\
+	using   Tanh = process::confined_t<dilated<1>, tang< 2>>;\
+	using ArTanh = process::confined_t<dilated<1>, tang<-2>>;\
 
 template <int M_ism=1, int M_car=0, typename ...As>
 	requires in_n<M_ism, 1, 2, -1, -2> and in_n<M_car, -0, -1, -2>
-XTAL_TYP sigmoid
-:	process::lift<sigmoid<M_ism, M_car>, bond::compose<As...>>
+XTAL_TYP tang
+:	process::lift<tang<M_ism, M_car>, bond::compose<As...>>
 {
 };
 template <int M_ism=1, typename ...As>
-XTAL_USE sigmoid_t = process::confined_t<sigmoid<M_ism, bond::seek_constant_n<As..., nominal_t<0>>, As...>>;
+XTAL_USE tang_t = process::confined_t<tang<M_ism, bond::seek_constant_n<As..., nominal_t<0>>, As...>>;
 
 template <int M_ism=1, typename ...As>
 XTAL_DEF_(return,inline)
-XTAL_LET sigmoid_f(auto &&o)
+XTAL_LET tang_f(auto &&o)
 XTAL_0EX -> decltype(auto)
 {
-	return sigmoid_t<M_ism, As...>::function(XTAL_REF_(o));
+	return tang_t<M_ism, As...>::function(XTAL_REF_(o));
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int M_ism>
-struct sigmoid<M_ism, -0>
+struct tang<M_ism, -0>
 {
-	using subkind = bond::compose<discarded<1, +1>, sigmoid<M_ism, -1>>;
+	using subkind = bond::compose<discarded<1, +1>, tang<M_ism, -1>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, subkind>
@@ -89,12 +89,12 @@ struct sigmoid<M_ism, -0>
 	};
 };
 template <int M_ism>
-struct sigmoid<M_ism, -1>
-:	bond::compose<discarded<1, +2>, sigmoid<M_ism, -2>>
+struct tang<M_ism, -1>
+:	bond::compose<discarded<1, +2>, tang<M_ism, -2>>
 {
 };
 template <int M_ism>
-struct sigmoid<M_ism, -2>
+struct tang<M_ism, -2>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -113,7 +113,7 @@ struct sigmoid<M_ism, -2>
 
 			if constexpr (N_lim < 0) {
 				auto const u = root_f<2>(XTAL_REF_(w));
-				return sigmoid<M_ism, -0>::template function<N_lim>(u)/(u);
+				return tang<M_ism, -0>::template function<N_lim>(u)/(u);
 			}
 			else {
 				using _op = bond::operate<decltype(w)>;
