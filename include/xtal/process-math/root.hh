@@ -17,7 +17,7 @@ XTAL_TYP root;
 template <int M_pow=1, int M_zap=-1>
 XTAL_USE root_t = process::confined_t<root<M_pow, M_zap>>;
 
-template <int M_pow=1, int M_zap=-1, int ...Ns>
+template <int M_pow=1, int M_zap=-1, auto ...Ns>
 XTAL_DEF_(return,inline)
 XTAL_LET root_f(auto &&o)
 XTAL_0EX -> decltype(auto)
@@ -95,15 +95,18 @@ struct root<M_pow, M_zap>
 			XTAL_0IF (1 == _op::bit_count_f(_op::designed_f(M_pow))) {//FIXME: Should work without `designed_f`!
 				return root_f<(M_pow >> 1)>(sqrt(XTAL_REF_(o)));
 			}
-
 		}
-		template <int N_lim=2> requires in_n<M_pow, -3>
+		template <int N_lim=3> requires in_n<M_pow, -3>
 		XTAL_DEF_(return,inline)
 		XTAL_SET function(auto &&o)
 		XTAL_0EX -> auto
 		{
-			if constexpr (real_number_q<decltype(o)>) {
-				using _op = bond::operate<decltype(o)>;
+			using _op = bond::operate<decltype(o)>;
+
+			if constexpr (N_lim < 0 or not real_number_q<decltype(o)>) {
+				return _op::alpha_1/cbrt(XTAL_REF_(o));
+			}
+			else {
 				using X_delta = typename _op::delta_type;
 				using X_sigma = typename _op::sigma_type;
 				using X_alpha = typename _op::alpha_type;
@@ -135,10 +138,6 @@ struct root<M_pow, M_zap>
 					y *= _op::accumulate_f(w, x, y*y*y);
 				}
 				return y;
-			}
-			else {
-				using _op = bond::operate<decltype(o)>;
-				return _op::alpha_1/cbrt(XTAL_REF_(o));
 			}
 		}
 		/*/

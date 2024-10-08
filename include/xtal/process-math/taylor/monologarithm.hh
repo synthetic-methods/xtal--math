@@ -15,10 +15,10 @@ template <int M_ism=1, int M_pow=1, int M_car=0>
 	requires in_n<M_ism, 1, 2, -1, -2> and in_n<M_pow, 1, -1> and in_n<M_car, -0, -1>
 XTAL_TYP monologarithm;
 
-template <int ...Ms>
+template <auto ...Ms>
 XTAL_USE monologarithm_t = process::confined_t<monologarithm<Ms...>>;
 
-template <int ...Ms>
+template <auto ...Ms>
 XTAL_DEF_(return,inline)
 XTAL_LET monologarithm_f(auto &&o, nominal_q auto ...oo)
 XTAL_0EX -> decltype(auto)

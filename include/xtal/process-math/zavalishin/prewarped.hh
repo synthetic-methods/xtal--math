@@ -30,16 +30,16 @@ struct prewarped
 	public:
 		using S_::S_;
 
-		template <auto ...Is>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline)
-		XTAL_LET method(auto &&u, auto &&f, auto &&...oo)
+		XTAL_LET method(auto &&u, real_number_q auto &&f, auto &&...oo)
 		XTAL_0EX -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(u)>;
 			//\
 			auto const t = _std::tan(_op::patio_1*S_::sample().period()*XTAL_REF_(f));
 			auto const t = pade::tangy_t<1>::template function<2>(S_::sample().period()*XTAL_REF_(f));
-			return S_::template method<Is...>(XTAL_REF_(u), t, XTAL_REF_(oo)...);
+			return S_::template method<Ns...>(XTAL_REF_(u), t, XTAL_REF_(oo)...);
 		};
 
 	};
