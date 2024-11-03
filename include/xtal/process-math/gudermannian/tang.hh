@@ -47,12 +47,12 @@ XTAL_0EX -> decltype(auto)
 template <int M_ism>
 struct tang<M_ism, -0>
 {
-	using subkind = bond::compose<discarded<1, +1>, tang<M_ism, -1>>;
+	using superkind = bond::compose<discarded<1, +1>, tang<M_ism, -1>>;
 
 	template <class S>
-	class subtype : public bond::compose_s<S, subkind>
+	class subtype : public bond::compose_s<S, superkind>
 	{
-		using S_ = bond::compose_s<S, subkind>;
+		using S_ = bond::compose_s<S, superkind>;
 
 	public:
 		using S_::S_;

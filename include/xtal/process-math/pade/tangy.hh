@@ -83,12 +83,12 @@ struct tangy<M_ism,-0>
 template <int M_ism> requires in_n<M_ism,-1,-2>
 struct tangy<M_ism, 1>
 {
-	using subkind = tangy<M_ism,-0>;
+	using superkind = tangy<M_ism,-0>;
 
 	template <class S>
-	class subtype : public bond::compose_s<S, subkind>
+	class subtype : public bond::compose_s<S, superkind>
 	{
-		using S_ = bond::compose_s<S, subkind>;
+		using S_ = bond::compose_s<S, superkind>;
 
 	public:
 		using S_::S_;

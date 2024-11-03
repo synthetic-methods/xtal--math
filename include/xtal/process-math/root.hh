@@ -32,12 +32,12 @@ XTAL_0EX -> decltype(auto)
 template <int M_pow, int M_zap> requires (0 <= M_zap)
 struct root<M_pow, M_zap>
 {
-	using subkind = root<M_pow>;
+	using superkind = root<M_pow>;
 
 	template <class S>
-	class subtype : public bond::compose_s<S, subkind>
+	class subtype : public bond::compose_s<S, superkind>
 	{
-		using S_ = bond::compose_s<S, subkind>;
+		using S_ = bond::compose_s<S, superkind>;
 
 	public:
 		using S_::S_;

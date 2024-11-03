@@ -20,12 +20,12 @@ struct prewarped;
 template <typename ...As>
 struct prewarped
 {
-	using subkind = bond::compose<As..., bond::tag<prewarped>>;
+	using superkind = bond::compose<As..., bond::tag<prewarped>>;
 
 	template <class S>
-	class subtype : public bond::compose_s<S, subkind>
+	class subtype : public bond::compose_s<S, superkind>
 	{
-		using S_ = bond::compose_s<S, subkind>;
+		using S_ = bond::compose_s<S, superkind>;
 
 	public:
 		using S_::S_;

@@ -37,14 +37,29 @@ struct differ
 template <>
 struct differ<>
 {
-	using subkind = bond::compose<void
-	,	resource::cached<>
+	using alpha_type = typename bond::operating::alpha_type;
+	using aphex_type = typename bond::operating::aphex_type;
+
+	using superkind = bond::compose<void
 	,	resource::example<>
+	>;
+	using subkind = bond::compose<void
+	,	differ<>
+	,	resource::cached<aphex_type[2]>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S, subkind>
 	{
 		using S_ = bond::compose_s<S, subkind>;
+
+	public:// CONSTRUCT
+		using S_::S_;
+
+	};		
+	template <class S> requires resource::cached_q<S>
+	class subtype<S> : public bond::compose_s<S, superkind>
+	{
+		using S_ = bond::compose_s<S, superkind>;
 
 	public:// CONSTRUCT
 		using S_::S_;
@@ -104,6 +119,32 @@ struct differ<>
 
 			return u10;
 		}
+
+	public:// BRACE*
+	//	TODO: Move this to `processor::math`?
+
+		template <class ...Xs>
+		struct braced
+		{
+			using superkind = bond::compose<void
+			,	subkind
+			,	resource::cached<bond::seek_front_t<Xs...>[2]>
+			>;
+			template <class R>
+			using subtype = bond::compose_s<R, superkind>;
+
+		};
+		template <class ...Xs> requires iterated_q<Xs...>
+		struct braced<Xs...>
+		{
+			using superkind = bond::compose<void
+			,	subkind
+			,	resource::cached<iteratee_t<bond::seek_front_t<Xs...>[2]>>
+			>;
+			template <class R>
+			using subtype = bond::compose_s<R, superkind>;
+
+		};
 
 	};
 };

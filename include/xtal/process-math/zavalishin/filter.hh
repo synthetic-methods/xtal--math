@@ -25,10 +25,22 @@ struct filter
 template <>
 struct filter<>
 {
+	using  alpha_type = typename bond::operating::alpha_type;
+	using  aphex_type = typename bond::operating::aphex_type;
+
 	using   zoom_type = occur::inferred_t<XTAL_TYP   ZOOM, float>;
 	using  order_type = occur::inferred_t<XTAL_TYP  ORDER, bond::seek_t<0, 1, 2, 3>>;
 	using  limit_type = occur::inferred_t<XTAL_TYP  LIMIT, bond::seek_t<0, 1>>;
 	using select_type = occur::inferred_t<XTAL_TYP SELECT, bond::seek_t<0, 1>>;
+
+	XTAL_SET N_order = order_type::cardinality() - 1;
+	XTAL_SET N_cache = N_order*2;
+
+//	TODO: Implement `maximum`? \
+
+//	NOTE: Assuming a base-type of `std::complex`, \
+	the minimum storage required is `(2)*(2*8) == 32` bytes-per-pole. \
+
 	//\
 	using subject = resource::invoice<void
 	using subject = bond::compose<void
@@ -37,15 +49,15 @@ struct filter<>
 	,	typename  order_type::template dispatch<>
 	,	typename select_type::template dispatch<>
 	>;
-	using subkind = bond::compose<void
-	,	resource::cached<_std::complex<double>[4*2]>
+	using superkind = bond::compose<void
+	,	resource::cached<aphex_type[N_cache]>
 	,	resource::example<>
 	,	subject
 	>;
 	template <class S>
-	class subtype : public bond::compose_s<S, subkind>
+	class subtype : public bond::compose_s<S, superkind>
 	{
-		using S_ = bond::compose_s<S, subkind>;
+		using S_ = bond::compose_s<S, superkind>;
 
 	public:
 		using S_::S_;

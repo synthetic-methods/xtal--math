@@ -76,8 +76,7 @@ struct logarithm<-1,-1, M_car>
 /***/
 ////////////////////////////////////////////////////////////////////////////////
 ///\
-Defines `function` as the logarithm `Log[#]`, \
-approximated by `(# - 1)/Sqrt[#]`. \
+Defines `function` as the logarithm `Log[#]`, approximated by `(# - 1)/Sqrt[#]`. \
 
 template <>
 struct logarithm< 1, 1, 0>
