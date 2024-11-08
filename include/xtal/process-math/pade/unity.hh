@@ -102,23 +102,30 @@ struct unity<M_ism> : unity<>
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return)
-		XTAL_SET function(algebra::d_::circular_q auto d)
+		XTAL_SET function(algebra::d_::circular_q auto t_)
 		XTAL_0EX -> decltype(auto)
 		{
-			using _op = bond::operate<decltype(d)>;
-			XTAL_USE Op_alpha = typename _op::alpha_type;
-			XTAL_USE Fn_alpha = decltype([] XTAL_1FN_(_xtd::bit_cast<Op_alpha>));
+			using T_ = XTAL_ALL_(t_);
+			using T_op = bond::operate<decltype(t_[0])>;// Underlying...
+			using U_op = bond::operate<decltype(t_(0))>;
+			using T_sigma = typename T_op::sigma_type;
+			using U_sigma = typename U_op::sigma_type;
+			using U_alpha = typename U_op::alpha_type;
+			XTAL_USE alpha_f = decltype([] XTAL_1FN_(_xtd::bit_cast<U_alpha>));
 
 			if constexpr (N_lim < 0) {
-				return function<N_lim>(d(0));
+				return function<N_lim>(t_(0));
 			}
 			else {
-				auto &d0 = d[0];
-				auto  s0 = d0 << 0;
-				auto  s1 = d0 << 1;
-				auto  sn = s0^s1; sn &= _op::sign.mask;
-				d0 ^= sn;
-				return superprocess::template function<N_lim>(d(0))*inoperative_f<Fn_alpha>(_op::unit.mask|sn);
+				T_sigma &u0 = t_[0];
+				T_sigma  un = u0;
+				un ^= un << 1;
+				un &= T_op::sign.mask;
+				u0 ^= un;
+				U_sigma vn{un};
+				vn <<= U_op::full.depth - T_op::full.depth;
+				vn  |= U_op::unit.mask;
+				return superprocess::template function<N_lim>(t_(0))*inoperative_f<alpha_f>(vn);
 			}
 		}
 

@@ -92,7 +92,7 @@ struct root<M_pow, M_zap>
 				return y;
 			}
 			/***/
-			XTAL_0IF (1 == _op::bit_count_f(_op::designed_f(M_pow))) {//FIXME: Should work without `designed_f`!
+			XTAL_0IF (0 == (1&M_pow)) {
 				return root_f<(M_pow >> 1)>(sqrt(XTAL_REF_(o)));
 			}
 		}

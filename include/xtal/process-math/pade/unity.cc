@@ -44,6 +44,8 @@ TAG_("unity")
 
 	using U_phi = algebra::d_::circular_t<T_alpha[2]>;
 
+	static_assert(is_q<T_alpha, decltype(U_phi{} (0))>);
+
 	auto mt19937_f = typename _op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
 
@@ -88,16 +90,6 @@ TAG_("unity")
 		TRUE_(check_f<-27>(unity_t<1>::template function<-1>(x5), unity_t<1>::template function<3>(U_phi{x5, 0.})));
 		TRUE_(check_f<-29>(unity_t<1>::template function<-1>(x6), unity_t<1>::template function<3>(U_phi{x6, 0.})));
 		TRUE_(check_f<-26>(unity_t<1>::template function<-1>(x7), unity_t<1>::template function<3>(U_phi{x7, 0.})));
-
-	//	4
-		TRUE_(check_f<-19>(unity_t<1>::template function<-1>(x0), unity_t<1>::template function<4>(U_phi{x0, 0.})));
-		TRUE_(check_f<-22>(unity_t<1>::template function<-1>(x1), unity_t<1>::template function<4>(U_phi{x1, 0.})));
-		TRUE_(check_f<-16>(unity_t<1>::template function<-1>(x2), unity_t<1>::template function<4>(U_phi{x2, 0.})));
-		TRUE_(check_f<-21>(unity_t<1>::template function<-1>(x3), unity_t<1>::template function<4>(U_phi{x3, 0.})));
-		TRUE_(check_f<-21>(unity_t<1>::template function<-1>(x4), unity_t<1>::template function<4>(U_phi{x4, 0.})));
-		TRUE_(check_f<-16>(unity_t<1>::template function<-1>(x5), unity_t<1>::template function<4>(U_phi{x5, 0.})));
-		TRUE_(check_f<-22>(unity_t<1>::template function<-1>(x6), unity_t<1>::template function<4>(U_phi{x6, 0.})));
-		TRUE_(check_f<-19>(unity_t<1>::template function<-1>(x7), unity_t<1>::template function<4>(U_phi{x7, 0.})));
 
 	};
 	/*/

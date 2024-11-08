@@ -81,31 +81,28 @@ struct differ<>
 		}
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_LET method(auto &&u, algebra::d_::circular_q auto &&z_)
+		XTAL_LET method(auto &&u, algebra::d_::circular_q auto &&t_)
 		XTAL_0EX -> auto
 		{
 			using _op = bond::operate<decltype(u)>;
-			
 			XTAL_USE U = XTAL_ALL_(u);
-			XTAL_USE Z = debraced_t<XTAL_ALL_(z_)>;
 			
 			auto [u1] = S_::template cache<U>();
 			U u0 = XTAL_REF_(u);
 			
-		//	Divides the difference by the derived slope of the phasor:
-			_std::swap(u1, u0); U u10 = u1 - u0; u10 *= root_f<-1, 0>(z_(1));
+		//	Divides the difference by the derived slope:
+			_std::swap(u1, u0); U u10 = u1 - u0; u10 *= root_f<-1, 0>(t_(1));
 
 		//	Resets the state to zero if a phase/frequency discontinuity is detected:
-		//	u10 *= abs(z10 - z_(1)) < _op::haplo_f(N_zap);
+		//	u10 *= abs(z10 - t_(1)) < _op::haplo_f(N_zap);
 			return u10;
 		}
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_LET method(auto &&u, auto &&v, algebra::d_::circular_q auto &&z_)
+		XTAL_LET method(auto &&u, auto &&v, algebra::d_::circular_q auto &&t_)
 		XTAL_0EX -> auto
 		{
-			using _op = bond::operate<decltype(u)>;
-			
+			using _op = bond::operate<decltype(u), decltype(v)>;
 			XTAL_USE U = XTAL_ALL_(u);
 			XTAL_USE V = XTAL_ALL_(v);
 			
@@ -113,9 +110,9 @@ struct differ<>
 			U u0 = XTAL_REF_(u);
 			V v0 = XTAL_REF_(v);
 			
-		//	Divides the difference by the derived slope of the phasor:
-			_std::swap(v1, v0); V v10 = v1 - v0; v10 += z_(1);
-			_std::swap(u1, u0); U u10 = u1 - u0; u10 *= root_f<-1, 0>(v10);
+		//	Divides the difference by the derived slope:
+			_std::swap(v1, v0); V v10 = v1 - v0; v10 += t_(1);
+			_std::swap(u1, u0); U u10 = u1 - u0; u10 *= root_f<-1>(v10);
 
 			return u10;
 		}

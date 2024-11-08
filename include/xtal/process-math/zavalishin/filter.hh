@@ -146,9 +146,11 @@ struct filter<>
 
 		//	Initialize coefficients `u*` and voltages `w*`:
 			bond::seek_forward_f<N_>([&] (auto I) XTAL_0FN {
-				_op::unitialize_f(get<I>(u_));// Annoying...
+				auto &uI = get<I>(u_);
+				uI += uI == X{};// Force non-zero... (annoying)
+				uI *= get<I>(a_);
 			});
-			u_ *= a_;
+		//	u_ *= a_;
 			w0  = u0;
 			bond::seek_forward_f<M_>([&] (auto I) XTAL_0FN {
 				get<I + 1>(w_) = term_f(get<I + 1>(u_), get<I>(w_), o);
