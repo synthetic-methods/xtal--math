@@ -81,7 +81,7 @@ struct differ<>
 		}
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_LET method(auto &&u, algebra::d_::circular_q auto &&t_)
+		XTAL_LET method(auto &&u, algebra::bicycle_q auto &&t_)
 		XTAL_0EX -> auto
 		{
 			using _op = bond::operate<decltype(u)>;
@@ -99,7 +99,7 @@ struct differ<>
 		}
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_LET method(auto &&u, auto &&v, algebra::d_::circular_q auto &&t_)
+		XTAL_LET method(auto &&u, auto &&v, algebra::bicycle_q auto &&t_)
 		XTAL_0EX -> auto
 		{
 			using _op = bond::operate<decltype(u), decltype(v)>;

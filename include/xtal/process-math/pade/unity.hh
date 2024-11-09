@@ -102,7 +102,7 @@ struct unity<M_ism> : unity<>
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return)
-		XTAL_SET function(algebra::d_::circular_q auto t_)
+		XTAL_SET function(algebra::bicycle_q auto t_)
 		XTAL_0EX -> decltype(auto)
 		{
 			using T_ = XTAL_ALL_(t_);

@@ -27,7 +27,7 @@ TAG_("logarithm")
 	static constexpr T_alpha two =  2;
 	static constexpr T_alpha ten = 10;
 
-	using U_phi = algebra::d_::circular_t<T_alpha[2]>;
+	using U_phi = algebra::bicycle_t<T_alpha[2]>;
 
 	auto mt19937_f = typename _op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());

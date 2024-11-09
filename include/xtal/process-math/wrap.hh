@@ -48,7 +48,7 @@ struct wrap<As...>
 		}
 		template <auto ...>
 		XTAL_DEF_(return,inline)
-		XTAL_SET function(algebra::d_::circular_q auto &&t_)
+		XTAL_SET function(algebra::bicycle_q auto &&t_)
 		XTAL_0EX -> decltype(auto)
 		{
 			return XTAL_REF_(t_);

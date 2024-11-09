@@ -238,7 +238,7 @@ struct filter<>
 		XTAL_0EX
 		{
 			//\todo\
-			Use `differential::circular` to provide the base frequency, \
+			Use `bicycle` to provide the base frequency, \
 			combining relative-frequency and resonance as the complex `s`, \
 			where frequency is given by `Abs[s]`, and `Q = Sqrt[# - ¼]@?`. \
 
