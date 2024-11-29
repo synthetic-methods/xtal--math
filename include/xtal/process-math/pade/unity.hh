@@ -150,6 +150,7 @@ struct unity<M_ism> : unity<>
 		XTAL_0EX -> decltype(auto)
 		{
 			using horner::term_f;
+			using horner::square_f;
 			using _op = bond::operate<decltype(o)>;
 
 			XTAL_LET N_lim_tan = N_lim;
@@ -160,7 +161,7 @@ struct unity<M_ism> : unity<>
 
 			auto const &[x_re, x_im] = involved_f(o);
 			auto const   y_re = tangy_t<-1, 1>::template function<N_lim_tan>(x_im, x_re);
-			auto const   w_im = term_f(x_im*x_im, x_re, x_re);
+			auto const   w_im = square_f(x_re, x_im);
 			//\
 			auto const   y_im = log(w_im);
 			auto const   y_im = taylor::logarithm_t< 1, 1, 1>::template function<N_lim_log>(w_im);
