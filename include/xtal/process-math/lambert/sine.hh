@@ -29,17 +29,17 @@ struct sine<M_ism, -0>
 	//	using S_::function;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o)
-		XTAL_0EX -> auto
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&o)
+		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(o)>;
 			return function<N_lim>(XTAL_REF_(o), _op::alpha_1);
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o, auto &&a)
-		XTAL_0EX -> auto
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&o, auto &&a)
+		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(o)>;
 
@@ -83,17 +83,17 @@ struct sine<M_ism, -1>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&o)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 			return function<N_lim>(XTAL_REF_(o), _op::alpha_1);
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o, auto &&a)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&o, auto &&a)
+		noexcept -> decltype(auto)
 		{
 			return supertype::template function<N_lim>(XTAL_REF_(o), XTAL_REF_(a))*root_f<-1, 4>(o);
 		}
@@ -115,9 +115,9 @@ struct sine<M_ism, -1>
 	//	using S_::function;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o, auto &&a)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&o, auto &&a)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 			XTAL_IF0
@@ -128,14 +128,14 @@ struct sine<M_ism, -1>
 				auto const [u, n] = roots_f<1, 4>(XTAL_REF_(o));
 				return root_f<2>(t)*root_f<-2>(s)*sinh(u)*n;
 			}
-			XTAL_0IF_(default) {
+			XTAL_0IF_(else) {
 				return S_::template function<N_lim>(XTAL_REF_(o), XTAL_REF_(a));
 			}
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&o)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 			return function<N_lim>(XTAL_REF_(o), _op::alpha_1);
@@ -159,9 +159,9 @@ struct sine<M_ism, -2>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o, auto &&a)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&o, auto &&a)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 
@@ -189,9 +189,9 @@ struct sine<M_ism, -2>
 			}
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&o)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 			return function<N_lim>(XTAL_REF_(o), _op::alpha_1);

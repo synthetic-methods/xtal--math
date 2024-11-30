@@ -20,8 +20,8 @@ XTAL_USE monologarithm_t = process::confined_t<monologarithm<Ms...>>;
 
 template <auto ...Ms>
 XTAL_DEF_(return,inline)
-XTAL_LET monologarithm_f(auto &&o, nominal_q auto ...oo)
-XTAL_0EX -> decltype(auto)
+XTAL_LET monologarithm_f(auto &&o, constant_q auto ...oo)
+noexcept -> decltype(auto)
 {
 	return monologarithm_t<Ms...>::template function<oo...>(XTAL_REF_(o));
 }
@@ -48,9 +48,9 @@ struct monologarithm<M_ism, M_pow, -0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&o)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 			auto constexpr _1 = _op::alpha_1;
@@ -86,9 +86,9 @@ struct monologarithm<M_ism, M_pow, -0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&o)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 			auto constexpr _1 = _op::alpha_1;
@@ -124,9 +124,9 @@ struct monologarithm<M_ism, M_pow, -1>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&u)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&u)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(u)>;
 			auto constexpr _1 = _op::alpha_1;
@@ -161,9 +161,9 @@ struct monologarithm<M_ism, M_pow, -1>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&u)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&u)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(u)>;
 			auto constexpr _1 = _op::alpha_1;

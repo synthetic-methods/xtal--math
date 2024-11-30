@@ -27,7 +27,7 @@ template <int N_sign=1> XTAL_USE tome_t = process::confined_t<tome<N_sign>>;
 template <int N_sign=1>
 XTAL_DEF_(return,inline)
 XTAL_LET tome_f(auto &&w, auto &&k, auto &&...ks)
-XTAL_0EX -> decltype(auto)
+noexcept -> decltype(auto)
 {
 	if constexpr (0 == sizeof...(ks)) {
 		return static_cast<XTAL_ALL_(k)>(XTAL_REF_(k));
@@ -53,9 +53,9 @@ struct tome
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&...oo)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&...oo)
+		noexcept -> decltype(auto)
 		{
 			return tome_f<N_sign>(XTAL_REF_(oo)...);
 		}

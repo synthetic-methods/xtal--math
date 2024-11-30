@@ -33,7 +33,7 @@ struct prewarped
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline)
 		XTAL_LET method(auto &&u, real_number_q auto &&f, auto &&...oo)
-		XTAL_0EX -> decltype(auto)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(u)>;
 			//\

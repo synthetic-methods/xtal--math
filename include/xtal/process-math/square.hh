@@ -19,7 +19,7 @@ template <auto ...Ms> XTAL_USE square_t = process::confined_t<square<Ms...>>;
 template <int N_alt=1, int N_sgn=1>
 XTAL_DEF_(return,inline)
 XTAL_LET square_f(auto const &x, auto &&...xs)
-XTAL_0EX -> auto
+noexcept -> auto
 {
 	using X = XTAL_ALL_(x);
 	using _op = bond::operate<X>;
@@ -37,7 +37,7 @@ XTAL_0EX -> auto
 		return complexion_f(square_f<-N_alt>(x_re, x_im), _op::diplo_1*x_re*x_im);
 	}
 //	XTAL_0IF (simplex_field_q<X>) {
-	XTAL_0IF_(default) {
+	XTAL_0IF_(else) {
 		return x*x;
 	}
 };
@@ -57,9 +57,9 @@ struct square
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&...xs)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&...xs)
+		noexcept -> decltype(auto)
 		{
 			return square_f<Ns...>(XTAL_REF_(xs)...);
 		}

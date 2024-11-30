@@ -20,8 +20,8 @@ XTAL_USE logarithm_t = process::confined_t<logarithm<Ms...>>;
 
 template <auto ...Ms>
 XTAL_DEF_(return,inline)
-XTAL_LET logarithm_f(auto &&o, nominal_q auto ...oo)
-XTAL_0EX -> decltype(auto)
+XTAL_LET logarithm_f(auto &&o, constant_q auto ...oo)
+noexcept -> decltype(auto)
 {
 	return logarithm_t<Ms...>::template function<oo...>(XTAL_REF_(o));
 }
@@ -56,9 +56,9 @@ struct logarithm<-1,-1, M_car>
 	//	TODO: Define `complex` variant!
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&o)
+		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
 			XTAL_0IF (N_lim <  0) {
@@ -92,9 +92,9 @@ struct logarithm< 1, 1, 0>
 		using S_::S_;
 
 		template <int N_lim=0, int N_div=0>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&o)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 			auto constexpr _1 = _op::alpha_1;
@@ -135,9 +135,9 @@ struct logarithm<-1, 1, 0>
 		using S_::S_;
 
 		template <int N_lim=0, int N_div=0>//TODO: Handle `N_div` with iterating `square_f`.
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&o)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 			auto constexpr _1 =   _op::alpha_1;
@@ -177,9 +177,9 @@ struct logarithm< 1, 1, 1>
 	//	TODO: Define `complex` variant!
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(complex_number_q auto u)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(complex_number_q auto u)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(u)>;
 
@@ -195,9 +195,9 @@ struct logarithm< 1, 1, 1>
 			return complexion_f(y_re, y_im);
 		}
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(real_number_q auto o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(real_number_q auto o)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 			using U_alpha = typename _op::alpha_type;
@@ -251,9 +251,9 @@ struct logarithm<-1, 1, 1>
 	//	TODO: Define `complex` variant!
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(real_number_q auto o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(real_number_q auto o)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 			using U_alpha = typename _op::alpha_type;

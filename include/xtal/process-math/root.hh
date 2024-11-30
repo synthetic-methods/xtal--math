@@ -20,7 +20,7 @@ XTAL_USE root_t = process::confined_t<root<M_pow, M_zap>>;
 template <int M_pow=1, int M_zap=-1, auto ...Ns>
 XTAL_DEF_(return,inline)
 XTAL_LET root_f(auto &&o)
-XTAL_0EX -> decltype(auto)
+noexcept -> decltype(auto)
 {
 	return root_t<M_pow, M_zap>::template function<Ns...>(XTAL_REF_(o));
 }
@@ -43,9 +43,9 @@ struct root<M_pow, M_zap>
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o)
-		XTAL_0EX -> auto
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&o)
+		noexcept -> auto
 		{
 			using _op = bond::operate<XTAL_ALL_(o)>;
 			return S_::template function<Ns...>(_op::template punctured_f<_op::designed_f(M_pow)*M_zap>(XTAL_REF_(o)));
@@ -65,9 +65,9 @@ struct root<M_pow, M_zap>
 		using S_::S_;
 
 		template <auto ...Ns> requires un_n<M_pow, -3>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o)
-		XTAL_0EX -> auto
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&o)
+		noexcept -> auto
 		{
 			using _op = bond::operate<XTAL_ALL_(o)>;
 			XTAL_IF0
@@ -97,9 +97,9 @@ struct root<M_pow, M_zap>
 			}
 		}
 		template <int N_lim=3> requires in_n<M_pow, -3>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o)
-		XTAL_0EX -> auto
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&o)
+		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(o)>;
 
@@ -142,9 +142,9 @@ struct root<M_pow, M_zap>
 		}
 		/*/
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(complex_number_q auto &&o)
-		XTAL_0EX -> auto
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(complex_number_q auto &&o)
+		noexcept -> auto
 		{
 			using _op = bond::operate<XTAL_ALL_(o)>;
 			auto constexpr N_sqrt_half = (typename _op::alpha_type) 0.7071067811865475244008443621048490393L;

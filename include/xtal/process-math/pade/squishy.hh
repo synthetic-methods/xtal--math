@@ -16,7 +16,7 @@ template <int M_ism=1, int N_pow=1> requires sign_p<N_pow> XTAL_USE squishy_t = 
 template <int M_ism=1, int N_pow=1> requires sign_p<N_pow>
 XTAL_DEF_(return,inline)
 XTAL_LET squishy_f(auto &&o)
-XTAL_0EX -> decltype(auto)
+noexcept -> decltype(auto)
 {
 	return squishy_t<M_ism, N_pow>::function(XTAL_REF_(o));
 }
@@ -36,9 +36,9 @@ struct squishy<0, N_pow>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&o)
+		noexcept -> decltype(auto)
 		{
 			return XTAL_REF_(o);
 		}
@@ -64,9 +64,9 @@ struct squishy<M_ism, 0>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(complex_field_q auto const &o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(complex_field_q auto const &o)
+		noexcept -> decltype(auto)
 		{
 			using O = XTAL_ALL_(o); using _op = bond::operate<O>;
 
@@ -101,16 +101,16 @@ struct squishy<M_ism, 1>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto const &o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto const &o)
+		noexcept -> decltype(auto)
 		{
 			return o*o;
 		}
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(complex_field_q auto const &o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(complex_field_q auto const &o)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 
@@ -133,9 +133,9 @@ struct squishy<M_ism,-1>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&o)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 			return _op::alpha_1/squishy_f<M_ism, +1>(XTAL_REF_(o));
@@ -159,17 +159,17 @@ struct squishy<M_ism, 1>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(simplex_field_q auto &&o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(simplex_field_q auto &&o)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 			return _op::template root_f<+2>(XTAL_REF_(o));
 		}
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(complex_field_q auto &&o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(complex_field_q auto &&o)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 			auto constexpr N_sqrt_half = (typename _op::alpha_type) 0.7071067811865475244008443621048490393L;
@@ -195,17 +195,17 @@ struct squishy<M_ism,-1>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(simplex_field_q auto const &o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(simplex_field_q auto const &o)
+		noexcept -> decltype(auto)
 		{
 			using O = XTAL_ALL_(o); using _op = bond::operate<O>;
 			return _op::template root_f<-2>(o);
 		}
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(complex_field_q auto const &o)
-		XTAL_0EX -> auto
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(complex_field_q auto const &o)
+		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(o)>;
 			auto constexpr N_sqrt_half = (typename _op::alpha_type) 0.7071067811865475244008443621048490393L;

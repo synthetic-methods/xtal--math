@@ -16,7 +16,7 @@ namespace xtal::process::math::pade::_test
 template <int N_lim=0, int N_trim=0>
 XTAL_DEF_(return)
 XTAL_LET wnity_check_f(auto const &t)
-XTAL_0EX -> bool
+noexcept -> bool
 {
 	int constexpr N_inf = -1;
 	auto const u = wnity_t<1>::template function<N_lim>(t);
@@ -45,7 +45,7 @@ TAG_("wnity")
 	static constexpr T_alpha two =  2;
 	static constexpr T_alpha ten = 10;
 
-	using U_phi = algebra::bicycle_t<T_alpha[2]>;
+	using U_phi = algebra::phason_t<T_alpha[2]>;
 
 	auto mt19937_f = typename _op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());

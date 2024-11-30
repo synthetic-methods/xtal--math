@@ -69,7 +69,7 @@ struct differ<>
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
 		XTAL_LET method(auto &&u)
-		XTAL_0EX -> auto
+		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(u)>;
 			
@@ -81,8 +81,8 @@ struct differ<>
 		}
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_LET method(auto &&u, algebra::bicycle_q auto &&t_)
-		XTAL_0EX -> auto
+		XTAL_LET method(auto &&u, algebra::phason_q auto &&t_)
+		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(u)>;
 			XTAL_USE U = XTAL_ALL_(u);
@@ -99,8 +99,8 @@ struct differ<>
 		}
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_LET method(auto &&u, auto &&v, algebra::bicycle_q auto &&t_)
-		XTAL_0EX -> auto
+		XTAL_LET method(auto &&u, auto &&v, algebra::phason_q auto &&t_)
+		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(u), decltype(v)>;
 			XTAL_USE U = XTAL_ALL_(u);
@@ -121,7 +121,7 @@ struct differ<>
 	//	TODO: Move this to `processor::math`?
 
 		template <class ...Xs>
-		struct braced
+		struct bind
 		{
 			using superkind = bond::compose<void
 			,	subkind
@@ -132,7 +132,7 @@ struct differ<>
 
 		};
 		template <class ...Xs> requires iterated_q<Xs...>
-		struct braced<Xs...>
+		struct bind<Xs...>
 		{
 			using superkind = bond::compose<void
 			,	subkind

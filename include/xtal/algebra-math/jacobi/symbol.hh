@@ -13,11 +13,14 @@ namespace xtal::algebra::math::jacobi
 
 template <class   ..._s>	XTAL_TYP symbol;
 template <class   ..._s>	XTAL_USE symbol_t = typename symbol<_s...>::type;
-template <class   ...Ts>	XTAL_REQ symbol_q = bond::any_tag_p<symbol_t, Ts...>;
+template <class   ...Ts>	XTAL_ASK symbol_q = bond::any_tag_p<symbol_t, Ts...>;
 template <class  V=void>
 XTAL_DEF_(return,inline)
 XTAL_LET symbol_f(auto &&...oo)
-XTAL_0EX {return _detail::initialize<symbol_t>::template via<V>(XTAL_REF_(oo)...);}
+noexcept -> auto
+{
+	return _detail::initialize<symbol_t>::template via<V>(XTAL_REF_(oo)...);
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -55,11 +58,11 @@ struct symbol<A>
 
 	public:// OPERATE
 
-		XTAL_DEF_(return,inline) XTAL_LET let(I_ i) XTAL_0FX_(&&) -> decltype(auto) {return XTAL_MOV_(S_::operator[](modulo(i)));}
-		XTAL_DEF_(return,inline) XTAL_LET let(I_ i) XTAL_0FX_( &) -> decltype(auto) {return           S_::operator[](modulo(i)) ;}
+		XTAL_DEF_(return,inline) XTAL_LET let(I_ i) const &&noexcept -> decltype(auto) {return XTAL_MOV_(S_::operator[](modulo(i)));}
+		XTAL_DEF_(return,inline) XTAL_LET let(I_ i) const  &noexcept -> decltype(auto) {return           S_::operator[](modulo(i)) ;}
 
-		XTAL_DEF_(return,inline) XTAL_LET let(I_ i) XTAL_0EX_(&&) -> decltype(auto) {return XTAL_MOV_(S_::operator[](modulo(i)));}
-		XTAL_DEF_(return,inline) XTAL_LET let(I_ i) XTAL_0EX_( &) -> decltype(auto) {return           S_::operator[](modulo(i)) ;}
+		XTAL_DEF_(return,inline) XTAL_LET let(I_ i)       &&noexcept -> decltype(auto) {return XTAL_MOV_(S_::operator[](modulo(i)));}
+		XTAL_DEF_(return,inline) XTAL_LET let(I_ i)        &noexcept -> decltype(auto) {return           S_::operator[](modulo(i)) ;}
 
 
 	public:// CONSTRUCT
@@ -70,7 +73,7 @@ struct symbol<A>
 
 		template <int N_subscript=1> requires ((bool) (1&N_data))
 		XTAL_LET characterize()
-		XTAL_0EX -> T &
+		noexcept -> T &
 		{
 			integral_type constexpr N = N_data;
 			integral_type constexpr M = N_data - 1;
@@ -105,7 +108,7 @@ struct symbol<A>
 		}
 		template <int N_subscript=1>
 		XTAL_LET subcharacterize()
-		XTAL_0EX -> T &
+		noexcept -> T &
 		{
 			size_type constexpr N = N_data*2 + 1;
 			size_type constexpr M = N_data*2 + 0;

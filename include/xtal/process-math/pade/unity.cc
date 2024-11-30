@@ -16,7 +16,7 @@ namespace xtal::process::math::pade::_test
 template <int N_lim=0, int N_trim=0>
 XTAL_DEF_(return)
 XTAL_LET unity_check_f(auto const &t)
-XTAL_0EX -> bool
+noexcept -> bool
 {
 	int constexpr N_inf = -1;
 	auto const u = unity_t<1>::template function<N_lim>(t);
@@ -42,12 +42,41 @@ TAG_("unity")
 	static constexpr T_alpha two =  2;
 	static constexpr T_alpha ten = 10;
 
-	using U_phi = algebra::bicycle_t<T_alpha[2]>;
+	using U_phi = algebra::phason_t<T_alpha[2]>;
 
 	static_assert(is_q<T_alpha, decltype(U_phi{} (0))>);
 
 	auto mt19937_f = typename _op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
+
+	TRY_("flight")
+	{
+		T_alpha pitch = 0.1;
+		T_alpha roll  = 0.1;
+		T_alpha yaw   = 0.1;
+
+		auto const w = pade::unity_t<1>::template function<4>(pitch);
+		auto const x = pade::unity_t<1>::template function<4>(roll);
+		auto const y = pade::unity_t<1>::template function<4>(-yaw);
+
+		auto const &[w_re, w_im] = involved_f(w);
+		auto const &[x_re, x_im] = involved_f(x);
+	//	auto const &[y_re, y_im] = involved_f(y);
+
+		T_aphex foo{w_re*x_re, w_im*x_im}; foo *= y;
+		T_aphex bar{w_im*x_re, w_re*x_im}; bar *= y;
+
+		algebra::scalar_t<T_alpha[4]> const o{foo.real(), bar.imag(), bar.real(), -foo.imag()};
+		TRUE_(check_f<-2>(o[0], 0.73258330748146527));
+		TRUE_(check_f<-2>(o[1], 0.10520194523965509));
+		TRUE_(check_f<-2>(o[2], 0.66421893908191321));
+		TRUE_(check_f<-2>(o[3], 0.10520194523965509));
+
+	//	{ foo.real(), bar.imag()}, {bar.real(), -foo.imag()}
+	//	{-bar.real(),-foo.imag()}, {foo.real(), -bar.imag()}
+
+
+	}
 
 	/**/
 	TRY_("scalar evaluation")
@@ -126,7 +155,7 @@ TAG_("unity")
 
 	};
 	/***/
-	/**/
+	/*/
 	TRY_("vector evaluation")
 	{
 		T_aphex x0{ 0.0000000000000000, 0.0000000000000000};
@@ -235,7 +264,7 @@ TAG_("unity")
 	TRY_("evaluation (fixed-point)")
 	{
 		//\
-		auto const [t0, t1] = algebra::bicycle_t<T_alpha[2]> {1.125, 0.0};
+		auto const [t0, t1] = algebra::phason_t<T_alpha[2]> {1.125, 0.0};
 		T_alpha t0{1.125};
 
 		TRUE_(unity_check_f<0,  2>(t0));

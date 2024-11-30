@@ -50,9 +50,9 @@ struct tangy<M_ism,-0>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(simplex_field_q auto &&o)
-		XTAL_0EX
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(simplex_field_q auto &&o)
+		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(o)>;
 			using namespace _std;
@@ -94,17 +94,17 @@ struct tangy<M_ism, 1>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(simplex_field_q auto &&t)
-		XTAL_0EX
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(simplex_field_q auto &&t)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(t)>;
 			return function(XTAL_REF_(t), _op::alpha_1);
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(simplex_field_q auto &&v, simplex_field_q auto &&u)
-		XTAL_0EX
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(simplex_field_q auto &&v, simplex_field_q auto &&u)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(v), decltype(u)>;
 			using U_aphex = typename _op::aphex_type;
@@ -151,9 +151,9 @@ struct tangy<M_ism,-2>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(simplex_field_q auto o)
-		XTAL_0EX
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(simplex_field_q auto o)
+		noexcept -> auto
 		{
 			XTAL_USE _op = bond::operate<decltype(o)>;
 			XTAL_LET _dn = _op::alpha_1/_op::patio_1;

@@ -37,7 +37,7 @@ struct dilated
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
 		XTAL_LET method(auto &&o)
-		XTAL_0EX -> decltype(auto)
+		noexcept -> decltype(auto)
 			requires (not XTAL_TRY_(S::template function<Is...>(XTAL_REF_(o))))
 		{
 			using _op = bond::operate<decltype(o)>;
@@ -48,8 +48,8 @@ struct dilated
 		};
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
-		XTAL_LET method(auto &&o)
-		XTAL_0FX -> decltype(auto)
+		XTAL_LET method(auto &&o) const
+		noexcept -> decltype(auto)
 			requires (not XTAL_TRY_(S::template function<Is...>(XTAL_REF_(o))))
 			and XTAL_TRY_(XTAL_ANY_(S_ const &).template method<Is...>(XTAL_REF_(o)))
 		{
@@ -60,9 +60,9 @@ struct dilated
 			return S_::template method<Is...>(XTAL_REF_(o)*n)*u;
 		};
 		template <auto ...Is>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&o)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 			auto constexpr n = _op::diplo_f(-N_two)*_op::template patio_f<-N_two_pi>(2, 1);

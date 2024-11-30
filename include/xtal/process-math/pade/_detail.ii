@@ -22,9 +22,9 @@ struct subunity<M_ism,-2>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return)
-		XTAL_SET function(simplex_field_q auto const &o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,static)
+		XTAL_LET function(simplex_field_q auto const &o)
+		noexcept -> decltype(auto)
 		{
 			int constexpr I_lim = N_lim&0x7;
 

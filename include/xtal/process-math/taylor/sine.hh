@@ -33,9 +33,9 @@ struct sine<M_ism, -0>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&w)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&w)
+		noexcept -> decltype(auto)
 		{
 			if constexpr (N_lim < 0) {
 				using namespace _std;
@@ -66,9 +66,9 @@ struct sine<M_ism, -1>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&o)
+		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 
@@ -106,9 +106,9 @@ struct sine<M_ism, -2>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return)
-		XTAL_SET function(auto &&w)
-		XTAL_0EX -> auto
+		XTAL_DEF_(return,static)
+		XTAL_LET function(auto &&w)
+		noexcept -> auto
 		{
 			if constexpr (N_lim < 0) {
 				using namespace _std;
@@ -148,9 +148,9 @@ struct sine<M_ism, -2>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return)
-		XTAL_SET function(auto &&w)
-		XTAL_0EX -> auto
+		XTAL_DEF_(return,static)
+		XTAL_LET function(auto &&w)
+		noexcept -> auto
 		{
 			if constexpr (N_lim < 0) {
 				using namespace _std;

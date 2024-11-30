@@ -50,16 +50,16 @@ struct wnity<1> : wnity<>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(complex_field_q auto const &t)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(complex_field_q auto const &t)
+		noexcept -> decltype(auto)
 		{
 			return function<N_lim>(t.real(), t.imag());
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&t_1, simplex_field_q auto &&t_i)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&t_1, simplex_field_q auto &&t_i)
+		noexcept -> decltype(auto)
 		{
 			using T_i = XTAL_ALL_(t_i); using _op = bond::operate<T_i>;
 
@@ -70,9 +70,9 @@ struct wnity<1> : wnity<>
 			return o*roots_t<1>::template function(e);
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(simplex_field_q auto &&t_1)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(simplex_field_q auto &&t_1)
+		noexcept -> decltype(auto)
 		{
 			auto const o = objective_f(unity_t<1>::template function<N_lim>(XTAL_REF_(t_1)));
 			auto const p = complexion_f(o.real(),  o.imag());

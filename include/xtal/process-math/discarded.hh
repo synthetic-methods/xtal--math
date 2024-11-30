@@ -58,9 +58,9 @@ struct discarded<M_pow, +1>
 			XTAL_0IF (M_pow == -1) {return v/XTAL_REF_(u);}
 		})
 		template <auto ...Is>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&u, auto &&...oo)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&u, auto &&...oo)
+		noexcept -> decltype(auto)
 		{
 			auto  v = S_::template function<Is...>(u, XTAL_REF_(oo)...);
 			using V = XTAL_ALL_(v);
@@ -105,9 +105,9 @@ struct discarded<1, +1>
 			}
 		})
 		template <auto ...Is>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&u, auto &&...oo)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&u, auto &&...oo)
+		noexcept -> decltype(auto)
 		{
 			auto  v = S_::template function<Is...>(u, XTAL_REF_(oo)...);
 			using V = XTAL_ALL_(v);
@@ -145,9 +145,9 @@ struct discarded<1, +2>
 			return S_::template method<Is...>(square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
 		})
 		template <auto ...Is>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&u, auto &&...oo)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&u, auto &&...oo)
+		noexcept -> decltype(auto)
 		{
 			return S_::template function<Is...>(square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
 		};

@@ -15,11 +15,11 @@ struct adapt
 namespace xtal
 {
 template <class U, class V=U> XTAL_TYP complexion;
-template <class        ...Ts> XTAL_REQ complexion_q = bond::any_tag_p<complexion, Ts...>;
+template <class        ...Ts> XTAL_ASK complexion_q = bond::any_tag_p<complexion, Ts...>;
 
 XTAL_DEF_(inline)
 XTAL_LET objective_f(complexion_q auto &&o)
-XTAL_0EX -> decltype(auto)
+noexcept -> decltype(auto)
 {
 	using X = XTAL_ALL_(o);
 	using Y = typename X::target_type;
@@ -27,7 +27,7 @@ XTAL_0EX -> decltype(auto)
 }
 XTAL_DEF_(inline)
 XTAL_LET injective_f(auto &&o)
-XTAL_0EX -> decltype(auto)
+noexcept -> decltype(auto)
 	requires XTAL_TRY_(o.real(); o.imag())
 {
 	return _std::make_pair(objective_f(o.real()), objective_f(o.imag()));
@@ -49,17 +49,17 @@ struct complexion
 	value_type re;
 	value_type im;
 
-	XTAL_DEF_(return,inline) auto real() XTAL_0FX {return re;}
-	XTAL_DEF_(return,inline) auto imag() XTAL_0FX {return im;}
+	XTAL_DEF_(return,inline) auto real() const noexcept -> value_type const & {return re;}
+	XTAL_DEF_(return,inline) auto imag() const noexcept -> value_type const & {return im;}
 
-	XTAL_DEF_(return,inline) auto real(auto &&...oo) XTAL_0FX {return re(XTAL_REF_(oo)...);}
-	XTAL_DEF_(return,inline) auto imag(auto &&...oo) XTAL_0FX {return im(XTAL_REF_(oo)...);}
+	XTAL_DEF_(return,inline) auto real(auto &&...oo) const noexcept -> value_type const & {return re = value_type{XTAL_REF_(oo)...};}
+	XTAL_DEF_(return,inline) auto imag(auto &&...oo) const noexcept -> value_type const & {return im = value_type{XTAL_REF_(oo)...};}
 
 	
 	template <class T> requires un_n<isotropic_q<T, source_type>> and un_n<isotropic_q<T, target_type>>
 	XTAL_DEF_(return,inline,friend)
 	XTAL_LET operator/ (T const &t, source_type const &s)
-	XTAL_0EX -> target_type
+	noexcept -> target_type
 		requires (not XTAL_TRY_(t.real();t.imag()))
 	{
 		auto const [s_re, s_im] = injective_f(s);
@@ -68,20 +68,20 @@ struct complexion
 	}
 	XTAL_DEF_(return,inline,friend)
 	XTAL_LET operator/ (source_type const &s, source_type const &t)
-	XTAL_0EX -> target_type
+	noexcept -> target_type
 	{
 		return s*(_op::alpha_1/t);
 	}
 	XTAL_DEF_(return,inline,friend)
 	XTAL_LET operator/ (source_type const &s, target_type const &t)
-	XTAL_0EX -> target_type
+	noexcept -> target_type
 		requires un_n<isotropic_q<source_type, target_type>>
 	{
 		return s*(_op::alpha_1/t);
 	}
 	XTAL_DEF_(return,inline,friend)
 	XTAL_LET operator/ (source_type const &s, auto const &t)
-	XTAL_0EX -> target_type
+	noexcept -> target_type
 	{
 		return s*(_op::alpha_1/t);
 	}
@@ -89,7 +89,7 @@ struct complexion
 //	Complex multiplication:
 	XTAL_DEF_(return,inline,friend)
 	XTAL_LET operator* (source_type const &s, source_type const &t)
-	XTAL_0EX -> target_type
+	noexcept -> target_type
 	{
 		auto const [s_re, s_im] = injective_f(s);
 		auto const [t_re, t_im] = injective_f(t);
@@ -97,7 +97,7 @@ struct complexion
 	}
 	XTAL_DEF_(return,inline,friend)
 	XTAL_LET operator* (source_type const &s, target_type const &t)
-	XTAL_0EX -> target_type
+	noexcept -> target_type
 		requires un_n<isotropic_q<source_type, target_type>>
 	{
 		auto const [s_re, s_im] = injective_f(s);
@@ -107,7 +107,7 @@ struct complexion
 	template <class T> requires un_n<isotropic_q<T, source_type>> and un_n<isotropic_q<T, target_type>>
 	XTAL_DEF_(return,inline,friend)
 	XTAL_LET operator* (source_type const &s, T const &t)
-	XTAL_0EX -> target_type
+	noexcept -> target_type
 		requires XTAL_TRY_(t.real()*t.imag())
 	{
 		auto const [s_re, s_im] = injective_f(s);
@@ -118,7 +118,7 @@ struct complexion
 	template <class T> requires un_n<isotropic_q<T, source_type>> and un_n<isotropic_q<T, target_type>>
 	XTAL_DEF_(return,inline,friend)
 	XTAL_LET operator* (source_type const &s, T const &t)
-	XTAL_0EX -> target_type
+	noexcept -> target_type
 		requires (not XTAL_TRY_(t.real();t.imag()))
 	{
 		return {s.re*t, s.im*t};
@@ -127,7 +127,7 @@ struct complexion
 	template <class T> requires un_n<isotropic_q<T, source_type>>
 	XTAL_DEF_(return,inline,friend)
 	XTAL_LET operator* (T const &t, source_type const &s)
-	XTAL_0EX -> decltype(auto)
+	noexcept -> decltype(auto)
 	{
 		return s*t;
 	}
@@ -135,7 +135,7 @@ struct complexion
 //	Complex addition:
 	XTAL_DEF_(return,inline,friend)
 	XTAL_LET operator+ (source_type const &s, source_type const &t)
-	XTAL_0EX -> target_type
+	noexcept -> target_type
 	{
 		auto const [s_re, s_im] = reinterpret_cast<value_type const(&)[2]>(s);
 		auto const [t_re, t_im] = reinterpret_cast<value_type const(&)[2]>(t);
@@ -143,7 +143,7 @@ struct complexion
 	}
 	XTAL_DEF_(return,inline,friend)
 	XTAL_LET operator+ (source_type const &s, target_type const &t)
-	XTAL_0EX -> target_type
+	noexcept -> target_type
 		requires un_n<isotropic_q<source_type, target_type>>
 	{
 		auto const [s_re, s_im] = reinterpret_cast<value_type const(&)[2]>(s);
@@ -153,7 +153,7 @@ struct complexion
 	template <class T> requires un_n<isotropic_q<T, source_type>> and un_n<isotropic_q<T, target_type>>
 	XTAL_DEF_(return,inline,friend)
 	XTAL_LET operator+ (source_type const &s, T const &t)
-	XTAL_0EX -> target_type
+	noexcept -> target_type
 		requires XTAL_TRY_(t.real() + t.imag())
 	{
 		auto const [s_re, s_im] = reinterpret_cast<value_type const(&)[2]>(s);
@@ -164,7 +164,7 @@ struct complexion
 	template <class T> requires un_n<isotropic_q<T, source_type>> and un_n<isotropic_q<T, target_type>>
 	XTAL_DEF_(return,inline,friend)
 	XTAL_LET operator+ (source_type const &s, T const &t)
-	XTAL_0EX -> target_type
+	noexcept -> target_type
 		requires (not XTAL_TRY_(t.real() + t.imag()))
 	{
 		return {s.re+t, s.im};
@@ -173,7 +173,7 @@ struct complexion
 	template <class T> requires un_n<isotropic_q<T, source_type>>
 	XTAL_DEF_(return,inline,friend)
 	XTAL_LET operator+ (T const &t, source_type const &s)
-	XTAL_0EX -> decltype(auto)
+	noexcept -> decltype(auto)
 	{
 		return s + t;
 	}
@@ -181,7 +181,7 @@ struct complexion
 	template <class T>
 	XTAL_DEF_(return,inline,friend)
 	XTAL_LET operator- (source_type const &s)
-	XTAL_0EX -> target_type
+	noexcept -> target_type
 	{
 		return {-s.re, -s.im};
 	}
@@ -221,14 +221,14 @@ namespace xtal::math::_test
 template <int N_index>
 XTAL_DEF_(return)
 XTAL_LET check_f(auto const &u, auto const &v)
-XTAL_0EX -> bool
+noexcept -> bool
 {
 	return bond::computrim_f<N_index>(u) == bond::computrim_f<N_index>(v);
 }
 template <int N_index, int N_limit>
 XTAL_DEF_(return)
 XTAL_LET check_f(auto const &u, auto const &v)
-XTAL_0EX -> int
+noexcept -> int
 {
 	XTAL_LET Z_index = sign_n<N_index>;
 	XTAL_LET Z_limit = sign_n<N_limit>;
@@ -250,7 +250,7 @@ XTAL_0EX -> int
 }
 XTAL_DEF_(return)
 XTAL_LET check_f(auto const &u, auto const &v)
-XTAL_0EX -> int
+noexcept -> int
 {
 	return check_f<-1, 1 - (int) bond::operating::fraction.depth>(u, v);
 }

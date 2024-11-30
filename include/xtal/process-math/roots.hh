@@ -16,7 +16,7 @@ template <int M_pow=1, int M_zap=-1> XTAL_USE roots_t = process::confined_t<root
 template <int M_pow=1, int M_zap=-1>
 XTAL_DEF_(return,inline)
 XTAL_LET roots_f(auto &&o)
-XTAL_0EX -> decltype(auto)
+noexcept -> decltype(auto)
 {
 	return roots_t<M_pow, M_zap>::function(XTAL_REF_(o));
 }
@@ -37,9 +37,9 @@ struct roots
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&w)
-		XTAL_0EX -> auto
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&w)
+		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(w)>;
 			auto constexpr _1 = _op::alpha_1;

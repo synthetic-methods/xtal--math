@@ -17,7 +17,7 @@ template <int N_alt=1> XTAL_USE term_t = process::confined_t<term<N_alt>>;
 template <int N_alt=1, additive_group_q W, multiplicative_group_q X, multiplicative_group_q ...Xs>
 XTAL_DEF_(return,inline)
 XTAL_LET term_f(W &&w, X &&x, Xs &&...xs)
-XTAL_0EX
+noexcept -> auto
 {
 	using V = devolved_u<W, X, Xs...>;
 	using _op = bond::operate<V>;
@@ -79,7 +79,7 @@ XTAL_0EX
 	}
 	/***/
 
-	XTAL_0IF_(default) {
+	XTAL_0IF_(else) {
 	// <5% invocations in test-suite, most being `real + complex*complex`...
 		return y*XTAL_REF_(x) + XTAL_REF_(w);
 	}
@@ -111,9 +111,9 @@ struct term
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function( auto &&...oo)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function( auto &&...oo)
+		noexcept -> decltype(auto)
 		{
 			return term_f(XTAL_REF_(oo)...);
 		}

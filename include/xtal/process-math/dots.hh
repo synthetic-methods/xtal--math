@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-
+#include "./roots.hh"
 
 
 
@@ -11,21 +11,26 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int N_two=0, int N_two_pi=0> XTAL_TYP dilate;
-template <int N_two=0, int N_two_pi=0> XTAL_USE dilate_t = process::confined_t<dilate<N_two, N_two_pi>>;
-template <int N_two=0, int N_two_pi=0>
+template <int M_pow=1, int M_zap=-1> requires in_n<M_pow, 1, 2,-1,-2>
+XTAL_TYP dots;
+
+template <int M_pow=1, int M_zap=-1> requires in_n<M_pow, 1, 2,-1,-2>
+XTAL_USE dots_t = process::confined_t<dots<M_pow, M_zap>>;
+
+template <int M_pow=1, int M_zap=-1> requires in_n<M_pow, 1, 2,-1,-2>
 XTAL_DEF_(return,inline)
-XTAL_LET dilate_f(auto &&o)
+XTAL_LET dots_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return dilate_t<N_two, N_two_pi>::template function(XTAL_REF_(o));
+	return roots_f<M_pow, M_zap>(norm(XTAL_REF_(o)));
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
-template <int N_two, int N_two_pi>
-struct dilate
+template <int M_pow, int M_zap> requires in_n<M_pow, 1, 2,-1,-2>
+struct dots//<M_pow, M_zap>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -35,26 +40,15 @@ struct dilate
 	public:
 		using S_::S_;
 
-		template <auto ...>
+		template <auto ...Is>
 		XTAL_DEF_(return,inline,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> auto
 		{
-			using _op = bond::operate<decltype(o)>;
-			auto constexpr n = _op::diplo_f(-N_two)*_op::template patio_f<-N_two_pi>(2, 1);
-		//	auto constexpr u = _op::diplo_f(+N_two)*_op::template patio_f<+N_two_pi>(2, 1);
-			
-			return XTAL_REF_(o)*(n);
-		};
+			return dots_f<M_pow, M_zap>(XTAL_REF_(o));
+		}
 
 	};
-};
-template <>
-struct dilate<0, 0>
-{
-	template <class S>
-	using subtype = S;
-
 };
 
 

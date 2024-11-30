@@ -18,7 +18,7 @@ template <int M_rot=0, int M_con=0> XTAL_USE imagine_t = process::confined_t<ima
 template <int M_rot=0, int M_con=0>
 XTAL_DEF_(return,inline)
 XTAL_LET imagine_f(auto &&o)
-XTAL_0EX -> decltype(auto)
+noexcept -> decltype(auto)
 {
 	return imagine_t<M_rot, M_con>::function(XTAL_REF_(o));
 }
@@ -43,9 +43,9 @@ struct imagine
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(auto &&o)
+		noexcept -> decltype(auto)
 			requires un_n<complex_field_q<decltype(o)>>
 		{
 			if constexpr (N_rot == 0 and N_con == 0) {
@@ -56,9 +56,9 @@ struct imagine
 			}
 		};
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(complex_field_q auto const &o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(complex_field_q auto const &o)
+		noexcept -> decltype(auto)
 			requires un_n<complex_number_q<decltype(o)>>
 		{
 			auto const x = o.real();
@@ -78,9 +78,9 @@ struct imagine
 			XTAL_0IF (N_rot == 0b11 and N_con == 1) {return complexion_f( y,  x);}
 		};
 		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(complex_number_q auto o)
-		XTAL_0EX -> decltype(auto)
+		XTAL_DEF_(return,inline,static)
+		XTAL_LET function(complex_number_q auto o)
+		noexcept -> decltype(auto)
 		{
 			auto &[x, y] = involved_f(o);
 			if constexpr (N_rot == 0b01 or N_rot == 0b11) {_std::swap(x, y);}

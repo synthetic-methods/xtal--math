@@ -62,8 +62,9 @@ struct filter<>
 	public:
 		using S_::S_;
 
-		XTAL_TNX infuse(auto &&o)
-		XTAL_0EX
+		XTAL_DEF_(return,inline)
+		XTAL_LET infuse(auto &&o)
+		noexcept -> sign_type
 		{
 			XTAL_IF0
 			XTAL_0IF (is_q<decltype(o), order_type>) {
@@ -77,8 +78,8 @@ struct filter<>
 		,	real_number_q auto &&o
 		,	real_number_q auto &&a
 		)
-	//	XTAL_0EX -> algebra::scalar_t<XTAL_ALL_(x)[N_ord]>
-		XTAL_0EX -> XTAL_ALL_(x)
+	//	noexcept -> algebra::scalar_t<XTAL_ALL_(x)[N_ord]>
+		noexcept -> XTAL_ALL_(x)
 		{
 			XTAL_IF0
 			XTAL_0IF (0 == N_ord) {
@@ -118,7 +119,7 @@ struct filter<>
 		,	real_number_q auto const &o
 		,	algebra::scalar_q auto const &a_
 		)
-		XTAL_0EX -> auto
+		noexcept -> auto
 		{
 			auto constexpr N  = N_ord + 1;
 			auto constexpr N_ = N_ord + 0;
@@ -184,7 +185,7 @@ struct filter<>
 		template <int N_lim=0, int N_ord=0, int N_sel=0> requires (0 == N_ord and 0 == N_sel)
 		XTAL_DEF_(return)
 		XTAL_LET method(auto &&x, auto &&f)
-		XTAL_0EX
+		noexcept -> auto
 		{
 			using V = XTAL_ALL_(x); using _op = bond::operate<V>;
 			using A = typename bond::operate<V>::alpha_type;
@@ -215,7 +216,7 @@ struct filter<>
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
 		XTAL_LET method(auto &&x, auto &&f, auto &&_R)
-		XTAL_0EX
+		noexcept -> decltype(auto)
 		{
 			using V = XTAL_ALL_(x); using _op = bond::operate<V>;
 			using A = typename _op::alpha_type;
@@ -232,10 +233,10 @@ struct filter<>
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
 		XTAL_LET method(auto &&x, auto &&f, complex_number_q auto &&_S)
-		XTAL_0EX
+		noexcept -> decltype(auto)
 		{
 			//\todo\
-			Use `bicycle` to provide the base frequency, \
+			Use `phason` to provide the base frequency, \
 			combining relative-frequency and resonance as the complex `s`, \
 			where frequency is given by `Abs[s]`, and `Q = Sqrt[# - ¼]@?`. \
 
@@ -251,7 +252,7 @@ struct filter<>
 		template <auto ...Is>
 		XTAL_DEF_(inline)
 		XTAL_LET solve(auto &y_, auto const &x, auto const &f)
-		XTAL_0EX -> void
+		noexcept -> void
 		{
 //		With:
 //			f(y[1]) = y1*(a_[1] - 2) + 2*F[y1, o, v]
@@ -272,7 +273,7 @@ struct filter<>
 		template <int N_ord=0>
 		XTAL_DEF_(inline)
 		XTAL_LET shape(auto &y_)
-		XTAL_0EX
+		noexcept -> auto
 		{
 //			U_data &y0 = cache[0], &a_[0] = cache[4];
 //			U_data &y1 = cache[1], &a_[1] = cache[5];
@@ -290,7 +291,7 @@ struct filter<>
 		template <int N_ord=0, int N_two=0>
 		XTAL_DEF_(inline)
 		XTAL_LET antisaturator(auto const &y1)
-		XTAL_0EX -> void
+		noexcept -> void
 		{
 			return y1;
 
