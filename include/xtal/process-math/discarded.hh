@@ -142,14 +142,14 @@ struct discarded<1, +2>
 		XTAL_DEF_(return,inline)
 		XTAL_LET method(auto &&u, auto &&...oo), -> decltype(auto)
 		{
-			return S_::template method<Is...>(square_f<1>(XTAL_REF_(u)), XTAL_REF_(oo)...);
+			return S_::template method<Is...>(square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
 		})
 		template <auto ...Is>
 		XTAL_DEF_(return,inline)
 		XTAL_SET function(auto &&u, auto &&...oo)
 		XTAL_0EX -> decltype(auto)
 		{
-			return S_::template function<Is...>(square_f<1>(XTAL_REF_(u)), XTAL_REF_(oo)...);
+			return S_::template function<Is...>(square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
 		};
 
 	};

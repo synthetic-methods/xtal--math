@@ -1,40 +1,49 @@
 #pragma once
 #include "./any.hh"
-#include "./term.hh"
-#include "../square.hh"
+
+
 
 
 
 
 XTAL_ENV_(push)
-namespace xtal::process::math::horner
+namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 ///\
-Evaluates the term `(x^2 + xs^2...)` (using fused multiply-add, if supported by the compiler). \
+Evaluates polynomial in `w` with coefficients `ks...` \
+(using fused multiply-add, if supported by the compiler). \
 
-template <int N_sign=1> XTAL_TYP square;
-template <int N_sign=1> XTAL_USE square_t = process::confined_t<square<N_sign>>;
+///\
+Used to define geometric/exponential series recursively via `(a[0] + b[0]*x*(...))`, \
+starting from the kernel `a[N_limit]`. \
+
+///\note\
+Co/domain scaling can be effected by multiplying `a`/`b`, respectively. \
+
+
+template <int N_sign=1> XTAL_TYP tome;
+template <int N_sign=1> XTAL_USE tome_t = process::confined_t<tome<N_sign>>;
 template <int N_sign=1>
 XTAL_DEF_(return,inline)
-XTAL_LET square_f(auto const &x, auto &&...xs)
-XTAL_0EX -> auto
+XTAL_LET tome_f(auto &&w, auto &&k, auto &&...ks)
+XTAL_0EX -> decltype(auto)
 {
-	static_assert(N_sign == 1);// For now...
-	if constexpr (0 == sizeof...(xs)) {
-		return math::square_f(x);
+	if constexpr (0 == sizeof...(ks)) {
+		return static_cast<XTAL_ALL_(k)>(XTAL_REF_(k));
 	}
 	else {
-		return term_f(square_f(XTAL_REF_(xs)...), x, x);
+		return term_f<N_sign>(k, w, tome_f<N_sign>(w, ks...));
 	}
 };
 
 
 ////////////////////////////////////////////////////////////////////////////////
-
 template <int N_sign>
-struct square
+struct tome
 {
+//	static_assert(xtal::sign_p<N_sign, 1>);
+
 	template <class S>
 	class subtype : public bond::compose_s<S>
 	{
@@ -48,7 +57,7 @@ struct square
 		XTAL_SET function(auto &&...oo)
 		XTAL_0EX -> decltype(auto)
 		{
-			return square_f<N_sign>(XTAL_REF_(oo)...);
+			return tome_f<N_sign>(XTAL_REF_(oo)...);
 		}
 
 	};

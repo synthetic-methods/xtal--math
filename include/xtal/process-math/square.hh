@@ -1,6 +1,6 @@
 #pragma once
 #include "./any.hh"
-
+#include "./term.hh"
 
 
 
@@ -10,119 +10,43 @@ XTAL_ENV_(push)
 namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
+///\
+Evaluates `Total[{x, xs}^2]` (using fused multiply-add, if supported by the compiler). \
 
-template <int M_ism=1, int N_pow=1> requires sign_p<N_pow> XTAL_TYP square;
-template <int M_ism=1, int N_pow=1> requires sign_p<N_pow> XTAL_USE square_t = process::confined_t<square<M_ism, N_pow>>;
-template <int M_ism=1, int N_pow=1> requires sign_p<N_pow>
+template <auto ...Ms> XTAL_TYP square;
+template <auto ...Ms> XTAL_USE square_t = process::confined_t<square<Ms...>>;
+
+template <int N_alt=1, int N_sgn=1>
 XTAL_DEF_(return,inline)
-XTAL_LET square_f(auto &&o)
-XTAL_0EX -> decltype(auto)
+XTAL_LET square_f(auto const &x, auto &&...xs)
+XTAL_0EX -> auto
 {
-	return square_t<M_ism, N_pow>::function(XTAL_REF_(o));
-}
+	using X = XTAL_ALL_(x);
+	using _op = bond::operate<X>;
+	
+	auto constexpr K_sgn = N_alt*N_sgn;
 
-
-////////////////////////////////////////////////////////////////////////////////
-
-template <int N_pow>
-struct square<0, N_pow>
-{
-	template <class S>
-	class subtype : public bond::compose_s<S>
-	{
-		using S_ = bond::compose_s<S>;
-
-	public:
-		using S_::S_;
-
-		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o)
-		XTAL_0EX -> decltype(auto)
-		{
-			return XTAL_REF_(o);
-		}
-
-	};
-};
-
-
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
-template <int M_ism> requires (0 < M_ism)
-struct square<M_ism, 0>
-{
-	static constexpr int I_sgn = sign_n<(M_ism&1)^0, -1>;
-
-	template <class S>
-	class subtype : public bond::compose_s<S>
-	{
-		using S_ = bond::compose_s<S>;
-
-	public:
-		using S_::S_;
-
-		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(complex_field_q auto const &o)
-		XTAL_0EX -> decltype(auto)
-		{
-			using O = XTAL_ALL_(o); using _op = bond::operate<O>;
-
-			auto y = o.imag();
-			auto x = o.real();
-			auto const yy = y*y;
-			auto const xx = x*x;
-			auto const y_ = 2*x*y;
-			auto const x_ = xx - I_sgn*yy;
-			auto const w_ = xx + I_sgn*yy;
-			auto const m_ = 1/w_;
-			return complexion_f(x_, y_)*(m_);
-		}
-
-	};
+	XTAL_IF0
+	XTAL_0IF (1 <= sizeof...(xs)) {
+		return term_f(_op::alpha_f(K_sgn)*square_f<N_alt, K_sgn>(XTAL_REF_(xs)...), x, x);
+	}
+	XTAL_0IF (complex_field_q<X>) {
+	//	auto const &[x_re, x_im] = involved_f(x);
+		auto const x_re = x.real();
+		auto const x_im = x.imag();
+		return complexion_f(square_f<-N_alt>(x_re, x_im), _op::diplo_1*x_re*x_im);
+	}
+//	XTAL_0IF (simplex_field_q<X>) {
+	XTAL_0IF_(default) {
+		return x*x;
+	}
 };
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism> requires (0 < M_ism)
-struct square<M_ism, 1>
-{
-	static constexpr int I_sgn = sign_n<M_ism&1, -1>;
-
-	template <class S>
-	class subtype : public bond::compose_s<S>
-	{
-		using S_ = bond::compose_s<S>;
-
-	public:
-		using S_::S_;
-
-		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto const &o)
-		XTAL_0EX -> decltype(auto)
-		{
-			return o*o;
-		}
-		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(complex_field_q auto const &o)
-		XTAL_0EX -> decltype(auto)
-		{
-			using _op = bond::operate<decltype(o)>;
-
-			auto const x = o.real(); auto xx = x*x;
-			auto const y = o.imag(); auto yy = y*y;
-			return complexion_f(xx - I_sgn*yy, _op::diplo_1*x*y);
-		}
-
-	};
-};
-template <int M_ism> requires (0 < M_ism)
-struct square<M_ism,-1>
+template <auto ...Ms>
+struct square
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -132,87 +56,12 @@ struct square<M_ism,-1>
 	public:
 		using S_::S_;
 
-		template <auto ...>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline)
-		XTAL_SET function(auto &&o)
+		XTAL_SET function(auto &&...xs)
 		XTAL_0EX -> decltype(auto)
 		{
-			using _op = bond::operate<decltype(o)>;
-			return _op::alpha_1/square_f<M_ism, +1>(XTAL_REF_(o));
-		}
-
-	};
-};
-
-
-////////////////////////////////////////////////////////////////////////////////
-
-template <int M_ism> requires (M_ism < 0)
-struct square<M_ism, 1>
-{
-	template <class S>
-	class subtype : public bond::compose_s<S>
-	{
-		using S_ = bond::compose_s<S>;
-
-	public:
-		using S_::S_;
-
-		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(simplex_field_q auto &&o)
-		XTAL_0EX -> decltype(auto)
-		{
-			using _op = bond::operate<decltype(o)>;
-			return _op::template root_f<+2>(XTAL_REF_(o));
-		}
-		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(complex_field_q auto &&o)
-		XTAL_0EX -> decltype(auto)
-		{
-			using O = XTAL_ALL_(o); using _op = bond::operate<O>;
-			auto constexpr O_k = _op::unsquare_f(_op::haplo_1);
-			auto  x = o.real();
-			auto  y = o.imag();
-			auto const n = function(x*x + y*y);
-			return O_k*complexion_f(function(n + x), function(n - x)*_op::assigned_f(y));
-		}
-
-	};
-};
-template <int M_ism> requires (M_ism < 0)
-struct square<M_ism,-1>
-{
-	using dis = square_t<-1, 1>;
-
-	template <class S>
-	class subtype : public bond::compose_s<S>
-	{
-		using S_ = bond::compose_s<S>;
-
-	public:
-		using S_::S_;
-
-		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(simplex_field_q auto const &o)
-		XTAL_0EX -> decltype(auto)
-		{
-			using O = XTAL_ALL_(o); using _op = bond::operate<O>;
-			return _op::template root_f<-2>(o);
-		}
-		template <auto ...>
-		XTAL_DEF_(return,inline)
-		XTAL_SET function(complex_field_q auto const &o)
-		XTAL_0EX -> auto
-		{
-			using O = XTAL_ALL_(o); using _op = bond::operate<O>;
-			auto constexpr O_k = _op::unsquare_f(_op::haplo_1);
-			auto  x = o.real();
-			auto  y = o.imag();
-			auto  u = function(x*x + y*y); x *= u*u;
-			return O_k*complexion_f(dis::function(u + x), dis::function(u - x)*-_op::assigned_f(y));
+			return square_f<Ns...>(XTAL_REF_(xs)...);
 		}
 
 	};

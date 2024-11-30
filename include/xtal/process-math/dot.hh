@@ -3,7 +3,7 @@
 
 #include "./root.hh"
 #include "./square.hh"
-#include "./horner/square.hh"
+
 
 
 XTAL_ENV_(push)
@@ -52,7 +52,7 @@ struct dot//<M_pow, M_zap>
 		XTAL_SET function(complex_field_q auto &&o)
 		XTAL_0EX -> auto
 		{
-			return root_f<M_pow, M_zap>(horner::square_f(o.real(), o.imag()));
+			return root_f<M_pow, M_zap>(square_f(o.real(), o.imag()));
 		}
 
 	};

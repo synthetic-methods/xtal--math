@@ -70,7 +70,6 @@ struct sine<M_ism, -1>
 		XTAL_SET function(auto &&o)
 		XTAL_0EX -> decltype(auto)
 		{
-			using horner::term_f;
 			using _op = bond::operate<decltype(o)>;
 
 			auto const w = XTAL_REF_(o)*_op::haplo_f(N_lim);
@@ -125,7 +124,7 @@ struct sine<M_ism, -2>
 				W x = _op::alpha_1;
 
 				bond::seek_backward_f<I_lim>([&] (auto i)
-					XTAL_0FN_(x = horner::term_f<I_sgn>(_op::alpha_1
+					XTAL_0FN_(x = term_f<I_sgn>(_op::alpha_1
 					,	_op::ratio_f(1, (2 + 2*i)*(3 + 2*i))
 					,	w
 					,	x
@@ -167,7 +166,7 @@ struct sine<M_ism, -2>
 				W x = _op::ratio_f(1, 1 + 2*I_lim);
 
 				bond::seek_backward_f<I_lim>([&] (auto i)
-					XTAL_0FN_(x = horner::term_f<I_sgn>(_op::ratio_f(1, 1 + 2*i)
+					XTAL_0FN_(x = term_f<I_sgn>(_op::ratio_f(1, 1 + 2*i)
 					,	_op::template ratio_f(1 + 2*i, 2 + 2*i)
 					,	w
 					,	x

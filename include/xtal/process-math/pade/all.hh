@@ -1,4 +1,5 @@
 #include "./any.hh"
+#include "./squishy.hh"
 #include "./tangy.hh"
 #include "./unity.hh"
 #include "./wnity.hh"

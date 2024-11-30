@@ -7,14 +7,14 @@
 
 
 XTAL_ENV_(push)
-namespace xtal::process::math::horner
+namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int N_sign=1> XTAL_TYP term;
-template <int N_sign=1> XTAL_USE term_t = process::confined_t<term<N_sign>>;
+template <int N_alt=1> XTAL_TYP term;
+template <int N_alt=1> XTAL_USE term_t = process::confined_t<term<N_alt>>;
 
-template <int N_sign=1, additive_group_q W, multiplicative_group_q X, multiplicative_group_q ...Xs>
+template <int N_alt=1, additive_group_q W, multiplicative_group_q X, multiplicative_group_q ...Xs>
 XTAL_DEF_(return,inline)
 XTAL_LET term_f(W &&w, X &&x, Xs &&...xs)
 XTAL_0EX
@@ -22,7 +22,7 @@ XTAL_0EX
 	using V = devolved_u<W, X, Xs...>;
 	using _op = bond::operate<V>;
 
-	auto constexpr v =  V{N_sign};
+	auto constexpr v =  V{N_alt};
 	auto const     y = (v *...* XTAL_REF_(xs));
 	using Y = XTAL_ALL_(y);
 
@@ -97,10 +97,10 @@ starting from the kernel `a[N_limit]`. \
 ///\note\
 Co/domain scaling can be effected by multiplying `a`/`b`, respectively. \
 
-template <int N_sign>
+template <int N_alt>
 struct term
 {
-//	static_assert(xtal::sign_p<N_sign, 1>);
+//	static_assert(xtal::sign_p<N_alt, 1>);
 
 	template <class S>
 	class subtype : public bond::compose_s<S>

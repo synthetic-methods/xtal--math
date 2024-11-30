@@ -85,7 +85,6 @@ struct filter<>
 				return XTAL_REF_(x);
 			}
 			XTAL_0IF (0 == N_sel) {
-				using horner::term_f;
 				auto constexpr N  = N_ord + 1;
 				auto constexpr N_ = N_ord + 0;
 
@@ -121,7 +120,6 @@ struct filter<>
 		)
 		XTAL_0EX -> auto
 		{
-			using horner::term_f;
 			auto constexpr N  = N_ord + 1;
 			auto constexpr N_ = N_ord + 0;
 			auto constexpr M_ = N_ord - 1;
@@ -188,7 +186,6 @@ struct filter<>
 		XTAL_LET method(auto &&x, auto &&f)
 		XTAL_0EX
 		{
-			using namespace horner;
 			using V = XTAL_ALL_(x); using _op = bond::operate<V>;
 			using A = typename bond::operate<V>::alpha_type;
 			

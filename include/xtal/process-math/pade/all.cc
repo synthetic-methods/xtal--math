@@ -1,4 +1,5 @@
 #include "./any.cc"
+#include "./squishy.cc"
 #include "./tangy.cc"
 #include "./unity.cc"
 #include "./wnity.cc"

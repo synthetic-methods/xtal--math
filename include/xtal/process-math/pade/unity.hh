@@ -1,9 +1,9 @@
 #pragma once
 #include "./any.hh"
 
+#include "./squishy.hh"
 #include "./tangy.hh"
 #include "../taylor/logarithm.hh"
-
 
 
 XTAL_ENV_(push)
@@ -41,7 +41,7 @@ XTAL_USE unity_t = process::confined_t<unity<M_ism, As...>, unity<>>;
 template <int M_ism> requires in_n<M_ism, 0, 1, 2>
 struct unity<M_ism> : unity<>
 {
-	using superprocess = process::lift_t<square<M_ism, 0>, _detail::subunity<M_ism,-0>>;
+	using superprocess = process::lift_t<squishy<M_ism, 0>, _detail::subunity<M_ism,-0>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -134,7 +134,7 @@ struct unity<M_ism> : unity<>
 template <int M_ism> requires in_n<M_ism,-1,-2>
 struct unity<M_ism> : unity<>
 {
-	using superprocess = process::lift_t<square<M_ism, 0>, _detail::subunity<M_ism,-0>>;
+	using superprocess = process::lift_t<squishy<M_ism, 0>, _detail::subunity<M_ism,-0>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -149,8 +149,6 @@ struct unity<M_ism> : unity<>
 		XTAL_SET function(complex_field_q auto &&o)
 		XTAL_0EX -> decltype(auto)
 		{
-			using horner::term_f;
-			using horner::square_f;
 			using _op = bond::operate<decltype(o)>;
 
 			XTAL_LET N_lim_tan = N_lim;

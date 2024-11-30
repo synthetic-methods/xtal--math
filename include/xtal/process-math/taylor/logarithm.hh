@@ -148,7 +148,7 @@ struct logarithm<-1, 1, 0>
 				return exp(XTAL_REF_(o));
 			}
 			XTAL_0IF (0 == N_lim) {
-				return horner::term_f(_1, XTAL_REF_(o), u + root_f<2>(horner::term_f(_1, u, u)));
+				return term_f(_1, XTAL_REF_(o), u + root_f<2>(term_f(_1, u, u)));
 			}
 			XTAL_0IF (1 <= N_lim) {
 				return monologarithm_t<-1>::template function<N_lim>(XTAL_REF_(o)) + _1;

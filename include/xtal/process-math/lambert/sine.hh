@@ -55,7 +55,7 @@ struct sine<M_ism, -0>
 				XTAL_0IF (M_ism ==  2) {return  sinh(XTAL_REF_(o));}
 			}
 			XTAL_0IF (M_ism == -2) {
-				auto const u = o + root_f<2>(horner::term_f(_op::alpha_1, o, o));
+				auto const u = o + root_f<2>(term_f(_op::alpha_1, o, o));
 				return roots_f<(1 << N)>(u).template sum<-1>()*_op::diplo_f(N - 1);
 			}
 			XTAL_0IF (M_ism == +2) {
@@ -119,7 +119,6 @@ struct sine<M_ism, -1>
 		XTAL_SET function(auto &&o, auto &&a)
 		XTAL_0EX -> decltype(auto)
 		{
-			using horner::term_f;
 			using _op = bond::operate<decltype(o)>;
 			XTAL_IF0
 			XTAL_0IF (N_lim < 0 or 3 < N_lim) {
@@ -164,7 +163,6 @@ struct sine<M_ism, -2>
 		XTAL_SET function(auto &&o, auto &&a)
 		XTAL_0EX -> decltype(auto)
 		{
-			using horner::term_f;
 			using _op = bond::operate<decltype(o)>;
 
 			auto constexpr N = stop_n<N_lim, 3>;

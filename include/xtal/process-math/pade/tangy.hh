@@ -98,9 +98,6 @@ struct tangy<M_ism, 1>
 		XTAL_SET function(simplex_field_q auto &&t)
 		XTAL_0EX
 		{
-			using horner::term_f;
-			using horner::polynomial_f;
-
 			using _op = bond::operate<decltype(t)>;
 			return function(XTAL_REF_(t), _op::alpha_1);
 		}
@@ -109,9 +106,6 @@ struct tangy<M_ism, 1>
 		XTAL_SET function(simplex_field_q auto &&v, simplex_field_q auto &&u)
 		XTAL_0EX
 		{
-			using horner::term_f;
-			using horner::polynomial_f;
-
 			using _op = bond::operate<decltype(v), decltype(u)>;
 			using U_aphex = typename _op::aphex_type;
 			using U_alpha = typename _op::alpha_type;
@@ -161,9 +155,6 @@ struct tangy<M_ism,-2>
 		XTAL_SET function(simplex_field_q auto o)
 		XTAL_0EX
 		{
-			using horner::term_f;
-			using horner::polynomial_f;
-
 			XTAL_USE _op = bond::operate<decltype(o)>;
 			XTAL_LET _dn = _op::alpha_1/_op::patio_1;
 			
@@ -195,8 +186,8 @@ struct tangy<M_ism,-2>
 				XTAL_LET y0 =     (U_alpha) 1.00000000000000000e-0;
 				XTAL_LET y1 =     (U_alpha) 0.50387678776821820e-0;
 
-				auto const x = horner::polynomial_f<I_sgn>(w, x0, x1);
-				auto const y = horner::polynomial_f<I_sgn>(w, y0, y1);
+				auto const x = tome_f<I_sgn>(w, x0, x1);
+				auto const y = tome_f<I_sgn>(w, y0, y1);
 				return x*root_f<-1, 1>(y);
 				/***/
 			}
@@ -208,8 +199,8 @@ struct tangy<M_ism,-2>
 				XTAL_LET y1 =     (U_alpha) 0.74755993126133540e-0;
 				XTAL_LET y2 =     (U_alpha) 0.05410519758331759e-0;
 				
-				auto const x = polynomial_f<I_sgn>(w, x0, x1);
-				auto const y = polynomial_f<I_sgn>(w, y0, y1, y2);
+				auto const x = tome_f<I_sgn>(w, x0, x1);
+				auto const y = tome_f<I_sgn>(w, y0, y1, y2);
 				return x*root_f<-1, 1>(y);
 			}
 			XTAL_0IF (2 == N_lim) {
@@ -221,8 +212,8 @@ struct tangy<M_ism,-2>
 				XTAL_LET y1 =     (U_alpha) 0.98379496428721650e-0;
 				XTAL_LET y2 =     (U_alpha) 0.16793026979785060e-0;
 				
-				auto const x = polynomial_f<I_sgn>(w, x0, x1, x2);
-				auto const y = polynomial_f<I_sgn>(w, y0, y1, y2);
+				auto const x = tome_f<I_sgn>(w, x0, x1, x2);
+				auto const y = tome_f<I_sgn>(w, y0, y1, y2);
 				return x*root_f<-1, 1>(y);
 			}
 			XTAL_0IF (3 == N_lim) {
@@ -235,8 +226,8 @@ struct tangy<M_ism,-2>
 				XTAL_LET y2 =     (U_alpha) 0.33731712522645585e-0;
 				XTAL_LET y3 =     (U_alpha) 0.11588697106135937e-1;
 				
-				auto const x = polynomial_f<I_sgn>(w, x0, x1, x2);
-				auto const y = polynomial_f<I_sgn>(w, y0, y1, y2, y3);
+				auto const x = tome_f<I_sgn>(w, x0, x1, x2);
+				auto const y = tome_f<I_sgn>(w, y0, y1, y2, y3);
 				return x*root_f<-1, 1>(y);
 			}
 			XTAL_0IF (4 == N_lim) {
@@ -250,8 +241,8 @@ struct tangy<M_ism,-2>
 				XTAL_LET y2 =     (U_alpha) 0.54620442139995930e-0;
 				XTAL_LET y3 =     (U_alpha) 0.45869073871868164e-1;
 				
-				auto const x = polynomial_f<I_sgn>(w, x0, x1, x2, x3);
-				auto const y = polynomial_f<I_sgn>(w, y0, y1, y2, y3);
+				auto const x = tome_f<I_sgn>(w, x0, x1, x2, x3);
+				auto const y = tome_f<I_sgn>(w, y0, y1, y2, y3);
 				return x*root_f<-1, 1>(y);
 			}
 			XTAL_0IF (5 == N_lim) {
@@ -266,8 +257,8 @@ struct tangy<M_ism,-2>
 				XTAL_LET y3 =     (U_alpha) 1.18407591369199770e-1;
 				XTAL_LET y4 =     (U_alpha) 0.23067742495692903e-2;
 				
-				auto const x = polynomial_f<I_sgn>(w, x0, x1, x2, x3);
-				auto const y = polynomial_f<I_sgn>(w, y0, y1, y2, y3, y4);
+				auto const x = tome_f<I_sgn>(w, x0, x1, x2, x3);
+				auto const y = tome_f<I_sgn>(w, y0, y1, y2, y3, y4);
 				return x*root_f<-1, 1>(y);
 			}
 			XTAL_0IF (6 == N_lim) {
@@ -283,8 +274,8 @@ struct tangy<M_ism,-2>
 				XTAL_LET y3 =     (U_alpha) 2.32185184843683330e-1;
 				XTAL_LET y4 =     (U_alpha) 1.15781734483417240e-2;
 
-				auto const x = polynomial_f<I_sgn>(w, x0, x1, x2, x3, x4);
-				auto const y = polynomial_f<I_sgn>(w, y0, y1, y2, y3, y4);
+				auto const x = tome_f<I_sgn>(w, x0, x1, x2, x3, x4);
+				auto const y = tome_f<I_sgn>(w, y0, y1, y2, y3, y4);
 				return x*root_f<-1, 1>(y);
 			}
 			XTAL_0IF (7 == N_lim) {
@@ -301,8 +292,8 @@ struct tangy<M_ism,-2>
 				XTAL_LET y4 =     (U_alpha) 0.36584362720576720e-1;
 				XTAL_LET y5 =     (U_alpha) 0.45821007587559800e-3;
 
-				auto const x = polynomial_f<I_sgn>(w, x0, x1, x2, x3, x4);
-				auto const y = polynomial_f<I_sgn>(w, y0, y1, y2, y3, y4, y5);
+				auto const x = tome_f<I_sgn>(w, x0, x1, x2, x3, x4);
+				auto const y = tome_f<I_sgn>(w, y0, y1, y2, y3, y4, y5);
 				return x*root_f<-1, 1>(y);
 			}
 		}

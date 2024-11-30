@@ -176,7 +176,7 @@ struct monologarithm<M_ism, M_pow, -1>
 			}
 			else {
 				auto v = XTAL_REF_(u)*_op::haplo_1;
-				return root_f<M_pow>(root_f<2>(horner::term_f<1>(_1, v, v)) + _i*v);
+				return root_f<M_pow>(root_f<2>(term_f<1>(_1, v, v)) + _i*v);
 			}
 		}
 

@@ -1,6 +1,6 @@
 #pragma once
-#include "../any.cc"
-#include "./any.hh"// testing...
+#include "./any.cc"
+#include "./tome.hh"// testing...
 
 
 
@@ -8,20 +8,17 @@
 
 
 XTAL_ENV_(push)
-namespace xtal::process::math::horner::_test
+namespace xtal::process::math::_test
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-using namespace xtal::process::math::_test;
-
-
 ////////////////////////////////////////////////////////////////////////////////
-/*/
-TAG_("any")
+/**/
+TAG_("math")
 {
-	TRY_("task")
+	TRY_("tome")
 	{
-		TRUE_(true);
+		TRUE_(tome_f(2.0, 1.0, 2.0, 3.0) == 1.0*1.0 + 2.0*2.0 + 3.0*4.0);
 
 	}
 }
