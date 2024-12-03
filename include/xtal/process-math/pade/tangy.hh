@@ -67,13 +67,13 @@ struct tangy<M_ism,-0>
 				return _op::patio_1*gudermannian::tang_t<M_ism>::template function<N_lim>(XTAL_REF_(o));
 			}
 			XTAL_0IF (0 == (N_lim&1)) {
-				auto const [x1, y1] = involved_f(_detail::subunity_t<M_ism,-0>::template function<N_lim>(o*_op::haplo_1));
+				auto const [x1, y1] = devalued_f(_detail::subunity_t<M_ism,-0>::template function<N_lim>(o*_op::haplo_1));
 				auto const x2 =  square_f(x1) + I_sgn*square_f(y1);
 				auto const y2 = _op::diplo_1*x1*y1;
 				return y2*root_f<-1, 0>(x2);
 			}
 			XTAL_0IF (1 == (N_lim&1)) {
-				auto const [x1, y1] = involved_f(_detail::subunity_t<M_ism,-0>::template function<N_lim>(o));
+				auto const [x1, y1] = devalued_f(_detail::subunity_t<M_ism,-0>::template function<N_lim>(o));
 				return y1*root_f<-1, 0>(x1);
 			}
 		}

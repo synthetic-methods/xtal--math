@@ -31,7 +31,7 @@ noexcept -> auto
 		return term_f(_op::alpha_f(K_sgn)*square_f<N_alt, K_sgn>(XTAL_REF_(xs)...), x, x);
 	}
 	XTAL_0IF (complex_field_q<X>) {
-	//	auto const &[x_re, x_im] = involved_f(x);
+	//	auto const &[x_re, x_im] = devalued_f(x);
 		auto const x_re = x.real();
 		auto const x_im = x.imag();
 		return complexion_f(square_f<-N_alt>(x_re, x_im), _op::diplo_1*x_re*x_im);

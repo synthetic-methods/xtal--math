@@ -98,7 +98,7 @@ struct discarded<1, +1>
 				return v*XTAL_REF_(u);
 			}
 			XTAL_0IF (complex_number_q<V>) {
-				involved_f(v)[1] *= XTAL_REF_(u); return v;
+				devalued_f(v)[1] *= XTAL_REF_(u); return v;
 			}
 			XTAL_0IF (complex_field_q<V>) {
 				return complexion_f(v.real(), v.imag()*XTAL_REF_(u));
@@ -118,7 +118,7 @@ struct discarded<1, +1>
 				return v*XTAL_REF_(u);
 			}
 			XTAL_0IF (complex_number_q<V>) {
-				involved_f(v)[1] *= XTAL_REF_(u); return v;
+				devalued_f(v)[1] *= XTAL_REF_(u); return v;
 			}
 			XTAL_0IF (complex_field_q<V>) {
 				return complexion_f(v.real(), v.imag()*XTAL_REF_(u));

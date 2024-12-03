@@ -59,7 +59,7 @@ struct wrap<As...>
 		noexcept -> decltype(auto)
 		{
 			if constexpr (complex_number_q<decltype(o)>) {
-				auto &xy = involved_f(o);
+				auto &xy = devalued_f(o);
 				return complexion_f(function(xy[0]), function(xy[1]));
 			}
 			else {

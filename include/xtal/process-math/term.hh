@@ -38,7 +38,7 @@ noexcept -> auto
 	}
 
 	XTAL_0IF (complex_number_q<W> and simplex_number_q<X, Y>) {
-		auto const &[w_re, w_im] = involved_f(XTAL_REF_(w));
+		auto const &[w_re, w_im] = devalued_f(XTAL_REF_(w));
 		auto const & z_im = w_im;
 		auto const   z_re = term_f(w_re, XTAL_REF_(x), y);
 		return _std::complex{z_re, z_im};
@@ -46,7 +46,7 @@ noexcept -> auto
 
 	/**/
 	XTAL_0IF (simplex_number_q<W, X> and complex_number_q<Y>) {
-		auto const &[y_re, y_im] = involved_f(y);
+		auto const &[y_re, y_im] = devalued_f(y);
 		auto const   z_im = x*y_im;
 		auto const   z_re = term_f(XTAL_REF_(w), XTAL_REF_(x), y_re);
 		return _std::complex{z_re, z_im};
@@ -57,8 +57,8 @@ noexcept -> auto
 	/***/
 	/**/
 	XTAL_0IF (complex_number_q<W, X> and simplex_number_q<Y>) {
-		auto const &[w_re, w_im] = involved_f(XTAL_REF_(w));
-		auto const &[x_re, x_im] = involved_f(XTAL_REF_(x));
+		auto const &[w_re, w_im] = devalued_f(XTAL_REF_(w));
+		auto const &[x_re, x_im] = devalued_f(XTAL_REF_(x));
 		auto const   z_re = term_f(w_re, x_re, y);
 		auto const   z_im = term_f(w_im, x_im, y);
 		return _std::complex{z_re, z_im};
@@ -70,9 +70,9 @@ noexcept -> auto
 
 	/*/
 	XTAL_0IF (complex_number_q<W, X, Y>) {
-		auto const &[w_re, w_im] = involved_f(XTAL_REF_(w));
-		auto const &[x_re, x_im] = involved_f(XTAL_REF_(x));
-		auto const &[y_re, y_im] = involved_f(y);
+		auto const &[w_re, w_im] = devalued_f(XTAL_REF_(w));
+		auto const &[x_re, x_im] = devalued_f(XTAL_REF_(x));
+		auto const &[y_re, y_im] = devalued_f(y);
 		auto const   z_re = term_f(term_f(w_re, x_re, y_re),-x_im, y_im);
 		auto const   z_im = term_f(term_f(w_im, x_im, y_re), x_re, y_im);
 		return _std::complex{z_re, z_im};

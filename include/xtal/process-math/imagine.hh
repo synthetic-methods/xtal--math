@@ -82,7 +82,7 @@ struct imagine
 		XTAL_LET function(complex_number_q auto o)
 		noexcept -> decltype(auto)
 		{
-			auto &[x, y] = involved_f(o);
+			auto &[x, y] = devalued_f(o);
 			if constexpr (N_rot == 0b01 or N_rot == 0b11) {_std::swap(x, y);}
 			if constexpr (N_rot == 0b01 or N_rot == 0b10) {x = -x;}
 			if constexpr (X_rot == 0b11 or X_rot == 0b10) {y = -y;}
