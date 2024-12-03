@@ -11,8 +11,8 @@ namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <typename ...As> XTAL_TYP filter;
-template <typename ...As> XTAL_USE filter_t = process::confined_t<filter<As...>>;
+template <typename ...As> struct   filter;
+template <typename ...As> using    filter_t = process::confined_t<filter<As...>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -28,10 +28,10 @@ struct filter<>
 	using  alpha_type = typename bond::operating::alpha_type;
 	using  aphex_type = typename bond::operating::aphex_type;
 
-	using   zoom_type = occur::inferred_t<XTAL_TYP   ZOOM, float>;
-	using  order_type = occur::inferred_t<XTAL_TYP  ORDER, bond::seek_t<0, 1, 2, 3>>;
-	using  limit_type = occur::inferred_t<XTAL_TYP  LIMIT, bond::seek_t<0, 1>>;
-	using select_type = occur::inferred_t<XTAL_TYP SELECT, bond::seek_t<0, 1>>;
+	using   zoom_type = occur::inferred_t<struct   ZOOM, float>;
+	using  order_type = occur::inferred_t<struct  ORDER, bond::seek_t<0, 1, 2, 3>>;
+	using  limit_type = occur::inferred_t<struct  LIMIT, bond::seek_t<0, 1>>;
+	using select_type = occur::inferred_t<struct SELECT, bond::seek_t<0, 1>>;
 
 	XTAL_SET N_order = order_type::cardinality() - 1;
 	XTAL_SET N_cache = N_order*2;
@@ -42,7 +42,7 @@ struct filter<>
 	the minimum storage required is `(2)*(2*8) == 32` bytes-per-pole. \
 
 	//\
-	using subject = resource::invoice<void
+	using subject = provision::context<void
 	using subject = bond::compose<void
 	,	typename   zoom_type::template   attach<>
 	,	typename  limit_type::template dispatch<>
@@ -50,8 +50,8 @@ struct filter<>
 	,	typename select_type::template dispatch<>
 	>;
 	using superkind = bond::compose<void
-	,	resource::cached<aphex_type[N_cache]>
-	,	resource::example<>
+	,	provision::cached<aphex_type[N_cache]>
+	,	provision::example<>
 	,	subject
 	>;
 	template <class S>
@@ -68,57 +68,66 @@ struct filter<>
 		{
 			XTAL_IF0
 			XTAL_0IF (is_q<decltype(o), order_type>) {
-			//	Reset? Damb...
+				S_::cache(0);
 			}
 			return S_::infuse(XTAL_REF_(o));
 		}
-		template <int N_lim=0, int N_ord=0, int N_sel=0>
+		template <int N_lim=0, int N_ord=0, int N_kit=0>
 		XTAL_DEF_(inline)
 		XTAL_LET method(auto &&x
 		,	real_number_q auto &&o
 		,	real_number_q auto &&a
 		)
-	//	noexcept -> algebra::scalar_t<XTAL_ALL_(x)[N_ord]>
 		noexcept -> XTAL_ALL_(x)
 		{
+			using X  = XTAL_ALL_(x); using _op = bond::operate<X>;
 			XTAL_IF0
 			XTAL_0IF (0 == N_ord) {
 				return XTAL_REF_(x);
 			}
-			XTAL_0IF (0 == N_sel) {
+			XTAL_0IF (0 == N_kit) {
 				auto constexpr N  = N_ord + 1;
 				auto constexpr N_ = N_ord + 0;
 
-				using X  = XTAL_ALL_(x); using _op = bond::operate<X>;
 				using A  = algebra::scalar_t<typename _op::alpha_type[N ]>;
 				using A_ = algebra::scalar_t<typename _op::alpha_type[N_]>;
-				
+				using W  = algebra::scalar_t<X[N ]>;
+				using W_ = algebra::scalar_t<X[N_]>;
+
 				auto constexpr _1 = _op::alpha_1;
 				auto constexpr _2 = _op::alpha_2;
 
 				XTAL_IF0
 				XTAL_0IF (1 == N_ord) {
-					return method<N_lim, N_ord, N_sel>(XTAL_REF_(x), XTAL_REF_(o), A_{_1});
+					A_ const a_{_1};
+					W  const w = method<N_lim, N_ord, N_kit>(XTAL_REF_(x), XTAL_REF_(o), a_);
+					return get<0>(w);
 				}
 				XTAL_0IF (2 == N_ord) {
 					auto const a1 = _2*a;
-					return method<N_lim, N_ord, N_sel>(XTAL_REF_(x), XTAL_REF_(o), A_{_1, a1});
+					A_ const a_{_1, a1};
+					W  const w = method<N_lim, N_ord, N_kit>(XTAL_REF_(x), XTAL_REF_(o), a_);
+					return get<0>(w);
 				}
 				XTAL_0IF (3 == N_ord) {
 					auto const a1 = term_f(_1, _2, a);
-					return method<N_lim, N_ord, N_sel>(XTAL_REF_(x), XTAL_REF_(o), A_{_1, a1, a1});
+					A_ const a_{_1, a1, a1};
+					W  const w = method<N_lim, N_ord, N_kit>(XTAL_REF_(x), XTAL_REF_(o), a_);
+					return get<0>(w);
 				}
 			}
-			XTAL_0IF (1 == N_sel) {
+			XTAL_0IF (1 == N_kit) {
 				return XTAL_REF_(x);
 			}
 		}
-		template <int N_lim=0, int N_ord=0, int N_sel=0> requires (1 <= N_ord and N_sel == 0)
+		template <int N_lim=0, int N_ord=0, int N_kit=0> requires (1 <= N_ord and N_kit == 0)
 		XTAL_DEF_(inline)
 		XTAL_LET method(auto &&x
 		,	real_number_q auto const &o
 		,	algebra::scalar_q auto const &a_
 		)
+		//\
+		noexcept -> algebra::scalar_t<XTAL_ALL_(x)[N_ord + 1]>
 		noexcept -> auto
 		{
 			auto constexpr N  = N_ord + 1;
@@ -178,135 +187,8 @@ struct filter<>
 			u_ /= a_;
 		//	w_ *= u_;// TODO: Make this line optional?
 
-		//	return y;
-			return get<0>(w);
+			return w;
 		}
-		/*/
-		template <int N_lim=0, int N_ord=0, int N_sel=0> requires (0 == N_ord and 0 == N_sel)
-		XTAL_DEF_(return)
-		XTAL_LET method(auto &&x, auto &&f)
-		noexcept -> auto
-		{
-			using V = XTAL_ALL_(x); using _op = bond::operate<V>;
-			using A = typename bond::operate<V>::alpha_type;
-			
-			using W_ = algebra::scalar_t<V[3]>;
-			using V_ = algebra::scalar_t<V[2]>;
-			using A_ = algebra::scalar_t<A[2]>;
-			
-			auto [w_, a_] = S_::template cache<V_, A_>();
-			A const &a0 = a_[0];
-			A const &a1 = a_[1];
-			A const  a2 =    1 ;
-
-			A const w0 =        a0        ;// a_[0]
-			A const w1 = term_f(a1, w0, f);// a_[1] + f %
-			A const w2 = term_f(a2, w1, f);// a_[2] + f %
-			W_ y_{V{}, V{}, term_f<-1>(term_f<-1>(x, w_[0], w0), w_[1], w1)/w2};
-
-		//	solve<Is...>(y_, x, f);// TODO: Save current `y_[1]`!
-			
-			y_[1] = term_f(w_[1], y_[2], f); w_[1] = term_f(y_[1], y_[2], f);
-			y_[0] = term_f(w_[0], y_[1], f); w_[0] = term_f(y_[0], y_[1], f);
-
-			return y_;
-		}
-		/***/
-		/*/
-		template <auto ...Is>
-		XTAL_DEF_(return,inline)
-		XTAL_LET method(auto &&x, auto &&f, auto &&_R)
-		noexcept -> decltype(auto)
-		{
-			using V = XTAL_ALL_(x); using _op = bond::operate<V>;
-			using A = typename _op::alpha_type;
-
-			using V_ = algebra::scalar_t<V[2]>;
-			using A_ = algebra::scalar_t<A[2]>;
-
-			auto [w_, a_] = S_::template cache<V_, A_>();
-
-		//	a1 = 2*cos(1.5707963267948966*alpha);
-			new (&a_) A_{_op::alpha_1, _op::alpha_2*_R};
-			return method<Is...>(XTAL_REF_(x), f);
-		}
-		template <auto ...Is>
-		XTAL_DEF_(return,inline)
-		XTAL_LET method(auto &&x, auto &&f, complex_number_q auto &&_S)
-		noexcept -> decltype(auto)
-		{
-			//\todo\
-			Use `phason` to provide the base frequency, \
-			combining relative-frequency and resonance as the complex `s`, \
-			where frequency is given by `Abs[s]`, and `Q = Sqrt[# - ¼]@?`. \
-
-			using V = XTAL_ALL_(x); using _op = bond::operate<V>;
-			using A = typename _op::alpha_type;
-
-			auto constexpr N_lnH = (A) -0.6931471805599453094172321214581765681e+0L;
-			
-			return method(XTAL_REF_(x), XTAL_REF_(f), exp(N_lnH*XTAL_REF_(_S).imag()));
-		}
-		/***/
-		/*/
-		template <auto ...Is>
-		XTAL_DEF_(inline)
-		XTAL_LET solve(auto &y_, auto const &x, auto const &f)
-		noexcept -> void
-		{
-//		With:
-//			f(y[1]) = y1*(a_[1] - 2) + 2*F[y1, o, v]
-//		
-//		Fixed-point:
-//			y1 = term_f< 1>(w_[1], y2, f);
-//			y0 = term_f< 1>(w_[0], y1, f);
-//			y2 = term_f<-1>(o, a_[0], y0) - shape(y1);
-
-//		Newton's method:
-//			auto const num = term_f<-1>(o, a_[0], y0) - y2 - shape<0>(y1);
-//			auto const nom = term_f< 1>(1, f, term_f< 1>(shape<1>(y1), f, a_[0]);
-//			y2 += num/nom;
-
-		}
-		/***/
-		/*/
-		template <int N_ord=0>
-		XTAL_DEF_(inline)
-		XTAL_LET shape(auto &y_)
-		noexcept -> auto
-		{
-//			U_data &y0 = cache[0], &a_[0] = cache[4];
-//			U_data &y1 = cache[1], &a_[1] = cache[5];
-//			U_data &y2 = cache[2], &a2 = cache[6];
-//			U_data &w_[0] = cache[3], &w_[1] = cache[7];
-//
-//			XTAL_IF0
-//			XTAL_0IF (N_ord == 0) {
-//				return y1*(a_[1] - 2) + antisaturator< 1, 1>(y1);
-//			}
-//			XTAL_0IF (N_ord == 1) {
-//				return    (a_[1] - 2) + antisaturator<-1, 1>(y1);
-//			}
-		}
-		template <int N_ord=0, int N_two=0>
-		XTAL_DEF_(inline)
-		XTAL_LET antisaturator(auto const &y1)
-		noexcept -> void
-		{
-			return y1;
-
-//			U_alpha const n_drive = S_::template head<0>();
-//			U_alpha const n_curve = S_::template head<1>();
-//
-//			XTAL_IF0
-//			XTAL_0IF (N_ord == 0) {
-//				return F (y1, n_drive, n_curve)*_op::diplo_f(N_two - 1);
-//			}
-//			XTAL_0IF (N_ord == 1) {
-//				return F'(y1, n_drive, n_curve)*_op::diplo_f(N_two - 1);
-//			}
-		}
-		/***/
 
 	};
 };

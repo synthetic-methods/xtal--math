@@ -11,17 +11,10 @@ namespace xtal::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <class T>
-XTAL_ASK duple_q = bond::pack_q<T> and bond::pack_size_n<T> == 2;
-
-template <class U>
-/*/
-XTAL_USE duple_t = occur::bundle_t<U, U>;
-/*/
 //\
-XTAL_USE duple_t = bond::couple_t<U, U>;
-XTAL_USE duple_t = algebra::scalar_t<U[2]>;
-/***/
+template <class U>	using    duple_t = bond::couple_t<U, U>;
+template <class U>	using    duple_t = algebra::scalar_t<U[2]>;
+template <class T>	concept  duple_q = bond::pack_q<T> and bond::pack_size_n<T> == 2;
 
 
 ////////////////////////////////////////////////////////////////////////////////

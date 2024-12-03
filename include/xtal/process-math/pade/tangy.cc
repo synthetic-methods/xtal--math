@@ -57,7 +57,16 @@ TAG_("tangy")
 		TRUE_(check_f<-1>(tangy_t<-1, 1>::template function<-1>(0.000), tangy_t<-1, 1>::template function< 1>(0.000)));
 		TRUE_(check_f<-1>(tangy_t<-1, 1>::template function<-1>(0.000), tangy_t<-1, 1>::template function< 0>(0.000)));
 
+		TRUE_(check_f<-2>(tangy_t<-1, 1>::template function<-1>(0.000), tangy_t<-1, 1>::template function< 5>(0.000)));
+		TRUE_(check_f<-2>(tangy_t<-1, 1>::template function<-1>(0.000), tangy_t<-1, 1>::template function< 4>(0.000)));
+		TRUE_(check_f<-2>(tangy_t<-1, 1>::template function<-1>(0.000), tangy_t<-1, 1>::template function< 3>(0.000)));
+		TRUE_(check_f<-2>(tangy_t<-1, 1>::template function<-1>(0.000), tangy_t<-1, 1>::template function< 2>(0.000)));
+		TRUE_(check_f<-2>(tangy_t<-1, 1>::template function<-1>(0.000), tangy_t<-1, 1>::template function< 1>(0.000)));
+		TRUE_(check_f<-2>(tangy_t<-1, 1>::template function<-1>(0.000), tangy_t<-1, 1>::template function< 0>(0.000)));
+
 	};
+	/***/
+	/**/
 	TRY_("inverse evaluation")
 	{
 		T_aphex x;

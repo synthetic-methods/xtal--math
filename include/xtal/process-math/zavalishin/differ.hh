@@ -19,12 +19,8 @@ the result is renormalized w.r.t. the chain-rule of differentiation. \
 ///\note\
 The `method` uses local arena-like allocation to manage state, so `sizeof(input) <= 56`. \
 
-///\todo\
-Define a `brace`d version with static-state, \
-possibly invoking the parent with the same `template method` parameters (e.g. `N_ord`er). \
-
-template <typename ...As> XTAL_TYP differ;
-template <typename ...As> XTAL_USE differ_t = process::confined_t<differ<As...>>;
+template <typename ...As> struct   differ;
+template <typename ...As> using    differ_t = process::confined_t<differ<As...>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -41,11 +37,11 @@ struct differ<>
 	using aphex_type = typename bond::operating::aphex_type;
 
 	using superkind = bond::compose<void
-	,	resource::example<>
+	,	provision::example<>
 	>;
 	using subkind = bond::compose<void
 	,	differ<>
-	,	resource::cached<aphex_type[2]>
+	,	provision::cached<aphex_type[2]>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S, subkind>
@@ -56,7 +52,7 @@ struct differ<>
 		using S_::S_;
 
 	};		
-	template <class S> requires resource::cached_q<S>
+	template <class S> requires provision::cached_q<S>
 	class subtype<S> : public bond::compose_s<S, superkind>
 	{
 		using S_ = bond::compose_s<S, superkind>;
@@ -73,7 +69,7 @@ struct differ<>
 		{
 			using _op = bond::operate<decltype(u)>;
 			
-			XTAL_USE U = XTAL_ALL_(u);
+			using   U = XTAL_ALL_(u);
 			auto [u1] = S_::template cache<U>(); U u0 = XTAL_REF_(u);
 
 			_std::swap(u0, u1);
@@ -85,7 +81,7 @@ struct differ<>
 		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(u)>;
-			XTAL_USE U = XTAL_ALL_(u);
+			using   U = XTAL_ALL_(u);
 			
 			auto [u1] = S_::template cache<U>();
 			U u0 = XTAL_REF_(u);
@@ -103,8 +99,8 @@ struct differ<>
 		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(u), decltype(v)>;
-			XTAL_USE U = XTAL_ALL_(u);
-			XTAL_USE V = XTAL_ALL_(v);
+			using   U = XTAL_ALL_(u);
+			using   V = XTAL_ALL_(v);
 			
 			auto [u1, v1] = S_::template cache<U, V>();
 			U u0 = XTAL_REF_(u);
@@ -117,7 +113,7 @@ struct differ<>
 			return u10;
 		}
 
-	public:// BRACE*
+	public:// BIND*
 	//	TODO: Move this to `processor::math`?
 
 		template <class ...Xs>
@@ -125,7 +121,7 @@ struct differ<>
 		{
 			using superkind = bond::compose<void
 			,	subkind
-			,	resource::cached<bond::seek_front_t<Xs...>[2]>
+			,	provision::cached<bond::seek_front_t<Xs...>[2]>
 			>;
 			template <class R>
 			using subtype = bond::compose_s<R, superkind>;
@@ -136,7 +132,7 @@ struct differ<>
 		{
 			using superkind = bond::compose<void
 			,	subkind
-			,	resource::cached<iteratee_t<bond::seek_front_t<Xs...>[2]>>
+			,	provision::cached<iteratee_t<bond::seek_front_t<Xs...>[2]>>
 			>;
 			template <class R>
 			using subtype = bond::compose_s<R, superkind>;

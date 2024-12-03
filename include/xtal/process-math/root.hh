@@ -12,10 +12,10 @@ namespace xtal::process::math
 /////////////////////////////////////////////////////////////////////////////////
 
 template <int M_pow=1, int M_zap=-1>
-XTAL_TYP root;
+struct   root;
 
 template <int M_pow=1, int M_zap=-1>
-XTAL_USE root_t = process::confined_t<root<M_pow, M_zap>>;
+using    root_t = process::confined_t<root<M_pow, M_zap>>;
 
 template <int M_pow=1, int M_zap=-1, auto ...Ns>
 XTAL_DEF_(return,inline)

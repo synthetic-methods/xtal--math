@@ -11,8 +11,8 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_pow=1, int M_zap=-1> XTAL_TYP roots;
-template <int M_pow=1, int M_zap=-1> XTAL_USE roots_t = process::confined_t<roots<M_pow>>;
+template <int M_pow=1, int M_zap=-1> struct   roots;
+template <int M_pow=1, int M_zap=-1> using    roots_t = process::confined_t<roots<M_pow>>;
 template <int M_pow=1, int M_zap=-1>
 XTAL_DEF_(return,inline)
 XTAL_LET roots_f(auto &&o)
@@ -47,16 +47,16 @@ struct roots
 			auto const o = objective_f(XTAL_REF_(w));
 
 			XTAL_IF0
+			XTAL_0IF (M_pow ==  1) {auto const q = root_f<-1, M_zap>(o); return duple_f(o,       q);}
+			XTAL_0IF (M_pow ==  2) {auto const q = root_f<-2, M_zap>(o); return duple_f(o*q,     q);}
+			XTAL_0IF (M_pow ==  3) {auto const q = root_f<-3, M_zap>(o); return duple_f(o*q*q,   q);}
+			XTAL_0IF (M_pow ==  4) {auto const q = root_f<-4, M_zap>(o); return duple_f(o*q*q*q, q);}
+			XTAL_0IF (M_pow == -1) {auto const q = root_f<-1, M_zap>(o); return duple_f(q,       o);}
+			XTAL_0IF (M_pow == -2) {auto const q = root_f<-2, M_zap>(o); return duple_f(q,     q*o);}
+			XTAL_0IF (M_pow == -3) {auto const q = root_f<-3, M_zap>(o); return duple_f(q,   q*q*o);}
+			XTAL_0IF (M_pow == -4) {auto const q = root_f<-4, M_zap>(o); return duple_f(q, q*q*q*o);}
 			XTAL_0IF (0 <  M_pow) {auto const q = root_f<-M_pow, M_zap, Ns...>(o); return duple_f(o *_op::template explo_f<+M_pow - 1>(q), q);}
 			XTAL_0IF (M_pow <  0) {auto const q = root_f<+M_pow, M_zap, Ns...>(o); return duple_f(q, _op::template explo_f<-M_pow - 1>(q)* o);}
-		//	XTAL_0IF (M_pow ==  1) {auto const q = root_f<-1, M_zap>(o); return duple_f(o,       q);}
-		//	XTAL_0IF (M_pow ==  2) {auto const q = root_f<-2, M_zap>(o); return duple_f(o*q,     q);}
-		//	XTAL_0IF (M_pow ==  3) {auto const q = root_f<-3, M_zap>(o); return duple_f(o*q*q,   q);}
-		//	XTAL_0IF (M_pow ==  4) {auto const q = root_f<-4, M_zap>(o); return duple_f(o*q*q*q, q);}
-		//	XTAL_0IF (M_pow == -1) {auto const q = root_f<-1, M_zap>(o); return duple_f(q,       o);}
-		//	XTAL_0IF (M_pow == -2) {auto const q = root_f<-2, M_zap>(o); return duple_f(q,     q*o);}
-		//	XTAL_0IF (M_pow == -3) {auto const q = root_f<-3, M_zap>(o); return duple_f(q,   q*q*o);}
-		//	XTAL_0IF (M_pow == -4) {auto const q = root_f<-4, M_zap>(o); return duple_f(q, q*q*q*o);}
 		}
 
 	};

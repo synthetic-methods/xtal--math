@@ -11,9 +11,9 @@ namespace xtal::algebra::math::jacobi
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <class   ..._s>	XTAL_TYP symbol;
-template <class   ..._s>	XTAL_USE symbol_t = typename symbol<_s...>::type;
-template <class   ...Ts>	XTAL_ASK symbol_q = bond::any_tag_p<symbol_t, Ts...>;
+template <class   ..._s>	struct   symbol;
+template <class   ..._s>	using    symbol_t = typename symbol<_s...>::type;
+template <class   ...Ts>	concept  symbol_q = bond::any_tag_p<symbol_t, Ts...>;
 template <class  V=void>
 XTAL_DEF_(return,inline)
 XTAL_LET symbol_f(auto &&...oo)
@@ -75,13 +75,13 @@ struct symbol<A>
 		XTAL_LET characterize()
 		noexcept -> T &
 		{
-			integral_type constexpr N = N_data;
-			integral_type constexpr M = N_data - 1;
-			integral_type constexpr K = M >> 1U;
-			integral_type           k = N_subscript;
+			integer_type constexpr N = N_data;
+			integer_type constexpr M = N_data - 1;
+			integer_type constexpr K = M >> 1U;
+			integer_type           k = N_subscript;
 			let(0) = {};
 
-			if constexpr (integral_number_q<U_data>) {
+			if constexpr (integer_q<U_data>) {
 				bond::seek_forward_f<K>([&, this] (size_type i) XTAL_0FN {
 					auto const o = k%N;
 					let(    o) =  i;
@@ -115,7 +115,7 @@ struct symbol<A>
 			size_type constexpr K = N_data;
 			size_type           k = N_data;
 
-			if constexpr (integral_number_q<U_data>) {
+			if constexpr (integer_q<U_data>) {
 				bond::seek_forward_f<K>([&, this] (size_type i) XTAL_0FN {
 					auto const o = k%N;
 					if (K < o) {

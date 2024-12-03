@@ -11,12 +11,11 @@ namespace xtal::process::math::taylor
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism=1, int M_pow=1, int M_car=0>
-	requires in_n<M_ism, 1, 2, -1, -2> and in_n<M_pow, 1, -1> and in_n<M_car, -0, -1>
-XTAL_TYP monologarithm;
+template <int M_ism=1, int M_pow=1, int M_car=0> requires in_n<M_ism, 1, 2, -1, -2> and in_n<M_pow, 1, -1> and in_n<M_car, -0, -1>
+struct   monologarithm;
 
 template <auto ...Ms>
-XTAL_USE monologarithm_t = process::confined_t<monologarithm<Ms...>>;
+using    monologarithm_t = process::confined_t<monologarithm<Ms...>>;
 
 template <auto ...Ms>
 XTAL_DEF_(return,inline)

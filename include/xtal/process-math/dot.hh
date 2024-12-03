@@ -12,10 +12,10 @@ namespace xtal::process::math
 /////////////////////////////////////////////////////////////////////////////////
 
 template <int M_pow=1, int M_zap=-1> requires in_n<M_pow, 1, 2,-1,-2>
-XTAL_TYP dot;
+struct   dot;
 
 template <int M_pow=1, int M_zap=-1> requires in_n<M_pow, 1, 2,-1,-2>
-XTAL_USE dot_t = process::confined_t<dot<M_pow, M_zap>>;
+using    dot_t = process::confined_t<dot<M_pow, M_zap>>;
 
 template <int M_pow=1, int M_zap=-1> requires in_n<M_pow, 1, 2,-1,-2>
 XTAL_DEF_(return,inline)

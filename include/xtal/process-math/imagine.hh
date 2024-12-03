@@ -13,8 +13,8 @@ namespace xtal::process::math
 ///\
 Applies complex quarter-rotation and conjugation. \
 
-template <int M_rot=0, int M_con=0> XTAL_TYP imagine;
-template <int M_rot=0, int M_con=0> XTAL_USE imagine_t = process::confined_t<imagine<M_rot, M_con>>;
+template <int M_rot=0, int M_con=0> struct   imagine;
+template <int M_rot=0, int M_con=0> using    imagine_t = process::confined_t<imagine<M_rot, M_con>>;
 template <int M_rot=0, int M_con=0>
 XTAL_DEF_(return,inline)
 XTAL_LET imagine_f(auto &&o)
@@ -82,7 +82,7 @@ struct imagine
 		XTAL_LET function(complex_number_q auto o)
 		noexcept -> decltype(auto)
 		{
-			auto &[x, y] = devalued_f(o);
+			auto &[x, y] = part_f(o);
 			if constexpr (N_rot == 0b01 or N_rot == 0b11) {_std::swap(x, y);}
 			if constexpr (N_rot == 0b01 or N_rot == 0b10) {x = -x;}
 			if constexpr (X_rot == 0b11 or X_rot == 0b10) {y = -y;}

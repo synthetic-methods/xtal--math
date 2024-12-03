@@ -22,18 +22,18 @@ struct wnity
 {
 };
 template <>
-XTAL_TYP wnity<>
+struct   wnity<>
 {
 	using limit_type = occur::math::limit_t<(1<<3)>;
 
 	template <class S>
-	using subtype = bond::compose_s<S, resource::invoice<void
+	using subtype = bond::compose_s<S, provision::context<void
 	,	typename limit_type::template dispatch<>
 	>>;
 
 };
 template <int M_ism=1, typename ...As>
-XTAL_USE wnity_t = process::confined_t<wnity<M_ism, As...>, wnity<>>;
+using    wnity_t = process::confined_t<wnity<M_ism, As...>, wnity<>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////

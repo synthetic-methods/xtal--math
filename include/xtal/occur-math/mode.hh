@@ -12,7 +12,7 @@ namespace xtal::occur::math
 /////////////////////////////////////////////////////////////////////////////////
 
 template <unsigned int N=0, typename ...As>
-XTAL_USE mode_t = inferred_t<unsigned int, XTAL_TYP MODE, bond::word<N>, As...>;
+using    mode_t = inferred_t<unsigned int, struct   MODE, bond::word<N>, As...>;
 
 
 ///////////////////////////////////////////////////////////////////////////////

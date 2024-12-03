@@ -22,12 +22,12 @@ struct tangy
 {
 };
 template <>
-XTAL_TYP tangy<>
+struct   tangy<>
 {
 	using limit_type = occur::math::limit_t<(1<<3)>;
 
 	template <class S>
-	using subtype = bond::compose_s<S, resource::invoice<void
+	using subtype = bond::compose_s<S, provision::context<void
 	,	typename limit_type::template dispatch<>
 	>>;
 
@@ -67,13 +67,13 @@ struct tangy<M_ism,-0>
 				return _op::patio_1*gudermannian::tang_t<M_ism>::template function<N_lim>(XTAL_REF_(o));
 			}
 			XTAL_0IF (0 == (N_lim&1)) {
-				auto const [x1, y1] = devalued_f(_detail::subunity_t<M_ism,-0>::template function<N_lim>(o*_op::haplo_1));
+				auto const [x1, y1] = part_f(_detail::subunity_t<M_ism,-0>::template function<N_lim>(o*_op::haplo_1));
 				auto const x2 =  square_f(x1) + I_sgn*square_f(y1);
 				auto const y2 = _op::diplo_1*x1*y1;
 				return y2*root_f<-1, 0>(x2);
 			}
 			XTAL_0IF (1 == (N_lim&1)) {
-				auto const [x1, y1] = devalued_f(_detail::subunity_t<M_ism,-0>::template function<N_lim>(o));
+				auto const [x1, y1] = part_f(_detail::subunity_t<M_ism,-0>::template function<N_lim>(o));
 				return y1*root_f<-1, 0>(x1);
 			}
 		}
@@ -99,7 +99,7 @@ struct tangy<M_ism, 1>
 		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(t)>;
-			return function(XTAL_REF_(t), _op::alpha_1);
+			return function<N_lim>(XTAL_REF_(t), _op::alpha_1);
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,static)
@@ -120,7 +120,8 @@ struct tangy<M_ism, 1>
 
 			auto const &[co_0, co_1]  = co;
 			auto const u_flp = _op::haplo_1 - _op::haplo_1*co_0*u_sgn;
-			return S_::template function<N_lim>(up.sum()/dn.sum())*u_sgn + u_flp*v_sgn;
+
+			return term_f(u_flp*v_sgn, u_sgn, S_::template function<N_lim>(up.sum()/dn.sum()));
 		}
 
 	};
@@ -155,11 +156,9 @@ struct tangy<M_ism,-2>
 		XTAL_LET function(simplex_field_q auto o)
 		noexcept -> auto
 		{
-			XTAL_USE _op = bond::operate<decltype(o)>;
+			using    _op = bond::operate<decltype(o)>;
 			XTAL_LET _dn = _op::alpha_1/_op::patio_1;
 			
-			_op::puncture_f(o);
-
 			using U_aphex = typename _op::aphex_type;
 			using U_alpha = typename _op::alpha_type;
 
@@ -167,7 +166,9 @@ struct tangy<M_ism,-2>
 
 			XTAL_IF0
 			XTAL_0IF (N_lim <  0) {
-				auto const [d, q] = roots_f<2>(o);
+				auto [d, q] = roots_f<2>(o);
+				_op::truncate_f(d);
+				_op::truncate_f(q);
 				XTAL_IF0
 				XTAL_0IF (M_ism == -1) {return _dn*q*atan (d);}
 				XTAL_0IF (M_ism == -2) {return _dn*q*atanh(d);}
@@ -302,7 +303,7 @@ struct tangy<M_ism,-2>
 };
 
 template <int M_ism=1, int M_car=0, typename ...As>
-XTAL_USE tangy_t = process::confined_t<tangy<M_ism, M_car, As...>>;//, tangy<>>;
+using tangy_t = process::confined_t<tangy<M_ism, M_car, As...>>;//, tangy<>>;
 
 
 ///////////////////////////////////////////////////////////////////////////////

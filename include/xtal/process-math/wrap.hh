@@ -11,8 +11,8 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <typename ...As> XTAL_TYP wrap;
-template <typename ...As> XTAL_USE wrap_t = process::confined_t<wrap<As...>>;
+template <typename ...As> struct   wrap;
+template <typename ...As> using    wrap_t = process::confined_t<wrap<As...>>;
 template <typename ...As>
 XTAL_DEF_(return,inline)
 XTAL_LET wrap_f(auto &&o)
@@ -59,7 +59,7 @@ struct wrap<As...>
 		noexcept -> decltype(auto)
 		{
 			if constexpr (complex_number_q<decltype(o)>) {
-				auto &xy = devalued_f(o);
+				auto &xy = part_f(o);
 				return complexion_f(function(xy[0]), function(xy[1]));
 			}
 			else {

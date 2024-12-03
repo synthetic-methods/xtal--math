@@ -22,8 +22,8 @@ starting from the kernel `a[N_limit]`. \
 Co/domain scaling can be effected by multiplying `a`/`b`, respectively. \
 
 
-template <int N_sign=1> XTAL_TYP tome;
-template <int N_sign=1> XTAL_USE tome_t = process::confined_t<tome<N_sign>>;
+template <int N_sign=1> struct   tome;
+template <int N_sign=1> using    tome_t = process::confined_t<tome<N_sign>>;
 template <int N_sign=1>
 XTAL_DEF_(return,inline)
 XTAL_LET tome_f(auto &&w, auto &&k, auto &&...ks)

@@ -11,8 +11,8 @@ namespace xtal::process::math::pade
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism=1, int N_pow=1> requires sign_p<N_pow> XTAL_TYP squishy;
-template <int M_ism=1, int N_pow=1> requires sign_p<N_pow> XTAL_USE squishy_t = process::confined_t<squishy<M_ism, N_pow>>;
+template <int M_ism=1, int N_pow=1> requires sign_p<N_pow> struct   squishy;
+template <int M_ism=1, int N_pow=1> requires sign_p<N_pow> using    squishy_t = process::confined_t<squishy<M_ism, N_pow>>;
 template <int M_ism=1, int N_pow=1> requires sign_p<N_pow>
 XTAL_DEF_(return,inline)
 XTAL_LET squishy_f(auto &&o)

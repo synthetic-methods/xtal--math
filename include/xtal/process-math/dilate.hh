@@ -11,8 +11,8 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int N_two=0, int N_two_pi=0> XTAL_TYP dilate;
-template <int N_two=0, int N_two_pi=0> XTAL_USE dilate_t = process::confined_t<dilate<N_two, N_two_pi>>;
+template <int N_two=0, int N_two_pi=0> struct   dilate;
+template <int N_two=0, int N_two_pi=0> using    dilate_t = process::confined_t<dilate<N_two, N_two_pi>>;
 template <int N_two=0, int N_two_pi=0>
 XTAL_DEF_(return,inline)
 XTAL_LET dilate_f(auto &&o)

@@ -14,8 +14,8 @@ struct adapt
 };
 namespace xtal
 {
-template <class U, class V=U> XTAL_TYP complexion;
-template <class        ...Ts> XTAL_ASK complexion_q = bond::any_tag_p<complexion, Ts...>;
+template <class U, class V=U> struct   complexion;
+template <class        ...Ts> concept  complexion_q = bond::any_tag_p<complexion, Ts...>;
 
 XTAL_DEF_(inline)
 XTAL_LET objective_f(complexion_q auto &&o)

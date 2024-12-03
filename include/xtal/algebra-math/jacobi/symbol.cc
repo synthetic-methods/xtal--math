@@ -24,9 +24,9 @@ TAG_("symbol")
 
 	TRY_("11th characterization (integer)")
 	{
-		integral_type constexpr N = 11;
-		integral_type constexpr M = N  - 1;
-		integral_type constexpr K = M >> 1;
+		integer_type constexpr N = 11;
+		integer_type constexpr M = N  - 1;
+		integer_type constexpr K = M >> 1;
 
 		using W = symbol_t<T_delta[N]>;
 		W w; w.characterize();
@@ -36,9 +36,9 @@ TAG_("symbol")
 	}
 	TRY_("11th subcharacterization (integer)")
 	{
-		integral_type constexpr N = 11;
-		integral_type constexpr M = N  - 1;
-		integral_type constexpr K = M >> 1;
+		integer_type constexpr N = 11;
+		integer_type constexpr M = N  - 1;
+		integer_type constexpr K = M >> 1;
 
 		using W = symbol_t<T_delta[K]>;
 		W w; w.subcharacterize();
@@ -48,9 +48,9 @@ TAG_("symbol")
 	}
 	TRY_("11th characterization (complex)")
 	{
-		integral_type constexpr N = 11;
-		integral_type constexpr M = N  - 1;
-		integral_type constexpr K = M >> 1;
+		integer_type constexpr N = 11;
+		integer_type constexpr M = N  - 1;
+		integer_type constexpr K = M >> 1;
 
 		using W = symbol_t<T_aphex[N]>;
 		W w; w.characterize();
@@ -64,9 +64,9 @@ TAG_("symbol")
 
 	TRY_("7th characterization (integer)")
 	{
-		integral_type constexpr N = 7;
-		integral_type constexpr M = N  - 1;
-		integral_type constexpr K = M >> 1;
+		integer_type constexpr N = 7;
+		integer_type constexpr M = N  - 1;
+		integer_type constexpr K = M >> 1;
 
 		using W = symbol_t<T_delta[N]>;
 		W w; w.characterize();
@@ -76,9 +76,9 @@ TAG_("symbol")
 	}
 	TRY_("7th subcharacterization (integer)")
 	{
-		integral_type constexpr N = 7;
-		integral_type constexpr M = N  - 1;
-		integral_type constexpr K = M >> 1;
+		integer_type constexpr N = 7;
+		integer_type constexpr M = N  - 1;
+		integer_type constexpr K = M >> 1;
 
 		using W = symbol_t<T_delta[K]>;
 		W w; w.subcharacterize();
@@ -88,9 +88,9 @@ TAG_("symbol")
 	}
 	TRY_("7th characterization (complex)")
 	{
-		integral_type constexpr N = 7;
-		integral_type constexpr M = N  - 1;
-		integral_type constexpr K = M >> 1;
+		integer_type constexpr N = 7;
+		integer_type constexpr M = N  - 1;
+		integer_type constexpr K = M >> 1;
 
 		using W = symbol_t<T_aphex[N]>;
 		W w; w.characterize();
@@ -103,9 +103,9 @@ TAG_("symbol")
 	}
 	TRY_("7th subcharacterization (complex)")
 	{
-		integral_type constexpr N = 7;
-		integral_type constexpr M = N  - 1;
-		integral_type constexpr K = M >> 1;
+		integer_type constexpr N = 7;
+		integer_type constexpr M = N  - 1;
+		integer_type constexpr K = M >> 1;
 
 		using W = symbol_t<T_aphex[K]>;
 		W w; w.subcharacterize();
@@ -118,9 +118,9 @@ TAG_("symbol")
 	}
 	TRY_("7th characterization (real)")
 	{
-		integral_type constexpr N = 7;
-		integral_type constexpr M = N  - 1;
-		integral_type constexpr K = M >> 1;
+		integer_type constexpr N = 7;
+		integer_type constexpr M = N  - 1;
+		integer_type constexpr K = M >> 1;
 
 		using W = symbol_t<T_alpha[N]>;
 		W w; w.characterize();
@@ -131,9 +131,9 @@ TAG_("symbol")
 
 	TRY_("5th characterization (complex)")
 	{
-		integral_type constexpr N = 5;
-		integral_type constexpr M = N  - 1;
-		integral_type constexpr K = M >> 1;
+		integer_type constexpr N = 5;
+		integer_type constexpr M = N  - 1;
+		integer_type constexpr K = M >> 1;
 
 		using W = symbol_t<T_aphex[N]>;
 		W w; w.characterize();
@@ -146,9 +146,9 @@ TAG_("symbol")
 	/*/
 	TRY_("5th characterization (real)")
 	{
-		integral_type constexpr N = 5;
-		integral_type constexpr M = N  - 1;
-		integral_type constexpr K = M >> 1;
+		integer_type constexpr N = 5;
+		integer_type constexpr M = N  - 1;
+		integer_type constexpr K = M >> 1;
 
 		using W = symbol_t<T_alpha[N]>;
 		W w; w.template characterize<2>();

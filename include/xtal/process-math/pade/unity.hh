@@ -22,18 +22,18 @@ struct unity
 {
 };
 template <>
-XTAL_TYP unity<>
+struct   unity<>
 {
 	using limit_type = occur::math::limit_t<(1<<3)>;
 
 	template <class S>
-	using subtype = bond::compose_s<S, resource::invoice<void
+	using subtype = bond::compose_s<S, provision::context<void
 	,	typename limit_type::template dispatch<>
 	>>;
 
 };
 template <int M_ism=1, typename ...As>
-XTAL_USE unity_t = process::confined_t<unity<M_ism, As...>, unity<>>;
+using    unity_t = process::confined_t<unity<M_ism, As...>, unity<>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -57,7 +57,7 @@ struct unity<M_ism> : unity<>
 		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
-			_std::complex<U> w; auto &m = devalued_f(w);
+			_std::complex<U> w; auto &m = part_f(w);
 			_std::copy_n(point_f(o), 2, m);
 			return function<N_lim>(w);
 		}
@@ -111,7 +111,7 @@ struct unity<M_ism> : unity<>
 			using T_sigma = typename T_op::sigma_type;
 			using U_sigma = typename U_op::sigma_type;
 			using U_alpha = typename U_op::alpha_type;
-			XTAL_USE alpha_f = decltype([] XTAL_1FN_(_xtd::bit_cast<U_alpha>));
+			using alpha_f = decltype([] XTAL_1FN_(_xtd::bit_cast<U_alpha>));
 
 			if constexpr (N_lim < 0) {
 				return function<N_lim>(t_(0));
@@ -157,7 +157,7 @@ struct unity<M_ism> : unity<>
 			XTAL_LET _1 = _op::haplo_0, _2pi = _1/_op::patio_2;
 			XTAL_LET _2 = _op::haplo_1, _4pi = _2/_op::patio_2;
 
-			auto const &[x_re, x_im] = devalued_f(o);
+			auto const &[x_re, x_im] = part_f(o);
 			auto const   y_re = tangy_t<-1, 1>::template function<N_lim_tan>(x_im, x_re);
 			auto const   w_im = square_f(x_re, x_im);
 			//\
