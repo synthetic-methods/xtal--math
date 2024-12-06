@@ -18,7 +18,7 @@ template <int M_pow=1, int M_zap=-1>
 using    root_t = process::confined_t<root<M_pow, M_zap>>;
 
 template <int M_pow=1, int M_zap=-1, auto ...Ns>
-XTAL_DEF_(return,inline)
+XTAL_DEF_(short)
 XTAL_LET root_f(auto &&o)
 noexcept -> decltype(auto)
 {
@@ -43,7 +43,7 @@ struct root<M_pow, M_zap>
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> auto
 		{
@@ -65,7 +65,7 @@ struct root<M_pow, M_zap>
 		using S_::S_;
 
 		template <auto ...Ns> requires un_n<M_pow, -3>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> auto
 		{
@@ -97,7 +97,7 @@ struct root<M_pow, M_zap>
 			}
 		}
 		template <int N_lim=3> requires in_n<M_pow, -3>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> auto
 		{
@@ -132,7 +132,7 @@ struct root<M_pow, M_zap>
 				
 				auto constexpr w = _op::ratio_f( 4, 3);
 				auto const     x = _op::ratio_f(-1, 3)*XTAL_REF_(o);
-				auto constexpr i_lim = stop_n<N_lim, 0x3>;
+				auto constexpr i_lim = end_n<N_lim, 0x3>;
 			//	#pragma unroll
 				for (int i{0}; i < i_lim; ++i) {
 					y *= _op::accumulate_f(w, x, y*y*y);
@@ -142,7 +142,7 @@ struct root<M_pow, M_zap>
 		}
 		/*/
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(complex_number_q auto &&o)
 		noexcept -> auto
 		{

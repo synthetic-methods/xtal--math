@@ -15,7 +15,7 @@ template <class   ..._s>	struct   symbol;
 template <class   ..._s>	using    symbol_t = typename symbol<_s...>::type;
 template <class   ...Ts>	concept  symbol_q = bond::any_tag_p<symbol_t, Ts...>;
 template <class  V=void>
-XTAL_DEF_(return,inline)
+XTAL_DEF_(short)
 XTAL_LET symbol_f(auto &&...oo)
 noexcept -> auto
 {
@@ -58,11 +58,11 @@ struct symbol<A>
 
 	public:// OPERATE
 
-		XTAL_DEF_(return,inline) XTAL_LET let(I_ i) const &&noexcept -> decltype(auto) {return XTAL_MOV_(S_::operator[](modulo(i)));}
-		XTAL_DEF_(return,inline) XTAL_LET let(I_ i) const  &noexcept -> decltype(auto) {return           S_::operator[](modulo(i)) ;}
+		XTAL_DEF_(short) XTAL_LET let(I_ i) const &&noexcept -> decltype(auto) {return XTAL_MOV_(S_::operator[](modulo(i)));}
+		XTAL_DEF_(short) XTAL_LET let(I_ i) const  &noexcept -> decltype(auto) {return           S_::operator[](modulo(i)) ;}
 
-		XTAL_DEF_(return,inline) XTAL_LET let(I_ i)       &&noexcept -> decltype(auto) {return XTAL_MOV_(S_::operator[](modulo(i)));}
-		XTAL_DEF_(return,inline) XTAL_LET let(I_ i)        &noexcept -> decltype(auto) {return           S_::operator[](modulo(i)) ;}
+		XTAL_DEF_(short) XTAL_LET let(I_ i)       &&noexcept -> decltype(auto) {return XTAL_MOV_(S_::operator[](modulo(i)));}
+		XTAL_DEF_(short) XTAL_LET let(I_ i)        &noexcept -> decltype(auto) {return           S_::operator[](modulo(i)) ;}
 
 
 	public:// CONSTRUCT

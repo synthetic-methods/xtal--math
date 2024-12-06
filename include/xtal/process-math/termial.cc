@@ -1,6 +1,6 @@
 #pragma once
 #include "./any.cc"
-#include "./tome.hh"// testing...
+#include "./termial.hh"// testing...
 
 
 
@@ -16,9 +16,9 @@ namespace xtal::process::math::_test
 /**/
 TAG_("math")
 {
-	TRY_("tome")
+	TRY_("termial")
 	{
-		TRUE_(tome_f(2.0, 1.0, 2.0, 3.0) == 1.0*1.0 + 2.0*2.0 + 3.0*4.0);
+		TRUE_(termial_f(2.0, 1.0, 2.0, 3.0) == 1.0*1.0 + 2.0*2.0 + 3.0*4.0);
 
 	}
 }

@@ -21,28 +21,31 @@ starting from the kernel `a[N_limit]`. \
 ///\note\
 Co/domain scaling can be effected by multiplying `a`/`b`, respectively. \
 
+///\note\
+Not to be confused with the Dijkstra's function `Binomial[n + 1, 2]`. \
 
-template <int N_sign=1> struct   tome;
-template <int N_sign=1> using    tome_t = process::confined_t<tome<N_sign>>;
-template <int N_sign=1>
-XTAL_DEF_(return,inline)
-XTAL_LET tome_f(auto &&w, auto &&k, auto &&...ks)
+
+template <int M_sgn=1>	struct   termial;
+template <int M_sgn=1>	using    termial_t = process::confined_t<termial<M_sgn>>;
+template <int M_sgn=1>
+XTAL_DEF_(short)
+XTAL_LET termial_f(auto &&w, auto &&k, auto &&...ks)
 noexcept -> decltype(auto)
 {
 	if constexpr (0 == sizeof...(ks)) {
 		return static_cast<XTAL_ALL_(k)>(XTAL_REF_(k));
 	}
 	else {
-		return term_f<N_sign>(k, w, tome_f<N_sign>(w, ks...));
+		return term_f<M_sgn>(k, w, termial_f<M_sgn>(w, ks...));
 	}
 };
 
 
 ////////////////////////////////////////////////////////////////////////////////
-template <int N_sign>
-struct tome
+template <int M_sgn>
+struct termial
 {
-//	static_assert(xtal::sign_p<N_sign, 1>);
+//	static_assert(signum_p<M_sgn, 1>);
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -53,11 +56,11 @@ struct tome
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&...oo)
 		noexcept -> decltype(auto)
 		{
-			return tome_f<N_sign>(XTAL_REF_(oo)...);
+			return termial_f<M_sgn>(XTAL_REF_(oo)...);
 		}
 
 	};

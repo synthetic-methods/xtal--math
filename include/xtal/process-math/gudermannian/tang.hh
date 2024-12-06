@@ -34,7 +34,7 @@ template <int M_ism=1, typename ...As>
 using    tang_t = process::confined_t<tang<M_ism, bond::seek_constant_n<As..., constant_t<0>>, As...>>;
 
 template <int M_ism=1, typename ...As>
-XTAL_DEF_(return,inline)
+XTAL_DEF_(short)
 XTAL_LET tang_f(auto &&o)
 noexcept -> decltype(auto)
 {
@@ -58,7 +58,7 @@ struct tang<M_ism, -0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&u)
 		noexcept -> decltype(auto)
 		{
@@ -105,7 +105,7 @@ struct tang<M_ism, -2>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&w)
 		noexcept -> decltype(auto)
 		{

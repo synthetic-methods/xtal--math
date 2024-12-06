@@ -51,7 +51,7 @@ noexcept -> decltype(auto)
 
 
 template <template <class> class Y, eigenvalue_q ...Xs>
-XTAL_DEF_(return,inline)
+XTAL_DEF_(short)
 XTAL_LET construxion_f(Xs &&...xs)
 noexcept -> auto
 {
@@ -60,20 +60,20 @@ noexcept -> auto
 }
 /**/
 template <template <class> class Y, class ...Xs>
-XTAL_DEF_(return,inline)
+XTAL_DEF_(short)
 XTAL_LET construxion_f(Xs &&...xs)
 noexcept -> auto
 {
 	using W = common_t<Xs...>;
 	return inoperative_f<Y<W>>(XTAL_REF_(xs)...);
 }
-XTAL_DEF_(return,inline)
+XTAL_DEF_(short)
 XTAL_LET complexion_f(eigenvalue_q auto &&...xs)
 noexcept -> auto
 {
 	return _std::complex<Eigen::ArrayXd>{XTAL_REF_(xs)...};
 }
-XTAL_DEF_(return,inline)
+XTAL_DEF_(short)
 XTAL_LET complexion_f(auto &&...xs)
 noexcept -> auto
 {
@@ -86,7 +86,7 @@ noexcept -> auto
 }/////////////////////////////////////////////////////////////////////////////
 namespace std
 {
-XTAL_DEF_(return,inline)
+XTAL_DEF_(short)
 auto conj(xtal::eigenclass_q auto &&x)
 {
 	using X = XTAL_ALL_(x);

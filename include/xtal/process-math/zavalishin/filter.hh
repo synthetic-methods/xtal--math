@@ -62,9 +62,9 @@ struct filter<>
 	public:
 		using S_::S_;
 
-		XTAL_DEF_(return,inline)
+		XTAL_DEF_(short)
 		XTAL_LET infuse(auto &&o)
-		noexcept -> sign_type
+		noexcept -> signed
 		{
 			XTAL_IF0
 			XTAL_0IF (is_q<decltype(o), order_type>) {

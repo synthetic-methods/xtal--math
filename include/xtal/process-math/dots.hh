@@ -18,7 +18,7 @@ template <int M_pow=1, int M_zap=-1> requires in_n<M_pow, 1, 2,-1,-2>
 using    dots_t = process::confined_t<dots<M_pow, M_zap>>;
 
 template <int M_pow=1, int M_zap=-1> requires in_n<M_pow, 1, 2,-1,-2>
-XTAL_DEF_(return,inline)
+XTAL_DEF_(short)
 XTAL_LET dots_f(auto &&o)
 noexcept -> decltype(auto)
 {
@@ -41,7 +41,7 @@ struct dots//<M_pow, M_zap>
 		using S_::S_;
 
 		template <auto ...Is>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> auto
 		{

@@ -18,7 +18,7 @@ template <auto ...Ms>
 using    logarithm_t = process::confined_t<logarithm<Ms...>>;
 
 template <auto ...Ms>
-XTAL_DEF_(return,inline)
+XTAL_DEF_(short)
 XTAL_LET logarithm_f(auto &&o, constant_q auto ...oo)
 noexcept -> decltype(auto)
 {
@@ -55,7 +55,7 @@ struct logarithm<-1,-1, M_car>
 	//	TODO: Define `complex` variant!
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> decltype(auto)
 		{
@@ -91,7 +91,7 @@ struct logarithm< 1, 1, 0>
 		using S_::S_;
 
 		template <int N_lim=0, int N_div=0>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> decltype(auto)
 		{
@@ -134,7 +134,7 @@ struct logarithm<-1, 1, 0>
 		using S_::S_;
 
 		template <int N_lim=0, int N_div=0>//TODO: Handle `N_div` with iterating `square_f`.
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> decltype(auto)
 		{
@@ -176,7 +176,7 @@ struct logarithm< 1, 1, 1>
 	//	TODO: Define `complex` variant!
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(complex_number_q auto u)
 		noexcept -> decltype(auto)
 		{
@@ -185,7 +185,7 @@ struct logarithm< 1, 1, 1>
 			auto constexpr up = _op::alpha_1/_op::patio_1;
 			auto constexpr dn =              _op::patio_1;
 
-			auto const [u_re, u_im] = part_f(XTAL_REF_(u));
+			auto const [u_re, u_im] = apart_f(XTAL_REF_(u));
 			auto const w_re = square_f(u_re);
 			auto const w_im = square_f(u_im);
 
@@ -194,7 +194,7 @@ struct logarithm< 1, 1, 1>
 			return complexion_f(y_re, y_im);
 		}
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(real_number_q auto o)
 		noexcept -> decltype(auto)
 		{
@@ -250,7 +250,7 @@ struct logarithm<-1, 1, 1>
 	//	TODO: Define `complex` variant!
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(real_number_q auto o)
 		noexcept -> decltype(auto)
 		{

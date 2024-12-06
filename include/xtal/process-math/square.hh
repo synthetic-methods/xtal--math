@@ -17,7 +17,7 @@ template <auto ...Ms> struct   square;
 template <auto ...Ms> using    square_t = process::confined_t<square<Ms...>>;
 
 template <int N_alt=1, int N_sgn=1>
-XTAL_DEF_(return,inline)
+XTAL_DEF_(short)
 XTAL_LET square_f(auto const &x, auto &&...xs)
 noexcept -> auto
 {
@@ -31,7 +31,7 @@ noexcept -> auto
 		return term_f(_op::alpha_f(K_sgn)*square_f<N_alt, K_sgn>(XTAL_REF_(xs)...), x, x);
 	}
 	XTAL_0IF (complex_field_q<X>) {
-	//	auto const &[x_re, x_im] = part_f(x);
+	//	auto const &[x_re, x_im] = apart_f(x);
 		auto const x_re = x.real();
 		auto const x_im = x.imag();
 		return complexion_f(square_f<-N_alt>(x_re, x_im), _op::diplo_1*x_re*x_im);
@@ -57,7 +57,7 @@ struct square
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&...xs)
 		noexcept -> decltype(auto)
 		{

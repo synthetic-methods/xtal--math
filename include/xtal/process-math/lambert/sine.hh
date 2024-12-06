@@ -29,7 +29,7 @@ struct sine<M_ism, -0>
 	//	using S_::function;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> auto
 		{
@@ -37,13 +37,13 @@ struct sine<M_ism, -0>
 			return function<N_lim>(XTAL_REF_(o), _op::alpha_1);
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o, auto &&a)
 		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(o)>;
 
-			auto constexpr N = stop_n<N_lim, 3>;
+			auto constexpr N = end_n<N_lim, 3>;
 
 			XTAL_IF0
 			XTAL_0IF (N_lim < 0) {
@@ -83,7 +83,7 @@ struct sine<M_ism, -1>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> decltype(auto)
 		{
@@ -91,7 +91,7 @@ struct sine<M_ism, -1>
 			return function<N_lim>(XTAL_REF_(o), _op::alpha_1);
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o, auto &&a)
 		noexcept -> decltype(auto)
 		{
@@ -115,7 +115,7 @@ struct sine<M_ism, -1>
 	//	using S_::function;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o, auto &&a)
 		noexcept -> decltype(auto)
 		{
@@ -133,7 +133,7 @@ struct sine<M_ism, -1>
 			}
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> decltype(auto)
 		{
@@ -159,13 +159,13 @@ struct sine<M_ism, -2>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o, auto &&a)
 		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 
-			auto constexpr N = stop_n<N_lim, 3>;
+			auto constexpr N = end_n<N_lim, 3>;
 
 			auto const w = XTAL_REF_(o)*_op::haplo_f(N << 1);
 			auto const t = term_f(w, a, a);
@@ -189,7 +189,7 @@ struct sine<M_ism, -2>
 			}
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> decltype(auto)
 		{

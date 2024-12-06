@@ -15,7 +15,7 @@ template <int N_alt=1> struct   term;
 template <int N_alt=1> using    term_t = process::confined_t<term<N_alt>>;
 
 template <int N_alt=1, additive_group_q W, multiplicative_group_q X, multiplicative_group_q ...Xs>
-XTAL_DEF_(return,inline)
+XTAL_DEF_(short)
 XTAL_LET term_f(W &&w, X &&x, Xs &&...xs)
 noexcept -> auto
 {
@@ -27,7 +27,7 @@ noexcept -> auto
 	using Y = XTAL_ALL_(y);
 
 	XTAL_IF0
-	XTAL_0IF_(static) {
+	XTAL_0IF_(constexpr) {
 		return y*XTAL_REF_(x) + XTAL_REF_(w);
 	}
 	XTAL_0IF (_op::use_FMA() and requires {
@@ -38,7 +38,7 @@ noexcept -> auto
 	}
 
 	XTAL_0IF (complex_number_q<W> and simplex_number_q<X, Y>) {
-		auto const &[w_re, w_im] = part_f(XTAL_REF_(w));
+		auto const &[w_re, w_im] = apart_f(XTAL_REF_(w));
 		auto const & z_im = w_im;
 		auto const   z_re = term_f(w_re, XTAL_REF_(x), y);
 		return _std::complex{z_re, z_im};
@@ -46,7 +46,7 @@ noexcept -> auto
 
 	/**/
 	XTAL_0IF (simplex_number_q<W, X> and complex_number_q<Y>) {
-		auto const &[y_re, y_im] = part_f(y);
+		auto const &[y_re, y_im] = apart_f(y);
 		auto const   z_im = x*y_im;
 		auto const   z_re = term_f(XTAL_REF_(w), XTAL_REF_(x), y_re);
 		return _std::complex{z_re, z_im};
@@ -57,8 +57,8 @@ noexcept -> auto
 	/***/
 	/**/
 	XTAL_0IF (complex_number_q<W, X> and simplex_number_q<Y>) {
-		auto const &[w_re, w_im] = part_f(XTAL_REF_(w));
-		auto const &[x_re, x_im] = part_f(XTAL_REF_(x));
+		auto const &[w_re, w_im] = apart_f(XTAL_REF_(w));
+		auto const &[x_re, x_im] = apart_f(XTAL_REF_(x));
 		auto const   z_re = term_f(w_re, x_re, y);
 		auto const   z_im = term_f(w_im, x_im, y);
 		return _std::complex{z_re, z_im};
@@ -70,9 +70,9 @@ noexcept -> auto
 
 	/*/
 	XTAL_0IF (complex_number_q<W, X, Y>) {
-		auto const &[w_re, w_im] = part_f(XTAL_REF_(w));
-		auto const &[x_re, x_im] = part_f(XTAL_REF_(x));
-		auto const &[y_re, y_im] = part_f(y);
+		auto const &[w_re, w_im] = apart_f(XTAL_REF_(w));
+		auto const &[x_re, x_im] = apart_f(XTAL_REF_(x));
+		auto const &[y_re, y_im] = apart_f(y);
 		auto const   z_re = term_f(term_f(w_re, x_re, y_re),-x_im, y_im);
 		auto const   z_im = term_f(term_f(w_im, x_im, y_re), x_re, y_im);
 		return _std::complex{z_re, z_im};
@@ -100,7 +100,7 @@ Co/domain scaling can be effected by multiplying `a`/`b`, respectively. \
 template <int N_alt>
 struct term
 {
-//	static_assert(xtal::sign_p<N_alt, 1>);
+//	static_assert(signum_p<N_alt, 1>);
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -111,7 +111,7 @@ struct term
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function( auto &&...oo)
 		noexcept -> decltype(auto)
 		{

@@ -11,7 +11,7 @@ template <int M_ism=1, int N_car=0> using    subunity_t = process::confined_t<su
 template <int M_ism               >
 struct subunity<M_ism,-2>
 {
-	static constexpr int I_sgn = sign_n<(M_ism&1)^1, -1>;
+	static constexpr int I_sgn = signum_n<(M_ism&1)^1, -1>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -22,7 +22,7 @@ struct subunity<M_ism,-2>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,static)
+		XTAL_DEF_(long,static)
 		XTAL_LET function(simplex_field_q auto const &o)
 		noexcept -> decltype(auto)
 		{
@@ -40,16 +40,16 @@ struct subunity<M_ism,-2>
 			XTAL_0IF (I_lim == 0x0) {// 0:1 D[...0]@0 && D[...0]@¼
 				alpha_type constexpr x0 = 1.000000000000000000000000000000000000L;// 1
 				alpha_type constexpr y0 = 3.141592653589793238462643383279502884L;
-				auto const x = tome_f<I_sgn>(w, x0);
-				auto const y = tome_f<I_sgn>(w, y0);
+				auto const x = termial_f<I_sgn>(w, x0);
+				auto const y = termial_f<I_sgn>(w, y0);
 				return complexion_f(x, y);
 			}
 			XTAL_0IF (I_lim == 0x1) {// 2:1 D[...1]@0 && D[...0]@¼
 				alpha_type constexpr x0 = 1.000000000000000000000000000000000000L;// 1
 				alpha_type constexpr x1 = 3.433629385640827046149426466881988463L;
 				alpha_type constexpr y0 = 3.141592653589793238462643383279502884L;
-				auto const x = tome_f<I_sgn>(w, x0, x1);
-				auto const y = tome_f<I_sgn>(w, y0);
+				auto const x = termial_f<I_sgn>(w, x0, x1);
+				auto const y = termial_f<I_sgn>(w, y0);
 				return complexion_f(x, y);
 			}
 			XTAL_0IF (I_lim == 0x2) {// 2:3 D[...1]@0 && D[...1]@¼
@@ -57,8 +57,8 @@ struct subunity<M_ism,-2>
 				alpha_type constexpr x1 = 3.968985697854261420737444775816737932L;
 				alpha_type constexpr y0 = 3.141592653589793238462643383279502884L;// pi
 				alpha_type constexpr y1 = 2.141425248853737498352073235738997875L;
-				auto const x = tome_f<I_sgn>(w, x0, x1);
-				auto const y = tome_f<I_sgn>(w, y0, y1);
+				auto const x = termial_f<I_sgn>(w, x0, x1);
+				auto const y = termial_f<I_sgn>(w, y0, y1);
 				return complexion_f(x, y);
 			}
 			XTAL_0IF (I_lim == 0x3) {// 4:3 D[...2]@0 && D[...2]@¼
@@ -67,8 +67,8 @@ struct subunity<M_ism,-2>
 				alpha_type constexpr x2 = 0.955351046282004540229507364731116905L;
 				alpha_type constexpr y0 = 3.141592653589793238462643383279502884L;// pi
 				alpha_type constexpr y1 = 2.978283337663136395120335432185471337L;
-				auto const x = tome_f<I_sgn>(w, x0, x1, x2);
-				auto const y = tome_f<I_sgn>(w, y0, y1);
+				auto const x = termial_f<I_sgn>(w, x0, x1, x2);
+				auto const y = termial_f<I_sgn>(w, y0, y1);
 				return complexion_f(x, y);
 			}
 			XTAL_0IF (I_lim == 0x4) {// 4:5 D[...2]@0 && D[...3]@¼
@@ -78,8 +78,8 @@ struct subunity<M_ism,-2>
 				alpha_type constexpr y0 = 3.141592653589793238462643383279502884L;// pi
 				alpha_type constexpr y1 = 3.457231542101901520792301595993191760L;
 				alpha_type constexpr y2 = 0.331996058066891068754049734988584509L;
-				auto const x = tome_f<I_sgn>(w, x0, x1, x2);
-				auto const y = tome_f<I_sgn>(w, y0, y1, y2);
+				auto const x = termial_f<I_sgn>(w, x0, x1, x2);
+				auto const y = termial_f<I_sgn>(w, y0, y1, y2);
 				return complexion_f(x, y);
 			}
 			XTAL_0IF (I_lim == 0x5) {// 6:5 D[...3]@0 && D[...3]@¼
@@ -90,8 +90,8 @@ struct subunity<M_ism,-2>
 				alpha_type constexpr y0 = 3.141592653589793238462643383279502884L;// pi
 				alpha_type constexpr y1 = 3.763711817027786915281807613442402050L;
 				alpha_type constexpr y2 = 0.623295934882939155479821936321002832L;
-				auto const x = tome_f<I_sgn>(w, x0, x1, x2, x3);
-				auto const y = tome_f<I_sgn>(w, y0, y1, y2);
+				auto const x = termial_f<I_sgn>(w, x0, x1, x2, x3);
+				auto const y = termial_f<I_sgn>(w, y0, y1, y2);
 				return complexion_f(x, y);
 			}
 			XTAL_0IF (I_lim == 0x6) {// 6:7 D[...3]@0 && D[...4]@¼
@@ -103,8 +103,8 @@ struct subunity<M_ism,-2>
 				alpha_type constexpr y1 = 3.978578321256066662987441200793155884L;
 				alpha_type constexpr y2 = 0.859750287076040352418274981236440341L;
 				alpha_type constexpr y3 = 0.022706582386768037080226242510354953L;
-				auto const x = tome_f<I_sgn>(w, x0, x1, x2, x3);
-				auto const y = tome_f<I_sgn>(w, y0, y1, y2, y3);
+				auto const x = termial_f<I_sgn>(w, x0, x1, x2, x3);
+				auto const y = termial_f<I_sgn>(w, y0, y1, y2, y3);
 				return complexion_f(x, y);
 			}
 			XTAL_0IF (I_lim == 0x7) {// 8:7 D[...4]@0 && D[...5]@¼
@@ -117,8 +117,8 @@ struct subunity<M_ism,-2>
 				alpha_type constexpr y1 = 4.136469917598875065501883380414805209L;
 				alpha_type constexpr y2 = 1.048974757862995076084471175276645114L;
 				alpha_type constexpr y3 = 0.054095324243024101847331195900039153L;
-				auto const x = tome_f<I_sgn>(w, x0, x1, x2, x3, x4);
-				auto const y = tome_f<I_sgn>(w, y0, y1, y2, y3);
+				auto const x = termial_f<I_sgn>(w, x0, x1, x2, x3, x4);
+				auto const y = termial_f<I_sgn>(w, y0, y1, y2, y3);
 				return complexion_f(x, y);
 			}
 		}

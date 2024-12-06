@@ -63,7 +63,7 @@ struct differ<>
 	public:// FUNC*
 
 		template <auto ...Is>
-		XTAL_DEF_(return,inline)
+		XTAL_DEF_(short)
 		XTAL_LET method(auto &&u)
 		noexcept -> auto
 		{
@@ -76,7 +76,7 @@ struct differ<>
 			return u1 - u0;
 		}
 		template <auto ...Is>
-		XTAL_DEF_(return,inline)
+		XTAL_DEF_(short)
 		XTAL_LET method(auto &&u, algebra::phason_q auto &&t_)
 		noexcept -> auto
 		{
@@ -94,7 +94,7 @@ struct differ<>
 			return u10;
 		}
 		template <auto ...Is>
-		XTAL_DEF_(return,inline)
+		XTAL_DEF_(short)
 		XTAL_LET method(auto &&u, auto &&v, algebra::phason_q auto &&t_)
 		noexcept -> auto
 		{

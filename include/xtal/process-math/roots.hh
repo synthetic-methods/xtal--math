@@ -14,7 +14,7 @@ namespace xtal::process::math
 template <int M_pow=1, int M_zap=-1> struct   roots;
 template <int M_pow=1, int M_zap=-1> using    roots_t = process::confined_t<roots<M_pow>>;
 template <int M_pow=1, int M_zap=-1>
-XTAL_DEF_(return,inline)
+XTAL_DEF_(short)
 XTAL_LET roots_f(auto &&o)
 noexcept -> decltype(auto)
 {
@@ -37,7 +37,7 @@ struct roots
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&w)
 		noexcept -> auto
 		{

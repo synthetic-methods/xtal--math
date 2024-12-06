@@ -35,7 +35,7 @@ struct dilated
 		using S_::S_;
 
 		template <auto ...Is>
-		XTAL_DEF_(return,inline)
+		XTAL_DEF_(short)
 		XTAL_LET method(auto &&o)
 		noexcept -> decltype(auto)
 			requires (not XTAL_TRY_(S::template function<Is...>(XTAL_REF_(o))))
@@ -47,7 +47,7 @@ struct dilated
 			return S_::template method<Is...>(XTAL_REF_(o)*n)*u;
 		};
 		template <auto ...Is>
-		XTAL_DEF_(return,inline)
+		XTAL_DEF_(short)
 		XTAL_LET method(auto &&o) const
 		noexcept -> decltype(auto)
 			requires (not XTAL_TRY_(S::template function<Is...>(XTAL_REF_(o))))
@@ -60,7 +60,7 @@ struct dilated
 			return S_::template method<Is...>(XTAL_REF_(o)*n)*u;
 		};
 		template <auto ...Is>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> decltype(auto)
 		{

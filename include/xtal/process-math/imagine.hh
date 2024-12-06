@@ -16,7 +16,7 @@ Applies complex quarter-rotation and conjugation. \
 template <int M_rot=0, int M_con=0> struct   imagine;
 template <int M_rot=0, int M_con=0> using    imagine_t = process::confined_t<imagine<M_rot, M_con>>;
 template <int M_rot=0, int M_con=0>
-XTAL_DEF_(return,inline)
+XTAL_DEF_(short)
 XTAL_LET imagine_f(auto &&o)
 noexcept -> decltype(auto)
 {
@@ -43,7 +43,7 @@ struct imagine
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> decltype(auto)
 			requires un_n<complex_field_q<decltype(o)>>
@@ -56,7 +56,7 @@ struct imagine
 			}
 		};
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(complex_field_q auto const &o)
 		noexcept -> decltype(auto)
 			requires un_n<complex_number_q<decltype(o)>>
@@ -78,11 +78,11 @@ struct imagine
 			XTAL_0IF (N_rot == 0b11 and N_con == 1) {return complexion_f( y,  x);}
 		};
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(complex_number_q auto o)
 		noexcept -> decltype(auto)
 		{
-			auto &[x, y] = part_f(o);
+			auto &[x, y] = apart_f(o);
 			if constexpr (N_rot == 0b01 or N_rot == 0b11) {_std::swap(x, y);}
 			if constexpr (N_rot == 0b01 or N_rot == 0b10) {x = -x;}
 			if constexpr (X_rot == 0b11 or X_rot == 0b10) {y = -y;}

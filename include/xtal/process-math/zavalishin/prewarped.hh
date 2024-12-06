@@ -31,7 +31,7 @@ struct prewarped
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline)
+		XTAL_DEF_(short)
 		XTAL_LET method(auto &&u, real_number_q auto &&f, auto &&...oo)
 		noexcept -> decltype(auto)
 		{

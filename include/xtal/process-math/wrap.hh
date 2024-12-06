@@ -14,7 +14,7 @@ namespace xtal::process::math
 template <typename ...As> struct   wrap;
 template <typename ...As> using    wrap_t = process::confined_t<wrap<As...>>;
 template <typename ...As>
-XTAL_DEF_(return,inline)
+XTAL_DEF_(short)
 XTAL_LET wrap_f(auto &&o)
 noexcept -> decltype(auto)
 {
@@ -40,26 +40,26 @@ struct wrap<As...>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> auto
 		{
 			return o - round(o);
 		}
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(algebra::phason_q auto &&t_)
 		noexcept -> decltype(auto)
 		{
 			return XTAL_REF_(t_);
 		}
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(complex_field_q auto &&o)
 		noexcept -> decltype(auto)
 		{
 			if constexpr (complex_number_q<decltype(o)>) {
-				auto &xy = part_f(o);
+				auto &xy = apart_f(o);
 				return complexion_f(function(xy[0]), function(xy[1]));
 			}
 			else {

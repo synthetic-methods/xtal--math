@@ -18,7 +18,7 @@ template <auto ...Ms>
 using    monologarithm_t = process::confined_t<monologarithm<Ms...>>;
 
 template <auto ...Ms>
-XTAL_DEF_(return,inline)
+XTAL_DEF_(short)
 XTAL_LET monologarithm_f(auto &&o, constant_q auto ...oo)
 noexcept -> decltype(auto)
 {
@@ -47,13 +47,13 @@ struct monologarithm<M_ism, M_pow, -0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 			auto constexpr _1 = _op::alpha_1;
-			auto constexpr _i = _op::alpha_1*sign_n<M_ism&1, -1>;
+			auto constexpr _i = _op::alpha_1*signum_n<M_ism&1, -1>;
 
 			if constexpr (N_lim < 0) {
 				return root_f<M_pow>(_i*log(_1 + _i*XTAL_REF_(o)));
@@ -85,13 +85,13 @@ struct monologarithm<M_ism, M_pow, -0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 			auto constexpr _1 = _op::alpha_1;
-			auto constexpr _i = _op::alpha_1*sign_n<M_ism&1, -1>;
+			auto constexpr _i = _op::alpha_1*signum_n<M_ism&1, -1>;
 
 			if constexpr (N_lim < 0) {
 				return root_f<M_pow>(exp(XTAL_REF_(o)*_i)*_i - _i);
@@ -123,13 +123,13 @@ struct monologarithm<M_ism, M_pow, -1>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&u)
 		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(u)>;
 			auto constexpr _1 = _op::alpha_1;
-			auto constexpr _i = _op::alpha_1*sign_n<M_ism&1, -1>;
+			auto constexpr _i = _op::alpha_1*signum_n<M_ism&1, -1>;
 
 			if constexpr (N_lim < 0) {
 				XTAL_IF0
@@ -160,13 +160,13 @@ struct monologarithm<M_ism, M_pow, -1>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&u)
 		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(u)>;
 			auto constexpr _1 = _op::alpha_1;
-			auto constexpr _i = _op::alpha_1*sign_n<M_ism&1, -1>;
+			auto constexpr _i = _op::alpha_1*signum_n<M_ism&1, -1>;
 
 			if constexpr (N_lim < 0) {
 				XTAL_IF0

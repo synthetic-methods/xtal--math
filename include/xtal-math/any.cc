@@ -49,15 +49,15 @@ struct complexion
 	value_type re;
 	value_type im;
 
-	XTAL_DEF_(return,inline) auto real() const noexcept -> value_type const & {return re;}
-	XTAL_DEF_(return,inline) auto imag() const noexcept -> value_type const & {return im;}
+	XTAL_DEF_(short) auto real() const noexcept -> value_type const & {return re;}
+	XTAL_DEF_(short) auto imag() const noexcept -> value_type const & {return im;}
 
-	XTAL_DEF_(return,inline) auto real(auto &&...oo) const noexcept -> value_type const & {return re = value_type{XTAL_REF_(oo)...};}
-	XTAL_DEF_(return,inline) auto imag(auto &&...oo) const noexcept -> value_type const & {return im = value_type{XTAL_REF_(oo)...};}
+	XTAL_DEF_(short) auto real(auto &&...oo) const noexcept -> value_type const & {return re = value_type{XTAL_REF_(oo)...};}
+	XTAL_DEF_(short) auto imag(auto &&...oo) const noexcept -> value_type const & {return im = value_type{XTAL_REF_(oo)...};}
 
 	
 	template <class T> requires un_n<isotropic_q<T, source_type>> and un_n<isotropic_q<T, target_type>>
-	XTAL_DEF_(return,inline,friend)
+	XTAL_DEF_(short,friend)
 	XTAL_LET operator/ (T const &t, source_type const &s)
 	noexcept -> target_type
 		requires (not XTAL_TRY_(t.real();t.imag()))
@@ -66,20 +66,20 @@ struct complexion
 		auto const s_abs = t/(s_re*s_re + s_im*s_im);
 		return {s_abs*s_re, -s_abs*s_im};
 	}
-	XTAL_DEF_(return,inline,friend)
+	XTAL_DEF_(short,friend)
 	XTAL_LET operator/ (source_type const &s, source_type const &t)
 	noexcept -> target_type
 	{
 		return s*(_op::alpha_1/t);
 	}
-	XTAL_DEF_(return,inline,friend)
+	XTAL_DEF_(short,friend)
 	XTAL_LET operator/ (source_type const &s, target_type const &t)
 	noexcept -> target_type
 		requires un_n<isotropic_q<source_type, target_type>>
 	{
 		return s*(_op::alpha_1/t);
 	}
-	XTAL_DEF_(return,inline,friend)
+	XTAL_DEF_(short,friend)
 	XTAL_LET operator/ (source_type const &s, auto const &t)
 	noexcept -> target_type
 	{
@@ -87,7 +87,7 @@ struct complexion
 	}
 	
 //	Complex multiplication:
-	XTAL_DEF_(return,inline,friend)
+	XTAL_DEF_(short,friend)
 	XTAL_LET operator* (source_type const &s, source_type const &t)
 	noexcept -> target_type
 	{
@@ -95,7 +95,7 @@ struct complexion
 		auto const [t_re, t_im] = injective_f(t);
 		return {s_re*t_re - s_im*t_im, s_im*t_re + s_re*t_im};
 	}
-	XTAL_DEF_(return,inline,friend)
+	XTAL_DEF_(short,friend)
 	XTAL_LET operator* (source_type const &s, target_type const &t)
 	noexcept -> target_type
 		requires un_n<isotropic_q<source_type, target_type>>
@@ -105,7 +105,7 @@ struct complexion
 		return {s_re*t_re - s_im*t_im, s_im*t_re + s_re*t_im};
 	}
 	template <class T> requires un_n<isotropic_q<T, source_type>> and un_n<isotropic_q<T, target_type>>
-	XTAL_DEF_(return,inline,friend)
+	XTAL_DEF_(short,friend)
 	XTAL_LET operator* (source_type const &s, T const &t)
 	noexcept -> target_type
 		requires XTAL_TRY_(t.real()*t.imag())
@@ -116,7 +116,7 @@ struct complexion
 	}
 //	Scalar multiplication:
 	template <class T> requires un_n<isotropic_q<T, source_type>> and un_n<isotropic_q<T, target_type>>
-	XTAL_DEF_(return,inline,friend)
+	XTAL_DEF_(short,friend)
 	XTAL_LET operator* (source_type const &s, T const &t)
 	noexcept -> target_type
 		requires (not XTAL_TRY_(t.real();t.imag()))
@@ -125,7 +125,7 @@ struct complexion
 	}
 //	Associative multiplication:
 	template <class T> requires un_n<isotropic_q<T, source_type>>
-	XTAL_DEF_(return,inline,friend)
+	XTAL_DEF_(short,friend)
 	XTAL_LET operator* (T const &t, source_type const &s)
 	noexcept -> decltype(auto)
 	{
@@ -133,7 +133,7 @@ struct complexion
 	}
 
 //	Complex addition:
-	XTAL_DEF_(return,inline,friend)
+	XTAL_DEF_(short,friend)
 	XTAL_LET operator+ (source_type const &s, source_type const &t)
 	noexcept -> target_type
 	{
@@ -141,7 +141,7 @@ struct complexion
 		auto const [t_re, t_im] = reinterpret_cast<value_type const(&)[2]>(t);
 		return {s_re + t_re, s_re + t_im};
 	}
-	XTAL_DEF_(return,inline,friend)
+	XTAL_DEF_(short,friend)
 	XTAL_LET operator+ (source_type const &s, target_type const &t)
 	noexcept -> target_type
 		requires un_n<isotropic_q<source_type, target_type>>
@@ -151,7 +151,7 @@ struct complexion
 		return {s_re + t_re, s_re + t_im};
 	}
 	template <class T> requires un_n<isotropic_q<T, source_type>> and un_n<isotropic_q<T, target_type>>
-	XTAL_DEF_(return,inline,friend)
+	XTAL_DEF_(short,friend)
 	XTAL_LET operator+ (source_type const &s, T const &t)
 	noexcept -> target_type
 		requires XTAL_TRY_(t.real() + t.imag())
@@ -162,7 +162,7 @@ struct complexion
 	}
 //	Scalar addition:
 	template <class T> requires un_n<isotropic_q<T, source_type>> and un_n<isotropic_q<T, target_type>>
-	XTAL_DEF_(return,inline,friend)
+	XTAL_DEF_(short,friend)
 	XTAL_LET operator+ (source_type const &s, T const &t)
 	noexcept -> target_type
 		requires (not XTAL_TRY_(t.real() + t.imag()))
@@ -171,7 +171,7 @@ struct complexion
 	}
 //	Associative addition:
 	template <class T> requires un_n<isotropic_q<T, source_type>>
-	XTAL_DEF_(return,inline,friend)
+	XTAL_DEF_(short,friend)
 	XTAL_LET operator+ (T const &t, source_type const &s)
 	noexcept -> decltype(auto)
 	{
@@ -179,7 +179,7 @@ struct complexion
 	}
 
 	template <class T>
-	XTAL_DEF_(return,inline,friend)
+	XTAL_DEF_(short,friend)
 	XTAL_LET operator- (source_type const &s)
 	noexcept -> target_type
 	{
@@ -191,7 +191,7 @@ struct complexion
 }
 namespace std
 {
-XTAL_DEF_(return,inline)
+XTAL_DEF_(short)
 auto exp(xtal::complexion_q auto &&x)
 {
 	using X = XTAL_ALL_(x);
@@ -200,7 +200,7 @@ auto exp(xtal::complexion_q auto &&x)
 	return Y{cos(x.imag()), sin(x.imag())}*exp(x.real());
 	return exp(x.real())*Y{cos(x.imag()), sin(x.imag())};
 }
-XTAL_DEF_(return,inline)
+XTAL_DEF_(short)
 auto conj(xtal::complexion_q auto &&x)
 {
 	using X = XTAL_ALL_(x);
@@ -230,8 +230,8 @@ XTAL_DEF_(return)
 XTAL_LET check_f(auto const &u, auto const &v)
 noexcept -> int
 {
-	XTAL_LET Z_index = sign_n<N_index>;
-	XTAL_LET Z_limit = sign_n<N_limit>;
+	XTAL_LET Z_index = signum_n<N_index>;
+	XTAL_LET Z_limit = signum_n<N_limit>;
 	static_assert(Z_index == Z_limit);
 
 	XTAL_IF0

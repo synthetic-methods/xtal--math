@@ -52,24 +52,24 @@ struct unity<M_ism> : unity<>
 		using S_::S_;
 
 		template <int N_lim=-1, class U>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(_std::initializer_list<U> o)
 		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
-			_std::complex<U> w; auto &m = part_f(w);
+			_std::complex<U> w; auto &m = apart_f(w);
 			_std::copy_n(point_f(o), 2, m);
 			return function<N_lim>(w);
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(complex_field_q auto const &t)
 		noexcept -> decltype(auto)
 		{
 			return function<N_lim>(t.real(), t.imag());
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&t_re, simplex_field_q auto &&t_im)
 		noexcept -> decltype(auto)
 		{
@@ -78,7 +78,7 @@ struct unity<M_ism> : unity<>
 		}
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,static)
+		XTAL_DEF_(long,static)
 		XTAL_LET function(simplex_field_q auto o)
 		noexcept -> decltype(auto)
 		{
@@ -101,7 +101,7 @@ struct unity<M_ism> : unity<>
 			}
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,static)
+		XTAL_DEF_(long,static)
 		XTAL_LET function(algebra::phason_q auto t_)
 		noexcept -> decltype(auto)
 		{
@@ -145,7 +145,7 @@ struct unity<M_ism> : unity<>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(complex_field_q auto &&o)
 		noexcept -> decltype(auto)
 		{
@@ -157,7 +157,7 @@ struct unity<M_ism> : unity<>
 			XTAL_LET _1 = _op::haplo_0, _2pi = _1/_op::patio_2;
 			XTAL_LET _2 = _op::haplo_1, _4pi = _2/_op::patio_2;
 
-			auto const &[x_re, x_im] = part_f(o);
+			auto const &[x_re, x_im] = apart_f(o);
 			auto const   y_re = tangy_t<-1, 1>::template function<N_lim_tan>(x_im, x_re);
 			auto const   w_im = square_f(x_re, x_im);
 			//\

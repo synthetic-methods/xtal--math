@@ -45,7 +45,7 @@ struct discarded<M_pow, +1>
 
 	//	TODO: Account for `const &` and `&`, or find a cleaner way to express...
 		XTAL_DO2_(template <auto ...Is>
-		XTAL_DEF_(return,inline)
+		XTAL_DEF_(short)
 		XTAL_LET method(auto &&u, auto &&...oo),
 		noexcept -> decltype(auto)
 		{
@@ -57,7 +57,7 @@ struct discarded<M_pow, +1>
 			return v*root_f<M_pow, 1>(XTAL_REF_(u));
 		})
 		template <auto ...Is>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&u, auto &&...oo)
 		noexcept -> decltype(auto)
 		{
@@ -83,7 +83,7 @@ struct discarded<1, +1>
 		using S_::S_;
 
 		XTAL_DO2_(template <auto ...Is>
-		XTAL_DEF_(return,inline)
+		XTAL_DEF_(short)
 		XTAL_LET method(auto &&u, auto &&...oo), -> decltype(auto)
 		{
 			auto  v = S_::template method<Is...>(u, XTAL_REF_(oo)...);
@@ -95,14 +95,14 @@ struct discarded<1, +1>
 				return v*XTAL_REF_(u);
 			}
 			XTAL_0IF (complex_number_q<V>) {
-				part_f(v)[1] *= XTAL_REF_(u); return v;
+				apart_f(v)[1] *= XTAL_REF_(u); return v;
 			}
 			XTAL_0IF (complex_field_q<V>) {
 				return complexion_f(v.real(), v.imag()*XTAL_REF_(u));
 			}
 		})
 		template <auto ...Is>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&u, auto &&...oo)
 		noexcept -> decltype(auto)
 		{
@@ -115,7 +115,7 @@ struct discarded<1, +1>
 				return v*XTAL_REF_(u);
 			}
 			XTAL_0IF (complex_number_q<V>) {
-				part_f(v)[1] *= XTAL_REF_(u); return v;
+				apart_f(v)[1] *= XTAL_REF_(u); return v;
 			}
 			XTAL_0IF (complex_field_q<V>) {
 				return complexion_f(v.real(), v.imag()*XTAL_REF_(u));
@@ -136,13 +136,13 @@ struct discarded<1, +2>
 		using S_::S_;
 
 		XTAL_DO2_(template <auto ...Is>
-		XTAL_DEF_(return,inline)
+		XTAL_DEF_(short)
 		XTAL_LET method(auto &&u, auto &&...oo), -> decltype(auto)
 		{
 			return S_::template method<Is...>(square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
 		})
 		template <auto ...Is>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&u, auto &&...oo)
 		noexcept -> decltype(auto)
 		{

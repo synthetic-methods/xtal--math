@@ -14,7 +14,7 @@ namespace xtal::process::math
 template <int N_two=0, int N_two_pi=0> struct   dilate;
 template <int N_two=0, int N_two_pi=0> using    dilate_t = process::confined_t<dilate<N_two, N_two_pi>>;
 template <int N_two=0, int N_two_pi=0>
-XTAL_DEF_(return,inline)
+XTAL_DEF_(short)
 XTAL_LET dilate_f(auto &&o)
 noexcept -> decltype(auto)
 {
@@ -36,7 +36,7 @@ struct dilate
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> auto
 		{

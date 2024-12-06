@@ -33,7 +33,7 @@ struct sine<M_ism, -0>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&w)
 		noexcept -> decltype(auto)
 		{
@@ -66,7 +66,7 @@ struct sine<M_ism, -1>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> decltype(auto)
 		{
@@ -106,7 +106,7 @@ struct sine<M_ism, -2>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,static)
+		XTAL_DEF_(long,static)
 		XTAL_LET function(auto &&w)
 		noexcept -> auto
 		{
@@ -118,7 +118,7 @@ struct sine<M_ism, -2>
 			}
 			else {
 				int constexpr I_lim = (N_lim << 1) - (0 < N_lim);
-				int constexpr I_sgn = sign_n<(M_ism&1)^1, -1>;
+				int constexpr I_sgn = signum_n<(M_ism&1)^1, -1>;
 
 				using W = XTAL_ALL_(w); using _op = bond::operate<W>;
 				W x = _op::alpha_1;
@@ -148,7 +148,7 @@ struct sine<M_ism, -2>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,static)
+		XTAL_DEF_(long,static)
 		XTAL_LET function(auto &&w)
 		noexcept -> auto
 		{
@@ -160,7 +160,7 @@ struct sine<M_ism, -2>
 			}
 			else {
 				int constexpr I_lim = (N_lim << 1) - (0 < N_lim);
-				int constexpr I_sgn = sign_n<(M_ism&1)^0, -1>;
+				int constexpr I_sgn = signum_n<(M_ism&1)^0, -1>;
 
 				using W = XTAL_ALL_(w); using _op = bond::operate<W>;
 				W x = _op::ratio_f(1, 1 + 2*I_lim);
