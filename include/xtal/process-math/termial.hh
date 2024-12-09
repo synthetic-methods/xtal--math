@@ -45,7 +45,7 @@ noexcept -> decltype(auto)
 template <int M_sgn>
 struct termial
 {
-//	static_assert(signum_p<M_sgn, 1>);
+//	static_assert(in_n<M_sgn, 1,-1>);
 
 	template <class S>
 	class subtype : public bond::compose_s<S>

@@ -43,8 +43,7 @@ struct sine<M_ism, -0>
 		{
 			using _op = bond::operate<decltype(o)>;
 
-			auto constexpr N = end_n<N_lim, 3>;
-
+			XTAL_LET N = below_n<(unsigned) N_lim, (1<<2)>;
 			XTAL_IF0
 			XTAL_0IF (N_lim < 0) {
 				using namespace _std;
@@ -165,8 +164,7 @@ struct sine<M_ism, -2>
 		{
 			using _op = bond::operate<decltype(o)>;
 
-			auto constexpr N = end_n<N_lim, 3>;
-
+			XTAL_LET N = below_n<(unsigned) N_lim, (1<<2)>;
 			auto const w = XTAL_REF_(o)*_op::haplo_f(N << 1);
 			auto const t = term_f(w, a, a);
 			auto const s = w + _op::alpha_1;

@@ -132,9 +132,9 @@ struct root<M_pow, M_zap>
 				
 				auto constexpr w = _op::ratio_f( 4, 3);
 				auto const     x = _op::ratio_f(-1, 3)*XTAL_REF_(o);
-				auto constexpr i_lim = end_n<N_lim, 0x3>;
-			//	#pragma unroll
-				for (int i{0}; i < i_lim; ++i) {
+				auto constexpr I = below_n<(unsigned) N_lim, (1<<2)>;
+				#pragma unroll
+				for (unsigned i{}; i < I; ++i) {
 					y *= _op::accumulate_f(w, x, y*y*y);
 				}
 				return y;

@@ -100,7 +100,7 @@ Co/domain scaling can be effected by multiplying `a`/`b`, respectively. \
 template <int N_alt>
 struct term
 {
-//	static_assert(signum_p<N_alt, 1>);
+//	static_assert(in_n<N_alt, 1,-1>);
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
