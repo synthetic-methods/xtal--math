@@ -167,8 +167,8 @@ struct tangy<M_ism,-2>
 			XTAL_IF0
 			XTAL_0IF (N_lim <  0) {
 				auto [d, q] = roots_f<2, 1>(o);
-				(void) cut_f<XTAL_VAL_(-_op::maxilon_1)>(d);
-				(void) cut_f<XTAL_VAL_(-_op::maxilon_1)>(q);
+				(void) cut_t<XTAL_VAL_(-_op::maxilon_1)>::edit(d);
+				(void) cut_t<XTAL_VAL_(-_op::maxilon_1)>::edit(q);
 				XTAL_IF0
 				XTAL_0IF (M_ism == -1) {return _dn*q*atan (d);}
 				XTAL_0IF (M_ism == -2) {return _dn*q*atanh(d);}

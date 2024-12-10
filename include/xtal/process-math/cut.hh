@@ -67,8 +67,8 @@ struct cut
 			XTAL_LET o_stop = static_cast<U_alpha>(magnum_f(M_stop));
 			XTAL_LET N_side = static_cast<U_delta>(M_side);
 			//\
-			if (_std::is_constant_evaluated() or not _op::IEC or XTAL_ENV_(GNUC)) {
 			if (_std::is_constant_evaluated() or not _op::IEC) {
+			if (_std::is_constant_evaluated() or not _op::IEC or XTAL_ENV_(GNUC)) {
 				U_alpha const s = _op::design_f(o); o = extrema_f<N_side>(o, o_stop);
 				U_alpha const q = o == o_stop;
 				o *= s; return q*s;

@@ -11,26 +11,26 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_pow=1, int M_zap=-1> requires in_n<M_pow, 1, 2,-1,-2>
+template <int M_exp=1, int M_cut=0> requires in_n<M_exp, 1, 2,-1,-2>
 struct   dot;
 
-template <int M_pow=1, int M_zap=-1> requires in_n<M_pow, 1, 2,-1,-2>
-using    dot_t = process::confined_t<dot<M_pow, M_zap>>;
+template <int M_exp=1, int M_cut=0> requires in_n<M_exp, 1, 2,-1,-2>
+using    dot_t = process::confined_t<dot<M_exp, M_cut>>;
 
-template <int M_pow=1, int M_zap=-1> requires in_n<M_pow, 1, 2,-1,-2>
+template <int M_exp=1, int M_cut=0> requires in_n<M_exp, 1, 2,-1,-2>
 XTAL_DEF_(short)
 XTAL_LET dot_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return root_f<M_pow, M_zap>(norm(XTAL_REF_(o)));
+	return root_f<M_exp, M_cut>(norm(XTAL_REF_(o)));
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_pow, int M_zap> requires in_n<M_pow, 1, 2,-1,-2>
-struct dot//<M_pow, M_zap>
+template <int M_exp, int M_cut> requires in_n<M_exp, 1, 2,-1,-2>
+struct dot//<M_exp, M_cut>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -45,7 +45,7 @@ struct dot//<M_pow, M_zap>
 		XTAL_LET function(auto &&o)
 		noexcept -> auto
 		{
-			return dot_f<M_pow, M_zap>(XTAL_REF_(o));
+			return dot_f<M_exp, M_cut>(XTAL_REF_(o));
 		}
 
 	};
