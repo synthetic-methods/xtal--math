@@ -87,7 +87,7 @@ struct differ<>
 			U u0 = XTAL_REF_(u);
 			
 		//	Divides the difference by the derived slope:
-			_std::swap(u1, u0); U u10 = u1 - u0; u10 *= root_f<-1, 0>(t_(1));
+			_std::swap(u1, u0); U u10 = u1 - u0; u10 *= root_f<-1, 1>(t_(1));
 
 		//	Resets the state to zero if a phase/frequency discontinuity is detected:
 		//	u10 *= abs(z10 - t_(1)) < _op::haplo_f(N_zap);

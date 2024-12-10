@@ -1,6 +1,6 @@
 #pragma once
 #include "./any.cc"
-#include "./wrap.hh"// testing...
+#include "./near.hh"// testing...
 
 
 
@@ -13,7 +13,7 @@ namespace xtal::process::math::_test
 
 ////////////////////////////////////////////////////////////////////////////////
 /*/
-TAG_("wrap")
+TAG_("near")
 {
 	using _op = bond::operating;
 	using T_sigma = typename _op::sigma_type;
@@ -24,11 +24,13 @@ TAG_("wrap")
 	static constexpr T_alpha two =  2;
 	static constexpr T_alpha ten = 10;
 
-	TRY_("task")
+	auto mt19937_f = typename _op::mt19937_t();
+	mt19937_f.seed(Catch::rngSeed());
+
+	TRY_("evaluation")
 	{
 		TRUE_(true);
-
-	}
+	};
 }
 /***/
 

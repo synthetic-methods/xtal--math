@@ -18,7 +18,7 @@ template <class      T >	concept   eigenclass_q =	complete_q<eigenclass_t<T>>;
 template <class      T >	concept   eigenvalue_q =	complete_q<eigenvalue_t<T>>;//TODO: Restrict to `Array`-derived.
 
 //template <eigenvalue_q T>
-//struct   devolved<T> : devolved<eigenvalue_t<T>> {};
+//struct   dissolve<T> : dissolve<eigenvalue_t<T>> {};
 
 
 }///////////////////////////////////////////////////////////////////////////////

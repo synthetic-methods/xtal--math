@@ -19,7 +19,7 @@ XTAL_DEF_(short)
 XTAL_LET term_f(W &&w, X &&x, Xs &&...xs)
 noexcept -> auto
 {
-	using V = devolved_u<W, X, Xs...>;
+	using V = dissolve_u<W, X, Xs...>;
 	using _op = bond::operate<V>;
 
 	auto constexpr v =  V{N_alt};
@@ -27,7 +27,7 @@ noexcept -> auto
 	using Y = XTAL_ALL_(y);
 
 	XTAL_IF0
-	XTAL_0IF_(constexpr) {
+	XTAL_0IF_(consteval) {
 		return y*XTAL_REF_(x) + XTAL_REF_(w);
 	}
 	XTAL_0IF (_op::use_FMA() and requires {
@@ -38,7 +38,7 @@ noexcept -> auto
 	}
 
 	XTAL_0IF (complex_number_q<W> and simplex_number_q<X, Y>) {
-		auto const &[w_re, w_im] = apart_f(XTAL_REF_(w));
+		auto const &[w_re, w_im] = destruct_f(XTAL_REF_(w));
 		auto const & z_im = w_im;
 		auto const   z_re = term_f(w_re, XTAL_REF_(x), y);
 		return _std::complex{z_re, z_im};
@@ -46,7 +46,7 @@ noexcept -> auto
 
 	/**/
 	XTAL_0IF (simplex_number_q<W, X> and complex_number_q<Y>) {
-		auto const &[y_re, y_im] = apart_f(y);
+		auto const &[y_re, y_im] = destruct_f(y);
 		auto const   z_im = x*y_im;
 		auto const   z_re = term_f(XTAL_REF_(w), XTAL_REF_(x), y_re);
 		return _std::complex{z_re, z_im};
@@ -57,8 +57,8 @@ noexcept -> auto
 	/***/
 	/**/
 	XTAL_0IF (complex_number_q<W, X> and simplex_number_q<Y>) {
-		auto const &[w_re, w_im] = apart_f(XTAL_REF_(w));
-		auto const &[x_re, x_im] = apart_f(XTAL_REF_(x));
+		auto const &[w_re, w_im] = destruct_f(XTAL_REF_(w));
+		auto const &[x_re, x_im] = destruct_f(XTAL_REF_(x));
 		auto const   z_re = term_f(w_re, x_re, y);
 		auto const   z_im = term_f(w_im, x_im, y);
 		return _std::complex{z_re, z_im};
@@ -70,9 +70,9 @@ noexcept -> auto
 
 	/*/
 	XTAL_0IF (complex_number_q<W, X, Y>) {
-		auto const &[w_re, w_im] = apart_f(XTAL_REF_(w));
-		auto const &[x_re, x_im] = apart_f(XTAL_REF_(x));
-		auto const &[y_re, y_im] = apart_f(y);
+		auto const &[w_re, w_im] = destruct_f(XTAL_REF_(w));
+		auto const &[x_re, x_im] = destruct_f(XTAL_REF_(x));
+		auto const &[y_re, y_im] = destruct_f(y);
 		auto const   z_re = term_f(term_f(w_re, x_re, y_re),-x_im, y_im);
 		auto const   z_im = term_f(term_f(w_im, x_im, y_re), x_re, y_im);
 		return _std::complex{z_re, z_im};

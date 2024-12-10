@@ -6,8 +6,6 @@
 #include "../dilate.hh"
 
 
-
-
 XTAL_ENV_(push)
 namespace xtal::process::math::pade::_test
 {/////////////////////////////////////////////////////////////////////////////////
@@ -50,7 +48,7 @@ TAG_("tangy")
 		TRUE_(check_f<-50>(tangy_t< 1>::template function<-1>(0.125), tangy_t< 1>::template function< 1>(0.125)));
 		TRUE_(check_f<-50>(tangy_t< 1>::template function<-1>(0.125), tangy_t< 1>::template function< 0>(0.125)));
 
-#if not (NDEBUG and XTAL_ENV_(GNUC))
+#if XTAL_ENV_(debug)
 		TRUE_(check_f<-1>(tangy_t<-1, 1>::template function<-1>(0.000), tangy_t<-1, 1>::template function< 5>(0.000)));
 		TRUE_(check_f<-1>(tangy_t<-1, 1>::template function<-1>(0.000), tangy_t<-1, 1>::template function< 4>(0.000)));
 		TRUE_(check_f<-1>(tangy_t<-1, 1>::template function<-1>(0.000), tangy_t<-1, 1>::template function< 3>(0.000)));

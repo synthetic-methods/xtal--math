@@ -6,7 +6,6 @@
 
 
 
-
 XTAL_ENV_(push)
 namespace xtal::process::math::_test
 {/////////////////////////////////////////////////////////////////////////////////
@@ -53,8 +52,8 @@ TAG_("root")
 	}
 	TRY_("punctured evaluation")
 	{
-		TRUE_(1.0 + root_f<-1, 0>(0.0) == 1.0 + root_f<-1, 0>(0.0));
-		TRUE_(1.0 + root_f<-2, 0>(0.0) == 1.0 + root_f<-2, 0>(0.0));
+		TRUE_(0.0 == root_f<-1, 1>(0.0) - root_f<-1, 1>(0.0));
+		TRUE_(0.0 == root_f<-2, 1>(0.0) - root_f<-2, 1>(0.0));
 
 	}
 

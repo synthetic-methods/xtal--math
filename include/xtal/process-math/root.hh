@@ -1,9 +1,9 @@
 #pragma once
 #include "./any.hh"
 
+#include "./cut.hh"
+#include "./magnum.hh"
 #include "./square.hh"
-
-
 
 
 XTAL_ENV_(push)
@@ -11,13 +11,13 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_pow=1, int M_zap=-1>
+template <int M_pow=1, int M_zap=0>
 struct   root;
 
-template <int M_pow=1, int M_zap=-1>
+template <int M_pow=1, int M_zap=0>
 using    root_t = process::confined_t<root<M_pow, M_zap>>;
 
-template <int M_pow=1, int M_zap=-1, auto ...Ns>
+template <int M_pow=1, int M_zap=0, auto ...Ns>
 XTAL_DEF_(short)
 XTAL_LET root_f(auto &&o)
 noexcept -> decltype(auto)
@@ -29,7 +29,7 @@ noexcept -> decltype(auto)
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_pow, int M_zap> requires (0 <= M_zap)
+template <int M_pow, int M_zap> requires (0 <  M_zap)
 struct root<M_pow, M_zap>
 {
 	using superkind = root<M_pow>;
@@ -48,12 +48,14 @@ struct root<M_pow, M_zap>
 		noexcept -> auto
 		{
 			using _op = bond::operate<XTAL_ALL_(o)>;
-			return S_::template function<Ns...>(_op::template punctured_f<_op::designed_f(M_pow)*M_zap>(XTAL_REF_(o)));
+			XTAL_LET N_pow = magnum_f(M_pow*M_zap);
+			XTAL_LET N_min = _op::minilon_f(N_pow);
+			return S_::template function<Ns...>(cut_f<XTAL_VAL_(N_min)>(XTAL_REF_(o)));
 		}
 
 	};
 };
-template <int M_pow, int M_zap> requires (M_zap <  0)
+template <int M_pow, int M_zap> requires (M_zap <= 0)
 struct root<M_pow, M_zap>
 {
 	template <class S>
@@ -85,8 +87,8 @@ struct root<M_pow, M_zap>
 				auto constexpr c0 =   _op::ratio_f( 5, 4);
 				auto const     c1 = o*_op::ratio_f(-1, 4);
 				auto y = XTAL_REF_(o);
-				y *= _op::template root_f<-2, 0>(y);
-				y  = _op::template root_f<-2, 0>(y);
+				y *= _op::template root_f<-2>(y);
+				y  = _op::template root_f<-2>(y);
 				y *= _op::accumulate_f(c0, c1, square_f(square_f(y)));
 				y *= _op::accumulate_f(c0, c1, square_f(square_f(y)));
 				return y;

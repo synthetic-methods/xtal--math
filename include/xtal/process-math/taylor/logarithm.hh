@@ -185,7 +185,7 @@ struct logarithm< 1, 1, 1>
 			auto constexpr up = _op::alpha_1/_op::patio_1;
 			auto constexpr dn =              _op::patio_1;
 
-			auto const [u_re, u_im] = apart_f(XTAL_REF_(u));
+			auto const [u_re, u_im] = destruct_f(XTAL_REF_(u));
 			auto const w_re = square_f(u_re);
 			auto const w_im = square_f(u_im);
 

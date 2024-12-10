@@ -57,7 +57,7 @@ struct unity<M_ism> : unity<>
 		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
-			_std::complex<U> w; auto &m = apart_f(w);
+			_std::complex<U> w; auto &m = destruct_f(w);
 			_std::copy_n(point_f(o), 2, m);
 			return function<N_lim>(w);
 		}
@@ -157,7 +157,7 @@ struct unity<M_ism> : unity<>
 			XTAL_LET _1 = _op::haplo_0, _2pi = _1/_op::patio_2;
 			XTAL_LET _2 = _op::haplo_1, _4pi = _2/_op::patio_2;
 
-			auto const &[x_re, x_im] = apart_f(o);
+			auto const &[x_re, x_im] = destruct_f(o);
 			auto const   y_re = tangy_t<-1, 1>::template function<N_lim_tan>(x_im, x_re);
 			auto const   w_im = square_f(x_re, x_im);
 			//\

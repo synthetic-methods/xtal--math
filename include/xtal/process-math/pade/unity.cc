@@ -6,8 +6,6 @@
 #include "../dilate.hh"
 
 
-
-
 XTAL_ENV_(push)
 namespace xtal::process::math::pade::_test
 {/////////////////////////////////////////////////////////////////////////////////
@@ -59,9 +57,9 @@ TAG_("unity")
 		auto const x = pade::unity_t<1>::template function<4>(roll);
 		auto const y = pade::unity_t<1>::template function<4>(-yaw);
 
-		auto const &[w_re, w_im] = apart_f(w);
-		auto const &[x_re, x_im] = apart_f(x);
-	//	auto const &[y_re, y_im] = apart_f(y);
+		auto const &[w_re, w_im] = destruct_f(w);
+		auto const &[x_re, x_im] = destruct_f(x);
+	//	auto const &[y_re, y_im] = destruct_f(y);
 
 		T_aphex foo{w_re*x_re, w_im*x_im}; foo *= y;
 		T_aphex bar{w_im*x_re, w_re*x_im}; bar *= y;

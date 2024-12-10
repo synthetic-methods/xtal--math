@@ -67,14 +67,14 @@ struct tangy<M_ism,-0>
 				return _op::patio_1*gudermannian::tang_t<M_ism>::template function<N_lim>(XTAL_REF_(o));
 			}
 			XTAL_0IF (0 == (N_lim&1)) {
-				auto const [x1, y1] = apart_f(_detail::subunity_t<M_ism,-0>::template function<N_lim>(o*_op::haplo_1));
+				auto const [x1, y1] = destruct_f(_detail::subunity_t<M_ism,-0>::template function<N_lim>(o*_op::haplo_1));
 				auto const x2 =  square_f(x1) + I_sgn*square_f(y1);
 				auto const y2 = _op::diplo_1*x1*y1;
-				return y2*root_f<-1, 0>(x2);
+				return y2*root_f<-1, 1>(x2);
 			}
 			XTAL_0IF (1 == (N_lim&1)) {
-				auto const [x1, y1] = apart_f(_detail::subunity_t<M_ism,-0>::template function<N_lim>(o));
-				return y1*root_f<-1, 0>(x1);
+				auto const [x1, y1] = destruct_f(_detail::subunity_t<M_ism,-0>::template function<N_lim>(o));
+				return y1*root_f<-1, 1>(x1);
 			}
 		}
 
@@ -166,21 +166,14 @@ struct tangy<M_ism,-2>
 
 			XTAL_IF0
 			XTAL_0IF (N_lim <  0) {
-				auto [d, q] = roots_f<2>(o);
-				_op::truncate_f(d);
-				_op::truncate_f(q);
+				auto [d, q] = roots_f<2, 1>(o);
+				(void) cut_f<XTAL_VAL_(-_op::maxilon_1)>(d);
+				(void) cut_f<XTAL_VAL_(-_op::maxilon_1)>(q);
 				XTAL_IF0
 				XTAL_0IF (M_ism == -1) {return _dn*q*atan (d);}
 				XTAL_0IF (M_ism == -2) {return _dn*q*atanh(d);}
 			}
 			XTAL_0IF (0 == N_lim) {
-				/*/
-				XTAL_LET xN = _dn*(U_alpha) 1.4142135623730950488016887242096980786L;
-				XTAL_LET wN =     (U_alpha) 0.8735141470922506811011384624884910163L;
-				
-				auto const y = term_f(_op::alpha_1, wN, w);
-				return xN*root_f<-2>(y + root_f<2>(y));
-				/*/
 				XTAL_LET x0 = _dn*(U_alpha) 1.00000000000000000e-0;
 				XTAL_LET x1 = _dn*(U_alpha) 0.18114206708921260e-0;
 
@@ -190,7 +183,6 @@ struct tangy<M_ism,-2>
 				auto const x = termial_f<I_sgn>(w, x0, x1);
 				auto const y = termial_f<I_sgn>(w, y0, y1);
 				return x*root_f<-1, 1>(y);
-				/***/
 			}
 			XTAL_0IF (1 == N_lim) {
 				XTAL_LET x0 = _dn*(U_alpha) 1.00000000000000000e-0;
