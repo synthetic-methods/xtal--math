@@ -36,7 +36,7 @@ struct monologarithm<M_ism, M_pow, -0>
 {
 	using superprocess = process::lift_t<void
 	,	bond::compose<dilated<1>, taylor::sine<-2>>
-	,	bond::compose<discarded<M_pow, +1>, monologarithm<M_ism, M_pow, -1>>
+	,	bond::compose<discarded<1, M_pow>, monologarithm<M_ism, M_pow, -1>>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -75,7 +75,7 @@ template <int M_ism, int M_pow> requires in_n<M_ism,-1,-2>
 struct monologarithm<M_ism, M_pow, -0>
 {
 	using superprocess = process::lift_t<void
-	,	bond::compose<discarded<M_pow, +1>, monologarithm<M_ism, M_pow, -1>>
+	,	bond::compose<discarded<1, M_pow>, monologarithm<M_ism, M_pow, -1>>
 	,	bond::compose<dilated<1>, taylor::sine<+2>>
 	>;
 	template <class S>

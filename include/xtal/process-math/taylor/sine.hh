@@ -22,7 +22,7 @@ struct sine<M_ism, +1>
 template <int M_ism>
 struct sine<M_ism, -0>
 {
-	using superkind = bond::compose<discarded<1, +1>, sine<M_ism, -1>>;
+	using superkind = bond::compose<discarded<1>, sine<M_ism, -1>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -55,7 +55,7 @@ struct sine<M_ism, -0>
 template <int M_ism>
 struct sine<M_ism, -1>
 {
-	using superkind = bond::compose<discarded<1, +2>, sine<M_ism, -2>>;
+	using superkind = bond::compose<discarded<2, M_ism>, sine<M_ism, -2>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -117,15 +117,14 @@ struct sine<M_ism, -2>
 				XTAL_0IF (M_ism ==  1) {return sin (root_f<2>(w))/XTAL_REF_(w);}
 			}
 			else {
-				int constexpr I_lim = (N_lim << 1) - (0 < N_lim);
-				int constexpr I_sgn = signum_n<(M_ism&1)^1, -1>;
+				int constexpr N = (N_lim << 1) - (0 < N_lim);
 
 				using W = XTAL_ALL_(w); using _op = bond::operate<W>;
 				W x = _op::alpha_1;
 
-				bond::seek_backward_f<I_lim>([&] (auto i)
-					XTAL_0FN_(x = term_f<I_sgn>(_op::alpha_1
-					,	_op::ratio_f(1, (2 + 2*i)*(3 + 2*i))
+				bond::seek_backward_f<N>([&] (auto i)
+					XTAL_0FN_(x = term_f(_op::alpha_1
+					,	+_op::ratio_f(1, (2 + 2*i)*(3 + 2*i))
 					,	w
 					,	x
 					)
@@ -159,15 +158,14 @@ struct sine<M_ism, -2>
 				XTAL_0IF (M_ism == 2) {return asinh(root_f<2>(XTAL_REF_(w)));}
 			}
 			else {
-				int constexpr I_lim = (N_lim << 1) - (0 < N_lim);
-				int constexpr I_sgn = signum_n<(M_ism&1)^0, -1>;
+				int constexpr N = (N_lim << 1) - (0 < N_lim);
 
 				using W = XTAL_ALL_(w); using _op = bond::operate<W>;
-				W x = _op::ratio_f(1, 1 + 2*I_lim);
+				W x = _op::ratio_f(1, 1 + 2*N);
 
-				bond::seek_backward_f<I_lim>([&] (auto i)
-					XTAL_0FN_(x = term_f<I_sgn>(_op::ratio_f(1, 1 + 2*i)
-					,	_op::template ratio_f(1 + 2*i, 2 + 2*i)
+				bond::seek_backward_f<N>([&] (auto i)
+					XTAL_0FN_(x = term_f(_op::ratio_f(1, 1 + 2*i)
+					,	-_op::template ratio_f(1 + 2*i, 2 + 2*i)
 					,	w
 					,	x
 					)

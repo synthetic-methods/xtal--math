@@ -18,23 +18,24 @@ associated with partial implementations (cf. `Sin` vs `Sinc`). \
 Because it invokes the super-`function` directly, \
 it must be applied via `{compose,confined}` (etc) rather than `process::{lift,link}`.
 
-template <int M_pow=1, int M_car=0>
-	requires in_n<M_pow, 1, -1> and in_n<M_car, 0, 1, 2>
+template <int M_car=0, int M_aux=0> requires in_n<M_car, 0, 1, 2>
 struct   discarded;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_pow>
-struct discarded<M_pow, +0>
+template <int M_aux>
+struct discarded<0, M_aux>
 {
 	template <class S>
 	using subtype = bond::compose_s<S>;
 
 };
-template <int M_pow>
-struct discarded<M_pow, +1>
+template <int M_aux>
+struct discarded<1, M_aux>
 {
+	XTAL_SET M_pow = signum_n<M_aux, 1>;
+
 	template <class S>
 	class subtype : public bond::compose_s<S>
 	{
@@ -72,7 +73,7 @@ struct discarded<M_pow, +1>
 	};
 };
 template <>
-struct discarded<1, +1>
+struct discarded<1>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -125,8 +126,8 @@ struct discarded<1, +1>
 
 	};
 };
-template <>
-struct discarded<1, +2>
+template <int M_aux>
+struct discarded<2, M_aux>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -141,14 +142,18 @@ struct discarded<1, +2>
 		XTAL_LET method(auto &&u, auto &&...oo),
 		noexcept -> decltype(auto)
 		{
-			return S_::template method<Is...>(square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
+			using _op = bond::operate<decltype(u)>;
+			XTAL_LET v = _op::alpha_f(signum_n<(M_aux&1)^1, -1>);
+			return S_::template method<Is...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
 		})
 		template <auto ...Is>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&u, auto &&...oo)
 		noexcept -> decltype(auto)
 		{
-			return S_::template function<Is...>(square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
+			using _op = bond::operate<decltype(u)>;
+			XTAL_LET v = _op::alpha_f(signum_n<(M_aux&1)^1, -1>);
+			return S_::template function<Is...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
 		};
 
 	};

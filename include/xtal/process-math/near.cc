@@ -12,23 +12,55 @@ namespace xtal::process::math::_test
 /////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-/*/
+/**/
 TAG_("near")
 {
-	using _op = bond::operating;
-	using T_sigma = typename _op::sigma_type;
-	using T_delta = typename _op::delta_type;
-	using T_alpha = typename _op::alpha_type;
-	using T_aphex = typename _op::aphex_type;
+	using T_op = bond::operating;
+	using T_sigma = typename T_op::sigma_type;
+	using T_delta = typename T_op::delta_type;
+	using T_alpha = typename T_op::alpha_type;
+	using T_aphex = typename T_op::aphex_type;
 	static constexpr T_alpha one =  1;
 	static constexpr T_alpha two =  2;
 	static constexpr T_alpha ten = 10;
 
-	auto mt19937_f = typename _op::mt19937_t();
+	auto mt19937_f = typename T_op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
 
-	TRY_("evaluation")
+	TRY_("near evaluation")
 	{
+		TRUE_(near_f(-3.75) == -4.00);
+		TRUE_(near_f(-3.50) == -4.00);
+		TRUE_(near_f(-3.25) == -4.00);
+		TRUE_(near_f(-3.00) == -4.00);
+		TRUE_(near_f(-2.75) == -2.00);
+		TRUE_(near_f(-2.50) == -2.00);
+		TRUE_(near_f(-2.25) == -2.00);
+		TRUE_(near_f(-2.00) == -2.00);
+		TRUE_(near_f(-1.75) == -2.00);
+		TRUE_(near_f(-1.50) == -2.00);
+		TRUE_(near_f(-1.25) == -1.00);
+		TRUE_(near_f(-1.00) == -1.00);
+		TRUE_(near_f(-0.75) == -1.00);
+		TRUE_(near_f(-0.50) == -0.50);
+		TRUE_(near_f(-0.25) == -0.25);
+		TRUE_(near_f(-0.00) == -0.00);
+		TRUE_(near_f( 0.00) ==  0.00);
+		TRUE_(near_f( 0.25) ==  0.25);
+		TRUE_(near_f( 0.50) ==  0.50);
+		TRUE_(near_f( 0.75) ==  1.00);
+		TRUE_(near_f( 1.00) ==  1.00);
+		TRUE_(near_f( 1.25) ==  1.00);
+		TRUE_(near_f( 1.50) ==  2.00);
+		TRUE_(near_f( 1.75) ==  2.00);
+		TRUE_(near_f( 2.00) ==  2.00);
+		TRUE_(near_f( 2.25) ==  2.00);
+		TRUE_(near_f( 2.50) ==  2.00);
+		TRUE_(near_f( 2.75) ==  2.00);
+		TRUE_(near_f( 3.00) ==  4.00);
+		TRUE_(near_f( 3.25) ==  4.00);
+		TRUE_(near_f( 3.50) ==  4.00);
+		TRUE_(near_f( 3.75) ==  4.00);
 		TRUE_(true);
 	};
 }
@@ -37,3 +69,4 @@ TAG_("near")
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////
 XTAL_ENV_(pop)
+ 

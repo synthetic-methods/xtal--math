@@ -13,7 +13,7 @@ namespace xtal::process::math
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int ...Ms>
+template <auto ...Ms>
 struct signum
 {
 	template <class S>
@@ -24,28 +24,48 @@ struct signum
 	public:
 		using S_::S_;
 
-		template <int ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(auto const &o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			return (0 < o) - (o < 0) + (o == 0);
 		}
-		template <int ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(real_number_q auto const &o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _op = bond::operate<decltype(o)>;
-			return _op::assigned_f(o);
+			return _xtd::copysign(_op::alpha_1, o);
 		}
-		template <int ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(complex_number_q auto const &o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _op = bond::operate<decltype(o)>;
-			return {function<Ns...>(o.real()), function<Ns...>(o.imag())};
+			return o*_op::template unsquare_dot_f<-1>(o);
+		}
+
+		template <auto ...Ns>
+		XTAL_DEF_(short,static)
+		XTAL_LET edit(real_number_q auto &o)
+		noexcept -> XTAL_ALL_(o)
+		{
+			auto const o_sgn = function<Ns...>(o); o *= o_sgn; return o_sgn;
+		}
+		template <auto ...Ns>
+		XTAL_DEF_(short,static)
+		XTAL_LET edit(complex_number_q auto &o)
+		noexcept -> XTAL_ALL_(o)
+		{
+			using _op = bond::operate<decltype(o)>;
+			auto [u, v] = _op::template unsquare_dot_f<0>(o);
+			auto const o_sgn = o*v;
+			auto const o_mgn = XTAL_ALL_(o){u};
+			o =    o_mgn;
+			return o_sgn;
 		}
 
 	};
@@ -54,7 +74,7 @@ struct signum
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int ...Ms>
+template <auto ...Ms>
 using    signum_t = process::confined_t<signum<Ms...>>;
 
 template <auto ...Ns>

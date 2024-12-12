@@ -30,10 +30,10 @@ template <int M_sgn=1>	using    termial_t = process::confined_t<termial<M_sgn>>;
 template <int M_sgn=1>
 XTAL_DEF_(short)
 XTAL_LET termial_f(auto &&w, auto &&k, auto &&...ks)
-noexcept -> decltype(auto)
+noexcept -> auto
 {
 	if constexpr (0 == sizeof...(ks)) {
-		return static_cast<XTAL_ALL_(k)>(XTAL_REF_(k));
+		return XTAL_REF_(k);
 	}
 	else {
 		return term_f<M_sgn>(k, w, termial_f<M_sgn>(w, ks...));

@@ -17,7 +17,7 @@ template <int M_ism=1, int N_car=0> using    sine_t = process::confined_t<sine<M
 template <int M_ism>
 struct sine<M_ism, -0>
 {
-	using superkind = bond::compose<discarded<1, +1>, sine<M_ism, -1>>;
+	using superkind = bond::compose<discarded<1>, sine<M_ism, -1>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -102,7 +102,7 @@ struct sine<M_ism, -1>
 template <int M_ism> requires in_n<M_ism, 2>
 struct sine<M_ism, -1>
 {
-	using superkind = bond::compose<discarded<1, +2>, sine<M_ism, -2>>;
+	using superkind = bond::compose<discarded<2>, sine<M_ism, -2>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>

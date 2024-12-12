@@ -64,7 +64,7 @@ TAG_("unity")
 		T_aphex foo{w_re*x_re, w_im*x_im}; foo *= y;
 		T_aphex bar{w_im*x_re, w_re*x_im}; bar *= y;
 
-		algebra::scalar_t<T_alpha[4]> const o{foo.real(), bar.imag(), bar.real(), -foo.imag()};
+		algebra::sector_t<T_alpha[4]> const o{foo.real(), bar.imag(), bar.real(), -foo.imag()};
 		TRUE_(check_f<-2>(o[0], 0.73258330748146527));
 		TRUE_(check_f<-2>(o[1], 0.10520194523965509));
 		TRUE_(check_f<-2>(o[2], 0.66421893908191321));

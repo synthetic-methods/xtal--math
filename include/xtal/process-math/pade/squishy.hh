@@ -53,7 +53,7 @@ struct squishy<0, N_pow>
 template <int M_ism> requires (0 < M_ism)
 struct squishy<M_ism, 0>
 {
-	static constexpr int I_sgn = signum_n<(M_ism&1)^0, -1>;
+	static constexpr int I_sgn = signum_n<(M_ism&1)^1, -1>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -75,8 +75,8 @@ struct squishy<M_ism, 0>
 			auto const yy = y*y;
 			auto const xx = x*x;
 			auto const y_ = 2*x*y;
-			auto const x_ = xx - I_sgn*yy;
-			auto const w_ = xx + I_sgn*yy;
+			auto const x_ = xx + I_sgn*yy;
+			auto const w_ = xx - I_sgn*yy;
 			auto const m_ = 1/w_;
 			return complexion_f(x_, y_)*(m_);
 		}

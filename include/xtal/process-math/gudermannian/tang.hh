@@ -47,7 +47,7 @@ noexcept -> decltype(auto)
 template <int M_ism>
 struct tang<M_ism, -0>
 {
-	using superkind = bond::compose<discarded<1, +1>, tang<M_ism, -1>>;
+	using superkind = bond::compose<discarded<1>, tang<M_ism, -1>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -90,7 +90,7 @@ struct tang<M_ism, -0>
 };
 template <int M_ism>
 struct tang<M_ism, -1>
-:	bond::compose<discarded<1, +2>, tang<M_ism, -2>>
+:	bond::compose<discarded<2>, tang<M_ism, -2>>
 {
 };
 template <int M_ism>

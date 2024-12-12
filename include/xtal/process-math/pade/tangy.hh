@@ -109,7 +109,7 @@ struct tangy<M_ism, 1>
 			using _op = bond::operate<decltype(v), decltype(u)>;
 			using U_aphex = typename _op::aphex_type;
 			using U_alpha = typename _op::alpha_type;
-			using W_alpha = algebra::scalar_t<U_alpha[2]>;
+			using W_alpha = algebra::sector_t<U_alpha[2]>;
 
 			auto u_abs = u, u_sgn = _op::design_f(u_abs);
 			auto v_abs = v, v_sgn = _op::design_f(v_abs);// v_sgn *= *_op::haplo_1;
@@ -128,21 +128,17 @@ struct tangy<M_ism, 1>
 };
 template <int M_ism> requires in_n<M_ism,-1,-2>
 struct tangy<M_ism,-0>
-:	bond::compose<discarded<1, +1>, tangy<M_ism,-1>>
+:	bond::compose<discarded<1>, tangy<M_ism,-1>>
 {
 };
 template <int M_ism> requires in_n<M_ism,-1,-2>
 struct tangy<M_ism,-1>
-:	bond::compose<discarded<1, +2>, tangy<M_ism,-2>>
+:	bond::compose<discarded<2>, tangy<M_ism,-2>>
 {
 };
 template <int M_ism> requires in_n<M_ism,-1,-2>
 struct tangy<M_ism,-2>
 {
-	//\
-	XTAL_SET I_sgn = signum_n<(M_ism&1)^1, -1>;
-	XTAL_SET I_sgn = (int) 1;
-
 	template <class S>
 	class subtype : public bond::compose_s<S>
 	{
@@ -180,8 +176,8 @@ struct tangy<M_ism,-2>
 				XTAL_LET y0 =     (U_alpha) 1.00000000000000000e-0;
 				XTAL_LET y1 =     (U_alpha) 0.50387678776821820e-0;
 
-				auto const x = termial_f<I_sgn>(w, x0, x1);
-				auto const y = termial_f<I_sgn>(w, y0, y1);
+				auto const x = termial_f(w, x0, x1);
+				auto const y = termial_f(w, y0, y1);
 				return x*root_f<-1, 1>(y);
 			}
 			XTAL_0IF (1 == N_lim) {
@@ -192,8 +188,8 @@ struct tangy<M_ism,-2>
 				XTAL_LET y1 =     (U_alpha) 0.74755993126133540e-0;
 				XTAL_LET y2 =     (U_alpha) 0.05410519758331759e-0;
 				
-				auto const x = termial_f<I_sgn>(w, x0, x1);
-				auto const y = termial_f<I_sgn>(w, y0, y1, y2);
+				auto const x = termial_f(w, x0, x1);
+				auto const y = termial_f(w, y0, y1, y2);
 				return x*root_f<-1, 1>(y);
 			}
 			XTAL_0IF (2 == N_lim) {
@@ -205,8 +201,8 @@ struct tangy<M_ism,-2>
 				XTAL_LET y1 =     (U_alpha) 0.98379496428721650e-0;
 				XTAL_LET y2 =     (U_alpha) 0.16793026979785060e-0;
 				
-				auto const x = termial_f<I_sgn>(w, x0, x1, x2);
-				auto const y = termial_f<I_sgn>(w, y0, y1, y2);
+				auto const x = termial_f(w, x0, x1, x2);
+				auto const y = termial_f(w, y0, y1, y2);
 				return x*root_f<-1, 1>(y);
 			}
 			XTAL_0IF (3 == N_lim) {
@@ -219,8 +215,8 @@ struct tangy<M_ism,-2>
 				XTAL_LET y2 =     (U_alpha) 0.33731712522645585e-0;
 				XTAL_LET y3 =     (U_alpha) 0.11588697106135937e-1;
 				
-				auto const x = termial_f<I_sgn>(w, x0, x1, x2);
-				auto const y = termial_f<I_sgn>(w, y0, y1, y2, y3);
+				auto const x = termial_f(w, x0, x1, x2);
+				auto const y = termial_f(w, y0, y1, y2, y3);
 				return x*root_f<-1, 1>(y);
 			}
 			XTAL_0IF (4 == N_lim) {
@@ -234,8 +230,8 @@ struct tangy<M_ism,-2>
 				XTAL_LET y2 =     (U_alpha) 0.54620442139995930e-0;
 				XTAL_LET y3 =     (U_alpha) 0.45869073871868164e-1;
 				
-				auto const x = termial_f<I_sgn>(w, x0, x1, x2, x3);
-				auto const y = termial_f<I_sgn>(w, y0, y1, y2, y3);
+				auto const x = termial_f(w, x0, x1, x2, x3);
+				auto const y = termial_f(w, y0, y1, y2, y3);
 				return x*root_f<-1, 1>(y);
 			}
 			XTAL_0IF (5 == N_lim) {
@@ -250,8 +246,8 @@ struct tangy<M_ism,-2>
 				XTAL_LET y3 =     (U_alpha) 1.18407591369199770e-1;
 				XTAL_LET y4 =     (U_alpha) 0.23067742495692903e-2;
 				
-				auto const x = termial_f<I_sgn>(w, x0, x1, x2, x3);
-				auto const y = termial_f<I_sgn>(w, y0, y1, y2, y3, y4);
+				auto const x = termial_f(w, x0, x1, x2, x3);
+				auto const y = termial_f(w, y0, y1, y2, y3, y4);
 				return x*root_f<-1, 1>(y);
 			}
 			XTAL_0IF (6 == N_lim) {
@@ -267,8 +263,8 @@ struct tangy<M_ism,-2>
 				XTAL_LET y3 =     (U_alpha) 2.32185184843683330e-1;
 				XTAL_LET y4 =     (U_alpha) 1.15781734483417240e-2;
 
-				auto const x = termial_f<I_sgn>(w, x0, x1, x2, x3, x4);
-				auto const y = termial_f<I_sgn>(w, y0, y1, y2, y3, y4);
+				auto const x = termial_f(w, x0, x1, x2, x3, x4);
+				auto const y = termial_f(w, y0, y1, y2, y3, y4);
 				return x*root_f<-1, 1>(y);
 			}
 			XTAL_0IF (7 == N_lim) {
@@ -285,8 +281,8 @@ struct tangy<M_ism,-2>
 				XTAL_LET y4 =     (U_alpha) 0.36584362720576720e-1;
 				XTAL_LET y5 =     (U_alpha) 0.45821007587559800e-3;
 
-				auto const x = termial_f<I_sgn>(w, x0, x1, x2, x3, x4);
-				auto const y = termial_f<I_sgn>(w, y0, y1, y2, y3, y4, y5);
+				auto const x = termial_f(w, x0, x1, x2, x3, x4);
+				auto const y = termial_f(w, y0, y1, y2, y3, y4, y5);
 				return x*root_f<-1, 1>(y);
 			}
 		}

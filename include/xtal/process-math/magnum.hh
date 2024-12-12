@@ -27,14 +27,14 @@ struct magnum
 		template <int ...Ns>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(_std::unsigned_integral auto const &o)
-		noexcept -> XTAL_ALL_(o)
+		noexcept -> auto
 		{
 			return o;
 		}
 		template <int ...Ns>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(_std::  signed_integral auto const &o)
-		noexcept -> XTAL_ALL_(o)
+		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(o)>;
 			auto const v = o >> _op::sign.shift;
@@ -43,7 +43,7 @@ struct magnum
 		template <int ...Ns>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(real_number_q auto const &o)
-		noexcept -> XTAL_ALL_(o)
+		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(o)>;
 			return _xtd::copysign(o, _op::alpha_1);
@@ -51,10 +51,30 @@ struct magnum
 		template <int ...Ns>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(complex_number_q auto const &o)
-		noexcept -> XTAL_ALL_(o)
+		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(o)>;
-			return {function<Ns...>(o.real()), function<Ns...>(o.imag())};
+			return _op::template unsquare_dot_f<1>(o);
+		}
+
+		template <auto ...Ns>
+		XTAL_DEF_(short,static)
+		XTAL_LET edit(real_number_q auto &o)
+		noexcept -> auto
+		{
+			using _op = bond::operate<decltype(o)>;
+			auto const o_sgn = _xtd::copysign(_op::alpha_1, o);
+			auto const o_mgn = o*o_sgn;
+			o =    o_sgn;
+			return o_mgn;
+		}
+		template <auto ...Ns>
+		XTAL_DEF_(short,static)
+		XTAL_LET edit(complex_number_q auto &o)
+		noexcept -> auto
+		{
+			using _op = bond::operate<decltype(o)>;
+			auto [u, v] = _op::template unsquare_dot_f<0>(o); o *= v; return u;
 		}
 
 	};

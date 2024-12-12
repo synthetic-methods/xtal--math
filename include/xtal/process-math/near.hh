@@ -13,7 +13,7 @@ namespace xtal::process::math
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int ...Ms>
+template <auto ...Ms>
 struct near
 {
 	template <class S>
@@ -24,31 +24,21 @@ struct near
 	public:
 		using S_::S_;
 
-		template <int ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(real_number_q auto u)
 		noexcept -> XTAL_ALL_(u)
 		{
 			using U = XTAL_ALL_(u);
 			using U_op = bond::operate<U>;
-			auto const N_shift = U_op::exponential_f(u);// TODO: Optimize...
-			auto const U_up = U_op::haplo_f(N_shift);
-			auto const U_dn = U_op::diplo_f(N_shift);
+			using U_sigma = typename U_op::sigma_type;
+			using U_alpha = typename U_op::alpha_type;
 
-			u *= U_up;
-
-			XTAL_IF0
-			XTAL_0IF_(consteval) {
-				u += U_op::haplo_1;
-				u = static_cast<U>(static_cast<integer_type>(u));
-			}
-			XTAL_0IF_(else) {
-				u = round(u);
-			}
-			u *= U_dn;
-			return u;
+			XTAL_LET N_half = U_op::alpha_f(1.4142135623730950488016887242096980786L);// Sqrt[2]
+			XTAL_LET N_mask = U_op::sign.mask|U_op::exponent.mask;
+			return _xtd::bit_cast<U_alpha>(_xtd::bit_cast<U_sigma>(u*N_half)&N_mask);
 		}
-		template <int ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(complex_number_q auto const &u)
 		noexcept -> XTAL_ALL_(u)
@@ -62,7 +52,7 @@ struct near
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int ...Ms>
+template <auto ...Ms>
 using    near_t = process::confined_t<near<Ms...>>;
 
 template <auto ...Ns>

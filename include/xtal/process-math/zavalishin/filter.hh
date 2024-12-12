@@ -89,10 +89,10 @@ struct filter<>
 				auto constexpr N  = N_ord + 1;
 				auto constexpr N_ = N_ord + 0;
 
-				using A  = algebra::scalar_t<typename _op::alpha_type[N ]>;
-				using A_ = algebra::scalar_t<typename _op::alpha_type[N_]>;
-				using W  = algebra::scalar_t<X[N ]>;
-				using W_ = algebra::scalar_t<X[N_]>;
+				using A  = algebra::sector_t<typename _op::alpha_type[N ]>;
+				using A_ = algebra::sector_t<typename _op::alpha_type[N_]>;
+				using W  = algebra::sector_t<X[N ]>;
+				using W_ = algebra::sector_t<X[N_]>;
 
 				auto constexpr _1 = _op::alpha_1;
 				auto constexpr _2 = _op::alpha_2;
@@ -124,10 +124,10 @@ struct filter<>
 		XTAL_DEF_(inline)
 		XTAL_LET method(auto &&x
 		,	real_number_q auto const &o
-		,	algebra::scalar_q auto const &a_
+		,	algebra::sector_q auto const &a_
 		)
 		//\
-		noexcept -> algebra::scalar_t<XTAL_ALL_(x)[N_ord + 1]>
+		noexcept -> algebra::sector_t<XTAL_ALL_(x)[N_ord + 1]>
 		noexcept -> auto
 		{
 			auto constexpr N  = N_ord + 1;
@@ -135,8 +135,8 @@ struct filter<>
 			auto constexpr M_ = N_ord - 1;
 
 			using X  = XTAL_ALL_(x); using _op = bond::operate<X>;
-			using W  = algebra::scalar_t<X[N ]>;
-			using W_ = algebra::scalar_t<X[N_]>;
+			using W  = algebra::sector_t<X[N ]>;
+			using W_ = algebra::sector_t<X[N_]>;
 
 		//	static_assert(is_q<W , decltype(a )>);
 			static_assert(is_q<W_, decltype(a_)>);
