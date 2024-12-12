@@ -11,78 +11,13 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int N_alt=1> struct   term;
-template <int N_alt=1> using    term_t = process::confined_t<term<N_alt>>;
-
 template <int N_alt=1, additive_group_q W, multiplicative_group_q X, multiplicative_group_q ...Xs>
 XTAL_DEF_(short)
 XTAL_LET term_f(W &&w, X &&x, Xs &&...xs)
 noexcept -> auto
 {
-	using V = dissolve_u<W, X, Xs...>;
-	using _op = bond::operate<V>;
-
-	auto constexpr v =  V{N_alt};
-	auto const     y = (v *...* XTAL_REF_(xs));
-	using Y = XTAL_ALL_(y);
-
-	XTAL_IF0
-	XTAL_0IF_(consteval) {
-		return y*XTAL_REF_(x) + XTAL_REF_(w);
-	}
-	XTAL_0IF (_op::use_FMA() and requires {
-		_std::fma(y, x, w);
-		requires is_q<XTAL_ALL_(_std::fma(y, x, w)), XTAL_ALL_(y*x + w)>;
-	}) {
-		return _std::fma(y, XTAL_REF_(x), XTAL_REF_(w));
-	}
-
-	XTAL_0IF (complex_number_q<W> and simplex_number_q<X, Y>) {
-		auto const &[w_re, w_im] = destruct_f(XTAL_REF_(w));
-		auto const & z_im = w_im;
-		auto const   z_re = term_f(w_re, XTAL_REF_(x), y);
-		return _std::complex{z_re, z_im};
-	}
-
-	/**/
-	XTAL_0IF (simplex_number_q<W, X> and complex_number_q<Y>) {
-		auto const &[y_re, y_im] = destruct_f(y);
-		auto const   z_im = x*y_im;
-		auto const   z_re = term_f(XTAL_REF_(w), XTAL_REF_(x), y_re);
-		return _std::complex{z_re, z_im};
-	}
-	XTAL_0IF (simplex_number_q<W, Y> and complex_number_q<X>) {
-		return term_f(XTAL_REF_(w), y, XTAL_REF_(x));
-	}
-	/***/
-	/**/
-	XTAL_0IF (complex_number_q<W, X> and simplex_number_q<Y>) {
-		auto const &[w_re, w_im] = destruct_f(XTAL_REF_(w));
-		auto const &[x_re, x_im] = destruct_f(XTAL_REF_(x));
-		auto const   z_re = term_f(w_re, x_re, y);
-		auto const   z_im = term_f(w_im, x_im, y);
-		return _std::complex{z_re, z_im};
-	}
-	XTAL_0IF (complex_number_q<W, Y> and simplex_number_q<X>) {
-		return term_f(XTAL_REF_(w), y, XTAL_REF_(x));
-	}
-	/***/
-
-	/*/
-	XTAL_0IF (complex_number_q<W, X, Y>) {
-		auto const &[w_re, w_im] = destruct_f(XTAL_REF_(w));
-		auto const &[x_re, x_im] = destruct_f(XTAL_REF_(x));
-		auto const &[y_re, y_im] = destruct_f(y);
-		auto const   z_re = term_f(term_f(w_re, x_re, y_re),-x_im, y_im);
-		auto const   z_im = term_f(term_f(w_im, x_im, y_re), x_re, y_im);
-		return _std::complex{z_re, z_im};
-	}
-	/***/
-
-	XTAL_0IF_(else) {
-	// <5% invocations in test-suite, most being `real + complex*complex`...
-		return y*XTAL_REF_(x) + XTAL_REF_(w);
-	}
+	absolve_u<W, X, Xs...> constexpr v{N_alt};
+	return _xtd::fam(XTAL_REF_(w), XTAL_REF_(x), (v *...* XTAL_REF_(xs)));
 };
 
 
@@ -97,8 +32,8 @@ starting from the kernel `a[N_limit]`. \
 ///\note\
 Co/domain scaling can be effected by multiplying `a`/`b`, respectively. \
 
-template <int N_alt>
-struct term
+template <int N_alt=1>
+struct   term
 {
 //	static_assert(in_n<N_alt, 1,-1>);
 
@@ -115,11 +50,13 @@ struct term
 		XTAL_LET function( auto &&...oo)
 		noexcept -> decltype(auto)
 		{
-			return term_f(XTAL_REF_(oo)...);
+			return term_f<N_alt>(XTAL_REF_(oo)...);
 		}
 
 	};
 };
+template <int N_alt=1>
+using    term_t = process::confined_t<term<N_alt>>;
 
 
 ///////////////////////////////////////////////////////////////////////////////

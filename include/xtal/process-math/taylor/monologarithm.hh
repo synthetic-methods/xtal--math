@@ -49,13 +49,15 @@ struct monologarithm<M_ism, M_pow, -0>
 		template <int N_lim=0>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
-		noexcept -> decltype(auto)
+		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(o)>;
 			auto constexpr _1 = _op::alpha_1;
 			auto constexpr _i = _op::alpha_1*signum_n<M_ism&1, -1>;
 
 			if constexpr (N_lim < 0) {
+			//	XTAL_0IF (M_pow == 1) {return               _i*log(_1 + _i*XTAL_REF_(o)) ;}
+			//	XTAL_0IF (M_pow == 1) {return root_f<M_pow>(_i*log(_1 + _i*XTAL_REF_(o)));}
 				return root_f<M_pow>(_i*log(_1 + _i*XTAL_REF_(o)));
 			}
 			else {
@@ -87,7 +89,7 @@ struct monologarithm<M_ism, M_pow, -0>
 		template <int N_lim=0>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
-		noexcept -> decltype(auto)
+		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(o)>;
 			auto constexpr _1 = _op::alpha_1;
@@ -125,13 +127,14 @@ struct monologarithm<M_ism, M_pow, -1>
 		template <int N_lim=0>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&u)
-		noexcept -> decltype(auto)
+		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(u)>;
 			auto constexpr _1 = _op::alpha_1;
 			auto constexpr _i = _op::alpha_1*signum_n<M_ism&1, -1>;
 
 			if constexpr (N_lim < 0) {
+//				echo("M_car<-1>");
 				XTAL_IF0
 				XTAL_0IF (M_pow ==  1) {return S0::template function<-0, N_lim>(u)/XTAL_REF_(u);}
 				XTAL_0IF (M_pow == -1) {return XTAL_REF_(u)/S0::template function<-0, N_lim>(u);}
@@ -162,13 +165,14 @@ struct monologarithm<M_ism, M_pow, -1>
 		template <int N_lim=0>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&u)
-		noexcept -> decltype(auto)
+		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(u)>;
 			auto constexpr _1 = _op::alpha_1;
 			auto constexpr _i = _op::alpha_1*signum_n<M_ism&1, -1>;
 
 			if constexpr (N_lim < 0) {
+//				echo("M_car<-2>");
 				XTAL_IF0
 				XTAL_0IF (M_pow ==  1) {return S0::template function<-0, N_lim>(u)/XTAL_REF_(u);}
 				XTAL_0IF (M_pow == -1) {return XTAL_REF_(u)/S0::template function<-0, N_lim>(u);}

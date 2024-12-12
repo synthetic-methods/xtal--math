@@ -22,7 +22,9 @@ XTAL_DEF_(short)
 XTAL_LET root_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return root_t<M_exp, M_cut>::template function<Ns...>(XTAL_REF_(o));
+	XTAL_IF0
+	XTAL_0IF (M_exp == 1) {return                                                XTAL_REF_(o) ;}
+	XTAL_0IF (M_exp != 1) {return root_t<M_exp, M_cut>::template function<Ns...>(XTAL_REF_(o));}
 }
 
 
@@ -89,8 +91,8 @@ struct root<M_exp, M_cut>
 				auto y = XTAL_REF_(o);
 				y *= _op::template root_f<-2>(y);
 				y  = _op::template root_f<-2>(y);
-				y *= _op::accumulate_f(c0, c1, square_f(square_f(y)));
-				y *= _op::accumulate_f(c0, c1, square_f(square_f(y)));
+				y *= _xtd::fam(c0, c1, square_f(square_f(y)));
+				y *= _xtd::fam(c0, c1, square_f(square_f(y)));
 				return y;
 			}
 			/***/
@@ -134,10 +136,10 @@ struct root<M_exp, M_cut>
 				
 				auto constexpr w = _op::ratio_f( 4, 3);
 				auto const     x = _op::ratio_f(-1, 3)*XTAL_REF_(o);
-				auto constexpr I = below_n<(unsigned) N_lim, (1<<2)>;
+				auto constexpr I = below_m<(1<<2), (unsigned) N_lim>;
 				#pragma unroll
 				for (unsigned i{}; i < I; ++i) {
-					y *= _op::accumulate_f(w, x, y*y*y);
+					y *= _xtd::fam(w, x, y*y*y);
 				}
 				return y;
 			}

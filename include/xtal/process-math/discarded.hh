@@ -47,7 +47,7 @@ struct discarded<M_pow, +1>
 		XTAL_DO2_(template <auto ...Is>
 		XTAL_DEF_(short)
 		XTAL_LET method(auto &&u, auto &&...oo),
-		noexcept -> decltype(auto)
+		noexcept -> auto
 		{
 			auto  v = S_::template method<Is...>(u, XTAL_REF_(oo)...);
 			using V = XTAL_ALL_(v);
@@ -59,7 +59,7 @@ struct discarded<M_pow, +1>
 		template <auto ...Is>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&u, auto &&...oo)
-		noexcept -> decltype(auto)
+		noexcept -> auto
 		{
 			auto  v = S_::template function<Is...>(u, XTAL_REF_(oo)...);
 			using V = XTAL_ALL_(v);
@@ -84,7 +84,8 @@ struct discarded<1, +1>
 
 		XTAL_DO2_(template <auto ...Is>
 		XTAL_DEF_(short)
-		XTAL_LET method(auto &&u, auto &&...oo), -> decltype(auto)
+		XTAL_LET method(auto &&u, auto &&...oo),
+		noexcept -> auto
 		{
 			auto  v = S_::template method<Is...>(u, XTAL_REF_(oo)...);
 			using V = XTAL_ALL_(v);
@@ -104,7 +105,7 @@ struct discarded<1, +1>
 		template <auto ...Is>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&u, auto &&...oo)
-		noexcept -> decltype(auto)
+		noexcept -> auto
 		{
 			auto  v = S_::template function<Is...>(u, XTAL_REF_(oo)...);
 			using V = XTAL_ALL_(v);
@@ -137,7 +138,8 @@ struct discarded<1, +2>
 
 		XTAL_DO2_(template <auto ...Is>
 		XTAL_DEF_(short)
-		XTAL_LET method(auto &&u, auto &&...oo), -> decltype(auto)
+		XTAL_LET method(auto &&u, auto &&...oo),
+		noexcept -> decltype(auto)
 		{
 			return S_::template method<Is...>(square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
 		})

@@ -149,7 +149,7 @@ TAG_("logarithm")
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
 			auto x = _op::mantissa_f(mt19937_f) - one;
-			w *= logarithm_t<-1>::template function<0>(x);
+			w *= logarithm_t<-1, 1, 0>::template function<0>(x);
 		}
 		return w;
 	};

@@ -127,7 +127,7 @@ struct complexion
 	template <class T> requires un_n<isotropic_q<T, source_type>>
 	XTAL_DEF_(short,friend)
 	XTAL_LET operator* (T const &t, source_type const &s)
-	noexcept -> decltype(auto)
+	noexcept -> auto
 	{
 		return s*t;
 	}
@@ -173,7 +173,7 @@ struct complexion
 	template <class T> requires un_n<isotropic_q<T, source_type>>
 	XTAL_DEF_(short,friend)
 	XTAL_LET operator+ (T const &t, source_type const &s)
-	noexcept -> decltype(auto)
+	noexcept -> auto
 	{
 		return s + t;
 	}

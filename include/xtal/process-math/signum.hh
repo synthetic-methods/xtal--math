@@ -26,17 +26,18 @@ struct signum
 
 		template <int ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto const &u)
-		noexcept -> XTAL_ALL_(u)
+		XTAL_LET function(auto const &o)
+		noexcept -> XTAL_ALL_(o)
 		{
-			return (0 < u) - (u < 0) + (u == 0);
+			return (0 < o) - (o < 0) + (o == 0);
 		}
 		template <int ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(real_number_q auto const &u)
-		noexcept -> XTAL_ALL_(u)
+		XTAL_LET function(real_number_q auto const &o)
+		noexcept -> XTAL_ALL_(o)
 		{
-			return _xtd::signbit(u);
+			using _op = bond::operate<decltype(o)>;
+			return _op::assigned_f(o);
 		}
 		template <int ...Ns>
 		XTAL_DEF_(short,static)
