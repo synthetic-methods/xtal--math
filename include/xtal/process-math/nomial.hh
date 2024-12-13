@@ -17,10 +17,10 @@ Implements the function `#^m^Sgn@m &`. \
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int M_exp=1, auto ...Ms>
-struct   monomial;
+struct   nomial;
 
 template <auto ...Ms>
-struct   monomial<0, Ms...>
+struct   nomial<0, Ms...>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -41,7 +41,7 @@ struct   monomial<0, Ms...>
 	};
 };
 template <int M_exp, auto ...Ms> requires (0 < M_exp) and in_n<bond::operating::bit_count_f(M_exp), 1>
-struct   monomial<M_exp, Ms...>
+struct   nomial<M_exp, Ms...>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -63,12 +63,12 @@ struct   monomial<M_exp, Ms...>
 	};
 };
 template <int M_exp, auto ...Ms> requires (2 < M_exp) and un_n<bond::operating::bit_count_f(M_exp), 1>
-struct   monomial<M_exp, Ms...>
+struct   nomial<M_exp, Ms...>
 {
 	XTAL_SET M_par = M_exp&1;
 	XTAL_SET M_per = M_exp >> 1;
 
-	using superkind = monomial<M_per, Ms...>;
+	using superkind = nomial<M_per, Ms...>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -92,7 +92,7 @@ struct   monomial<M_exp, Ms...>
 	};
 };
 template <int M_exp, auto ...Ms> requires (M_exp < 0) and complete_q<root<M_exp, Ms...>>
-struct   monomial<M_exp, Ms...>
+struct   nomial<M_exp, Ms...>
 {
 	using superkind = root<-M_exp, Ms...>;
 
@@ -119,14 +119,14 @@ struct   monomial<M_exp, Ms...>
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int ...Ms>
-using    monomial_t = process::confined_t<monomial<Ms...>>;
+using    nomial_t = process::confined_t<nomial<Ms...>>;
 
 template <int ...Ms>
 XTAL_DEF_(short)
-XTAL_LET monomial_f(auto &&...oo)
+XTAL_LET nomial_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
-	return monomial_t<Ms...>::function(XTAL_REF_(oo)...);
+	return nomial_t<Ms...>::function(XTAL_REF_(oo)...);
 }
 
 

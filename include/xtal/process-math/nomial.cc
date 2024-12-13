@@ -1,6 +1,6 @@
 #pragma once
 #include "./any.cc"
-#include "./monomial.hh"// testing...
+#include "./nomial.hh"// testing...
 
 
 
@@ -13,7 +13,7 @@ namespace xtal::process::math::_test
 
 ////////////////////////////////////////////////////////////////////////////////
 /**/
-TAG_("monomial")
+TAG_("nomial")
 {
 	using _op = bond::operating;
 	using T_sigma = typename _op::sigma_type;
@@ -29,11 +29,11 @@ TAG_("monomial")
 
 	TRY_("evaluation")
 	{
-		TRUE_(monomial_t< 7>::function(3.) == 2187.);
-		TRUE_(monomial_f< 7>          (3.) == 2187.);
+		TRUE_(nomial_t< 7>::function(3.) == 2187.);
+		TRUE_(nomial_f< 7>          (3.) == 2187.);
 
-		TRUE_(check_f<-1>(monomial_t<-3>::function(3.), T_alpha{1.442249570307408382321638310780110L}));
-		TRUE_(check_f<-1>(monomial_f<-3>          (3.), T_alpha{1.442249570307408382321638310780110L}));
+		TRUE_(check_f<-1>(nomial_t<-3>::function(3.), T_alpha{1.442249570307408382321638310780110L}));
+		TRUE_(check_f<-1>(nomial_f<-3>          (3.), T_alpha{1.442249570307408382321638310780110L}));
 
 	};
 }
