@@ -4,3 +4,4 @@
 #include "./prewarped.hh"
 #include "./sigmoid.hh"
 #include "./vactrol.hh"
+#include "./vectrol.hh"

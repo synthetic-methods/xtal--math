@@ -4,3 +4,4 @@
 #include "./prewarped.cc"
 #include "./sigmoid.cc"
 #include "./vactrol.cc"
+#include "./vectrol.cc"
