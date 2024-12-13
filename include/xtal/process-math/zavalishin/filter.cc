@@ -47,9 +47,10 @@ TAG_("filter")
 
 		SVF svf{};
 		svf <<= typename occur::sample_t<>{44100};
-		svf <<= typename filter<>::limit_type{0};
-		svf <<= typename filter<>::order_type{2};
-		svf <<= typename filter<>::select_type{0};
+		svf <<= typename filter<>::   limit_type{0};
+		svf <<= typename filter<>::   order_type{2};
+		svf <<= typename filter<>::  select_type{0};
+		svf <<= typename filter<>::topology_type{0};
 	
 		U constexpr omega = 2*2*3*3*5*5*7;
 		U constexpr  zero = 0, dn = 0;

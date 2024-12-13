@@ -84,7 +84,7 @@ TAG_("monologarithm")
 		T_alpha s_abs = 0.88;
 		T_alpha s_arg = 0.11;
 
-		T_aphex w = pade::unity_t<1, dilate<1>>::template function<4>(s_arg);
+		T_aphex w = pade::unity_t<1, dilate<2>>::template function<4>(s_arg);
 		T_alpha u = _op::alpha_1/s_abs;
 		
 		w *= taylor::monologarithm_t<-1, +1>::template function<0>(u*zoom);

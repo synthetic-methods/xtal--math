@@ -27,7 +27,7 @@ TAG_("differ")
 	}
 	TRY_("scaling")
 	{
-		differ_t<dilate<0, 1>> diff{};
+		differ_t<dilate<XTAL_VAL_(bond::operating::patio_2)>> diff{};
 
 		TRUE_(check_f<19>(0.15915493667125702, diff(1)));
 		TRUE_(check_f<19>(0.15915493667125702, diff(2)));

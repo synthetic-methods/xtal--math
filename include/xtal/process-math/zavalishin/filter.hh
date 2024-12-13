@@ -19,22 +19,16 @@ template <typename ...As> using    filter_t = process::confined_t<filter<As...>>
 
 template <typename ...As>
 struct filter
-:	process::link<filter<>, As...>
 {
-};
-template <>
-struct filter<>
-{
-	using  alpha_type = typename bond::operating::alpha_type;
-	using  aphex_type = typename bond::operating::aphex_type;
-
-	using   zoom_type = occur::inferred_t<struct   ZOOM, float>;
-	using  order_type = occur::inferred_t<struct  ORDER, bond::seek_t<0, 1, 2, 3>>;
-	using  limit_type = occur::inferred_t<struct  LIMIT, bond::seek_t<0, 1>>;
-	using select_type = occur::inferred_t<struct SELECT, bond::seek_t<0, 1>>;
+	using     zoom_type = occur::inferred_t<struct     ZOOM, float>;
+	using    order_type = occur::inferred_t<struct    ORDER, bond::seek_t<0, 1, 2, 3>>;
+	using   select_type = occur::inferred_t<struct   SELECT, bond::seek_t<0, 1>>;
+	using topology_type = occur::inferred_t<struct TOPOLOGY, bond::seek_t<0, 1>>;
+	using    limit_type = occur::inferred_t<struct    LIMIT, bond::seek_t<0, 1>>;
 
 	XTAL_SET N_order = order_type::cardinality() - 1;
-	XTAL_SET N_cache = N_order*2;
+	XTAL_SET N_cache = N_order<<1;
+	using    U_cache = typename bond::operating::aphex_type;
 
 //	TODO: Implement `maximum`? \
 
@@ -44,13 +38,14 @@ struct filter<>
 	//\
 	using subject = provision::context<void
 	using subject = bond::compose<void
-	,	typename   zoom_type::template   attach<>
-	,	typename  limit_type::template dispatch<>
-	,	typename  order_type::template dispatch<>
-	,	typename select_type::template dispatch<>
+	,	typename     zoom_type::template   attach<>
+	,	typename   select_type::template dispatch<>
+	,	typename    order_type::template dispatch<>
+	,	typename topology_type::template dispatch<>
+	,	typename    limit_type::template dispatch<>// TODO: Replace with `sigmoid`'s parameters?
 	>;
-	using superkind = bond::compose<void
-	,	provision::cached<aphex_type[N_cache]>
+	using superkind = bond::compose<As...
+	,	provision::cached<U_cache[N_cache]>
 	,	provision::example<>
 	,	subject
 	>;
@@ -62,132 +57,148 @@ struct filter<>
 	public:
 		using S_::S_;
 
+		template <class O>
 		XTAL_DEF_(short)
-		XTAL_LET infuse(auto &&o)
+		XTAL_LET infuse(O &&o)
 		noexcept -> signed
 		{
 			XTAL_IF0
-			XTAL_0IF (is_q<decltype(o), order_type>) {
+			XTAL_0IF (is_q<O, order_type>) {
 				S_::cache(0);
 			}
 			return S_::infuse(XTAL_REF_(o));
 		}
-		template <int N_lim=0, int N_ord=0, int N_kit=0>
+
+		template <auto ...Ns>
 		XTAL_DEF_(inline)
-		XTAL_LET method(auto &&x
-		,	real_number_q auto &&o
-		,	real_number_q auto &&a
+		XTAL_LET method(auto &&input
+		,	real_number_q auto &&scale
+		,	real_number_q auto &&coefficient
 		)
-		noexcept -> XTAL_ALL_(x)
+		noexcept -> XTAL_ALL_(input)
 		{
-			using X  = XTAL_ALL_(x); using _op = bond::operate<X>;
+			using _op = bond::operate<decltype(input), decltype(scale)>;
+
+			return method<Ns...>(XTAL_REF_(input), XTAL_REF_(scale), XTAL_REF_(coefficient), _op::alpha_0);
+		}
+		template <int N_sel=0, int N_ord=0, int N_top=0, auto ...Ns>
+		XTAL_DEF_(inline)
+		XTAL_LET method(auto &&input
+		,	real_number_q auto &&scale
+		,	real_number_q auto &&coefficient
+		,	real_number_q auto &&mix
+		)
+		noexcept -> XTAL_ALL_(input)
+		{
+			using _op = bond::operate<decltype(input), decltype(scale)>;
+
+			XTAL_LET N  = N_ord + 1;
+			XTAL_LET N_ = N_ord + 0;
 			XTAL_IF0
 			XTAL_0IF (0 == N_ord) {
-				return XTAL_REF_(x);
+				return XTAL_REF_(input);
 			}
-			XTAL_0IF (0 == N_kit) {
-				auto constexpr N  = N_ord + 1;
-				auto constexpr N_ = N_ord + 0;
+			XTAL_0IF (0 == N_top) {
+				using U_input = XTAL_ALL_(input);
+				using U_exput = XTAL_ALL_(input);
+				using U_coeff = typename _op::alpha_type;
 
-				using A  = algebra::sector_t<typename _op::alpha_type[N ]>;
-				using A_ = algebra::sector_t<typename _op::alpha_type[N_]>;
-				using W  = algebra::sector_t<X[N ]>;
-				using W_ = algebra::sector_t<X[N_]>;
+				using W_exput  = algebra::sector_t<U_input[N ]>;
+				using W_exput_ = algebra::sector_t<U_input[N_]>;
+				using W_coeff  = algebra::sector_t<U_coeff[N ]>;
+				using W_coeff_ = algebra::sector_t<U_coeff[N_]>;
+				
+				union {W_exput exput; W_coeff coeff;} io{[=] () XTAL_0FN -> W_coeff {
+					auto constexpr _0 =  _op::alpha_0;
+					auto constexpr _1 =  _op::alpha_1;
+					auto constexpr _2 =  _op::alpha_2;
+					auto const    a02 = term_f(_0, _2, coefficient);
+					auto const    a12 = term_f(_1, _2, coefficient);
+					XTAL_IF0
+					XTAL_0IF (1 == N_ord) {return {_1, _1};}
+					XTAL_0IF (2 == N_ord) {return {_1, a02, _1};}
+					XTAL_0IF (3 == N_ord) {return {_1, a12, a12, _1};}
+				}()};
 
-				auto constexpr _1 = _op::alpha_1;
-				auto constexpr _2 = _op::alpha_2;
+				(void) edit<N_ord, N_top, Ns...>(io, XTAL_REF_(input), XTAL_REF_(scale));
 
-				XTAL_IF0
-				XTAL_0IF (1 == N_ord) {
-					A_ const a_{_1};
-					W  const w = method<N_lim, N_ord, N_kit>(XTAL_REF_(x), XTAL_REF_(o), a_);
-					return get<0>(w);
-				}
-				XTAL_0IF (2 == N_ord) {
-					auto const a1 = _2*a;
-					A_ const a_{_1, a1};
-					W  const w = method<N_lim, N_ord, N_kit>(XTAL_REF_(x), XTAL_REF_(o), a_);
-					return get<0>(w);
-				}
-				XTAL_0IF (3 == N_ord) {
-					auto const a1 = term_f(_1, _2, a);
-					A_ const a_{_1, a1, a1};
-					W  const w = method<N_lim, N_ord, N_kit>(XTAL_REF_(x), XTAL_REF_(o), a_);
-					return get<0>(w);
-				}
+				XTAL_LET I_ =  static_cast<unsigned>(N_sel);
+				XTAL_LET I0 = _std::countr_one(I_ >>  0) +  0, J0 = I0 + 1;
+				XTAL_LET I1 = _std::countr_one(I_ >> J0) + J0, J1 = I1 + 1;
+				return term_f(get<0>(io.exput), get<1>(io.exput), mix);
 			}
-			XTAL_0IF (1 == N_kit) {
-				return XTAL_REF_(x);
+			XTAL_0IF (1 == N_top) {
+				return XTAL_REF_(input);
 			}
 		}
-		template <int N_lim=0, int N_ord=0, int N_kit=0> requires (1 <= N_ord and N_kit == 0)
+		template <int N_ord=0, int N_top=0, int N_lim=0, auto ...Ns> requires (1 <= N_ord and N_top == 0)
 		XTAL_DEF_(inline)
-		XTAL_LET method(auto &&x
-		,	real_number_q auto const &o
-		,	algebra::sector_q auto const &a_
-		)
-		//\
-		noexcept -> algebra::sector_t<XTAL_ALL_(x)[N_ord + 1]>
-		noexcept -> auto
+		XTAL_LET edit(auto &io, auto &&input, real_number_q auto const &scale)
+		noexcept
 		{
-			auto constexpr N  = N_ord + 1;
-			auto constexpr N_ = N_ord + 0;
-			auto constexpr M_ = N_ord - 1;
+			using _op = bond::operate<decltype(input), decltype(scale)>;
+			XTAL_LET _1 = _op::alpha_1;
+			XTAL_LET _2 = _op::alpha_2;
+			XTAL_LET N_ =    N_ord + 0;
+			XTAL_LET M_ =    N_ord - 1;
 
-			using X  = XTAL_ALL_(x); using _op = bond::operate<X>;
-			using W  = algebra::sector_t<X[N ]>;
-			using W_ = algebra::sector_t<X[N_]>;
+			using U_input = XTAL_ALL_(input);
+			using U_exput = XTAL_ALL_(input);
+			using U_coeff = typename _op::alpha_type;
 
-		//	static_assert(is_q<W , decltype(a )>);
-			static_assert(is_q<W_, decltype(a_)>);
+			using W_input_ = algebra::sector_t<U_input[N_]>;
+			using W_exput_ = algebra::sector_t<U_exput[N_]>;
+			using W_coeff_ = algebra::sector_t<U_coeff[N_]>;
+			auto    cache  = S_::template cache<W_input_, W_input_>();
+			auto    coeff  = io.coeff; auto &coeff_ = reinterpret_cast<W_coeff_ &>(coeff);
+			auto   &exput  = io.exput; auto &exput_ = reinterpret_cast<W_exput_ &>(exput);
+			auto   &slope_ = get<0>(cache);
+			auto   &state_ = get<1>(cache);
+		//	auto   [state_, slope_] = S_::template cache<W_exput_, W_exput_>();//NOTE: Can't access from lambda...
 
-		//	algebra::series_t<X[N_]> z_(self().template head<zoom_type>());
-		//	auto [s_, u_] = S_::template cache<W_, W_>();//NOTE: Can't access from lambda...
-			auto cache = S_::template cache<W_, W_>();
-			W w;
-			auto &w_ = reinterpret_cast<W_ &>(w);
-			auto &u_ = get<0>(cache);
-			auto &s_ = get<1>(cache);
+			auto &sl_0 = get<0>(slope_), sl_N = _1;
+			auto &ex_0 = get<0>(exput), &ex_N = get<N_>(exput);
 
-			auto &u0 = get<0>(u_), uN = _op::alpha_1;
-			auto &w0 = get<0>(w), &wN = get<N_>(w);
-
-		//	Initialize coefficients `u*` and voltages `w*`:
+		//	Initialize coeff `u*` and voltages `exput*`:
 			bond::seek_forward_f<N_>([&] (auto I) XTAL_0FN {
-				auto &uI = get<I>(u_);
-				uI += uI == X{};// Force non-zero... (annoying)
-				uI *= get<I>(a_);
+				auto const &co_I = get<I>(coeff_);
+				auto       &sl_I = get<I>(slope_);
+				sl_I += sl_I == U_input{};// Reinitialize slopes to `1`...
+				sl_I *= co_I;
 			});
-		//	u_ *= a_;
-			w0  = u0;
-			bond::seek_forward_f<M_>([&] (auto I) XTAL_0FN {
-				get<I + 1>(w_) = term_f(get<I + 1>(u_), get<I>(w_), o);
-			});
-			wN = root_f<-1, (4)>(term_f(uN, get<M_>(w_), o));
+		//	slope_ *= coeff_;
 
-		//	Integrate states `s*` with coefficients/voltages:
-			bond::seek_forward_f<1 + N_lim>([&] (auto K) XTAL_0FN {
+			ex_0 = sl_0;
+			bond::seek_forward_f<M_>([&] (auto I) XTAL_0FN {
+				get<I + 1>(exput_) = term_f(get<I + 1>(slope_), get<I>(exput_), scale);
+			});
+			ex_N = root_f<-1, (4)>(term_f(sl_N, get<M_>(exput_), scale));
+
+			XTAL_LET I_lim = (size_type) N_lim != 0;// Only iterate when `sigmoid_t` is non-linear...
+
+		//	Integrate states `s*` with coeff/voltages:
+			bond::seek_forward_f<1 + I_lim>([&] (auto K) XTAL_0FN {
 				XTAL_IF0
-				XTAL_0IF (0 == K) {wN *= x - w_.product(s_);}
-				XTAL_0IF (1 <= K) {wN  = x - w_.product(u_);}
+				XTAL_0IF (0 == K) {ex_N *= input - exput_.product(state_);}
+				XTAL_0IF (1 <= K) {ex_N  = input - exput_.product(slope_);}
 				bond::seek_backward_f<N_>([&] (auto I) XTAL_0FN {
-					auto const  &aI = get<I>(a_);
-					auto const  &sI = get<I>(s_);
-					auto const   wI = term_f(sI, get<I + 1>(w), o);
-					auto const   uI = sigmoid_t<-1,-1>::template function<N_lim>(wI, aI);//, get<I>(z_));
-					get<I>(w_) = wI;
-					get<I>(u_) = uI;
+					auto const      &co_I = get<I>(coeff_);
+					auto const      &st_I = get<I>(state_);
+					auto const       ex_I = term_f(st_I, get<I + 1>(exput), scale);
+					auto const       sl_I = sigmoid_t<-1,-1>::template function<N_lim, Ns...>(ex_I, co_I);//, get<I>(z_));
+					get<I>(exput_) = ex_I;
+					get<I>(slope_) = sl_I;
 				});
 			});
-		//	Finalize states and voltages/coefficients:
-			bond::seek_forward_f<N_>([&] (auto I) XTAL_0FN {
-				get<I>(s_) = term_f(-get<I>(s_), get<I>(w_), _op::alpha_2);
-			});
-		//	s_  = term_f(-s_, w_, _op::alpha_2);
-			u_ /= a_;
-		//	w_ *= u_;// TODO: Make this line optional?
 
-			return w;
+		//	Finalize states and voltages/coeff:
+			bond::seek_forward_f<N_>([&] (auto I) XTAL_0FN {
+				get<I>(state_) = term_f(-get<I>(state_), get<I>(exput_), _2);
+			});
+			slope_ /= coeff_;
+		//	exput_ *= slope_;// TODO: Make this line optional?
+
+			return exput;
 		}
 
 	};

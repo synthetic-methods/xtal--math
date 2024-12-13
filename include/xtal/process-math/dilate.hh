@@ -1,9 +1,9 @@
 #pragma once
 #include "./any.hh"
 
-
-
-
+#include "./root.hh"
+#include "./signum.hh"
+#include "./magnum.hh"
 
 
 XTAL_ENV_(push)
@@ -11,22 +11,34 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int N_two=0, int N_two_pi=0> struct   dilate;
-template <int N_two=0, int N_two_pi=0> using    dilate_t = process::confined_t<dilate<N_two, N_two_pi>>;
-template <int N_two=0, int N_two_pi=0>
+template <auto M_val=1> struct   dilate;
+template <auto M_val=1> using    dilate_t = process::confined_t<dilate<M_val>>;
+template <auto M_val=1>
 XTAL_DEF_(short)
 XTAL_LET dilate_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return dilate_t<N_two, N_two_pi>::template function(XTAL_REF_(o));
+	return dilate_t<M_val>::template function(XTAL_REF_(o));
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int N_two, int N_two_pi>
+template <auto M_val>
 struct dilate
 {
+	XTAL_SET N_val = constant_t<M_val>{};
+
+	XTAL_DEF_(short,static)
+	XTAL_LET after_f(auto &&o)
+	noexcept -> decltype(auto)
+	{
+		XTAL_LET N =  bond::operate<decltype(o)>::alpha_f(N_val);
+		XTAL_LET u =        magnum_f(N);
+		XTAL_LET v = (int)  signum_f(N);
+		return XTAL_REF_(o)*root_f<-v>(u);
+	};
+
 	template <class S>
 	class subtype : public bond::compose_s<S>
 	{
@@ -40,21 +52,10 @@ struct dilate
 		XTAL_LET function(auto &&o)
 		noexcept -> auto
 		{
-			using _op = bond::operate<decltype(o)>;
-			auto constexpr n = _op::diplo_f(-N_two)*_op::template patio_f<-N_two_pi>(2, 1);
-		//	auto constexpr u = _op::diplo_f(+N_two)*_op::template patio_f<+N_two_pi>(2, 1);
-			
-			return XTAL_REF_(o)*(n);
+			return after_f(XTAL_REF_(o));
 		};
 
 	};
-};
-template <>
-struct dilate<0, 0>
-{
-	template <class S>
-	using subtype = S;
-
 };
 
 

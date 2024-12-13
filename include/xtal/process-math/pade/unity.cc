@@ -296,9 +296,9 @@ TAG_("unity")
 		auto z = unity_t<1>::template function<N_lim>(t1);
 
 		TRUE_(check_f<-1>(z, unity_t<1           >::template function<N_lim>(t1)));
-		TRUE_(check_f<-1>(z, unity_t<1, dilate<1>>::template function<N_lim>(t2)));
+		TRUE_(check_f<-1>(z, unity_t<1, dilate<2>>::template function<N_lim>(t2)));
 		
-		TRUE_(check_f<-1>(z, process::lift_t<unity<1>, dilate<1>>::template function<N_lim>(t2)));
+		TRUE_(check_f<-1>(z, process::lift_t<unity<1>, dilate<2>>::template function<N_lim>(t2)));
 		TRUE_(check_f<-1>(z, process::lift_t<unity<1>           >::template function<N_lim>(t1)));
 
 	}

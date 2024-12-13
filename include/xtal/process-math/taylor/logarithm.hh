@@ -80,7 +80,7 @@ Defines `function` as the logarithm `Log[#]`, approximated by `(# - 1)/Sqrt[#]`.
 template <>
 struct logarithm< 1, 1, 0>
 {
-	using superprocess = process::confined_t<dilated<1>, taylor::sine<-2>>;
+	using superprocess = process::confined_t<dilated<2>, taylor::sine<-2>>;
 	
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -123,7 +123,7 @@ approximated by `(Sqrt[(#/2)^2 + 1] + (#/2))*# + 1`. \
 template <>
 struct logarithm<-1, 1, 0>
 {
-	using superprocess = process::confined_t<dilated<1>, taylor::sine<+2>>;
+	using superprocess = process::confined_t<dilated<2>, taylor::sine<+2>>;
 	
 	template <class S>
 	class subtype : public bond::compose_s<S>
