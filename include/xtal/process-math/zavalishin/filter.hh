@@ -11,43 +11,34 @@ namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
+///\note\
+The filter is preconfigured to support `std::complex<double>[4]` poles. \
+With base-types of `double` and `std::complex<double>` respectively, \
+the storage required is `16` and `32` bytes-per-pole. \
+
 template <typename ...As> struct   filter;
 template <typename ...As> using    filter_t = process::confined_t<filter<As...>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename ...As>
-struct filter
+template <class U_pole, size_type N_pole>
+struct filter<U_pole[N_pole]>
 {
 	using     zoom_type = occur::inferred_t<struct     ZOOM, typename bond::operating::alpha_type>;
-	using   select_type = occur::inferred_t<struct   SELECT, bond::seek_t<0, 1>>;
-	using    order_type = occur::inferred_t<struct    ORDER, bond::seek_t<0, 1, 2, 3>>;
-	using topology_type = occur::inferred_t<struct TOPOLOGY, bond::seek_t<0, 1>>;
-	using    limit_type = occur::inferred_t<struct    LIMIT, bond::seek_t<0, 1>>;
+	using   select_type = occur::inferred_t<struct   SELECT, unsigned int, bond::word<2>>;
+	using    order_type = occur::inferred_t<struct    ORDER, unsigned int, bond::seek_s<N_pole + 1>>;
+	using topology_type = occur::inferred_t<struct TOPOLOGY, unsigned int, bond::word<2>>;
+	using    limit_type = occur::inferred_t<struct    LIMIT, unsigned int, bond::word<2>>;
 
-	XTAL_SET N_order = order_type::cardinality() - 1;
-	XTAL_SET N_cache = N_order<<1;
-	using    U_cache = typename bond::operating::aphex_type;
-
-//	TODO: Implement `maximum`? \
-
-//	NOTE: Assuming a base-type of `std::complex`, \
-	the minimum storage required is `(2)*(2*8) == 32` bytes-per-pole. \
-
-	//\
-	using subject = provision::context<void
-	using subject = bond::compose<void
+	using superkind = bond::compose<bond::tag<filter_t>
+	,	provision::cached<U_pole[N_pole << 1]>
+	,	provision::example<>
 	,	typename     zoom_type::template   attach<>
 	,	typename   select_type::template dispatch<>
 	,	typename    order_type::template dispatch<>
 	,	typename topology_type::template dispatch<>
 	,	typename    limit_type::template dispatch<>// TODO: Replace with `sigmoid`'s parameters?
-	>;
-	using superkind = bond::compose<As...
-	,	provision::cached<U_cache[N_cache]>
-	,	provision::example<>
-	,	subject
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -63,9 +54,9 @@ struct filter
 		noexcept -> signed
 		{
 			XTAL_IF0
-			XTAL_0IF (is_q<    order_type, O>)             {S_::cache(0);}
-			XTAL_0IF (is_q< topology_type, O>)             {S_::cache(0);}
-			XTAL_0IF (occur::stage_q<      O>) {if (o == 0) S_::cache(0);}
+			XTAL_0IF (is_q<    order_type, O>)             {S_::template cache<0>();}
+			XTAL_0IF (is_q< topology_type, O>)             {S_::template cache<0>();}
+			XTAL_0IF (occur::stage_q<      O>) {if (o == 0) S_::template cache<0>();}
 			return S_::infuse(XTAL_REF_(o));
 		}
 
@@ -91,8 +82,6 @@ struct filter
 		{
 			using _op = bond::operate<decltype(x_input)>;
 
-			XTAL_LET N  = N_ord + 1;
-			XTAL_LET N_ = N_ord + 0;
 			XTAL_IF0
 			XTAL_0IF (0 == N_ord) {
 				return x_input;
@@ -101,19 +90,20 @@ struct filter
 				using U_input  = XTAL_ALL_(x_input);
 				using U_exput  = XTAL_ALL_(x_input);
 				using U_coeff  = typename _op::alpha_type;
-				using W_exputs = algebra::sector_t<U_input[N ]>;
-				using W_coeffs = algebra::sector_t<U_coeff[N ]>;
+				using U_exputs = algebra::sector_t<U_input[N_ord + 1]>;
+				using U_coeffs = algebra::sector_t<U_coeff[N_ord + 1]>;
 				
-				union {W_exputs exputs; W_coeffs coeffs;} io{[=] () XTAL_0FN -> W_coeffs {
-					auto constexpr _0 =  _op::alpha_0;
-					auto constexpr _1 =  _op::alpha_1;
-					auto constexpr _2 =  _op::alpha_2;
-					auto const    a02 = term_f(_0, _2, s_coeff);
-					auto const    a12 = term_f(_1, _2, s_coeff);
+				union {U_exputs exputs; U_coeffs coeffs;} io{[=] () XTAL_0FN -> U_coeffs {
+					XTAL_LET _1 = _op::alpha_1;
+					XTAL_LET _2 = _op::alpha_2;
+					auto const  &u = s_coeff;
+					auto const u02 =            _2*u , u04 = u02* _2;
+					auto const u12 = term_f(_1, _2,u), w24 = u02*u12;
 					XTAL_IF0
 					XTAL_0IF (1 == N_ord) {return {_1, _1};}
-					XTAL_0IF (2 == N_ord) {return {_1, a02, _1};}
-					XTAL_0IF (3 == N_ord) {return {_1, a12, a12, _1};}
+					XTAL_0IF (2 == N_ord) {return {_1, u02, _1};}
+					XTAL_0IF (3 == N_ord) {return {_1, u12, u12, _1};}
+					XTAL_0IF (4 == N_ord) {return {_1, u04, w24, u04, _1};}
 				}()};
 
 				(void) edit<N_ord, N_top, Ns...>(io, x_input, f_scale);
@@ -154,7 +144,7 @@ struct filter
 			auto &sl_0 = get<0>(slopes_), sl_N = _1;
 			auto &ex_0 = get<0>(exputs), &ex_N = get<N_>(exputs);
 
-		//	Initialize coeffs `u*` and voltages `exputs*`:
+		//	Initialize `coeffs*` and `exputs*`:
 		//	slopes_ *= coeffs_;
 			bond::seek_forward_f<N_>([&] (auto I) XTAL_0FN {
 				auto const &co_I = get<I>(coeffs_);
@@ -171,7 +161,7 @@ struct filter
 
 			XTAL_LET I_lim = (size_type) N_lim != 0;// Only iterate when `sigmoid_t` is non-linear...
 
-		//	Integrate states `s*` with coeffs/voltages:
+		//	Integrate `states*` with `coeffs*`/`exputs*`:
 			bond::seek_forward_f<1 + I_lim>([&] (auto K) XTAL_0FN {
 				XTAL_IF0
 				XTAL_0IF (0 == K) {ex_N *= x_input - exputs_.product(states_);}
@@ -186,7 +176,7 @@ struct filter
 				});
 			});
 
-		//	Finalize states and voltages/coeffs:
+		//	Finalize states and `exputs*`/`coeffs*`:
 			bond::seek_forward_f<N_>([&] (auto I) XTAL_0FN {
 				get<I>(states_) = term_f(-get<I>(states_), get<I>(exputs_), _2);
 			});
@@ -195,6 +185,11 @@ struct filter
 		}
 
 	};
+};
+template <>
+struct filter<>
+:	filter<typename bond::operating::aphex_type[4]>
+{
 };
 
 
