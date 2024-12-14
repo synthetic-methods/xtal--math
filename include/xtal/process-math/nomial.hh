@@ -53,16 +53,58 @@ struct   nomial<M_exp, Ms...>
 
 		template <int ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto o)
+		XTAL_LET function(auto &&o)
 		noexcept -> auto
 		{
+			auto oo = objective_f(XTAL_REF_(o));
 			#pragma unroll
-			for (int i{M_exp}; i >>= 1; o *= o); return o;
+			for (int i{M_exp}; i >>= 1; oo *= oo); return oo;
 		}
 
 	};
 };
-template <int M_exp, auto ...Ms> requires (2 < M_exp) and un_n<bond::operating::bit_count_f(M_exp), 1>
+template <auto ...Ms>
+struct   nomial<3, Ms...>
+{
+	template <class S>
+	class subtype : public bond::compose_s<S>
+	{
+		using S_ = bond::compose_s<S>;
+
+	public:
+		using S_::S_;
+
+		template <int ...Ns>
+		XTAL_DEF_(short,static)
+		XTAL_LET function(auto const &o)
+		noexcept -> auto
+		{
+			return o*o*o;
+		}
+		template <int ...Ns>
+		XTAL_DEF_(short,static)
+		XTAL_LET function(complex_field_q auto const &o)
+		noexcept -> auto
+		{
+			using _op = bond::operate<decltype(o)>;
+			auto const &[x, y] = destruct_f(o);
+			auto const xx =  x*x;
+			auto const yy = -y*y;
+			auto const u  =  x*term_f(xx, yy, _op::alpha_3);
+			auto const v  =  y*term_f(yy, xx, _op::alpha_3);
+			return complexion_f(u, v);
+		}
+		template <int ...Ns>
+		XTAL_DEF_(short,static)
+		XTAL_LET function(algebra::sector_q auto const &o)
+		noexcept -> XTAL_ALL_(o)
+		{
+			return XTAL_ALL_(o)::template map_f<[] XTAL_1FN_(function<Ns...>)>(o);
+		}
+
+	};
+};
+template <int M_exp, auto ...Ms> requires (3 < M_exp) and un_n<bond::operating::bit_count_f(M_exp), 1>
 struct   nomial<M_exp, Ms...>
 {
 	XTAL_SET M_par = M_exp&1;
