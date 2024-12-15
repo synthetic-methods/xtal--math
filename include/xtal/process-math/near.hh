@@ -24,6 +24,21 @@ struct near
 	public:
 		using S_::S_;
 
+		/*/
+		template <auto ...Ns>
+		XTAL_DEF_(short,static)
+		XTAL_LET function(integer_q auto n)
+		noexcept -> XTAL_ALL_(n)
+		{
+			using U = XTAL_ALL_(n);
+			using U_op = bond::operate<U>;
+
+			--n;
+			bond::seek_forward_f<U_op::bit_floor_f(U_op::full.depth)>([&]<constant_q I> (I) XTAL_0FN {n |= n >> (1 << I{});});
+			++n;
+			return n;
+		}
+		/***/
 		template <auto ...Ns>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(real_number_q auto u)

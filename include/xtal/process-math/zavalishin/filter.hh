@@ -94,16 +94,16 @@ struct filter<U_pole[N_pole]>
 				using U_coeffs = algebra::sector_t<U_coeff[N_ord + 1]>;
 				
 				union {U_exputs exputs; U_coeffs coeffs;} io{[=] () XTAL_0FN -> U_coeffs {
-					XTAL_LET _1 = _op::alpha_1;
-					XTAL_LET _2 = _op::alpha_2;
+					XTAL_LET K_1 = _op::alpha_1;
+					XTAL_LET K_2 = _op::alpha_2;
 					auto const  &u = s_coeff;
-					auto const u02 =            _2*u , u04 = u02* _2;
-					auto const u12 = term_f(_1, _2,u), w24 = u02*u12;
+					auto const u02 =             K_2*u , u04 = u02*K_2;
+					auto const u12 = term_f(K_1, K_2,u), w24 = u02*u12;
 					XTAL_IF0
-					XTAL_0IF (1 == N_ord) {return {_1, _1};}
-					XTAL_0IF (2 == N_ord) {return {_1, u02, _1};}
-					XTAL_0IF (3 == N_ord) {return {_1, u12, u12, _1};}
-					XTAL_0IF (4 == N_ord) {return {_1, u04, w24, u04, _1};}
+					XTAL_0IF (1 == N_ord) {return {K_1, K_1};}
+					XTAL_0IF (2 == N_ord) {return {K_1, u02, K_1};}
+					XTAL_0IF (3 == N_ord) {return {K_1, u12, u12, K_1};}
+					XTAL_0IF (4 == N_ord) {return {K_1, u04, w24, u04, K_1};}
 				}()};
 
 				(void) edit<N_ord, N_top, Ns...>(io, x_input, f_scale);
@@ -123,10 +123,10 @@ struct filter<U_pole[N_pole]>
 		noexcept -> void
 		{
 			using _op = bond::operate<decltype(x_input)>;
-			XTAL_LET _1 = _op::alpha_1;
-			XTAL_LET _2 = _op::alpha_2;
-			XTAL_LET N_ =    N_ord + 0;
-			XTAL_LET M_ =    N_ord - 1;
+			XTAL_LET K_1 = _op::alpha_1;
+			XTAL_LET K_2 = _op::alpha_2;
+			XTAL_LET N_  =    N_ord + 0;
+			XTAL_LET M_  =    N_ord - 1;
 
 			using U_input   = XTAL_ALL_(x_input);
 			using U_exput   = XTAL_ALL_(x_input);
@@ -141,7 +141,7 @@ struct filter<U_pole[N_pole]>
 			auto   &slopes_ = get<1>(cachet);
 		//	auto   [states_, slopes_] = S_::template cache<W_exputs_, W_exputs_>();//NOTE: Can't access from lambda...
 
-			auto &sl_0 = get<0>(slopes_), sl_N = _1;
+			auto &sl_0 = get<0>(slopes_), sl_N = K_1;
 			auto &ex_0 = get<0>(exputs), &ex_N = get<N_>(exputs);
 
 		//	Initialize `coeffs*` and `exputs*`:
@@ -178,7 +178,7 @@ struct filter<U_pole[N_pole]>
 
 		//	Finalize states and `exputs*`/`coeffs*`:
 			bond::seek_forward_f<N_>([&] (auto I) XTAL_0FN {
-				get<I>(states_) = term_f(-get<I>(states_), get<I>(exputs_), _2);
+				get<I>(states_) = term_f(-get<I>(states_), get<I>(exputs_), K_2);
 			});
 			slopes_ /= coeffs_;
 		//	exputs_ *= slopes_;// TODO: Make this line optional?

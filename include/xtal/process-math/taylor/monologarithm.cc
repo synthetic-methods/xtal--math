@@ -94,9 +94,36 @@ TAG_("monologarithm")
 		TRUE_(check_f<16>(w, _std::complex{0.18009502457651236, 0.8570821020168073}));
 
 	};
+	EST_("real std::exp(...) - 1")
+	{
+		T_alpha w{};
+		for (T_sigma i = 0x100; ~--i;) {
+			auto x = _op::mantissa_f(mt19937_f) - one;
+			w *= _std::exp(x) - _op::alpha_1;
+		}
+		return w;
+	};
+	EST_("real antimonologarithm... <M_iso=-2, M_lim=-1>")
+	{
+		T_alpha w{};
+		for (T_sigma i = 0x100; ~--i;) {
+			auto x = _op::mantissa_f(mt19937_f) - one;
+			w *= monologarithm_t<-2>::template function<~0>(x);
+		}
+		return w;
+	};
+	EST_("real antimonologarithm... <M_iso=-2, M_lim= 0>")
+	{
+		T_alpha w{};
+		for (T_sigma i = 0x100; ~--i;) {
+			auto x = _op::mantissa_f(mt19937_f) - one;
+			w *= monologarithm_t<-2>::template function< 0>(x);
+		}
+		return w;
+	};
 }
 /***/
 
-///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////FIXME
 }/////////////////////////////////////////////////////////////////////////////
 XTAL_ENV_(pop)

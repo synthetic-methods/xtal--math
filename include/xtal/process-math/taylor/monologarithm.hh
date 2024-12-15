@@ -96,7 +96,7 @@ struct monologarithm<M_ism, M_pow, -0>
 			auto constexpr _i = _op::alpha_1*signum_n<M_ism&1, -1>;
 
 			if constexpr (N_lim < 0) {
-				return root_f<M_pow>(exp(XTAL_REF_(o)*_i)*_i - _i);
+				return root_f<M_pow>(term_f(-_i, _i, exp(_i*XTAL_REF_(o))));
 			}
 			else {
 				return superprocess::template function<N_lim>(XTAL_REF_(o));
