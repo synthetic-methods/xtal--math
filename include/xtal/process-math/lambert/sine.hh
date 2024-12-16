@@ -68,7 +68,7 @@ struct sine<M_ism, -0>
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism> requires in_n<M_ism,-2>
+template <int M_ism> requires in_q<M_ism,-2>
 struct sine<M_ism, -1>
 {
 	using supertype = sine_t<M_ism, 0>;
@@ -99,7 +99,7 @@ struct sine<M_ism, -1>
 
 	};
 };
-template <int M_ism> requires in_n<M_ism, 2>
+template <int M_ism> requires in_q<M_ism, 2>
 struct sine<M_ism, -1>
 {
 	using superkind = bond::compose<discarded<2>, sine<M_ism, -2>>;
@@ -146,7 +146,7 @@ struct sine<M_ism, -1>
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism> requires in_n<M_ism, 2>
+template <int M_ism> requires in_q<M_ism, 2>
 struct sine<M_ism, -2>
 {
 	template <class S>

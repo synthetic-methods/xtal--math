@@ -68,7 +68,7 @@ struct root<M_exp, M_cut>
 	public:
 		using S_::S_;
 
-		template <auto ...Ns> requires un_n<M_exp, -3>
+		template <auto ...Ns> requires un_q<M_exp, -3>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> auto
@@ -100,7 +100,7 @@ struct root<M_exp, M_cut>
 				return root_f<(M_exp >> 1)>(sqrt(XTAL_REF_(o)));
 			}
 		}
-		template <int N_lim=3> requires in_n<M_exp, -3>
+		template <int N_lim=3> requires in_q<M_exp, -3>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> auto

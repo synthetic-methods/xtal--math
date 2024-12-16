@@ -54,10 +54,13 @@ TAG_("symbol")
 
 		using W = symbol_t<T_aphex[N]>;
 		W w; w.characterize();
-		TRUE_(_op::explo_f(w, K).transact(bond::computrim_f<8>) == W{0, 1,-1, 1,-1,-1, 1, 1,-1, 1,-1});
+		W m {_op::explo_f(w, K)};
+		_detail::apply_to<[] (auto &&z) XTAL_0FN_(_std::arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
 
-		w.transact([] (auto &&z) XTAL_0FN_(_std::arg(XTAL_REF_(z))*K/_op::patio_1));
-		w.transact(bond::computrim_f<16>);
+		_detail::apply_to<bond::computrim_f<16>>(m);
+		_detail::apply_to<bond::computrim_f<16>>(w);
+
+		TRUE_(m == W{0, 1,-1, 1,-1,-1, 1, 1,-1, 1,-1});
 		TRUE_(w == W{0, 0, -1, 2, 3, 1,-4,-2,-3, 4,-5});
 
 	}
@@ -94,11 +97,14 @@ TAG_("symbol")
 
 		using W = symbol_t<T_aphex[N]>;
 		W w; w.characterize();
-		TRUE_(_op::explo_f(w, K).transact(bond::computrim_f<8>) == W{0, 1, 1,-1, 1,-1,-1});
+		W m {_op::explo_f(w, K)};
+		_detail::apply_to<[] (auto &&z) XTAL_0FN_(_std::arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
 
-		w.transact([] (auto &&z) XTAL_0FN_(_std::arg(XTAL_REF_(z))*K/_op::patio_1));
-		w.transact(bond::computrim_f<16>);
-		TRUE_(w == W{0, 0, 2, 1,-2,-1, -3});
+		_detail::apply_to<bond::computrim_f<16>>(m);
+		_detail::apply_to<bond::computrim_f<16>>(w);
+
+		TRUE_(m == W{0, 1, 1,-1, 1,-1,-1});
+		TRUE_(w == W{0, 0, 2, 1,-2,-1,-3});
 
 	}
 	TRY_("7th subcharacterization (complex)")
@@ -109,10 +115,12 @@ TAG_("symbol")
 
 		using W = symbol_t<T_aphex[K]>;
 		W w; w.subcharacterize();
-		TRUE_(_op::explo_f(w, K).transact(bond::computrim_f<8>) == W{1, 1,-1});
+		W m {_op::explo_f(w, K)};
+		_detail::apply_to<[] (auto &&z) XTAL_0FN_(_std::arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
 
-		w.transact([] (auto &&z) XTAL_0FN_(_std::arg(XTAL_REF_(z))*K/_op::patio_1));
-		w.transact(bond::computrim_f<16>);
+		_detail::apply_to<bond::computrim_f<16>>(m);
+		_detail::apply_to<bond::computrim_f<16>>(w);
+
 		TRUE_(w == W{0, 2, 1});
 
 	}
@@ -124,7 +132,9 @@ TAG_("symbol")
 
 		using W = symbol_t<T_alpha[N]>;
 		W w; w.characterize();
-		w.transact(bond::computrim_f<16>);
+
+		_detail::apply_to<bond::computrim_f<16>>(w);
+
 		TRUE_(w == W{0, 1, 1,-1, 1,-1,-1});
 
 	}
@@ -137,10 +147,13 @@ TAG_("symbol")
 
 		using W = symbol_t<T_aphex[N]>;
 		W w; w.characterize();
-		TRUE_(_op::explo_f(w, K).transact(bond::computrim_f<8>) == W{0, 1,-1,-1, 1});
+		W m{_op::explo_f(w, K)};
+		_detail::apply_to<[] (auto &&z) XTAL_0FN_(_std::arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
 
-		w.transact([] (auto &&z) XTAL_0FN_(_std::arg(XTAL_REF_(z))*K/_op::patio_1));
-		w.transact(bond::computrim_f<16>);
+		_detail::apply_to<bond::computrim_f<16>>(m);
+		_detail::apply_to<bond::computrim_f<16>>(w);
+
+		TRUE_(m == W{0, 1,-1,-1, 1});
 		TRUE_(w == W{w[0], 0, 1,-1, w[M]});
 	}
 	/*/
@@ -152,7 +165,7 @@ TAG_("symbol")
 
 		using W = symbol_t<T_alpha[N]>;
 		W w; w.template characterize<2>();
-		w.transact(bond::computrim_f<16>);
+		_detail::apply_to<bond::computrim_f<16>>(w);
 	//	echo(w);
 	}
 	/***/

@@ -40,7 +40,7 @@ struct   nomial<0, Ms...>
 
 	};
 };
-template <int M_exp, auto ...Ms> requires (0 < M_exp) and in_n<bond::operating::bit_count_f(M_exp), 1>
+template <int M_exp, auto ...Ms> requires (0 < M_exp) and in_q<bond::operating::bit_count_f(M_exp), 1>
 struct   nomial<M_exp, Ms...>
 {
 	template <class S>
@@ -104,7 +104,7 @@ struct   nomial<3, Ms...>
 
 	};
 };
-template <int M_exp, auto ...Ms> requires (3 < M_exp) and un_n<bond::operating::bit_count_f(M_exp), 1>
+template <int M_exp, auto ...Ms> requires (3 < M_exp) and un_q<bond::operating::bit_count_f(M_exp), 1>
 struct   nomial<M_exp, Ms...>
 {
 	XTAL_SET M_par = M_exp&1;

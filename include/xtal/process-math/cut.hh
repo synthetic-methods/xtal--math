@@ -21,10 +21,10 @@ XTAL_LET flank_n = (int) signum_f(signum_f(N())*nearing_f(magnum_f(N())));
 
 }///////////////////////////////////////////////////////////////////////////////
 
-template <auto M_stop_, int M_side=_detail::flank_n<M_stop_>> requires in_n<M_side, 1, -1>
+template <auto M_stop_, int M_side=_detail::flank_n<M_stop_>> requires in_q<M_side, 1, -1>
 struct   cut;
 
-template <auto M_stop_, int M_side=_detail::flank_n<M_stop_>> requires in_n<M_side, 1, -1>
+template <auto M_stop_, int M_side=_detail::flank_n<M_stop_>> requires in_q<M_side, 1, -1>
 using    cut_t = process::confined_t<cut<M_stop_, M_side>>;
 
 template <auto M_stop_, int M_side=_detail::flank_n<M_stop_>, auto ...Ns>
@@ -39,7 +39,7 @@ noexcept -> decltype(auto)
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-template <auto M_stop_, int M_side> requires in_n<M_side, 1, -1>
+template <auto M_stop_, int M_side> requires in_q<M_side, 1, -1>
 struct cut
 {
 	XTAL_SET M_stop = M_stop_();

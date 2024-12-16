@@ -11,7 +11,7 @@ namespace xtal::process::math::taylor
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism=1, int M_pow=1, int M_car=0> requires in_n<M_ism, 1,-1> and in_n<M_pow, 1,-1> and in_n<M_car, 0, 1>
+template <int M_ism=1, int M_pow=1, int M_car=0> requires in_q<M_ism, 1,-1> and in_q<M_pow, 1,-1> and in_q<M_car, 0, 1>
 struct   logarithm;
 
 template <auto ...Ms>

@@ -11,9 +11,9 @@ namespace xtal::process::math::pade
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism=1, int N_pow=1> requires in_n<N_pow, 1, 0,-1> struct   squishy;
-template <int M_ism=1, int N_pow=1> requires in_n<N_pow, 1, 0,-1> using    squishy_t = process::confined_t<squishy<M_ism, N_pow>>;
-template <int M_ism=1, int N_pow=1> requires in_n<N_pow, 1, 0,-1>
+template <int M_ism=1, int N_pow=1> requires in_q<N_pow, 1, 0,-1> struct   squishy;
+template <int M_ism=1, int N_pow=1> requires in_q<N_pow, 1, 0,-1> using    squishy_t = process::confined_t<squishy<M_ism, N_pow>>;
+template <int M_ism=1, int N_pow=1> requires in_q<N_pow, 1, 0,-1>
 XTAL_DEF_(short)
 XTAL_LET squishy_f(auto &&o)
 noexcept -> decltype(auto)

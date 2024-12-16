@@ -11,7 +11,7 @@ namespace xtal::process::math::taylor
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism=1, int M_pow=1, int M_car=0> requires in_n<M_ism, 1, 2, -1, -2> and in_n<M_pow, 1, -1> and in_n<M_car, -0, -1>
+template <int M_ism=1, int M_pow=1, int M_car=0> requires in_q<M_ism, 1, 2, -1, -2> and in_q<M_pow, 1, -1> and in_q<M_car, -0, -1>
 struct   monologarithm;
 
 template <auto ...Ms>
@@ -31,7 +31,7 @@ noexcept -> decltype(auto)
 Defines `function` as the monologarithm `-Log[1 - #]`, \
 approximated by `#/Sqrt[1 - #]`. \
 
-template <int M_ism, int M_pow> requires in_n<M_ism, 1, 2>
+template <int M_ism, int M_pow> requires in_q<M_ism, 1, 2>
 struct monologarithm<M_ism, M_pow, -0>
 {
 	using superprocess = process::lift_t<void
@@ -71,7 +71,7 @@ struct monologarithm<M_ism, M_pow, -0>
 Defines `function` as the antimonologarithm `1 - Exp[-#]`, \
 approximated by `(Sqrt[1 + (#/2)^2] - (#/2))*(#)`. \
 
-template <int M_ism, int M_pow> requires in_n<M_ism,-1,-2>
+template <int M_ism, int M_pow> requires in_q<M_ism,-1,-2>
 struct monologarithm<M_ism, M_pow, -0>
 {
 	using superprocess = process::lift_t<void
@@ -112,7 +112,7 @@ struct monologarithm<M_ism, M_pow, -0>
 Defines `function` as the cardinal monologarithm `-Log[1 - #]/#`, \
 approximated by `1/Sqrt[1 - #]`. \
 
-template <int M_ism, int M_pow> requires in_n<M_ism, 1, 2>
+template <int M_ism, int M_pow> requires in_q<M_ism, 1, 2>
 struct monologarithm<M_ism, M_pow, -1>
 {
 	template <class S>
@@ -150,7 +150,7 @@ struct monologarithm<M_ism, M_pow, -1>
 Defines `function` as the cardinal antimonologarithm `(1 - Exp[-#])/#`, \
 approximated by `Sqrt[1 + (#/2)^2] + (#/2)`. \
 
-template <int M_ism, int M_pow> requires in_n<M_ism,-1,-2>
+template <int M_ism, int M_pow> requires in_q<M_ism,-1,-2>
 struct monologarithm<M_ism, M_pow, -1>
 {
 	template <class S>

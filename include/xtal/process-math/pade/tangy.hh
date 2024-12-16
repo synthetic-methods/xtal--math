@@ -16,7 +16,7 @@ Defines `Tan[Pi #] &` and `Tanh[Pi #] &`. \
 ///\param M_ism \f$\in {1, 2}\f$ specifies the underlying morphism, \
 generating either the circular or hyperbolic tangent. \
 
-template <int M_ism=0, int M_car=0, typename ...As>// requires in_n<M_ism, 0, 1,-1, 2,-2> and in_n<M_car, 1,-0,-1,-2>
+template <int M_ism=0, int M_car=0, typename ...As>// requires in_q<M_ism, 0, 1,-1, 2,-2> and in_q<M_car, 1,-0,-1,-2>
 struct tangy
 :	process::lift<tangy<M_ism, M_car>, bond::compose<As...>>
 {
@@ -36,7 +36,7 @@ struct   tangy<>
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism> requires in_n<M_ism, 1, 2>
+template <int M_ism> requires in_q<M_ism, 1, 2>
 struct tangy<M_ism,-0>
 {
 	static constexpr int I_sgn = signum_n<(M_ism&1)^1, -1>;
@@ -80,7 +80,7 @@ struct tangy<M_ism,-0>
 
 	};
 };
-template <int M_ism> requires in_n<M_ism,-1,-2>
+template <int M_ism> requires in_q<M_ism,-1,-2>
 struct tangy<M_ism, 1>
 {
 	using superkind = tangy<M_ism,-0>;
@@ -126,17 +126,17 @@ struct tangy<M_ism, 1>
 
 	};
 };
-template <int M_ism> requires in_n<M_ism,-1,-2>
+template <int M_ism> requires in_q<M_ism,-1,-2>
 struct tangy<M_ism,-0>
 :	bond::compose<discarded<1>, tangy<M_ism,-1>>
 {
 };
-template <int M_ism> requires in_n<M_ism,-1,-2>
+template <int M_ism> requires in_q<M_ism,-1,-2>
 struct tangy<M_ism,-1>
 :	bond::compose<discarded<2>, tangy<M_ism,-2>>
 {
 };
-template <int M_ism> requires in_n<M_ism,-1,-2>
+template <int M_ism> requires in_q<M_ism,-1,-2>
 struct tangy<M_ism,-2>
 {
 	template <class S>

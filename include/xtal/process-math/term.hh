@@ -35,7 +35,7 @@ Co/domain scaling can be effected by multiplying `a`/`b`, respectively. \
 template <int N_alt=1>
 struct   term
 {
-//	static_assert(in_n<N_alt, 1,-1>);
+//	static_assert(in_q<N_alt, 1,-1>);
 
 	template <class S>
 	class subtype : public bond::compose_s<S>

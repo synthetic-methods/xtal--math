@@ -16,7 +16,7 @@ Defines the pair `1^{#,-#} &`. \
 ///\note\
 Pronounced "double-unity". \
 
-template <int M_ism=0, typename ...As> requires in_n<M_ism, 0, 1, 2>
+template <int M_ism=0, typename ...As> requires in_q<M_ism, 0, 1, 2>
 struct wnity
 :	process::lift<wnity<M_ism>, bond::compose<As...>>
 {
