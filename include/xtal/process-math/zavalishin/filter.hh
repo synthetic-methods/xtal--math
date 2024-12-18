@@ -54,9 +54,9 @@ struct filter<U_pole[N_pole]>
 		noexcept -> signed
 		{
 			XTAL_IF0
-			XTAL_0IF (same_q<    order_type, O>)             {S_::template cache<0>();}
-			XTAL_0IF (same_q< topology_type, O>)             {S_::template cache<0>();}
-			XTAL_0IF (occur::stage_q<      O>) {if (o == 0) S_::template cache<0>();}
+			XTAL_0IF (same_q<    order_type, O>)             {S_::cache(constant_t<0>{});}
+			XTAL_0IF (same_q< topology_type, O>)             {S_::cache(constant_t<0>{});}
+			XTAL_0IF (        occur::stage_q<O>) {if (o == 0) S_::cache(constant_t<0>{});}
 			return S_::infuse(XTAL_REF_(o));
 		}
 
@@ -131,28 +131,24 @@ struct filter<U_pole[N_pole]>
 			using U_input   = XTAL_ALL_(x_input);
 			using U_exput   = XTAL_ALL_(x_input);
 			using U_coeff   = typename _op::alpha_type;
-			using W_inputs_ = algebra::lateral_t<U_input[N_]>;
-			using W_exputs_ = algebra::lateral_t<U_exput[N_]>;
-			using W_coeffs_ = algebra::lateral_t<U_coeff[N_]>;
-			auto    cachet  = S_::template cache<W_inputs_, W_inputs_>();
-			auto    coeffs  = io.coeffs; auto &coeffs_ = reinterpret_cast<W_coeffs_ &>(coeffs);
-			auto   &exputs  = io.exputs; auto &exputs_ = reinterpret_cast<W_exputs_ &>(exputs);
-			auto   &states_ = get<0>(cachet);
-			auto   &slopes_ = get<1>(cachet);
-		//	auto   [states_, slopes_] = S_::template cache<W_exputs_, W_exputs_>();//NOTE: Can't access from lambda...
+			using U_inputs_ = algebra::lateral_t<U_input[N_]>;
+			using U_exputs_ = algebra::lateral_t<U_exput[N_]>;
+			using U_coeffs_ = algebra::lateral_t<U_coeff[N_]>;
+			auto    cachet  = S_::template cache<U_inputs_, U_inputs_>();
+			auto    coeffs  = io.coeffs; auto &coeffs_ = reinterpret_cast<U_coeffs_ &>(coeffs);
+			auto   &exputs  = io.exputs; auto &exputs_ = reinterpret_cast<U_exputs_ &>(exputs);
+			auto   &slopes_ = get<0>(cachet);
+			auto   &states_ = get<1>(cachet);
+		//	auto   [slopes_, states_] = S_::template cache<U_exputs_, U_exputs_>();//NOTE: Can't access from lambda...
 
 			auto &sl_0 = get<0>(slopes_), sl_N = K_1;
 			auto &ex_0 = get<0>(exputs), &ex_N = get<N_>(exputs);
 
-		//	Initialize `coeffs*` and `exputs*`:
-		//	slopes_ *= coeffs_;
-			bond::seek_forward_f<N_>([&] (auto I) XTAL_0FN {
-				auto const &co_I = get<I>(coeffs_);
-				auto       &sl_I = get<I>(slopes_);
-				sl_I += sl_I == XTAL_ALL_(sl_I){0};// Reinitialize slopes to `1`...
-				sl_I *= co_I;
-			});
+		//	Initialize `coeffs*`:
+			slopes_.unzero();
+			slopes_ *= coeffs_;
 
+		//	Initialize `exputs*`:
 			ex_0 = sl_0;
 			bond::seek_forward_f<M_>([&] (auto I) XTAL_0FN {
 				get<I + 1>(exputs_) = term_f(get<I + 1>(slopes_), get<I>(exputs_), f_scale);
@@ -161,7 +157,7 @@ struct filter<U_pole[N_pole]>
 
 			XTAL_LET I_lim = (size_type) N_lim != 0;// Only iterate when `sigmoid_t` is non-linear...
 
-		//	Integrate `states*` with `coeffs*`/`exputs*`:
+		//	Integrate `states*` with `coeffs*` and `exputs*`:
 			bond::seek_forward_f<1 + I_lim>([&] (auto K) XTAL_0FN {
 				XTAL_IF0
 				XTAL_0IF (0 == K) {ex_N *= x_input - exputs_.product(states_);}

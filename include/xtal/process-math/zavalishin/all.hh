@@ -3,5 +3,6 @@
 #include "./filter.hh"
 #include "./prewarped.hh"
 #include "./sigmoid.hh"
+#include "./trigger.hh"
 #include "./vactrol.hh"
 #include "./vectrol.hh"

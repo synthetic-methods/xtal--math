@@ -3,5 +3,6 @@
 #include "./filter.cc"
 #include "./prewarped.cc"
 #include "./sigmoid.cc"
+#include "./trigger.cc"
 #include "./vactrol.cc"
 #include "./vectrol.cc"
