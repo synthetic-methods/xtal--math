@@ -54,8 +54,8 @@ struct filter<U_pole[N_pole]>
 		noexcept -> signed
 		{
 			XTAL_IF0
-			XTAL_0IF (is_q<    order_type, O>)             {S_::template cache<0>();}
-			XTAL_0IF (is_q< topology_type, O>)             {S_::template cache<0>();}
+			XTAL_0IF (same_q<    order_type, O>)             {S_::template cache<0>();}
+			XTAL_0IF (same_q< topology_type, O>)             {S_::template cache<0>();}
 			XTAL_0IF (occur::stage_q<      O>) {if (o == 0) S_::template cache<0>();}
 			return S_::infuse(XTAL_REF_(o));
 		}
@@ -90,8 +90,8 @@ struct filter<U_pole[N_pole]>
 				using U_input  = XTAL_ALL_(x_input);
 				using U_exput  = XTAL_ALL_(x_input);
 				using U_coeff  = typename _op::alpha_type;
-				using U_exputs = algebra::sector_t<U_input[N_ord + 1]>;
-				using U_coeffs = algebra::sector_t<U_coeff[N_ord + 1]>;
+				using U_exputs = algebra::lateral_t<U_input[N_ord + 1]>;
+				using U_coeffs = algebra::lateral_t<U_coeff[N_ord + 1]>;
 				
 				union {U_exputs exputs; U_coeffs coeffs;} io{[=] () XTAL_0FN -> U_coeffs {
 					XTAL_LET K_1 = _op::alpha_1;
@@ -131,9 +131,9 @@ struct filter<U_pole[N_pole]>
 			using U_input   = XTAL_ALL_(x_input);
 			using U_exput   = XTAL_ALL_(x_input);
 			using U_coeff   = typename _op::alpha_type;
-			using W_inputs_ = algebra::sector_t<U_input[N_]>;
-			using W_exputs_ = algebra::sector_t<U_exput[N_]>;
-			using W_coeffs_ = algebra::sector_t<U_coeff[N_]>;
+			using W_inputs_ = algebra::lateral_t<U_input[N_]>;
+			using W_exputs_ = algebra::lateral_t<U_exput[N_]>;
+			using W_coeffs_ = algebra::lateral_t<U_coeff[N_]>;
 			auto    cachet  = S_::template cache<W_inputs_, W_inputs_>();
 			auto    coeffs  = io.coeffs; auto &coeffs_ = reinterpret_cast<W_coeffs_ &>(coeffs);
 			auto   &exputs  = io.exputs; auto &exputs_ = reinterpret_cast<W_exputs_ &>(exputs);

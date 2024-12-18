@@ -96,7 +96,7 @@ struct   nomial<3, Ms...>
 		}
 		template <int ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(algebra::sector_q auto const &o)
+		XTAL_LET function(algebra::lateral_q auto const &o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			return XTAL_ALL_(o)::template map_f<[] XTAL_1FN_(function<Ns...>)>(o);

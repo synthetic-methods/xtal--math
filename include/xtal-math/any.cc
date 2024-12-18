@@ -15,7 +15,7 @@ struct adapt
 namespace xtal
 {
 template <class U, class V=U> struct   complexion;
-template <class        ...Ts> concept  complexion_q = bond::any_tag_p<complexion, Ts...>;
+template <class        ...Ts> concept  complexion_q = bond::tag_p<complexion, Ts...>;
 
 XTAL_DEF_(inline)
 XTAL_LET objective_f(complexion_q auto &&o)
@@ -268,8 +268,8 @@ TAG_("any")
 	using Y_aphex = _std::complex<Y_alpha>;
 	using X_aphex = _std::complex<X_alpha>;
 
-	static_assert(is_q<X_aphex, typename X_aphex::source_type>);
-	static_assert(is_q<Y_aphex, typename X_aphex::target_type>);
+	static_assert(same_q<X_aphex, typename X_aphex::source_type>);
+	static_assert(same_q<Y_aphex, typename X_aphex::target_type>);
 
 	TRY_("task")
 	{

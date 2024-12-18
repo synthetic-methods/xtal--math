@@ -24,9 +24,9 @@ TAG_("symbol")
 
 	TRY_("11th characterization (integer)")
 	{
-		integer_type constexpr N = 11;
-		integer_type constexpr M = N  - 1;
-		integer_type constexpr K = M >> 1;
+		ordinal_type constexpr N = 11;
+		ordinal_type constexpr M = N  - 1;
+		ordinal_type constexpr K = M >> 1;
 
 		using W = symbol_t<T_delta[N]>;
 		W w; w.characterize();
@@ -36,9 +36,9 @@ TAG_("symbol")
 	}
 	TRY_("11th subcharacterization (integer)")
 	{
-		integer_type constexpr N = 11;
-		integer_type constexpr M = N  - 1;
-		integer_type constexpr K = M >> 1;
+		ordinal_type constexpr N = 11;
+		ordinal_type constexpr M = N  - 1;
+		ordinal_type constexpr K = M >> 1;
 
 		using W = symbol_t<T_delta[K]>;
 		W w; w.subcharacterize();
@@ -48,9 +48,9 @@ TAG_("symbol")
 	}
 	TRY_("11th characterization (complex)")
 	{
-		integer_type constexpr N = 11;
-		integer_type constexpr M = N  - 1;
-		integer_type constexpr K = M >> 1;
+		ordinal_type constexpr N = 11;
+		ordinal_type constexpr M = N  - 1;
+		ordinal_type constexpr K = M >> 1;
 
 		using W = symbol_t<T_aphex[N]>;
 		W w; w.characterize();
@@ -67,9 +67,9 @@ TAG_("symbol")
 
 	TRY_("7th characterization (integer)")
 	{
-		integer_type constexpr N = 7;
-		integer_type constexpr M = N  - 1;
-		integer_type constexpr K = M >> 1;
+		ordinal_type constexpr N = 7;
+		ordinal_type constexpr M = N  - 1;
+		ordinal_type constexpr K = M >> 1;
 
 		using W = symbol_t<T_delta[N]>;
 		W w; w.characterize();
@@ -79,9 +79,9 @@ TAG_("symbol")
 	}
 	TRY_("7th subcharacterization (integer)")
 	{
-		integer_type constexpr N = 7;
-		integer_type constexpr M = N  - 1;
-		integer_type constexpr K = M >> 1;
+		ordinal_type constexpr N = 7;
+		ordinal_type constexpr M = N  - 1;
+		ordinal_type constexpr K = M >> 1;
 
 		using W = symbol_t<T_delta[K]>;
 		W w; w.subcharacterize();
@@ -91,9 +91,9 @@ TAG_("symbol")
 	}
 	TRY_("7th characterization (complex)")
 	{
-		integer_type constexpr N = 7;
-		integer_type constexpr M = N  - 1;
-		integer_type constexpr K = M >> 1;
+		ordinal_type constexpr N = 7;
+		ordinal_type constexpr M = N  - 1;
+		ordinal_type constexpr K = M >> 1;
 
 		using W = symbol_t<T_aphex[N]>;
 		W w; w.characterize();
@@ -109,9 +109,9 @@ TAG_("symbol")
 	}
 	TRY_("7th subcharacterization (complex)")
 	{
-		integer_type constexpr N = 7;
-		integer_type constexpr M = N  - 1;
-		integer_type constexpr K = M >> 1;
+		ordinal_type constexpr N = 7;
+		ordinal_type constexpr M = N  - 1;
+		ordinal_type constexpr K = M >> 1;
 
 		using W = symbol_t<T_aphex[K]>;
 		W w; w.subcharacterize();
@@ -126,9 +126,9 @@ TAG_("symbol")
 	}
 	TRY_("7th characterization (real)")
 	{
-		integer_type constexpr N = 7;
-		integer_type constexpr M = N  - 1;
-		integer_type constexpr K = M >> 1;
+		ordinal_type constexpr N = 7;
+		ordinal_type constexpr M = N  - 1;
+		ordinal_type constexpr K = M >> 1;
 
 		using W = symbol_t<T_alpha[N]>;
 		W w; w.characterize();
@@ -141,9 +141,9 @@ TAG_("symbol")
 
 	TRY_("5th characterization (complex)")
 	{
-		integer_type constexpr N = 5;
-		integer_type constexpr M = N  - 1;
-		integer_type constexpr K = M >> 1;
+		ordinal_type constexpr N = 5;
+		ordinal_type constexpr M = N  - 1;
+		ordinal_type constexpr K = M >> 1;
 
 		using W = symbol_t<T_aphex[N]>;
 		W w; w.characterize();
@@ -159,9 +159,9 @@ TAG_("symbol")
 	/*/
 	TRY_("5th characterization (real)")
 	{
-		integer_type constexpr N = 5;
-		integer_type constexpr M = N  - 1;
-		integer_type constexpr K = M >> 1;
+		ordinal_type constexpr N = 5;
+		ordinal_type constexpr M = N  - 1;
+		ordinal_type constexpr K = M >> 1;
 
 		using W = symbol_t<T_alpha[N]>;
 		W w; w.template characterize<2>();

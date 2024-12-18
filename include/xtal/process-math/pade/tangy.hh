@@ -109,7 +109,7 @@ struct tangy<M_ism, 1>
 			using _op = bond::operate<decltype(v), decltype(u)>;
 			using U_aphex = typename _op::aphex_type;
 			using U_alpha = typename _op::alpha_type;
-			using W_alpha = algebra::sector_t<U_alpha[2]>;
+			using W_alpha = algebra::lateral_t<U_alpha[2]>;
 
 			auto u_abs = u, u_sgn = _op::design_f(u_abs);
 			auto v_abs = v, v_sgn = _op::design_f(v_abs);// v_sgn *= *_op::haplo_1;

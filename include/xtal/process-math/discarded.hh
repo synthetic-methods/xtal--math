@@ -53,7 +53,7 @@ struct discarded<1, M_aux>
 			auto  v = S_::template method<Is...>(u, XTAL_REF_(oo)...);
 			using V = XTAL_ALL_(v);
 			using U = XTAL_ALL_(u);
-			static_assert(is_q<U, V>);
+			static_assert(same_q<U, V>);
 
 			return v*root_f<M_pow, 1>(XTAL_REF_(u));
 		})
@@ -65,7 +65,7 @@ struct discarded<1, M_aux>
 			auto  v = S_::template function<Is...>(u, XTAL_REF_(oo)...);
 			using V = XTAL_ALL_(v);
 			using U = XTAL_ALL_(u);
-			static_assert(is_q<U, V>);
+			static_assert(same_q<U, V>);
 
 			return v*root_f<M_pow, 1>(XTAL_REF_(u));
 		}
@@ -93,7 +93,7 @@ struct discarded<1>
 			using U = XTAL_ALL_(u);
 
 			XTAL_IF0
-			XTAL_0IF (is_q<U, V>) {
+			XTAL_0IF (same_q<U, V>) {
 				return v*XTAL_REF_(u);
 			}
 			XTAL_0IF (complex_number_q<V>) {
@@ -113,7 +113,7 @@ struct discarded<1>
 			using U = XTAL_ALL_(u);
 
 			XTAL_IF0
-			XTAL_0IF (is_q<U, V>) {
+			XTAL_0IF (same_q<U, V>) {
 				return v*XTAL_REF_(u);
 			}
 			XTAL_0IF (complex_number_q<V>) {

@@ -13,7 +13,7 @@ namespace xtal::algebra::math::jacobi
 
 template <class   ..._s>	struct   symbol;
 template <class   ..._s>	using    symbol_t = typename symbol<_s...>::type;
-template <class   ...Ts>	concept  symbol_q = bond::any_tag_p<symbol_t, Ts...>;
+template <class   ...Ts>	concept  symbol_q = bond::tag_p<symbol_t, Ts...>;
 template <class  V=void>
 XTAL_DEF_(short)
 XTAL_LET symbol_f(auto &&...oo)
@@ -33,7 +33,7 @@ struct symbol<A>
 	using _op = bond::operate<A>;
 	
 	template <class T>
-	using endotype = typename sector<A>::template homotype<T>;
+	using endotype = typename lateral<A>::template homotype<T>;
 
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<symbol_t>>;
@@ -75,10 +75,10 @@ struct symbol<A>
 		XTAL_LET characterize()
 		noexcept -> T &
 		{
-			integer_type constexpr N = N_data;
-			integer_type constexpr M = N_data - 1;
-			integer_type constexpr K = M >> 1U;
-			integer_type           k = N_subscript;
+			ordinal_type constexpr N = N_data;
+			ordinal_type constexpr M = N_data - 1;
+			ordinal_type constexpr K = M >> 1U;
+			ordinal_type           k = N_subscript;
 			let(0) = {};
 
 			if constexpr (integer_q<U_data>) {
