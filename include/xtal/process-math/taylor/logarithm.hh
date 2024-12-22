@@ -105,7 +105,7 @@ struct logarithm< 1, 1, 0>
 				auto u = XTAL_REF_(o);
 				#pragma unroll
 				for (int i{0}; i < N_div; ++i) {
-					u = root_f<2>(u);
+					u = root_f<2>(XTAL_MOV_(u));
 				}
 				return _op::diplo_f(N_div)*superprocess::template function<N_lim>(
 					roots_f<2>(XTAL_REF_(o)).template sum<-1>()

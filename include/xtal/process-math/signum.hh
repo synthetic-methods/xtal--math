@@ -86,6 +86,15 @@ noexcept -> decltype(auto)
 	return signum_t<Ms...>::function(XTAL_REF_(oo)...);
 	return signum_t<>::template function<Ns...>(XTAL_REF_(oo)...);
 }
+template <auto ...Ns>
+XTAL_DEF_(short)
+XTAL_LET signum_e(auto &&...oo)
+noexcept -> decltype(auto)
+{
+	//\
+	return signum_t<Ms...>::function(XTAL_REF_(oo)...);
+	return signum_t<>::template     edit<Ns...>(XTAL_REF_(oo)...);
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////

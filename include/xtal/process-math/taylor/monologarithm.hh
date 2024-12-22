@@ -17,14 +17,6 @@ struct   monologarithm;
 template <auto ...Ms>
 using    monologarithm_t = process::confined_t<monologarithm<Ms...>>;
 
-template <auto ...Ms>
-XTAL_DEF_(short)
-XTAL_LET monologarithm_f(auto &&o, constant_q auto ...oo)
-noexcept -> decltype(auto)
-{
-	return monologarithm_t<Ms...>::template function<oo...>(XTAL_REF_(o));
-}
-
 
 ////////////////////////////////////////////////////////////////////////////////
 ///\
@@ -181,6 +173,19 @@ struct monologarithm<M_ism, M_pow, -1>
 
 	};
 };
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <auto N>
+XTAL_DEF_(short)
+XTAL_LET monologarithm_f(auto &&...oo)
+noexcept -> decltype(auto)
+{
+	XTAL_LET N_sgn = signum_n<N>;
+	XTAL_LET N_abs = magnum_n<N>;
+	return monologarithm_t<1*N_sgn>::template function<N_abs>(XTAL_REF_(oo)...);
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////

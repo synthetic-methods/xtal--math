@@ -1,4 +1,4 @@
 #pragma once
 #include "./any.hh"
 
-#include "./jacobi/all.hh"
+#include "./dirichlet/all.hh"

@@ -99,7 +99,7 @@ struct   nomial<3, Ms...>
 		XTAL_LET function(algebra::lateral_q auto const &o)
 		noexcept -> XTAL_ALL_(o)
 		{
-			return XTAL_ALL_(o)::template map_f<[] XTAL_1FN_(function<Ns...>)>(o);
+			return XTAL_ALL_(o)::template map_f<XTAL_FUN_(function<Ns...>)>(o);
 		}
 
 	};

@@ -30,11 +30,11 @@ noexcept -> auto
 		}
 		XTAL_0IF (M_pow == 1) {
 			auto const y = (XTAL_REF_(xs) *...* (x_));
-			return _xtd::fam(XTAL_REF_(w), XTAL_REF_(x), y);
+			return _xtd::accumulator(XTAL_REF_(w), XTAL_REF_(x), y);
 		}
 		XTAL_0IF (M_pow == 2) {
 			auto const y = (XTAL_REF_(xs) *...* (x_*XTAL_REF_(x)));
-			return _xtd::fam(XTAL_REF_(w), y, y);
+			return _xtd::accumulator(XTAL_REF_(w), y, y);
 		}
 		XTAL_0IF_(void)
 	}

@@ -36,8 +36,6 @@ noexcept -> decltype(auto)
 template <class U, class V>
 struct complexion
 {
-	using taboo = typename bond::tag<complexion>::template subtype<unit_type>::taboo;
-
 	using        type = complexion;
 	using  value_type = U;
 	using  valve_type = V;

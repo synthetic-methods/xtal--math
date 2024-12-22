@@ -7,7 +7,7 @@
 
 
 XTAL_ENV_(push)
-namespace xtal::algebra::math::jacobi
+namespace xtal::algebra::math::dirichlet
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -52,17 +52,17 @@ struct symbol<A>
 		static constexpr auto modulo = [] (I_ i) XTAL_0FN_(((i%N_data) + N_data)%N_data);
 
 	public:// ACCESS
-		using S_::let;
+		using S_::element;
 		using S_::self;
 		using S_::twin;
 
 	public:// OPERATE
 
-		XTAL_DEF_(short) XTAL_LET let(I_ i) const &&noexcept -> decltype(auto) {return XTAL_MOV_(S_::operator[](modulo(i)));}
-		XTAL_DEF_(short) XTAL_LET let(I_ i) const  &noexcept -> decltype(auto) {return           S_::operator[](modulo(i)) ;}
+		XTAL_DEF_(short) XTAL_LET element(I_ i) const &&noexcept -> decltype(auto) {return XTAL_MOV_(S_::operator[](modulo(i)));}
+		XTAL_DEF_(short) XTAL_LET element(I_ i) const  &noexcept -> decltype(auto) {return           S_::operator[](modulo(i)) ;}
 
-		XTAL_DEF_(short) XTAL_LET let(I_ i)       &&noexcept -> decltype(auto) {return XTAL_MOV_(S_::operator[](modulo(i)));}
-		XTAL_DEF_(short) XTAL_LET let(I_ i)        &noexcept -> decltype(auto) {return           S_::operator[](modulo(i)) ;}
+		XTAL_DEF_(short) XTAL_LET element(I_ i)       &&noexcept -> decltype(auto) {return XTAL_MOV_(S_::operator[](modulo(i)));}
+		XTAL_DEF_(short) XTAL_LET element(I_ i)        &noexcept -> decltype(auto) {return           S_::operator[](modulo(i)) ;}
 
 
 	public:// CONSTRUCT
@@ -79,16 +79,16 @@ struct symbol<A>
 			ordinal_type constexpr M = N_data - 1;
 			ordinal_type constexpr K = M >> 1U;
 			ordinal_type           k = N_subscript;
-			let(0) = {};
+			element(0) = {};
 
 			if constexpr (integer_q<U_data>) {
 				bond::seek_forward_f<K>([&, this] (size_type i) XTAL_0FN {
 					auto const o = k%N;
-					let(    o) =  i;
-					let(N - o) =  i - K;
+					element(    o) =  i;
+					element(N - o) =  i - K;
 					k *= K;
 				});
-				let(1) = 0;
+				element(1) = 0;
 			}
 			else {
 				U_data w =  1;
@@ -98,8 +98,8 @@ struct symbol<A>
 				}
 				bond::seek_forward_f<K>([&, this] (size_type i) XTAL_0FN {
 					auto const o = k%N;
-					let(    o) =  w;
-					let(N - o) = -w;
+					element(    o) =  w;
+					element(N - o) = -w;
 					w *= u;
 					k *= K;
 				});
@@ -119,14 +119,14 @@ struct symbol<A>
 				bond::seek_forward_f<K>([&, this] (size_type i) XTAL_0FN {
 					auto const o = k%N;
 					if (K < o) {
-						let(M - o) = (1 + i) - K;
+						element(M - o) = (1 + i) - K;
 					}
 					else {
-						let(o - 1) = (1 + i);
+						element(o - 1) = (1 + i);
 					}
 					k *= K;
 				});
-				let(0) = 0;
+				element(0) = 0;
 			}
 			else {
 				U_data w, u;
@@ -140,10 +140,10 @@ struct symbol<A>
 				bond::seek_forward_f<K>([&, this] (size_type i) XTAL_0FN {
 					auto const o = k%N;
 					if (K < o) {
-						let(M - o) = -w;
+						element(M - o) = -w;
 					}
 					else {
-						let(o - 1) =  w;
+						element(o - 1) =  w;
 					}
 					w *= u;
 					k *= K;

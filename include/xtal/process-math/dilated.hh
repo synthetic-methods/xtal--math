@@ -53,7 +53,7 @@ struct dilated
 		noexcept -> decltype(auto)
 		requires         in_q<XTAL_TRY_(S ::template function<Is...>  (XTAL_REF_(o)))>
 		{
-			return around_f<[] XTAL_1FN_(S_::template function<Is...>)>(XTAL_REF_(o));
+			return around_f<XTAL_FUN_(S_::template function<Is...>)>(XTAL_REF_(o));
 		};
 
 		template <auto ...Is>
@@ -63,7 +63,7 @@ struct dilated
 		requires un_q<XTAL_TRY_(S::         template function<Is...>  (XTAL_REF_(o)))>
 		and XTAL_TRY_(XTAL_ANY_(S_ const &).template   method<Is...>  (XTAL_REF_(o)))
 		{
-			return around_f<[] XTAL_1FN_(S_::template   method<Is...>)>(XTAL_REF_(o));
+			return around_f<XTAL_FUN_(S_::template   method<Is...>)>(XTAL_REF_(o));
 		};
 		template <auto ...Is>
 		XTAL_DEF_(short)
@@ -72,7 +72,7 @@ struct dilated
 		requires un_q<XTAL_TRY_(S::         template function<Is...>  (XTAL_REF_(o)))>
 		and XTAL_TRY_(XTAL_ANY_(S_       &).template   method<Is...>  (XTAL_REF_(o)))
 		{
-			return around_f<[] XTAL_1FN_(S_::template   method<Is...>)>(XTAL_REF_(o));
+			return around_f<XTAL_FUN_(S_::template   method<Is...>)>(XTAL_REF_(o));
 		};
 
 	};

@@ -69,7 +69,7 @@ struct cut
 			//\
 			if (_std::is_constant_evaluated() or not _op::IEC) {
 			if (_std::is_constant_evaluated() or not _op::IEC or XTAL_ENV_(GNUC)) {
-				U_alpha const s = _op::design_f(o); o = extrema_f<N_side>(o, o_stop);
+				U_alpha const s = _op::design_f(o); o = extrema_f<N_side>(XTAL_MOV_(o), o_stop);
 				U_alpha const q = o == o_stop;
 				o *= s; return q*s;
 			}

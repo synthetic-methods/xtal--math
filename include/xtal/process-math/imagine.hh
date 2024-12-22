@@ -84,8 +84,8 @@ struct imagine
 		{
 			auto &[x, y] = destruct_f(o);
 			if constexpr (N_rot == 0b01 or N_rot == 0b11) {_std::swap(x, y);}
-			if constexpr (N_rot == 0b01 or N_rot == 0b10) {x = -x;}
-			if constexpr (X_rot == 0b11 or X_rot == 0b10) {y = -y;}
+			if constexpr (N_rot == 0b01 or N_rot == 0b10) {x = -XTAL_MOV_(x);}
+			if constexpr (X_rot == 0b11 or X_rot == 0b10) {y = -XTAL_MOV_(y);}
 			return o;
 		};
 
