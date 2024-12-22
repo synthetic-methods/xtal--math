@@ -21,10 +21,7 @@ TAG_("monologarithm")
 	using T_delta = typename _op::delta_type;
 	using T_alpha = typename _op::alpha_type;
 	using T_aphex = typename _op::aphex_type;
-	static constexpr T_alpha egg =  0.123456789;
-	static constexpr T_alpha one =  1;
-	static constexpr T_alpha two =  2;
-	static constexpr T_alpha ten = 10;
+	static constexpr T_alpha egg = 0.123456789;
 
 	using U_phi = algebra::phason_t<T_alpha[2]>;
 
@@ -33,10 +30,10 @@ TAG_("monologarithm")
 
 	TRY_("inversion")
 	{
-		TRUE_(check_f<-1>(one, monologarithm_t< 2,  1>::template function<0>(egg)*monologarithm_t< 2, -1>::template function<0>(egg)));
-		TRUE_(check_f<-1>(one, monologarithm_t< 1,  1>::template function<0>(egg)*monologarithm_t< 1, -1>::template function<0>(egg)));
-		TRUE_(check_f<-1>(one, monologarithm_t<-1,  1>::template function<0>(egg)*monologarithm_t<-1, -1>::template function<0>(egg)));
-		TRUE_(check_f<-1>(one, monologarithm_t<-2,  1>::template function<0>(egg)*monologarithm_t<-2, -1>::template function<0>(egg)));
+		TRUE_(check_f<-1>(1.0, monologarithm_t< 2,  1>::template function<0>(egg)*monologarithm_t< 2, -1>::template function<0>(egg)));
+		TRUE_(check_f<-1>(1.0, monologarithm_t< 1,  1>::template function<0>(egg)*monologarithm_t< 1, -1>::template function<0>(egg)));
+		TRUE_(check_f<-1>(1.0, monologarithm_t<-1,  1>::template function<0>(egg)*monologarithm_t<-1, -1>::template function<0>(egg)));
+		TRUE_(check_f<-1>(1.0, monologarithm_t<-2,  1>::template function<0>(egg)*monologarithm_t<-2, -1>::template function<0>(egg)));
 
 		TRUE_(check_f<19>(egg, monologarithm_t< 2,  1>::template function<0>(monologarithm_t<-2,  1>::template function<0>(egg))));
 		TRUE_(check_f<19>(egg, monologarithm_t< 1,  1>::template function<0>(monologarithm_t<-1,  1>::template function<0>(egg))));
@@ -85,7 +82,7 @@ TAG_("monologarithm")
 		T_alpha s_arg = 0.11;
 
 		T_aphex w = pade::unity_t<1, dilate<2>>::template function<4>(s_arg);
-		T_alpha u = _op::alpha_1/s_abs;
+		T_alpha u = 1.0/s_abs;
 		
 		w *= taylor::monologarithm_t<-1, +1>::template function<0>(u*zoom);
 		w  = taylor::monologarithm_t<+1, -1>::template function<0>(w)*zoom;
@@ -98,8 +95,8 @@ TAG_("monologarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) - one;
-			w *= _std::exp(x) - _op::alpha_1;
+			auto x = _op::mantissa_f(mt19937_f) - 1.0;
+			w *= _std::exp(x) - 1.0;
 		}
 		return w;
 	};
@@ -107,7 +104,7 @@ TAG_("monologarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) - one;
+			auto x = _op::mantissa_f(mt19937_f) - 1.0;
 			w *= monologarithm_t<-2>::template function<~0>(x);
 		}
 		return w;
@@ -116,7 +113,7 @@ TAG_("monologarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) - one;
+			auto x = _op::mantissa_f(mt19937_f) - 1.0;
 			w *= monologarithm_t<-2>::template function< 0>(x);
 		}
 		return w;

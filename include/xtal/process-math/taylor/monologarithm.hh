@@ -52,13 +52,12 @@ struct monologarithm<M_ism, M_pow, -0>
 		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(o)>;
-			auto constexpr _1 = _op::alpha_1;
-			auto constexpr _i = _op::alpha_1*signum_n<M_ism&1, -1>;
+			auto constexpr _i = _op::alpha_f(signum_n<M_ism&1, -1>);
 
 			if constexpr (N_lim < 0) {
-			//	XTAL_0IF (M_pow == 1) {return               _i*log(_1 + _i*XTAL_REF_(o)) ;}
-			//	XTAL_0IF (M_pow == 1) {return root_f<M_pow>(_i*log(_1 + _i*XTAL_REF_(o)));}
-				return root_f<M_pow>(_i*log(_1 + _i*XTAL_REF_(o)));
+			//	XTAL_0IF (M_pow == 1) {return               _i*log(term_f(one, _i, XTAL_REF_(o))) ;}
+			//	XTAL_0IF (M_pow == 1) {return root_f<M_pow>(_i*log(term_f(one, _i, XTAL_REF_(o))));}
+				return root_f<M_pow>(_i*log(term_f(one, _i, XTAL_REF_(o))));
 			}
 			else {
 				return superprocess::template function<N_lim>(XTAL_REF_(o));
@@ -92,8 +91,7 @@ struct monologarithm<M_ism, M_pow, -0>
 		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(o)>;
-			auto constexpr _1 = _op::alpha_1;
-			auto constexpr _i = _op::alpha_1*signum_n<M_ism&1, -1>;
+			auto constexpr _i = _op::alpha_f(signum_n<M_ism&1, -1>);
 
 			if constexpr (N_lim < 0) {
 				return root_f<M_pow>(term_f(-_i, _i, exp(_i*XTAL_REF_(o))));
@@ -130,8 +128,7 @@ struct monologarithm<M_ism, M_pow, -1>
 		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(u)>;
-			auto constexpr _1 = _op::alpha_1;
-			auto constexpr _i = _op::alpha_1*signum_n<M_ism&1, -1>;
+			auto constexpr _i = _op::alpha_f(signum_n<M_ism&1, -1>);
 
 			if constexpr (N_lim < 0) {
 //				echo("M_car<-1>");
@@ -140,7 +137,7 @@ struct monologarithm<M_ism, M_pow, -1>
 				XTAL_0IF (M_pow == -1) {return XTAL_REF_(u)/S0::template function<-0, N_lim>(u);}
 			}
 			else {
-				return root_f<M_pow*-2>(_1 + _i*XTAL_REF_(u));
+				return root_f<M_pow*-2>(term_f(one, _i, XTAL_REF_(u)));
 			}
 		}
 
@@ -168,8 +165,7 @@ struct monologarithm<M_ism, M_pow, -1>
 		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(u)>;
-			auto constexpr _1 = _op::alpha_1;
-			auto constexpr _i = _op::alpha_1*signum_n<M_ism&1, -1>;
+			auto constexpr _i = _op::alpha_f(signum_n<M_ism&1, -1>);
 
 			if constexpr (N_lim < 0) {
 //				echo("M_car<-2>");
@@ -179,7 +175,7 @@ struct monologarithm<M_ism, M_pow, -1>
 			}
 			else {
 				auto v = XTAL_REF_(u)*_op::haplo_1;
-				return root_f<M_pow>(root_f<2>(term_f(_1, v, v)) + _i*v);
+				return root_f<M_pow>(root_f<2>(term_f(one, v, v)) + _i*v);
 			}
 		}
 

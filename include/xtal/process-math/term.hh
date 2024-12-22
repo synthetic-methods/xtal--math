@@ -11,7 +11,7 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_alt=1, int M_pow=1, additive_group_q W, multiplicative_group_q X, multiplicative_group_q ...Xs>
+template <int M_alt=1, int M_pow=1, class W, multiplicative_group_q X, multiplicative_group_q ...Xs>
 XTAL_DEF_(short)
 XTAL_LET term_f(W &&w, X &&x, Xs &&...xs)
 noexcept -> auto
@@ -20,7 +20,7 @@ noexcept -> auto
 	using X_op = bond::operate<X>;
 	X_ constexpr x_{M_alt};
 
-	if constexpr (integer_q<W> and real_number_q<X_>) {
+	if constexpr (thunk_p<W, X_> or integer_q<W> and real_number_q<X_>) {
 		return term_f<M_alt, M_pow>(static_cast<X_>(XTAL_REF_(w)), XTAL_REF_(x), XTAL_REF_(xs)...);
 	}
 	else {

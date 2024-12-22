@@ -58,10 +58,8 @@ struct sinoid<M_ism, -0>
 			XTAL_LET zoom_up = _op::ratio_f(1, 1 + N);
 			XTAL_LET zoom_dn = _op::ratio_f(1 + N, N);
 
-			_1 = _op::alpha_1;
-
 			o *= zoom_up*N;
-			o += root_f<2>(term_f<1>(_op::alpha_1, o, o));
+			o += root_f<2>(term_f(one, o, o));
 			/*/
 			o  = nomial_f<-N>(o);
 			/*/

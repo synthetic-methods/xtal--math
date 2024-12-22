@@ -120,10 +120,10 @@ struct sine<M_ism, -2>
 				int constexpr N = (N_lim << 1) - (0 < N_lim);
 
 				using W = XTAL_ALL_(w); using _op = bond::operate<W>;
-				W x = _op::alpha_1;
+				W x{one};
 
 				bond::seek_backward_f<N>([&] (auto i)
-					XTAL_0FN_(x = term_f(_op::alpha_1
+					XTAL_0FN_(x = term_f(one
 					,	+_op::ratio_f(1, (2 + 2*i)*(3 + 2*i))
 					,	w
 					,	x

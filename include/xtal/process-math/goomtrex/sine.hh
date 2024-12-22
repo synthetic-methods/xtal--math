@@ -56,11 +56,7 @@ struct   sine<M_ism, M_car>
 		XTAL_LET function(auto u)
 		noexcept -> auto
 		{
-			using  U_op = bond::operate<decltype(u)>;
-			XTAL_LET      a0 = U_op::alpha_1;
-			XTAL_LET haplo_0 = U_op::haplo_0;
-			XTAL_LET haplo_1 = U_op::haplo_1;
-
+			using     U_op = bond::operate<decltype(u)>;
 			XTAL_LET  N     = magnum_n<N_ord>;
 			XTAL_LET  N_par = N_ord&1;
 			XTAL_IF0
@@ -73,10 +69,10 @@ struct   sine<M_ism, M_car>
 				auto const [zoom_dn, zoom_up] = zoom_;
 				if (N_ord < 0) {u *= U_op::ratio_f(N, 1);}
 				u *=   zoom_up;
-				u +=   root_f< 2>(term_f(U_op::alpha_1, u, u));
+				u +=   root_f< 2>(term_f(one, u, u));
 				u  = nomial_f< N>(u);
 				u -=   root_f<-1>(u);
-				u *=   haplo_1;
+				u *=   half;
 				u *=   zoom_dn;
 				if (0 < N_ord) {u *= U_op::ratio_f(1, N);}
 				return u;
@@ -87,16 +83,16 @@ struct   sine<M_ism, M_car>
 				XTAL_LET  a1 = U_op::alpha_f(0.1666666666666666666666666666666667e-1L);// 1/60
 				XTAL_LET  b1 = U_op::alpha_f(0.3872983346207416885179265399782400e-0L);// Sqrt[3/20]
 
-				auto const t0 = term_f(a0, a1, w), tX = t0*b1*u;
-				return t0*term_f(a0, tX, tX);
+				auto const t0 = term_f(one, a1, w), tX = t0*b1*u;
+				return t0*term_f(one, tX, tX);
 			}
 //			XTAL_0IF (N_ord == 27) {
 //				auto constexpr a = U{0.2336664289109584522132436978521609e2L};// Sqrt[1/546]
 //				auto const o = a * u;
-//				auto const t = term_f(1, o, o);
+//				auto const t = term_f(one, o, o);
 //				auto const s = square_f(t*o*U_co(9, 1));
-//				auto const r = term_f(1, s, U_co(1, 9));
-//				auto const y = term_f(1, s, r*r)*r*t;
+//				auto const r = term_f(one, s, U_co(1, 9));
+//				auto const y = term_f(one, s, r*r)*r*t;
 //				return y;
 //			}
 			XTAL_0IF_(else) {
@@ -139,7 +135,6 @@ struct   sine<M_ism, M_car>
 		noexcept -> decltype(auto)
 		{
 			using  W_op = bond::operate<decltype(w)>;
-			XTAL_LET a0 = W_op::alpha_1;
 
 			XTAL_LET  N_par = N_ord&1;
 			XTAL_IF0
@@ -149,16 +144,16 @@ struct   sine<M_ism, M_car>
 			}
 			XTAL_0IF (2 == N_ord) {
 				XTAL_LET a1 = W_op::ratio_f(1, 3);
-				return root_f<2>(term_f(a0, a1, w));
+				return root_f<2>(term_f(one, a1, w));
 			}
 			XTAL_0IF (3 == N_ord) {
 				XTAL_LET a1 = W_op::ratio_f(1, 6);
-				return          (term_f(a0, a1, w));
+				return          (term_f(one, a1, w));
 			}
 			XTAL_0IF (4 == N_ord) {
 				XTAL_LET a1 = W_op::ratio_f(1, 15);
 				XTAL_LET a2 = W_op::ratio_f(2, 15);
-				return root_f<2>(term_f(a0, a1, w))*term_f(a0, w, a2);
+				return root_f<2>(term_f(one, a1, w))*term_f(one, w, a2);
 			}
 		//	XTAL_0IF (5 == N_ord) {
 		//		XTAL_LET a0 = W_op::alpha_f(  5.21298012204885);
@@ -181,11 +176,11 @@ struct   sine<M_ism, M_car>
 			XTAL_0IF (9 == N_ord) {
 				XTAL_LET   a1 = W_op::alpha_f(0.1666666666666666666666666666666667e-1L);// 1/60
 				XTAL_LET   b1 = W_op::alpha_f(0.3872983346207416885179265399782400e-0L);// Sqrt[3/20]
-				auto const t0 = term_f(a0, a1, w), t1 = t0*b1;
-				return t0*term_f(a0, t1, t1, w);
+				auto const t0 = term_f(one, w, a1), t1 = t0*b1;
+				return t0*term_f(one, w, t1, t1);
 			}
 			XTAL_0IF_(else) {
-				return term_f(a0, w, S_::template function<N_ord>(w));
+				return term_f(one, w, S_::template function<N_ord>(w));
 			}
 		}
 		template <int N_ord=0> requires (N_ord <  0)
@@ -200,8 +195,7 @@ struct   sine<M_ism, M_car>
 		XTAL_LET function(auto &&u)
 		noexcept -> auto
 		{
-			using U = XTAL_ALL_(u);
-			return U{bond::operate<U>::alpha_1};
+			return XTAL_ALL_(u){one};
 		}
 
 	};
@@ -229,7 +223,7 @@ struct   sine<M_ism, M_car>
 			XTAL_LET  N_par = N_ord&1;
 			XTAL_IF0
 			XTAL_0IF (0 == N_par or N_ord < 0) {
-				return sine_t<M_ism, M_car + 1>::template function<N_ord>(w) - W_op::alpha_1;
+				return sine_t<M_ism, M_car + 1>::template function<N_ord>(w) - one;
 			}
 			XTAL_0IF_(else) {
 				return S_::template function<N_ord>(w)*w;

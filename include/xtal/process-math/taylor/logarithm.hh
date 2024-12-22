@@ -96,7 +96,6 @@ struct logarithm< 1, 1, 0>
 		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
-			auto constexpr _1 = _op::alpha_1;
 
 			XTAL_IF0
 			XTAL_0IF (N_lim <  0) {
@@ -139,18 +138,17 @@ struct logarithm<-1, 1, 0>
 		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
-			auto constexpr _1 =   _op::alpha_1;
-			auto const      u = o*_op::haplo_1;
+			auto const u = o*_op::haplo_1;
 
 			XTAL_IF0
 			XTAL_0IF (N_lim <  0) {
 				return exp(XTAL_REF_(o));
 			}
 			XTAL_0IF (0 == N_lim) {
-				return term_f(_1, XTAL_REF_(o), u + root_f<2>(term_f(_1, u, u)));
+				return term_f(one, XTAL_REF_(o), u + root_f<2>(term_f(one, u, u)));
 			}
 			XTAL_0IF (1 <= N_lim) {
-				return monologarithm_t<-1>::template function<N_lim>(XTAL_REF_(o)) + _1;
+				return monologarithm_t<-1>::template function<N_lim>(XTAL_REF_(o)) + one;
 			}
 		}
 
@@ -182,8 +180,8 @@ struct logarithm< 1, 1, 1>
 		{
 			using _op = bond::operate<decltype(u)>;
 
-			auto constexpr up = _op::alpha_1/_op::patio_1;
-			auto constexpr dn =              _op::patio_1;
+			auto constexpr up = one/_op::patio_1;
+			auto constexpr dn =     _op::patio_1;
 
 			auto const [u_re, u_im] = destruct_f(XTAL_REF_(u));
 			auto const w_re = square_f(u_re);
@@ -215,7 +213,6 @@ struct logarithm< 1, 1, 1>
 			//	Log[m/2^(1/2)] + Log[2]*(x + 1/2)
 			//	Log[m/2^(1/2)] + Log[2]*(x*2 + 1)/2
 
-				U_alpha constexpr          _1 = 1;
 				U_alpha constexpr N_sqrt_half = 0.7071067811865475244008443621048490393e+0L;
 				U_alpha constexpr N_half_log2 = 0.3465735902799726547086160607290882840e+0L;
 
@@ -262,7 +259,6 @@ struct logarithm<-1, 1, 1>
 				return exp(o);
 			}
 			XTAL_0IF (0 <= N_lim) {
-				U_alpha constexpr    _1 = 1;
 				U_alpha constexpr M_ln2 = 1.4426950408889634073599246810018921374e+0L;// 1/Log[2]
 				U_alpha constexpr N_ln2 = 0.6931471805599453094172321214581765681e+0L;// 1*Log[2]
 				o *= M_ln2;

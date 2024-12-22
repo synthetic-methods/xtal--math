@@ -20,9 +20,6 @@ TAG_("nearing")
 	using T_delta = typename _op::delta_type;
 	using T_alpha = typename _op::alpha_type;
 	using T_aphex = typename _op::aphex_type;
-	static constexpr T_alpha one =  1;
-	static constexpr T_alpha two =  2;
-	static constexpr T_alpha ten = 10;
 
 	auto mt19937_f = typename _op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());

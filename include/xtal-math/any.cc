@@ -70,20 +70,20 @@ struct complexion
 	XTAL_LET operator/ (source_type const &s, source_type const &t)
 	noexcept -> target_type
 	{
-		return s*(_op::alpha_1/t);
+		return s*(one/t);
 	}
 	XTAL_DEF_(short,friend)
 	XTAL_LET operator/ (source_type const &s, target_type const &t)
 	noexcept -> target_type
 		requires un_q<isotropic_q<source_type, target_type>>
 	{
-		return s*(_op::alpha_1/t);
+		return s*(one/t);
 	}
 	XTAL_DEF_(short,friend)
 	XTAL_LET operator/ (source_type const &s, auto const &t)
 	noexcept -> target_type
 	{
-		return s*(_op::alpha_1/t);
+		return s*(one/t);
 	}
 	
 //	Complex multiplication:

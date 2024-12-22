@@ -75,15 +75,15 @@ struct root<M_exp, M_cut>
 		{
 			using _op = bond::operate<XTAL_ALL_(o)>;
 			XTAL_IF0
-			XTAL_0IF (M_exp ==  1) {return                        XTAL_REF_(o)  ;}
-			XTAL_0IF (M_exp ==  2) {return                   sqrt(XTAL_REF_(o)) ;}
-			XTAL_0IF (M_exp ==  3) {return                   cbrt(XTAL_REF_(o)) ;}
-			XTAL_0IF (M_exp ==  4) {return              sqrt(sqrt(XTAL_REF_(o)));}
-			XTAL_0IF (M_exp == -1) {return _op::alpha_1/          XTAL_REF_(o)  ;}
-			XTAL_0IF (M_exp == -2) {return _op::alpha_1/     sqrt(XTAL_REF_(o)) ;}
-			XTAL_0IF (M_exp == -3) {return _op::alpha_1/     cbrt(XTAL_REF_(o)) ;}
+			XTAL_0IF (M_exp ==  1) {return               XTAL_REF_(o)  ;}
+			XTAL_0IF (M_exp ==  2) {return          sqrt(XTAL_REF_(o)) ;}
+			XTAL_0IF (M_exp ==  3) {return          cbrt(XTAL_REF_(o)) ;}
+			XTAL_0IF (M_exp ==  4) {return     sqrt(sqrt(XTAL_REF_(o)));}
+			XTAL_0IF (M_exp == -1) {return one/          XTAL_REF_(o)  ;}
+			XTAL_0IF (M_exp == -2) {return one/     sqrt(XTAL_REF_(o)) ;}
+			XTAL_0IF (M_exp == -3) {return one/     cbrt(XTAL_REF_(o)) ;}
 			/**/
-			XTAL_0IF (M_exp == -4) {return _op::alpha_1/sqrt(sqrt(XTAL_REF_(o)));}
+			XTAL_0IF (M_exp == -4) {return one/sqrt(sqrt(XTAL_REF_(o)));}
 			/*/
 			XTAL_0IF (M_exp == -4) {
 				auto constexpr c0 =   _op::ratio_f( 5, 4);
@@ -108,7 +108,7 @@ struct root<M_exp, M_cut>
 			using _op = bond::operate<decltype(o)>;
 
 			if constexpr (N_lim < 0 or not real_number_q<decltype(o)>) {
-				return _op::alpha_1/cbrt(XTAL_REF_(o));
+				return one/cbrt(XTAL_REF_(o));
 			}
 			else {
 				using X_delta = typename _op::delta_type;
@@ -166,7 +166,7 @@ struct root<M_exp, M_cut>
 				return N_sqrt_half*complexion_f(lhs, rhs*_op::assigned_f(y));
 			}
 			XTAL_0IF (M_exp == -1) {
-				return _op::alpha_1/XTAL_REF_(o);
+				return one/XTAL_REF_(o);
 			}
 			XTAL_0IF (M_exp == -2) {
 				using dis = root_t<2>;

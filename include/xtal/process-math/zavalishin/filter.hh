@@ -94,8 +94,8 @@ struct filter<U_pole[N_pole]>
 				using U_coeffs = algebra::lateral_t<U_coeff[N_ord + 1]>;
 				
 				union {U_exputs exputs; U_coeffs coeffs;} io{[=] () XTAL_0FN -> U_coeffs {
-					XTAL_LET K_1 = _op::alpha_1;
-					XTAL_LET K_2 = _op::alpha_2;
+					XTAL_LET K_1 = _op::alpha_f(1);
+					XTAL_LET K_2 = _op::alpha_f(2);
 					auto const  &u = s_coeff;
 					auto const u02 =             K_2*u , u04 = u02*K_2;
 					auto const u12 = term_f(K_1, K_2,u), w24 = u02*u12;
@@ -123,8 +123,8 @@ struct filter<U_pole[N_pole]>
 		noexcept -> void
 		{
 			using _op = bond::operate<decltype(x_input)>;
-			XTAL_LET K_1 = _op::alpha_1;
-			XTAL_LET K_2 = _op::alpha_2;
+			XTAL_LET K_1 = _op::alpha_f(1);
+			XTAL_LET K_2 = _op::alpha_f(2);
 			XTAL_LET N_  =    N_ord + 0;
 			XTAL_LET M_  =    N_ord - 1;
 

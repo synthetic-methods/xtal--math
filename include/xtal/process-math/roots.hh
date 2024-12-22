@@ -41,10 +41,8 @@ struct roots
 		XTAL_LET function(auto &&w)
 		noexcept -> auto
 		{
-			using _op = bond::operate<decltype(w)>;
-			auto constexpr _1 = _op::alpha_1;
-
-			auto const o = objective_f(XTAL_REF_(w));
+			using    _op = bond::operate<XTAL_ALL_(w)>;
+			auto const o =   objective_f(XTAL_REF_(w));
 
 			XTAL_IF0
 			XTAL_0IF (M_exp ==  1) {auto const q = root_f<-1, M_cut>(o); return duple_f(o,       q);}

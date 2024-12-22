@@ -22,8 +22,6 @@ TAG_("logarithm")
 	using T_alpha = typename _op::alpha_type;
 	using T_aphex = typename _op::aphex_type;
 	static constexpr T_alpha egg =  1.23456789;
-	static constexpr T_alpha one =  1;
-	static constexpr T_alpha two =  2;
 	static constexpr T_alpha ten = 10;
 
 	using U_phi = algebra::phason_t<T_alpha[2]>;
@@ -33,8 +31,8 @@ TAG_("logarithm")
 
 	TRY_("inversion")
 	{
-		TRUE_(check_f<-1>(one, logarithm_t< 1,  1>::template function<0>(egg)*logarithm_t< 1, -1>::template function<0>(egg)));
-		TRUE_(check_f<-1>(one, logarithm_t<-1,  1>::template function<0>(egg)*logarithm_t<-1, -1>::template function<0>(egg)));
+		TRUE_(check_f<-1>(1.0, logarithm_t< 1,  1>::template function<0>(egg)*logarithm_t< 1, -1>::template function<0>(egg)));
+		TRUE_(check_f<-1>(1.0, logarithm_t<-1,  1>::template function<0>(egg)*logarithm_t<-1, -1>::template function<0>(egg)));
 
 		TRUE_(check_f<19>(egg, logarithm_t< 1,  1>::template function<0>(logarithm_t<-1,  1>::template function<0>(egg))));
 		TRUE_(check_f<19>(egg, logarithm_t<-1,  1>::template function<0>(logarithm_t< 1,  1>::template function<0>(egg))));
@@ -66,7 +64,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) + one;
+			auto x = _op::mantissa_f(mt19937_f) + 1.0;
 			w += _std::log(x);
 		}
 		return w;
@@ -75,7 +73,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) + one;
+			auto x = _op::mantissa_f(mt19937_f) + 1.0;
 			w += logarithm_t< 1, 1, 1>::template function<2>(x);
 		}
 		return w;
@@ -84,7 +82,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) + one;
+			auto x = _op::mantissa_f(mt19937_f) + 1.0;
 			w += logarithm_t< 1>::template function<2>(x);
 		}
 		return w;
@@ -93,7 +91,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) + one;
+			auto x = _op::mantissa_f(mt19937_f) + 1.0;
 			w += logarithm_t< 1>::template function<1>(x);
 		}
 		return w;
@@ -102,7 +100,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) + one;
+			auto x = _op::mantissa_f(mt19937_f) + 1.0;
 			w += logarithm_t< 1>::template function<0>(x);
 		}
 		return w;
@@ -112,7 +110,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) - one;
+			auto x = _op::mantissa_f(mt19937_f) - 1.0;
 			w *= _std::exp(x);
 		}
 		return w;
@@ -121,7 +119,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) - one;
+			auto x = _op::mantissa_f(mt19937_f) - 1.0;
 			w *= logarithm_t<-1, 1, 1>::template function<2>(x);
 		}
 		return w;
@@ -130,7 +128,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) - one;
+			auto x = _op::mantissa_f(mt19937_f) - 1.0;
 			w *= logarithm_t<-1>::template function<2>(x);
 		}
 		return w;
@@ -139,7 +137,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) - one;
+			auto x = _op::mantissa_f(mt19937_f) - 1.0;
 			w *= logarithm_t<-1>::template function<1>(x);
 		}
 		return w;
@@ -148,7 +146,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) - one;
+			auto x = _op::mantissa_f(mt19937_f) - 1.0;
 			w *= logarithm_t<-1, 1, 0>::template function<0>(x);
 		}
 		return w;

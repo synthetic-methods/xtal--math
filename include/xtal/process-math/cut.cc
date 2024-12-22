@@ -20,9 +20,6 @@ TAG_("cut")
 	using T_delta = typename _op::delta_type;
 	using T_alpha = typename _op::alpha_type;
 	using T_aphex = typename _op::aphex_type;
-	XTAL_LET_(T_alpha) one =  1;
-	XTAL_LET_(T_alpha) two =  2;
-	XTAL_LET_(T_alpha) ten = 10;
 	XTAL_LET_(T_alpha) inf = _std::numeric_limits<T_alpha>::infinity();
 
 	auto mt19937_f = typename _op::mt19937_t();

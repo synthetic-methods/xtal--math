@@ -153,7 +153,7 @@ struct tangy<M_ism,-2>
 		noexcept -> auto
 		{
 			using    _op = bond::operate<decltype(o)>;
-			XTAL_LET _dn = _op::alpha_1/_op::patio_1;
+			XTAL_LET _dn = one/_op::patio_1;
 			
 			using U_aphex = typename _op::aphex_type;
 			using U_alpha = typename _op::alpha_type;

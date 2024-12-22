@@ -20,18 +20,15 @@ TAG_("root")
 	using T_delta = typename _op::delta_type;
 	using T_alpha = typename _op::alpha_type;
 	using T_aphex = typename _op::aphex_type;
-	static constexpr T_alpha one =  1;
-	static constexpr T_alpha two =  2;
-	static constexpr T_alpha ten = 10;
 
 	auto mt19937_f = typename _op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
 
 	TRY_("evaluation")
 	{
-		TRUE_(check_f<-35>(one, cbrt(-0.500)*root_f<-3>(-0.500)));
-		TRUE_(check_f<-34>(one, cbrt(-0.250)*root_f<-3>(-0.250)));
-		TRUE_(check_f<-33>(one, cbrt(-0.125)*root_f<-3>(-0.125)));
+		TRUE_(check_f<-35>(1.0, cbrt(-0.500)*root_f<-3>(-0.500)));
+		TRUE_(check_f<-34>(1.0, cbrt(-0.250)*root_f<-3>(-0.250)));
+		TRUE_(check_f<-33>(1.0, cbrt(-0.125)*root_f<-3>(-0.125)));
 
 	//	TRUE_(check_f<-1>(1.0f, cbrt(0.500f)*root_f<-3>(0.500f)));
 	//	TRUE_(check_f<-1>(1.0f, cbrt(0.250f)*root_f<-3>(0.250f)));
@@ -39,15 +36,15 @@ TAG_("root")
 	//	NOTE: GCC aborts on `TRUE_` (though the `check_f` itself succeeds)...
 
 		TRUE_(check_f<-1>(root_f< 4>(0.5),     sqrt(sqrt(0.5))));
-		TRUE_(check_f<-1>(root_f<-4>(0.5), one/sqrt(sqrt(0.5))));
+		TRUE_(check_f<-1>(root_f<-4>(0.5), 1.0/sqrt(sqrt(0.5))));
 
 		TRUE_(check_f<-1>(root_f< 8>(0.5),     sqrt(sqrt(sqrt(0.5)))));
-		TRUE_(check_f<-1>(root_f<-8>(0.5), one/sqrt(sqrt(sqrt(0.5)))));
+		TRUE_(check_f<-1>(root_f<-8>(0.5), 1.0/sqrt(sqrt(sqrt(0.5)))));
 
 		TRUE_(check_f<22>(root_f<-2>(pow(T_aphex {2, 3}, -2.0)), T_aphex {2, 3}));
 		TRUE_(check_f<22>(pow(T_aphex {2, 3}, 0.5), root_f< 2>(T_aphex {2, 3})));
 
-		TRUE_(check_f<-1>(one/sqrt(2.2345268795805384), root_f<-2>(_std::complex{2.2345268795805384,0.0}).real()));
+		TRUE_(check_f<-1>(1.0/sqrt(2.2345268795805384), root_f<-2>(_std::complex{2.2345268795805384,0.0}).real()));
 
 	}
 	TRY_("punctured evaluation")
@@ -61,7 +58,7 @@ TAG_("root")
 	{
 		double w{1};
 		for (int i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) + one;
+			auto x = _op::mantissa_f(mt19937_f) + 1.0;
 			w *= _std::cbrt(x);
 		}
 		return w;
@@ -70,7 +67,7 @@ TAG_("root")
 	{
 		double w{1};
 		for (int i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) + one;
+			auto x = _op::mantissa_f(mt19937_f) + 1.0;
 			w *= root_t<-3>::template function<1>(x);
 		}
 		return w;
@@ -79,7 +76,7 @@ TAG_("root")
 	{
 		double w{1};
 		for (int i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) + one;
+			auto x = _op::mantissa_f(mt19937_f) + 1.0;
 			w *= root_t<-3>::template function<2>(x);
 		}
 		return w;
@@ -88,7 +85,7 @@ TAG_("root")
 	{
 		double w{1};
 		for (int i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) + one;
+			auto x = _op::mantissa_f(mt19937_f) + 1.0;
 			w *= root_t<-3>::template function<3>(x);
 		}
 		return w;

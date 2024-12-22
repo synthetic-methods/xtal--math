@@ -90,8 +90,8 @@ struct   nomial<3, Ms...>
 			auto const &[x, y] = destruct_f(o);
 			auto const xx =  x*x;
 			auto const yy = -y*y;
-			auto const u  =  x*term_f(xx, yy, _op::alpha_3);
-			auto const v  =  y*term_f(yy, xx, _op::alpha_3);
+			auto const u  =  x*term_f(xx, yy, _op::alpha_f(3));
+			auto const v  =  y*term_f(yy, xx, _op::alpha_f(3));
 			return complexion_f(u, v);
 		}
 		template <int ...Ns>

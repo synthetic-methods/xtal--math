@@ -138,7 +138,7 @@ struct squishy<M_ism,-1>
 		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
-			return _op::alpha_1/squishy_f<M_ism, +1>(XTAL_REF_(o));
+			return one/squishy_f<M_ism, +1>(XTAL_REF_(o));
 		}
 
 	};

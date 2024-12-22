@@ -20,9 +20,6 @@ TAG_("signum")
 	using T_delta = typename T_op::delta_type;
 	using T_alpha = typename T_op::alpha_type;
 	using T_aphex = typename T_op::aphex_type;
-	static constexpr T_alpha one =  1;
-	static constexpr T_alpha two =  2;
-	static constexpr T_alpha ten = 10;
 
 	auto mt19937_f = typename T_op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
