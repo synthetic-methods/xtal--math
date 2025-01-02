@@ -93,7 +93,8 @@ struct filter<U_pole[N_pole]>
 				using U_exputs = algebra::lateral_t<U_input[N_ord + 1]>;
 				using U_coeffs = algebra::lateral_t<U_coeff[N_ord + 1]>;
 				
-				union {U_exputs exputs; U_coeffs coeffs;} io{[=] () XTAL_0FN -> U_coeffs {
+				union {U_exputs exputs; U_coeffs coeffs;} io{[=] ()
+				XTAL_0FN -> U_coeffs {
 					XTAL_LET K_1 = _op::alpha_f(1);
 					XTAL_LET K_2 = _op::alpha_f(2);
 					auto const  &u = s_coeff;
@@ -106,7 +107,7 @@ struct filter<U_pole[N_pole]>
 					XTAL_0IF (4 == N_ord) {return {K_1, u04, w24, u04, K_1};}
 				}()};
 
-				(void) edit<N_ord, N_top, Ns...>(io, x_input, f_scale);
+				(void) edit<N_ord, N_top, Ns...>(io, x_input, f_scale);// io.coeffs -> io.exputs
 
 				XTAL_LET I_ =  static_cast<unsigned>(N_sel);
 				XTAL_LET I0 = _std::countr_one(I_ >>  0) +  0, J0 = I0 + 1;
@@ -145,7 +146,7 @@ struct filter<U_pole[N_pole]>
 			auto &ex_0 = get<0>(exputs), &ex_N = get<N_>(exputs);
 
 		//	Initialize `coeffs*`:
-			slopes_.unzero();
+			slopes_.template unzero<1>();
 			slopes_ *= coeffs_;
 
 		//	Initialize `exputs*`:
