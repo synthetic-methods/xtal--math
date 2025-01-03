@@ -11,30 +11,51 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_alt=1, int M_pow=1, class W, multiplicative_group_q X, multiplicative_group_q ...Xs>
+template <int M_alt=1, int M_pow=1, class W, class X, class ...Xs>
 XTAL_DEF_(short)
 XTAL_LET term_f(W &&w, X &&x, Xs &&...xs)
 noexcept -> auto
 {
-	using X_   = absolve_u<X, Xs...>;
-	using X_op = bond::operate<X>;
-	X_ constexpr x_{M_alt};
-
-	if constexpr (thunk_p<W, X_> or integer_q<W> and real_number_q<X_>) {
-		return term_f<M_alt, M_pow>(static_cast<X_>(XTAL_REF_(w)), XTAL_REF_(x), XTAL_REF_(xs)...);
-	}
-	else {
+	if constexpr (0 == sizeof...(Xs)) {
 		XTAL_IF0
 		XTAL_0IF (M_pow == 0) {
 			return XTAL_REF_(w);
 		}
 		XTAL_0IF (M_pow == 1) {
-			auto const y = (XTAL_REF_(xs) *...* (x_));
-			return _xtd::accumulator(XTAL_REF_(w), XTAL_REF_(x), y);
+			return XTAL_REF_(w) + XTAL_REF_(x);
 		}
 		XTAL_0IF (M_pow == 2) {
-			auto const y = (XTAL_REF_(xs) *...* (x_*XTAL_REF_(x)));
+			return term_f<M_alt>(XTAL_REF_(w), x, x);
+		}
+	}
+	else {
+		using Y = absolve_u<Xs...>;// NOTE: Constants interpreted as scalar quantities...
+		XTAL_IF0
+		XTAL_0IF (constant_q<W, X> or integer_q<W, X> and real_number_q<Y>) {
+			return term_f<M_alt, M_pow>(static_cast<Y>(XTAL_REF_(w)), static_cast<Y>(XTAL_REF_(x)), XTAL_REF_(xs)...);
+		}
+		XTAL_0IF (constant_q<W   > or integer_q<W   > and real_number_q<Y>) {
+			return term_f<M_alt, M_pow>(static_cast<Y>(XTAL_REF_(w)), XTAL_REF_(x), XTAL_REF_(xs)...);
+		}
+		XTAL_0IF (constant_q<   X> or integer_q<   X> and real_number_q<Y>) {
+			return term_f<M_alt, M_pow>(XTAL_REF_(w), static_cast<Y>(XTAL_REF_(x)), XTAL_REF_(xs)...);
+		}
+		XTAL_0IF (M_pow == 0  or M_alt ==  0) {
+			return XTAL_REF_(w);
+		}
+		XTAL_0IF (M_pow == 1 and M_alt ==  1) {
+			return _xtd::accumulator(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
+		}
+		XTAL_0IF (M_pow == 1 and M_alt == -1) {
+			return _xtd::accumulator(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)..., Y{M_alt});
+		}
+		XTAL_0IF (M_pow == 2 and M_alt ==  1) {
+			auto const y = (XTAL_REF_(xs) *...* XTAL_REF_(x));
 			return _xtd::accumulator(XTAL_REF_(w), y, y);
+		}
+		XTAL_0IF (M_pow == 2 and M_alt == -1) {
+			auto const y = (XTAL_REF_(xs) *...* XTAL_REF_(x));
+			return _xtd::accumulator(XTAL_REF_(w), y, y, Y{M_alt});
 		}
 		XTAL_0IF_(void)
 	}

@@ -12,7 +12,7 @@ namespace xtal::process::math::taylor::_test
 /////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-/**/
+
 TAG_("logarithm")
 {
 	using _op = bond::operating;
@@ -59,7 +59,7 @@ TAG_("logarithm")
 	//	UNTRUE_(check_f(logarithm_t<-1>::template function< 0>(egg), exp(egg)));
 
 	}
-
+	/**/
 	EST_("real std::log")
 	{
 		T_alpha w{};
@@ -105,55 +105,61 @@ TAG_("logarithm")
 		}
 		return w;
 	};
-
+	/***/
 	EST_("real std::exp")
 	{
-		T_alpha w{};
-		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) - 1.0;
-			w *= _std::exp(x);
+		T_alpha o{1};
+		for (T_sigma i = 0x10; ~--i;) {
+			o *= _std::exp(_op::mantissa_f(mt19937_f) - one);
 		}
-		return w;
+		return o;
+	
 	};
+	/**/
 	EST_("real antilogarithm... <N_lim=2, M_car=1>")
 	{
-		T_alpha w{};
+		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
 			auto x = _op::mantissa_f(mt19937_f) - 1.0;
 			w *= logarithm_t<-1, 1, 1>::template function<2>(x);
 		}
 		return w;
+	
 	};
 	EST_("real antilogarithm... <N_lim=2>")
 	{
-		T_alpha w{};
+		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
 			auto x = _op::mantissa_f(mt19937_f) - 1.0;
 			w *= logarithm_t<-1>::template function<2>(x);
 		}
 		return w;
+	
 	};
 	EST_("real antilogarithm... <N_lim=1>")
 	{
-		T_alpha w{};
+		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
 			auto x = _op::mantissa_f(mt19937_f) - 1.0;
 			w *= logarithm_t<-1>::template function<1>(x);
 		}
 		return w;
+	
 	};
 	EST_("real antilogarithm... <N_lim=0>")
 	{
-		T_alpha w{};
+		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
 			auto x = _op::mantissa_f(mt19937_f) - 1.0;
 			w *= logarithm_t<-1, 1, 0>::template function<0>(x);
 		}
 		return w;
+	
 	};
+	/***/
 
 }
-/***/
+
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////

@@ -136,29 +136,25 @@ struct shape<M_ism, M_car>
 		XTAL_LET fiction(auto u, complex_field_q auto const &z)
 		noexcept -> auto
 		{
-			using          U     =     XTAL_ALL_(u);
-			using          U_op  = bond::operate<U>;
-			auto constexpr U0    = U_op::alpha_f(0);
-			auto constexpr U1    = U_op::alpha_f(1);
-			auto constexpr U2    = U_op::alpha_f(2);
-			auto           z_re  = z.real();
-			auto           z_im  = z.imag();
-			auto const     z_io  = signum_e(z_im);
-			auto const     z_co  = z_im*root_f<-1>(z_re);
-			auto          [z_up, z_dn] = roots_f<2>(square_f(z_re, z_im));
+			using       _op  = bond::operate<decltype(u)>;
+			auto       z_re  = z.real();
+			auto       z_im  = z.imag();
+			auto const z_io  = signum_e(z_im);
+			auto const z_co  = z_im*root_f<-1>(z_re);
+			auto      [z_up, z_dn] = roots_f<2>(square_f(z_re, z_im));
 
-			U const _u = discard_t<M_car>::template function<0>(u, z_up);
+			auto const _u = discard_t<M_car>::template function<0>(u, z_up);
 			u *= z_up*z_io;
 			XTAL_IF0
 			XTAL_0IF (0 < M_ism) {
-				u += root_f<2>(term_f(U1, u,  term_f(u,  U2,  z_co))) - U1;
-				u  = term_f(U1, XTAL_MOV_(u), root_f<-1>(U1 + z_co));
+				u += root_f<2>(term_f(one, u,  term_f(u,  two,  z_co))) - one;
+				u  = term_f(one, XTAL_MOV_(u), root_f<-1>(one + z_co));
 				if constexpr (N_lim < 0) {
 					u = log(XTAL_MOV_(u));
 				}
 				else {
 					auto constexpr N_ord = nomial_f<N_lim>(N_ism);
-					u = U_op::ratio_f(N_ord, 2)*roots_f<N_ord>(XTAL_MOV_(u)).template sum<-1>();
+					u = _op::ratio_f(N_ord, 2)*roots_f<N_ord>(XTAL_MOV_(u)).template sum<-1>();
 				}
 			}
 			XTAL_0IF (M_ism < 0) {
@@ -168,10 +164,10 @@ struct shape<M_ism, M_car>
 				else {
 					auto constexpr N_ord = nomial_f<N_lim>(N_ism);
 					u *= root_f<-1>(N_ord);
-					u += root_f< 2>(term_f<1, 2>(U1, u));
+					u += root_f< 2>(term_f<1, 2>(one, u));
 					u  = nomial_f<N_ord>(XTAL_MOV_(u));
 				}
-				u = half*term_f(term_f(z_co*-U2, z_co - U1, root_f<-1>(u)), z_co + U1, XTAL_MOV_(u));
+				u = half*term_f(term_f(z_co*-two, z_co - one, root_f<-1>(u)), z_co + one, XTAL_MOV_(u));
 			}
 			u *= z_dn*z_io;
 			return _u*u;

@@ -121,10 +121,10 @@ struct tang<M_ism, -2>
 				auto const _4 = _op::diplo_f(2);
 				auto const _8 = _op::diplo_f(3);
 				XTAL_IF0
-				XTAL_0IF (M_ism ==  2) {return root_f<2>(term_f(_1,     w))/term_f(_1, _2, XTAL_REF_(w));}
-				XTAL_0IF (M_ism ==  1) {return root_f<2>(term_f(_1,-_2, w))/term_f(_1,-_4, XTAL_REF_(w));}
-				XTAL_0IF (M_ism == -1) {auto const m = term_f(_1, _8, XTAL_REF_(w)); return _1/root_f<2>(_op::haplo_1*(root_f<2>(m) + m));}
-				XTAL_0IF (M_ism == -2) {auto const m = term_f(_1,-_4, XTAL_REF_(w)); return _1/root_f<2>(_op::haplo_1*(root_f<2>(m) + m));}
+				XTAL_0IF (M_ism ==  2) {return root_f<2>(term_f(one,  _1, w))/term_f(one, _2, XTAL_REF_(w));}
+				XTAL_0IF (M_ism ==  1) {return root_f<2>(term_f(one, -_2, w))/term_f(one,-_4, XTAL_REF_(w));}
+				XTAL_0IF (M_ism == -1) {auto const m = term_f(one, _8, XTAL_REF_(w)); return root_f<-2>(_op::haplo_1*(root_f<2>(m) + m));}
+				XTAL_0IF (M_ism == -2) {auto const m = term_f(one,-_4, XTAL_REF_(w)); return root_f<-2>(_op::haplo_1*(root_f<2>(m) + m));}
 			}
 		}
 

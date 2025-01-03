@@ -73,6 +73,7 @@ struct unity<M_ism> : unity<>
 		XTAL_LET function(auto &&t_re, simplex_field_q auto &&t_im)
 		noexcept -> decltype(auto)
 		{
+		//	auto constexpr exp = XTAL_FUN_(taylor::logarithm_t<-1, 1, 1>::template function<2>);
 			using U_op = bond::operate<decltype(t_re), decltype(t_im)>;
 			return function<N_lim>(XTAL_REF_(t_re))*exp(XTAL_REF_(t_im)*U_op::patio_f(-2));
 		}

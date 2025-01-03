@@ -124,10 +124,11 @@ struct filter<U_pole[N_pole]>
 		noexcept -> void
 		{
 			using _op = bond::operate<decltype(x_input)>;
-			XTAL_LET K_1 = _op::alpha_f(1);
-			XTAL_LET K_2 = _op::alpha_f(2);
-			XTAL_LET N_  =    N_ord + 0;
-			XTAL_LET M_  =    N_ord - 1;
+
+			auto constexpr K_1 = _op::alpha_f(1);
+			auto constexpr K_2 = _op::alpha_f(2);
+			auto constexpr N_  =     N_ord - (0);
+			auto constexpr M_  =     N_ord - (1);
 
 			using U_input   = XTAL_ALL_(x_input);
 			using U_exput   = XTAL_ALL_(x_input);
@@ -135,6 +136,7 @@ struct filter<U_pole[N_pole]>
 			using U_inputs_ = algebra::lateral_t<U_input[N_]>;
 			using U_exputs_ = algebra::lateral_t<U_exput[N_]>;
 			using U_coeffs_ = algebra::lateral_t<U_coeff[N_]>;
+
 			auto    cachet  = S_::template cache<U_inputs_, U_inputs_>();
 			auto    coeffs  = io.coeffs; auto &coeffs_ = reinterpret_cast<U_coeffs_ &>(coeffs);
 			auto   &exputs  = io.exputs; auto &exputs_ = reinterpret_cast<U_exputs_ &>(exputs);
@@ -142,8 +144,8 @@ struct filter<U_pole[N_pole]>
 			auto   &states_ = get<1>(cachet);
 		//	auto   [slopes_, states_] = S_::template cache<U_exputs_, U_exputs_>();//NOTE: Can't access from lambda...
 
-			auto &sl_0 = get<0>(slopes_), sl_N = K_1;
-			auto &ex_0 = get<0>(exputs), &ex_N = get<N_>(exputs);
+			auto     &sl_0  = get<0>(slopes_), sl_N = K_1;
+			auto     &ex_0  = get<0>(exputs), &ex_N = get<N_>(exputs);
 
 		//	Initialize `coeffs*`:
 			slopes_.template unzero<1>();
