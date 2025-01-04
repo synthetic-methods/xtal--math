@@ -31,11 +31,11 @@ TAG_("logarithm")
 
 	TRY_("inversion")
 	{
-		TRUE_(check_f<-1>(1.0, logarithm_t< 1,  1>::template function<0>(egg)*logarithm_t< 1, -1>::template function<0>(egg)));
-		TRUE_(check_f<-1>(1.0, logarithm_t<-1,  1>::template function<0>(egg)*logarithm_t<-1, -1>::template function<0>(egg)));
+		TRUE_(check_f<-1>(1.0, logarithm_t< 1, 0, 1>::template function<0>(egg)*logarithm_t< 1, 0, -1>::template function<0>(egg)));
+		TRUE_(check_f<-1>(1.0, logarithm_t<-1, 0, 1>::template function<0>(egg)*logarithm_t<-1, 0, -1>::template function<0>(egg)));
 
-		TRUE_(check_f<19>(egg, logarithm_t< 1,  1>::template function<0>(logarithm_t<-1,  1>::template function<0>(egg))));
-		TRUE_(check_f<19>(egg, logarithm_t<-1,  1>::template function<0>(logarithm_t< 1,  1>::template function<0>(egg))));
+		TRUE_(check_f<19>(egg, logarithm_t< 1, 0, 1>::template function<0>(logarithm_t<-1, 0, 1>::template function<0>(egg))));
+		TRUE_(check_f<19>(egg, logarithm_t<-1, 0, 1>::template function<0>(logarithm_t< 1, 0, 1>::template function<0>(egg))));
 
 	}
 	TRY_("evaluation")
@@ -44,7 +44,7 @@ TAG_("logarithm")
 		TRUE_(check_f<-46>(logarithm_t< 1, 1, 1>::template function<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1, 1>::template function< 0>(T_aphex{0.3, 0.8})));
 
 		TRUE_(check_f<-13>(logarithm_t< 1, 1, 1>::template function<2>(egg), log(egg)));
-		TRUE_(check_f<- 4>(logarithm_t<-1, 1, 1>::template function<2>(egg), exp(egg)));
+		TRUE_(check_f<-25>(logarithm_t<-1, 1, 1>::template function<2>(egg), exp(egg)));
 
 		TRUE_(check_f<- 1>(logarithm_t< 1>::template function<-1>(egg), log(egg)));
 		TRUE_(check_f<- 5>(logarithm_t< 1>::template function< 3>(egg), log(egg)));
@@ -53,9 +53,9 @@ TAG_("logarithm")
 		TRUE_(check_f<-40>(logarithm_t< 1>::template function< 0>(egg), log(egg)));
 
 		TRUE_(check_f<- 1>(logarithm_t<-1>::template function<-1>(egg), exp(egg)));
-		TRUE_(check_f<-14>(logarithm_t<-1>::template function< 3>(egg), exp(egg)));
-		TRUE_(check_f<-29>(logarithm_t<-1>::template function< 2>(egg), exp(egg)));
-		TRUE_(check_f<-45>(logarithm_t<-1>::template function< 1>(egg), exp(egg)));
+		TRUE_(check_f<-26>(logarithm_t<-1>::template function< 3>(egg), exp(egg)));
+		TRUE_(check_f<-34>(logarithm_t<-1>::template function< 2>(egg), exp(egg)));
+		TRUE_(check_f<-43>(logarithm_t<-1>::template function< 1>(egg), exp(egg)));
 	//	UNTRUE_(check_f(logarithm_t<-1>::template function< 0>(egg), exp(egg)));
 
 	}
@@ -109,13 +109,22 @@ TAG_("logarithm")
 	EST_("real std::exp")
 	{
 		T_alpha o{1};
-		for (T_sigma i = 0x10; ~--i;) {
-			o *= _std::exp(_op::mantissa_f(mt19937_f) - one);
+		for (T_sigma i = 0x100; ~--i;) {
+			o *= _std::exp(_op::mantissa_f(mt19937_f));
 		}
 		return o;
 	
 	};
 	/**/
+	EST_("real antilogarithm... <N_lim=~0>")
+	{
+		T_alpha w{1};
+		for (T_sigma i = 0x100; ~--i;) {
+			w *= logarithm_t<-1>::template function<~0>(_op::mantissa_f(mt19937_f));
+		}
+		return w;
+	
+	};
 	EST_("real antilogarithm... <N_lim=2, M_car=1>")
 	{
 		T_alpha w{1};
@@ -151,7 +160,7 @@ TAG_("logarithm")
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
 			auto x = _op::mantissa_f(mt19937_f) - 1.0;
-			w *= logarithm_t<-1, 1, 0>::template function<0>(x);
+			w *= logarithm_t<-1>::template function<0>(x);
 		}
 		return w;
 	

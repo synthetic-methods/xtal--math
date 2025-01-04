@@ -310,7 +310,7 @@ TAG_("unity")
 
 		//\
 		echo(check_f(x, z));
-		TRUE_(check_f<-16>(x, z));
+		TRUE_(check_f<-19>(x, z));
 
 	}
 	TRY_("inversion< 5> (native)")
@@ -321,7 +321,7 @@ TAG_("unity")
 
 		//\
 		echo(check_f(x, z));
-		TRUE_(check_f<-16>(x, z));
+		TRUE_(check_f<-19>(x, z));
 
 	}
 	EST_("unity inversion<-1> (native)")

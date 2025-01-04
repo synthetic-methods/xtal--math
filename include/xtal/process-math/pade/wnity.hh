@@ -61,7 +61,7 @@ struct wnity<1> : wnity<>
 		XTAL_LET function(auto &&t_1, simplex_field_q auto &&t_i)
 		noexcept -> decltype(auto)
 		{
-		//	auto constexpr exp = XTAL_FUN_(taylor::logarithm_t<-1, 1, 1>::template function<2>);
+			auto constexpr exp = XTAL_FUN_(taylor::logarithm_t<-1, 1>::template function<2>);
 			using T_i = XTAL_ALL_(t_i); using _op = bond::operate<T_i>;
 
 			auto const o = function<N_lim>(XTAL_REF_(t_1));

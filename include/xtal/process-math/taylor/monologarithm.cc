@@ -30,15 +30,15 @@ TAG_("monologarithm")
 
 	TRY_("inversion")
 	{
-		TRUE_(check_f<-1>(1.0, monologarithm_t< 2,  1>::template function<0>(egg)*monologarithm_t< 2, -1>::template function<0>(egg)));
-		TRUE_(check_f<-1>(1.0, monologarithm_t< 1,  1>::template function<0>(egg)*monologarithm_t< 1, -1>::template function<0>(egg)));
-		TRUE_(check_f<-1>(1.0, monologarithm_t<-1,  1>::template function<0>(egg)*monologarithm_t<-1, -1>::template function<0>(egg)));
-		TRUE_(check_f<-1>(1.0, monologarithm_t<-2,  1>::template function<0>(egg)*monologarithm_t<-2, -1>::template function<0>(egg)));
+		TRUE_(check_f<-1>(1.0, monologarithm_t< 2, 0, 1>::template function<0>(egg)*monologarithm_t< 2, 0, -1>::template function<0>(egg)));
+		TRUE_(check_f<-1>(1.0, monologarithm_t< 1, 0, 1>::template function<0>(egg)*monologarithm_t< 1, 0, -1>::template function<0>(egg)));
+		TRUE_(check_f<-1>(1.0, monologarithm_t<-1, 0, 1>::template function<0>(egg)*monologarithm_t<-1, 0, -1>::template function<0>(egg)));
+		TRUE_(check_f<-1>(1.0, monologarithm_t<-2, 0, 1>::template function<0>(egg)*monologarithm_t<-2, 0, -1>::template function<0>(egg)));
 
-		TRUE_(check_f<19>(egg, monologarithm_t< 2,  1>::template function<0>(monologarithm_t<-2,  1>::template function<0>(egg))));
-		TRUE_(check_f<19>(egg, monologarithm_t< 1,  1>::template function<0>(monologarithm_t<-1,  1>::template function<0>(egg))));
-		TRUE_(check_f<19>(egg, monologarithm_t<-1,  1>::template function<0>(monologarithm_t< 1,  1>::template function<0>(egg))));
-		TRUE_(check_f<19>(egg, monologarithm_t<-2,  1>::template function<0>(monologarithm_t< 2,  1>::template function<0>(egg))));
+		TRUE_(check_f<19>(egg, monologarithm_t< 2, 0, 1>::template function<0>(monologarithm_t<-2, 0, 1>::template function<0>(egg))));
+		TRUE_(check_f<19>(egg, monologarithm_t< 1, 0, 1>::template function<0>(monologarithm_t<-1, 0, 1>::template function<0>(egg))));
+		TRUE_(check_f<19>(egg, monologarithm_t<-1, 0, 1>::template function<0>(monologarithm_t< 1, 0, 1>::template function<0>(egg))));
+		TRUE_(check_f<19>(egg, monologarithm_t<-2, 0, 1>::template function<0>(monologarithm_t< 2, 0, 1>::template function<0>(egg))));
 
 	}
 	TRY_("evaluation")
@@ -67,12 +67,12 @@ TAG_("monologarithm")
 		TRUE_(check_f<  7>(monologarithm_t<-2>::template function< 1>(egg), 1 - exp(-egg)));
 		TRUE_(check_f<  7>(monologarithm_t<-2>::template function< 0>(egg), 1 - exp(-egg)));
 
-		TRUE_(check_f<24>(0.61803398874989490, monologarithm_t<-2, 1,-1>::function(1L)));
-		TRUE_(check_f<24>(1.61803398874989490, monologarithm_t<-1, 1,-1>::function(1L)));
-		TRUE_(check_f<24>(0.41421356237309515, monologarithm_t<-2, 1,-1>::function(2L)));
-		TRUE_(check_f<24>(2.41421356237309490, monologarithm_t<-1, 1,-1>::function(2L)));
-		TRUE_(check_f<24>(0.30277563773199456, monologarithm_t<-2, 1,-1>::function(3L)));
-		TRUE_(check_f<24>(3.30277563773199480, monologarithm_t<-1, 1,-1>::function(3L)));
+		TRUE_(check_f<24>(0.61803398874989490, monologarithm_t<-2,-1, 1>::function(1L)));
+		TRUE_(check_f<24>(1.61803398874989490, monologarithm_t<-1,-1, 1>::function(1L)));
+		TRUE_(check_f<24>(0.41421356237309515, monologarithm_t<-2,-1, 1>::function(2L)));
+		TRUE_(check_f<24>(2.41421356237309490, monologarithm_t<-1,-1, 1>::function(2L)));
+		TRUE_(check_f<24>(0.30277563773199456, monologarithm_t<-2,-1, 1>::function(3L)));
+		TRUE_(check_f<24>(3.30277563773199480, monologarithm_t<-1,-1, 1>::function(3L)));
 
 	}
 	TRY_("mapping")
@@ -84,8 +84,8 @@ TAG_("monologarithm")
 		T_aphex w = pade::unity_t<1, dilate<2>>::template function<4>(s_arg);
 		T_alpha u = 1.0/s_abs;
 		
-		w *= taylor::monologarithm_t<-1, +1>::template function<0>(u*zoom);
-		w  = taylor::monologarithm_t<+1, -1>::template function<0>(w)*zoom;
+		w *= taylor::monologarithm_t<-1, 0, +1>::template function<0>(u*zoom);
+		w  = taylor::monologarithm_t<+1, 0, -1>::template function<0>(w)*zoom;
 		w  = imagine_f<1>(w);
 
 		TRUE_(check_f<16>(w, _std::complex{0.18009502457651236, 0.8570821020168073}));

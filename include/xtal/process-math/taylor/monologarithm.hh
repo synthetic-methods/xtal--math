@@ -11,7 +11,7 @@ namespace xtal::process::math::taylor
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism=1, int M_pow=1, int M_car=0> requires in_q<M_ism, 1, 2, -1, -2> and in_q<M_pow, 1, -1> and in_q<M_car, -0, -1>
+template <int M_ism=1, int M_car=0, int M_pow=1> requires in_q<M_ism, 1, 2, -1, -2> and in_q<M_car, -0, -1> and in_q<M_pow, 1, -1>
 struct   monologarithm;
 
 template <auto ...Ms>
@@ -24,11 +24,11 @@ Defines `function` as the monologarithm `-Log[1 - #]`, \
 approximated by `#/Sqrt[1 - #]`. \
 
 template <int M_ism, int M_pow> requires in_q<M_ism, 1, 2>
-struct monologarithm<M_ism, M_pow, -0>
+struct monologarithm<M_ism, -0, M_pow>
 {
 	using superprocess = process::lift_t<void
 	,	bond::compose<dilated<2>, taylor::sine<-2>>
-	,	bond::compose<discarded<1, M_pow>, monologarithm<M_ism, M_pow, -1>>
+	,	bond::compose<discarded<1, M_pow>, monologarithm<M_ism, -1, M_pow>>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -63,10 +63,10 @@ Defines `function` as the antimonologarithm `1 - Exp[-#]`, \
 approximated by `(Sqrt[1 + (#/2)^2] - (#/2))*(#)`. \
 
 template <int M_ism, int M_pow> requires in_q<M_ism,-1,-2>
-struct monologarithm<M_ism, M_pow, -0>
+struct monologarithm<M_ism, -0, M_pow>
 {
 	using superprocess = process::lift_t<void
-	,	bond::compose<discarded<1, M_pow>, monologarithm<M_ism, M_pow, -1>>
+	,	bond::compose<discarded<1, M_pow>, monologarithm<M_ism, -1, M_pow>>
 	,	bond::compose<dilated<2>, taylor::sine<+2>>
 	>;
 	template <class S>
@@ -103,13 +103,13 @@ Defines `function` as the cardinal monologarithm `-Log[1 - #]/#`, \
 approximated by `1/Sqrt[1 - #]`. \
 
 template <int M_ism, int M_pow> requires in_q<M_ism, 1, 2>
-struct monologarithm<M_ism, M_pow, -1>
+struct monologarithm<M_ism, -1, M_pow>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
-		using S0 = bond::compose_s<S, monologarithm<M_ism, M_pow, -0>>;
+		using S0 = bond::compose_s<S, monologarithm<M_ism, -0, M_pow>>;
 
 	public:
 		using S_::S_;
@@ -140,13 +140,13 @@ Defines `function` as the cardinal antimonologarithm `(1 - Exp[-#])/#`, \
 approximated by `Sqrt[1 + (#/2)^2] + (#/2)`. \
 
 template <int M_ism, int M_pow> requires in_q<M_ism,-1,-2>
-struct monologarithm<M_ism, M_pow, -1>
+struct monologarithm<M_ism, -1, M_pow>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
 	{
 		using S_ = bond::compose_s<S>;
-		using S0 = bond::compose_s<S, monologarithm<M_ism, M_pow, -0>>;
+		using S0 = bond::compose_s<S, monologarithm<M_ism, -0, M_pow>>;
 
 	public:
 		using S_::S_;
