@@ -46,7 +46,7 @@ struct imagine
 		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> decltype(auto)
-			requires un_q<complex_field_q<decltype(o)>>
+			requires un_n<complex_field_q<decltype(o)>>
 		{
 			if constexpr (N_rot == 0 and N_con == 0) {
 				return XTAL_REF_(o);
@@ -59,7 +59,7 @@ struct imagine
 		XTAL_DEF_(short,static)
 		XTAL_LET function(complex_field_q auto const &o)
 		noexcept -> decltype(auto)
-			requires un_q<complex_number_q<decltype(o)>>
+			requires un_n<complex_number_q<decltype(o)>>
 		{
 			auto const x = o.real();
 			auto const y = o.imag();

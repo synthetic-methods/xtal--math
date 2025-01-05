@@ -1,8 +1,8 @@
 #pragma once
 #include "./any.hh"
 
-
-
+#include "./dot.hh"
+#include "./dots.hh"
 
 
 
@@ -54,7 +54,7 @@ struct magnum
 		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(o)>;
-			return _op::template unsquare_dot_f<1>(o);
+			return dot_f<2>(o);
 		}
 
 		template <auto ...Ns>
@@ -74,7 +74,7 @@ struct magnum
 		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(o)>;
-			auto [u, v] = _op::template unsquare_dot_f<0>(o); o *= v; return u;
+			auto [u, v] = dots_f<2>(o); o *= v; return u;
 		}
 
 	};

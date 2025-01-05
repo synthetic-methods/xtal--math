@@ -31,13 +31,13 @@ noexcept -> auto
 	else {
 		using Y = absolve_u<Xs...>;// NOTE: Constants interpreted as scalar quantities...
 		XTAL_IF0
-		XTAL_0IF (constant_q<W, X> or integer_q<W, X> and real_number_q<Y>) {
+		XTAL_0IF (constant_q<W, X> or integral_number_q<W, X> and real_number_q<Y>) {
 			return term_f<M_alt, M_pow>(static_cast<Y>(XTAL_REF_(w)), static_cast<Y>(XTAL_REF_(x)), XTAL_REF_(xs)...);
 		}
-		XTAL_0IF (constant_q<W   > or integer_q<W   > and real_number_q<Y>) {
+		XTAL_0IF (constant_q<W   > or integral_number_q<W   > and real_number_q<Y>) {
 			return term_f<M_alt, M_pow>(static_cast<Y>(XTAL_REF_(w)), XTAL_REF_(x), XTAL_REF_(xs)...);
 		}
-		XTAL_0IF (constant_q<   X> or integer_q<   X> and real_number_q<Y>) {
+		XTAL_0IF (constant_q<   X> or integral_number_q<   X> and real_number_q<Y>) {
 			return term_f<M_alt, M_pow>(XTAL_REF_(w), static_cast<Y>(XTAL_REF_(x)), XTAL_REF_(xs)...);
 		}
 		XTAL_0IF (M_pow == 0  or M_alt ==  0) {
@@ -76,7 +76,7 @@ Co/domain scaling can be effected by multiplying `a`/`b`, respectively. \
 template <auto ...Ms>
 struct   term
 {
-//	static_assert(in_q<M_alt, 1,-1>);
+//	static_assert(in_n<M_alt, 1,-1>);
 
 	template <class S>
 	class subtype : public bond::compose_s<S>

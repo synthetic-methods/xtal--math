@@ -2,7 +2,7 @@
 #include "./any.hh"
 //#include "../../algebra/scalar.hh"
 
-
+#include "../../process-math/pade/unity.hh"
 
 
 
@@ -81,7 +81,7 @@ struct symbol<A>
 			ordinal_type           k = N_subscript;
 			element(0) = {};
 
-			if constexpr (integer_q<U_data>) {
+			if constexpr (integral_number_q<U_data>) {
 				bond::seek_forward_f<K>([&, this] (size_type i) XTAL_0FN {
 					auto const o = k%N;
 					element(    o) =  i;
@@ -94,7 +94,7 @@ struct symbol<A>
 				U_data w =  1;
 				U_data u = -1;
 				if constexpr (complex_field_q<U_data>) {
-					u = _op::circle_f(_op::patio_f(1, K));
+					u = process::math::pade::unity_t<1>::template function<6>(_op::ratio_f(1, 2*K));
 				}
 				bond::seek_forward_f<K>([&, this] (size_type i) XTAL_0FN {
 					auto const o = k%N;
@@ -115,7 +115,7 @@ struct symbol<A>
 			size_type constexpr K = N_data;
 			size_type           k = N_data;
 
-			if constexpr (integer_q<U_data>) {
+			if constexpr (integral_number_q<U_data>) {
 				bond::seek_forward_f<K>([&, this] (size_type i) XTAL_0FN {
 					auto const o = k%N;
 					if (K < o) {
@@ -131,7 +131,7 @@ struct symbol<A>
 			else {
 				U_data w, u;
 				if constexpr (complex_field_q<U_data>) {
-					u = _op::circle_f(_op::patio_f(1, K));
+					u = process::math::pade::unity_t<1>::template function<6>(_op::ratio_f(1, 2*K));
 				}
 				else {
 					u = 1;

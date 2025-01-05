@@ -173,7 +173,7 @@ struct shape<M_ism, M_car>
 			return _u*u;
 		}
 		/**/
-		template <int N_lim=0> requires in_q<M_ism, -3> and above_p<0, N_lim>
+		template <int N_lim=0> requires in_n<M_ism, -3> and above_p<0, N_lim>
 		XTAL_DEF_(short,static)
 		XTAL_LET fiction(auto u, complex_field_q auto const &z)
 		noexcept -> auto

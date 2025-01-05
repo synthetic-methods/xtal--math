@@ -29,22 +29,23 @@ TAG_("shape")
 
 	TRY_("shape cardinal")
 	{
-		TRUE_(check_f<-32>(1.14791942238637400, shape_t<-3, 1>::template function< 4>(0.5, 0.5)));
-		TRUE_(check_f<-35>(1.14791942238637400, shape_t<-3, 1>::template function< 3>(0.5, 0.5)));
-		TRUE_(check_f<-39>(1.14791942238637400, shape_t<-3, 1>::template function< 2>(0.5, 0.5)));
-		TRUE_(check_f<-44>(1.14791942238637400, shape_t<-3, 1>::template function< 1>(0.5, 0.5)));
-		TRUE_(check_f<-41>(1.14791942238637400, shape_t<-2, 1>::template function< 4>(0.5, 0.5)));
-		TRUE_(check_f<-41>(1.14791942238637400, shape_t<-2, 1>::template function< 3>(0.5, 0.5)));
-		TRUE_(check_f<-45>(1.14791942238637400, shape_t<-2, 1>::template function< 2>(0.5, 0.5)));
-		TRUE_(check_f<-45>(1.14791942238637400, shape_t<-2, 1>::template function< 1>(0.5, 0.5)));
-		TRUE_(check_f<-35>(0.88763432524793617, shape_t< 3, 1>::template function< 4>(0.5, 0.5)));
-		TRUE_(check_f<-38>(0.88763432524793617, shape_t< 3, 1>::template function< 3>(0.5, 0.5)));
-		TRUE_(check_f<-41>(0.88763432524793617, shape_t< 3, 1>::template function< 2>(0.5, 0.5)));
-		TRUE_(check_f<-44>(0.88763432524793617, shape_t< 3, 1>::template function< 1>(0.5, 0.5)));
-		TRUE_(check_f<-38>(0.88763432524793617, shape_t< 2, 1>::template function< 4>(0.5, 0.5)));
-		TRUE_(check_f<-41>(0.88763432524793617, shape_t< 2, 1>::template function< 3>(0.5, 0.5)));
-		TRUE_(check_f<-44>(0.88763432524793617, shape_t< 2, 1>::template function< 2>(0.5, 0.5)));
-		TRUE_(check_f<-45>(0.88763432524793617, shape_t< 2, 1>::template function< 1>(0.5, 0.5)));
+		TRUE_(check_f<-32>(shape_t<-3, 1>::template function<~0>(0.5, 0.5), shape_t<-3, 1>::template function< 4>(0.5, 0.5)));
+		TRUE_(check_f<-35>(shape_t<-3, 1>::template function<~0>(0.5, 0.5), shape_t<-3, 1>::template function< 3>(0.5, 0.5)));
+		TRUE_(check_f<-39>(shape_t<-3, 1>::template function<~0>(0.5, 0.5), shape_t<-3, 1>::template function< 2>(0.5, 0.5)));
+		TRUE_(check_f<-44>(shape_t<-3, 1>::template function<~0>(0.5, 0.5), shape_t<-3, 1>::template function< 1>(0.5, 0.5)));
+		TRUE_(check_f<-41>(shape_t<-3, 1>::template function<~0>(0.5, 0.5), shape_t<-2, 1>::template function< 4>(0.5, 0.5)));
+		TRUE_(check_f<-41>(shape_t<-3, 1>::template function<~0>(0.5, 0.5), shape_t<-2, 1>::template function< 3>(0.5, 0.5)));
+		TRUE_(check_f<-45>(shape_t<-3, 1>::template function<~0>(0.5, 0.5), shape_t<-2, 1>::template function< 2>(0.5, 0.5)));
+		TRUE_(check_f<-45>(shape_t<-3, 1>::template function<~0>(0.5, 0.5), shape_t<-2, 1>::template function< 1>(0.5, 0.5)));
+
+		TRUE_(check_f<-36>(shape_t< 3, 1>::template function<~0>(0.5, 0.5), shape_t< 3, 1>::template function< 4>(0.5, 0.5)));
+		TRUE_(check_f<-38>(shape_t< 3, 1>::template function<~0>(0.5, 0.5), shape_t< 3, 1>::template function< 3>(0.5, 0.5)));
+		TRUE_(check_f<-41>(shape_t< 3, 1>::template function<~0>(0.5, 0.5), shape_t< 3, 1>::template function< 2>(0.5, 0.5)));
+		TRUE_(check_f<-44>(shape_t< 3, 1>::template function<~0>(0.5, 0.5), shape_t< 3, 1>::template function< 1>(0.5, 0.5)));
+		TRUE_(check_f<-38>(shape_t< 3, 1>::template function<~0>(0.5, 0.5), shape_t< 2, 1>::template function< 4>(0.5, 0.5)));
+		TRUE_(check_f<-41>(shape_t< 3, 1>::template function<~0>(0.5, 0.5), shape_t< 2, 1>::template function< 3>(0.5, 0.5)));
+		TRUE_(check_f<-44>(shape_t< 3, 1>::template function<~0>(0.5, 0.5), shape_t< 2, 1>::template function< 2>(0.5, 0.5)));
+		TRUE_(check_f<-45>(shape_t< 3, 1>::template function<~0>(0.5, 0.5), shape_t< 2, 1>::template function< 1>(0.5, 0.5)));
 
 	}
 	TRY_("shape isomorphism")
@@ -66,19 +67,32 @@ TAG_("shape")
 		TRUE_(check_f<-4>(0.1925824035672532,  shape_t<-2, -1>::template function<1, 1>(-5.0)));
 		TRUE_(check_f<-2>(0.1622776601683800,  shape_t<-2, -1>::template function<1, 1>(-6.0)));
 		TRUE_(check_f<-2>(0.1400549446402577,  shape_t<-2, -1>::template function<1, 1>(-7.0)));
+		TRUE_(check_f<-2>(0.1231056256176600,  shape_t<-2, -1>::template function<1, 1>(-8.0)));
 		TRUE_(check_f<-1>(0.1097722286464435,  shape_t<-2, -1>::template function<1, 1>(-9.0)));
 
-		TRUE_(check_f<-9>(1.6180339887498949,  shape_t<-2, -1>::template function<1, 1>( 1.0)));
-		TRUE_(check_f<-9>(2.4142135623730949,  shape_t<-2, -1>::template function<1, 1>( 2.0)));
-		TRUE_(check_f<-9>(3.3027756377319948,  shape_t<-2, -1>::template function<1, 1>( 3.0)));
-		TRUE_(check_f<-9>(4.2360679774997898,  shape_t<-2, -1>::template function<1, 1>( 4.0)));
-		TRUE_(check_f<-9>(5.1925824035672532,  shape_t<-2, -1>::template function<1, 1>( 5.0)));
-		TRUE_(check_f<-9>(6.1622776601683800,  shape_t<-2, -1>::template function<1, 1>( 6.0)));
-		TRUE_(check_f<-9>(7.1400549446402577,  shape_t<-2, -1>::template function<1, 1>( 7.0)));
-		TRUE_(check_f<-9>(9.1097722286464435,  shape_t<-2, -1>::template function<1, 1>( 9.0)));
+		TRUE_(check_f<-5>(1.6180339887498949,  shape_t<-2, -1>::template function<1, 1>( 1.0)));
+		TRUE_(check_f<-5>(2.4142135623730949,  shape_t<-2, -1>::template function<1, 1>( 2.0)));
+		TRUE_(check_f<-5>(3.3027756377319948,  shape_t<-2, -1>::template function<1, 1>( 3.0)));
+		TRUE_(check_f<-5>(4.2360679774997898,  shape_t<-2, -1>::template function<1, 1>( 4.0)));
+		TRUE_(check_f<-5>(5.1925824035672532,  shape_t<-2, -1>::template function<1, 1>( 5.0)));
+		TRUE_(check_f<-5>(6.1622776601683800,  shape_t<-2, -1>::template function<1, 1>( 6.0)));
+		TRUE_(check_f<-5>(7.1400549446402577,  shape_t<-2, -1>::template function<1, 1>( 7.0)));
+		TRUE_(check_f<-5>(8.1231056256176600,  shape_t<-2, -1>::template function<1, 1>( 8.0)));
+		TRUE_(check_f<-5>(9.1097722286464435,  shape_t<-2, -1>::template function<1, 1>( 9.0)));
+
+		TRUE_(check_f<-9>(1.6180339887498950,  shape_t<-2, -1>::template function<1, 1>( 1.0)));
+		TRUE_(check_f<-9>(2.4142135623730950,  shape_t<-2, -1>::template function<1, 1>( 2.0)));
+		TRUE_(check_f<-9>(3.3027756377319952,  shape_t<-2, -1>::template function<1, 1>( 3.0)));
+		TRUE_(check_f<-9>(4.2360679774997900,  shape_t<-2, -1>::template function<1, 1>( 4.0)));
+		TRUE_(check_f<-9>(5.1925824035672520,  shape_t<-2, -1>::template function<1, 1>( 5.0)));
+		TRUE_(check_f<-9>(6.1622776601683790,  shape_t<-2, -1>::template function<1, 1>( 6.0)));
+		TRUE_(check_f<-9>(7.1400549446402590,  shape_t<-2, -1>::template function<1, 1>( 7.0)));
+		TRUE_(check_f<-9>(8.1231056256176600,  shape_t<-2, -1>::template function<1, 1>( 8.0)));
+		TRUE_(check_f<-9>(9.1097722286464420,  shape_t<-2, -1>::template function<1, 1>( 9.0)));
 
 		TRUE_(check_f<-9>(0.4438171626239681, -shape_t< 3,  0>::template function<~0>(-0.5,-0.5)));
 		TRUE_(check_f< 9>(0.4438171626239681, -shape_t< 3,  0>::template function< 9>(-0.5,-0.5)));
+
 
 		TRUE_(check_f< 9>(0.4438171626239681,  shape_t< 3,  0>::template function<~0>( 0.5, 0.5)));
 		TRUE_(check_f< 9>(0.4438171626239681,  shape_t< 3,  0>::template function< 9>( 0.5, 0.5)));

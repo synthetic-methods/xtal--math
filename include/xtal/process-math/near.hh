@@ -27,7 +27,7 @@ struct near
 		/*/
 		template <auto ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(integer_q auto n)
+		XTAL_LET function(integral_number_q auto n)
 		noexcept -> XTAL_ALL_(n)
 		{
 			using U = XTAL_ALL_(n);

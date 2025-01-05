@@ -48,33 +48,36 @@ struct filter<U_pole[N_pole]>
 	public:
 		using S_::S_;
 
-		template <class O>
+		template <class X>
 		XTAL_DEF_(short)
-		XTAL_LET infuse(O &&o)
+		XTAL_LET infuse(X &&x)
 		noexcept -> signed
 		{
 			XTAL_IF0
-			XTAL_0IF (same_q<    order_type, O>)             {S_::cache(constant_t<0>{});}
-			XTAL_0IF (same_q< topology_type, O>)             {S_::cache(constant_t<0>{});}
-			XTAL_0IF (        occur::stage_q<O>) {if (o == 0) S_::cache(constant_t<0>{});}
-			return S_::infuse(XTAL_REF_(o));
+			XTAL_0IF (in_q<X, order_type, topology_type>) {
+				S_::cache(constant_t<0>{});
+			}
+			XTAL_0IF (occur::stage_q<X>) {
+				if (x == 0) S_::cache(constant_t<0>{});
+			}
+			return S_::infuse(XTAL_REF_(x));
 		}
 
 		template <auto ...Ns>
 		XTAL_DEF_(short)
 		XTAL_LET method( auto &&x_input
-		,	real_number_q auto   f_scale
+		,	real_number_q auto   g_scale
 		,	real_number_q auto   s_coeff
 		)
 		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(x_input)>;
-			return method<Ns...>(XTAL_REF_(x_input), f_scale, s_coeff, _op::alpha_0);
+			return method<Ns...>(XTAL_REF_(x_input), g_scale, s_coeff, _op::alpha_0);
 		}
 		template <int N_sel=0, int N_ord=0, int N_top=0, auto ...Ns>
 		XTAL_DEF_(inline)
 		XTAL_LET method( auto const &x_input
-		,	real_number_q auto        f_scale
+		,	real_number_q auto        g_scale
 		,	real_number_q auto        s_coeff
 		,	real_number_q auto        y_mix
 		)
@@ -107,7 +110,7 @@ struct filter<U_pole[N_pole]>
 					XTAL_0IF (4 == N_ord) {return {K_1, u04, w24, u04, K_1};}
 				}()};
 
-				(void) edit<N_ord, N_top, Ns...>(io, x_input, f_scale);// io.coeffs -> io.exputs
+				(void) edit<N_ord, N_top, Ns...>(io, x_input, g_scale);// io.coeffs -> io.exputs
 
 				XTAL_LET I_ =  static_cast<unsigned>(N_sel);
 				XTAL_LET I0 = _std::countr_one(I_ >>  0) +  0, J0 = I0 + 1;
@@ -120,7 +123,7 @@ struct filter<U_pole[N_pole]>
 		}
 		template <int N_ord=0, int N_top=0, int N_lim=0, auto ...Ns> requires (1 <= N_ord and N_top == 0)
 		XTAL_DEF_(inline)
-		XTAL_LET edit(auto &io, auto const &x_input, real_number_q auto const &f_scale)
+		XTAL_LET edit(auto &io, auto const &x_input, real_number_q auto const &g_scale)
 		noexcept -> void
 		{
 			using _op = bond::operate<decltype(x_input)>;
@@ -144,8 +147,8 @@ struct filter<U_pole[N_pole]>
 			auto   &states_ = get<1>(cachet);
 		//	auto   [slopes_, states_] = S_::template cache<U_exputs_, U_exputs_>();//NOTE: Can't access from lambda...
 
-			auto     &sl_0  = get<0>(slopes_), sl_N = K_1;
-			auto     &ex_0  = get<0>(exputs), &ex_N = get<N_>(exputs);
+			auto   &sl_0    = get<0>(slopes_), sl_N = K_1;
+			auto   &ex_0    = get<0>(exputs), &ex_N = get<N_>(exputs);
 
 		//	Initialize `coeffs*`:
 			slopes_.template unzero<1>();
@@ -154,9 +157,9 @@ struct filter<U_pole[N_pole]>
 		//	Initialize `exputs*`:
 			ex_0 = sl_0;
 			bond::seek_forward_f<M_>([&] (auto I) XTAL_0FN {
-				get<I + 1>(exputs_) = term_f(get<I + 1>(slopes_), get<I>(exputs_), f_scale);
+				get<I + 1>(exputs_) = term_f(get<I + 1>(slopes_), get<I>(exputs_), g_scale);
 			});
-			ex_N = root_f<-1, (4)>(term_f(sl_N, get<M_>(exputs_), f_scale));
+			ex_N = root_f<-1, (4)>(term_f(sl_N, get<M_>(exputs_), g_scale));
 
 			XTAL_LET I_lim = (size_type) N_lim != 0;// Only iterate when `sigmoid_t` is non-linear...
 
@@ -168,7 +171,7 @@ struct filter<U_pole[N_pole]>
 				bond::seek_backward_f<N_>([&] (auto I) XTAL_0FN {
 					auto const      &co_I = get<I>(coeffs_);
 					auto const      &st_I = get<I>(states_);
-					auto const       ex_I = term_f(st_I, get<I + 1>(exputs), f_scale);
+					auto const       ex_I = term_f(st_I, get<I + 1>(exputs), g_scale);
 					auto const       sl_I = sigmoid_t<-1, -1>::template function<N_lim, Ns...>(ex_I, co_I);//, get<I>(z_));
 					get<I>(exputs_) = ex_I;
 					get<I>(slopes_) = sl_I;

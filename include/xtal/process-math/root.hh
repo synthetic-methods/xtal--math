@@ -1,9 +1,9 @@
 #pragma once
 #include "./any.hh"
 
-#include "./cut.hh"
-#include "./magnum.hh"
-#include "./square.hh"
+#include "./power.hh"
+
+
 
 
 XTAL_ENV_(push)
@@ -17,49 +17,28 @@ struct   root;
 template <int M_exp=1, int M_cut=0>
 using    root_t = process::confined_t<root<M_exp, M_cut>>;
 
-template <int M_exp=1, int M_cut=0, auto ...Ns>
+template <int M_exp=1, int M_cut=0, auto N_lim=0b11>
 XTAL_DEF_(short)
-XTAL_LET root_f(auto &&w)
+XTAL_LET root_f(auto &&z)
 noexcept -> decltype(auto)
 {
+	static_assert(M_exp != 0);
 	XTAL_IF0
-	XTAL_0IF (M_exp == 1) {return                                                XTAL_REF_(w) ;}
-	XTAL_0IF (M_exp != 1) {return root_t<M_exp, M_cut>::template function<Ns...>(XTAL_REF_(w));}
+//	XTAL_0IF_(consteval) {return root_t<M_exp, 0    >::template function<   ~0>(XTAL_REF_(z));}
+	XTAL_0IF (M_cut <=0) {return root_t<M_exp, 0    >::template function<N_lim>(XTAL_REF_(z));}
+	XTAL_0IF (0 < M_cut) {return root_t<M_exp, M_cut>::template function<N_lim>(XTAL_REF_(z));}
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_exp, int M_cut> requires (0 <  M_cut)
-struct root<M_exp, M_cut>
+template <int M_exp, int M_cut>
+struct root
 {
-	using superkind = root<M_exp>;
+	XTAL_SET M_exp_mag = magnum_n<M_exp>;
+	XTAL_SET M_exp_sgn = signum_n<M_exp>;
 
-	template <class S>
-	class subtype : public bond::compose_s<S, superkind>
-	{
-		using S_ = bond::compose_s<S, superkind>;
-
-	public:
-		using S_::S_;
-
-		template <auto ...Ns>
-		XTAL_DEF_(short,static)
-		XTAL_LET function(auto &&w)
-		noexcept -> auto
-		{
-			using _op = bond::operate<XTAL_ALL_(w)>;
-			XTAL_LET N_exp = magnum_f(M_exp*M_cut);
-			XTAL_LET N_min = _op::minilon_f(N_exp);
-			return S_::template function<Ns...>(cut_f<XTAL_VAL_(N_min)>(XTAL_REF_(w)));
-		}
-
-	};
-};
-template <int M_exp, int M_cut> requires (M_cut <= 0)
-struct root<M_exp, M_cut>
-{
 	template <class S>
 	class subtype : public bond::compose_s<S>
 	{
@@ -68,134 +47,168 @@ struct root<M_exp, M_cut>
 	public:
 		using S_::S_;
 
-		template <int N_lim=0b11> requires un_q<M_exp, -3>
+		template <int N_lim=0b11>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto &&w)
+		XTAL_LET function(auto &&z)
 		noexcept -> auto
 		{
-			using W_op = bond::operate<XTAL_ALL_(w)>;
+			using _op = bond::operate<decltype(z)>;
+			XTAL_LET I_lim = below_m<(1<<4), (unsigned) N_lim>;
 			XTAL_IF0
-			XTAL_0IF (integral_q<decltype(w)>) {
-				return function<N_lim>(W_op::alpha_f(w));
+			XTAL_0IF (integral_number_q<decltype(z)>) {
+				return function<I_lim>(_op::alpha_f(XTAL_REF_(z)));
 			}
-			XTAL_0IF (M_exp ==  1) {return               XTAL_REF_(w)  ;}
-			XTAL_0IF (M_exp ==  2) {return          sqrt(XTAL_REF_(w)) ;}
-			XTAL_0IF (M_exp ==  3) {return          cbrt(XTAL_REF_(w)) ;}
-			XTAL_0IF (M_exp ==  4) {return     sqrt(sqrt(XTAL_REF_(w)));}
-			XTAL_0IF (M_exp == -1) {return one/          XTAL_REF_(w)  ;}
-			XTAL_0IF (M_exp == -2) {return one/     sqrt(XTAL_REF_(w)) ;}
-			XTAL_0IF (M_exp == -3) {return one/     cbrt(XTAL_REF_(w)) ;}
-			/**/
-			XTAL_0IF (M_exp == -4) {return one/sqrt(sqrt(XTAL_REF_(w)));}
-			/*/
-			XTAL_0IF (M_exp == -4) {
-				auto constexpr c0 =   W_op::ratio_f( 5, 4);
-				auto const     c1 = w*W_op::ratio_f(-1, 4);
-				auto y = XTAL_REF_(w);
-				y *= W_op::template root_f<-2>(y);
-				y  = _op::template root_f<-2>(y);
-				y *= _xtd::accumulator(c0, c1, square_f(square_f(y)));
-				y *= _xtd::accumulator(c0, c1, square_f(square_f(y)));
-				return y;
-			}
-			/***/
-			XTAL_0IF (0 == M_exp%2) {
-				return root_f<M_exp/2>(root_f<2>(XTAL_REF_(w)));
-			}
-			XTAL_0IF (0 == M_exp%3) {
-				return root_f<M_exp/3>(root_f<3>(XTAL_REF_(w)));
-			}
+			XTAL_0IF XTAL_TRY_TO_(dysfunction<I_lim>(XTAL_REF_(z)))
+			XTAL_0IF XTAL_TRY_TO_(dysfunction<I_lim>(XTAL_REF_(z), constant_t<2>{}))
+			XTAL_0IF XTAL_TRY_TO_(dysfunction<I_lim>(XTAL_REF_(z), constant_t<3>{}))
+			XTAL_0IF XTAL_TRY_TO_(dysfunction<I_lim>(XTAL_REF_(z), constant_t<5>{}))
+			XTAL_0IF XTAL_TRY_TO_(dysfunction<I_lim>(XTAL_REF_(z), constant_t<7>{}))
 			XTAL_0IF_(else) {
-				return pow(XTAL_REF_(w), W_op::alpha_1/M_exp);
+				return pow(XTAL_REF_(z), _op::alpha_1/M_exp);
 			}
 		}
-		template <int N_lim=0b11> requires in_q<M_exp, -3>
+
+	protected:
+		template <int I_lim>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto &&w)
-		noexcept -> auto
+		XTAL_LET dysfunction(auto &&z, constant_q auto i_exp)
+		noexcept -> XTAL_ALL_(z)
+		requires (M_exp%i_exp == 0 and 1 != M_exp/i_exp)
 		{
-			using W    = XTAL_ALL_(w);
-			using W_op = bond::operate<W>;
-
-			XTAL_IF0
-			XTAL_0IF (integral_q<decltype(w)>) {
-				return function<N_lim>(W_op::alpha_f(w));
-			}
-			XTAL_0IF (N_lim < 0 or not real_number_q<decltype(w)>) {
-				return one/cbrt(XTAL_REF_(w));
-			}
-			XTAL_0IF_(else) {
-				using X_delta = typename W_op::delta_type;
-				using X_sigma = typename W_op::sigma_type;
-				using X_alpha = typename W_op::alpha_type;
-
-				X_sigma constexpr N     =   W_op::sign.mask >> 11;    // {64,32} -> {52,20}
-				X_sigma constexpr K_exp = 3*W_op::full.depth/4 - 1; // {64,32} -> {47,23}
-				X_sigma constexpr K_num = 37;
-				X_sigma constexpr K_nom = 30;
-				X_sigma constexpr K     = (K_num << K_exp)/K_nom;// 4/3 - 1/10 // Together
-			//	X_sigma constexpr K     = 0x9DDDDD;// 32-bit
-			//	X_sigma constexpr K     = 0x9DDDDDDDDDDD;// 64-bit
-
-			//	X_sigma constexpr magic = 0x3FF*(1/3)*(3 - 1)*(5 - 3)*N - K;
-				X_sigma constexpr magic = 0x554*N - K;
-
-				auto m = _xtd::bit_cast<X_sigma>(w);
-				auto v = W_op::sign.mask&m;
-				m ^= v;
-				m /= 3;
-				m  = magic - m;
-				m ^= v;
-				auto y = _xtd::bit_cast<X_alpha>(m);
-				
-				auto constexpr a = W_op::ratio_f( 4, 3);
-				auto const     x = W_op::ratio_f(-1, 3)*XTAL_REF_(w);
-				auto constexpr I = below_m<(1<<2), (unsigned) N_lim>;
-				#pragma unroll
-				for (unsigned i{}; i < I; ++i) {
-					y *= _xtd::accumulator(a, x, y*y*y);
-				}
-				return y;
-			}
+			return root_t<M_exp/-i_exp>::template function<I_lim>(root_t<-i_exp>::template function<I_lim>(XTAL_REF_(z)));
 		}
-		/*/
-		template <auto ...Ns>
+		template <int I_lim> requires in_n<M_exp_mag, 1>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(complex_number_q auto &&w)
-		noexcept -> auto
+		XTAL_LET dysfunction(auto &&z)
+		noexcept -> XTAL_ALL_(z)
 		{
-			using _op = bond::operate<XTAL_ALL_(w)>;
-			auto constexpr N_sqrt_half = (typename _op::alpha_type) 0.7071067811865475244008443621048490393L;
+			using _op = bond::operate<decltype(z)>;
 
 			XTAL_IF0
 			XTAL_0IF (M_exp ==  1) {
-				return XTAL_REF_(w);
+				return XTAL_REF_(z);
 			}
-			XTAL_0IF (M_exp ==  2) {
-				auto const x   = w.real();
-				auto const y   = w.imag();
-				auto const n   = function<Ns...>(x*x + y*y);
-				auto const lhs = function<Ns...>(n + x);
-				auto const rhs = function<Ns...>(n - x);
-				return N_sqrt_half*complexion_f(lhs, rhs*_op::assigned_f(y));
+			XTAL_0IF (M_cut <= 0) {
+				return one/(XTAL_REF_(z));
 			}
-			XTAL_0IF (M_exp == -1) {
-				return one/XTAL_REF_(w);
-			}
-			XTAL_0IF (M_exp == -2) {
-				using dis = root_t<2>;
-				auto       x   =  w.real();
-				auto       y   =  w.imag();
-				auto const a    =  x*x + y*y;
-				auto const u_dn =  function<Ns...>(a);
-				auto const u_up =  u_dn*a;
-				auto const v_re =  u_dn*dis::template function<Ns...>(u_up + x);
-				auto const v_im = -u_dn*dis::template function<Ns...>(u_up - x);
-
-				return N_sqrt_half*complexion_f(v_re, v_im*_op::assigned_f(y));
+			XTAL_0IF (0 <  M_cut) {
+				return one/(XTAL_REF_(z) + _op::minilon_f(M_cut));
 			}
 		}
-		/***/
+		template <int I_lim> requires in_n<M_exp_mag, 2>
+		XTAL_DEF_(short,static)
+		XTAL_LET dysfunction(complex_number_q auto z)
+		noexcept -> XTAL_ALL_(z)
+		{
+			using _op = bond::operate<decltype(z)>;
+
+			XTAL_IF0
+			XTAL_0IF_(consteval) {
+				z *= _op::haplo_f(M_exp >> 1);
+				auto const x_re = z.real();
+				auto const x_im = z.imag();
+				auto const x_a2 = _xtd::accumulator(x_re*x_re, x_im, x_im);
+				auto const x_a1 = root_t<2>::template function<I_lim>(x_a2);
+
+				auto y_re = x_a1 + x_re, v_re = y_re;
+				auto y_im = x_a1 - x_re, v_im = y_im;
+				if constexpr (M_exp < 0) {
+					v_re *= x_a2;
+					v_im *= x_a2;
+				}
+				y_re *= root_t<-M_exp_mag, 1>::template function<I_lim>(v_re);
+				y_im *= root_t<-M_exp_mag, 1>::template function<I_lim>(v_im);
+
+				auto const y_im_sgn = M_exp_sgn*_op::assigned_f(x_im);
+				return {y_re, y_im*y_im_sgn};
+			}
+			XTAL_0IF_(else) {
+				return root_f<M_exp_sgn, M_cut>(sqrt(z));
+			}
+		}
+		template <int I_lim> requires in_n<M_exp_mag, 2, 3, 5, 7, 9>
+		XTAL_DEF_(short,static)
+		XTAL_LET dysfunction(real_number_q auto z)
+		noexcept -> XTAL_ALL_(z)
+		{
+			auto constexpr z_one = XTAL_ALL_(z){1};
+			auto const     z_sig = _xtd::copysign(z_one, z); z *= z_sig;
+			XTAL_IF0
+			XTAL_0IF_(consteval) {
+				return z_sig*misfunction<I_lim>(z);
+			}
+			XTAL_0IF (M_exp_mag != 2) {
+				return z_sig*misfunction<I_lim>(z);
+			}
+			XTAL_0IF (M_exp_mag == 2) {
+				return z_sig*root_f<M_exp_sgn, M_cut>(sqrt(z));
+			}
+		}
+
+
+		template <int I_lim>
+		XTAL_DEF_(short,static)
+		XTAL_LET misfunction(real_number_q auto z)
+		noexcept -> XTAL_ALL_(z)
+		{
+			XTAL_IF0
+			XTAL_0IF (0 < M_exp) {return exfunction<I_lim>(z);}
+			XTAL_0IF (M_exp < 0) {return infunction<I_lim>(z);}
+		}
+		template <int I_lim>
+		XTAL_DEF_(short,static)
+		XTAL_LET exfunction(real_number_q auto z)
+		noexcept -> XTAL_ALL_(z)
+		{
+			return z*power_f<M_exp_mag - 1>(infunction<I_lim>(z));
+		}
+		template <int I_lim>
+		XTAL_DEF_(short,static)
+		XTAL_LET infunction(real_number_q auto z)
+		noexcept -> XTAL_ALL_(z)
+		{
+			using _op = bond::operate<decltype(z)>;
+			using Z_sigma = typename _op::sigma_type;
+			using Z_delta = typename _op::delta_type;
+			using Z_alpha = typename _op::alpha_type;
+
+			Z_alpha constexpr  m_1 = _op::dnsilon_f(_op::exponent.depth + M_exp_mag);// Experimental error term...
+			Z_delta constexpr  M_1 = _xtd::bit_cast<Z_delta>(m_1);
+
+			Z_delta constexpr  N = -M_exp_mag;
+			Z_alpha constexpr  n = -M_exp_mag;
+			Z_alpha constexpr _n =  one/n;
+			Z_delta constexpr _N =  M_1/N;
+
+			XTAL_IF0
+			XTAL_0IF_(consteval) {
+				z += M_exp_mag*_op::minilon_f(M_cut);
+			}
+			Z_delta constexpr  K_    = (N - one)*_N;
+			Z_alpha constexpr  k_    = (n - one)*_n;
+			Z_alpha const      z_    =         z*_n;
+			Z_alpha constexpr  h     =         half;
+
+			auto y = _xtd::bit_cast<Z_alpha>(K_ + _xtd::bit_cast<Z_delta>(z)/N);
+			
+			XTAL_IF0
+			XTAL_0IF_(consteval) {
+				auto v = z;
+				for (unsigned i{}; i < 0x10 and v != y; ++i) {
+					y *= _xtd::accumulator(k_, z_, power_f<M_exp_mag>(v = y));
+				}
+				{
+					y /= _xtd::accumulator(h, h, z*power_f<M_exp_mag>(v = y));
+				}
+			}
+			XTAL_0IF_(else) {
+				#pragma unroll
+				for (unsigned i{}; i < I_lim; ++i) {
+					y *= _xtd::accumulator(k_, z_, power_f<M_exp_mag>(y));
+				}
+			}
+			return y;
+		}
 
 	};
 };

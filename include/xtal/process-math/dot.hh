@@ -11,13 +11,13 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_exp=1, int M_cut=0> requires in_q<M_exp, 1, 2,-1,-2>
+template <int M_exp=1, int M_cut=0> requires in_n<M_exp, 1, 2,-1,-2>
 struct   dot;
 
-template <int M_exp=1, int M_cut=0> requires in_q<M_exp, 1, 2,-1,-2>
+template <int M_exp=1, int M_cut=0> requires in_n<M_exp, 1, 2,-1,-2>
 using    dot_t = process::confined_t<dot<M_exp, M_cut>>;
 
-template <int M_exp=1, int M_cut=0> requires in_q<M_exp, 1, 2,-1,-2>
+template <int M_exp=1, int M_cut=0> requires in_n<M_exp, 1, 2,-1,-2>
 XTAL_DEF_(short)
 XTAL_LET dot_f(auto &&o)
 noexcept -> decltype(auto)
@@ -29,7 +29,7 @@ noexcept -> decltype(auto)
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_exp, int M_cut> requires in_q<M_exp, 1, 2,-1,-2>
+template <int M_exp, int M_cut> requires in_n<M_exp, 1, 2,-1,-2>
 struct dot//<M_exp, M_cut>
 {
 	template <class S>

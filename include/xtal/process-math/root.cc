@@ -24,8 +24,38 @@ TAG_("root")
 	auto mt19937_f = typename _op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
 
+	XTAL_LET M_1i_root2 = root_f< 2>(T_aphex{1, 1});
+	XTAL_LET M_i1_root2 = root_f<-2>(T_aphex{1, 1});
+
+	XTAL_LET N_zero_root2 = root_f< 2>(_op::alpha_0);
+	XTAL_LET N_half_root2 = root_f<-2>(_op::diplo_1);
+	XTAL_LET N_half_root3 = root_f<-3>(_op::diplo_1);
+	XTAL_LET N_half_root4 = root_f<-4>(_op::diplo_1);
+	XTAL_LET N_half_root5 = root_f<-5>(_op::diplo_1);
+
 	TRY_("evaluation")
 	{
+		TRUE_(check_f<-1>(root_f<-2>(T_aphex{1, 1}), one/root_f< 2>(T_aphex{1, 1})));
+
+		TRUE_(check_f<-1>(N_half_root2, 0.7071067811865475244008443621048490L));
+		TRUE_(check_f<-1>(N_half_root3, 0.7937005259840997373758528196361541L));
+		TRUE_(check_f<-1>(N_half_root4, 0.8408964152537145430311254762332149L));
+		TRUE_(check_f<-1>(N_half_root5, 0.8705505632961241391362700174797461L));
+	//	echo(check_f(pow(0.5, _op::ratio_f(1,  3)), root_t< 3>::template function<2>(0.5)));
+	//	echo(check_f(pow(0.5, _op::ratio_f(1, -3)), root_t<-3>::template function<2>(0.5)));
+
+	//	echo(check_f(pow(0.5, _op::ratio_f(1,  3)), root_t< 3>::template function<3>(0.5)));
+	//	echo(check_f(pow(0.5, _op::ratio_f(1, -3)), root_t<-3>::template function<3>(0.5)));
+
+		TRUE_(check_f<-27>(pow(0.5, _op::ratio_f(1,  3)), root_f< 3>(0.5)));
+		TRUE_(check_f<-28>(pow(0.5, _op::ratio_f(1, -3)), root_f<-3>(0.5)));
+
+		TRUE_(check_f<-30>(pow(0.5, _op::ratio_f(1,  5)), root_f< 5>(0.5)));
+		TRUE_(check_f<-27>(pow(0.5, _op::ratio_f(1, -5)), root_f<-5>(0.5)));
+
+		TRUE_(check_f<-30>(pow(0.5, _op::ratio_f(1,  7)), root_f< 7>(0.5)));
+		TRUE_(check_f<-28>(pow(0.5, _op::ratio_f(1, -7)), root_f<-7>(0.5)));
+
 		TRUE_(check_f<-35>(1.0, cbrt(-0.500)*root_f<-3>(-0.500)));
 		TRUE_(check_f<-34>(1.0, cbrt(-0.250)*root_f<-3>(-0.250)));
 		TRUE_(check_f<-33>(1.0, cbrt(-0.125)*root_f<-3>(-0.125)));
@@ -58,8 +88,7 @@ TAG_("root")
 	{
 		double w{1};
 		for (int i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) + 1.0;
-			w *= _std::cbrt(x);
+			w *= one/_std::cbrt(_op::mantissa_f(mt19937_f) + one);
 		}
 		return w;
 	};
@@ -67,8 +96,7 @@ TAG_("root")
 	{
 		double w{1};
 		for (int i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) + 1.0;
-			w *= root_t<-3>::template function<1>(x);
+			w *= root_t<-3>::template function<1>(_op::mantissa_f(mt19937_f) + one);
 		}
 		return w;
 	};
@@ -76,8 +104,7 @@ TAG_("root")
 	{
 		double w{1};
 		for (int i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) + 1.0;
-			w *= root_t<-3>::template function<2>(x);
+			w *= root_t<-3>::template function<2>(_op::mantissa_f(mt19937_f) + one);
 		}
 		return w;
 	};
@@ -85,11 +112,11 @@ TAG_("root")
 	{
 		double w{1};
 		for (int i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) + 1.0;
-			w *= root_t<-3>::template function<3>(x);
+			w *= root_t<-3>::template function<3>(_op::mantissa_f(mt19937_f) + one);
 		}
 		return w;
 	};
+
 }
 /***/
 

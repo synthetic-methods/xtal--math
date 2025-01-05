@@ -4,7 +4,7 @@
 #include "./nearing.hh"
 #include "./magnum.hh"
 #include "./signum.hh"
-
+#include "./dots.hh"
 
 XTAL_ENV_(push)
 namespace xtal::process::math
@@ -21,10 +21,10 @@ XTAL_LET flank_n = (int) signum_f(signum_f(N())*nearing_f(magnum_f(N())));
 
 }///////////////////////////////////////////////////////////////////////////////
 
-template <auto M_stop_, int M_side=_detail::flank_n<M_stop_>> requires in_q<M_side, 1, -1>
+template <auto M_stop_, int M_side=_detail::flank_n<M_stop_>> requires in_n<M_side, 1, -1>
 struct   cut;
 
-template <auto M_stop_, int M_side=_detail::flank_n<M_stop_>> requires in_q<M_side, 1, -1>
+template <auto M_stop_, int M_side=_detail::flank_n<M_stop_>> requires in_n<M_side, 1, -1>
 using    cut_t = process::confined_t<cut<M_stop_, M_side>>;
 
 template <auto M_stop_, int M_side=_detail::flank_n<M_stop_>, auto ...Ns>
@@ -39,7 +39,7 @@ noexcept -> decltype(auto)
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-template <auto M_stop_, int M_side> requires in_q<M_side, 1, -1>
+template <auto M_stop_, int M_side> requires in_n<M_side, 1, -1>
 struct cut
 {
 	XTAL_SET M_stop = M_stop_();
@@ -110,8 +110,7 @@ struct cut
 			using _op = bond::operate<decltype(o)>;
 
 			auto &[x, y] = destruct_f(o);
-		//	auto  [w, m] = dots_f<2>(o);
-			auto  [w, m] = _op::template unsquare_dot_f<0>(o);
+			auto  [w, m] = dots_f<2>(o);
 			auto r = edit<Ns...>(w);
 			w *= m;
 			x *= w;

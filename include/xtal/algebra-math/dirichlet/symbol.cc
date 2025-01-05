@@ -2,7 +2,7 @@
 #include "./any.cc"
 #include "./symbol.hh"// testing...
 
-
+#include "../../process-math/all.hh"
 
 
 
@@ -54,7 +54,7 @@ TAG_("symbol")
 
 		using W = symbol_t<T_aphex[N]>;
 		W w; w.characterize();
-		W m {_op::explo_f(w, K)};
+		W m {process::math::nomial_f<K>(w)};
 		_detail::apply_to<[] (auto &&z) XTAL_0FN_(_std::arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
 
 		_detail::apply_to<bond::computrim_f<16>>(m);
@@ -97,7 +97,7 @@ TAG_("symbol")
 
 		using W = symbol_t<T_aphex[N]>;
 		W w; w.characterize();
-		W m {_op::explo_f(w, K)};
+		W m {process::math::nomial_f<K>(w)};
 		_detail::apply_to<[] (auto &&z) XTAL_0FN_(_std::arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
 
 		_detail::apply_to<bond::computrim_f<16>>(m);
@@ -115,7 +115,7 @@ TAG_("symbol")
 
 		using W = symbol_t<T_aphex[K]>;
 		W w; w.subcharacterize();
-		W m {_op::explo_f(w, K)};
+		W m {process::math::nomial_f<K>(w)};
 		_detail::apply_to<[] (auto &&z) XTAL_0FN_(_std::arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
 
 		_detail::apply_to<bond::computrim_f<16>>(m);
@@ -147,7 +147,7 @@ TAG_("symbol")
 
 		using W = symbol_t<T_aphex[N]>;
 		W w; w.characterize();
-		W m{_op::explo_f(w, K)};
+		W m{process::math::nomial_f<K>(w)};
 		_detail::apply_to<[] (auto &&z) XTAL_0FN_(_std::arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
 
 		_detail::apply_to<bond::computrim_f<16>>(m);

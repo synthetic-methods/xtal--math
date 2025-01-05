@@ -1,8 +1,8 @@
 #pragma once
 #include "./any.hh"
 
-
-
+#include "./dot.hh"
+#include "./dots.hh"
 
 
 
@@ -45,7 +45,7 @@ struct signum
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _op = bond::operate<decltype(o)>;
-			return o*_op::template unsquare_dot_f<-1>(o);
+			return o*dot_f<-2>(o);
 		}
 
 		template <auto ...Ns>
@@ -61,7 +61,7 @@ struct signum
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _op = bond::operate<decltype(o)>;
-			auto [u, v] = _op::template unsquare_dot_f<0>(o);
+			auto [u, v] = dots_f<2>(o);
 			auto const o_sgn = o*v;
 			auto const o_mgn = XTAL_ALL_(o){u};
 			o =    o_mgn;

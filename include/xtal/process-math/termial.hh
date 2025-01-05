@@ -50,7 +50,7 @@ noexcept -> auto
 template <int M_sgn, int M_pow>
 struct termial
 {
-//	static_assert(in_q<M_sgn, 1,-1>);
+//	static_assert(in_n<M_sgn, 1,-1>);
 
 	template <class S>
 	class subtype : public bond::compose_s<S>

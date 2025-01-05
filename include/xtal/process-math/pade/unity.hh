@@ -16,7 +16,7 @@ Defines `function` by `(-1)^(2 #) &`; spiritually equivalent to `1^# &`. \
 ///\param M_ism \f$\in {1, 2}\f$ specifies the underlying morphism, \
 generating either circular or hyperbolic `{cosine, sine}` pairs. \
 
-template <int M_ism=0, typename ...As> requires in_q<M_ism, 0, 1,-1, 2,-2>
+template <int M_ism=0, typename ...As> requires in_n<M_ism, 0, 1,-1, 2,-2>
 struct unity
 :	process::lift<unity<M_ism>, bond::compose<As...>>
 {
@@ -38,7 +38,7 @@ using    unity_t = process::confined_t<unity<M_ism, As...>, unity<>>;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism> requires in_q<M_ism, 0, 1, 2>
+template <int M_ism> requires in_n<M_ism, 0, 1, 2>
 struct unity<M_ism> : unity<>
 {
 	using superprocess = process::lift_t<squishy<M_ism>, _detail::subunity<M_ism,-0>>;
@@ -133,7 +133,7 @@ struct unity<M_ism> : unity<>
 
 	};
 };
-template <int M_ism> requires in_q<M_ism,-1,-2>
+template <int M_ism> requires in_n<M_ism,-1,-2>
 struct unity<M_ism> : unity<>
 {
 	template <class S>
