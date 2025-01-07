@@ -16,29 +16,35 @@ Evaluates `Total[{x, xs}^2]` (using fused multiply-add, if supported by the comp
 template <auto ...Ms> struct   square;
 template <auto ...Ms> using    square_t = process::confined_t<square<Ms...>>;
 
-template <int N_alt=1, int N_sgn=1>
+template <int N_sqr=1, int N_alt=1, int N_sgn=1>
 XTAL_DEF_(short)
 XTAL_LET square_f(auto const &x, auto &&...xs)
 noexcept -> auto
 {
-	using X    = XTAL_ALL_(x);
-	using X_op = bond::operate<X>;
-	
-	auto constexpr K_sgn = N_alt*N_sgn;
-
 	XTAL_IF0
-	XTAL_0IF (1 <= sizeof...(xs)) {
-		return term_f(X_op::alpha_f(K_sgn)*square_f<N_alt, K_sgn>(XTAL_REF_(xs)...), x, x);
+	XTAL_0IF (2 <= N_sqr) {
+		return square_f<N_sqr - 1, N_alt, N_sgn>(square_f<1, N_alt, N_sgn>(x, XTAL_REF_(xs)...));
 	}
-	XTAL_0IF (complex_field_q<X>) {
-	//	auto const &[x_re, x_im] = destruct_f(x);
-		auto const x_re = x.real();
-		auto const x_im = x.imag();
-		return complexion_f(square_f<-N_alt>(x_re, x_im), X_op::diplo_1*x_re*x_im);
-	}
-//	XTAL_0IF (simplex_field_q<X>) {
-	XTAL_0IF_(else) {
-		return x*x;
+	XTAL_0IF (1 == N_sqr) {
+		using X    = XTAL_ALL_(x);
+		using X_op = bond::operate<X>;
+		
+		auto constexpr K_sgn = N_alt*N_sgn;
+
+		XTAL_IF0
+		XTAL_0IF (1 <= sizeof...(xs)) {
+			return term_f(X_op::alpha_f(K_sgn)*square_f<1, N_alt, K_sgn>(XTAL_REF_(xs)...), x, x);
+		}
+		XTAL_0IF (complex_field_q<X>) {
+		//	auto const &[x_re, x_im] = destruct_f(x);
+			auto const x_re = x.real();
+			auto const x_im = x.imag();
+			return complexion_f(square_f<1, -N_alt>(x_re, x_im), X_op::diplo_1*x_re*x_im);
+		}
+	//	XTAL_0IF (simplex_field_q<X>) {
+		XTAL_0IF_(else) {
+			return x*x;
+		}
 	}
 };
 

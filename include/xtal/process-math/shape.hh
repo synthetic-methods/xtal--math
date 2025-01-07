@@ -2,8 +2,10 @@
 #include "./any.hh"
 
 #include "./discard.hh"
-#include "./termial.hh"
+#include "./signum.hh"
+#include "./square.hh"
 #include "./nomial.hh"
+#include "./termial.hh"
 #include "./roots.hh"
 
 XTAL_ENV_(push)
@@ -52,24 +54,13 @@ Because the implementation for `M_ism=-3` has mixed-order, the corresponding inv
 and should only be used in suitable contexts (e.g. antisaturation). \
 
 
-template <auto  ...Ms>	struct   shape;
-template <auto  ...Ms>	using    shape_t = process::confined_t<shape<Ms...>>;
-
-////////////////////////////////////////////////////////////////////////////////
-
-template <auto  ...Ms>
-struct   shape
-{
-	template <class S>
-	using subtype = bond::compose_s<S>;
-
-};
-
+template <int M_ism=1, int M_car=0>	struct   shape;
+template <int M_ism=1, int M_car=0>	using    shape_t = process::confined_t<shape<M_ism, M_car>>;
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int M_ism, int M_car>
-struct shape<M_ism, M_car>
+struct shape
 {
 	XTAL_SET N_ism = magnum_n<M_ism>;
 
@@ -90,7 +81,7 @@ struct shape<M_ism, M_car>
 		{
 			using U = XTAL_ALL_(u);
 			using V = absolve_u<U>;
-			V constexpr I = 0.7071067811865475244008443621048490393L;
+			V constexpr I = root_f<-2>(2.L);
 			XTAL_IF0
 			XTAL_0IF (N_adj ==  0) {return function<N_lim>(u, _std::complex<V>{1,  0});}
 			XTAL_0IF (N_adj ==  1) {return function<N_lim>(u, _std::complex<V>{I,  I});}
@@ -209,8 +200,8 @@ struct shape<M_ism, M_car>
 				return w0*u_*term_f(term_f(one, w, w1), u, u1, z_co);
 			}
 			XTAL_0IF_(else) {
-				XTAL_LET N0 = nomial_f<N_lim + 0>(U3), T0 = U4/square_f<-1>(N0, U1);
-				XTAL_LET N1 = nomial_f<N_lim + 2>(U2), T1 = U1/square_f<-1>(N1, U2);
+				XTAL_LET N0 = nomial_f<N_lim + 0>(U3), T0 = U4/square_f<1, -1>(N0, U1);
+				XTAL_LET N1 = nomial_f<N_lim + 2>(U2), T1 = U1/square_f<1, -1>(N1, U2);
 
 				u *= signum_e(z_co);
 

@@ -55,7 +55,7 @@ TAG_("symbol")
 		using W = symbol_t<T_aphex[N]>;
 		W w; w.characterize();
 		W m {process::math::nomial_f<K>(w)};
-		_detail::apply_to<[] (auto &&z) XTAL_0FN_(_std::arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
+		_detail::apply_to<[] (auto &&z) XTAL_0FN_(arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
 
 		_detail::apply_to<bond::computrim_f<16>>(m);
 		_detail::apply_to<bond::computrim_f<16>>(w);
@@ -98,7 +98,7 @@ TAG_("symbol")
 		using W = symbol_t<T_aphex[N]>;
 		W w; w.characterize();
 		W m {process::math::nomial_f<K>(w)};
-		_detail::apply_to<[] (auto &&z) XTAL_0FN_(_std::arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
+		_detail::apply_to<[] (auto &&z) XTAL_0FN_(arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
 
 		_detail::apply_to<bond::computrim_f<16>>(m);
 		_detail::apply_to<bond::computrim_f<16>>(w);
@@ -116,7 +116,7 @@ TAG_("symbol")
 		using W = symbol_t<T_aphex[K]>;
 		W w; w.subcharacterize();
 		W m {process::math::nomial_f<K>(w)};
-		_detail::apply_to<[] (auto &&z) XTAL_0FN_(_std::arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
+		_detail::apply_to<[] (auto &&z) XTAL_0FN_(arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
 
 		_detail::apply_to<bond::computrim_f<16>>(m);
 		_detail::apply_to<bond::computrim_f<16>>(w);
@@ -148,7 +148,7 @@ TAG_("symbol")
 		using W = symbol_t<T_aphex[N]>;
 		W w; w.characterize();
 		W m{process::math::nomial_f<K>(w)};
-		_detail::apply_to<[] (auto &&z) XTAL_0FN_(_std::arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
+		_detail::apply_to<[] (auto &&z) XTAL_0FN_(arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
 
 		_detail::apply_to<bond::computrim_f<16>>(m);
 		_detail::apply_to<bond::computrim_f<16>>(w);

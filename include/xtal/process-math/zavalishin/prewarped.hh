@@ -35,9 +35,6 @@ struct prewarped
 		XTAL_LET method(auto &&u, real_number_q auto &&f, auto &&...oo)
 		noexcept -> decltype(auto)
 		{
-			using _op = bond::operate<decltype(u)>;
-			//\
-			auto const t = _std::tan(_op::patio_1*S_::sample().period()*XTAL_REF_(f));
 			auto const t = pade::tangy_t<1>::template function<2>(S_::sample().period()*XTAL_REF_(f));
 			return S_::template method<Ns...>(XTAL_REF_(u), t, XTAL_REF_(oo)...);
 		};

@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-
+#include "./root.hh"
 
 
 
@@ -49,8 +49,8 @@ struct near
 			using U_sigma = typename U_op::sigma_type;
 			using U_alpha = typename U_op::alpha_type;
 
-			XTAL_LET N_half = U_op::alpha_f(1.4142135623730950488016887242096980786L);// Sqrt[2]
-			XTAL_LET N_mask = U_op::sign.mask|U_op::exponent.mask;
+			U_alpha constexpr N_half = root_f<2>(2.L);
+			U_sigma constexpr N_mask = U_op::sign.mask|U_op::exponent.mask;
 			return _xtd::bit_cast<U_alpha>(_xtd::bit_cast<U_sigma>(u*N_half)&N_mask);
 		}
 		template <auto ...Ns>

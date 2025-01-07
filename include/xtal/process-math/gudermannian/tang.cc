@@ -47,7 +47,7 @@ TAG_("whatever")
 	{
 		T_alpha w{0};
 		for (T_sigma i = 0x10; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f);// x = _std::pow(two, x);
+			auto x = _op::mantissa_f(mt19937_f);
 			w += tang_t<-1>::template function<-1>(x);
 		}
 		return w;
@@ -56,7 +56,7 @@ TAG_("whatever")
 	{
 		T_alpha w{0};
 		for (T_sigma i = 0x10; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f);// x = _std::pow(two, x);
+			auto x = _op::mantissa_f(mt19937_f);
 			w += tang_t<-1>::template function< 0>(x);
 		}
 		return w;
@@ -65,7 +65,7 @@ TAG_("whatever")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x10; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f);// x = _std::pow(two, x);
+			auto x = _op::mantissa_f(mt19937_f);
 			w *= sinh(x);
 		}
 		return w;
@@ -74,7 +74,7 @@ TAG_("whatever")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x10; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f);// x = _std::pow(two, x);
+			auto x = _op::mantissa_f(mt19937_f);
 			w *= pade::tangy_t<1>::template function< 1>(tang_t<2>::template function< 0>(x));
 		}
 		return w;
@@ -83,7 +83,7 @@ TAG_("whatever")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x10; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f);// x = _std::pow(two, x);
+			auto x = _op::mantissa_f(mt19937_f);
 			w *= tang_t<1>::template function<~0>(tang_t<2>::template function< 0>(x))*_op::patio_1;
 		}
 		return w;

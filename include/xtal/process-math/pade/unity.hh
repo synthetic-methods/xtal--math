@@ -88,8 +88,6 @@ struct unity<M_ism> : unity<>
 			using U_alpha = typename U_op::alpha_type;
 
 			if constexpr (N_lim < 0) {
-				using namespace _std;
-
 				auto w = o*U_op::patio_2;
 				XTAL_IF0
 				XTAL_0IF (1 == M_ism) {return complexion_f(cos (w), sin (w));}
@@ -163,7 +161,7 @@ struct unity<M_ism> : unity<>
 			auto const   w_im = square_f(x_re, x_im);
 			//\
 			auto const   y_im = log(w_im);
-			auto const   y_im = taylor::logarithm_t< 1, 1, 1>::template function<N_lim_log>(w_im);
+			auto const   y_im = taylor::logarithm_t< 1, 1>::template function<N_lim_log>(w_im);
 			return complexion_f(y_re*_2, y_im*-_4pi);
 		}
 

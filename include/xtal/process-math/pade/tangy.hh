@@ -55,7 +55,6 @@ struct tangy<M_ism,-0>
 		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(o)>;
-			using namespace _std;
 			
 			XTAL_IF0
 			XTAL_0IF (N_lim <  0) {

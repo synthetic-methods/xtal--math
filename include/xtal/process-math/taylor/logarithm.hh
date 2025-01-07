@@ -3,7 +3,7 @@
 
 #include "./sine.hh"
 #include "./monologarithm.hh"
-#include "../gudermannian/tang.hh"
+#include "../pade/tangy.hh"
 
 
 XTAL_ENV_(push)
@@ -11,7 +11,7 @@ namespace xtal::process::math::taylor
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism=1, int M_car=0, int M_pow=1> requires in_n<M_ism, 1,-1> and in_n<M_car, 0, 1> and in_n<M_pow, 1,-1>
+template <int M_ism=1, int M_car=0> requires in_n<M_ism, 1,-1> and in_n<M_car, 0, 1>
 struct   logarithm;
 
 template <auto ...Ms>
@@ -27,58 +27,11 @@ noexcept -> decltype(auto)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/*/
-template <int M_ism, int M_car>
-struct logarithm<M_ism, M_car, -1>
-:	process::lift<root<-1>, logarithm<M_ism, M_car, 1>>
-{
-};
-/*/
-template <int M_car>
-struct logarithm< 1, M_car, -1>
-:	process::lift<root<-1>, logarithm< 1, M_car, 1>>
-{
-};
-template <int M_car>
-struct logarithm<-1, M_car, -1>
-{
-	using superprocess = logarithm_t<-1, M_car, 1>;
-
-	template <class S>
-	class subtype : public bond::compose_s<S>
-	{
-		using S_ = bond::compose_s<S>;
-
-	public:
-		using S_::S_;
-
-	//	TODO: Define `complex` variant!
-
-		template <int N_lim=0>
-		XTAL_DEF_(short,static)
-		XTAL_LET function(auto &&o)
-		noexcept -> decltype(auto)
-		{
-			XTAL_IF0
-			XTAL_0IF (N_lim <  0) {
-				return exp(-XTAL_REF_(o));
-			}
-			XTAL_0IF (0 <= N_lim) {
-				return root_f<-1>(superprocess::template function<N_lim>(XTAL_REF_(o)));
-			}
-
-		}
-
-	};
-};
-
-/***/
-////////////////////////////////////////////////////////////////////////////////
 ///\
 Defines `function` as the logarithm `Log[#]`, approximated by `(# - 1)/Sqrt[#]`. \
 
 template <>
-struct logarithm< 1, 0, 1>
+struct logarithm< 1, 0>
 {
 	using superprocess = process::confined_t<dilated<2>, taylor::sine<-2>>;
 	
@@ -90,27 +43,27 @@ struct logarithm< 1, 0, 1>
 	public:
 		using S_::S_;
 
-		template <int N_lim=0, int N_div=0>
+		template <int N_lim=0>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> decltype(auto)
 		{
-			using _op = bond::operate<decltype(o)>;
-
 			XTAL_IF0
-			XTAL_0IF (N_lim <  0) {
-				return log(XTAL_REF_(o));
-			}
-			XTAL_0IF (0 <= N_lim) {
-				auto u = XTAL_REF_(o);
-				#pragma unroll
-				for (int i{0}; i < N_div; ++i) {
-					u = root_f<2>(XTAL_MOV_(u));
-				}
-				return _op::diplo_f(N_div)*superprocess::template function<N_lim>(
-					roots_f<2>(XTAL_REF_(o)).template sum<-1>()
-				);
-			}
+			XTAL_0IF (0 <= N_lim)                 {return dysfunction<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)                  {return dysfunction<   ~0>(XTAL_REF_(o));}
+#if XTAL_SYS_(builtin)
+			XTAL_0IF (real_number_q<decltype(o)>) {return      __builtin_log(XTAL_REF_(o));}
+#endif
+			XTAL_0IF_(else)                       {return                log(XTAL_REF_(o));}
+		}
+
+	protected:
+		template <int N_lim=0>
+		XTAL_DEF_(short,static)
+		XTAL_LET dysfunction(auto o)
+		noexcept -> decltype(auto)
+		{
+			return superprocess::template function<N_lim>(roots_f<2>(XTAL_MOV_(o)).template sum<-1>());
 		}
 
 	};
@@ -120,7 +73,7 @@ Defines `function` as the antilogarithm `Exp[#]`, \
 approximated by `(Sqrt[(#/2)^2 + 1] + (#/2))*# + 1`. \
 
 template <>
-struct logarithm<-1, 0, 1>
+struct logarithm<-1, 0>
 {
 	using superprocess = process::confined_t<dilated<2>, taylor::sine<+2>>;
 	
@@ -132,33 +85,36 @@ struct logarithm<-1, 0, 1>
 	public:
 		using S_::S_;
 
-		template <int N_lim=0, int N_div=0>//TODO: Handle `N_div` with iterating `square_f`.
+		template <int N_lim=0>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&o)
 		noexcept -> decltype(auto)
 		{
+			XTAL_IF0
+			XTAL_0IF (0 <= N_lim)                 {return dysfunction<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)                  {return dysfunction<   ~0>(XTAL_REF_(o));}
+#if XTAL_SYS_(builtin)
+			XTAL_0IF (real_number_q<decltype(o)>) {return      __builtin_exp(XTAL_REF_(o));}
+#endif
+			XTAL_0IF_(else)                       {return                exp(XTAL_REF_(o));}
+		}
+
+	protected:
+		template <int N_lim=0>
+		XTAL_DEF_(short,static)
+		XTAL_LET dysfunction(auto &&o)
+		noexcept -> decltype(auto)
+		{
 			using _op = bond::operate<decltype(o)>;
 
-			XTAL_IF0
-#if XTAL_SYS_(builtin)
-			XTAL_0IF (N_lim <  0 and real_number_q<decltype(o)>) {
-				return __builtin_exp(XTAL_REF_(o));
-			}
-#endif
-			XTAL_0IF (N_lim <  0) {
-				return exp(XTAL_REF_(o));
-			}
-			XTAL_0IF (0 == N_lim) {
+			if constexpr (0 == N_lim) {
 				auto u = o*_op::haplo_1; u += root_f<2>(term_f(one, u, u));
-				return term_f(one, u, XTAL_REF_(o));
+				return term_f(one, XTAL_MOV_(u), XTAL_REF_(o));
 			}
-			XTAL_0IF (1 <= N_lim) {
+			else {
 				/**/
-				auto constexpr N = N_lim << 2;
-				auto w = function<0>(XTAL_REF_(o)*_op::haplo_f(N));
-				#pragma unroll
-				for (int i{}; i < N; ++i) {w *= w;}
-				return w;
+				auto constexpr N = below_m<0x10, (unsigned) N_lim> << 2;
+				return square_f<N>(function<0>(XTAL_REF_(o)*_op::haplo_f(N)));
 				/*/
 				return monologarithm_t<-1>::template function<N_lim>(XTAL_REF_(o)) + one;
 				/***/
@@ -174,7 +130,7 @@ struct logarithm<-1, 0, 1>
 Defines the argument-restricted approximation of the logarithm `Log[#]`. \
 
 template <>
-struct logarithm< 1, 1, 1>
+struct logarithm< 1, 1>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -184,61 +140,66 @@ struct logarithm< 1, 1, 1>
 	public:
 		using S_::S_;
 
-	//	TODO: Define `complex` variant!
-
 		template <int N_lim=0>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(complex_number_q auto u)
+		XTAL_LET function(auto &&o)
 		noexcept -> decltype(auto)
 		{
-			using _op = bond::operate<decltype(u)>;
-
-			auto constexpr up = one/_op::patio_1;
-			auto constexpr dn =     _op::patio_1;
-
-			auto const [u_re, u_im] = destruct_f(XTAL_REF_(u));
-			auto const w_re = square_f(u_re);
-			auto const w_im = square_f(u_im);
-
-			auto const y_re = _op::haplo_1*function<N_lim>(w_re + w_im);
-			auto const y_im = gudermannian::tang_t<-1>::template function<-!!N_lim>(up*u_im/u_re)*dn;
-			return complexion_f(y_re, y_im);
+			XTAL_IF0
+			XTAL_0IF (0 <= N_lim) {return dysfunction<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)  {return dysfunction<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF_(else)       {return                log(XTAL_REF_(o));}
 		}
+
+	protected:
 		template <int N_lim=0>
-		XTAL_DEF_(short,static)
-		XTAL_LET function(real_number_q auto o)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(long,static)
+		XTAL_LET dysfunction(real_number_q auto o)
+		noexcept -> XTAL_ALL_(o)
 		{
 			using _op = bond::operate<decltype(o)>;
 			using U_alpha = typename _op::alpha_type;
 			using U_sigma = typename _op::sigma_type;
 			using U_delta = typename _op::delta_type;
 
-			XTAL_IF0
-			XTAL_0IF (N_lim <  0) {
-				return log(o);
-			}
-			XTAL_0IF (0 <= N_lim) {
-			//	Log[m 2^x]
-			//	Log[m] + Log[2^x]
-			//	Log[m] + Log[2]*x
-			//	Log[m/2^(1/2)] + Log[2]*x + Log[2^(1/2)]
-			//	Log[m/2^(1/2)] + Log[2]*(x + 1/2)
-			//	Log[m/2^(1/2)] + Log[2]*(x*2 + 1)/2
+		//	Log[m 2^x]
+		//	Log[m] + Log[2^x]
+		//	Log[m] + Log[2]*x
+		//	Log[m/2^(1/2)] + Log[2]*x + Log[2^(1/2)]
+		//	Log[m/2^(1/2)] + (x + 1/2)*Log[2]
+		//	Log[m/2^(1/2)] + (x*2 + 1)*Log[2]/2
 
-				U_alpha constexpr N_sqrt_half = 0.7071067811865475244008443621048490393e+0L;
-				U_alpha constexpr N_half_log2 = 0.3465735902799726547086160607290882840e+0L;
+			U_sigma m = _xtd::bit_cast<U_sigma>(o);
+			U_delta n = m - _op::unit.mask;
+			m  &= _op::fraction.mask;
+			m  |= _op::unit.mask;
+			n >>= _op::unit.shift - one;
+			n  |= one;
 
-				U_sigma m = _xtd::bit_cast<U_sigma>(o);
-				U_delta n = (m << 1) - (_op::unit.mask << 1);
-				m     &= _op::fraction.mask;
-				m     |= _op::unit.mask;
-				n    >>= _op::unit.shift;
-				n     |= 1;
-				auto w = N_sqrt_half*_xtd::bit_cast<U_alpha>(m);
-				auto u = N_half_log2*   static_cast<U_alpha>(n);
-				return logarithm_t< 1>::template function<N_lim>(w) + u;
-			}
+			U_alpha constexpr w1 =                       root_f<-2>(2.L) ;
+			U_alpha constexpr u1 =           logarithm_f(root_f< 2>(2.L));
+			auto const w    = w1 *  _xtd::bit_cast<U_alpha>(XTAL_MOV_(m));
+			auto const u    = u1 *     static_cast<U_alpha>(XTAL_MOV_(n));
+
+			return logarithm_t<1>::template function<N_lim>(XTAL_MOV_(w)) + XTAL_MOV_(u);
+		}
+		template <int N_lim=0>
+		XTAL_DEF_(long,static)
+		XTAL_LET dysfunction(complex_number_q auto o)
+		noexcept -> XTAL_ALL_(o)
+		{
+			using _op = bond::operate<decltype(o)>;
+
+			auto constexpr up = one/_op::patio_1;
+			auto constexpr dn =     _op::patio_1;
+
+			auto const [u_re, u_im] = destruct_f(XTAL_REF_(o));
+			auto const w_re = square_f(u_re);
+			auto const w_im = square_f(u_im);
+
+			auto const y_re = _op::haplo_1*dysfunction<N_lim>(w_re + w_im);
+			auto const y_im = pade::tangy_t<-1, 1>::template function<N_lim>(u_im, u_re)*_op::patio_1;
+			return {y_re, y_im};
 		}
 
 	};
@@ -247,7 +208,7 @@ struct logarithm< 1, 1, 1>
 Defines argument-restricted approximation of the antilogarithm `Exp[#]`. \
 
 template <>
-struct logarithm<-1, 1, 1>
+struct logarithm<-1, 1>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -261,30 +222,36 @@ struct logarithm<-1, 1, 1>
 
 		template <int N_lim=0>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(real_number_q auto o)
+		XTAL_LET function(auto &&o)
+		noexcept -> decltype(auto)
+		{
+			XTAL_IF0
+			XTAL_0IF (0 <= N_lim) {return dysfunction<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)  {return dysfunction<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF_(else)       {return                exp(XTAL_REF_(o));}
+		}
+
+	protected:
+		template <int N_lim=0>
+		XTAL_DEF_(short,static)
+		XTAL_LET dysfunction(real_number_q auto o)
 		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;
 			using U_alpha = typename _op::alpha_type;
 
-			XTAL_IF0
-			XTAL_0IF (N_lim <  0) {
-				return exp(o);
-			}
-			XTAL_0IF (0 <= N_lim) {
-				U_alpha constexpr M_ln2 = 1.4426950408889634073599246810018921374e+0L;// 1/Log[2]
-				U_alpha constexpr N_ln2 = 0.6931471805599453094172321214581765681e+0L;// 1*Log[2]
-				o *= M_ln2;
-				auto const n = _std::round(o);
-				o -= n;
-				o *= N_ln2;
-				return _std::ldexp(logarithm_t<-1>::template function<N_lim>(o), n);
-			}
+			U_alpha constexpr _N_log2 = one/logarithm_f(2.L);
+			U_alpha constexpr  N_log2 =     logarithm_f(2.L);
+			o *= _N_log2; auto const n = round(o); o -= n;
+			o *=  N_log2;
+			return ldexp(logarithm_t<-1>::template function<N_lim>(XTAL_MOV_(o)), XTAL_MOV_(n));
 		}
 
 	};
 };
 
+
+////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////

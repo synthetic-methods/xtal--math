@@ -29,32 +29,32 @@ TAG_("shape")
 
 	TRY_("shape cardinal")
 	{
-		TRUE_(check_f<-32>(shape_t<-3, 1>::template function<~0>(0.5, 0.5), shape_t<-3, 1>::template function< 4>(0.5, 0.5)));
-		TRUE_(check_f<-35>(shape_t<-3, 1>::template function<~0>(0.5, 0.5), shape_t<-3, 1>::template function< 3>(0.5, 0.5)));
-		TRUE_(check_f<-39>(shape_t<-3, 1>::template function<~0>(0.5, 0.5), shape_t<-3, 1>::template function< 2>(0.5, 0.5)));
-		TRUE_(check_f<-44>(shape_t<-3, 1>::template function<~0>(0.5, 0.5), shape_t<-3, 1>::template function< 1>(0.5, 0.5)));
-		TRUE_(check_f<-41>(shape_t<-3, 1>::template function<~0>(0.5, 0.5), shape_t<-2, 1>::template function< 4>(0.5, 0.5)));
-		TRUE_(check_f<-41>(shape_t<-3, 1>::template function<~0>(0.5, 0.5), shape_t<-2, 1>::template function< 3>(0.5, 0.5)));
-		TRUE_(check_f<-45>(shape_t<-3, 1>::template function<~0>(0.5, 0.5), shape_t<-2, 1>::template function< 2>(0.5, 0.5)));
-		TRUE_(check_f<-45>(shape_t<-3, 1>::template function<~0>(0.5, 0.5), shape_t<-2, 1>::template function< 1>(0.5, 0.5)));
+		TRUE_(check_f<-32>(shape_t<-3,-1>::template function<~0>(0.5, 0.5), shape_t<-3,-1>::template function< 4>(0.5, 0.5)));
+		TRUE_(check_f<-35>(shape_t<-3,-1>::template function<~0>(0.5, 0.5), shape_t<-3,-1>::template function< 3>(0.5, 0.5)));
+		TRUE_(check_f<-39>(shape_t<-3,-1>::template function<~0>(0.5, 0.5), shape_t<-3,-1>::template function< 2>(0.5, 0.5)));
+		TRUE_(check_f<-44>(shape_t<-3,-1>::template function<~0>(0.5, 0.5), shape_t<-3,-1>::template function< 1>(0.5, 0.5)));
+		TRUE_(check_f<-41>(shape_t<-3,-1>::template function<~0>(0.5, 0.5), shape_t<-2,-1>::template function< 4>(0.5, 0.5)));
+		TRUE_(check_f<-41>(shape_t<-3,-1>::template function<~0>(0.5, 0.5), shape_t<-2,-1>::template function< 3>(0.5, 0.5)));
+		TRUE_(check_f<-45>(shape_t<-3,-1>::template function<~0>(0.5, 0.5), shape_t<-2,-1>::template function< 2>(0.5, 0.5)));
+		TRUE_(check_f<-45>(shape_t<-3,-1>::template function<~0>(0.5, 0.5), shape_t<-2,-1>::template function< 1>(0.5, 0.5)));
 
-		TRUE_(check_f<-36>(shape_t< 3, 1>::template function<~0>(0.5, 0.5), shape_t< 3, 1>::template function< 4>(0.5, 0.5)));
-		TRUE_(check_f<-38>(shape_t< 3, 1>::template function<~0>(0.5, 0.5), shape_t< 3, 1>::template function< 3>(0.5, 0.5)));
-		TRUE_(check_f<-41>(shape_t< 3, 1>::template function<~0>(0.5, 0.5), shape_t< 3, 1>::template function< 2>(0.5, 0.5)));
-		TRUE_(check_f<-44>(shape_t< 3, 1>::template function<~0>(0.5, 0.5), shape_t< 3, 1>::template function< 1>(0.5, 0.5)));
-		TRUE_(check_f<-38>(shape_t< 3, 1>::template function<~0>(0.5, 0.5), shape_t< 2, 1>::template function< 4>(0.5, 0.5)));
-		TRUE_(check_f<-41>(shape_t< 3, 1>::template function<~0>(0.5, 0.5), shape_t< 2, 1>::template function< 3>(0.5, 0.5)));
-		TRUE_(check_f<-44>(shape_t< 3, 1>::template function<~0>(0.5, 0.5), shape_t< 2, 1>::template function< 2>(0.5, 0.5)));
-		TRUE_(check_f<-45>(shape_t< 3, 1>::template function<~0>(0.5, 0.5), shape_t< 2, 1>::template function< 1>(0.5, 0.5)));
+		TRUE_(check_f<-36>(shape_t< 3,-1>::template function<~0>(0.5, 0.5), shape_t< 3,-1>::template function< 4>(0.5, 0.5)));
+		TRUE_(check_f<-38>(shape_t< 3,-1>::template function<~0>(0.5, 0.5), shape_t< 3,-1>::template function< 3>(0.5, 0.5)));
+		TRUE_(check_f<-41>(shape_t< 3,-1>::template function<~0>(0.5, 0.5), shape_t< 3,-1>::template function< 2>(0.5, 0.5)));
+		TRUE_(check_f<-44>(shape_t< 3,-1>::template function<~0>(0.5, 0.5), shape_t< 3,-1>::template function< 1>(0.5, 0.5)));
+		TRUE_(check_f<-38>(shape_t< 3,-1>::template function<~0>(0.5, 0.5), shape_t< 2,-1>::template function< 4>(0.5, 0.5)));
+		TRUE_(check_f<-41>(shape_t< 3,-1>::template function<~0>(0.5, 0.5), shape_t< 2,-1>::template function< 3>(0.5, 0.5)));
+		TRUE_(check_f<-44>(shape_t< 3,-1>::template function<~0>(0.5, 0.5), shape_t< 2,-1>::template function< 2>(0.5, 0.5)));
+		TRUE_(check_f<-45>(shape_t< 3,-1>::template function<~0>(0.5, 0.5), shape_t< 2,-1>::template function< 1>(0.5, 0.5)));
 
 	}
 	TRY_("shape isomorphism")
 	{
-		TRUE_(check_f<-40>(0.5, shape_t<-3, 0>::template function< 2>(shape_t< 3, 0>::template function< 2>(0.5, 0.5), 0.5)));
-		TRUE_(check_f<-40>(0.5, shape_t< 3, 0>::template function< 2>(shape_t<-3, 0>::template function< 2>(0.5, 0.5), 0.5)));
+		TRUE_(check_f<-40>(0.5, shape_t<-3>::template function< 2>(shape_t< 3>::template function< 2>(0.5, 0.5), 0.5)));
+		TRUE_(check_f<-40>(0.5, shape_t< 3>::template function< 2>(shape_t<-3>::template function< 2>(0.5, 0.5), 0.5)));
 
-		TRUE_(check_f<- 7>(0.5, shape_t<-2, 0>::template function< 4>(shape_t< 2, 0>::template function< 4>(0.5, 0.5), 0.5)));
-		TRUE_(check_f<- 7>(0.5, shape_t< 2, 0>::template function< 4>(shape_t<-2, 0>::template function< 4>(0.5, 0.5), 0.5)));
+		TRUE_(check_f<- 7>(0.5, shape_t<-2>::template function< 4>(shape_t< 2>::template function< 4>(0.5, 0.5), 0.5)));
+		TRUE_(check_f<- 7>(0.5, shape_t< 2>::template function< 4>(shape_t<-2>::template function< 4>(0.5, 0.5), 0.5)));
 
 	}
 	/**/
@@ -123,38 +123,38 @@ TAG_("shape")
 		TRUE_(check_f< 8>(0.57395971119318700, shape_t<-3,  0>::template function< 1>( 0.5,  0.5)));
 		TRUE_(check_f< 2>(0.57395971119318700, shape_t<-3,  0>::template function< 0>( 0.5,  0.5)));
 
-		TRUE_(check_f<15>(exp(0.5) - one, shape_t<-3,  0>::template function<9>(0.5, 1.0)));
-		TRUE_(check_f<15>(exp(0.5) - one, shape_t<-3,  0>::template function<8>(0.5, 1.0)));
-		TRUE_(check_f<15>(exp(0.5) - one, shape_t<-3,  0>::template function<7>(0.5, 1.0)));
-		TRUE_(check_f<15>(exp(0.5) - one, shape_t<-3,  0>::template function<6>(0.5, 1.0)));
-		TRUE_(check_f<15>(exp(0.5) - one, shape_t<-3,  0>::template function<5>(0.5, 1.0)));
-		TRUE_(check_f<15>(exp(0.5) - one, shape_t<-3,  0>::template function<4>(0.5, 1.0)));
-		TRUE_(check_f<13>(exp(0.5) - one, shape_t<-3,  0>::template function<3>(0.5, 1.0)));
-		TRUE_(check_f<11>(exp(0.5) - one, shape_t<-3,  0>::template function<2>(0.5, 1.0)));
-		TRUE_(check_f< 5>(exp(0.5) - one, shape_t<-3,  0>::template function<1>(0.5, 1.0)));
-		TRUE_(check_f< 1>(exp(0.5) - one, shape_t<-3,  0>::template function<0>(0.5, 1.0)));
+		TRUE_(check_f<15>(exp(0.5) - one, shape_t<-3>::template function<9>(0.5, 1.0)));
+		TRUE_(check_f<15>(exp(0.5) - one, shape_t<-3>::template function<8>(0.5, 1.0)));
+		TRUE_(check_f<15>(exp(0.5) - one, shape_t<-3>::template function<7>(0.5, 1.0)));
+		TRUE_(check_f<15>(exp(0.5) - one, shape_t<-3>::template function<6>(0.5, 1.0)));
+		TRUE_(check_f<15>(exp(0.5) - one, shape_t<-3>::template function<5>(0.5, 1.0)));
+		TRUE_(check_f<15>(exp(0.5) - one, shape_t<-3>::template function<4>(0.5, 1.0)));
+		TRUE_(check_f<13>(exp(0.5) - one, shape_t<-3>::template function<3>(0.5, 1.0)));
+		TRUE_(check_f<11>(exp(0.5) - one, shape_t<-3>::template function<2>(0.5, 1.0)));
+		TRUE_(check_f< 5>(exp(0.5) - one, shape_t<-3>::template function<1>(0.5, 1.0)));
+		TRUE_(check_f< 1>(exp(0.5) - one, shape_t<-3>::template function<0>(0.5, 1.0)));
 
-		TRUE_(check_f<36>(sinh(0.5), shape_t<-3,  0>::template function<9>(0.5, 0.0)));
-		TRUE_(check_f<33>(sinh(0.5), shape_t<-3,  0>::template function<8>(0.5, 0.0)));
-		TRUE_(check_f<27>(sinh(0.5), shape_t<-3,  0>::template function<7>(0.5, 0.0)));
-		TRUE_(check_f<24>(sinh(0.5), shape_t<-3,  0>::template function<6>(0.5, 0.0)));
-		TRUE_(check_f<22>(sinh(0.5), shape_t<-3,  0>::template function<5>(0.5, 0.0)));
-		TRUE_(check_f<18>(sinh(0.5), shape_t<-3,  0>::template function<4>(0.5, 0.0)));
-		TRUE_(check_f<15>(sinh(0.5), shape_t<-3,  0>::template function<3>(0.5, 0.0)));
-		TRUE_(check_f<11>(sinh(0.5), shape_t<-3,  0>::template function<2>(0.5, 0.0)));
-		TRUE_(check_f< 9>(sinh(0.5), shape_t<-3,  0>::template function<1>(0.5, 0.0)));
-		TRUE_(check_f< 2>(sinh(0.5), shape_t<-3,  0>::template function<0>(0.5, 0.0)));
+		TRUE_(check_f<36>(sinh(0.5), shape_t<-3>::template function<9>(0.5, 0.0)));
+		TRUE_(check_f<33>(sinh(0.5), shape_t<-3>::template function<8>(0.5, 0.0)));
+		TRUE_(check_f<27>(sinh(0.5), shape_t<-3>::template function<7>(0.5, 0.0)));
+		TRUE_(check_f<24>(sinh(0.5), shape_t<-3>::template function<6>(0.5, 0.0)));
+		TRUE_(check_f<22>(sinh(0.5), shape_t<-3>::template function<5>(0.5, 0.0)));
+		TRUE_(check_f<18>(sinh(0.5), shape_t<-3>::template function<4>(0.5, 0.0)));
+		TRUE_(check_f<15>(sinh(0.5), shape_t<-3>::template function<3>(0.5, 0.0)));
+		TRUE_(check_f<11>(sinh(0.5), shape_t<-3>::template function<2>(0.5, 0.0)));
+		TRUE_(check_f< 9>(sinh(0.5), shape_t<-3>::template function<1>(0.5, 0.0)));
+		TRUE_(check_f< 2>(sinh(0.5), shape_t<-3>::template function<0>(0.5, 0.0)));
 
-		TRUE_(check_f<31>(sinh(1.0), shape_t<-3,  0>::template function<9>(1.0, 0.0)));
-		TRUE_(check_f<28>(sinh(1.0), shape_t<-3,  0>::template function<8>(1.0, 0.0)));
-		TRUE_(check_f<22>(sinh(1.0), shape_t<-3,  0>::template function<7>(1.0, 0.0)));
-		TRUE_(check_f<18>(sinh(1.0), shape_t<-3,  0>::template function<6>(1.0, 0.0)));
-		TRUE_(check_f<16>(sinh(1.0), shape_t<-3,  0>::template function<5>(1.0, 0.0)));
-		TRUE_(check_f<13>(sinh(1.0), shape_t<-3,  0>::template function<4>(1.0, 0.0)));
-		TRUE_(check_f< 9>(sinh(1.0), shape_t<-3,  0>::template function<3>(1.0, 0.0)));
-		TRUE_(check_f< 6>(sinh(1.0), shape_t<-3,  0>::template function<2>(1.0, 0.0)));
-		TRUE_(check_f< 4>(sinh(1.0), shape_t<-3,  0>::template function<1>(1.0, 0.0)));
-		TRUE_(check_f< 1>(sinh(1.0), shape_t<-3,  0>::template function<0>(1.0, 0.0)));
+		TRUE_(check_f<31>(sinh(1.0), shape_t<-3>::template function<9>(1.0, 0.0)));
+		TRUE_(check_f<28>(sinh(1.0), shape_t<-3>::template function<8>(1.0, 0.0)));
+		TRUE_(check_f<22>(sinh(1.0), shape_t<-3>::template function<7>(1.0, 0.0)));
+		TRUE_(check_f<18>(sinh(1.0), shape_t<-3>::template function<6>(1.0, 0.0)));
+		TRUE_(check_f<16>(sinh(1.0), shape_t<-3>::template function<5>(1.0, 0.0)));
+		TRUE_(check_f<13>(sinh(1.0), shape_t<-3>::template function<4>(1.0, 0.0)));
+		TRUE_(check_f< 9>(sinh(1.0), shape_t<-3>::template function<3>(1.0, 0.0)));
+		TRUE_(check_f< 6>(sinh(1.0), shape_t<-3>::template function<2>(1.0, 0.0)));
+		TRUE_(check_f< 4>(sinh(1.0), shape_t<-3>::template function<1>(1.0, 0.0)));
+		TRUE_(check_f< 1>(sinh(1.0), shape_t<-3>::template function<0>(1.0, 0.0)));
 
 	};
 	/***/
@@ -165,7 +165,7 @@ TAG_("shape")
 		for (T_sigma i = 0x100; ~--i;) {
 			//\
 			o *= shape_t<-3, -0>::template function<~0, 0>(_op::mantissa_f(mt19937_f));
-			o *= _std::exp(_op::mantissa_f(mt19937_f)) - one;
+			o *= exp(_op::mantissa_f(mt19937_f)) - one;
 		}
 		return o;
 

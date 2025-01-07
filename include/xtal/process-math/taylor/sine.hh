@@ -34,20 +34,16 @@ struct sine<M_ism, -0>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto &&w)
+		XTAL_LET function(auto &&o)
 		noexcept -> decltype(auto)
 		{
-			if constexpr (N_lim < 0) {
-				using namespace _std;
-				XTAL_IF0
-				XTAL_0IF (M_ism ==  2) {return  sinh(XTAL_REF_(w));}
-				XTAL_0IF (M_ism ==  1) {return  sin (XTAL_REF_(w));}
-				XTAL_0IF (M_ism == -1) {return asin (XTAL_REF_(w));}
-				XTAL_0IF (M_ism == -2) {return asinh(XTAL_REF_(w));}
-			}
-			else {
-				return S_::template function<N_lim>(XTAL_REF_(w));
-			}
+			XTAL_IF0
+			XTAL_0IF_(consteval)   {return S_::template function<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim)  {return S_::template function<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF (M_ism ==  2) {return  sinh(XTAL_REF_(o));}
+			XTAL_0IF (M_ism ==  1) {return  sin (XTAL_REF_(o));}
+			XTAL_0IF (M_ism == -1) {return asin (XTAL_REF_(o));}
+			XTAL_0IF (M_ism == -2) {return asinh(XTAL_REF_(o));}
 		}
 
 	};
@@ -70,22 +66,13 @@ struct sine<M_ism, -1>
 		XTAL_LET function(auto &&o)
 		noexcept -> decltype(auto)
 		{
-			using _op = bond::operate<decltype(o)>;
-
-			auto const w = XTAL_REF_(o)*_op::haplo_f(N_lim);
-			auto const u = w*_op::haplo_1;
-
-			if constexpr (N_lim < 0) {
-				using namespace _std;
-				XTAL_IF0
-				XTAL_0IF (M_ism ==  2) {return  sinh(o)/XTAL_REF_(o);}
-				XTAL_0IF (M_ism ==  1) {return  sin (o)/XTAL_REF_(o);}
-				XTAL_0IF (M_ism == -1) {return asin (o)/XTAL_REF_(o);}
-				XTAL_0IF (M_ism == -2) {return asinh(o)/XTAL_REF_(o);}
-			}
-			else {
-				return S_::template function<N_lim>(XTAL_REF_(o));
-			}
+			XTAL_IF0
+			XTAL_0IF_(consteval)   {return S_::template function<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim)  {return S_::template function<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF (M_ism ==  2) {return  sinh(o)/o;}
+			XTAL_0IF (M_ism ==  1) {return  sin (o)/o;}
+			XTAL_0IF (M_ism == -1) {return asin (o)/o;}
+			XTAL_0IF (M_ism == -2) {return asinh(o)/o;}
 		}
 
 	};
@@ -94,7 +81,7 @@ struct sine<M_ism, -1>
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism> requires (0 < M_ism)
+template <int M_ism>
 struct sine<M_ism, -2>
 {
 	template <class S>
@@ -105,21 +92,37 @@ struct sine<M_ism, -2>
 	public:
 		using S_::S_;
 
+	public:
 		template <int N_lim=-1>
 		XTAL_DEF_(long,static)
 		XTAL_LET function(auto &&w)
+		noexcept -> XTAL_ALL_(w)
+		{
+			XTAL_IF0
+			XTAL_0IF (0 == N_lim)  {return one;}
+			XTAL_0IF (1 <= N_lim)  {return dysfunction<N_lim>(XTAL_REF_(w));}
+			XTAL_0IF_(consteval)   {return dysfunction<   ~0>(XTAL_REF_(w));}
+			XTAL_0IF_(else) {
+				auto const u = root_f<2>(w);
+				XTAL_IF0
+				XTAL_0IF (M_ism ==  2) {return sinh (u)/u;}
+				XTAL_0IF (M_ism ==  1) {return sin  (u)/u;}
+				XTAL_0IF (M_ism == -1) {return asin (u)/u;}
+				XTAL_0IF (M_ism == -2) {return asinh(u)/u;}
+			}
+		}
+
+	protected:
+		template <int N_lim>
+		XTAL_DEF_(long,static)
+		XTAL_LET dysfunction(auto &&w)
 		noexcept -> auto
 		{
-			if constexpr (N_lim < 0) {
-				using namespace _std;
-				XTAL_IF0
-				XTAL_0IF (M_ism ==  2) {return sinh(root_f<2>(w))/XTAL_REF_(w);}
-				XTAL_0IF (M_ism ==  1) {return sin (root_f<2>(w))/XTAL_REF_(w);}
-			}
-			else {
-				int constexpr N = (N_lim << 1) - (0 < N_lim);
+			XTAL_LET N = 1 + 2*below_m<0x10, (unsigned) N_lim>;
 
-				using W = XTAL_ALL_(w); using _op = bond::operate<W>;
+			using W = XTAL_ALL_(w); using _op = bond::operate<W>;
+			XTAL_IF0
+			XTAL_0IF (0 < M_ism) {
 				W x{one};
 
 				bond::seek_backward_f<N>([&] (auto i)
@@ -131,36 +134,7 @@ struct sine<M_ism, -2>
 				));
 				return x;
 			}
-		}
-
-	};
-};
-template <int M_ism> requires (M_ism < 0)
-struct sine<M_ism, -2>
-{
-	template <class S>
-	class subtype : public bond::compose_s<S>
-	{
-		using S_ = bond::compose_s<S>;
-
-	public:
-		using S_::S_;
-
-		template <int N_lim=-1>
-		XTAL_DEF_(long,static)
-		XTAL_LET function(auto &&w)
-		noexcept -> auto
-		{
-			if constexpr (N_lim < 0) {
-				using namespace _std;
-				XTAL_IF0
-				XTAL_0IF (M_ism == 1) {return asin (root_f<2>(XTAL_REF_(w)));}
-				XTAL_0IF (M_ism == 2) {return asinh(root_f<2>(XTAL_REF_(w)));}
-			}
-			else {
-				int constexpr N = (N_lim << 1) - (0 < N_lim);
-
-				using W = XTAL_ALL_(w); using _op = bond::operate<W>;
+			XTAL_0IF (M_ism < 0) {
 				W x = _op::ratio_f(1, 1 + 2*N);
 
 				bond::seek_backward_f<N>([&] (auto i)

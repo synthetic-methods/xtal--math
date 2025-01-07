@@ -88,15 +88,15 @@ TAG_("root")
 	{
 		double w{1};
 		for (int i = 0x100; ~--i;) {
-			w *= one/_std::cbrt(_op::mantissa_f(mt19937_f) + one);
+			w *= one/cbrt(_op::mantissa_f(mt19937_f) + one);
 		}
 		return w;
 	};
-	EST_("real root_t<-3>::<1>")
+	EST_("real root_t<-3>::<3>")
 	{
 		double w{1};
 		for (int i = 0x100; ~--i;) {
-			w *= root_t<-3>::template function<1>(_op::mantissa_f(mt19937_f) + one);
+			w *= root_t<-3>::template function<3>(_op::mantissa_f(mt19937_f) + one);
 		}
 		return w;
 	};
@@ -108,11 +108,11 @@ TAG_("root")
 		}
 		return w;
 	};
-	EST_("real root_t<-3>::<3>")
+	EST_("real root_t<-3>::<1>")
 	{
 		double w{1};
 		for (int i = 0x100; ~--i;) {
-			w *= root_t<-3>::template function<3>(_op::mantissa_f(mt19937_f) + one);
+			w *= root_t<-3>::template function<1>(_op::mantissa_f(mt19937_f) + one);
 		}
 		return w;
 	};

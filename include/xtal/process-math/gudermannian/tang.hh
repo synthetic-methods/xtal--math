@@ -72,7 +72,6 @@ struct tang<M_ism, -0>
 				using _op = bond::operate<decltype(u)>;
 				auto constexpr up =     _op::patio_1;
 				auto constexpr dn = one/_op::patio_1;
-				using namespace _std;
 				XTAL_IF0
 				XTAL_0IF (M_ism ==  2) {return atan(sinh(XTAL_REF_(u)*up))*dn;}// `Gudermannian`
 				XTAL_0IF (M_ism ==  1) {return       tan(XTAL_REF_(u)*up) *dn;}

@@ -29,22 +29,13 @@ TAG_("logarithm")
 	auto mt19937_f = typename _op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
 
-	TRY_("inversion")
-	{
-		TRUE_(check_f<-1>(1.0, logarithm_t< 1, 0, 1>::template function<0>(egg)*logarithm_t< 1, 0, -1>::template function<0>(egg)));
-		TRUE_(check_f<-1>(1.0, logarithm_t<-1, 0, 1>::template function<0>(egg)*logarithm_t<-1, 0, -1>::template function<0>(egg)));
-
-		TRUE_(check_f<19>(egg, logarithm_t< 1, 0, 1>::template function<0>(logarithm_t<-1, 0, 1>::template function<0>(egg))));
-		TRUE_(check_f<19>(egg, logarithm_t<-1, 0, 1>::template function<0>(logarithm_t< 1, 0, 1>::template function<0>(egg))));
-
-	}
 	TRY_("evaluation")
 	{
-		TRUE_(check_f<- 1>(logarithm_t< 1, 1, 1>::template function<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1, 1>::template function< 2>(T_aphex{0.3, 0.8})));
-		TRUE_(check_f<-46>(logarithm_t< 1, 1, 1>::template function<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1, 1>::template function< 0>(T_aphex{0.3, 0.8})));
+		TRUE_(check_f<-31>(logarithm_t< 1, 1>::template function<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1>::template function< 2>(T_aphex{0.3, 0.8})));
+		TRUE_(check_f<-46>(logarithm_t< 1, 1>::template function<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1>::template function< 0>(T_aphex{0.3, 0.8})));
 
-		TRUE_(check_f<-13>(logarithm_t< 1, 1, 1>::template function<2>(egg), log(egg)));
-		TRUE_(check_f<-25>(logarithm_t<-1, 1, 1>::template function<2>(egg), exp(egg)));
+		TRUE_(check_f<-13>(logarithm_t< 1, 1>::template function<2>(egg), log(egg)));
+		TRUE_(check_f<-25>(logarithm_t<-1, 1>::template function<2>(egg), exp(egg)));
 
 		TRUE_(check_f<- 1>(logarithm_t< 1>::template function<-1>(egg), log(egg)));
 		TRUE_(check_f<- 5>(logarithm_t< 1>::template function< 3>(egg), log(egg)));
@@ -60,12 +51,33 @@ TAG_("logarithm")
 
 	}
 	/**/
+	EST_("complex std::log")
+	{
+		T_aphex w{};
+		for (T_sigma i = 0x100; ~--i;) {
+			auto x = _op::mantissa_f(mt19937_f) + 1.0;
+			auto y = _op::mantissa_f(mt19937_f) + 1.0;
+			w += log(T_aphex{x, y});
+		}
+		return w;
+	};
+	EST_("complex logarithm... <N_lim=2, M_car=1>")
+	{
+		T_aphex w{};
+		for (T_sigma i = 0x100; ~--i;) {
+			auto x = _op::mantissa_f(mt19937_f) + 1.0;
+			auto y = _op::mantissa_f(mt19937_f) + 1.0;
+			w += logarithm_t< 1, 1>::template function<2>(T_aphex{x, y});
+		}
+		return w;
+	};
+
 	EST_("real std::log")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
 			auto x = _op::mantissa_f(mt19937_f) + 1.0;
-			w += _std::log(x);
+			w += log(x);
 		}
 		return w;
 	};
@@ -74,7 +86,7 @@ TAG_("logarithm")
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
 			auto x = _op::mantissa_f(mt19937_f) + 1.0;
-			w += logarithm_t< 1, 1, 1>::template function<2>(x);
+			w += logarithm_t< 1, 1>::template function<2>(x);
 		}
 		return w;
 	};
@@ -110,7 +122,7 @@ TAG_("logarithm")
 	{
 		T_alpha o{1};
 		for (T_sigma i = 0x100; ~--i;) {
-			o *= _std::exp(_op::mantissa_f(mt19937_f));
+			o *= exp(_op::mantissa_f(mt19937_f));
 		}
 		return o;
 	
@@ -130,7 +142,7 @@ TAG_("logarithm")
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
 			auto x = _op::mantissa_f(mt19937_f) - 1.0;
-			w *= logarithm_t<-1, 1, 1>::template function<2>(x);
+			w *= logarithm_t<-1, 1>::template function<2>(x);
 		}
 		return w;
 	
