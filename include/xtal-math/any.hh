@@ -13,7 +13,7 @@ namespace xtal::math
 
 //\
 template <class U>	using    duple_t = bond::couple_t<U, U>;
-template <class U>	using    duple_t = algebra::lateral_t<U[2]>;
+template <class U>	using    duple_t = atom::couple_t<U[2]>;
 template <class T>	concept  duple_q = bond::pack_q<T> and bond::pack_size_n<T> == 2;
 
 
@@ -29,7 +29,7 @@ noexcept -> decltype(auto)
 	/*/
 	//\
 	return bond::couple_f(XTAL_REF_(xs)...);
-	return algebra::lateral_f(XTAL_REF_(xs)...);
+	return atom::couple_f(XTAL_REF_(xs)...);
 	/***/
 }
 template <int N_arity=-1> requires (N_arity ==  0)

@@ -48,7 +48,7 @@ struct wrap<As...>
 		}
 		template <auto ...>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(algebra::phason_q auto &&t_)
+		XTAL_LET function(atom::phason_q auto &&t_)
 		noexcept -> decltype(auto)
 		{
 			return XTAL_REF_(t_);

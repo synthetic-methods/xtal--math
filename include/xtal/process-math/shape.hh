@@ -8,6 +8,7 @@
 #include "./termial.hh"
 #include "./roots.hh"
 
+
 XTAL_ENV_(push)
 namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
@@ -81,7 +82,7 @@ struct shape
 		{
 			using U = XTAL_ALL_(u);
 			using V = absolve_u<U>;
-			V constexpr I = root_f<-2>(2.L);
+			V constexpr I = root_f<-2>(2.);
 			XTAL_IF0
 			XTAL_0IF (N_adj ==  0) {return function<N_lim>(u, _std::complex<V>{1,  0});}
 			XTAL_0IF (N_adj ==  1) {return function<N_lim>(u, _std::complex<V>{I,  I});}

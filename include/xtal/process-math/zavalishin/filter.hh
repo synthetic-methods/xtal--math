@@ -22,7 +22,7 @@ template <typename ...As> using    filter_t = process::confined_t<filter<As...>>
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <class U_pole, size_type N_pole>
+template <class U_pole, int N_pole>
 struct filter<U_pole[N_pole]>
 {
 	using     zoom_type = occur::inferred_t<struct     ZOOM, typename bond::operating::alpha_type>;
@@ -93,8 +93,8 @@ struct filter<U_pole[N_pole]>
 				using U_input  = XTAL_ALL_(x_input);
 				using U_exput  = XTAL_ALL_(x_input);
 				using U_coeff  = typename _op::alpha_type;
-				using U_exputs = algebra::lateral_t<U_input[N_ord + 1]>;
-				using U_coeffs = algebra::lateral_t<U_coeff[N_ord + 1]>;
+				using U_exputs = atom::couple_t<U_input[N_ord + 1]>;
+				using U_coeffs = atom::couple_t<U_coeff[N_ord + 1]>;
 				
 				union {U_exputs exputs; U_coeffs coeffs;} io{[=] ()
 				XTAL_0FN -> U_coeffs {
@@ -136,9 +136,9 @@ struct filter<U_pole[N_pole]>
 			using U_input   = XTAL_ALL_(x_input);
 			using U_exput   = XTAL_ALL_(x_input);
 			using U_coeff   = typename _op::alpha_type;
-			using U_inputs_ = algebra::lateral_t<U_input[N_]>;
-			using U_exputs_ = algebra::lateral_t<U_exput[N_]>;
-			using U_coeffs_ = algebra::lateral_t<U_coeff[N_]>;
+			using U_inputs_ = atom::couple_t<U_input[N_]>;
+			using U_exputs_ = atom::couple_t<U_exput[N_]>;
+			using U_coeffs_ = atom::couple_t<U_coeff[N_]>;
 
 			auto    cachet  = S_::template cache<U_inputs_, U_inputs_>();
 			auto    coeffs  = io.coeffs; auto &coeffs_ = reinterpret_cast<U_coeffs_ &>(coeffs);
@@ -161,7 +161,7 @@ struct filter<U_pole[N_pole]>
 			});
 			ex_N = root_f<-1, (4)>(term_f(sl_N, get<M_>(exputs_), g_scale));
 
-			XTAL_LET I_lim = (size_type) N_lim != 0;// Only iterate when `sigmoid_t` is non-linear...
+			XTAL_LET I_lim = (unsigned) N_lim != 0;// Only iterate when `sigmoid_t` is non-linear...
 
 		//	Integrate `states*` with `coeffs*` and `exputs*`:
 			bond::seek_forward_f<1 + I_lim>([&] (auto K) XTAL_0FN {

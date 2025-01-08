@@ -1,4 +1,3 @@
 #pragma once
 #include "./any.hh"
-
-#include "./dirichlet/all.hh"
+#include "./series.hh"

@@ -30,11 +30,32 @@ noexcept -> decltype(auto)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_exp, auto ...Ms>
-struct   power
+template <int M_exp, auto ...Ms> requires un_n<M_exp>
+struct   power<M_exp, Ms...>
 {
-	static_assert(0 <= M_exp);
-	
+	template <class S>
+	class subtype : public bond::compose_s<S>
+	{
+		using S_ = bond::compose_s<S>;
+
+	public:
+		using S_::S_;
+
+	public:
+
+		template <int ...Ns>
+		XTAL_DEF_(short,static)
+		XTAL_LET function(auto const &o)
+		noexcept -> auto
+		{
+			return XTAL_ALL_(o) {one};
+		}
+
+	};
+};
+template <int M_exp, auto ...Ms> requires in_n<M_exp>
+struct   power<M_exp, Ms...>
+{
 	template <class S>
 	class subtype : public bond::compose_s<S>
 	{
@@ -98,12 +119,12 @@ struct   power
 		XTAL_DEF_(short,static)
 		XTAL_LET function(auto const &o)
 		noexcept -> auto
-		requires un_n<0, bond::operating::template powered_f<2>(M_exp)>
-		and      un_n<0, bond::operating::template powered_f<3>(M_exp)>
+		requires un_n<0, bond::operate<int>::template powered_f<2>(M_exp)>
+		and      un_n<0, bond::operate<int>::template powered_f<3>(M_exp)>
 		{
 			using O = XTAL_ALL_(o);
 			XTAL_IF0
-			XTAL_0IF (algebra::lateral_q<O>) {
+			XTAL_0IF (atom::couple_q<O>) {
 				return O::template map_f<XTAL_FUN_(function<Ns...>)>(o);
 			}
 			XTAL_0IF (M_exp   == 0) {return                             O{1};}

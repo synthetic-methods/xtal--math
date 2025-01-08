@@ -40,19 +40,19 @@ struct discard
 			auto constexpr m_car = M_car&1;
 			auto constexpr n_car = N_car&1;
 			XTAL_IF0
-			XTAL_0IF (m_car == n_car) {return              one;}
-			XTAL_0IF (m_car ==     0) {return               x ;}
-			XTAL_0IF (m_car ==     1) {return root_f<-1, 1>(x);}
+			XTAL_0IF (m_car == n_car) {return XTAL_ALL_(x) {one};}
+			XTAL_0IF (m_car ==     0) {return                 x ;}
+			XTAL_0IF (m_car ==     1) {return   root_f<-1, 1>(x);}
 		}
 		template <int N_car=0>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(auto const &x, auto const &z)
-		noexcept -> auto
+		noexcept -> XTAL_ALL_(x)
 		{
 			auto constexpr m_car = M_car&1;
 			auto constexpr n_car = N_car&1;
 			XTAL_IF0
-			XTAL_0IF (m_car == n_car) {return                one;}
+			XTAL_0IF (m_car == n_car) {return XTAL_ALL_(x) {one};}
 			XTAL_0IF (m_car ==     0) {return                x  ;}
 			XTAL_0IF (m_car ==     1) {return root_f<-1, 1>(x*z);}
 		}

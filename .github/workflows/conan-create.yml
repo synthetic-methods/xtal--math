@@ -11,16 +11,32 @@ jobs:
     strategy:
       matrix:
         bt: [Debug, Release]
-        os: [macos, ubuntu]
+        os: [macos, ubuntu] #, windows]
     
     runs-on: ${{matrix.os}}-latest
 
     steps:
     - uses: actions/checkout@v3
-    - uses: turtlebrowser/get-conan@main
+    
+    - uses: actions/checkout@v3
+      with:
+        repository: synthetic-methods/xtal
+        path: test_dependencies/xtal
+
+    - run:  brew install conan
+      if:   ${{ matrix.os == 'macos' }}
+
+    - run:  pip3 install wheel setuptools; pip3 install conan --upgrade
+      if:   ${{ matrix.os != 'macos' }}
+
+    - name: Run `conan update...`
+      run:  conan remote update conancenter --url="https://center2.conan.io"
 
     - name: Run `conan config...`
       run:  conan config install ${{github.workspace}}/.conan2
 
+    - name: Run `conan export...`
+      run:  conan export ${{github.workspace}}/test_dependencies/xtal
+
     - name: Run `conan create...`
-      run:  conan create ${{github.workspace}} --build=missing -s build_type=${{matrix.bt}} --profile=${{matrix.os}}
+      run:  conan create ${{github.workspace}} --build=missing -s build_type=${{matrix.bt}} --profile:all=${{matrix.os}} -o "test_package/*:benchmark=True"

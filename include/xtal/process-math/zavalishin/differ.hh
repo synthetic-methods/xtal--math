@@ -28,7 +28,7 @@ template <typename ...As> using    differ_t = process::confined_t<differ<As...>>
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <class U_pole, size_type N_pole>
+template <class U_pole, int N_pole>
 struct differ<U_pole[N_pole]>
 {
 	using order_type = occur::inferred_t<struct ORDER, unsigned int, bond::seek_s<N_pole + 1>>;
@@ -65,7 +65,7 @@ struct differ<U_pole[N_pole]>
 		}
 		template <int N_ord=1> requires in_n<N_ord, 1>
 		XTAL_DEF_(short)
-		XTAL_LET method(auto const &u, algebra::phason_q auto const &t_)
+		XTAL_LET method(auto const &u, atom::phason_q auto const &t_)
 		noexcept -> auto
 		{
 			auto [u_] = S_::cache(u);
@@ -73,7 +73,7 @@ struct differ<U_pole[N_pole]>
 		}
 		template <int N_ord=1> requires in_n<N_ord, 1>
 		XTAL_DEF_(short)
-		XTAL_LET method(auto const &u, auto const &v, algebra::phason_q auto const &t_)
+		XTAL_LET method(auto const &u, auto const &v, atom::phason_q auto const &t_)
 		noexcept -> auto
 		{
 			auto [u_, v_] = S_::cache(u, v);

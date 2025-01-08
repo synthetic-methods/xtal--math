@@ -49,7 +49,7 @@ struct near
 			using U_sigma = typename U_op::sigma_type;
 			using U_alpha = typename U_op::alpha_type;
 
-			U_alpha constexpr N_half = root_f<2>(2.L);
+			U_alpha constexpr N_half = root_f<2>(2.);
 			U_sigma constexpr N_mask = U_op::sign.mask|U_op::exponent.mask;
 			return _xtd::bit_cast<U_alpha>(_xtd::bit_cast<U_sigma>(u*N_half)&N_mask);
 		}

@@ -1,13 +1,13 @@
 #pragma once
 #include "./any.hh"
-//#include "../../algebra/scalar.hh"
+//#include "../../atom/scalar.hh"
 
 #include "../../process-math/pade/unity.hh"
 
 
 
 XTAL_ENV_(push)
-namespace xtal::algebra::math::dirichlet
+namespace xtal::atom::math::dirichlet
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -33,7 +33,7 @@ struct symbol<A>
 	using _op = bond::operate<A>;
 	
 	template <class T>
-	using endotype = typename lateral<A>::template homotype<T>;
+	using endotype = typename couple<A>::template homotype<T>;
 
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<symbol_t>>;
@@ -82,7 +82,7 @@ struct symbol<A>
 			element(0) = {};
 
 			if constexpr (integral_number_q<U_data>) {
-				bond::seek_forward_f<K>([&, this] (size_type i) XTAL_0FN {
+				bond::seek_forward_f<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
 					element(    o) =  i;
 					element(N - o) =  i - K;
@@ -96,7 +96,7 @@ struct symbol<A>
 				if constexpr (complex_field_q<U_data>) {
 					u = process::math::pade::unity_t<1>::template function<6>(_op::ratio_f(1, 2*K));
 				}
-				bond::seek_forward_f<K>([&, this] (size_type i) XTAL_0FN {
+				bond::seek_forward_f<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
 					element(    o) =  w;
 					element(N - o) = -w;
@@ -110,13 +110,13 @@ struct symbol<A>
 		XTAL_LET subcharacterize()
 		noexcept -> T &
 		{
-			size_type constexpr N = N_data*2 + 1;
-			size_type constexpr M = N_data*2 + 0;
-			size_type constexpr K = N_data;
-			size_type           k = N_data;
+			auto constexpr N = N_data*2 + 1;
+			auto constexpr M = N_data*2 + 0;
+			auto constexpr K = N_data;
+			auto           k = N_data;
 
 			if constexpr (integral_number_q<U_data>) {
-				bond::seek_forward_f<K>([&, this] (size_type i) XTAL_0FN {
+				bond::seek_forward_f<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
 					if (K < o) {
 						element(M - o) = (1 + i) - K;
@@ -137,7 +137,7 @@ struct symbol<A>
 					u = 1;
 				}
 				w = u;
-				bond::seek_forward_f<K>([&, this] (size_type i) XTAL_0FN {
+				bond::seek_forward_f<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
 					if (K < o) {
 						element(M - o) = -w;

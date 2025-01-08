@@ -29,10 +29,10 @@ noexcept -> decltype(auto)
 template <int M_rot, int M_con>
 struct imagine
 {
-	static constexpr size_type N_rot = M_rot&0b11U;
-	static constexpr size_type N_con = M_con&0b01U;
-	static constexpr size_type X_con = N_con << 1U;
-	static constexpr size_type X_rot = N_rot^X_con;
+	static constexpr unsigned N_rot = M_rot&0b11U;
+	static constexpr unsigned N_con = M_con&0b01U;
+	static constexpr unsigned X_con = N_con << 1U;
+	static constexpr unsigned X_rot = N_rot^X_con;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>

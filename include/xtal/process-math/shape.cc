@@ -22,7 +22,7 @@ TAG_("shape")
 	using T_alpha = typename _op::alpha_type;
 	using T_aphex = typename _op::aphex_type;
 
-	using U_phi = algebra::phason_t<T_alpha[2]>;
+	using U_phi = atom::phason_t<T_alpha[2]>;
 
 	auto mt19937_f = typename _op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());

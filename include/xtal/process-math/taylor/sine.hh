@@ -96,10 +96,10 @@ struct sine<M_ism, -2>
 		template <int N_lim=-1>
 		XTAL_DEF_(long,static)
 		XTAL_LET function(auto &&w)
-		noexcept -> XTAL_ALL_(w)
+		noexcept -> auto
 		{
 			XTAL_IF0
-			XTAL_0IF (0 == N_lim)  {return one;}
+			XTAL_0IF (0 == N_lim)  {return XTAL_ALL_(w) {one};}
 			XTAL_0IF (1 <= N_lim)  {return dysfunction<N_lim>(XTAL_REF_(w));}
 			XTAL_0IF_(consteval)   {return dysfunction<   ~0>(XTAL_REF_(w));}
 			XTAL_0IF_(else) {

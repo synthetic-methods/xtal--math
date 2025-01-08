@@ -176,8 +176,8 @@ struct logarithm< 1, 1>
 			n >>= _op::unit.shift - one;
 			n  |= one;
 
-			U_alpha constexpr w1 =                       root_f<-2>(2.L) ;
-			U_alpha constexpr u1 =           logarithm_f(root_f< 2>(2.L));
+			U_alpha constexpr w1 =                       root_f<-2>(2.) ;
+			U_alpha constexpr u1 =           logarithm_f(root_f< 2>(2.));
 			auto const w    = w1 *  _xtd::bit_cast<U_alpha>(XTAL_MOV_(m));
 			auto const u    = u1 *     static_cast<U_alpha>(XTAL_MOV_(n));
 
@@ -240,8 +240,8 @@ struct logarithm<-1, 1>
 			using _op = bond::operate<decltype(o)>;
 			using U_alpha = typename _op::alpha_type;
 
-			U_alpha constexpr _N_log2 = one/logarithm_f(2.L);
-			U_alpha constexpr  N_log2 =     logarithm_f(2.L);
+			U_alpha constexpr _N_log2 = one/logarithm_f(2.);
+			U_alpha constexpr  N_log2 =     logarithm_f(2.);
 			o *= _N_log2; auto const n = round(o); o -= n;
 			o *=  N_log2;
 			return ldexp(logarithm_t<-1>::template function<N_lim>(XTAL_MOV_(o)), XTAL_MOV_(n));

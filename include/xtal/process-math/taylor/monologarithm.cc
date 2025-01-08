@@ -23,7 +23,7 @@ TAG_("monologarithm")
 	using T_aphex = typename _op::aphex_type;
 	static constexpr T_alpha egg = 0.123456789;
 
-	using U_phi = algebra::phason_t<T_alpha[2]>;
+	using U_phi = atom::phason_t<T_alpha[2]>;
 
 	auto mt19937_f = typename _op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
@@ -54,12 +54,12 @@ TAG_("monologarithm")
 		TRUE_(check_f<  7>(monologarithm_t<-2>::template function< 1>(egg), 1 - exp(-egg)));
 		TRUE_(check_f<  7>(monologarithm_t<-2>::template function< 0>(egg), 1 - exp(-egg)));
 
-		TRUE_(check_f<24>(0.61803398874989490, monologarithm_t<-2,-1>::function(1.L)));
-		TRUE_(check_f<24>(1.61803398874989490, monologarithm_t<-1,-1>::function(1.L)));
-		TRUE_(check_f<24>(0.41421356237309515, monologarithm_t<-2,-1>::function(2.L)));
-		TRUE_(check_f<24>(2.41421356237309490, monologarithm_t<-1,-1>::function(2.L)));
-		TRUE_(check_f<24>(0.30277563773199456, monologarithm_t<-2,-1>::function(3.L)));
-		TRUE_(check_f<24>(3.30277563773199480, monologarithm_t<-1,-1>::function(3.L)));
+		TRUE_(check_f<24>(0.61803398874989490, monologarithm_t<-2,-1>::function(1.)));
+		TRUE_(check_f<24>(1.61803398874989490, monologarithm_t<-1,-1>::function(1.)));
+		TRUE_(check_f<24>(0.41421356237309515, monologarithm_t<-2,-1>::function(2.)));
+		TRUE_(check_f<24>(2.41421356237309490, monologarithm_t<-1,-1>::function(2.)));
+		TRUE_(check_f<24>(0.30277563773199456, monologarithm_t<-2,-1>::function(3.)));
+		TRUE_(check_f<24>(3.30277563773199480, monologarithm_t<-1,-1>::function(3.)));
 
 	}
 	TRY_("mapping")

@@ -25,7 +25,7 @@ TAG_("whatever")
 	static constexpr T_alpha two =  2;
 	static constexpr T_alpha ten = 10;
 
-	using U_phi = algebra::phason_t<T_alpha[2]>;
+	using U_phi = atom::phason_t<T_alpha[2]>;
 
 	auto mt19937_f = typename _op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
