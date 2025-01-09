@@ -1,6 +1,6 @@
+FIXME.*
 build
 *.c++
-FIXME.c*
 *workspace
 
 
