@@ -17,11 +17,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    
     - uses: actions/checkout@v3
       with:
         repository: synthetic-methods/xtal
-        path: test_dependencies/xtal
+        path:       test_dependencies/xtal
 
     - run:  brew install conan
       if:   ${{ matrix.os == 'macos' }}
@@ -29,14 +28,7 @@ jobs:
     - run:  pip3 install wheel setuptools; pip3 install conan --upgrade
       if:   ${{ matrix.os != 'macos' }}
 
-    - name: Run `conan update...`
-      run:  conan remote update conancenter --url="https://center2.conan.io"
-
-    - name: Run `conan config...`
-      run:  conan config install ${{github.workspace}}/.conan2
-
-    - name: Run `conan export...`
-      run:  conan export ${{github.workspace}}/test_dependencies/xtal
-
-    - name: Run `conan create...`
-      run:  conan create ${{github.workspace}} --build=missing -s build_type=${{matrix.bt}} --profile:all=${{matrix.os}} -o "test_package/*:benchmark=True"
+    - run:  conan remote update conancenter --url="https://center2.conan.io"
+    - run:  conan config install ${{github.workspace}}/.conan2
+    - run:  conan export ${{github.workspace}}/test_dependencies/xtal
+    - run:  conan create ${{github.workspace}} --build=missing -s build_type=${{matrix.bt}} --profile:all=${{matrix.os}} -o "test_package/*:benchmark=True"

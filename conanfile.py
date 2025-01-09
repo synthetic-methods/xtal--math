@@ -8,11 +8,11 @@ class XTALMath__Conan(ConanFile):
 	required_conan_version = ">=2.0.0"
 
 	# Info:
-	name    = "xtal-math"
+	name    = "xtal--math"
 	version = "0.0.0"
 	license = "Boost Software License 1.0"
 
-	url     = "https://github.com/synthetic-methods/xtal-math"
+	url     = "https://github.com/synthetic-methods/xtal--math"
 	author  = "GoomTrex goomtrex@gmail.com"
 	
 	topics  = ("C++20"
@@ -23,7 +23,7 @@ class XTALMath__Conan(ConanFile):
 	, "VTable", "Branchless", "Control"
 	)
 	description = """
-	xtal-math is a cross-platform library for mathemusical Digital Signal Processing (DSP).
+	xtal--math is a cross-platform library for mathemusical Digital Signal Processing (DSP).
 	"""
 
 	# Build:
