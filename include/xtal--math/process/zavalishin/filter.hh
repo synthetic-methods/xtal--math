@@ -78,29 +78,22 @@ struct filter<U_pole[N_pole]>
 
 		template <auto ...Ns>
 		XTAL_DEF_(short)
-		XTAL_LET method( auto &&x_input
-		,	real_variable_q auto   g_scale
-		,	real_variable_q auto   s_coeff
-		)
+		XTAL_LET method(auto &&x_input, real_q auto s_scale, real_q auto s_coeff)
 		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(x_input)>;
-			return method<Ns...>(XTAL_REF_(x_input), g_scale, s_coeff, _op::alpha_0);
+			return method<Ns...>(XTAL_REF_(x_input), s_scale, s_coeff, _op::alpha_0);
 		}
 		template <int N_sel=0, int N_ord=0, int N_top=0, auto ...Ns>
 		XTAL_DEF_(inline)
-		XTAL_LET method( auto const &x_input
-		,	real_variable_q auto g_scale
-		,	real_variable_q auto s_coeff
-		,	real_variable_q auto y_mix
-		)
+		XTAL_LET method(auto &&x_input, real_q auto s_scale, real_q auto s_coeff, real_q auto y_mix)
 		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(x_input)>;
 
 			XTAL_IF0
 			XTAL_0IF (0 == N_ord) {
-				return x_input;
+				return XTAL_REF_(x_input);
 			}
 			XTAL_0IF (0 == N_top) {
 				using U_input  = XTAL_ALL_(x_input);
@@ -108,11 +101,11 @@ struct filter<U_pole[N_pole]>
 				using U_coeff  = typename _op::alpha_type;
 				using U_exputs = arrange::couple_t<U_input[N_ord + 1]>;
 				using U_coeffs = arrange::couple_t<U_coeff[N_ord + 1]>;
-				
-				union {U_exputs exputs; U_coeffs coeffs;} io{[=] ()
-				XTAL_0FN -> U_coeffs {
-					XTAL_LET K_1 = _op::alpha_f(1);
-					XTAL_LET K_2 = _op::alpha_f(2);
+				union U_io {U_exputs exputs; U_coeffs coeffs;};
+
+				U_io io{[=] () XTAL_0FN -> U_coeffs {
+					XTAL_LET K_1 = _op::alpha_f(one);
+					XTAL_LET K_2 = _op::alpha_f(two);
 					auto const  &u = s_coeff;
 					auto const u02 =             K_2*u , u04 = u02*K_2;
 					auto const u12 = term_f(K_1, K_2,u), w24 = u02*u12;
@@ -123,20 +116,24 @@ struct filter<U_pole[N_pole]>
 					XTAL_0IF (4 == N_ord) {return {K_1, u04, w24, u04, K_1};}
 				}()};
 
-				(void) edit<N_ord, N_top, Ns...>(io, x_input, g_scale);// io.coeffs -> io.exputs
+				(void) edit<N_ord, N_top, Ns...>(XTAL_REF_(x_input), s_scale, io);// io.coeffs -> io.exputs
 
 				XTAL_LET I_ =  static_cast<unsigned>(N_sel);
 				XTAL_LET I0 = _std::countr_one(I_ >>  0) +  0, J0 = I0 + 1;
 				XTAL_LET I1 = _std::countr_one(I_ >> J0) + J0, J1 = I1 + 1;
-				return term_f(get<0>(io.exputs), get<1>(io.exputs), y_mix);
+				auto const y1 = _op::alpha_f(y_mix);
+				//\
+				auto const y0 = _op::alpha_f(one);
+				auto const y0 = term_f<-1, 2>(one, y1);
+				return term_f(y0*get<I0>(io.exputs), y1, get<I1>(io.exputs));
 			}
 			XTAL_0IF (1 == N_top) {
-				return x_input;
+				return XTAL_REF_(x_input);
 			}
 		}
 		template <int N_ord=0, int N_top=0, int N_lim=0, auto ...Ns> requires (1 <= N_ord and N_top == 0)
 		XTAL_DEF_(inline)
-		XTAL_LET edit(auto &io, auto const &x_input, real_variable_q auto const &g_scale)
+		XTAL_LET edit(auto const &x_input, real_q auto s_scale, auto &io)
 		noexcept -> void
 		{
 			using _op = bond::operate<decltype(x_input)>;
@@ -170,9 +167,9 @@ struct filter<U_pole[N_pole]>
 		//	Initialize `exputs*`:
 			ex_0 = sl_0;
 			bond::seek_forward_f<M_>([&] (auto I) XTAL_0FN {
-				get<I + 1>(exputs_) = term_f(get<I + 1>(slopes_), get<I>(exputs_), g_scale);
+				get<I + 1>(exputs_) = term_f(get<I + 1>(slopes_), get<I>(exputs_), s_scale);
 			});
-			ex_N = root_f<-1, (4)>(term_f(sl_N, get<M_>(exputs_), g_scale));
+			ex_N = root_f<-1, (4)>(term_f(sl_N, get<M_>(exputs_), s_scale));
 
 			XTAL_LET K_lim = provision::shaper_q<S_> and above_p<0, N_lim>;
 
@@ -185,10 +182,10 @@ struct filter<U_pole[N_pole]>
 				bond::seek_backward_f<N_>([&] (auto I) XTAL_0FN {
 					XTAL_IF0
 					XTAL_0IF (0 == K_lim) {
-						get<I>(exputs_)  = term_f(get<I>(states_), get<I + 1>(exputs), g_scale);
+						get<I>(exputs_)  = term_f(get<I>(states_), get<I + 1>(exputs), s_scale);
 					}
 					XTAL_0IF (1 == K_lim) {
-						auto const exput = term_f(get<I>(states_), get<I + 1>(exputs), g_scale);
+						auto const exput = term_f(get<I>(states_), get<I + 1>(exputs), s_scale);
 						auto const slope = S_::template shape_t<-1, -1>::template function<N_lim, Ns...>(exput) + (get<I>(coeffs_) - one);
 						get<I>(exputs_) = exput;
 						get<I>(slopes_) = slope;

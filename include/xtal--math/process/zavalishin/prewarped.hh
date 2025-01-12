@@ -35,8 +35,8 @@ struct prewarped
 		XTAL_LET method(auto &&u, real_variable_q auto &&f, auto &&...oo)
 		noexcept -> decltype(auto)
 		{
-			auto const t = pade::tangy_t<1>::template function<2>(S_::sample().period()*XTAL_REF_(f));
-			return S_::template method<Ns...>(XTAL_REF_(u), t, XTAL_REF_(oo)...);
+			auto const g = pade::tangy_t<1>::template function<2>(S_::sample().period()*XTAL_REF_(f));
+			return S_::template method<Ns...>(XTAL_REF_(u), g, XTAL_REF_(oo)...);
 		};
 
 	};

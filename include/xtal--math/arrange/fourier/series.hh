@@ -308,11 +308,11 @@ s
 				struct transverse {using type = T;};
 
 			};
-			using type = bond::isotype<homotype>;
+			using type = derive_t<homotype>;
 
 		};
 	};
-	using type = bond::isotype<homotype>;
+	using type = derive_t<homotype>;
 
 };
 static_assert(atomic_q<series_t<float[2]>>);
