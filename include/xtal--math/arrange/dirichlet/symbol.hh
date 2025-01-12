@@ -76,13 +76,13 @@ struct symbol<A>
 		noexcept -> T &
 		{
 			using namespace process::math;
-			ordinal_type constexpr N = N_data;
-			ordinal_type constexpr M = N_data - 1;
-			ordinal_type constexpr K = M >> 1U;
-			ordinal_type           k = N_subscript;
+			extent_type constexpr N = N_data;
+			extent_type constexpr M = N_data - 1;
+			extent_type constexpr K = M >> 1U;
+			extent_type           k = N_subscript;
 			element(0) = {};
 
-			if constexpr (integral_number_q<U_data>) {
+			if constexpr (integral_variable_q<U_data>) {
 				bond::seek_forward_f<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
 					element(    o) =  i;
@@ -117,7 +117,7 @@ struct symbol<A>
 			auto constexpr K = N_data;
 			auto           k = N_data;
 
-			if constexpr (integral_number_q<U_data>) {
+			if constexpr (integral_variable_q<U_data>) {
 				bond::seek_forward_f<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
 					if (K < o) {

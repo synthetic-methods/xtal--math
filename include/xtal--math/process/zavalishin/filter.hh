@@ -79,8 +79,8 @@ struct filter<U_pole[N_pole]>
 		template <auto ...Ns>
 		XTAL_DEF_(short)
 		XTAL_LET method( auto &&x_input
-		,	real_number_q auto   g_scale
-		,	real_number_q auto   s_coeff
+		,	real_variable_q auto   g_scale
+		,	real_variable_q auto   s_coeff
 		)
 		noexcept -> decltype(auto)
 		{
@@ -90,9 +90,9 @@ struct filter<U_pole[N_pole]>
 		template <int N_sel=0, int N_ord=0, int N_top=0, auto ...Ns>
 		XTAL_DEF_(inline)
 		XTAL_LET method( auto const &x_input
-		,	real_number_q auto        g_scale
-		,	real_number_q auto        s_coeff
-		,	real_number_q auto        y_mix
+		,	real_variable_q auto g_scale
+		,	real_variable_q auto s_coeff
+		,	real_variable_q auto y_mix
 		)
 		noexcept -> auto
 		{
@@ -136,7 +136,7 @@ struct filter<U_pole[N_pole]>
 		}
 		template <int N_ord=0, int N_top=0, int N_lim=0, auto ...Ns> requires (1 <= N_ord and N_top == 0)
 		XTAL_DEF_(inline)
-		XTAL_LET edit(auto &io, auto const &x_input, real_number_q auto const &g_scale)
+		XTAL_LET edit(auto &io, auto const &x_input, real_variable_q auto const &g_scale)
 		noexcept -> void
 		{
 			using _op = bond::operate<decltype(x_input)>;
@@ -185,7 +185,7 @@ struct filter<U_pole[N_pole]>
 				bond::seek_backward_f<N_>([&] (auto I) XTAL_0FN {
 					XTAL_IF0
 					XTAL_0IF (0 == K_lim) {
-						get<I>(exputs_) = term_f(get<I>(states_), get<I + 1>(exputs), g_scale);
+						get<I>(exputs_)  = term_f(get<I>(states_), get<I + 1>(exputs), g_scale);
 					}
 					XTAL_0IF (1 == K_lim) {
 						auto const exput = term_f(get<I>(states_), get<I + 1>(exputs), g_scale);

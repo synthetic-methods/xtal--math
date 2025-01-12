@@ -66,14 +66,14 @@ struct   power<M_exp, Ms...>
 
 	public:
 
-		template <int ...Ns> requires in_n<0, bond::operating::template powered_f<2>(M_exp)>
+		template <int ...Ns> requires in_n<0, bond::operating::template expound_f<2>(M_exp)>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(auto const &o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _op = bond::operate<decltype(o)>;
 			if constexpr (M_exp == 2) {
-				if constexpr (complex_number_q<decltype(o)>) {
+				if constexpr (complex_variable_q<decltype(o)>) {
 					auto const &[x, y] = destruct_f(o);
 					auto const      u  = _xtd::accumulator(x*x, y*y, _op::alpha_f(-1));
 					auto const      v  = two*x*y;
@@ -90,14 +90,14 @@ struct   power<M_exp, Ms...>
 			}
 		}
 
-		template <int ...Ns> requires in_n<0, bond::operating::template powered_f<3>(M_exp)>
+		template <int ...Ns> requires in_n<0, bond::operating::template expound_f<3>(M_exp)>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(auto const &o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _op = bond::operate<decltype(o)>;
 			if constexpr (M_exp == 3) {
-				if constexpr (complex_number_q<decltype(o)>) {
+				if constexpr (complex_variable_q<decltype(o)>) {
 					auto const &[x, y] = destruct_f(o);
 					auto const      xx =  x*x;
 					auto const     _yy = -y*y;
@@ -119,8 +119,8 @@ struct   power<M_exp, Ms...>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(auto const &o)
 		noexcept -> auto
-		requires un_n<0, bond::operate<int>::template powered_f<2>(M_exp)>
-		and      un_n<0, bond::operate<int>::template powered_f<3>(M_exp)>
+		requires un_n<0, bond::operate<int>::template expound_f<2>(M_exp)>
+		and      un_n<0, bond::operate<int>::template expound_f<3>(M_exp)>
 		{
 			using O = XTAL_ALL_(o);
 			XTAL_IF0

@@ -52,7 +52,7 @@ struct logarithm< 1, 0>
 			XTAL_0IF (0 <= N_lim)                 {return dysfunction<N_lim>(XTAL_REF_(o));}
 			XTAL_0IF_(consteval)                  {return dysfunction<   ~0>(XTAL_REF_(o));}
 #if XTAL_SYS_(builtin)
-			XTAL_0IF (real_number_q<decltype(o)>) {return      __builtin_log(XTAL_REF_(o));}
+			XTAL_0IF (real_variable_q<decltype(o)>) {return      __builtin_log(XTAL_REF_(o));}
 #endif
 			XTAL_0IF_(else)                       {return                log(XTAL_REF_(o));}
 		}
@@ -94,7 +94,7 @@ struct logarithm<-1, 0>
 			XTAL_0IF (0 <= N_lim)                 {return dysfunction<N_lim>(XTAL_REF_(o));}
 			XTAL_0IF_(consteval)                  {return dysfunction<   ~0>(XTAL_REF_(o));}
 #if XTAL_SYS_(builtin)
-			XTAL_0IF (real_number_q<decltype(o)>) {return      __builtin_exp(XTAL_REF_(o));}
+			XTAL_0IF (real_variable_q<decltype(o)>) {return      __builtin_exp(XTAL_REF_(o));}
 #endif
 			XTAL_0IF_(else)                       {return                exp(XTAL_REF_(o));}
 		}
@@ -154,7 +154,7 @@ struct logarithm< 1, 1>
 	protected:
 		template <int N_lim=0>
 		XTAL_DEF_(long,static)
-		XTAL_LET dysfunction(real_number_q auto o)
+		XTAL_LET dysfunction(real_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _op = bond::operate<decltype(o)>;
@@ -185,7 +185,7 @@ struct logarithm< 1, 1>
 		}
 		template <int N_lim=0>
 		XTAL_DEF_(long,static)
-		XTAL_LET dysfunction(complex_number_q auto o)
+		XTAL_LET dysfunction(complex_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _op = bond::operate<decltype(o)>;
@@ -234,7 +234,7 @@ struct logarithm<-1, 1>
 	protected:
 		template <int N_lim=0>
 		XTAL_DEF_(short,static)
-		XTAL_LET dysfunction(real_number_q auto o)
+		XTAL_LET dysfunction(real_variable_q auto o)
 		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(o)>;

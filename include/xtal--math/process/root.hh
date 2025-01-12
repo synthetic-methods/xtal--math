@@ -55,7 +55,7 @@ struct root
 			using _op = bond::operate<decltype(z)>;
 			XTAL_LET I_lim = below_m<(1<<4), (unsigned) N_lim>;
 			XTAL_IF0
-			XTAL_0IF (integral_number_q<decltype(z)>) {
+			XTAL_0IF (integral_variable_q<decltype(z)>) {
 				return function<I_lim>(_op::alpha_f(XTAL_REF_(z)));
 			}
 			XTAL_0IF XTAL_TRY_TO_(dysfunction<I_lim>(XTAL_REF_(z)))
@@ -97,7 +97,7 @@ struct root
 		}
 		template <int I_lim> requires in_n<M_exp_mag, 2>
 		XTAL_DEF_(short,static)
-		XTAL_LET dysfunction(complex_number_q auto z)
+		XTAL_LET dysfunction(complex_variable_q auto z)
 		noexcept -> XTAL_ALL_(z)
 		{
 			using _op = bond::operate<decltype(z)>;
@@ -128,7 +128,7 @@ struct root
 		}
 		template <int I_lim> requires in_n<M_exp_mag, 2, 3, 5, 7, 9>
 		XTAL_DEF_(short,static)
-		XTAL_LET dysfunction(real_number_q auto z)
+		XTAL_LET dysfunction(real_variable_q auto z)
 		noexcept -> XTAL_ALL_(z)
 		{
 			auto constexpr z_one = XTAL_ALL_(z){1};
@@ -148,7 +148,7 @@ struct root
 
 		template <int I_lim>
 		XTAL_DEF_(short,static)
-		XTAL_LET misfunction(real_number_q auto z)
+		XTAL_LET misfunction(real_variable_q auto z)
 		noexcept -> XTAL_ALL_(z)
 		{
 			XTAL_IF0
@@ -157,14 +157,14 @@ struct root
 		}
 		template <int I_lim>
 		XTAL_DEF_(short,static)
-		XTAL_LET exfunction(real_number_q auto z)
+		XTAL_LET exfunction(real_variable_q auto z)
 		noexcept -> XTAL_ALL_(z)
 		{
 			return z*power_f<M_exp_mag - 1>(infunction<I_lim>(z));
 		}
 		template <int I_lim>
 		XTAL_DEF_(short,static)
-		XTAL_LET infunction(real_number_q auto z)
+		XTAL_LET infunction(real_variable_q auto z)
 		noexcept -> XTAL_ALL_(z)
 		{
 			using _op = bond::operate<decltype(z)>;

@@ -31,13 +31,13 @@ noexcept -> auto
 	else {
 		using Y = absolve_u<Xs...>;// NOTE: Constants interpreted as scalar quantities...
 		XTAL_IF0
-		XTAL_0IF (constant_q<W, X> or integral_number_q<W, X> and real_number_q<Y>) {
+		XTAL_0IF (constant_q<W, X> or integral_variable_q<W, X> and real_variable_q<Y>) {
 			return term_f<M_alt, M_pow>(static_cast<Y>(XTAL_REF_(w)), static_cast<Y>(XTAL_REF_(x)), XTAL_REF_(xs)...);
 		}
-		XTAL_0IF (constant_q<W   > or integral_number_q<W   > and real_number_q<Y>) {
+		XTAL_0IF (constant_q<W   > or integral_variable_q<W   > and real_variable_q<Y>) {
 			return term_f<M_alt, M_pow>(static_cast<Y>(XTAL_REF_(w)), XTAL_REF_(x), XTAL_REF_(xs)...);
 		}
-		XTAL_0IF (constant_q<   X> or integral_number_q<   X> and real_number_q<Y>) {
+		XTAL_0IF (constant_q<   X> or integral_variable_q<   X> and real_variable_q<Y>) {
 			return term_f<M_alt, M_pow>(XTAL_REF_(w), static_cast<Y>(XTAL_REF_(x)), XTAL_REF_(xs)...);
 		}
 		XTAL_0IF (M_pow == 0  or M_alt ==  0) {

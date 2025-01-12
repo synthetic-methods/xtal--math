@@ -152,7 +152,6 @@ TAG_("series")
 
 	//	auto bar_bar = bar*bar;
 	//	auto baz_baz = baz*baz;
-	//	auto baz_baz = _op::square_f(baz);
 
 	//	echo(baz.real());
 

@@ -96,7 +96,7 @@ struct discarded<1>
 			XTAL_0IF (same_q<U, V>) {
 				return v*XTAL_REF_(u);
 			}
-			XTAL_0IF (complex_number_q<V>) {
+			XTAL_0IF (complex_variable_q<V>) {
 				destruct_f(v)[1] *= XTAL_REF_(u); return v;
 			}
 			XTAL_0IF (complex_field_q<V>) {
@@ -116,7 +116,7 @@ struct discarded<1>
 			XTAL_0IF (same_q<U, V>) {
 				return v*XTAL_REF_(u);
 			}
-			XTAL_0IF (complex_number_q<V>) {
+			XTAL_0IF (complex_variable_q<V>) {
 				destruct_f(v)[1] *= XTAL_REF_(u); return v;
 			}
 			XTAL_0IF (complex_field_q<V>) {

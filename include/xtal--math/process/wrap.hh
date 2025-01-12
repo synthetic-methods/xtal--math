@@ -58,7 +58,7 @@ struct wrap<As...>
 		XTAL_LET function(complex_field_q auto &&o)
 		noexcept -> decltype(auto)
 		{
-			if constexpr (complex_number_q<decltype(o)>) {
+			if constexpr (complex_variable_q<decltype(o)>) {
 				auto &xy = destruct_f(o);
 				return complexion_f(function(xy[0]), function(xy[1]));
 			}
