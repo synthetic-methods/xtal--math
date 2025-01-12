@@ -25,7 +25,7 @@ noexcept -> auto
 
 ////////////////////////////////////////////////////////////////////////////////
 ///\
-Extends `arrange::order` with point-wise multiplication. \
+Extends `order` with point-wise multiplication. \
 
 template <vector_q A>
 struct series<A>
@@ -36,7 +36,7 @@ struct series<A>
 	using A_aphex = typename A_op::aphex_type;
 	
 	template <class T>
-	using endotype = typename arrange::order<A>::template homotype<T>;
+	using endotype = typename order<A>::template homotype<T>;
 
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<series_t>>;

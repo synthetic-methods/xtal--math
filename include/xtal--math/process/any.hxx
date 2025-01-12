@@ -15,7 +15,7 @@
 #include "./magnum.hh"
 #include "./near.hh"
 #include "./nearing.hh"
-#include "./nomial.hh"
+//nclude "./phasor.hh"
 #include "./power.hh"
 #include "./root.hh"
 #include "./roots.hh"

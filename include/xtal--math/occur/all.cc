@@ -1,4 +1,3 @@
-#pragma once
 #include "./any.cc"
 #include "./arity.cc"
 #include "./count.cc"

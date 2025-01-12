@@ -23,7 +23,7 @@ TAG_("monologarithm")
 	using T_aphex = typename _op::aphex_type;
 	static constexpr T_alpha egg = 0.123456789;
 
-	using U_phi = arrange::phason_t<T_alpha[2]>;
+	using U_phi = arrange::math::phason_t<T_alpha[2]>;
 
 	auto mt19937_f = typename _op::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());

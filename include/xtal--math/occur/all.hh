@@ -1,4 +1,3 @@
-#pragma once
 #include "./any.hh"
 #include "./arity.hh"
 #include "./count.hh"

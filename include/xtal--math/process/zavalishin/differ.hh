@@ -65,7 +65,7 @@ struct differ<U_pole[N_pole]>
 		}
 		template <int N_ord=1> requires in_n<N_ord, 1>
 		XTAL_DEF_(short)
-		XTAL_LET method(auto const &u, arrange::phason_q auto const &t_)
+		XTAL_LET method(auto const &u, arrange::math::phason_q auto const &t_)
 		noexcept -> auto
 		{
 			auto [u_] = S_::cache(u);
@@ -73,7 +73,7 @@ struct differ<U_pole[N_pole]>
 		}
 		template <int N_ord=1> requires in_n<N_ord, 1>
 		XTAL_DEF_(short)
-		XTAL_LET method(auto const &u, auto const &v, arrange::phason_q auto const &t_)
+		XTAL_LET method(auto const &u, auto const &v, arrange::math::phason_q auto const &t_)
 		noexcept -> auto
 		{
 			auto [u_, v_] = S_::cache(u, v);

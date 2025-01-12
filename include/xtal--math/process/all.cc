@@ -1,4 +1,3 @@
-#pragma once
 #include "./any.cc"
 
 #include "./cut.cc"
@@ -12,9 +11,9 @@
 #include "./identity.cc"
 #include "./imagine.cc"
 #include "./magnum.cc"
-#include "./nomial.cc"
 #include "./near.cc"
 #include "./nearing.cc"
+#include "./phasor.cc"
 #include "./power.cc"
 #include "./root.cc"
 #include "./roots.cc"

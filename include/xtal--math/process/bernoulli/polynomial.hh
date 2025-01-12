@@ -79,7 +79,7 @@ struct polynomial<M_ism,-0>
 				XTAL_0IF (N_par == 0 and M_ism == 1) {return cos (up)*(dn);}
 			}
 			else {
-				auto constexpr dn = _op::assigned_f(N_ity)*nomial_f<N_ord - 1>(_op::patio_2);
+				auto constexpr dn = _op::assigned_f(N_ity)*power_f<N_ord - 1>(_op::patio_2);
 				XTAL_IF0
 				XTAL_0IF (N_par == 0) {return dn*s_::template function<N_ord>(square_f(XTAL_REF_(u)));}
 				XTAL_0IF (N_par == 1) {return dn*S_::template function<N_ord>(         XTAL_REF_(u) );}

@@ -1,8 +1,8 @@
 #pragma once
 #include "./any.hh"
-//#include "../../arrange/scalar.hh"
 
 #include "../../process/pade/unity.hh"
+
 
 
 
@@ -25,7 +25,7 @@ noexcept -> auto
 
 ////////////////////////////////////////////////////////////////////////////////
 ///\
-Extends `scalar` with Dirichlet characterization and modulo access. \
+Extends `couple` with Dirichlet characterization and modulo access. \
 
 template <vector_q A>
 struct symbol<A>

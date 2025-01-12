@@ -25,7 +25,7 @@ noexcept -> auto
 
 ////////////////////////////////////////////////////////////////////////////////
 ///\
-Extends `serial` with multiplication defined by circular convolution. \
+Extends `serial` with multiplication via circular convolution. \
 
 template <vector_q A>
 struct series<A>

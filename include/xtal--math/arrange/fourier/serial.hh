@@ -26,7 +26,7 @@ noexcept -> auto
 
 ////////////////////////////////////////////////////////////////////////////////
 ///\
-Extends `arrange::order` with point-wise addition, and multiplication defined by linear convolution. \
+Extends `grade` with multiplication via linear convolution. \
 
 template <vector_q A>
 struct serial<A>
@@ -34,7 +34,7 @@ struct serial<A>
 	using _op = bond::operate<A>;
 	
 	template <class T>
-	using endotype = typename arrange::order<A>::template homotype<T>;
+	using endotype = typename grade<A>::template homotype<T>;
 
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<serial_t>>;
@@ -58,48 +58,9 @@ struct serial<A>
 	
 	public:// OPERATE
 		using S_::operator*=;
-	//	using S_::operator+=;
-	//	using S_::operator-=;
 
-		XTAL_DEF_(short)  XTAL_LET operator  * (auto const &t)      const noexcept -> auto   {return twin() *=   t ;}
-		XTAL_DEF_(short)  XTAL_LET operator  + (auto const &t)      const noexcept -> auto   {return twin() +=   t ;}
-		XTAL_DEF_(short)  XTAL_LET operator  - (auto const &t)      const noexcept -> auto   {return twin() -=   t ;}
-		XTAL_DEF_(inline) XTAL_LET operator  *=(initializer_s<U_data> t)  noexcept -> auto & {return self() *= T(t);}
-		XTAL_DEF_(inline) XTAL_LET operator  +=(initializer_s<U_data> t)  noexcept -> auto & {return self() += T(t);}
-		XTAL_DEF_(inline) XTAL_LET operator  -=(initializer_s<U_data> t)  noexcept -> auto & {return self() -= T(t);}
-		XTAL_DEF_(inline) XTAL_LET operator ++ (int)                      noexcept -> auto   {auto t = twin(); operator++(); return t;}
-		XTAL_DEF_(inline) XTAL_LET operator -- (int)                      noexcept -> auto   {auto t = twin(); operator--(); return t;}
-
-
-		///\
-		Produces the successor by pairwise addition from `begin()` to `end()`, \
-		assuming the entries of `this` are finite differences/derivatives. \
-
-		XTAL_DEF_(inline)
-		XTAL_LET operator ++ ()
-		noexcept -> T &
-		{
-			[this]<auto ...I> (bond::seek_t<I...>)
-				XTAL_0FN {((get<I>(self()) += get<I + 1>(self())),...);}
-			(bond::seek_s<N_data - 1>{});
-			
-			return self();
-		}
-		///\
-		Produces the predecessor by pairwise subtraction from `end()` to `begin()`, \
-		assuming the entries of `this` are finite differences/derivatives. \
-
-		XTAL_DEF_(inline)
-		XTAL_LET operator -- ()
-		noexcept -> T &
-		{
-			[this]<auto ...I> (bond::seek_t<I...>)
-				XTAL_0FN {((get<I>(self()) -= get<I + 1>(self())),...);}
-			(bond::antiseek_s<N_data - 1>{});
-			
-			return self();
-		}
-
+		XTAL_DEF_(short)  XTAL_LET operator  * (auto           const &t) const noexcept -> auto   {return twin() *=   t ;}
+		XTAL_DEF_(inline) XTAL_LET operator  *=(initializer_s<U_data> t)       noexcept -> auto & {return self() *= T(t);}
 
 		///\
 		Multiplication by linear convolution, truncated by `N_data`. \
@@ -119,34 +80,6 @@ struct serial<A>
 				bond::seek_backward_f<     I, 1>([&, this] (auto J) XTAL_0FN {get<I>(s) += get<J>(t)*get<I - J>(s);});});
 			}
 			return s;
-		}
-
-	//	Vector addition:
-
-		XTAL_DEF_(inline)
-		XTAL_LET operator +=(T const &t)
-		noexcept -> T &
-		{
-			return S_::template pointwise<[] (auto &u, auto const &v) XTAL_0FN {u += v;}>(XTAL_REF_(t));
-		}
-		XTAL_DEF_(inline)
-		XTAL_LET operator -=(T const &t)
-		noexcept -> T &
-		{
-			return S_::template pointwise<[] (auto &u, auto const &v) XTAL_0FN {u -= v;}>(XTAL_REF_(t));
-		}
-
-		XTAL_DEF_(inline)
-		XTAL_LET operator +=(subarray_q<N_data> auto const &t)
-		noexcept -> T &
-		{
-			return S_::template pointwise<[] (auto &u, auto const &v) XTAL_0FN {u += v;}>(XTAL_REF_(t));
-		}
-		XTAL_DEF_(inline)
-		XTAL_LET operator -=(subarray_q<N_data> auto const &t)
-		noexcept -> T &
-		{
-			return S_::template pointwise<[] (auto &u, auto const &v) XTAL_0FN {u -= v;}>(XTAL_REF_(t));
 		}
 
 	};
