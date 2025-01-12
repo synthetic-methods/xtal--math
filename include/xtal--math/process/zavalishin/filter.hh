@@ -61,71 +61,68 @@ struct filter<U_pole[N_pole]>
 	public:
 		using S_::S_;
 
-		template <class X>
 		XTAL_DEF_(short)
-		XTAL_LET infuse(X &&x)
+		XTAL_LET infuse(auto &&x)
 		noexcept -> signed
 		{
 			XTAL_IF0
-			XTAL_0IF (in_q<X, order_type, topology_type>) {
+			XTAL_0IF (in_q<decltype(x), order_type, topology_type>) {
 				S_::cache(constant_t<0>{});
 			}
-			XTAL_0IF (occur::stage_q<X>) {
-				if (x == 0) S_::cache(constant_t<0>{});
+			XTAL_0IF (occur::stage_q<decltype(x)>) {
+				if (x == 0) {
+					S_::cache(constant_t<0>{});
+				}
 			}
 			return S_::infuse(XTAL_REF_(x));
 		}
 
 		template <auto ...Ns>
 		XTAL_DEF_(short)
-		XTAL_LET method(auto &&x_input, real_q auto s_scale, real_q auto s_coeff)
+		XTAL_LET method(auto &&x_input, real_q auto s_scale, real_q auto s_damping)
 		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(x_input)>;
-			return method<Ns...>(XTAL_REF_(x_input), s_scale, s_coeff, _op::alpha_0);
+			return method<Ns...>(XTAL_REF_(x_input), s_scale, s_damping, _op::alpha_0);
 		}
 		template <int N_sel=0, int N_ord=0, int N_top=0, auto ...Ns>
 		XTAL_DEF_(inline)
-		XTAL_LET method(auto &&x_input, real_q auto s_scale, real_q auto s_coeff, real_q auto y_mix)
+		XTAL_LET method(auto &&x_input, real_q auto s_scale, real_q auto s_damping, real_q auto y_balance)
 		noexcept -> auto
 		{
-			using _op = bond::operate<decltype(x_input)>;
+			using X = XTAL_ALL_(x_input);
+			using W = absolve_u<X>;
 
 			XTAL_IF0
 			XTAL_0IF (0 == N_ord) {
 				return XTAL_REF_(x_input);
 			}
 			XTAL_0IF (0 == N_top) {
-				using U_input  = XTAL_ALL_(x_input);
-				using U_exput  = XTAL_ALL_(x_input);
-				using U_coeff  = typename _op::alpha_type;
-				using U_exputs = arrange::couple_t<U_input[N_ord + 1]>;
-				using U_coeffs = arrange::couple_t<U_coeff[N_ord + 1]>;
-				union U_io {U_exputs exputs; U_coeffs coeffs;};
+				using U_outputs = arrange::couple_t<X[N_ord + 1]>;
+				using U_scalars = arrange::couple_t<W[N_ord + 1]>;
+				union U_io {U_outputs outputs; U_scalars scalars;};
 
-				U_io io{[=] () XTAL_0FN -> U_coeffs {
-					XTAL_LET K_1 = _op::alpha_f(one);
-					XTAL_LET K_2 = _op::alpha_f(two);
-					auto const  &u = s_coeff;
-					auto const u02 =             K_2*u , u04 = u02*K_2;
-					auto const u12 = term_f(K_1, K_2,u), w24 = u02*u12;
+				U_io io{[=] () XTAL_0FN -> U_scalars {
+					auto const  &u = s_damping;
+					auto const u02 =             two*u , u04 = u02*two;
+					auto const u12 = term_f(one, two,u), w24 = u02*u12;
 					XTAL_IF0
-					XTAL_0IF (1 == N_ord) {return {K_1, K_1};}
-					XTAL_0IF (2 == N_ord) {return {K_1, u02, K_1};}
-					XTAL_0IF (3 == N_ord) {return {K_1, u12, u12, K_1};}
-					XTAL_0IF (4 == N_ord) {return {K_1, u04, w24, u04, K_1};}
+					XTAL_0IF (1 == N_ord) {return {one, one};}
+					XTAL_0IF (2 == N_ord) {return {one, u02, one};}
+					XTAL_0IF (3 == N_ord) {return {one, u12, u12, one};}
+					XTAL_0IF (4 == N_ord) {return {one, u04, w24, u04, one};}
 				}()};
 
-				(void) edit<N_ord, N_top, Ns...>(XTAL_REF_(x_input), s_scale, io);// io.coeffs -> io.exputs
+				(void) edit<N_ord, N_top, Ns...>(XTAL_REF_(x_input), s_scale, io);// io.scalars -> io.outputs
 
 				XTAL_LET I_ =  static_cast<unsigned>(N_sel);
 				XTAL_LET I0 = _std::countr_one(I_ >>  0) +  0, J0 = I0 + 1;
 				XTAL_LET I1 = _std::countr_one(I_ >> J0) + J0, J1 = I1 + 1;
-				auto const y1 = _op::alpha_f(y_mix);
+				W const y1 = y_balance;
 				//\
-				auto const y0 = _op::alpha_f(one);
-				auto const y0 = term_f<-1, 2>(one, y1);
-				return term_f(y0*get<I0>(io.exputs), y1, get<I1>(io.exputs));
+				W const y0 = one;
+				W const y0 = term_f<-1, 2>(one, y1);
+				return term_f(y0*get<I0>(io.outputs), y1, get<I1>(io.outputs));
 			}
 			XTAL_0IF (1 == N_top) {
 				return XTAL_REF_(x_input);
@@ -136,69 +133,60 @@ struct filter<U_pole[N_pole]>
 		XTAL_LET edit(auto const &x_input, real_q auto s_scale, auto &io)
 		noexcept -> void
 		{
-			using _op = bond::operate<decltype(x_input)>;
+			using X = XTAL_ALL_(x_input);
+			using W = absolve_u<X>;
 
-			auto constexpr K_1 = _op::alpha_f(1);
-			auto constexpr K_2 = _op::alpha_f(2);
-			auto constexpr N_  =     N_ord - (0);
-			auto constexpr M_  =     N_ord - (1);
+			using U_scalars_ = arrange::couple_t<W[N_ord]>;
+			using U_outputs_ = arrange::couple_t<X[N_ord]>;
+			using U_poles_   = arrange::couple_t<X[N_ord]>;
 
-			using U_input   = XTAL_ALL_(x_input);
-			using U_exput   = XTAL_ALL_(x_input);
-			using U_coeff   = typename _op::alpha_type;
-			using U_inputs_ = arrange::couple_t<U_input[N_]>;
-			using U_exputs_ = arrange::couple_t<U_exput[N_]>;
-			using U_coeffs_ = arrange::couple_t<U_coeff[N_]>;
+			auto  scalars = io.scalars; auto scalars_ = scalars.capsize(constant_t<N_ord>{});
+			auto &outputs = io.outputs; auto outputs_ = outputs.capsize(constant_t<N_ord>{});
 
-			auto    cachet  = S_::template cache<U_inputs_, U_inputs_>();
-			auto    coeffs  = io.coeffs; auto &coeffs_ = reinterpret_cast<U_coeffs_ &>(coeffs);
-			auto   &exputs  = io.exputs; auto &exputs_ = reinterpret_cast<U_exputs_ &>(exputs);
-			auto   &slopes_ = get<0>(cachet);
-			auto   &states_ = get<1>(cachet);
-		//	auto   [slopes_, states_] = S_::template cache<U_exputs_, U_exputs_>();//NOTE: Can't access from lambda...
+			auto  cachet  = S_::template cache<U_poles_, U_poles_>();
+		//	NOTE: Can't destructure then capture...
+			auto &states_ = get<0>(cachet);
+			auto &slopes_ = get<1>(cachet);
 
-			auto   &sl_0    = get<0>(slopes_), sl_N = K_1;
-			auto   &ex_0    = get<0>(exputs), &ex_N = get<N_>(exputs);
-
-		//	Initialize `coeffs*`:
+		//	Initialize `scalars*`:
 			slopes_.template unzero<1>();
-			slopes_ *= coeffs_;
+			slopes_ *= scalars_;
 
-		//	Initialize `exputs*`:
-			ex_0 = sl_0;
-			bond::seek_forward_f<M_>([&] (auto I) XTAL_0FN {
-				get<I + 1>(exputs_) = term_f(get<I + 1>(slopes_), get<I>(exputs_), s_scale);
+		//	Initialize `outputs*`:
+			get<0 >(outputs) = get<0>(slopes_);
+			bond::seek_forward_f<N_ord - 1>([&] (auto I) XTAL_0FN {
+				get<I + 1>(outputs_) = term_f(get<I + 1>(slopes_), get<I>(outputs_), s_scale);
 			});
-			ex_N = root_f<-1, (4)>(term_f(sl_N, get<M_>(exputs_), s_scale));
+			get<N_ord>(outputs) = root_f<-1, (1)>(term_f(one, get<N_ord - 1>(outputs_), s_scale));
 
 			XTAL_LET K_lim = provision::shaper_q<S_> and above_p<0, N_lim>;
 
-		//	Integrate `states*` with `coeffs*` and `exputs*`:
+		//	Integrate `states*` with `scalars*` and `outputs*`:
 			bond::seek_forward_f<1 + 1*K_lim>([&] (auto K) XTAL_0FN {
 				XTAL_IF0
-				XTAL_0IF (0 == K) {ex_N *= x_input - exputs_.product(states_);}
-				XTAL_0IF (1 <= K) {ex_N  = x_input - exputs_.product(slopes_);}
+				XTAL_0IF (0 == K) {get<N_ord>(outputs) *= x_input - outputs_.product(states_);}
+				XTAL_0IF (1 <= K) {get<N_ord>(outputs)  = x_input - outputs_.product(slopes_);}
 
-				bond::seek_backward_f<N_>([&] (auto I) XTAL_0FN {
+				bond::seek_backward_f<N_ord>([&] (auto I) XTAL_0FN {
 					XTAL_IF0
 					XTAL_0IF (0 == K_lim) {
-						get<I>(exputs_)  = term_f(get<I>(states_), get<I + 1>(exputs), s_scale);
+						get<I>(outputs_) = term_f(get<I>(states_), get<I + 1>(outputs), s_scale);
 					}
 					XTAL_0IF (1 == K_lim) {
-						auto const exput = term_f(get<I>(states_), get<I + 1>(exputs), s_scale);
-						auto const slope = S_::template shape_t<-1, -1>::template function<N_lim, Ns...>(exput) + (get<I>(coeffs_) - one);
-						get<I>(exputs_) = exput;
-						get<I>(slopes_) = slope;
+						auto const exput = term_f(get<I>(states_), get<I + 1>(outputs), s_scale);
+						auto const slope = S_::template shape_t<-1, -1>::template function<N_lim, Ns...>(exput) + (get<I>(scalars_) - one);
+						get<I>(outputs_) = exput;
+						get<I>( slopes_) = slope;
 					}
 				});
 			});
 
-		//	Finalize states and `exputs*`/`coeffs*`:
-			bond::seek_forward_f<N_>([&] (auto I) XTAL_0FN {
-				get<I>(states_) = term_f(-get<I>(states_), get<I>(exputs_), K_2);
+		//	Finalize states and `outputs*`/`scalars*`:
+			bond::seek_forward_f<N_ord>([&] (auto I) XTAL_0FN {
+				get<I>(states_) = term_f(-get<I>(states_), two, get<I>(outputs_));
 			});
-			slopes_ /= coeffs_;
-		//	exputs_ *= slopes_;// TODO: Make this line optional?
+			slopes_ /= scalars_;
+		//	outputs_ *= slopes_;// TODO: Make this line optional?
 		}
 
 	};
