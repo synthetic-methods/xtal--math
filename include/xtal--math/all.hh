@@ -1,4 +1,3 @@
-#pragma once
 #include "./arrange/all.hh"
 #include "./occur/all.hh"
 #include "./process/all.hh"

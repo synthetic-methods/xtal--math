@@ -1,4 +1,3 @@
-#pragma once
 #include "./any.hh"
 
 #include "./cut.hh"
@@ -12,9 +11,9 @@
 #include "./identity.hh"
 #include "./imagine.hh"
 #include "./magnum.hh"
-#include "./nomial.hh"
 #include "./near.hh"
 #include "./nearing.hh"
+#include "./phasor.hh"
 #include "./power.hh"
 #include "./root.hh"
 #include "./roots.hh"

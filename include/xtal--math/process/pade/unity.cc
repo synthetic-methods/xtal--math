@@ -40,7 +40,7 @@ TAG_("unity")
 	static constexpr T_alpha two =  2;
 	static constexpr T_alpha ten = 10;
 
-	using U_phi = arrange::phason_t<T_alpha[2]>;
+	using U_phi = arrange::math::phason_t<T_alpha[2]>;
 
 	static_assert(same_q<T_alpha, decltype(U_phi{} (0))>);
 
@@ -262,7 +262,7 @@ TAG_("unity")
 	TRY_("evaluation (fixed-point)")
 	{
 		//\
-		auto const [t0, t1] = arrange::phason_t<T_alpha[2]> {1.125, 0.0};
+		auto const [t0, t1] = arrange::math::phason_t<T_alpha[2]> {1.125, 0.0};
 		T_alpha t0{1.125};
 
 		TRUE_(unity_check_f<0,  2>(t0));

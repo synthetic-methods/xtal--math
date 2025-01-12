@@ -102,7 +102,7 @@ struct unity<M_ism> : unity<>
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(long,static)
-		XTAL_LET function(arrange::phason_q auto t_)
+		XTAL_LET function(arrange::math::phason_q auto t_)
 		noexcept -> decltype(auto)
 		{
 			using T_ = XTAL_ALL_(t_);
