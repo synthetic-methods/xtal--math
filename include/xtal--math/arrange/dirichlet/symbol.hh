@@ -155,7 +155,7 @@ struct symbol<A>
 		}
 
 	};
-	using type = bond::isotype<homotype>;
+	using type = derive_t<homotype>;
 
 };
 
