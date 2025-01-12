@@ -53,7 +53,7 @@ struct   power<M_exp, Ms...>
 
 	};
 };
-template <int M_exp, auto ...Ms> requires in_n<M_exp>
+template <int M_exp, auto ...Ms> requires above_p<0, M_exp>
 struct   power<M_exp, Ms...>
 {
 	template <class S>
@@ -132,6 +132,31 @@ struct   power<M_exp, Ms...>
 			XTAL_0IF (M_exp%3 == 0) {return power_f<M_exp/3>(power_f<3>(o)) ;}
 			XTAL_0IF (M_exp%2 == 0) {return power_f<M_exp/2>(power_f<2>(o)) ;}
 			XTAL_0IF_(else)         {return        o*power_f<M_exp - 1>(o)  ;}
+		}
+
+	};
+};
+template <int M_exp, auto ...Ms> requires below_p<0, M_exp>
+struct   power<M_exp, Ms...>
+{
+	using superkind = power<-M_exp, Ms...>;
+
+	template <class S>
+	class subtype : public bond::compose_s<S, superkind>
+	{
+		using S_ = bond::compose_s<S, superkind>;
+
+	public:
+		using S_::S_;
+
+	public:
+
+		template <int ...Ns>
+		XTAL_DEF_(short,static)
+		XTAL_LET function(auto &&o)
+		noexcept -> auto
+		{
+			return S_::template function<Ns...>(one/XTAL_REF_(o));
 		}
 
 	};
