@@ -54,7 +54,7 @@ struct cut
 
 		template <auto ...Ns>
 		XTAL_DEF_(long,static)
-		XTAL_LET edit(real_number_q auto &o)
+		XTAL_LET edit(real_variable_q auto &o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _xtd::bit_cast;
@@ -95,7 +95,7 @@ struct cut
 		/**/
 		template <auto ...Ns>
 		XTAL_DEF_(long,static)
-		XTAL_LET edit(complex_number_q auto &o)
+		XTAL_LET edit(complex_variable_q auto &o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			auto &[x, y] = destruct_f(o);
@@ -104,7 +104,7 @@ struct cut
 		/*/
 		template <auto ...Ns>
 		XTAL_DEF_(long,static)
-		XTAL_LET edit(complex_number_q auto &o)
+		XTAL_LET edit(complex_variable_q auto &o)
 		noexcept -> XTAL_ALL_(abs(o))
 		{
 			using _op = bond::operate<decltype(o)>;

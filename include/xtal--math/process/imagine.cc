@@ -40,7 +40,7 @@ TAG_("imagine")
 		TRUE_(imagine_f<3, 1>(o) == T_aphex{ y,  x});
 
 	}
-	TRY_("imagine `complex_number_q auto &&`")
+	TRY_("imagine `complex_variable_q auto &&`")
 	{
 		T_alpha x{1};
 		T_alpha y{2};

@@ -128,7 +128,7 @@ struct series<A>
 					auto constexpr UM = U0 + _1*M;
 					auto constexpr WM = W0 + _2*M;
 					
-					auto const w = _op::square_f(get<UM>(s));
+					auto const w = process::math::square_f(get<UM>(s));
 					get<WM + _0>(s) =   w;
 					get<WM + _1>(s) = u*w;
 				}

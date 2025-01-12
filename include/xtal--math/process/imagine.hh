@@ -59,7 +59,7 @@ struct imagine
 		XTAL_DEF_(short,static)
 		XTAL_LET function(complex_field_q auto const &o)
 		noexcept -> decltype(auto)
-			requires un_n<complex_number_q<decltype(o)>>
+			requires un_n<complex_variable_q<decltype(o)>>
 		{
 			auto const x = o.real();
 			auto const y = o.imag();
@@ -79,7 +79,7 @@ struct imagine
 		};
 		template <auto ...>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(complex_number_q auto o)
+		XTAL_LET function(complex_variable_q auto o)
 		noexcept -> decltype(auto)
 		{
 			auto &[x, y] = destruct_f(o);

@@ -42,7 +42,7 @@ struct magnum
 		}
 		template <int ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(real_number_q auto const &o)
+		XTAL_LET function(real_variable_q auto const &o)
 		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(o)>;
@@ -50,7 +50,7 @@ struct magnum
 		}
 		template <int ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(complex_number_q auto const &o)
+		XTAL_LET function(complex_variable_q auto const &o)
 		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(o)>;
@@ -59,7 +59,7 @@ struct magnum
 
 		template <auto ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET edit(real_number_q auto &o)
+		XTAL_LET edit(real_variable_q auto &o)
 		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(o)>;
@@ -70,7 +70,7 @@ struct magnum
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET edit(complex_number_q auto &o)
+		XTAL_LET edit(complex_variable_q auto &o)
 		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(o)>;

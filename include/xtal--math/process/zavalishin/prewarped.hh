@@ -32,7 +32,7 @@ struct prewarped
 
 		template <auto ...Ns>
 		XTAL_DEF_(short)
-		XTAL_LET method(auto &&u, real_number_q auto &&f, auto &&...oo)
+		XTAL_LET method(auto &&u, real_variable_q auto &&f, auto &&...oo)
 		noexcept -> decltype(auto)
 		{
 			auto const t = pade::tangy_t<1>::template function<2>(S_::sample().period()*XTAL_REF_(f));
