@@ -33,9 +33,10 @@ struct dilate
 	XTAL_LET after_f(auto &&o)
 	noexcept -> decltype(auto)
 	{
-		XTAL_LET N =  bond::operate<decltype(o)>::alpha_f(N_val);
-		XTAL_LET u =        magnum_f(N);
-		XTAL_LET v = (int)  signum_f(N);
+		using _op = bond::operate<decltype(o)>;
+		XTAL_LET n_val =   _op::alpha_f(N_val);
+		XTAL_LET u     =       magnum_f(n_val);
+		XTAL_LET v     = (int) signum_f(n_val);
 		return XTAL_REF_(o)*root_f<-v>(u);
 	};
 

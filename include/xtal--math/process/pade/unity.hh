@@ -97,7 +97,7 @@ struct unity<M_ism> : unity<>
 				auto w = wrap_f(o);
 				auto m = objective_f(wrap_f(w*U_op::diplo_1)*U_op::haplo_1);
 				return superprocess::template function<N_lim>(m)*
-					operative_f<XTAL_FUN_(U_op::assigned_f)>(m == w);
+					operative_f<XTAL_FUN_(U_alpha)>(((m == w) << 1) - 1);
 			}
 		}
 		template <int N_lim=-1>

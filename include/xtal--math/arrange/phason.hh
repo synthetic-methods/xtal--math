@@ -213,7 +213,7 @@ struct phason<A>
 			/*/
 			size_type constexpr M_bias = T_op::half.depth >> T_op::half.width;
 			size_type constexpr M_size = T_op::half.depth - M_bias;
-			auto [m, n] = bond::operate<decltype(f)>::scientific_f(f);
+			auto [m, n] = bond::bit_representation_f(f);
 			m >>= n - M_size;
 			s >>=     M_size;
 			s  *= m;
@@ -222,7 +222,7 @@ struct phason<A>
 			XTAL_0IF (1*sizeof(ordinate_type) == sizeof(coordinate_type)) {
 				int constexpr M_bias = T_op::half.depth >> T_op::half.width;
 				int constexpr M_size = T_op::half.depth - M_bias;
-				auto [m, n] = _op::scientific_f(f);
+				auto [m, n] = bond::bit_representation_f(f);
 				m >>= n - M_size;
 				s >>=     M_size;
 				s  *= m;

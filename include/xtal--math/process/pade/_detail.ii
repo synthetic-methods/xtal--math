@@ -12,7 +12,7 @@ template <int M_ism               >
 struct subunity<M_ism,-2>
 {
 	//\
-	static constexpr int I_sgn = signum_n<(M_ism&1)^1, -1>;
+	static constexpr int I_sgn = sign_n<(M_ism&1)^1, -1>;
 	static constexpr int I_sgn = 1;
 
 	template <class S>

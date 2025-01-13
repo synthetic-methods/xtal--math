@@ -45,7 +45,7 @@ struct polynomial<M_ism, 1>
 template <int M_ism>
 struct polynomial<M_ism,-0>
 {
-	static constexpr int I_sgn = -signum_n<M_ism&1, -1>;
+	static constexpr int I_sgn = -sign_n<M_ism&1, -1>;
 
 	using superkind = bond::compose<discarded<1>, polynomial<M_ism,-1>>;
 
@@ -64,9 +64,10 @@ struct polynomial<M_ism,-0>
 		noexcept -> decltype(auto)
 		{
 			using     _op = bond::operate<decltype(u)>;
+			using W_alpha = typename _op::alpha_type;
 			using W_sigma = typename _op::sigma_type;
-			W_sigma constexpr N_par = _op::designed_f(N_ord)&1;
-			W_sigma constexpr N_ity = _op::designed_f(N_ord) >> 1;
+			W_sigma constexpr N_par = magnum_f(N_ord)&1;
+			W_sigma constexpr N_ity = magnum_f(N_ord) >> 1;
 
 			if constexpr (N_ord < 0) {
 				auto const dn =          one/_op::patio_1;
@@ -79,7 +80,7 @@ struct polynomial<M_ism,-0>
 				XTAL_0IF (N_par == 0 and M_ism == 1) {return cos (up)*(dn);}
 			}
 			else {
-				auto constexpr dn = _op::assigned_f(N_ity)*power_f<N_ord - 1>(_op::patio_2);
+				W_alpha constexpr dn = signum_f(N_ity)*power_f<N_ord - 1>(_op::patio_2);
 				XTAL_IF0
 				XTAL_0IF (N_par == 0) {return dn*s_::template function<N_ord>(square_f(XTAL_REF_(u)));}
 				XTAL_0IF (N_par == 1) {return dn*S_::template function<N_ord>(         XTAL_REF_(u) );}
@@ -98,7 +99,7 @@ struct polynomial<M_ism,-1>
 template <int M_ism>
 struct polynomial<M_ism,-2>
 {
-	XTAL_SET I_sgn = signum_n<(M_ism&1)^1, -1>;
+	XTAL_SET I_sgn = sign_n<(M_ism&1)^1, -1>;
 
 	using superkind = polynomial<M_ism,-3>;
 

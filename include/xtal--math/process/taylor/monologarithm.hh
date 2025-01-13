@@ -46,7 +46,7 @@ struct monologarithm<M_ism, -0>
 		noexcept -> auto
 		{
 			using _op = bond::operate<decltype(o)>;
-			auto constexpr k = _op::alpha_f(signum_n<I_ism, -1>);
+			auto constexpr k = _op::alpha_f(sign_n<I_ism, -1>);
 
 			XTAL_IF0
 			XTAL_0IF (0 <= N_lim) {return  superprocess::template function<N_lim>(XTAL_REF_(o));}
@@ -167,8 +167,8 @@ XTAL_DEF_(short)
 XTAL_LET monologarithm_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
-	XTAL_LET N_sgn = signum_n<N>;
-	XTAL_LET N_abs = magnum_n<N>;
+	XTAL_LET N_sgn =   sign_n<N>;
+	XTAL_LET N_abs = N*sign_n<N>;
 	return monologarithm_t<1*N_sgn>::template function<N_abs>(XTAL_REF_(oo)...);
 }
 

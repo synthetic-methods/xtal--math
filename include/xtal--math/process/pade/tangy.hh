@@ -39,7 +39,7 @@ struct   tangy<>
 template <int M_ism> requires in_n<M_ism, 1, 2>
 struct tangy<M_ism,-0>
 {
-	static constexpr int I_sgn = signum_n<(M_ism&1)^1, -1>;
+	static constexpr int I_sgn = sign_n<(M_ism&1)^1, -1>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -110,8 +110,8 @@ struct tangy<M_ism, 1>
 			using U_alpha = typename _op::alpha_type;
 			using W_alpha = arrange::couple_t<U_alpha[2]>;
 
-			auto u_abs = u, u_sgn = _op::design_f(u_abs);
-			auto v_abs = v, v_sgn = _op::design_f(v_abs);// v_sgn *= *_op::haplo_1;
+			auto u_abs = u, u_sgn = signum_t<>::edit(u_abs);
+			auto v_abs = v, v_sgn = signum_t<>::edit(v_abs);// v_sgn *= *_op::haplo_1;
 
 			W_alpha co(v_abs < u_abs);
 			W_alpha up{v, u_abs}; up *= co;

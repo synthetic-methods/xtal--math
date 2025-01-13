@@ -34,7 +34,7 @@ struct discarded<0, M_aux>
 template <int M_aux>
 struct discarded<1, M_aux>
 {
-	XTAL_SET M_pow = signum_n<M_aux, 1>;
+	XTAL_SET M_pow = sign_n<M_aux, 1>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -143,7 +143,7 @@ struct discarded<2, M_aux>
 		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(u)>;
-			XTAL_LET v = _op::alpha_f(signum_n<(M_aux&1)^1, -1>);
+			XTAL_LET v = _op::alpha_f(sign_n<(M_aux&1)^1, -1>);
 			return S_::template method<Is...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
 		})
 		template <auto ...Is>
@@ -152,7 +152,7 @@ struct discarded<2, M_aux>
 		noexcept -> decltype(auto)
 		{
 			using _op = bond::operate<decltype(u)>;
-			XTAL_LET v = _op::alpha_f(signum_n<(M_aux&1)^1, -1>);
+			XTAL_LET v = _op::alpha_f(sign_n<(M_aux&1)^1, -1>);
 			return S_::template function<Is...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
 		};
 
