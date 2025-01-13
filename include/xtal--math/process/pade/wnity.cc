@@ -20,8 +20,8 @@ noexcept -> bool
 	auto const u = wnity_t<1>::template function<N_lim>(t);
 	auto const v = wnity_t<1>::template function<N_inf>(t);
 	return true
-		and bond::computrim_f<N_trim>(get<0>(u)) == bond::computrim_f<N_trim>(get<0>(v))
-		and bond::computrim_f<N_trim>(get<1>(u)) == bond::computrim_f<N_trim>(get<1>(v))
+		and check_f<N_trim>(get<0>(u), get<0>(v))
+		and check_f<N_trim>(get<1>(u), get<1>(v))
 		and true;
 }
 

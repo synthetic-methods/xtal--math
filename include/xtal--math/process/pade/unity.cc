@@ -19,7 +19,7 @@ noexcept -> bool
 	int constexpr N_inf = -1;
 	auto const u = unity_t<1>::template function<N_lim>(t);
 	auto const v = unity_t<1>::template function<N_inf>(t);
-	return bond::computrim_f<N_trim>(u) == bond::computrim_f<N_trim>(v);
+	return check_f<N_trim>(u, v);
 }
 
 

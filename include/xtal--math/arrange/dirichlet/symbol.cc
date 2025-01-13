@@ -57,8 +57,8 @@ TAG_("symbol")
 		W m {process::math::power_f<K>(w)};
 		_detail::apply_to<[] (auto &&z) XTAL_0FN_(arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
 
-		_detail::apply_to<bond::computrim_f<16>>(m);
-		_detail::apply_to<bond::computrim_f<16>>(w);
+		_detail::apply_to<XTAL_FUN_(_op::template trim_f<16>)>(m);
+		_detail::apply_to<XTAL_FUN_(_op::template trim_f<16>)>(w);
 
 		TRUE_(m == W{0, 1,-1, 1,-1,-1, 1, 1,-1, 1,-1});
 		TRUE_(w == W{0, 0, -1, 2, 3, 1,-4,-2,-3, 4,-5});
@@ -100,8 +100,8 @@ TAG_("symbol")
 		W m {process::math::power_f<K>(w)};
 		_detail::apply_to<[] (auto &&z) XTAL_0FN_(arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
 
-		_detail::apply_to<bond::computrim_f<16>>(m);
-		_detail::apply_to<bond::computrim_f<16>>(w);
+		_detail::apply_to<XTAL_FUN_(_op::template trim_f<16>)>(m);
+		_detail::apply_to<XTAL_FUN_(_op::template trim_f<16>)>(w);
 
 		TRUE_(m == W{0, 1, 1,-1, 1,-1,-1});
 		TRUE_(w == W{0, 0, 2, 1,-2,-1,-3});
@@ -118,8 +118,8 @@ TAG_("symbol")
 		W m {process::math::power_f<K>(w)};
 		_detail::apply_to<[] (auto &&z) XTAL_0FN_(arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
 
-		_detail::apply_to<bond::computrim_f<16>>(m);
-		_detail::apply_to<bond::computrim_f<16>>(w);
+		_detail::apply_to<XTAL_FUN_(_op::template trim_f<16>)>(m);
+		_detail::apply_to<XTAL_FUN_(_op::template trim_f<16>)>(w);
 
 		TRUE_(w == W{0, 2, 1});
 
@@ -133,7 +133,7 @@ TAG_("symbol")
 		using W = symbol_t<T_alpha[N]>;
 		W w; w.characterize();
 
-		_detail::apply_to<bond::computrim_f<16>>(w);
+		_detail::apply_to<XTAL_FUN_(_op::template trim_f<16>)>(w);
 
 		TRUE_(w == W{0, 1, 1,-1, 1,-1,-1});
 
@@ -150,8 +150,8 @@ TAG_("symbol")
 		W m{process::math::power_f<K>(w)};
 		_detail::apply_to<[] (auto &&z) XTAL_0FN_(arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
 
-		_detail::apply_to<bond::computrim_f<16>>(m);
-		_detail::apply_to<bond::computrim_f<16>>(w);
+		_detail::apply_to<XTAL_FUN_(_op::template trim_f<16>)>(m);
+		_detail::apply_to<XTAL_FUN_(_op::template trim_f<16>)>(w);
 
 		TRUE_(m == W{0, 1,-1,-1, 1});
 		TRUE_(w == W{w[0], 0, 1,-1, w[M]});
@@ -165,7 +165,7 @@ TAG_("symbol")
 
 		using W = symbol_t<T_alpha[N]>;
 		W w; w.template characterize<2>();
-		_detail::apply_to<bond::computrim_f<16>>(w);
+		_detail::apply_to<XTAL_FUN_(_op::template trim_f<16>)>(w);
 	//	echo(w);
 	}
 	/***/
