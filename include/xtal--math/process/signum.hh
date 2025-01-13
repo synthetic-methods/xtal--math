@@ -27,10 +27,53 @@ struct signum
 		template <auto ...Ns>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(auto const &o)
-		noexcept -> XTAL_ALL_(o)
+		noexcept -> auto
+		requires un_n<anyplex_variable_q<decltype(o)>>
 		{
 			return (0 < o) - (o < 0) + (o == 0);
 		}
+		/**/
+		template <auto ...Ns>
+		XTAL_DEF_(short,static)
+		XTAL_LET function(ordinal_variable_q auto o)
+		noexcept -> auto
+		{
+			using _op    = bond::operate<decltype(o)>;
+			using _alpha = typename _op::alpha_type;
+			o  -= 1;
+			o >>= _op::positive.depth;
+			//\
+			if constexpr (_op::IEC&559) {
+			if constexpr (false) {
+				o &= _op::sign.mask;
+				o |= _op::unit.mask;
+				return _xtd::bit_cast<_alpha>(o);
+			}
+			else {
+				o |= 1;
+				return    static_cast<_alpha>(o);
+			}
+		}
+		template <auto ...Ns>
+		XTAL_DEF_(short,static)
+		XTAL_LET function(cardinal_variable_q auto o)
+		noexcept -> auto
+		{
+			using _op    = bond::operate<decltype(o)>;
+			using _alpha = typename _op::alpha_type;
+			using _delta = typename _op::delta_type;
+			//\
+			if constexpr (_op::IEC&559) {
+			if constexpr (false) {
+				o <<= _op::positive.depth;
+				o  ^= _op::sign.mask|_op::unit.mask;
+				return _xtd::bit_cast<_alpha>(o);
+			}
+			else {
+				return function(_xtd::bit_cast<_delta>(o&one));
+			}
+		}
+		/***/
 		template <auto ...Ns>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(real_variable_q auto const &o)
@@ -48,6 +91,34 @@ struct signum
 			return o*dot_f<-2>(o);
 		}
 
+		template <int N_side=0> requires in_n<N_side, 1, 0, -1>
+		XTAL_DEF_(long)
+		XTAL_SET edit(ordinal_variable_q auto &u)
+		noexcept -> auto
+		{
+			auto const v = bond::bit_sign_f(u);
+			XTAL_IF0
+			XTAL_0IF (N_side == -1) {
+				u &= v;
+				u += v;
+				u ^= v;
+			}
+			XTAL_0IF (N_side ==  0) {
+				u += v;
+				u ^= v;
+			}
+			XTAL_0IF (N_side ==  1) {
+				u &=~v;
+			}
+			return function(v);
+		}
+		template <int N_side=0> requires in_n<N_side, 1, 0, -1>
+		XTAL_DEF_(long)
+		XTAL_SET edit(cardinal_variable_q auto &u)
+		noexcept -> auto
+		{
+			return edit<N_side>(reinterpret_cast<bond::bit_delta_t<XTAL_ALL_(u)> &>(u));
+		}
 		template <auto ...Ns>
 		XTAL_DEF_(short,static)
 		XTAL_LET edit(real_variable_q auto &o)

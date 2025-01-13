@@ -49,7 +49,7 @@ struct squishy<M_ism>
 template <int M_ism> requires in_n<M_ism, 1, 2>
 struct squishy<M_ism>
 {
-	static constexpr int I_sgn = signum_n<(M_ism&1)^1, -1>;
+	static constexpr int I_sgn = sign_n<(M_ism&1)^1, -1>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>

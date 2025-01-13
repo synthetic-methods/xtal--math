@@ -42,7 +42,30 @@ TAG_("signum")
 		TRUE_(check_f<-1>(aphex, aphex_mgn));
 
 	};
+	TRY_("assigned_f( 1)")
+	{
+		TRUE_( 1. == signum_f(T_sigma{ 1}));
+		TRUE_( 1. == signum_f(T_delta{ 1}));
+		TRUE_( 1. == signum_f(T_alpha{ 1}));
+	//	TRUE_( 1. == signum_f(true));
+
+	};
+	TRY_("assigned_f( 0)")
+	{
+		TRUE_(-1. == signum_f(T_sigma{ 0}));
+		TRUE_(-1. == signum_f(T_delta{ 0}));
+	//	TRUE_(-1. == signum_f(T_alpha{-0}));
+	//	TRUE_(-1. == signum_f(false));
+
+	};
+	TRY_("assigned_f(-1)")
+	{
+		TRUE_(-1. == signum_f(T_delta{-1}));
+		TRUE_(-1. == signum_f(T_alpha{-1}));
+
+	};
 }
+////////////////////////////////////////////////////////////////////////////////
 /***/
 
 ///////////////////////////////////////////////////////////////////////////////

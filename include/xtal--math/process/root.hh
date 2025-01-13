@@ -36,8 +36,8 @@ noexcept -> decltype(auto)
 template <int M_exp, int M_cut>
 struct root
 {
-	XTAL_SET M_exp_mag = magnum_n<M_exp>;
-	XTAL_SET M_exp_sgn = signum_n<M_exp>;
+	XTAL_SET M_exp_sgn = sign_n<M_exp>;
+	XTAL_SET M_exp_mag = M_exp*M_exp_sgn;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -119,7 +119,7 @@ struct root
 				y_re *= root_t<-M_exp_mag, 1>::template function<I_lim>(v_re);
 				y_im *= root_t<-M_exp_mag, 1>::template function<I_lim>(v_im);
 
-				auto const y_im_sgn = M_exp_sgn*_op::assigned_f(x_im);
+				auto const y_im_sgn = M_exp_sgn*_xtd::copysign(_op::alpha_1, x_im);
 				return {y_re, y_im*y_im_sgn};
 			}
 			XTAL_0IF_(else) {
