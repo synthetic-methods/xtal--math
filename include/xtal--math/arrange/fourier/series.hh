@@ -1,10 +1,10 @@
 #pragma once
 #include "./any.hh"
 #include "./serial.hh"
-#include "../hadamard/series.hh"
 
-#include "../../process/any.hxx"
+#include "../../process/power.hh"
 #include "../../process/pade/unity.hh"
+
 
 XTAL_ENV_(push)
 namespace xtal::arrange::math::fourier
@@ -128,7 +128,7 @@ struct series<A>
 					auto constexpr UM = U0 + _1*M;
 					auto constexpr WM = W0 + _2*M;
 					
-					auto const w = process::math::square_f(get<UM>(s));
+					auto const w = process::math::power_f<2>(get<UM>(s));
 					get<WM + _0>(s) =   w;
 					get<WM + _1>(s) = u*w;
 				}
@@ -295,7 +295,7 @@ s
 		struct transverse
 		{
 			template <class R>
-			using holotype = typename hadamard::series<A>::template homotype<R>;
+			using holotype = typename group<A, _std::multiplies<void>>::template homotype<R>;
 
 			template <class R>
 			class homotype : public holotype<R>

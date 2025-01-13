@@ -4,4 +4,3 @@
 
 #include "./dirichlet/all.cc"
 #include "./fourier/all.cc"
-#include "./hadamard/all.cc"
