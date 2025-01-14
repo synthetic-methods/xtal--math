@@ -75,7 +75,7 @@ struct filtering<U_pole[N_pole]>
 					case -1: {
 						XTAL_LET N_thresh = _op::haplo_f(7);
 						XTAL_LET M_thresh = square_f(N_thresh);
-						using    U_poles_ = arrange::couple_t<U_pole[N_pole]>;
+						using    U_poles_ = arrange::collate_t<U_pole[N_pole]>;
 						//\note\
 						Because `N_ord` may be less than `N_pole`, \
 						access to `U_poles_` requres resetting the `cache` when `N_ord` changes. \

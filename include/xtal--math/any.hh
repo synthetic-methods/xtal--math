@@ -15,7 +15,7 @@ namespace xtal
 
 //\
 template <class U>	using    duple_t = bond::couple_t<U, U>;
-template <class U>	using    duple_t = arrange::couple_t<U[2]>;
+template <class U>	using    duple_t = arrange::collate_t<U[2]>;
 template <class T>	concept  duple_q = bond::pack_q<T> and bond::pack_size_n<T> == 2;
 
 template <int N_arity=-1> requires (N_arity == -1)
@@ -28,7 +28,7 @@ noexcept -> decltype(auto)
 	/*/
 	//\
 	return bond::couple_f(XTAL_REF_(xs)...);
-	return arrange::couple_f(XTAL_REF_(xs)...);
+	return arrange::collate_f(XTAL_REF_(xs)...);
 	/***/
 }
 template <int N_arity=-1> requires (N_arity ==  0)

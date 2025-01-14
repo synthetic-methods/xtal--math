@@ -98,8 +98,8 @@ struct filter<U_pole[N_pole]>
 				return XTAL_REF_(x_input);
 			}
 			XTAL_0IF (0 == N_top) {
-				using U_outputs = arrange::couple_t<X[N_ord + 1]>;
-				using U_scalars = arrange::couple_t<W[N_ord + 1]>;
+				using U_outputs = arrange::collate_t<X[N_ord + 1]>;
+				using U_scalars = arrange::collate_t<W[N_ord + 1]>;
 				union U_io {U_outputs outputs; U_scalars scalars;};
 
 				U_io io{[=] () XTAL_0FN -> U_scalars {
@@ -136,9 +136,9 @@ struct filter<U_pole[N_pole]>
 			using X = XTAL_ALL_(x_input);
 			using W = absolve_u<X>;
 
-			using U_scalars_ = arrange::couple_t<W[N_ord]>;
-			using U_outputs_ = arrange::couple_t<X[N_ord]>;
-			using U_poles_   = arrange::couple_t<X[N_ord]>;
+			using U_scalars_ = arrange::collate_t<W[N_ord]>;
+			using U_outputs_ = arrange::collate_t<X[N_ord]>;
+			using U_poles_   = arrange::collate_t<X[N_ord]>;
 
 			auto  scalars = io.scalars; auto scalars_ = scalars.self(constant_t<N_ord>{});
 			auto &outputs = io.outputs; auto outputs_ = outputs.self(constant_t<N_ord>{});

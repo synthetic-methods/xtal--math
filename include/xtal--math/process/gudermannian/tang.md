@@ -36,7 +36,7 @@ So, for `Tan` we wrap at `1/4`, and if outside, need to invert...
 For `ArcTan`, need to invert the argument and adjust by +/-0.5...
 
 		using U_alpha = typename _op::alpha_type;
-		using W_alpha = arrange::couple_t<U_alpha[2]>;
+		using W_alpha = arrange::collate_t<U_alpha[2]>;
 		auto u = wrap_f(o), n = _op::truncate_f<0,-2>(XTAL_MOV_(u));
 		auto v = W_alpha(n == 0)*W_alpha{u, root_f<-1>(u)};
 	//	

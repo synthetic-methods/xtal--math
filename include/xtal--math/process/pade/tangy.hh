@@ -108,7 +108,7 @@ struct tangy<M_ism, 1>
 			using _op = bond::operate<decltype(v), decltype(u)>;
 			using U_aphex = typename _op::aphex_type;
 			using U_alpha = typename _op::alpha_type;
-			using W_alpha = arrange::couple_t<U_alpha[2]>;
+			using W_alpha = arrange::collate_t<U_alpha[2]>;
 
 			auto u_abs = u, u_sgn = signum_t<>::edit(u_abs);
 			auto v_abs = v, v_sgn = signum_t<>::edit(v_abs);// v_sgn *= *_op::haplo_1;

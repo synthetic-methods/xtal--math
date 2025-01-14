@@ -25,7 +25,7 @@ noexcept -> auto
 
 ////////////////////////////////////////////////////////////////////////////////
 ///\
-Extends `couple` with Dirichlet characterization and modulo access. \
+Extends `collate` with Dirichlet characterization and modulo access. \
 
 template <vector_q A>
 struct symbol<A>
@@ -33,7 +33,7 @@ struct symbol<A>
 	using _op = bond::operate<A>;
 	
 	template <class T>
-	using endotype = typename couple<A>::template homotype<T>;
+	using endotype = typename collate<A>::template homotype<T>;
 
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<symbol_t>>;
