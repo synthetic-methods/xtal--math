@@ -240,10 +240,9 @@ struct logarithm<-1, 1>
 			using _op = bond::operate<decltype(o)>;
 			using U_alpha = typename _op::alpha_type;
 
-			U_alpha constexpr _N_log2 = one/logarithm_f(2.);
-			U_alpha constexpr  N_log2 =     logarithm_f(2.);
-			o *= _N_log2; auto const n = round(o); o -= n;
-			o *=  N_log2;
+			U_alpha constexpr N_log2 = _std::numbers::ln2_v<U_alpha>;
+			o *= one/N_log2; auto const n = round(o); o -= n;
+			o *=     N_log2;
 			return ldexp(logarithm_t<-1>::template function<N_lim>(XTAL_MOV_(o)), XTAL_MOV_(n));
 		}
 

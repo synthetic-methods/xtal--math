@@ -15,14 +15,14 @@ namespace xtal::process::math::taylor::_test
 /**/
 TAG_("sine")
 {
-	using _op = bond::operate<size_type>;
+	using _op = bond::operating;
 	using T_sigma = typename _op::sigma_type;
 	using T_delta = typename _op::delta_type;
 	using T_alpha = typename _op::alpha_type;
 
 	TRY_("task")
 	{
-		double constexpr N_2pi = 6.283185307179586476925286766559005768L;
+		double constexpr N_2pi = two*_std::numbers::pi_v<T_alpha>;
 		int constexpr N_lim = 0b111;
 		int constexpr N_bas = 0;// e
 		

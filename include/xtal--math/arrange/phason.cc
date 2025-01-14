@@ -17,7 +17,6 @@ TAG_("phason")
 {
 	using U_op = bond::operate<int>;
 	using T_op = bond::operate<double>;
-	using T_iota  = typename T_op:: iota_type;
 	using T_delta = typename T_op::delta_type;
 	using T_sigma = typename T_op::sigma_type;
 	using T_alpha = typename T_op::alpha_type;

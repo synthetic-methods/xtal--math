@@ -1,6 +1,6 @@
 #pragma once
 #include "./any.cc"
-#include "./squishy.hh"// testing...
+#include "./disunity.hh"// testing...
 
 
 
@@ -13,7 +13,7 @@ namespace xtal::process::math::pade::_test
 
 ////////////////////////////////////////////////////////////////////////////////
 /*/
-TAG_("squishy")
+TAG_("disunity")
 {
 	using _op = bond::operating;
 	using T_sigma = typename _op::sigma_type;
@@ -23,9 +23,9 @@ TAG_("squishy")
 
 	TRY_("task")
 	{
-		TRUE_(check_f<22>(squishy_f<-1, -1>(pow(T_aphex {2, 3}, -2.0)), T_aphex {2, 3}));
-		TRUE_(check_f<22>(pow(T_aphex {2, 3}, 2.0), squishy_f<(+1), 1>(T_aphex {2, 3})));
-		TRUE_(check_f<22>(pow(T_aphex {2, 3}, 0.5), squishy_f<(-1), 1>(T_aphex {2, 3})));
+		TRUE_(check_f<22>(disunity_f<-1, -1>(pow(T_aphex {2, 3}, -2.0)), T_aphex {2, 3}));
+		TRUE_(check_f<22>(pow(T_aphex {2, 3}, 2.0), disunity_f<(+1), 1>(T_aphex {2, 3})));
+		TRUE_(check_f<22>(pow(T_aphex {2, 3}, 0.5), disunity_f<(-1), 1>(T_aphex {2, 3})));
 
 	}
 }

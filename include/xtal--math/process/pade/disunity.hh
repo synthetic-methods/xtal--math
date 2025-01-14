@@ -10,23 +10,26 @@ XTAL_ENV_(push)
 namespace xtal::process::math::pade
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
+///\
+Provides result-expansion (w.r.t. argument-reduction) for `unity`, \
+i.e. squaring for both circular and hyperbolic results.
 
-template <int M_ism=1> struct   squishy;
-template <int M_ism=1> using    squishy_t = process::confined_t<squishy<M_ism>>;
+template <int M_ism=1> struct   disunity;
+template <int M_ism=1> using    disunity_t = process::confined_t<disunity<M_ism>>;
 
 template <int M_ism=1, auto ...Ns>
 XTAL_DEF_(short)
-XTAL_LET squishy_f(auto &&o)
+XTAL_LET disunity_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return squishy_t<M_ism>::template function<Ns...>(XTAL_REF_(o));
+	return disunity_t<M_ism>::template function<Ns...>(XTAL_REF_(o));
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int M_ism> requires in_n<M_ism, 0>
-struct squishy<M_ism>
+struct disunity<M_ism>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -47,7 +50,7 @@ struct squishy<M_ism>
 	};
 };
 template <int M_ism> requires in_n<M_ism, 1, 2>
-struct squishy<M_ism>
+struct disunity<M_ism>
 {
 	static constexpr int I_sgn = sign_n<(M_ism&1)^1, -1>;
 

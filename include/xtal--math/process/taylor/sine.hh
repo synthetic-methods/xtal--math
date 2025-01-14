@@ -139,7 +139,7 @@ struct sine<M_ism, -2>
 
 				bond::seek_backward_f<N>([&] (auto i)
 					XTAL_0FN_(x = term_f(_op::ratio_f(1, 1 + 2*i)
-					,	-_op::template ratio_f(1 + 2*i, 2 + 2*i)
+					,	-_op::ratio_f(1 + 2*i, 2 + 2*i)
 					,	w
 					,	x
 					)

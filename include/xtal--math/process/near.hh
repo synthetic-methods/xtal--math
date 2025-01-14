@@ -34,7 +34,7 @@ struct near
 			using U_op = bond::operate<U>;
 
 			--n;
-			bond::seek_forward_f<bond::bit_floor_f(U_op::full.depth)>([&]<constant_q I> (I) XTAL_0FN {n |= n >> (1 << I{});});
+			bond::seek_forward_f<bond::bit_ceiling_f(U_op::full.depth)>([&]<constant_q I> (I) XTAL_0FN {n |= n >> (1 << I{});});
 			++n;
 			return n;
 		}

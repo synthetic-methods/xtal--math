@@ -14,7 +14,7 @@ namespace xtal::arrange::math
 Extends `grade` as a fixed-point fractional/cyclic value with a bisected representation. \
 \
 Allows floating-point construction via `std::initializer_list`, \
-and access to the floating-point value via `operator()`/`operator(size_type)`. \
+and access to the floating-point value via `operator()`/`operator(int)`. \
 \
 Implements truncated floating-point multiplication (affecting all elements) \
 and addition (affecting only the initial element). \
@@ -127,30 +127,9 @@ struct phason<A>
 		using S_::operator >>=;
 		using S_::operator <<=;
 
-		XTAL_DEF_(inline)
-		XTAL_LET operator >>=(initializer_s<coordinate_type>  o)
-		noexcept -> auto &
-		{
-			auto i0 = S_::data();
-			_detail::move_to<XTAL_FUN_(T::ordinate)>(i0, XTAL_REF_(o));
-			return self();
-		}
-		XTAL_DEF_(inline)
-		XTAL_LET operator >>=(iterable_q auto &&o)
-		noexcept -> auto &
-		{
-			auto i0 = S_::data();
-			_detail::move_to<XTAL_FUN_(T::ordinate)>(i0, XTAL_REF_(o));
-			return self();
-		}
-		XTAL_DEF_(inline)
-		XTAL_LET operator >>=(iterable_q auto const &o)
-		noexcept -> auto &
-		{
-			auto i0 = S_::data();
-			_detail::copy_to<XTAL_FUN_(T::ordinate)>(i0, XTAL_REF_(o));
-			return self();
-		}
+		XTAL_DEF_(inline) XTAL_LET operator >>=(initializer_s<coordinate_type>  o) noexcept -> auto & {_detail::move_to<XTAL_FUN_(T::ordinate)>(S_::data(), XTAL_REF_(o)); return self();}
+		XTAL_DEF_(inline) XTAL_LET operator >>=(iterable_q auto               &&o) noexcept -> auto & {_detail::move_to<XTAL_FUN_(T::ordinate)>(S_::data(), XTAL_REF_(o)); return self();}
+		XTAL_DEF_(inline) XTAL_LET operator >>=(iterable_q auto const          &o) noexcept -> auto & {_detail::copy_to<XTAL_FUN_(T::ordinate)>(S_::data(), XTAL_REF_(o)); return self();}
 		
 		XTAL_DEF_(inline)
 		XTAL_LET operator <<=(initializer_s<coordinate_type> o)
@@ -202,7 +181,7 @@ struct phason<A>
 		XTAL_LET operator /= (simplex_variable_q auto const &f)
 		noexcept -> auto &
 		{
-			return operator*=(one/f);
+			return operator*=(U_op::alpha_1/f);
 		}
 	//	XTAL_DEF_(inline)
 		XTAL_LET operator *= (real_variable_q auto const &f)
@@ -211,8 +190,8 @@ struct phason<A>
 			using _op = bond::operate<decltype(f)>;
 			auto &s = reinterpret_cast<phason_t<inordinate_type[N_data]> &>(self());
 			/*/
-			size_type constexpr M_bias = T_op::half.depth >> T_op::half.width;
-			size_type constexpr M_size = T_op::half.depth - M_bias;
+			unsigned constexpr M_bias = T_op::half.depth >> T_op::half.width;
+			unsigned constexpr M_size = T_op::half.depth - M_bias;
 			auto [m, n] = bond::bit_representation_f(f);
 			m >>= n - M_size;
 			s >>=     M_size;
@@ -220,8 +199,8 @@ struct phason<A>
 			/*/
 			XTAL_IF0
 			XTAL_0IF (1*sizeof(ordinate_type) == sizeof(coordinate_type)) {
-				int constexpr M_bias = T_op::half.depth >> T_op::half.width;
-				int constexpr M_size = T_op::half.depth - M_bias;
+				unsigned constexpr M_bias = T_op::half.depth >> T_op::half.width;
+				unsigned constexpr M_size = T_op::half.depth - M_bias;
 				auto [m, n] = bond::bit_representation_f(f);
 				m >>= n - M_size;
 				s >>=     M_size;
@@ -251,8 +230,21 @@ struct phason<A>
 		///\
 		Offsets the first element. \
 		
-		using S_::operator-=;
-		using S_::operator+=;
+	//	using S_::operator-=;
+	//	using S_::operator+=;
+
+		XTAL_DEF_(inline)
+		XTAL_LET operator -= (auto const &f)
+		noexcept -> auto &
+		{
+			return S_::operator-=(f);
+		}
+		XTAL_DEF_(inline)
+		XTAL_LET operator += (auto const &f)
+		noexcept -> auto &
+		{
+			return S_::operator+=(f);
+		}
 
 		XTAL_DEF_(inline)
 		XTAL_LET operator -= (simplex_variable_q auto const &f)
