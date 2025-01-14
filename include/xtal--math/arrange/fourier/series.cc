@@ -36,8 +36,8 @@ TAG_("solid", "series")
 	}
 	TRY_("generation")
 	{
-		using U_alpha = couple_t<T_alpha[1<<1]>;
-		using U_aphex = couple_t<T_aphex[1<<1]>;
+		using U_alpha = collate_t<T_alpha[1<<1]>;
+		using U_aphex = collate_t<T_aphex[1<<1]>;
 		using W_aphex = series_t<U_aphex[1<<4]>;
 
 		W_aphex w_aphex; w_aphex.generate(T_aphex{0, 1}, T_alpha{2.0});

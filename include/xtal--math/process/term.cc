@@ -21,8 +21,8 @@ TAG_("math")
 	using U_alpha = typename _op::alpha_type;
 	using U_aphex = typename _op::aphex_type;
 	
-	using W_alpha = arrange::couple_t<U_alpha[2]>;
-	using W_aphex = arrange::couple_t<U_aphex[2]>;
+	using W_alpha = arrange::collate_t<U_alpha[2]>;
+	using W_aphex = arrange::collate_t<U_aphex[2]>;
 
 	TRY_("term")
 	{

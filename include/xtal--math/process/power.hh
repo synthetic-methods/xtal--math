@@ -124,7 +124,7 @@ struct   power<M_exp, Ms...>
 		{
 			using O = XTAL_ALL_(o);
 			XTAL_IF0
-			XTAL_0IF (arrange::couple_q<O>) {
+			XTAL_0IF (arrange::collate_q<O>) {
 				return O::template map_f<XTAL_FUN_(function<Ns...>)>(o);
 			}
 			XTAL_0IF (M_exp   == 0) {return                             O{1};}

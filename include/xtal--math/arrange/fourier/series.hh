@@ -74,7 +74,7 @@ struct series<A>
 		}
 
 		//\
-		template <int N_count=N_data> requires complex_field_q<U_v1> and same_q<couple_t<U_v1[2]>, U_data>
+		template <int N_count=N_data> requires complex_field_q<U_v1> and same_q<collate_t<U_v1[2]>, U_data>
 		template <int N_count=N_data> requires complex_field_q<U_v1> and bond::dipack_q<U_data>
 		XTAL_DEF_(inline)
 		XTAL_LET generate(U_v1 const &u1, U_v2 const &u2)
@@ -83,7 +83,7 @@ struct series<A>
 			auto &s = self();
 
 			using W1  = U_v1;
-			using U2  = couple_t<U_v2[2]>;
+			using U2  = collate_t<U_v2[2]>;
 			using W1_ = series_t<W1[N_data<<1U]>;
 			using U2_ = series_t<U2[N_data<<1U]>;
 			static_assert(sizeof(W1_) == sizeof(U2_));
