@@ -57,8 +57,10 @@ struct phasor<A, As...>
 		using S_ = bond::compose_s<S, superkind>;
 		using U_ = typename S_::head_type;
 
-	public:// ACCESS
+	public:// CONSTRUCT
 		using S_::S_;
+
+	public:// ACCESS
 		using S_::self;
 		using S_::head;
 
@@ -77,7 +79,7 @@ struct phasor<A, As...>
 			return S_::template bias<coordinate_type>();
 		}
 
-	public:// EVALUATION
+	public:// OPERATE
 		///\todo\
 		Use `provision::example` to manage downsampling \
 		e.g. by integer multiplication followed by normalization. \

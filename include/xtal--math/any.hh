@@ -65,7 +65,7 @@ XTAL_LET construxion_f(Xs &&...xs)
 noexcept -> auto
 {
 	using X_ = common_t<Xs...>;
-	return operative_f<invoke_f<Y<X_>>>(XTAL_REF_(xs)...);
+	return operative_f<invoke_n<Y<X_>>>(XTAL_REF_(xs)...);
 }
 XTAL_DEF_(short)
 XTAL_LET complexion_f(auto &&...xs)
@@ -92,7 +92,7 @@ XTAL_LET construxion_f(Xs &&...xs)
 noexcept -> auto
 {
 	using W = common_t<eigenvalue_t<Xs>...>;
-	return operative_f<invoke_f<Y<W>>>(XTAL_REF_(xs)...);
+	return operative_f<invoke_n<Y<W>>>(XTAL_REF_(xs)...);
 }
 /**/
 XTAL_DEF_(short)
