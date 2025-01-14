@@ -127,26 +127,6 @@ TAG_("phasor")
 			z_chi >>= z_render++ >> occur::review_f(w_data);
 
 		};
-//		EST_("procession (processor in-place: `Eigen...)")
-//		{
-//			z_eig >>= z_render++ >> occur::review_f(e_data);
-//
-//		};
-//		TRY_("procession (processor in-place: `Eigen...)")
-//		{
-//			/**/
-//			z_eig >>= z_render++ >> occur::review_f(e_data);
-//			/*/
-//			z_eig >>= z_render++;
-//			_std::copy(z_eig.state().begin(), N_data, e_data.begin());
-//			/***/
-//
-//			for (int i = 0; i < 0x10; ++i) {
-//		//		echo(z_eig.state()[i](0));
-//				echo(z_data[0][i], z_data[1][i]);
-//			}
-//			echo();
-//		};
 	}
 	/**/
 	TRY_("reprogression")
@@ -167,6 +147,8 @@ TAG_("phasor")
 		x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-18>(2.0*x_source(0), x_target(0)));
 		x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-18>(2.0*x_source(0), x_target(0)));
 	}
+	/***/
+	/**/
 	TRY_("progression")
 	{
 		T_alpha x_d4 = _op::haplo_f(4);
@@ -192,6 +174,8 @@ TAG_("phasor")
 		TRUE_(y_phi() == X_phi{-1*x_d4, x_d3});
 
 	}
+	/***/
+	/**/
 	TRY_("procession in-place")
 	{
 		T_alpha x_d4 = _op::haplo_f(4);

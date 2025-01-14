@@ -99,7 +99,7 @@ struct phason<A>
 		:	homotype(size_type{0})
 		{}
 		
-		XTAL_NEW_(explicit) homotype(size_type const n)
+		XTAL_NEW_(explicit) homotype(XTAL_SYN_(size_type) auto const n)
 		noexcept
 		:	S_(n)
 		{}
