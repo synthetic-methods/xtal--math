@@ -74,7 +74,7 @@ struct series<A>
 		}
 
 		//\
-		template <size_type N_count=N_data> requires complex_field_q<U_v1> and same_q<couple_t<U_v1[2]>, U_data>
+		template <int N_count=N_data> requires complex_field_q<U_v1> and same_q<couple_t<U_v1[2]>, U_data>
 		template <int N_count=N_data> requires complex_field_q<U_v1> and bond::dipack_q<U_data>
 		XTAL_DEF_(inline)
 		XTAL_LET generate(U_v1 const &u1, U_v2 const &u2)
@@ -190,8 +190,8 @@ struct series<A>
 			I constexpr N_width = N_data;
 			I const     n_width = that.size();
 			I const     h_width = n_width >> 1U; assert(1 <= h_width);
-			I const     n_depth = bond::bit_floor_f(n_width); assert(n_width == I{1} << n_depth);
-			I constexpr N_depth = bond::bit_floor_f(N_width); assert(n_depth         <= N_depth);
+			I const     n_depth = bond::bit_ceiling_f(n_width); assert(n_width == I{1} << n_depth);
+			I constexpr N_depth = bond::bit_ceiling_f(N_width); assert(n_depth         <= N_depth);
 
 		//	Move all entries to their bit-reversed locations:
 			for (I h{}; h < h_width; ++h) {

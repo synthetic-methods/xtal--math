@@ -117,7 +117,8 @@ struct signum
 		XTAL_SET edit(cardinal_variable_q auto &u)
 		noexcept -> auto
 		{
-			return edit<N_side>(reinterpret_cast<bond::bit_delta_t<XTAL_ALL_(u)> &>(u));
+			using _op = bond::operate<decltype(u)>;
+			return edit<N_side>(reinterpret_cast<typename _op::delta_type &>(u));
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(short,static)

@@ -18,7 +18,7 @@ XTAL_DEF_(short)
 XTAL_LET dilate_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return dilate_t<M_val>::template function(XTAL_REF_(o));
+	return dilate_t<M_val>::function(XTAL_REF_(o));
 }
 
 

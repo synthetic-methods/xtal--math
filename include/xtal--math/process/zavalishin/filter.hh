@@ -140,8 +140,8 @@ struct filter<U_pole[N_pole]>
 			using U_outputs_ = arrange::couple_t<X[N_ord]>;
 			using U_poles_   = arrange::couple_t<X[N_ord]>;
 
-			auto  scalars = io.scalars; auto scalars_ = scalars.capsize(constant_t<N_ord>{});
-			auto &outputs = io.outputs; auto outputs_ = outputs.capsize(constant_t<N_ord>{});
+			auto  scalars = io.scalars; auto scalars_ = scalars.self(constant_t<N_ord>{});
+			auto &outputs = io.outputs; auto outputs_ = outputs.self(constant_t<N_ord>{});
 
 			auto  cachet  = S_::template cache<U_poles_, U_poles_>();
 		//	NOTE: Can't destructure then capture...

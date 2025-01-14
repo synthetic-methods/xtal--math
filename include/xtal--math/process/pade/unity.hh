@@ -1,7 +1,8 @@
 #pragma once
 #include "./any.hh"
 
-#include "./squishy.hh"
+#include "./impunity.hh"
+#include "./disunity.hh"
 #include "./tangy.hh"
 #include "../taylor/logarithm.hh"
 
@@ -41,7 +42,7 @@ using    unity_t = process::confined_t<unity<M_ism, As...>, unity<>>;
 template <int M_ism> requires in_n<M_ism, 0, 1, 2>
 struct unity<M_ism> : unity<>
 {
-	using superprocess = process::lift_t<squishy<M_ism>, _detail::subunity<M_ism,-0>>;
+	using superprocess = process::lift_t<disunity<M_ism>, impunity<M_ism>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
