@@ -149,7 +149,7 @@ struct tangy<M_ism,-2>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(long,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(simplex_field_q auto &&o)
 		noexcept -> auto
 		{

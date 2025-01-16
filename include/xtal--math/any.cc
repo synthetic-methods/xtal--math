@@ -245,7 +245,7 @@ XTAL_DEF_(return)
 XTAL_LET check_f(auto const &u, auto const &v)
 noexcept -> int
 {
-	return check_f<-1, 1 - (int) bond::operating::fraction.depth>(u, v);
+	return check_f<-1, 1 - (int) bond::operate<>::fraction.depth>(u, v);
 }
 
 

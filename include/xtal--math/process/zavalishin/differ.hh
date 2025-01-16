@@ -84,7 +84,7 @@ struct differ<U_pole[N_pole]>
 };
 template <>
 struct differ<>
-:	differ<typename bond::operating::aphex_type[2]>
+:	differ<typename bond::operate<>::aphex_type[2]>
 {
 };
 

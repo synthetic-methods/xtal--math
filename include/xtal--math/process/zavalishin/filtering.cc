@@ -17,7 +17,7 @@ TAG_("filter")
 {
 	TRY_("instantiation")
 	{
-		using _op = bond::operating;
+		using _op = bond::operate<>;
 		using U = typename _op::alpha_type;
 		//\
 		using SVF = confined_t<filter<>>;
@@ -36,7 +36,7 @@ TAG_("filter")
 	}
 	TRY_("instantiation")
 	{
-		using _op = bond::operating;
+		using _op = bond::operate<>;
 		using U = typename _op::alpha_type;
 		//\
 		using SVF = confined_t<filter<>>;

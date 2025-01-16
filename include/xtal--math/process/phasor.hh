@@ -92,7 +92,7 @@ struct phasor<A, As...>
 		XTAL_LET method(subarray_q<N> auto &&a)
 		noexcept -> decltype(auto)
 		{
-			(void) S_::influx(XTAL_REF_(a));
+			(void) S_::template flux<+1>(XTAL_REF_(a));
 			return method();
 		}
 

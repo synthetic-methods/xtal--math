@@ -66,7 +66,7 @@ struct   power<M_exp, Ms...>
 
 	public:
 
-		template <int ...Ns> requires in_n<0, bond::operating::template expound_f<2>(M_exp)>
+		template <int ...Ns> requires in_n<0, bond::operate<>::template expound_f<2>(M_exp)>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(auto const &o)
 		noexcept -> XTAL_ALL_(o)
@@ -90,7 +90,7 @@ struct   power<M_exp, Ms...>
 			}
 		}
 
-		template <int ...Ns> requires in_n<0, bond::operating::template expound_f<3>(M_exp)>
+		template <int ...Ns> requires in_n<0, bond::operate<>::template expound_f<3>(M_exp)>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(auto const &o)
 		noexcept -> XTAL_ALL_(o)

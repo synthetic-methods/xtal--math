@@ -38,7 +38,7 @@ template <typename ...As> using    filter_t = process::confined_t<filter<As...>>
 template <class U_pole, int N_pole>
 struct filter<U_pole[N_pole]>
 {
-	using     zoom_type = occur::inferred_t<struct     ZOOM, typename bond::operating::alpha_type>;
+	using     zoom_type = occur::inferred_t<struct     ZOOM, typename bond::operate<>::alpha_type>;
 	using   select_type = occur::inferred_t<struct   SELECT, unsigned int, bond::word<2>>;
 	using    order_type = occur::inferred_t<struct    ORDER, unsigned int, bond::seek_s<N_pole + 1>>;
 	using topology_type = occur::inferred_t<struct TOPOLOGY, unsigned int, bond::word<2>>;
@@ -61,20 +61,22 @@ struct filter<U_pole[N_pole]>
 	public:
 		using S_::S_;
 
+		template <signed N_ion>
 		XTAL_DEF_(short)
-		XTAL_LET infuse(auto &&x)
+		XTAL_LET fuse(auto &&o)
 		noexcept -> signed
 		{
-			XTAL_IF0
-			XTAL_0IF (in_q<decltype(x), order_type, topology_type>) {
-				S_::cache(constant_t<0>{});
-			}
-			XTAL_0IF (occur::stage_q<decltype(x)>) {
-				if (x == 0) {
+			if constexpr (N_ion == +1) {
+				if constexpr (in_q<decltype(o), order_type, topology_type>) {
 					S_::cache(constant_t<0>{});
 				}
+				if constexpr (occur::stage_q<decltype(o)>) {
+					if (o == 0) {
+						S_::cache(constant_t<0>{});
+					}
+				}
 			}
-			return S_::infuse(XTAL_REF_(x));
+			return S_::template fuse<N_ion>(XTAL_REF_(o));
 		}
 
 		template <auto ...Ns>
@@ -193,7 +195,7 @@ struct filter<U_pole[N_pole]>
 };
 template <>
 struct filter<>
-:	filter<typename bond::operating::aphex_type[4]>
+:	filter<typename bond::operate<>::aphex_type[4]>
 {
 };
 

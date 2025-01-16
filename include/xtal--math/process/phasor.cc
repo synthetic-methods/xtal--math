@@ -40,7 +40,7 @@ TAG_("phasor")
 	using U_stored = provision::stored<unit_type[0x1000]>;
 	using U_example = provision::example<>;
 
-	using _Op = bond::operating;
+	using _Op = bond::operate<>;
 	using T_sigma = typename _Op::sigma_type;
 	using T_delta = typename _Op::delta_type;
 	using T_alpha = typename _Op::alpha_type;

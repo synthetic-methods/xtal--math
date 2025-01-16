@@ -15,7 +15,7 @@ namespace xtal::process::math::gudermannian::_test
 /**/
 TAG_("whatever")
 {
-	using _op = bond::operating;
+	using _op = bond::operate<>;
 
 	using T_sigma = typename _op::sigma_type;
 	using T_delta = typename _op::delta_type;

@@ -47,8 +47,17 @@ struct filtering<U_pole[N_pole]>
 		XTAL_TO4_(XTAL_DEF_(let) balance(auto &&...oo), S_::template head<balance_type>(XTAL_REF_(oo)...))
 
 	public:// FLUX
+
+		template <signed N_ion>
 		XTAL_DEF_(short)
-		XTAL_LET infuse(auto &&o)
+		XTAL_LET fuse(auto &&o)
+		noexcept -> signed
+		{
+			return S_::template fuse<N_ion>(XTAL_REF_(o));
+		}
+		template <signed N_ion> requires in_n<N_ion, +1>
+		XTAL_DEF_(short)
+		XTAL_LET fuse(auto &&o)
 		noexcept -> signed
 		{
 			XTAL_LET N_dn = root_f<2>(control_type{two});
@@ -61,10 +70,11 @@ struct filtering<U_pole[N_pole]>
 					case -1: {(void) damping( N_dn); break;}
 				}
 			}
-			return S_::infuse(XTAL_REF_(o));
+			return S_::template fuse<N_ion>(XTAL_REF_(o));
 		}
+		template <signed N_ion> requires in_n<N_ion, -1>
 		XTAL_DEF_(short)
-		XTAL_LET effuse(auto &&o)
+		XTAL_LET fuse(auto &&o)
 		noexcept -> signed
 		{
 			using _op = bond::operate<control_type>;
@@ -85,11 +95,11 @@ struct filtering<U_pole[N_pole]>
 						since the components are scaled by powers of gain. \
 
 						auto const [states_] = S_::template cache<U_poles_>();
-						return bond::pack_dot_f(states_) < M_thresh and S_::effuse(XTAL_REF_(o));
+						return bond::pack_dot_f(states_) < M_thresh and S_::template fuse<N_ion>(XTAL_REF_(o));
 					}
 				}
 			}
-			return S_::effuse(XTAL_REF_(o));
+			return S_::template fuse<N_ion>(XTAL_REF_(o));
 		}
 
 	public:
@@ -111,7 +121,7 @@ struct filtering<U_pole[N_pole]>
 };
 template <>
 struct filtering<>
-:	filtering<typename bond::operating::aphex_type[4]>
+:	filtering<typename bond::operate<>::aphex_type[4]>
 {
 };
 
