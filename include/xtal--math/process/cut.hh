@@ -94,7 +94,7 @@ struct cut
 		}
 		/**/
 		template <auto ...Ns>
-		XTAL_DEF_(long,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET edit(complex_variable_q auto &o)
 		noexcept -> XTAL_ALL_(o)
 		{
@@ -103,7 +103,7 @@ struct cut
 		}
 		/*/
 		template <auto ...Ns>
-		XTAL_DEF_(long,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET edit(complex_variable_q auto &o)
 		noexcept -> XTAL_ALL_(abs(o))
 		{
@@ -120,7 +120,7 @@ struct cut
 		/***/
 
 		template <auto ...Ns>
-		XTAL_DEF_(long,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto o)
 		noexcept -> auto
 		{

@@ -247,7 +247,7 @@ struct series<A>
 		///\returns `lhs` convolved with `rhs`, \
 		using `this` as the Fourier basis. \
 s
-		XTAL_LET convolve(isomorphic_q<T> auto &&y0, XTAL_SYM_(y0) auto y1) const
+		XTAL_LET convolve(isomorphic_q<T> auto &&y0, same_q<decltype(y0)> auto y1) const
 		noexcept -> decltype(auto)
 		{
 			return transform<-1>(transform<1>(XTAL_REF_(y0)) *= transform<1>(y1));
@@ -256,7 +256,7 @@ s
 		using `this` as the Fourier basis. \
 
 		XTAL_DEF_(short)
-		XTAL_LET convolution(isomorphic_q<T> auto y0, XTAL_SYM_(y0) auto const &y1) const
+		XTAL_LET convolution(isomorphic_q<T> auto y0, same_q<decltype(y0)> auto const &y1) const
 		noexcept -> auto
 		{
 			return convolve(XTAL_MOV_(y0), y1);

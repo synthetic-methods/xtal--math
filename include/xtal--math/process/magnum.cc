@@ -15,7 +15,7 @@ namespace xtal::process::math::_test
 /**/
 TAG_("magnum")
 {
-	using T_op = bond::operating;
+	using T_op = bond::operate<>;
 	using T_sigma = typename T_op::sigma_type;
 	using T_delta = typename T_op::delta_type;
 	using T_alpha = typename T_op::alpha_type;

@@ -15,7 +15,7 @@ namespace xtal::process::math::_test
 /**/
 TAG_("math")
 {
-	using _op = bond::operating;
+	using _op = bond::operate<>;
 	using U_delta = typename _op::delta_type;
 	using U_sigma = typename _op::sigma_type;
 	using U_alpha = typename _op::alpha_type;

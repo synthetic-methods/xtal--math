@@ -92,7 +92,7 @@ struct signum
 		}
 
 		template <int N_side=0> requires in_n<N_side, 1, 0, -1>
-		XTAL_DEF_(long)
+		XTAL_DEF_(short)
 		XTAL_SET edit(ordinal_variable_q auto &u)
 		noexcept -> auto
 		{
@@ -113,7 +113,7 @@ struct signum
 			return function(v);
 		}
 		template <int N_side=0> requires in_n<N_side, 1, 0, -1>
-		XTAL_DEF_(long)
+		XTAL_DEF_(short)
 		XTAL_SET edit(cardinal_variable_q auto &u)
 		noexcept -> auto
 		{

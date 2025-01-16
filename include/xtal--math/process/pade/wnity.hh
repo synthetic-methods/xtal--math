@@ -57,7 +57,7 @@ struct wnity<1> : wnity<>
 			return function<N_lim>(t.real(), t.imag());
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(long,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(auto &&t_1, simplex_field_q auto &&t_i)
 		noexcept -> decltype(auto)
 		{
@@ -69,7 +69,7 @@ struct wnity<1> : wnity<>
 			return o*roots_t<1>::function(e);
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(long,static)
+		XTAL_DEF_(short,static)
 		XTAL_LET function(simplex_field_q auto &&t_1)
 		noexcept -> decltype(auto)
 		{

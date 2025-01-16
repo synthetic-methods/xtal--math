@@ -79,9 +79,8 @@ struct phason<A>
 		using typename S_::U_data;
 
 	public:// MAP
-
-		XTAL_DEF_(set)   ordinate(coordinate_type const &co) noexcept {return U_op::template bit_fraction_f<  ordinate_type>(co);}
-		XTAL_DEF_(set) coordinate(  ordinate_type const & o) noexcept {return T_op::template     fraction_f<coordinate_type>( o);}
+		XTAL_DEF_(set)   ordinate(coordinate_type const &co) noexcept {return bond::bit_fraction_f<  ordinate_type>(co);}
+		XTAL_DEF_(set) coordinate(  ordinate_type const & o) noexcept {return bond::bit_fraction_f<coordinate_type>( o);}
 
 	public:// ACCESS
 		using S_::self;
@@ -99,7 +98,7 @@ struct phason<A>
 		:	homotype(size_type{0})
 		{}
 		
-		XTAL_NEW_(explicit) homotype(XTAL_SYN_(size_type) auto const n)
+		XTAL_NEW_(explicit) homotype(same_q<size_type> auto const n)
 		noexcept
 		:	S_(n)
 		{}
@@ -262,7 +261,7 @@ struct phason<A>
 		XTAL_LET operator += (real_variable_q auto const &f)
 		noexcept -> auto &
 		{
-			get<0>(*this) += T_op::bit_fraction_f(f);
+			get<0>(*this) += bond::bit_fraction_f<_std::make_signed_t<ordinate_type>>(f);
 			return self();
 		}
 
