@@ -36,8 +36,8 @@ struct magnum
 		XTAL_LET function(_std::  signed_integral auto const &o)
 		noexcept -> auto
 		{
-			using _op = bond::operate<decltype(o)>;
-			auto const v = o >> _op::sign.shift;
+			using _fix = bond::fixture<decltype(o)>;
+			auto const v = o >> _fix::sign.shift;
 			return (o^v) - v;
 		}
 		template <int ...Ns>
@@ -45,15 +45,15 @@ struct magnum
 		XTAL_LET function(real_variable_q auto const &o)
 		noexcept -> auto
 		{
-			using _op = bond::operate<decltype(o)>;
-			return _xtd::copysign(o, _op::alpha_1);
+			using _fix = bond::fixture<decltype(o)>;
+			return _xtd::copysign(o, _fix::alpha_1);
 		}
 		template <int ...Ns>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(complex_variable_q auto const &o)
 		noexcept -> auto
 		{
-			using _op = bond::operate<decltype(o)>;
+			using _fix = bond::fixture<decltype(o)>;
 			return dot_f<2>(o);
 		}
 
@@ -62,8 +62,8 @@ struct magnum
 		XTAL_LET edit(real_variable_q auto &o)
 		noexcept -> auto
 		{
-			using _op = bond::operate<decltype(o)>;
-			auto const o_sgn = _xtd::copysign(_op::alpha_1, o);
+			using _fix = bond::fixture<decltype(o)>;
+			auto const o_sgn = _xtd::copysign(_fix::alpha_1, o);
 			auto const o_mgn = o*o_sgn;
 			o =    o_sgn;
 			return o_mgn;
@@ -73,7 +73,7 @@ struct magnum
 		XTAL_LET edit(complex_variable_q auto &o)
 		noexcept -> auto
 		{
-			using _op = bond::operate<decltype(o)>;
+			using _fix = bond::fixture<decltype(o)>;
 			auto [u, v] = dots_f<2>(o); o *= v; return u;
 		}
 

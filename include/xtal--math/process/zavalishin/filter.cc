@@ -17,8 +17,8 @@ TAG_("filter")
 {
 	TRY_("instantiation")
 	{
-		using _op = bond::operate<>;
-		using U = typename _op::alpha_type;
+		using _fix = bond::fixture<>;
+		using U = typename _fix::alpha_type;
 		//\
 		using SVF = confined_t<filter<>>;
 		using SVF = confined_t<prewarped<>, filter<>>;
@@ -36,8 +36,8 @@ TAG_("filter")
 	}
 	TRY_("instantiation")
 	{
-		using _op = bond::operate<>;
-		using U = typename _op::alpha_type;
+		using _fix = bond::fixture<>;
+		using U = typename _fix::alpha_type;
 		//\
 		using SVF = confined_t<filter<>>;
 		using SVF = confined_t<prewarped<>, filter<>>;

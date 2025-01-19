@@ -62,10 +62,10 @@ struct wnity<1> : wnity<>
 		noexcept -> decltype(auto)
 		{
 			auto constexpr exp = XTAL_FUN_(taylor::logarithm_t<-1, 1>::template function<2>);
-			using T_i = XTAL_ALL_(t_i); using _op = bond::operate<T_i>;
+			using T_i = XTAL_ALL_(t_i); using _fix = bond::fixture<T_i>;
 
 			auto const o = function<N_lim>(XTAL_REF_(t_1));
-			auto const e = exp(XTAL_REF_(t_i)*_op::patio_f(-2));
+			auto const e = exp(XTAL_REF_(t_i)*_fix::patio_f(-2));
 			return o*roots_t<1>::function(e);
 		}
 		template <int N_lim=-1>

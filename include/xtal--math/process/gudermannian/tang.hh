@@ -69,9 +69,9 @@ struct tang<M_ism, -0>
 				return S_::template function<N_lim>(XTAL_REF_(u));
 			}
 			XTAL_0IF (N_lim <  0) {
-				using _op = bond::operate<decltype(u)>;
-				auto constexpr up =     _op::patio_1;
-				auto constexpr dn = one/_op::patio_1;
+				using _fix = bond::fixture<decltype(u)>;
+				auto constexpr up =     _fix::patio_1;
+				auto constexpr dn = one/_fix::patio_1;
 				XTAL_IF0
 				XTAL_0IF (M_ism ==  2) {return atan(sinh(XTAL_REF_(u)*up))*dn;}// `Gudermannian`
 				XTAL_0IF (M_ism ==  1) {return       tan(XTAL_REF_(u)*up) *dn;}
@@ -114,16 +114,16 @@ struct tang<M_ism, -2>
 				return tang<M_ism, -0>::template function<N_lim>(u)/(u);
 			}
 			else {
-				using _op = bond::operate<decltype(w)>;
-				auto const _1 = _op::diplo_f(0);
-				auto const _2 = _op::diplo_f(1);
-				auto const _4 = _op::diplo_f(2);
-				auto const _8 = _op::diplo_f(3);
+				using _fix = bond::fixture<decltype(w)>;
+				auto const _1 = _fix::diplo_f(0);
+				auto const _2 = _fix::diplo_f(1);
+				auto const _4 = _fix::diplo_f(2);
+				auto const _8 = _fix::diplo_f(3);
 				XTAL_IF0
 				XTAL_0IF (M_ism ==  2) {return root_f<2>(term_f(one,  _1, w))/term_f(one, _2, XTAL_REF_(w));}
 				XTAL_0IF (M_ism ==  1) {return root_f<2>(term_f(one, -_2, w))/term_f(one,-_4, XTAL_REF_(w));}
-				XTAL_0IF (M_ism == -1) {auto const m = term_f(one, _8, XTAL_REF_(w)); return root_f<-2>(_op::haplo_1*(root_f<2>(m) + m));}
-				XTAL_0IF (M_ism == -2) {auto const m = term_f(one,-_4, XTAL_REF_(w)); return root_f<-2>(_op::haplo_1*(root_f<2>(m) + m));}
+				XTAL_0IF (M_ism == -1) {auto const m = term_f(one, _8, XTAL_REF_(w)); return root_f<-2>(_fix::haplo_1*(root_f<2>(m) + m));}
+				XTAL_0IF (M_ism == -2) {auto const m = term_f(one,-_4, XTAL_REF_(w)); return root_f<-2>(_fix::haplo_1*(root_f<2>(m) + m));}
 			}
 		}
 

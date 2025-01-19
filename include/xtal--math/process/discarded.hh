@@ -142,8 +142,8 @@ struct discarded<2, M_aux>
 		XTAL_LET method(auto &&u, auto &&...oo),
 		noexcept -> decltype(auto)
 		{
-			using _op = bond::operate<decltype(u)>;
-			XTAL_LET v = _op::alpha_f(sign_n<(M_aux&1)^1, -1>);
+			using _fix = bond::fixture<decltype(u)>;
+			XTAL_LET v = _fix::alpha_f(sign_n<(M_aux&1)^1, -1>);
 			return S_::template method<Is...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
 		})
 		template <auto ...Is>
@@ -151,8 +151,8 @@ struct discarded<2, M_aux>
 		XTAL_LET function(auto &&u, auto &&...oo)
 		noexcept -> decltype(auto)
 		{
-			using _op = bond::operate<decltype(u)>;
-			XTAL_LET v = _op::alpha_f(sign_n<(M_aux&1)^1, -1>);
+			using _fix = bond::fixture<decltype(u)>;
+			XTAL_LET v = _fix::alpha_f(sign_n<(M_aux&1)^1, -1>);
 			return S_::template function<Is...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
 		};
 

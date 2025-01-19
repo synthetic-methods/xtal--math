@@ -27,12 +27,12 @@ noexcept -> bool
 /**/
 TAG_("unity")
 {
-	using _op = bond::operate<>;
+	using _fix = bond::fixture<>;
 
-	using T_sigma = typename _op::sigma_type;
-	using T_delta = typename _op::delta_type;
-	using T_alpha = typename _op::alpha_type;
-	using T_aphex = typename _op::aphex_type;
+	using T_sigma = typename _fix::sigma_type;
+	using T_delta = typename _fix::delta_type;
+	using T_alpha = typename _fix::alpha_type;
+	using T_aphex = typename _fix::aphex_type;
 
 	using A_alpha = Eigen::ArrayXd ;// Eigen::Array<T_alpha,-1, 1>;
 	using A_aphex = Eigen::ArrayXcd;// Eigen::Array<T_aphex,-1, 1>;
@@ -44,7 +44,7 @@ TAG_("unity")
 
 	static_assert(same_q<T_alpha, decltype(U_phi{} (0))>);
 
-	auto mt19937_f = typename _op::mt19937_t();
+	auto mt19937_f = typename _fix::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
 
 	TRY_("flight")
@@ -328,7 +328,7 @@ TAG_("unity")
 	{
 		T_aphex y{};
 		for (int i = 0x20; ~--i;) {
-			T_aphex const x{_op::mantissa_f(mt19937_f), _op::mantissa_f(mt19937_f)};
+			T_aphex const x{_fix::mantissa_f(mt19937_f), _fix::mantissa_f(mt19937_f)};
 			y += unity_t<-1>::template function<-1>(y);
 		}
 		return y;
@@ -338,7 +338,7 @@ TAG_("unity")
 	{
 		T_aphex y{};
 		for (int i = 0x20; ~--i;) {
-			T_aphex const x{_op::mantissa_f(mt19937_f), _op::mantissa_f(mt19937_f)};
+			T_aphex const x{_fix::mantissa_f(mt19937_f), _fix::mantissa_f(mt19937_f)};
 			y += unity_t<-1>::template function< 3>(y);
 		}
 		return y;

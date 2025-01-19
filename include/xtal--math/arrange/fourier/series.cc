@@ -15,11 +15,11 @@ namespace xtal::arrange::math::fourier::_test
 
 TAG_("solid", "series")
 {
-	using _op = bond::operate<>;
-	using T_delta = typename _op::delta_type;
-	using T_sigma = typename _op::sigma_type;
-	using T_alpha = typename _op::alpha_type;
-	using T_aphex = typename _op::aphex_type;
+	using _fix = bond::fixture<>;
+	using T_delta = typename _fix::delta_type;
+	using T_sigma = typename _fix::sigma_type;
+	using T_alpha = typename _fix::alpha_type;
+	using T_aphex = typename _fix::aphex_type;
 
 	/**/
 	TRY_("initialization")
@@ -93,7 +93,7 @@ TAG_("solid", "series")
 		U_series rhs = {1, 0, 1, 0, 0, 0, 0, 0};
 		U_series xhs = {0, 1, 2, 1, 2, 0, 0, 0};
 		U_series yhs = basis.convolution(lhs, rhs);
-		_detail::apply_to<XTAL_FUN_(_op::template trim_f<16>)>(yhs);
+		_detail::apply_to<XTAL_FUN_(_fix::template trim_f<16>)>(yhs);
 		TRUE_(xhs == yhs);
 
 	}

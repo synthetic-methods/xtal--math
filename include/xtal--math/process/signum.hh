@@ -38,15 +38,15 @@ struct signum
 		XTAL_LET function(ordinal_variable_q auto o)
 		noexcept -> auto
 		{
-			using _op    = bond::operate<decltype(o)>;
-			using _alpha = typename _op::alpha_type;
+			using _fix    = bond::fixture<decltype(o)>;
+			using _alpha = typename _fix::alpha_type;
 			o  -= 1;
-			o >>= _op::positive.depth;
+			o >>= _fix::positive.depth;
 			//\
-			if constexpr (_op::IEC&559) {
+			if constexpr (_fix::IEC&559) {
 			if constexpr (false) {
-				o &= _op::sign.mask;
-				o |= _op::unit.mask;
+				o &= _fix::sign.mask;
+				o |= _fix::unit.mask;
 				return _xtd::bit_cast<_alpha>(o);
 			}
 			else {
@@ -59,14 +59,14 @@ struct signum
 		XTAL_LET function(cardinal_variable_q auto o)
 		noexcept -> auto
 		{
-			using _op    = bond::operate<decltype(o)>;
-			using _alpha = typename _op::alpha_type;
-			using _delta = typename _op::delta_type;
+			using _fix    = bond::fixture<decltype(o)>;
+			using _alpha = typename _fix::alpha_type;
+			using _delta = typename _fix::delta_type;
 			//\
-			if constexpr (_op::IEC&559) {
+			if constexpr (_fix::IEC&559) {
 			if constexpr (false) {
-				o <<= _op::positive.depth;
-				o  ^= _op::sign.mask|_op::unit.mask;
+				o <<= _fix::positive.depth;
+				o  ^= _fix::sign.mask|_fix::unit.mask;
 				return _xtd::bit_cast<_alpha>(o);
 			}
 			else {
@@ -79,15 +79,15 @@ struct signum
 		XTAL_LET function(real_variable_q auto const &o)
 		noexcept -> XTAL_ALL_(o)
 		{
-			using _op = bond::operate<decltype(o)>;
-			return _xtd::copysign(_op::alpha_1, o);
+			using _fix = bond::fixture<decltype(o)>;
+			return _xtd::copysign(_fix::alpha_1, o);
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(complex_variable_q auto const &o)
 		noexcept -> XTAL_ALL_(o)
 		{
-			using _op = bond::operate<decltype(o)>;
+			using _fix = bond::fixture<decltype(o)>;
 			return o*dot_f<-2>(o);
 		}
 
@@ -117,8 +117,8 @@ struct signum
 		XTAL_SET edit(cardinal_variable_q auto &u)
 		noexcept -> auto
 		{
-			using _op = bond::operate<decltype(u)>;
-			return edit<N_side>(reinterpret_cast<typename _op::delta_type &>(u));
+			using _fix = bond::fixture<decltype(u)>;
+			return edit<N_side>(reinterpret_cast<typename _fix::delta_type &>(u));
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(short,static)
@@ -132,7 +132,7 @@ struct signum
 		XTAL_LET edit(complex_variable_q auto &o)
 		noexcept -> XTAL_ALL_(o)
 		{
-			using _op = bond::operate<decltype(o)>;
+			using _fix = bond::fixture<decltype(o)>;
 			auto [u, v] = dots_f<2>(o);
 			auto const o_sgn = o*v;
 			auto const o_mgn = XTAL_ALL_(o){u};

@@ -77,13 +77,13 @@ struct filtering<U_pole[N_pole]>
 		XTAL_LET fuse(auto &&o)
 		noexcept -> signed
 		{
-			using _op = bond::operate<control_type>;
+			using _fix = bond::fixture<control_type>;
 			if constexpr (occur::stage_q<decltype(o)>) {
 				switch (o.head()) {
 					case  0: {break;}
 					case  1: {break;}
 					case -1: {
-						XTAL_LET N_thresh = _op::haplo_f(7);
+						XTAL_LET N_thresh = _fix::haplo_f(7);
 						XTAL_LET M_thresh = square_f(N_thresh);
 						using    U_poles_ = arrange::collate_t<U_pole[N_pole]>;
 						//\note\
@@ -111,9 +111,9 @@ struct filtering<U_pole[N_pole]>
 			static_assert(same_q<U_pole, decltype(x_input)>);
 		//	static_assert(N_top == 0);// Necessary?
 
-			using X_op = bond::operate<decltype(x_input)>;
-			auto const s_damping = X_op::alpha_f(S_::template head<damping_type>());
-			auto const y_balance = X_op::alpha_f(S_::template head<balance_type>());
+			using X_fix = bond::fixture<decltype(x_input)>;
+			auto const s_damping = X_fix::alpha_f(S_::template head<damping_type>());
+			auto const y_balance = X_fix::alpha_f(S_::template head<balance_type>());
 			return S::template method<Ns...>(XTAL_REF_(x_input), s_scale, s_damping, y_balance);
 		}
 
@@ -121,7 +121,7 @@ struct filtering<U_pole[N_pole]>
 };
 template <>
 struct filtering<>
-:	filtering<typename bond::operate<>::aphex_type[4]>
+:	filtering<typename bond::fixture<>::aphex_type[4]>
 {
 };
 

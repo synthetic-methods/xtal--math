@@ -68,9 +68,9 @@ struct disunity<M_ism>
 		noexcept -> decltype(auto)
 		{
 			using U    = XTAL_ALL_(o);
-			using U_op = bond::operate<U>;
+			using U_fix = bond::fixture<U>;
 
-			XTAL_LET i_sgn = U_op::alpha_f(I_sgn);
+			XTAL_LET i_sgn = U_fix::alpha_f(I_sgn);
 
 			auto y = o.imag();
 			auto x = o.real();

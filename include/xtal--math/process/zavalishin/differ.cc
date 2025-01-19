@@ -30,7 +30,7 @@ TAG_("differ")
 	}
 //	TRY_("scaling")
 //	{
-//		confined_t<dilate<XTAL_VAL_(bond::operate<>::patio_2)>, D> diff{};
+//		confined_t<dilate<XTAL_VAL_(bond::fixture<>::patio_2)>, D> diff{};
 //		diff <<= typename D::order_type{1};
 //
 //		TRUE_(check_f<19>(0.15915493667125702, diff(1)));

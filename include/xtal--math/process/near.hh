@@ -31,10 +31,10 @@ struct near
 		noexcept -> XTAL_ALL_(n)
 		{
 			using U = XTAL_ALL_(n);
-			using U_op = bond::operate<U>;
+			using U_fix = bond::fixture<U>;
 
 			--n;
-			bond::seek_forward_f<bond::math::bit_ceiling_f(U_op::full.depth)>([&]<constant_q I> (I) XTAL_0FN {n |= n >> (1 << I{});});
+			bond::seek_forward_f<bond::math::bit_ceiling_f(U_fix::full.depth)>([&]<constant_q I> (I) XTAL_0FN {n |= n >> (1 << I{});});
 			++n;
 			return n;
 		}
@@ -45,13 +45,13 @@ struct near
 		noexcept -> XTAL_ALL_(u)
 		{
 			using U = XTAL_ALL_(u);
-			using U_op = bond::operate<U>;
-			using U_sigma = typename U_op::sigma_type;
-			using U_alpha = typename U_op::alpha_type;
+			using U_fix = bond::fixture<U>;
+			using U_sigma = typename U_fix::sigma_type;
+			using U_alpha = typename U_fix::alpha_type;
 
-			U_alpha constexpr N_half = root_f<2>(2.);
-			U_sigma constexpr N_mask = U_op::sign.mask|U_op::exponent.mask;
-			return _xtd::bit_cast<U_alpha>(_xtd::bit_cast<U_sigma>(u*N_half)&N_mask);
+			U_alpha constexpr N_half_sqrt = root_f<2>(2.);
+			U_sigma constexpr N_mask      = U_fix::sign.mask|U_fix::exponent.mask;
+			return _xtd::bit_cast<U_alpha>(_xtd::bit_cast<U_sigma>(u*N_half_sqrt)&N_mask);
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(short,static)
