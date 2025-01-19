@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-
+#include "../bond/all.hxx"
 
 
 
@@ -79,8 +79,8 @@ struct phason<A>
 		using typename S_::U_data;
 
 	public:// MAP
-		XTAL_DEF_(set)   ordinate(coordinate_type const &co) noexcept {return bond::bit_fraction_f<  ordinate_type>(co);}
-		XTAL_DEF_(set) coordinate(  ordinate_type const & o) noexcept {return bond::bit_fraction_f<coordinate_type>( o);}
+		XTAL_DEF_(set)   ordinate(coordinate_type const &co) noexcept {return bond::math::bit_fraction_f<  ordinate_type>(co);}
+		XTAL_DEF_(set) coordinate(  ordinate_type const & o) noexcept {return bond::math::bit_fraction_f<coordinate_type>( o);}
 
 	public:// ACCESS
 		using S_::self;
@@ -191,7 +191,7 @@ struct phason<A>
 			/*/
 			unsigned constexpr M_bias = T_op::half.depth >> T_op::half.width;
 			unsigned constexpr M_size = T_op::half.depth - M_bias;
-			auto [m, n] = bond::bit_representation_f(f);
+			auto [m, n] = bond::math::bit_representation_f(f);
 			m >>= n - M_size;
 			s >>=     M_size;
 			s  *= m;
@@ -200,7 +200,7 @@ struct phason<A>
 			XTAL_0IF (1*sizeof(ordinate_type) == sizeof(coordinate_type)) {
 				unsigned constexpr M_bias = T_op::half.depth >> T_op::half.width;
 				unsigned constexpr M_size = T_op::half.depth - M_bias;
-				auto [m, n] = bond::bit_representation_f(f);
+				auto [m, n] = bond::math::bit_representation_f(f);
 				m >>= n - M_size;
 				s >>=     M_size;
 				s  *= m;
@@ -261,7 +261,7 @@ struct phason<A>
 		XTAL_LET operator += (real_variable_q auto const &f)
 		noexcept -> auto &
 		{
-			get<0>(*this) += bond::bit_fraction_f<_std::make_signed_t<ordinate_type>>(f);
+			get<0>(*this) += bond::math::bit_fraction_f<_std::make_signed_t<ordinate_type>>(f);
 			return self();
 		}
 

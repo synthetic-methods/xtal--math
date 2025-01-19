@@ -190,12 +190,12 @@ struct series<A>
 			I constexpr N_width = N_data;
 			I const     n_width = that.size();
 			I const     h_width = n_width >> 1U; assert(1 <= h_width);
-			I const     n_depth = bond::bit_ceiling_f(n_width); assert(n_width == I{1} << n_depth);
-			I constexpr N_depth = bond::bit_ceiling_f(N_width); assert(n_depth         <= N_depth);
+			I const     n_depth = bond::math::bit_ceiling_f(n_width); assert(n_width == I{1} << n_depth);
+			I constexpr N_depth = bond::math::bit_ceiling_f(N_width); assert(n_depth         <= N_depth);
 
 		//	Move all entries to their bit-reversed locations:
 			for (I h{}; h < h_width; ++h) {
-				_std::swap(that[h], that[bond::bit_reverse_f(h, n_depth)]);
+				_std::swap(that[h], that[bond::math::bit_reverse_f(h, n_depth)]);
 			}
 		
 		//	Conjugate the input if computing the inverse transform of the codomain:

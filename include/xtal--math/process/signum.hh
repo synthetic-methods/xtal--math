@@ -96,7 +96,7 @@ struct signum
 		XTAL_SET edit(ordinal_variable_q auto &u)
 		noexcept -> auto
 		{
-			auto const v = bond::bit_sign_f(u);
+			auto const v = bond::math::bit_sign_f(u);
 			XTAL_IF0
 			XTAL_0IF (N_side == -1) {
 				u &= v;

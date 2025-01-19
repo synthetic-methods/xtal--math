@@ -190,7 +190,7 @@ struct phasor<A, As...>
 
 			auto  u_delta = _phi - phi; u_delta[0] += phi[1];
 			auto &v_delta = reinterpret_cast<V_phason const &>(u_delta);
-			auto  n_delta = bond::bit_ceiling_f(magnum_f(v_delta[1]));
+			auto  n_delta = bond::math::bit_ceiling_f(magnum_f(v_delta[1]));
 			auto  i_delta = condition_f<ordinate_type>(v_delta[0] >> n_delta);
 
 			_phi = XTAL_MOV_(phi);
