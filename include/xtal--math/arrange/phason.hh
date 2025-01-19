@@ -58,11 +58,11 @@ struct phason<A>
 	using coordinate_type = valued_u<A>;
 
 	using U_   = bond::  forge<coordinate_type>;
-	using U_op = bond::operate<coordinate_type>;
-	using T_op = typename U_op::template widen<-1>;
+	using U_fix = bond::fixture<coordinate_type>;
+	using T_fix = typename U_fix::template widen<-1>;
 	
-	using   ordinate_type = bond::compose_s<typename T_op::sigma_type, U_>;
-	using inordinate_type = bond::compose_s<typename T_op::delta_type, U_>;
+	using   ordinate_type = bond::compose_s<typename T_fix::sigma_type, U_>;
+	using inordinate_type = bond::compose_s<typename T_fix::delta_type, U_>;
 
 	static_assert(_std::numeric_limits<absolve_u<ordinate_type>>::is_modulo);// D'oh!
 
@@ -180,17 +180,17 @@ struct phason<A>
 		XTAL_LET operator /= (simplex_variable_q auto const &f)
 		noexcept -> auto &
 		{
-			return operator*=(U_op::alpha_1/f);
+			return operator*=(U_fix::alpha_1/f);
 		}
 	//	XTAL_DEF_(inline)
 		XTAL_LET operator *= (real_variable_q auto const &f)
 		noexcept -> auto &
 		{
-			using _op = bond::operate<decltype(f)>;
+			using _fix = bond::fixture<decltype(f)>;
 			auto &s = reinterpret_cast<phason_t<inordinate_type[N_data]> &>(self());
 			/*/
-			unsigned constexpr M_bias = T_op::half.depth >> T_op::half.width;
-			unsigned constexpr M_size = T_op::half.depth - M_bias;
+			unsigned constexpr M_bias = T_fix::half.depth >> T_fix::half.width;
+			unsigned constexpr M_size = T_fix::half.depth - M_bias;
 			auto [m, n] = bond::math::bit_representation_f(f);
 			m >>= n - M_size;
 			s >>=     M_size;
@@ -198,8 +198,8 @@ struct phason<A>
 			/*/
 			XTAL_IF0
 			XTAL_0IF (1*sizeof(ordinate_type) == sizeof(coordinate_type)) {
-				unsigned constexpr M_bias = T_op::half.depth >> T_op::half.width;
-				unsigned constexpr M_size = T_op::half.depth - M_bias;
+				unsigned constexpr M_bias = T_fix::half.depth >> T_fix::half.width;
+				unsigned constexpr M_size = T_fix::half.depth - M_bias;
 				auto [m, n] = bond::math::bit_representation_f(f);
 				m >>= n - M_size;
 				s >>=     M_size;
@@ -207,12 +207,12 @@ struct phason<A>
 			}
 			XTAL_IF0
 			XTAL_0IF (2*sizeof(ordinate_type) == sizeof(coordinate_type)) {
-				typename T_op::sigma_type t_[2];
-				typename U_op::sigma_type const u(f*_op::diplo_f(T_op::full.depth));
+				typename T_fix::sigma_type t_[2];
+				typename U_fix::sigma_type const u(f*_fix::diplo_f(T_fix::full.depth));
 				#pragma unroll
 				for (int i{}; i < N_data; ++i) {
-					reinterpret_cast<typename U_op::sigma_type &>(t_) = u*s[i];
-				//	t_[1] += t_[0] >> T_op::positive.depth;// Round...
+					reinterpret_cast<typename U_fix::sigma_type &>(t_) = u*s[i];
+				//	t_[1] += t_[0] >> T_fix::positive.depth;// Round...
 					s [i]  = t_[1];
 				}
 			}
@@ -278,8 +278,8 @@ struct phason<A>
 		noexcept -> Y
 		{
 			auto [u0, u1] = *this;
-			auto const v0 = _xtd::bit_cast<inordinate_type>(u0) >> T_op::positive.depth; u0 ^= v0; u0 -= v0;
-			auto const v1 = _xtd::bit_cast<inordinate_type>(u1) >> T_op::positive.depth; u1 ^= v1; u1 -= v1;
+			auto const v0 = _xtd::bit_cast<inordinate_type>(u0) >> T_fix::positive.depth; u0 ^= v0; u0 -= v0;
+			auto const v1 = _xtd::bit_cast<inordinate_type>(u1) >> T_fix::positive.depth; u1 ^= v1; u1 -= v1;
 			return condition_f<Y>(v0 == v1 and u0 < u1);
 		}
 

@@ -15,11 +15,11 @@ namespace xtal::process::math::_test
 /**/
 TAG_("math")
 {
-	using _op = bond::operate<>;
-	using U_delta = typename _op::delta_type;
-	using U_sigma = typename _op::sigma_type;
-	using U_alpha = typename _op::alpha_type;
-	using U_aphex = typename _op::aphex_type;
+	using _fix = bond::fixture<>;
+	using U_delta = typename _fix::delta_type;
+	using U_sigma = typename _fix::sigma_type;
+	using U_alpha = typename _fix::alpha_type;
+	using U_aphex = typename _fix::aphex_type;
 	
 	using W_alpha = arrange::collate_t<U_alpha[2]>;
 	using W_aphex = arrange::collate_t<U_aphex[2]>;

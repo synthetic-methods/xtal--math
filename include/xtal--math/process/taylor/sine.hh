@@ -16,7 +16,7 @@ template <int M_ism=1, int N_car=0> using    sine_t = process::confined_t<sine<M
 
 template <int M_ism>
 struct sine<M_ism, +1>
-:	bond::compose<dilated<XTAL_VAL_(-bond::operate<>::patio_2)>, sine<M_ism, -0>>
+:	bond::compose<dilated<XTAL_VAL_(-bond::fixture<>::patio_2)>, sine<M_ism, -0>>
 {
 };
 template <int M_ism>
@@ -120,14 +120,14 @@ struct sine<M_ism, -2>
 		{
 			XTAL_LET N = 1 + 2*below_m<0x10, (unsigned) N_lim>;
 
-			using W = XTAL_ALL_(w); using _op = bond::operate<W>;
+			using W = XTAL_ALL_(w); using _fix = bond::fixture<W>;
 			XTAL_IF0
 			XTAL_0IF (0 < M_ism) {
 				W x{one};
 
 				bond::seek_backward_f<N>([&] (auto i)
 					XTAL_0FN_(x = term_f(one
-					,	+_op::ratio_f(1, (2 + 2*i)*(3 + 2*i))
+					,	+_fix::ratio_f(1, (2 + 2*i)*(3 + 2*i))
 					,	w
 					,	x
 					)
@@ -135,11 +135,11 @@ struct sine<M_ism, -2>
 				return x;
 			}
 			XTAL_0IF (M_ism < 0) {
-				W x = _op::ratio_f(1, 1 + 2*N);
+				W x = _fix::ratio_f(1, 1 + 2*N);
 
 				bond::seek_backward_f<N>([&] (auto i)
-					XTAL_0FN_(x = term_f(_op::ratio_f(1, 1 + 2*i)
-					,	-_op::ratio_f(1 + 2*i, 2 + 2*i)
+					XTAL_0FN_(x = term_f(_fix::ratio_f(1, 1 + 2*i)
+					,	-_fix::ratio_f(1 + 2*i, 2 + 2*i)
 					,	w
 					,	x
 					)

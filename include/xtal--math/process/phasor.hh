@@ -27,7 +27,7 @@ Accommodate `std::complex` `value_type`s? \
 template <vector_q A, typename ...As>
 struct phasor<A, As...>
 {
-	using _op =         bond::operate<A>;
+	using _fix =         bond::fixture<A>;
 	using _ph = arrange::math::phason<A>;
 	using coordinate_type = typename _ph::coordinate_type;
 	using inordinate_type = typename _ph::inordinate_type;

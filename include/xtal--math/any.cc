@@ -34,7 +34,7 @@ struct complexion
 	using source_type = _std::complex<U>;
 	using target_type = _std::complex<V>;
 
-	using _op = xtal::bond::operate<value_type>;
+	using _fix = xtal::bond::fixture<value_type>;
 
 	value_type re;
 	value_type im;
@@ -215,8 +215,8 @@ XTAL_DEF_(return)
 XTAL_LET check_f(auto const &u, auto const &v)
 noexcept -> bool
 {
-	using _op = bond::operate<decltype(u), decltype(v)>;
-	return _op::template trim_f<N_index>(u) == _op::template trim_f<N_index>(v);
+	using _fix = bond::fixture<decltype(u), decltype(v)>;
+	return _fix::template trim_f<N_index>(u) == _fix::template trim_f<N_index>(v);
 }
 template <int N_index, int N_limit>
 XTAL_DEF_(return)
@@ -245,7 +245,7 @@ XTAL_DEF_(return)
 XTAL_LET check_f(auto const &u, auto const &v)
 noexcept -> int
 {
-	return check_f<-1, 1 - (int) bond::operate<>::fraction.depth>(u, v);
+	return check_f<-1, 1 - (int) bond::fixture<>::fraction.depth>(u, v);
 }
 
 

@@ -15,17 +15,17 @@ namespace xtal::bond::math::_test
 
 TAG_("bit", "bit_reverse")
 {
-	using T_op = operate<>;
-	using T_sigma = typename T_op::sigma_type;
-	using T_delta = typename T_op::delta_type;
-	using T_alpha = typename T_op::alpha_type;
-	using T_aphex = typename T_op::aphex_type;
-	auto mt19937_f = typename T_op::mt19937_t(Catch::rngSeed());
+	using T_fix = fixture<>;
+	using T_sigma = typename T_fix::sigma_type;
+	using T_delta = typename T_fix::delta_type;
+	using T_alpha = typename T_fix::alpha_type;
+	using T_aphex = typename T_fix::aphex_type;
+	auto mt19937_f = typename T_fix::mt19937_t(Catch::rngSeed());
 
 
 	TRY_("32:03")
 	{
-		using T_op = operate<uint32_t>;
+		using T_fix = fixture<uint32_t>;
 		T_sigma question = 0b011;
 		T_sigma answer   = 0b110;
 
@@ -34,7 +34,7 @@ TAG_("bit", "bit_reverse")
 	}
 	TRY_("16:16")
 	{
-		using T_op = operate<uint16_t>;
+		using T_fix = fixture<uint16_t>;
 		T_sigma question = 0b0100100011100101;
 		T_sigma answer   = 0b1010011100010010;
 
@@ -43,7 +43,7 @@ TAG_("bit", "bit_reverse")
 	}
 	TRY_("16:12")
 	{
-		using T_op = operate<uint16_t>;
+		using T_fix = fixture<uint16_t>;
 		T_sigma question = 0b010010001110;
 		T_sigma answer   = 0b011100010010;
 
@@ -52,7 +52,7 @@ TAG_("bit", "bit_reverse")
 	}
 	TRY_("8:8")
 	{
-		using T_op = operate<uint8_t>;
+		using T_fix = fixture<uint8_t>;
 		T_sigma question = 0b01001101;
 		T_sigma answer   = 0b10110010;
 
@@ -61,7 +61,7 @@ TAG_("bit", "bit_reverse")
 	}
 	TRY_("8:6")
 	{
-		using T_op = operate<uint8_t>;
+		using T_fix = fixture<uint8_t>;
 		T_sigma question = 0b010011;
 		T_sigma answer   = 0b110010;
 
@@ -75,36 +75,36 @@ TAG_("bit", "bit_reverse")
 
 TAG_("bit_floor_f")
 {
-	using T_op = operate<>;
-	using T_delta = typename T_op::delta_type;
-	using T_sigma = typename T_op::sigma_type;
-	using T_alpha = typename T_op::alpha_type;
-	using T_aphex = typename T_op::aphex_type;
-	auto mt19937_f = typename T_op::mt19937_t(Catch::rngSeed());
+	using T_fix = fixture<>;
+	using T_delta = typename T_fix::delta_type;
+	using T_sigma = typename T_fix::sigma_type;
+	using T_alpha = typename T_fix::alpha_type;
+	using T_aphex = typename T_fix::aphex_type;
+	auto mt19937_f = typename T_fix::mt19937_t(Catch::rngSeed());
 
 	TRY_("trial")
 	{
-		TRUE_( 9 == bit_floor_f<-4>(T_op::diplo_f(9)));
-		TRUE_( 8 == bit_floor_f<-4>(T_op::diplo_f(8)));
-		TRUE_( 7 == bit_floor_f<-4>(T_op::diplo_f(7)));
-		TRUE_( 6 == bit_floor_f<-4>(T_op::diplo_f(6)));
-		TRUE_( 5 == bit_floor_f<-4>(T_op::diplo_f(5)));
-		TRUE_( 4 == bit_floor_f<-4>(T_op::diplo_f(4)));
-		TRUE_( 3 == bit_floor_f<-4>(T_op::diplo_f(3)));
-		TRUE_( 2 == bit_floor_f<-4>(T_op::diplo_f(2)));
-		TRUE_( 1 == bit_floor_f<-4>(T_op::diplo_f(1)));
-		TRUE_( 0 == bit_floor_f<-4>(T_op::diplo_f(0)));
-		TRUE_( 0 == bit_floor_f<-4>(T_op::haplo_f(0)));
-		TRUE_(-1 == bit_floor_f<-4>(T_op::haplo_f(1)));
-		TRUE_(-2 == bit_floor_f<-4>(T_op::haplo_f(2)));
-		TRUE_(-3 == bit_floor_f<-4>(T_op::haplo_f(3)));
-		TRUE_(-4 == bit_floor_f<-4>(T_op::haplo_f(4)));
-		TRUE_(-4 == bit_floor_f<-4>(T_op::haplo_f(5)));
-		TRUE_(-4 == bit_floor_f<-4>(T_op::haplo_f(6)));
-		TRUE_(-4 == bit_floor_f<-4>(T_op::haplo_f(7)));
-		TRUE_(-4 == bit_floor_f<-4>(T_op::haplo_f(8)));
-		TRUE_(-4 == bit_floor_f<-4>(T_op::haplo_f(9)));
-		TRUE_(-4 == bit_floor_f<-4>(T_op::alpha_f(0)));
+		TRUE_( 9 == bit_floor_f<-4>(T_fix::diplo_f(9)));
+		TRUE_( 8 == bit_floor_f<-4>(T_fix::diplo_f(8)));
+		TRUE_( 7 == bit_floor_f<-4>(T_fix::diplo_f(7)));
+		TRUE_( 6 == bit_floor_f<-4>(T_fix::diplo_f(6)));
+		TRUE_( 5 == bit_floor_f<-4>(T_fix::diplo_f(5)));
+		TRUE_( 4 == bit_floor_f<-4>(T_fix::diplo_f(4)));
+		TRUE_( 3 == bit_floor_f<-4>(T_fix::diplo_f(3)));
+		TRUE_( 2 == bit_floor_f<-4>(T_fix::diplo_f(2)));
+		TRUE_( 1 == bit_floor_f<-4>(T_fix::diplo_f(1)));
+		TRUE_( 0 == bit_floor_f<-4>(T_fix::diplo_f(0)));
+		TRUE_( 0 == bit_floor_f<-4>(T_fix::haplo_f(0)));
+		TRUE_(-1 == bit_floor_f<-4>(T_fix::haplo_f(1)));
+		TRUE_(-2 == bit_floor_f<-4>(T_fix::haplo_f(2)));
+		TRUE_(-3 == bit_floor_f<-4>(T_fix::haplo_f(3)));
+		TRUE_(-4 == bit_floor_f<-4>(T_fix::haplo_f(4)));
+		TRUE_(-4 == bit_floor_f<-4>(T_fix::haplo_f(5)));
+		TRUE_(-4 == bit_floor_f<-4>(T_fix::haplo_f(6)));
+		TRUE_(-4 == bit_floor_f<-4>(T_fix::haplo_f(7)));
+		TRUE_(-4 == bit_floor_f<-4>(T_fix::haplo_f(8)));
+		TRUE_(-4 == bit_floor_f<-4>(T_fix::haplo_f(9)));
+		TRUE_(-4 == bit_floor_f<-4>(T_fix::alpha_f(0)));
 
 
 		TRUE_(0 == bit_floor_f<0>(0));
@@ -124,16 +124,16 @@ TAG_("bit_floor_f")
 		TRUE_(bit_floor_f(8.0) == bit_floor_f(8));
 		TRUE_(bit_floor_f(9.0) == bit_floor_f(9));
 
-	//	TRUE_(bit_floor_f(0.0*T_op::diplo_1*T_op::dnsilon_1) == bit_ceiling_f(0));
-		TRUE_(bit_floor_f(1.0*T_op::diplo_1*T_op::dnsilon_1) == bit_ceiling_f(1));
-		TRUE_(bit_floor_f(2.0*T_op::diplo_1*T_op::dnsilon_1) == bit_ceiling_f(2));
-		TRUE_(bit_floor_f(3.0*T_op::diplo_1*T_op::dnsilon_1) == bit_ceiling_f(3));
-		TRUE_(bit_floor_f(4.0*T_op::diplo_1*T_op::dnsilon_1) == bit_ceiling_f(4));
-		TRUE_(bit_floor_f(5.0*T_op::diplo_1*T_op::dnsilon_1) == bit_ceiling_f(5));
-		TRUE_(bit_floor_f(6.0*T_op::diplo_1*T_op::dnsilon_1) == bit_ceiling_f(6));
-		TRUE_(bit_floor_f(7.0*T_op::diplo_1*T_op::dnsilon_1) == bit_ceiling_f(7));
-		TRUE_(bit_floor_f(8.0*T_op::diplo_1*T_op::dnsilon_1) == bit_ceiling_f(8));
-		TRUE_(bit_floor_f(9.0*T_op::diplo_1*T_op::dnsilon_1) == bit_ceiling_f(9));
+	//	TRUE_(bit_floor_f(0.0*T_fix::diplo_1*T_fix::dnsilon_1) == bit_ceiling_f(0));
+		TRUE_(bit_floor_f(1.0*T_fix::diplo_1*T_fix::dnsilon_1) == bit_ceiling_f(1));
+		TRUE_(bit_floor_f(2.0*T_fix::diplo_1*T_fix::dnsilon_1) == bit_ceiling_f(2));
+		TRUE_(bit_floor_f(3.0*T_fix::diplo_1*T_fix::dnsilon_1) == bit_ceiling_f(3));
+		TRUE_(bit_floor_f(4.0*T_fix::diplo_1*T_fix::dnsilon_1) == bit_ceiling_f(4));
+		TRUE_(bit_floor_f(5.0*T_fix::diplo_1*T_fix::dnsilon_1) == bit_ceiling_f(5));
+		TRUE_(bit_floor_f(6.0*T_fix::diplo_1*T_fix::dnsilon_1) == bit_ceiling_f(6));
+		TRUE_(bit_floor_f(7.0*T_fix::diplo_1*T_fix::dnsilon_1) == bit_ceiling_f(7));
+		TRUE_(bit_floor_f(8.0*T_fix::diplo_1*T_fix::dnsilon_1) == bit_ceiling_f(8));
+		TRUE_(bit_floor_f(9.0*T_fix::diplo_1*T_fix::dnsilon_1) == bit_ceiling_f(9));
 
 	//	TRUE_(bit_ceiling_f(0) == _std::bit_width(0U - 1));
 		TRUE_(bit_ceiling_f(1) == _std::bit_width(1U - 1));
@@ -173,12 +173,12 @@ TAG_("bit_floor_f")
 
 TAG_("bit_representation_f")
 {
-	using T_op = operate<>;
-	using T_delta = typename T_op::delta_type;
-	using T_sigma = typename T_op::sigma_type;
-	using T_alpha = typename T_op::alpha_type;
-	using T_aphex = typename T_op::aphex_type;
-	auto mt19937_f = typename T_op::mt19937_t(Catch::rngSeed());
+	using T_fix = fixture<>;
+	using T_delta = typename T_fix::delta_type;
+	using T_sigma = typename T_fix::sigma_type;
+	using T_alpha = typename T_fix::alpha_type;
+	using T_aphex = typename T_fix::aphex_type;
+	auto mt19937_f = typename T_fix::mt19937_t(Catch::rngSeed());
 
 	TRY_("trial")
 	{
@@ -204,21 +204,21 @@ TAG_("bit_representation_f")
 
 TAG_("semifractional")
 {
-	using T_op = operate<>;
-	using T_delta = typename T_op::delta_type;
-	using T_sigma = typename T_op::sigma_type;
-	using T_alpha = typename T_op::alpha_type;
-	using T_aphex = typename T_op::aphex_type;
+	using T_fix = fixture<>;
+	using T_delta = typename T_fix::delta_type;
+	using T_sigma = typename T_fix::sigma_type;
+	using T_alpha = typename T_fix::alpha_type;
+	using T_aphex = typename T_fix::aphex_type;
 
-	using U_op = operate<float>;
-	using U_delta = typename U_op::delta_type;
-	using U_sigma = typename U_op::sigma_type;
-	using U_alpha = typename U_op::alpha_type;
-	using U_aphex = typename U_op::aphex_type;
+	using U_fix = fixture<float>;
+	using U_delta = typename U_fix::delta_type;
+	using U_sigma = typename U_fix::sigma_type;
+	using U_alpha = typename U_fix::alpha_type;
+	using U_aphex = typename U_fix::aphex_type;
 
 	TRY_("trial")
 	{
-		using _qp = bond::operate<int>;
+		using _qp = bond::fixture<int>;
 		
 		TRUE_(check_f<-26>(bit_fraction_f<U_alpha>()*bit_fraction_f<U_delta>(+123456789.0e-00), (+123456789.0e-00) - round(+123456789.0e-00)));
 		TRUE_(check_f<-26>(bit_fraction_f<U_alpha>()*bit_fraction_f<U_delta>(+123456789.0e-01), (+123456789.0e-01) - round(+123456789.0e-01)));
@@ -272,12 +272,12 @@ TAG_("semifractional")
 
 TAG_("fraction")
 {
-	using T_op = operate<>;
-	using T_sigma = typename T_op::sigma_type;
-	using T_delta = typename T_op::delta_type;
-	using T_alpha = typename T_op::alpha_type;
-	using T_aphex = typename T_op::aphex_type;
-	auto mt19937_f = typename T_op::mt19937_t(Catch::rngSeed());
+	using T_fix = fixture<>;
+	using T_sigma = typename T_fix::sigma_type;
+	using T_delta = typename T_fix::delta_type;
+	using T_alpha = typename T_fix::alpha_type;
+	using T_aphex = typename T_fix::aphex_type;
+	auto mt19937_f = typename T_fix::mt19937_t(Catch::rngSeed());
 
 
 	static constexpr T_alpha two =  2;
@@ -287,7 +287,7 @@ TAG_("fraction")
 	TRY_("comparing implementations")
 	{
 		for (T_sigma i = 0x100; ~--i;) {
-			T_alpha const u = ten*T_op::mantissa_f(mt19937_f);
+			T_alpha const u = ten*T_fix::mantissa_f(mt19937_f);
 			TRUE_(check_f<16>(bit_fraction_f<T_alpha>(u), u - _std::round(u)));
 		}
 	};
@@ -295,7 +295,7 @@ TAG_("fraction")
 	{
 		T_delta w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto const u = ten*T_op::mantissa_f(mt19937_f);
+			auto const u = ten*T_fix::mantissa_f(mt19937_f);
 			w ^= bit_fraction_f<T_delta>(u);
 		}
 		return w;
@@ -304,7 +304,7 @@ TAG_("fraction")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto const u = ten*T_op::mantissa_f(mt19937_f);
+			auto const u = ten*T_fix::mantissa_f(mt19937_f);
 			w *= u - _std::round(u);
 		}
 		return w;

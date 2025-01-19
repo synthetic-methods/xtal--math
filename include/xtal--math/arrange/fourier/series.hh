@@ -34,7 +34,7 @@ struct series<A>
 	using U_v1 =  valued_u<U_v0>;
 	using U_v2 =  valued_u<U_v1>;
 
-	using _op = bond::operate<A>;
+	using _fix = bond::fixture<A>;
 	
 	template <class T>
 	using endotype = typename serial<A>::template homotype<T>;
@@ -158,7 +158,7 @@ struct series<A>
 			auto const j = S_::rend() - 1;
 			
 		//	Compute the fractional sinusoid for this `N_data`:
-			auto const y = process::math::pade::unity_t<1>::template function<6>(_op::ratio_f(-1, 2*N_data));// TODO: Make `constexpr`!
+			auto const y = process::math::pade::unity_t<1>::template function<6>(_fix::ratio_f(-1, 2*N_data));// TODO: Make `constexpr`!
 
 		//	Compute the initial `1/8`th then mirror the remaining segments:
 			typename S_::difference_type constexpr M = N_data >> 2U;// `1/8`th
@@ -279,7 +279,7 @@ s
 				T(constant_t<-1>{}).convolve(s, t);
 			}
 			else {
-				using X = typename _op::aphex_type;
+				using X = typename _fix::aphex_type;
 				using Y = typename series<X[N_data]>::type;
 				Y s_(s);
 				Y t_(t);

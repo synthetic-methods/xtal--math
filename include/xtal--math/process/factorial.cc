@@ -1,6 +1,6 @@
 #pragma once
 #include "./any.cc"
-#include "./either.hh"// testing...
+#include "./term.hh"// testing...
 
 
 
@@ -12,22 +12,23 @@ namespace xtal::process::math::_test
 /////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-/*/
-TAG_("limit")
+/**/
+TAG_("math")
 {
 	using _fix = bond::fixture<>;
-	using T_sigma = typename _fix::sigma_type;
-	using T_delta = typename _fix::delta_type;
-	using T_alpha = typename _fix::alpha_type;
-	using T_aphex = typename _fix::aphex_type;
+	using U_delta = typename _fix::delta_type;
+	using U_sigma = typename _fix::sigma_type;
+	using U_alpha = typename _fix::alpha_type;
+	using U_aphex = typename _fix::aphex_type;
+	
+	using W_alpha = arrange::collate_t<U_alpha[2]>;
+	using W_aphex = arrange::collate_t<U_aphex[2]>;
 
-	auto mt19937_f = typename _fix::mt19937_t();
-	mt19937_f.seed(Catch::rngSeed());
-
-	TRY_("evaluation")
+	TRY_("term")
 	{
-		TRUE_(true);
-	};
+		TRUE_(factorial_f<5>() == 120);
+
+	}
 }
 /***/
 

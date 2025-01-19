@@ -15,18 +15,18 @@ namespace xtal::process::math::taylor::_test
 
 TAG_("logarithm")
 {
-	using _op = bond::operate<>;
+	using _fix = bond::fixture<>;
 
-	using T_sigma = typename _op::sigma_type;
-	using T_delta = typename _op::delta_type;
-	using T_alpha = typename _op::alpha_type;
-	using T_aphex = typename _op::aphex_type;
+	using T_sigma = typename _fix::sigma_type;
+	using T_delta = typename _fix::delta_type;
+	using T_alpha = typename _fix::alpha_type;
+	using T_aphex = typename _fix::aphex_type;
 	static constexpr T_alpha egg =  1.23456789;
 	static constexpr T_alpha ten = 10;
 
 	using U_phi = arrange::math::phason_t<T_alpha[2]>;
 
-	auto mt19937_f = typename _op::mt19937_t();
+	auto mt19937_f = typename _fix::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
 
 	TRY_("evaluation")
@@ -55,8 +55,8 @@ TAG_("logarithm")
 	{
 		T_aphex w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) + 1.0;
-			auto y = _op::mantissa_f(mt19937_f) + 1.0;
+			auto x = _fix::mantissa_f(mt19937_f) + 1.0;
+			auto y = _fix::mantissa_f(mt19937_f) + 1.0;
 			w += log(T_aphex{x, y});
 		}
 		return w;
@@ -65,8 +65,8 @@ TAG_("logarithm")
 	{
 		T_aphex w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) + 1.0;
-			auto y = _op::mantissa_f(mt19937_f) + 1.0;
+			auto x = _fix::mantissa_f(mt19937_f) + 1.0;
+			auto y = _fix::mantissa_f(mt19937_f) + 1.0;
 			w += logarithm_t< 1, 1>::template function<2>(T_aphex{x, y});
 		}
 		return w;
@@ -76,7 +76,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) + 1.0;
+			auto x = _fix::mantissa_f(mt19937_f) + 1.0;
 			w += log(x);
 		}
 		return w;
@@ -85,7 +85,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) + 1.0;
+			auto x = _fix::mantissa_f(mt19937_f) + 1.0;
 			w += logarithm_t< 1, 1>::template function<2>(x);
 		}
 		return w;
@@ -94,7 +94,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) + 1.0;
+			auto x = _fix::mantissa_f(mt19937_f) + 1.0;
 			w += logarithm_t< 1>::template function<2>(x);
 		}
 		return w;
@@ -103,7 +103,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) + 1.0;
+			auto x = _fix::mantissa_f(mt19937_f) + 1.0;
 			w += logarithm_t< 1>::template function<1>(x);
 		}
 		return w;
@@ -112,7 +112,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) + 1.0;
+			auto x = _fix::mantissa_f(mt19937_f) + 1.0;
 			w += logarithm_t< 1>::template function<0>(x);
 		}
 		return w;
@@ -122,7 +122,7 @@ TAG_("logarithm")
 	{
 		T_alpha o{1};
 		for (T_sigma i = 0x100; ~--i;) {
-			o *= exp(_op::mantissa_f(mt19937_f));
+			o *= exp(_fix::mantissa_f(mt19937_f));
 		}
 		return o;
 	
@@ -132,7 +132,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
-			w *= logarithm_t<-1>::template function<~0>(_op::mantissa_f(mt19937_f));
+			w *= logarithm_t<-1>::template function<~0>(_fix::mantissa_f(mt19937_f));
 		}
 		return w;
 	
@@ -141,7 +141,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) - 1.0;
+			auto x = _fix::mantissa_f(mt19937_f) - 1.0;
 			w *= logarithm_t<-1, 1>::template function<2>(x);
 		}
 		return w;
@@ -151,7 +151,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) - 1.0;
+			auto x = _fix::mantissa_f(mt19937_f) - 1.0;
 			w *= logarithm_t<-1>::template function<2>(x);
 		}
 		return w;
@@ -161,7 +161,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) - 1.0;
+			auto x = _fix::mantissa_f(mt19937_f) - 1.0;
 			w *= logarithm_t<-1>::template function<1>(x);
 		}
 		return w;
@@ -171,7 +171,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _op::mantissa_f(mt19937_f) - 1.0;
+			auto x = _fix::mantissa_f(mt19937_f) - 1.0;
 			w *= logarithm_t<-1>::template function<0>(x);
 		}
 		return w;

@@ -105,16 +105,16 @@ struct logarithm<-1, 0>
 		XTAL_LET dysfunction(auto &&o)
 		noexcept -> decltype(auto)
 		{
-			using _op = bond::operate<decltype(o)>;
+			using _fix = bond::fixture<decltype(o)>;
 
 			if constexpr (0 == N_lim) {
-				auto u = o*_op::haplo_1; u += root_f<2>(term_f(one, u, u));
+				auto u = o*_fix::haplo_1; u += root_f<2>(term_f(one, u, u));
 				return term_f(one, XTAL_MOV_(u), XTAL_REF_(o));
 			}
 			else {
 				/**/
 				auto constexpr N = below_m<0x10, (unsigned) N_lim> << 2;
-				return square_f<N>(function<0>(XTAL_REF_(o)*_op::haplo_f(N)));
+				return square_f<N>(function<0>(XTAL_REF_(o)*_fix::haplo_f(N)));
 				/*/
 				return monologarithm_t<-1>::template function<N_lim>(XTAL_REF_(o)) + one;
 				/***/
@@ -157,10 +157,10 @@ struct logarithm< 1, 1>
 		XTAL_LET dysfunction(real_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
-			using _op = bond::operate<decltype(o)>;
-			using U_alpha = typename _op::alpha_type;
-			using U_sigma = typename _op::sigma_type;
-			using U_delta = typename _op::delta_type;
+			using _fix = bond::fixture<decltype(o)>;
+			using U_alpha = typename _fix::alpha_type;
+			using U_sigma = typename _fix::sigma_type;
+			using U_delta = typename _fix::delta_type;
 
 		//	Log[m 2^x]
 		//	Log[m] + Log[2^x]
@@ -170,10 +170,10 @@ struct logarithm< 1, 1>
 		//	Log[m/2^(1/2)] + (x*2 + 1)*Log[2]/2
 
 			U_sigma m = _xtd::bit_cast<U_sigma>(o);
-			U_delta n = m - _op::unit.mask;
-			m  &= _op::fraction.mask;
-			m  |= _op::unit.mask;
-			n >>= _op::unit.shift - one;
+			U_delta n = m - _fix::unit.mask;
+			m  &= _fix::fraction.mask;
+			m  |= _fix::unit.mask;
+			n >>= _fix::unit.shift - one;
 			n  |= one;
 
 			U_alpha constexpr w1 =                       root_f<-2>(2.) ;
@@ -188,17 +188,17 @@ struct logarithm< 1, 1>
 		XTAL_LET dysfunction(complex_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
-			using _op = bond::operate<decltype(o)>;
+			using _fix = bond::fixture<decltype(o)>;
 
-			auto constexpr up = one/_op::patio_1;
-			auto constexpr dn =     _op::patio_1;
+			auto constexpr up = one/_fix::patio_1;
+			auto constexpr dn =     _fix::patio_1;
 
 			auto const [u_re, u_im] = destruct_f(XTAL_REF_(o));
 			auto const w_re = square_f(u_re);
 			auto const w_im = square_f(u_im);
 
-			auto const y_re = _op::haplo_1*dysfunction<N_lim>(w_re + w_im);
-			auto const y_im = pade::tangy_t<-1, 1>::template function<N_lim>(u_im, u_re)*_op::patio_1;
+			auto const y_re = _fix::haplo_1*dysfunction<N_lim>(w_re + w_im);
+			auto const y_im = pade::tangy_t<-1, 1>::template function<N_lim>(u_im, u_re)*_fix::patio_1;
 			return {y_re, y_im};
 		}
 
@@ -237,8 +237,8 @@ struct logarithm<-1, 1>
 		XTAL_LET dysfunction(real_variable_q auto o)
 		noexcept -> decltype(auto)
 		{
-			using _op = bond::operate<decltype(o)>;
-			using U_alpha = typename _op::alpha_type;
+			using _fix = bond::fixture<decltype(o)>;
+			using U_alpha = typename _fix::alpha_type;
 
 			U_alpha constexpr N_log2 = _std::numbers::ln2_v<U_alpha>;
 			o *= one/N_log2; auto const n = round(o); o -= n;

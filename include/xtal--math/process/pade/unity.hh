@@ -57,7 +57,7 @@ struct unity<M_ism> : unity<>
 		XTAL_LET function(_std::initializer_list<U> o)
 		noexcept -> decltype(auto)
 		{
-			using _op = bond::operate<decltype(o)>;
+			using _fix = bond::fixture<decltype(o)>;
 			_std::complex<U> w; auto &m = destruct_f(w);
 			_std::copy_n(point_f(o), 2, m);
 			return function<N_lim>(w);
@@ -75,8 +75,8 @@ struct unity<M_ism> : unity<>
 		noexcept -> decltype(auto)
 		{
 			auto constexpr exp = XTAL_FUN_(taylor::logarithm_t<-1, 1>::template function<2>);
-			using U_op = bond::operate<decltype(t_re), decltype(t_im)>;
-			return function<N_lim>(XTAL_REF_(t_re))*exp(XTAL_REF_(t_im)*U_op::patio_f(-2));
+			using U_fix = bond::fixture<decltype(t_re), decltype(t_im)>;
+			return function<N_lim>(XTAL_REF_(t_re))*exp(XTAL_REF_(t_im)*U_fix::patio_f(-2));
 		}
 
 		template <int N_lim=-1>
@@ -85,18 +85,18 @@ struct unity<M_ism> : unity<>
 		noexcept -> decltype(auto)
 		{
 			using U       = XTAL_ALL_(o);
-			using U_op    = bond::operate<U>;
-			using U_alpha = typename U_op::alpha_type;
+			using U_fix    = bond::fixture<U>;
+			using U_alpha = typename U_fix::alpha_type;
 
 			if constexpr (N_lim < 0) {
-				auto w = o*U_op::patio_2;
+				auto w = o*U_fix::patio_2;
 				XTAL_IF0
 				XTAL_0IF (1 == M_ism) {return complexion_f(cos (w), sin (w));}
 				XTAL_0IF (2 == M_ism) {return complexion_f(cosh(w), sinh(w));}
 			}
 			else {
 				auto w = wrap_f(o);
-				auto m = objective_f(wrap_f(w*U_op::diplo_1)*U_op::haplo_1);
+				auto m = objective_f(wrap_f(w*U_fix::diplo_1)*U_fix::haplo_1);
 				return superprocess::template function<N_lim>(m)*
 					operative_f<XTAL_FUN_(U_alpha)>(((m == w) << 1) - 1);
 			}
@@ -107,11 +107,11 @@ struct unity<M_ism> : unity<>
 		noexcept -> decltype(auto)
 		{
 			using T_ = XTAL_ALL_(t_);
-			using T_op = bond::operate<decltype(t_[0])>;// Underlying...
-			using U_op = bond::operate<decltype(t_(0))>;
-			using T_sigma = typename T_op::sigma_type;
-			using U_sigma = typename U_op::sigma_type;
-			using U_alpha = typename U_op::alpha_type;
+			using T_fix = bond::fixture<decltype(t_[0])>;// Underlying...
+			using U_fix = bond::fixture<decltype(t_(0))>;
+			using T_sigma = typename T_fix::sigma_type;
+			using U_sigma = typename U_fix::sigma_type;
+			using U_alpha = typename U_fix::alpha_type;
 
 			if constexpr (N_lim < 0) {
 				return function<N_lim>(t_(0));
@@ -120,11 +120,11 @@ struct unity<M_ism> : unity<>
 				T_sigma &u0 = t_[0];
 				T_sigma  un = u0;
 				un ^= un << 1;
-				un &= T_op::sign.mask;
+				un &= T_fix::sign.mask;
 				u0 ^= un;
 				U_sigma vn{un};
-				vn <<= U_op::full.depth - T_op::full.depth;
-				vn  |= U_op::unit.mask;
+				vn <<= U_fix::full.depth - T_fix::full.depth;
+				vn  |= U_fix::unit.mask;
 				return superprocess::template function<N_lim>(t_(0))*
 					operative_f<XTAL_FUN_(_xtd::bit_cast<U_alpha>)>(vn);
 			}
@@ -149,13 +149,13 @@ struct unity<M_ism> : unity<>
 		noexcept -> decltype(auto)
 		{
 			using U       = XTAL_ALL_(o);
-			using U_op    = bond::operate<U>;
+			using U_fix    = bond::fixture<U>;
 
 			XTAL_LET N_lim_tan = N_lim;
 			XTAL_LET N_lim_log = 2;
 
-			XTAL_LET _1 = U_op::haplo_0, _2pi = _1/U_op::patio_2;
-			XTAL_LET _2 = U_op::haplo_1, _4pi = _2/U_op::patio_2;
+			XTAL_LET _1 = U_fix::haplo_0, _2pi = _1/U_fix::patio_2;
+			XTAL_LET _2 = U_fix::haplo_1, _4pi = _2/U_fix::patio_2;
 
 			auto const &[x_re, x_im] = destruct_f(o);
 			auto const   y_re = tangy_t<-1, 1>::template function<N_lim_tan>(x_im, x_re);

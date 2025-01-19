@@ -15,11 +15,11 @@ namespace xtal::arrange::math::dirichlet::_test
 
 TAG_("symbol")
 {
-	using _op = bond::operate<>;
-	using T_delta = typename _op::delta_type;
-	using T_sigma = typename _op::sigma_type;
-	using T_alpha = typename _op::alpha_type;
-	using T_aphex = typename _op::aphex_type;
+	using _fix = bond::fixture<>;
+	using T_delta = typename _fix::delta_type;
+	using T_sigma = typename _fix::sigma_type;
+	using T_alpha = typename _fix::alpha_type;
+	using T_aphex = typename _fix::aphex_type;
 
 
 	TRY_("11th characterization (integer)")
@@ -55,10 +55,10 @@ TAG_("symbol")
 		using W = symbol_t<T_aphex[N]>;
 		W w; w.characterize();
 		W m {process::math::power_f<K>(w)};
-		_detail::apply_to<[] (auto &&z) XTAL_0FN_(arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
+		_detail::apply_to<[] (auto &&z) XTAL_0FN_(arg(XTAL_REF_(z))*K/_fix::patio_1)>(w);
 
-		_detail::apply_to<XTAL_FUN_(_op::template trim_f<16>)>(m);
-		_detail::apply_to<XTAL_FUN_(_op::template trim_f<16>)>(w);
+		_detail::apply_to<XTAL_FUN_(_fix::template trim_f<16>)>(m);
+		_detail::apply_to<XTAL_FUN_(_fix::template trim_f<16>)>(w);
 
 		TRUE_(m == W{0, 1,-1, 1,-1,-1, 1, 1,-1, 1,-1});
 		TRUE_(w == W{0, 0, -1, 2, 3, 1,-4,-2,-3, 4,-5});
@@ -98,10 +98,10 @@ TAG_("symbol")
 		using W = symbol_t<T_aphex[N]>;
 		W w; w.characterize();
 		W m {process::math::power_f<K>(w)};
-		_detail::apply_to<[] (auto &&z) XTAL_0FN_(arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
+		_detail::apply_to<[] (auto &&z) XTAL_0FN_(arg(XTAL_REF_(z))*K/_fix::patio_1)>(w);
 
-		_detail::apply_to<XTAL_FUN_(_op::template trim_f<16>)>(m);
-		_detail::apply_to<XTAL_FUN_(_op::template trim_f<16>)>(w);
+		_detail::apply_to<XTAL_FUN_(_fix::template trim_f<16>)>(m);
+		_detail::apply_to<XTAL_FUN_(_fix::template trim_f<16>)>(w);
 
 		TRUE_(m == W{0, 1, 1,-1, 1,-1,-1});
 		TRUE_(w == W{0, 0, 2, 1,-2,-1,-3});
@@ -116,10 +116,10 @@ TAG_("symbol")
 		using W = symbol_t<T_aphex[K]>;
 		W w; w.subcharacterize();
 		W m {process::math::power_f<K>(w)};
-		_detail::apply_to<[] (auto &&z) XTAL_0FN_(arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
+		_detail::apply_to<[] (auto &&z) XTAL_0FN_(arg(XTAL_REF_(z))*K/_fix::patio_1)>(w);
 
-		_detail::apply_to<XTAL_FUN_(_op::template trim_f<16>)>(m);
-		_detail::apply_to<XTAL_FUN_(_op::template trim_f<16>)>(w);
+		_detail::apply_to<XTAL_FUN_(_fix::template trim_f<16>)>(m);
+		_detail::apply_to<XTAL_FUN_(_fix::template trim_f<16>)>(w);
 
 		TRUE_(w == W{0, 2, 1});
 
@@ -133,7 +133,7 @@ TAG_("symbol")
 		using W = symbol_t<T_alpha[N]>;
 		W w; w.characterize();
 
-		_detail::apply_to<XTAL_FUN_(_op::template trim_f<16>)>(w);
+		_detail::apply_to<XTAL_FUN_(_fix::template trim_f<16>)>(w);
 
 		TRUE_(w == W{0, 1, 1,-1, 1,-1,-1});
 
@@ -148,10 +148,10 @@ TAG_("symbol")
 		using W = symbol_t<T_aphex[N]>;
 		W w; w.characterize();
 		W m{process::math::power_f<K>(w)};
-		_detail::apply_to<[] (auto &&z) XTAL_0FN_(arg(XTAL_REF_(z))*K/_op::patio_1)>(w);
+		_detail::apply_to<[] (auto &&z) XTAL_0FN_(arg(XTAL_REF_(z))*K/_fix::patio_1)>(w);
 
-		_detail::apply_to<XTAL_FUN_(_op::template trim_f<16>)>(m);
-		_detail::apply_to<XTAL_FUN_(_op::template trim_f<16>)>(w);
+		_detail::apply_to<XTAL_FUN_(_fix::template trim_f<16>)>(m);
+		_detail::apply_to<XTAL_FUN_(_fix::template trim_f<16>)>(w);
 
 		TRUE_(m == W{0, 1,-1,-1, 1});
 		TRUE_(w == W{w[0], 0, 1,-1, w[M]});
@@ -165,7 +165,7 @@ TAG_("symbol")
 
 		using W = symbol_t<T_alpha[N]>;
 		W w; w.template characterize<2>();
-		_detail::apply_to<XTAL_FUN_(_op::template trim_f<16>)>(w);
+		_detail::apply_to<XTAL_FUN_(_fix::template trim_f<16>)>(w);
 	//	echo(w);
 	}
 	/***/

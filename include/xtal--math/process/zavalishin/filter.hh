@@ -38,7 +38,7 @@ template <typename ...As> using    filter_t = process::confined_t<filter<As...>>
 template <class U_pole, int N_pole>
 struct filter<U_pole[N_pole]>
 {
-	using     zoom_type = occur::inferred_t<struct     ZOOM, typename bond::operate<>::alpha_type>;
+	using     zoom_type = occur::inferred_t<struct     ZOOM, typename bond::fixture<>::alpha_type>;
 	using   select_type = occur::inferred_t<struct   SELECT, unsigned int, bond::word<2>>;
 	using    order_type = occur::inferred_t<struct    ORDER, unsigned int, bond::seek_s<N_pole + 1>>;
 	using topology_type = occur::inferred_t<struct TOPOLOGY, unsigned int, bond::word<2>>;
@@ -84,8 +84,8 @@ struct filter<U_pole[N_pole]>
 		XTAL_LET method(auto &&x_input, real_q auto s_scale, real_q auto s_damping)
 		noexcept -> decltype(auto)
 		{
-			using _op = bond::operate<decltype(x_input)>;
-			return method<Ns...>(XTAL_REF_(x_input), s_scale, s_damping, _op::alpha_0);
+			using _fix = bond::fixture<decltype(x_input)>;
+			return method<Ns...>(XTAL_REF_(x_input), s_scale, s_damping, _fix::alpha_0);
 		}
 		template <int N_sel=0, int N_ord=0, int N_top=0, auto ...Ns>
 		XTAL_DEF_(inline)
@@ -194,7 +194,7 @@ struct filter<U_pole[N_pole]>
 };
 template <>
 struct filter<>
-:	filter<typename bond::operate<>::aphex_type[4]>
+:	filter<typename bond::fixture<>::aphex_type[4]>
 {
 };
 

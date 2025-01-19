@@ -31,7 +31,7 @@ Extends `grade` with multiplication via linear convolution. \
 template <vector_q A>
 struct serial<A>
 {
-	using _op = bond::operate<A>;
+	using _fix = bond::fixture<A>;
 	
 	template <class T>
 	using endotype = typename grade<A>::template homotype<T>;
@@ -71,7 +71,7 @@ struct serial<A>
 		{
 			auto &s = self();
 			
-			if constexpr (_op::alignment::value < N_data) {
+			if constexpr (_fix::alignment::value < N_data) {
 				for (auto i = N_data; ~--i;) {element(i) *= get<0>(t);
 				for (auto j = i; j-- ;) {element(i) += t.element(j)*element(i - j);}}
 			}

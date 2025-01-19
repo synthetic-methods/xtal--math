@@ -54,21 +54,21 @@ struct tangy<M_ism,-0>
 		XTAL_LET function(simplex_field_q auto &&o)
 		noexcept -> auto
 		{
-			using _op = bond::operate<decltype(o)>;
+			using _fix = bond::fixture<decltype(o)>;
 			
 			XTAL_IF0
 			XTAL_0IF (N_lim <  0) {
 				XTAL_IF0
-				XTAL_0IF (1 == M_ism) {return tan (XTAL_REF_(o)*_op::patio_1);}
-				XTAL_0IF (2 == M_ism) {return tanh(XTAL_REF_(o)*_op::patio_1);}
+				XTAL_0IF (1 == M_ism) {return tan (XTAL_REF_(o)*_fix::patio_1);}
+				XTAL_0IF (2 == M_ism) {return tanh(XTAL_REF_(o)*_fix::patio_1);}
 			}
 			XTAL_0IF (N_lim == 0) {
-				return _op::patio_1*gudermannian::tang_t<M_ism>::template function<N_lim>(XTAL_REF_(o));
+				return _fix::patio_1*gudermannian::tang_t<M_ism>::template function<N_lim>(XTAL_REF_(o));
 			}
 			XTAL_0IF (0 == (N_lim&1)) {
-				auto const [x1, y1] = destruct_f(impunity_t<M_ism,-0>::template function<N_lim>(o*_op::haplo_1));
+				auto const [x1, y1] = destruct_f(impunity_t<M_ism,-0>::template function<N_lim>(o*_fix::haplo_1));
 				auto const x2 =  square_f(x1) + I_sgn*square_f(y1);
-				auto const y2 = _op::diplo_1*x1*y1;
+				auto const y2 = _fix::diplo_1*x1*y1;
 				return y2*root_f<-1, 1>(x2);
 			}
 			XTAL_0IF (1 == (N_lim&1)) {
@@ -97,28 +97,28 @@ struct tangy<M_ism, 1>
 		XTAL_LET function(simplex_field_q auto &&t)
 		noexcept -> decltype(auto)
 		{
-			using _op = bond::operate<decltype(t)>;
-			return function<N_lim>(XTAL_REF_(t), _op::alpha_1);
+			using _fix = bond::fixture<decltype(t)>;
+			return function<N_lim>(XTAL_REF_(t), _fix::alpha_1);
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(short,static)
 		XTAL_LET function(simplex_field_q auto &&v, simplex_field_q auto &&u)
 		noexcept -> decltype(auto)
 		{
-			using _op = bond::operate<decltype(v), decltype(u)>;
-			using U_aphex = typename _op::aphex_type;
-			using U_alpha = typename _op::alpha_type;
+			using _fix = bond::fixture<decltype(v), decltype(u)>;
+			using U_aphex = typename _fix::aphex_type;
+			using U_alpha = typename _fix::alpha_type;
 			using W_alpha = arrange::collate_t<U_alpha[2]>;
 
 			auto u_abs = u, u_sgn = signum_t<>::edit(u_abs);
-			auto v_abs = v, v_sgn = signum_t<>::edit(v_abs);// v_sgn *= *_op::haplo_1;
+			auto v_abs = v, v_sgn = signum_t<>::edit(v_abs);// v_sgn *= *_fix::haplo_1;
 
 			W_alpha co(v_abs < u_abs);
 			W_alpha up{v, u_abs}; up *= co;
 			W_alpha dn{u_abs,-v}; dn *= co;
 
 			auto const &[co_0, co_1]  = co;
-			auto const u_flp = _op::haplo_1 - _op::haplo_1*co_0*u_sgn;
+			auto const u_flp = _fix::haplo_1 - _fix::haplo_1*co_0*u_sgn;
 
 			return term_f(u_flp*v_sgn, u_sgn, S_::template function<N_lim>(up.sum()/dn.sum()));
 		}

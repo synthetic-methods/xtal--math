@@ -63,15 +63,15 @@ struct polynomial<M_ism,-0>
 		XTAL_LET function(auto &&u)
 		noexcept -> decltype(auto)
 		{
-			using     _op = bond::operate<decltype(u)>;
-			using W_alpha = typename _op::alpha_type;
-			using W_sigma = typename _op::sigma_type;
+			using     _fix = bond::fixture<decltype(u)>;
+			using W_alpha = typename _fix::alpha_type;
+			using W_sigma = typename _fix::sigma_type;
 			W_sigma constexpr N_par = magnum_f(N_ord)&1;
 			W_sigma constexpr N_ity = magnum_f(N_ord) >> 1;
 
 			if constexpr (N_ord < 0) {
-				auto const dn =          one/_op::patio_1;
-				auto const up = XTAL_REF_(u)*_op::patio_2;
+				auto const dn =          one/_fix::patio_1;
+				auto const up = XTAL_REF_(u)*_fix::patio_2;
 
 				XTAL_IF0
 				XTAL_0IF (N_par == 1 and M_ism == 2) {return sinh(up)*(dn);}
@@ -80,7 +80,7 @@ struct polynomial<M_ism,-0>
 				XTAL_0IF (N_par == 0 and M_ism == 1) {return cos (up)*(dn);}
 			}
 			else {
-				W_alpha constexpr dn = signum_f(N_ity)*power_f<N_ord - 1>(_op::patio_2);
+				W_alpha constexpr dn = signum_f(N_ity)*power_f<N_ord - 1>(_fix::patio_2);
 				XTAL_IF0
 				XTAL_0IF (N_par == 0) {return dn*s_::template function<N_ord>(square_f(XTAL_REF_(u)));}
 				XTAL_0IF (N_par == 1) {return dn*S_::template function<N_ord>(         XTAL_REF_(u) );}
@@ -118,8 +118,8 @@ struct polynomial<M_ism,-2>
 		{
 			XTAL_LET N_par = N_ord&1;
 
-			using _op = bond::operate<decltype(w)>;
-			w *= _op::alpha_f(I_sgn);
+			using _fix = bond::fixture<decltype(w)>;
+			w *= _fix::alpha_f(I_sgn);
 
 			if constexpr (N_ord < 0) {
 				auto const u = root_f<2>(magnum_f(XTAL_MOV_(w)));
@@ -127,11 +127,11 @@ struct polynomial<M_ism,-2>
 			}
 			else {
 				XTAL_LET co_ = [] (auto num, auto nom)
-					XTAL_0FN_(_op::ratio_f(num, nom*_op::template factorial_f<N_ord>())
+					XTAL_0FN_(_fix::ratio_f(num, nom*factorial_f<N_ord>())
 				);
 				XTAL_IF0
 				XTAL_0IF (1 == N_ord) {return                                                                  co_(1, 1);}
-				XTAL_0IF (1 == N_par) {return      (_op::ratio_f(1, 4) + w) * S_::template function<N_ord>(XTAL_MOV_(w));}
+				XTAL_0IF (1 == N_par) {return     (_fix::ratio_f(1, 4) + w) * S_::template function<N_ord>(XTAL_MOV_(w));}
 				XTAL_0IF (0 == N_ord) {return termial_f(XTAL_MOV_(w),                                         co_(1, 1));}
 				XTAL_0IF (2 == N_ord) {return termial_f(XTAL_MOV_(w),                             co_(1, 12), co_(1, 1));}
 				XTAL_0IF (4 == N_ord) {return termial_f(XTAL_MOV_(w),                co_(7, 240), co_(1,  2), co_(1, 1));}
@@ -161,10 +161,10 @@ struct polynomial<M_ism,-3>
 			static_assert(1 == N_par);
 			static_assert(3 <= N_ord);
 
-			using _op = bond::operate<decltype(w)>;
+			using _fix = bond::fixture<decltype(w)>;
 
 			XTAL_LET co_ = [] (auto num, auto nom)
-				XTAL_0FN_(_op::ratio_f(num, nom*_op::template factorial_f<N_ord>())
+				XTAL_0FN_(_fix::ratio_f(num, nom*factorial_f<N_ord>())
 			);
 			XTAL_IF0
 			XTAL_0IF (3 == N_ord) {return termial_f(XTAL_MOV_(w),                          co_(1, 1));}

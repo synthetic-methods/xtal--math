@@ -59,25 +59,25 @@ struct cut
 		{
 			using _xtd::bit_cast;
 
-			using _op = bond::operate<XTAL_ALL_(o)>;
-			using U_delta = typename _op::delta_type;
-			using U_sigma = typename _op::sigma_type;
-			using U_alpha = typename _op::alpha_type;
+			using _fix = bond::fixture<XTAL_ALL_(o)>;
+			using U_delta = typename _fix::delta_type;
+			using U_sigma = typename _fix::sigma_type;
+			using U_alpha = typename _fix::alpha_type;
 
 			XTAL_LET o_stop = static_cast<U_alpha>(magnum_f(M_stop));
 			XTAL_LET N_side = static_cast<U_delta>(M_side);
 			//\
-			if (_std::is_constant_evaluated() or not _op::IEC) {
-			if (_std::is_constant_evaluated() or not _op::IEC or XTAL_ENV_(GNUC)) {
+			if (_std::is_constant_evaluated() or not _fix::IEC) {
+			if (_std::is_constant_evaluated() or not _fix::IEC or XTAL_ENV_(GNUC)) {
 				U_alpha const s = signum_t<>::edit(o); o = either_f<N_side>(XTAL_MOV_(o), o_stop);
 				U_alpha const q = o == o_stop;
 				o *= s; return q*s;
 			}
 			else {
 				XTAL_LET_(U_sigma) K_stop = bit_cast<U_sigma>(o_stop);
-				XTAL_LET_(U_sigma) K_side = N_side >> _op::sign.shift;
-				XTAL_LET sign = _op::sign;
-				XTAL_LET unit = _op::unit;
+				XTAL_LET_(U_sigma) K_side = N_side >> _fix::sign.shift;
+				XTAL_LET sign = _fix::sign;
+				XTAL_LET unit = _fix::unit;
 
 				auto   &t = reinterpret_cast<U_sigma &>(o);
 				U_sigma s = t&sign.mask;
@@ -107,7 +107,7 @@ struct cut
 		XTAL_LET edit(complex_variable_q auto &o)
 		noexcept -> XTAL_ALL_(abs(o))
 		{
-			using _op = bond::operate<decltype(o)>;
+			using _fix = bond::fixture<decltype(o)>;
 
 			auto &[x, y] = destruct_f(o);
 			auto  [w, m] = dots_f<2>(o);

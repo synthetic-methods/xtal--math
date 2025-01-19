@@ -52,11 +52,11 @@ struct root
 		XTAL_LET function(auto &&z)
 		noexcept -> auto
 		{
-			using _op = bond::operate<decltype(z)>;
+			using _fix = bond::fixture<decltype(z)>;
 			XTAL_LET I_lim = below_m<(1<<4), (unsigned) N_lim>;
 			XTAL_IF0
 			XTAL_0IF (integral_variable_q<decltype(z)>) {
-				return function<I_lim>(_op::alpha_f(XTAL_REF_(z)));
+				return function<I_lim>(_fix::alpha_f(XTAL_REF_(z)));
 			}
 			XTAL_0IF XTAL_TRY_TO_(dysfunction<I_lim>(XTAL_REF_(z)))
 			XTAL_0IF XTAL_TRY_TO_(dysfunction<I_lim>(XTAL_REF_(z), constant_t<2>{}))
@@ -64,7 +64,7 @@ struct root
 			XTAL_0IF XTAL_TRY_TO_(dysfunction<I_lim>(XTAL_REF_(z), constant_t<5>{}))
 			XTAL_0IF XTAL_TRY_TO_(dysfunction<I_lim>(XTAL_REF_(z), constant_t<7>{}))
 			XTAL_0IF_(else) {
-				return pow(XTAL_REF_(z), _op::alpha_1/M_exp);
+				return pow(XTAL_REF_(z), _fix::alpha_1/M_exp);
 			}
 		}
 
@@ -82,7 +82,7 @@ struct root
 		XTAL_LET dysfunction(auto &&z)
 		noexcept -> XTAL_ALL_(z)
 		{
-			using _op = bond::operate<decltype(z)>;
+			using _fix = bond::fixture<decltype(z)>;
 
 			XTAL_IF0
 			XTAL_0IF (M_exp ==  1) {
@@ -92,7 +92,7 @@ struct root
 				return one/(XTAL_REF_(z));
 			}
 			XTAL_0IF (0 <  M_cut) {
-				return one/(XTAL_REF_(z) + _op::minilon_f(M_cut));
+				return one/(XTAL_REF_(z) + _fix::minilon_f(M_cut));
 			}
 		}
 		template <int I_lim> requires in_n<M_exp_mag, 2>
@@ -100,11 +100,11 @@ struct root
 		XTAL_LET dysfunction(complex_variable_q auto z)
 		noexcept -> XTAL_ALL_(z)
 		{
-			using _op = bond::operate<decltype(z)>;
+			using _fix = bond::fixture<decltype(z)>;
 
 			XTAL_IF0
 			XTAL_0IF_(consteval) {
-				z *= _op::haplo_f(M_exp >> 1);
+				z *= _fix::haplo_f(M_exp >> 1);
 				auto const x_re = z.real();
 				auto const x_im = z.imag();
 				auto const x_a2 = _xtd::accumulator(x_re*x_re, x_im, x_im);
@@ -119,7 +119,7 @@ struct root
 				y_re *= root_t<-M_exp_mag, 1>::template function<I_lim>(v_re);
 				y_im *= root_t<-M_exp_mag, 1>::template function<I_lim>(v_im);
 
-				auto const y_im_sgn = M_exp_sgn*_xtd::copysign(_op::alpha_1, x_im);
+				auto const y_im_sgn = M_exp_sgn*_xtd::copysign(_fix::alpha_1, x_im);
 				return {y_re, y_im*y_im_sgn};
 			}
 			XTAL_0IF_(else) {
@@ -167,12 +167,12 @@ struct root
 		XTAL_LET infunction(real_variable_q auto z)
 		noexcept -> XTAL_ALL_(z)
 		{
-			using _op = bond::operate<decltype(z)>;
-			using Z_sigma = typename _op::sigma_type;
-			using Z_delta = typename _op::delta_type;
-			using Z_alpha = typename _op::alpha_type;
+			using _fix = bond::fixture<decltype(z)>;
+			using Z_sigma = typename _fix::sigma_type;
+			using Z_delta = typename _fix::delta_type;
+			using Z_alpha = typename _fix::alpha_type;
 
-			Z_alpha constexpr  m_1 = _op::dnsilon_f(_op::exponent.depth + M_exp_mag);// Experimental error term...
+			Z_alpha constexpr  m_1 = _fix::dnsilon_f(_fix::exponent.depth + M_exp_mag);// Experimental error term...
 			Z_delta constexpr  M_1 = _xtd::bit_cast<Z_delta>(m_1);
 
 			Z_delta constexpr  N = -M_exp_mag;
@@ -182,7 +182,7 @@ struct root
 
 			XTAL_IF0
 			XTAL_0IF_(consteval) {
-				z += M_exp_mag*_op::minilon_f(M_cut);
+				z += M_exp_mag*_fix::minilon_f(M_cut);
 			}
 			Z_delta constexpr  K_    = (N - one)*_N;
 			Z_alpha constexpr  k_    = (n - one)*_n;

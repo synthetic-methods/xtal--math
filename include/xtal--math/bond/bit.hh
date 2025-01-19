@@ -46,8 +46,8 @@ XTAL_DEF_(short)
 XTAL_SET bit_sign_f(real_variable_q auto o)
 noexcept -> int
 {
-	using _op = bond::operate<decltype(o)>;
-	return bit_sign_f(_xtd::bit_cast<typename _op::delta_type>(o));
+	using _fix = bond::fixture<decltype(o)>;
+	return bit_sign_f(_xtd::bit_cast<typename _fix::delta_type>(o));
 }
 XTAL_DEF_(short)
 XTAL_SET bit_sign_f(constant_q auto w)
@@ -93,7 +93,7 @@ noexcept -> int
 {
 	/*/
 	U const  z =      one == u;
-	U const _z = bond::operate<decltype(u)>::unit.depth&-z;
+	U const _z = bond::fixture<decltype(u)>::unit.depth&-z;
 	return _std::bit_width(u) - (one << _z) + z;// 0 -> -1023
 	/*/
 	return _std::bit_width(u) - one;// 0 -> -1
@@ -127,14 +127,14 @@ XTAL_DEF_(short)
 XTAL_SET bit_floor_f(real_variable_q auto &&x)
 noexcept -> int
 {
-	using    X_op =  bond::operate<absolve_u<decltype(x)>>;
-	XTAL_LET Z    = -static_cast<int>(X_op::unit.mark);
+	using    X_fix =  bond::fixture<absolve_u<decltype(x)>>;
+	XTAL_LET Z    = -static_cast<int>(X_fix::unit.mark);
 
-	XTAL_LET      unit = X_op::    unit;
-	XTAL_LET      sign = X_op::    sign;
-	XTAL_LET  exponent = X_op::exponent;
-	using U = typename X_op::sigma_type;
-	using V = typename X_op::delta_type;
+	XTAL_LET      unit = X_fix::    unit;
+	XTAL_LET      sign = X_fix::    sign;
+	XTAL_LET  exponent = X_fix::exponent;
+	using U = typename X_fix::sigma_type;
+	using V = typename X_fix::delta_type;
 
 	auto n = _xtd::bit_cast<V>(XTAL_REF_(x));
 	n >>= exponent.shift;
@@ -159,8 +159,8 @@ XTAL_SET bit_floor_f(auto &&x)
 noexcept -> int
 requires real_variable_q<absolve_u<decltype(x)>>
 {
-	using    X_op =  bond::operate<absolve_u<decltype(x)>>;
-	XTAL_LET Z    = -static_cast<int>(X_op::unit.mark);
+	using    X_fix =  bond::fixture<absolve_u<decltype(x)>>;
+	XTAL_LET Z    = -static_cast<int>(X_fix::unit.mark);
 
 	return bit_floor_f<Z>(XTAL_REF_(x));
 }
@@ -212,8 +212,8 @@ XTAL_DEF_(short)
 XTAL_SET bit_ceiling_f(real_variable_q auto &&x)
 noexcept -> int
 {
-	using X_op = bond::operate<decltype(x)>;
-	return bit_floor_f<N_zero>(X_op::diplo_1*X_op::dnsilon_1*XTAL_REF_(x));
+	using X_fix = bond::fixture<decltype(x)>;
+	return bit_floor_f<N_zero>(X_fix::diplo_1*X_fix::dnsilon_1*XTAL_REF_(x));
 }
 template <int N_zero=+1>
 XTAL_DEF_(short)
@@ -276,7 +276,7 @@ XTAL_DEF_(short)
 XTAL_SET bit_reverse_f(auto &&x)
 noexcept -> auto
 {
-	XTAL_LET N_depth = bond::operate<decltype(x)>::full.depth;
+	XTAL_LET N_depth = bond::fixture<decltype(x)>::full.depth;
 	//\
 	int constexpr n_subdepth = below_m<N_depth, (unsigned) N_subdepth>;
 	int constexpr n_subdepth = 0 < N_subdepth? N_subdepth: N_depth;
@@ -289,17 +289,17 @@ XTAL_DEF_(long)
 XTAL_SET bit_representation_f(real_variable_q auto x)
 noexcept -> auto
 {
-	using X_op =  bond::operate<decltype(x)>;
-	using U = typename X_op::sigma_type;
-	using V = typename X_op::delta_type;
+	using X_fix =  bond::fixture<decltype(x)>;
+	using U = typename X_fix::sigma_type;
+	using V = typename X_fix::delta_type;
 
-	U constexpr N = X_op::unit.mark + X_op::fraction.depth;
-	U constexpr M =            one << X_op::fraction.depth;
+	U constexpr N = X_fix::unit.mark + X_fix::fraction.depth;
+	U constexpr M =            one << X_fix::fraction.depth;
 	
 	auto const o = _xtd::bit_cast<U>(x);
-	V const z = static_cast<V>(o) >> X_op::positive.depth;
-	V const n = N - (o << X_op::sign.depth >> X_op::sign.depth + X_op::exponent.shift);
-	V       m = M | (o&X_op::fraction.mask);
+	V const z = static_cast<V>(o) >> X_fix::positive.depth;
+	V const n = N - (o << X_fix::sign.depth >> X_fix::sign.depth + X_fix::exponent.shift);
+	V       m = M | (o&X_fix::fraction.mask);
 	m  ^= z;
 	m  -= z;
 	return couple_t<V[2]>{m, n};
@@ -309,7 +309,7 @@ XTAL_SET bit_presentation_f(couple_q auto const &mn)
 noexcept -> auto
 {
 	auto const &[m, n] = mn;
-	using MN_op = bond::operate<decltype(m), decltype(n)>;
+	using MN_op = bond::fixture<decltype(m), decltype(n)>;
 	return static_cast<typename MN_op::alpha_type>(m)*MN_op::haplo_f(n);
 }
 
@@ -325,14 +325,14 @@ XTAL_SET bit_fraction_f()
 noexcept -> auto
 {
 	using Y       = T_return;
-	using Y_op    = bond::operate<Y>;
+	using Y_fix    = bond::fixture<Y>;
 
 	XTAL_IF0
 	XTAL_0IF (integral_q<Y>) {
-		return Y_op::diplo_f(Y_op::full.depth);
+		return Y_fix::diplo_f(Y_fix::full.depth);
 	}
 	XTAL_0IF (    real_q<Y>) {
-		return Y_op::haplo_f(Y_op::full.depth);
+		return Y_fix::haplo_f(Y_fix::full.depth);
 	}
 	XTAL_0IF_(void)
 }
@@ -342,28 +342,28 @@ XTAL_SET bit_fraction_f(integral_variable_q auto x)
 noexcept -> auto
 {
 	using X       =              XTAL_ALL_(x);
-	using X_op    =          bond::operate<X>;
-	using X_alpha = typename X_op::alpha_type;
-	using X_sigma = typename X_op::sigma_type;
-	using X_delta = typename X_op::delta_type;
+	using X_fix    =          bond::fixture<X>;
+	using X_alpha = typename X_fix::alpha_type;
+	using X_sigma = typename X_fix::sigma_type;
+	using X_delta = typename X_fix::delta_type;
 
 	using Y       = complete_t<Y_return, X_alpha>;
-	using Y_op    = bond::operate<Y>;
-	using Y_alpha = typename Y_op::alpha_type;
-	using Y_sigma = typename Y_op::sigma_type;
-	using Y_delta = typename Y_op::delta_type;
+	using Y_fix    = bond::fixture<Y>;
+	using Y_alpha = typename Y_fix::alpha_type;
+	using Y_sigma = typename Y_fix::sigma_type;
+	using Y_delta = typename Y_fix::delta_type;
 
 	XTAL_IF0
 	XTAL_0IF (cardinal_q<Y>) {
-		return Y_op::sigma_f(x);
+		return Y_fix::sigma_f(x);
 	}
 	XTAL_0IF ( ordinal_q<Y>) {
-		return Y_op::delta_f(x);
+		return Y_fix::delta_f(x);
 	}
 	XTAL_0IF (    real_q<Y>) {
 		//\
-		return Y_op::alpha_f(x)*Y_op::haplo_f(X_op::full.depth);
-		return Y_op::alpha_f(static_cast<X_delta>(x))*Y_op::haplo_f(X_op::full.depth);
+		return Y_fix::alpha_f(x)*Y_fix::haplo_f(X_fix::full.depth);
+		return Y_fix::alpha_f(static_cast<X_delta>(x))*Y_fix::haplo_f(X_fix::full.depth);
 	}
 	XTAL_0IF_(void)
 }
@@ -373,16 +373,16 @@ XTAL_SET bit_fraction_f(real_variable_q auto x)
 noexcept -> auto
 {
 	using X       =              XTAL_ALL_(x);
-	using X_op    =          bond::operate<X>;
-	using X_alpha = typename X_op::alpha_type;
-	using X_sigma = typename X_op::sigma_type;
-	using X_delta = typename X_op::delta_type;
+	using X_fix    =          bond::fixture<X>;
+	using X_alpha = typename X_fix::alpha_type;
+	using X_sigma = typename X_fix::sigma_type;
+	using X_delta = typename X_fix::delta_type;
 
 	using Y       = complete_t<Y_return, X_delta>;
-	using Y_op    = bond::operate<Y>;
-	using Y_alpha = typename Y_op::alpha_type;
-	using Y_sigma = typename Y_op::sigma_type;
-	using Y_delta = typename Y_op::delta_type;
+	using Y_fix    = bond::fixture<Y>;
+	using Y_alpha = typename Y_fix::alpha_type;
+	using Y_sigma = typename Y_fix::sigma_type;
+	using Y_delta = typename Y_fix::delta_type;
 
 	XTAL_IF0
 	XTAL_0IF_(consteval) {
@@ -391,21 +391,21 @@ noexcept -> auto
 			return static_cast<Y>(bit_fraction_f<Y_delta>(x))*bit_fraction_f<Y_alpha>();
 		}
 		XTAL_0IF ( ordinal_q<Y>) {
-			XTAL_LET N_exp = X_op::exponent.shift;
-			XTAL_LET M_exp = X_op::unit.mark + X_op::unit.shift - Y_op::full.depth;
-			XTAL_LET M_sgn = X_op::sign.mask;
+			XTAL_LET N_exp = X_fix::exponent.shift;
+			XTAL_LET M_exp = X_fix::unit.mark + X_fix::unit.shift - Y_fix::full.depth;
+			XTAL_LET M_sgn = X_fix::sign.mask;
 
 			auto o = _xtd::bit_cast<X_sigma>(x);
 
-			X_delta o_ = o &  M_sgn; o  ^= o_; o_ >>= X_op::sign.shift;
+			X_delta o_ = o &  M_sgn; o  ^= o_; o_ >>= X_fix::sign.shift;
 			X_sigma x  = o >> N_exp; x  -= M_exp;
-			X_sigma u  = x != 0    ; u <<= X_op::fraction.depth;
+			X_sigma u  = x != 0    ; u <<= X_fix::fraction.depth;
 
-			auto const x_on = _xtd::bit_cast<X_delta>(~x) >> X_op::positive.depth;
+			auto const x_on = _xtd::bit_cast<X_delta>(~x) >> X_fix::positive.depth;
 			auto const x_up = x_on & x;
 			auto const x_dn = x_up - x;
 
-			o  &=  X_op::fraction.mask;
+			o  &=  X_fix::fraction.mask;
 			o  ^=  u;
 			o <<=  x_up;
 			o >>=  x_dn;
@@ -440,10 +440,10 @@ XTAL_SET bit_fraction_f(complex_variable_q auto const &x)
 noexcept -> auto
 {
 	using X       = XTAL_ALL_(x);
-	using X_op    = bond::operate<X>;
-	using X_alpha = typename X_op::alpha_type;
-	using X_sigma = typename X_op::sigma_type;
-	using X_delta = typename X_op::delta_type;
+	using X_fix    = bond::fixture<X>;
+	using X_alpha = typename X_fix::alpha_type;
+	using X_sigma = typename X_fix::sigma_type;
+	using X_delta = typename X_fix::delta_type;
 
 	using U = _std::conditional_t<integral_q<typename X::value_type>, X_alpha, X_delta>;
 	using Y = complete_t<T_return, _std::complex<U>>;

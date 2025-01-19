@@ -54,11 +54,11 @@ struct impunity<M_ism,-2>
 		XTAL_LET function(simplex_field_q auto const &o)
 		noexcept -> decltype(auto)
 		{
-			using X = XTAL_ALL_(o); using _op = bond::operate<X>;
+			using X = XTAL_ALL_(o); using _fix = bond::fixture<X>;
 
-			using alpha_type = typename _op::alpha_type;
-			using sigma_type = typename _op::sigma_type;
-			using delta_type = typename _op::delta_type;
+			using alpha_type = typename _fix::alpha_type;
+			using sigma_type = typename _fix::sigma_type;
+			using delta_type = typename _fix::delta_type;
 
 			auto const w = objective_f(o);
 
@@ -149,8 +149,8 @@ struct impunity<M_ism,-2>
 			}
 			XTAL_0IF_(else) {
 				auto const [u, _u] = roots_f<2>(w);
-				auto const x = cos(u*_op::patio_1);
-				auto const y = sin(u*_op::patio_1)*_u;
+				auto const x = cos(u*_fix::patio_1);
+				auto const y = sin(u*_fix::patio_1)*_u;
 				return complexion_f(x, y);
 			}
 		}
@@ -173,11 +173,11 @@ struct impunity<M_ism,-2>
 		XTAL_LET function(simplex_field_q auto o)
 		noexcept -> auto
 		{
-			using    _op = bond::operate<decltype(o)>;
-			XTAL_LET _dn = one/_op::patio_1;
+			using    _fix = bond::fixture<decltype(o)>;
+			XTAL_LET _dn = one/_fix::patio_1;
 			
-			using U_aphex = typename _op::aphex_type;
-			using U_alpha = typename _op::alpha_type;
+			using U_aphex = typename _fix::aphex_type;
+			using U_alpha = typename _fix::alpha_type;
 
 			auto const w = objective_f(o);
 
@@ -300,8 +300,8 @@ struct impunity<M_ism,-2>
 			}
 			XTAL_0IF_(else) {
 				auto [d, q] = roots_f<2, 1>(o);
-				(void) cut_t<XTAL_VAL_(-_op::maxilon_1)>::edit(d);
-				(void) cut_t<XTAL_VAL_(-_op::maxilon_1)>::edit(q);
+				(void) cut_t<XTAL_VAL_(-_fix::maxilon_1)>::edit(d);
+				(void) cut_t<XTAL_VAL_(-_fix::maxilon_1)>::edit(q);
 				XTAL_IF0
 				XTAL_0IF (M_ism == -1) {return _dn*q*atan (d);}
 				XTAL_0IF (M_ism == -2) {return _dn*q*atanh(d);}

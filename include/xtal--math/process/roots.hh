@@ -41,7 +41,7 @@ struct roots
 		XTAL_LET function(auto &&w)
 		noexcept -> auto
 		{
-			using    _op = bond::operate<XTAL_ALL_(w)>;
+			using    _fix = bond::fixture<XTAL_ALL_(w)>;
 			auto const o =   objective_f(XTAL_REF_(w));
 
 			XTAL_IF0
