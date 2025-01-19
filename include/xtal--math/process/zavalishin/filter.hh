@@ -146,7 +146,6 @@ struct filter<U_pole[N_pole]>
 			auto &outputs = io.outputs; auto outputs_ = outputs.self(constant_t<N_ord>{});
 
 			auto  cachet  = S_::template cache<U_poles_, U_poles_>();
-		//	NOTE: Can't destructure then capture...
 			auto &states_ = get<0>(cachet);
 			auto &slopes_ = get<1>(cachet);
 
