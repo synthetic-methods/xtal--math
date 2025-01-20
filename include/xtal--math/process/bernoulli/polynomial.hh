@@ -17,7 +17,7 @@ Defines the Bernoulli polynomials `BernoulliB[n, u + 1/2]*(2 Pi)^(n - 1)/n!`, wh
 
 ///\note\
 The even polynomials are only defined for ``implemented separately, \
-so avoid invoking `function<N_ord>` when `in_n<M_car, 1, 0,-2>`. \
+so avoid invoking `static_method<N_ord>` when `in_n<M_car, 1, 0,-2>`. \
 
 template <int M_ism=1, int M_car=0> struct   polynomial;
 template <int M_ism=1, int M_car=0> using    polynomial_t = process::confined_t<polynomial<M_ism, M_car>>;
@@ -26,7 +26,7 @@ XTAL_DEF_(short)
 XTAL_LET polynomial_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return polynomial_t<M_ism, M_car>::template function<M_ord>(XTAL_REF_(o));
+	return polynomial_t<M_ism, M_car>::template static_method<M_ord>(XTAL_REF_(o));
 }
 
 
@@ -60,7 +60,7 @@ struct polynomial<M_ism,-0>
 
 		template <int N_ord=0>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto &&u)
+		XTAL_LET static_method(auto &&u)
 		noexcept -> decltype(auto)
 		{
 			using     _fix = bond::fixture<decltype(u)>;
@@ -82,8 +82,8 @@ struct polynomial<M_ism,-0>
 			else {
 				W_alpha constexpr dn = signum_f(N_ity)*power_f<N_ord - 1>(_fix::patio_2);
 				XTAL_IF0
-				XTAL_0IF (N_par == 0) {return dn*s_::template function<N_ord>(square_f(XTAL_REF_(u)));}
-				XTAL_0IF (N_par == 1) {return dn*S_::template function<N_ord>(         XTAL_REF_(u) );}
+				XTAL_0IF (N_par == 0) {return dn*s_::template static_method<N_ord>(square_f(XTAL_REF_(u)));}
+				XTAL_0IF (N_par == 1) {return dn*S_::template static_method<N_ord>(         XTAL_REF_(u) );}
 			}
 		}
 
@@ -113,7 +113,7 @@ struct polynomial<M_ism,-2>
 
 		template <int N_ord=0>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto w)
+		XTAL_LET static_method(auto w)
 		noexcept -> decltype(auto)
 		{
 			XTAL_LET N_par = N_ord&1;
@@ -123,7 +123,7 @@ struct polynomial<M_ism,-2>
 
 			if constexpr (N_ord < 0) {
 				auto const u = root_f<2>(magnum_f(XTAL_MOV_(w)));
-				return polynomial<M_ism, -0>::template function<N_ord>(u)/(u);
+				return polynomial<M_ism, -0>::template static_method<N_ord>(u)/(u);
 			}
 			else {
 				XTAL_LET co_ = [] (auto num, auto nom)
@@ -131,7 +131,7 @@ struct polynomial<M_ism,-2>
 				);
 				XTAL_IF0
 				XTAL_0IF (1 == N_ord) {return                                                                  co_(1, 1);}
-				XTAL_0IF (1 == N_par) {return     (_fix::ratio_f(1, 4) + w) * S_::template function<N_ord>(XTAL_MOV_(w));}
+				XTAL_0IF (1 == N_par) {return     (_fix::ratio_f(1, 4) + w) * S_::template static_method<N_ord>(XTAL_MOV_(w));}
 				XTAL_0IF (0 == N_ord) {return termial_f(XTAL_MOV_(w),                                         co_(1, 1));}
 				XTAL_0IF (2 == N_ord) {return termial_f(XTAL_MOV_(w),                             co_(1, 12), co_(1, 1));}
 				XTAL_0IF (4 == N_ord) {return termial_f(XTAL_MOV_(w),                co_(7, 240), co_(1,  2), co_(1, 1));}
@@ -154,7 +154,7 @@ struct polynomial<M_ism,-3>
 
 		template <int N_ord=0>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto w)
+		XTAL_LET static_method(auto w)
 		noexcept -> decltype(auto)
 		{
 			XTAL_LET N_par = N_ord&1;

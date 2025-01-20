@@ -31,23 +31,23 @@ TAG_("logarithm")
 
 	TRY_("evaluation")
 	{
-		TRUE_(check_f<-31>(logarithm_t< 1, 1>::template function<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1>::template function< 2>(T_aphex{0.3, 0.8})));
-		TRUE_(check_f<-46>(logarithm_t< 1, 1>::template function<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1>::template function< 0>(T_aphex{0.3, 0.8})));
+		TRUE_(check_f<-31>(logarithm_t< 1, 1>::template static_method<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1>::template static_method< 2>(T_aphex{0.3, 0.8})));
+		TRUE_(check_f<-46>(logarithm_t< 1, 1>::template static_method<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1>::template static_method< 0>(T_aphex{0.3, 0.8})));
 
-		TRUE_(check_f<-13>(logarithm_t< 1, 1>::template function<2>(egg), log(egg)));
-		TRUE_(check_f<-25>(logarithm_t<-1, 1>::template function<2>(egg), exp(egg)));
+		TRUE_(check_f<-13>(logarithm_t< 1, 1>::template static_method<2>(egg), log(egg)));
+		TRUE_(check_f<-25>(logarithm_t<-1, 1>::template static_method<2>(egg), exp(egg)));
 
-		TRUE_(check_f<- 1>(logarithm_t< 1>::template function<-1>(egg), log(egg)));
-		TRUE_(check_f<- 5>(logarithm_t< 1>::template function< 3>(egg), log(egg)));
-		TRUE_(check_f<-19>(logarithm_t< 1>::template function< 2>(egg), log(egg)));
-		TRUE_(check_f<-33>(logarithm_t< 1>::template function< 1>(egg), log(egg)));
-		TRUE_(check_f<-40>(logarithm_t< 1>::template function< 0>(egg), log(egg)));
+		TRUE_(check_f<- 1>(logarithm_t< 1>::template static_method<-1>(egg), log(egg)));
+		TRUE_(check_f<- 5>(logarithm_t< 1>::template static_method< 3>(egg), log(egg)));
+		TRUE_(check_f<-19>(logarithm_t< 1>::template static_method< 2>(egg), log(egg)));
+		TRUE_(check_f<-33>(logarithm_t< 1>::template static_method< 1>(egg), log(egg)));
+		TRUE_(check_f<-40>(logarithm_t< 1>::template static_method< 0>(egg), log(egg)));
 
-		TRUE_(check_f<- 1>(logarithm_t<-1>::template function<-1>(egg), exp(egg)));
-		TRUE_(check_f<-26>(logarithm_t<-1>::template function< 3>(egg), exp(egg)));
-		TRUE_(check_f<-34>(logarithm_t<-1>::template function< 2>(egg), exp(egg)));
-		TRUE_(check_f<-43>(logarithm_t<-1>::template function< 1>(egg), exp(egg)));
-	//	UNTRUE_(check_f(logarithm_t<-1>::template function< 0>(egg), exp(egg)));
+		TRUE_(check_f<- 1>(logarithm_t<-1>::template static_method<-1>(egg), exp(egg)));
+		TRUE_(check_f<-26>(logarithm_t<-1>::template static_method< 3>(egg), exp(egg)));
+		TRUE_(check_f<-34>(logarithm_t<-1>::template static_method< 2>(egg), exp(egg)));
+		TRUE_(check_f<-43>(logarithm_t<-1>::template static_method< 1>(egg), exp(egg)));
+	//	UNTRUE_(check_f(logarithm_t<-1>::template static_method< 0>(egg), exp(egg)));
 
 	}
 	/**/
@@ -67,7 +67,7 @@ TAG_("logarithm")
 		for (T_sigma i = 0x100; ~--i;) {
 			auto x = _fix::mantissa_f(mt19937_f) + 1.0;
 			auto y = _fix::mantissa_f(mt19937_f) + 1.0;
-			w += logarithm_t< 1, 1>::template function<2>(T_aphex{x, y});
+			w += logarithm_t< 1, 1>::template static_method<2>(T_aphex{x, y});
 		}
 		return w;
 	};
@@ -86,7 +86,7 @@ TAG_("logarithm")
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
 			auto x = _fix::mantissa_f(mt19937_f) + 1.0;
-			w += logarithm_t< 1, 1>::template function<2>(x);
+			w += logarithm_t< 1, 1>::template static_method<2>(x);
 		}
 		return w;
 	};
@@ -95,7 +95,7 @@ TAG_("logarithm")
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
 			auto x = _fix::mantissa_f(mt19937_f) + 1.0;
-			w += logarithm_t< 1>::template function<2>(x);
+			w += logarithm_t< 1>::template static_method<2>(x);
 		}
 		return w;
 	};
@@ -104,7 +104,7 @@ TAG_("logarithm")
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
 			auto x = _fix::mantissa_f(mt19937_f) + 1.0;
-			w += logarithm_t< 1>::template function<1>(x);
+			w += logarithm_t< 1>::template static_method<1>(x);
 		}
 		return w;
 	};
@@ -113,7 +113,7 @@ TAG_("logarithm")
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
 			auto x = _fix::mantissa_f(mt19937_f) + 1.0;
-			w += logarithm_t< 1>::template function<0>(x);
+			w += logarithm_t< 1>::template static_method<0>(x);
 		}
 		return w;
 	};
@@ -132,7 +132,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
-			w *= logarithm_t<-1>::template function<~0>(_fix::mantissa_f(mt19937_f));
+			w *= logarithm_t<-1>::template static_method<~0>(_fix::mantissa_f(mt19937_f));
 		}
 		return w;
 	
@@ -142,7 +142,7 @@ TAG_("logarithm")
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
 			auto x = _fix::mantissa_f(mt19937_f) - 1.0;
-			w *= logarithm_t<-1, 1>::template function<2>(x);
+			w *= logarithm_t<-1, 1>::template static_method<2>(x);
 		}
 		return w;
 	
@@ -152,7 +152,7 @@ TAG_("logarithm")
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
 			auto x = _fix::mantissa_f(mt19937_f) - 1.0;
-			w *= logarithm_t<-1>::template function<2>(x);
+			w *= logarithm_t<-1>::template static_method<2>(x);
 		}
 		return w;
 	
@@ -162,7 +162,7 @@ TAG_("logarithm")
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
 			auto x = _fix::mantissa_f(mt19937_f) - 1.0;
-			w *= logarithm_t<-1>::template function<1>(x);
+			w *= logarithm_t<-1>::template static_method<1>(x);
 		}
 		return w;
 	
@@ -172,7 +172,7 @@ TAG_("logarithm")
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
 			auto x = _fix::mantissa_f(mt19937_f) - 1.0;
-			w *= logarithm_t<-1>::template function<0>(x);
+			w *= logarithm_t<-1>::template static_method<0>(x);
 		}
 		return w;
 	

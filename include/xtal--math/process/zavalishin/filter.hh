@@ -17,7 +17,7 @@ described in _The Art of VA Synthesis_ by Vadim Zavalishin. \
 ///\
 The non-linearity is supplied as a `process`-`template` using `provision::shaper`. \
 The process must conform to the signature `<M_ism, M_car>`, \
-defining a stateless `function<N_var, ...>` within the `subtype`. \
+defining a stateless `static_method<N_var, ...>` within the `subtype`. \
 
 ///\
 The parameters `M_ism` and `M_car` determine the type and return-value of curve, respectively. \
@@ -175,7 +175,7 @@ struct filter<U_pole[N_pole]>
 					}
 					XTAL_0IF (1 == K_lim) {
 						auto const exput = term_f(get<I>(states_), get<I + 1>(outputs), s_scale);
-						auto const slope = S_::template shape_t<-1, -1>::template function<N_lim, Ns...>(exput) + (get<I>(scalars_) - one);
+						auto const slope = S_::template shape_t<-1, -1>::template static_method<N_lim, Ns...>(exput) + (get<I>(scalars_) - one);
 						get<I>(outputs_) = exput;
 						get<I>( slopes_) = slope;
 					}

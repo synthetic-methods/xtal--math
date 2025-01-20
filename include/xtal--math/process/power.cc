@@ -26,7 +26,7 @@ TAG_("power")
 
 	TRY_("power evaluation")
 	{
-		TRUE_(power_t< 7>::function(3.) == 2187.);
+		TRUE_(power_t< 7>::static_method(3.) == 2187.);
 		TRUE_(power_f< 7>          (3.) == 2187.);
 
 	};

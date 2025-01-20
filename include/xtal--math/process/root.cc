@@ -41,11 +41,11 @@ TAG_("root")
 		TRUE_(check_f<-1>(N_half_root3, 0.7937005259840997373758528196361541L));
 		TRUE_(check_f<-1>(N_half_root4, 0.8408964152537145430311254762332149L));
 		TRUE_(check_f<-1>(N_half_root5, 0.8705505632961241391362700174797461L));
-	//	echo(check_f(pow(0.5, _fix::ratio_f(1,  3)), root_t< 3>::template function<2>(0.5)));
-	//	echo(check_f(pow(0.5, _fix::ratio_f(1, -3)), root_t<-3>::template function<2>(0.5)));
+	//	echo(check_f(pow(0.5, _fix::ratio_f(1,  3)), root_t< 3>::template static_method<2>(0.5)));
+	//	echo(check_f(pow(0.5, _fix::ratio_f(1, -3)), root_t<-3>::template static_method<2>(0.5)));
 
-	//	echo(check_f(pow(0.5, _fix::ratio_f(1,  3)), root_t< 3>::template function<3>(0.5)));
-	//	echo(check_f(pow(0.5, _fix::ratio_f(1, -3)), root_t<-3>::template function<3>(0.5)));
+	//	echo(check_f(pow(0.5, _fix::ratio_f(1,  3)), root_t< 3>::template static_method<3>(0.5)));
+	//	echo(check_f(pow(0.5, _fix::ratio_f(1, -3)), root_t<-3>::template static_method<3>(0.5)));
 
 		TRUE_(check_f<-27>(pow(0.5, _fix::ratio_f(1,  3)), root_f< 3>(0.5)));
 		TRUE_(check_f<-28>(pow(0.5, _fix::ratio_f(1, -3)), root_f<-3>(0.5)));
@@ -96,7 +96,7 @@ TAG_("root")
 	{
 		double w{1};
 		for (int i = 0x100; ~--i;) {
-			w *= root_t<-3>::template function<3>(_fix::mantissa_f(mt19937_f) + one);
+			w *= root_t<-3>::template static_method<3>(_fix::mantissa_f(mt19937_f) + one);
 		}
 		return w;
 	};
@@ -104,7 +104,7 @@ TAG_("root")
 	{
 		double w{1};
 		for (int i = 0x100; ~--i;) {
-			w *= root_t<-3>::template function<2>(_fix::mantissa_f(mt19937_f) + one);
+			w *= root_t<-3>::template static_method<2>(_fix::mantissa_f(mt19937_f) + one);
 		}
 		return w;
 	};
@@ -112,7 +112,7 @@ TAG_("root")
 	{
 		double w{1};
 		for (int i = 0x100; ~--i;) {
-			w *= root_t<-3>::template function<1>(_fix::mantissa_f(mt19937_f) + one);
+			w *= root_t<-3>::template static_method<1>(_fix::mantissa_f(mt19937_f) + one);
 		}
 		return w;
 	};

@@ -36,25 +36,25 @@ TAG_("tangy")
 	/**/
 	TRY_("scalar evaluation")
 	{
-		TRUE_(check_f<-23>(tangy_t< 1>::template function<-1>(0.375), tangy_t< 1>::template function< 4>(0.375)));
-		TRUE_(check_f<-37>(tangy_t< 1>::template function<-1>(0.375), tangy_t< 1>::template function< 3>(0.375)));
-		TRUE_(check_f<-40>(tangy_t< 1>::template function<-1>(0.375), tangy_t< 1>::template function< 2>(0.375)));
-		TRUE_(check_f<-50>(tangy_t< 1>::template function<-1>(0.375), tangy_t< 1>::template function< 1>(0.375)));
-		TRUE_(check_f<-50>(tangy_t< 1>::template function<-1>(0.375), tangy_t< 1>::template function< 0>(0.375)));
+		TRUE_(check_f<-23>(tangy_t< 1>::template static_method<-1>(0.375), tangy_t< 1>::template static_method< 4>(0.375)));
+		TRUE_(check_f<-37>(tangy_t< 1>::template static_method<-1>(0.375), tangy_t< 1>::template static_method< 3>(0.375)));
+		TRUE_(check_f<-40>(tangy_t< 1>::template static_method<-1>(0.375), tangy_t< 1>::template static_method< 2>(0.375)));
+		TRUE_(check_f<-50>(tangy_t< 1>::template static_method<-1>(0.375), tangy_t< 1>::template static_method< 1>(0.375)));
+		TRUE_(check_f<-50>(tangy_t< 1>::template static_method<-1>(0.375), tangy_t< 1>::template static_method< 0>(0.375)));
 
-		TRUE_(check_f<-23>(tangy_t< 1>::template function<-1>(0.125), tangy_t< 1>::template function< 4>(0.125)));
-		TRUE_(check_f<-37>(tangy_t< 1>::template function<-1>(0.125), tangy_t< 1>::template function< 3>(0.125)));
-		TRUE_(check_f<-40>(tangy_t< 1>::template function<-1>(0.125), tangy_t< 1>::template function< 2>(0.125)));
-		TRUE_(check_f<-50>(tangy_t< 1>::template function<-1>(0.125), tangy_t< 1>::template function< 1>(0.125)));
-		TRUE_(check_f<-50>(tangy_t< 1>::template function<-1>(0.125), tangy_t< 1>::template function< 0>(0.125)));
+		TRUE_(check_f<-23>(tangy_t< 1>::template static_method<-1>(0.125), tangy_t< 1>::template static_method< 4>(0.125)));
+		TRUE_(check_f<-37>(tangy_t< 1>::template static_method<-1>(0.125), tangy_t< 1>::template static_method< 3>(0.125)));
+		TRUE_(check_f<-40>(tangy_t< 1>::template static_method<-1>(0.125), tangy_t< 1>::template static_method< 2>(0.125)));
+		TRUE_(check_f<-50>(tangy_t< 1>::template static_method<-1>(0.125), tangy_t< 1>::template static_method< 1>(0.125)));
+		TRUE_(check_f<-50>(tangy_t< 1>::template static_method<-1>(0.125), tangy_t< 1>::template static_method< 0>(0.125)));
 
 #if XTAL_ENV_(debug)
-		TRUE_(check_f<-1>(tangy_t<-1, 1>::template function<-1>(0.000), tangy_t<-1, 1>::template function< 5>(0.000)));
-		TRUE_(check_f<-1>(tangy_t<-1, 1>::template function<-1>(0.000), tangy_t<-1, 1>::template function< 4>(0.000)));
-		TRUE_(check_f<-1>(tangy_t<-1, 1>::template function<-1>(0.000), tangy_t<-1, 1>::template function< 3>(0.000)));
-		TRUE_(check_f<-1>(tangy_t<-1, 1>::template function<-1>(0.000), tangy_t<-1, 1>::template function< 2>(0.000)));
-		TRUE_(check_f<-1>(tangy_t<-1, 1>::template function<-1>(0.000), tangy_t<-1, 1>::template function< 1>(0.000)));
-		TRUE_(check_f<-1>(tangy_t<-1, 1>::template function<-1>(0.000), tangy_t<-1, 1>::template function< 0>(0.000)));
+		TRUE_(check_f<-1>(tangy_t<-1, 1>::template static_method<-1>(0.000), tangy_t<-1, 1>::template static_method< 5>(0.000)));
+		TRUE_(check_f<-1>(tangy_t<-1, 1>::template static_method<-1>(0.000), tangy_t<-1, 1>::template static_method< 4>(0.000)));
+		TRUE_(check_f<-1>(tangy_t<-1, 1>::template static_method<-1>(0.000), tangy_t<-1, 1>::template static_method< 3>(0.000)));
+		TRUE_(check_f<-1>(tangy_t<-1, 1>::template static_method<-1>(0.000), tangy_t<-1, 1>::template static_method< 2>(0.000)));
+		TRUE_(check_f<-1>(tangy_t<-1, 1>::template static_method<-1>(0.000), tangy_t<-1, 1>::template static_method< 1>(0.000)));
+		TRUE_(check_f<-1>(tangy_t<-1, 1>::template static_method<-1>(0.000), tangy_t<-1, 1>::template static_method< 0>(0.000)));
 #endif
 	};
 	/***/
@@ -64,140 +64,140 @@ TAG_("tangy")
 		T_aphex x;
 
 		x = T_aphex{  0,  1};
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 0>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 1>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 2>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 3>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 0>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 1>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 2>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 3>(x.imag(), x.real())));
 
 		x = T_aphex{  0, -1};
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 0>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 1>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 2>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 3>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 0>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 1>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 2>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 3>(x.imag(), x.real())));
 
 		x = T_aphex{  1,  0};
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 0>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 1>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 2>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 3>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 0>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 1>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 2>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 3>(x.imag(), x.real())));
 
 		x = T_aphex{ -1,  0};
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 0>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 1>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 2>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 3>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 0>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 1>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 2>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 3>(x.imag(), x.real())));
 
 		x = T_aphex{  1,  1};
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 0>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 1>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 2>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 3>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 0>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 1>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 2>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 3>(x.imag(), x.real())));
 
 		x = T_aphex{  1, -1};
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 0>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 1>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 2>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 3>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 0>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 1>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 2>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 3>(x.imag(), x.real())));
 
 		x = T_aphex{ -1,  1};
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 0>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 1>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 2>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 3>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 0>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 1>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 2>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 3>(x.imag(), x.real())));
 
 		x = T_aphex{ -1, -1};
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 0>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 1>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 2>(x.imag(), x.real())));
-		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 3>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 0>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 1>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 2>(x.imag(), x.real())));
+		TRUE_(check_f<-1>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 3>(x.imag(), x.real())));
 
 	//	atan2(+<+)
 		x = T_aphex{  2.414,  1.618};
-		TRUE_(check_f<-40>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 0>(x.imag(), x.real())));
-		TRUE_(check_f<-35>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 1>(x.imag(), x.real())));
-		TRUE_(check_f<-29>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 2>(x.imag(), x.real())));
-		TRUE_(check_f<-26>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 3>(x.imag(), x.real())));
-		TRUE_(check_f<-21>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 4>(x.imag(), x.real())));
-		TRUE_(check_f<-16>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 5>(x.imag(), x.real())));
-		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 6>(x.imag(), x.real())));
-		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 7>(x.imag(), x.real())));
+		TRUE_(check_f<-40>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 0>(x.imag(), x.real())));
+		TRUE_(check_f<-35>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 1>(x.imag(), x.real())));
+		TRUE_(check_f<-29>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 2>(x.imag(), x.real())));
+		TRUE_(check_f<-26>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 3>(x.imag(), x.real())));
+		TRUE_(check_f<-21>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 4>(x.imag(), x.real())));
+		TRUE_(check_f<-16>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 5>(x.imag(), x.real())));
+		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 6>(x.imag(), x.real())));
+		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 7>(x.imag(), x.real())));
 
 	//	atan2(+<-)
 		x = T_aphex{ -2.414,  1.618};
-		TRUE_(check_f<-40>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 0>(x.imag(), x.real())));
-		TRUE_(check_f<-35>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 1>(x.imag(), x.real())));
-		TRUE_(check_f<-29>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 2>(x.imag(), x.real())));
-		TRUE_(check_f<-26>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 3>(x.imag(), x.real())));
-		TRUE_(check_f<-21>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 4>(x.imag(), x.real())));
-		TRUE_(check_f<-16>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 5>(x.imag(), x.real())));
-		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 6>(x.imag(), x.real())));
-		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 7>(x.imag(), x.real())));
+		TRUE_(check_f<-40>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 0>(x.imag(), x.real())));
+		TRUE_(check_f<-35>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 1>(x.imag(), x.real())));
+		TRUE_(check_f<-29>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 2>(x.imag(), x.real())));
+		TRUE_(check_f<-26>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 3>(x.imag(), x.real())));
+		TRUE_(check_f<-21>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 4>(x.imag(), x.real())));
+		TRUE_(check_f<-16>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 5>(x.imag(), x.real())));
+		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 6>(x.imag(), x.real())));
+		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 7>(x.imag(), x.real())));
 
 	//	atan2(-<+)
 		x = T_aphex{  2.414, -1.618};
-		TRUE_(check_f<-40>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 0>(x.imag(), x.real())));
-		TRUE_(check_f<-35>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 1>(x.imag(), x.real())));
-		TRUE_(check_f<-29>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 2>(x.imag(), x.real())));
-		TRUE_(check_f<-26>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 3>(x.imag(), x.real())));
-		TRUE_(check_f<-21>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 4>(x.imag(), x.real())));
-		TRUE_(check_f<-16>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 5>(x.imag(), x.real())));
-		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 6>(x.imag(), x.real())));
-		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 7>(x.imag(), x.real())));
+		TRUE_(check_f<-40>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 0>(x.imag(), x.real())));
+		TRUE_(check_f<-35>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 1>(x.imag(), x.real())));
+		TRUE_(check_f<-29>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 2>(x.imag(), x.real())));
+		TRUE_(check_f<-26>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 3>(x.imag(), x.real())));
+		TRUE_(check_f<-21>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 4>(x.imag(), x.real())));
+		TRUE_(check_f<-16>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 5>(x.imag(), x.real())));
+		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 6>(x.imag(), x.real())));
+		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 7>(x.imag(), x.real())));
 
 	//	atan2(-<-)
 		x = T_aphex{ -2.414, -1.618};
-		TRUE_(check_f<-40>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 0>(x.imag(), x.real())));
-		TRUE_(check_f<-35>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 1>(x.imag(), x.real())));
-		TRUE_(check_f<-29>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 2>(x.imag(), x.real())));
-		TRUE_(check_f<-26>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 3>(x.imag(), x.real())));
-		TRUE_(check_f<-21>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 4>(x.imag(), x.real())));
-		TRUE_(check_f<-16>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 5>(x.imag(), x.real())));
-		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 6>(x.imag(), x.real())));
-		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 7>(x.imag(), x.real())));
+		TRUE_(check_f<-40>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 0>(x.imag(), x.real())));
+		TRUE_(check_f<-35>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 1>(x.imag(), x.real())));
+		TRUE_(check_f<-29>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 2>(x.imag(), x.real())));
+		TRUE_(check_f<-26>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 3>(x.imag(), x.real())));
+		TRUE_(check_f<-21>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 4>(x.imag(), x.real())));
+		TRUE_(check_f<-16>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 5>(x.imag(), x.real())));
+		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 6>(x.imag(), x.real())));
+		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 7>(x.imag(), x.real())));
 
 	//	atan2(+>+)
 		x = T_aphex{  1.618,  2.414};
-		TRUE_(check_f<-40>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 0>(x.imag(), x.real())));
-		TRUE_(check_f<-35>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 1>(x.imag(), x.real())));
-		TRUE_(check_f<-29>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 2>(x.imag(), x.real())));
-		TRUE_(check_f<-26>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 3>(x.imag(), x.real())));
-		TRUE_(check_f<-21>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 4>(x.imag(), x.real())));
-		TRUE_(check_f<-16>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 5>(x.imag(), x.real())));
-		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 6>(x.imag(), x.real())));
-		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 7>(x.imag(), x.real())));
+		TRUE_(check_f<-40>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 0>(x.imag(), x.real())));
+		TRUE_(check_f<-35>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 1>(x.imag(), x.real())));
+		TRUE_(check_f<-29>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 2>(x.imag(), x.real())));
+		TRUE_(check_f<-26>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 3>(x.imag(), x.real())));
+		TRUE_(check_f<-21>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 4>(x.imag(), x.real())));
+		TRUE_(check_f<-16>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 5>(x.imag(), x.real())));
+		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 6>(x.imag(), x.real())));
+		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 7>(x.imag(), x.real())));
 
 	//	atan2(+>-)
 		x = T_aphex{ -1.618,  2.414};
-		TRUE_(check_f<-40>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 0>(x.imag(), x.real())));
-		TRUE_(check_f<-35>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 1>(x.imag(), x.real())));
-		TRUE_(check_f<-29>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 2>(x.imag(), x.real())));
-		TRUE_(check_f<-26>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 3>(x.imag(), x.real())));
-		TRUE_(check_f<-21>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 4>(x.imag(), x.real())));
-		TRUE_(check_f<-16>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 5>(x.imag(), x.real())));
-		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 6>(x.imag(), x.real())));
-		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 7>(x.imag(), x.real())));
+		TRUE_(check_f<-40>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 0>(x.imag(), x.real())));
+		TRUE_(check_f<-35>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 1>(x.imag(), x.real())));
+		TRUE_(check_f<-29>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 2>(x.imag(), x.real())));
+		TRUE_(check_f<-26>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 3>(x.imag(), x.real())));
+		TRUE_(check_f<-21>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 4>(x.imag(), x.real())));
+		TRUE_(check_f<-16>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 5>(x.imag(), x.real())));
+		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 6>(x.imag(), x.real())));
+		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 7>(x.imag(), x.real())));
 
 	//	atan2(->+)
 		x = T_aphex{  1.618, -2.414};
-		TRUE_(check_f<-40>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 0>(x.imag(), x.real())));
-		TRUE_(check_f<-35>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 1>(x.imag(), x.real())));
-		TRUE_(check_f<-29>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 2>(x.imag(), x.real())));
-		TRUE_(check_f<-26>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 3>(x.imag(), x.real())));
-		TRUE_(check_f<-21>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 4>(x.imag(), x.real())));
-		TRUE_(check_f<-16>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 5>(x.imag(), x.real())));
-		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 6>(x.imag(), x.real())));
-		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 7>(x.imag(), x.real())));
+		TRUE_(check_f<-40>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 0>(x.imag(), x.real())));
+		TRUE_(check_f<-35>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 1>(x.imag(), x.real())));
+		TRUE_(check_f<-29>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 2>(x.imag(), x.real())));
+		TRUE_(check_f<-26>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 3>(x.imag(), x.real())));
+		TRUE_(check_f<-21>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 4>(x.imag(), x.real())));
+		TRUE_(check_f<-16>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 5>(x.imag(), x.real())));
+		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 6>(x.imag(), x.real())));
+		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 7>(x.imag(), x.real())));
 
 	//	atan2(->-)
 		x = T_aphex{ -1.618, -2.414};
-		TRUE_(check_f<-40>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 0>(x.imag(), x.real())));
-		TRUE_(check_f<-35>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 1>(x.imag(), x.real())));
-		TRUE_(check_f<-29>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 2>(x.imag(), x.real())));
-		TRUE_(check_f<-26>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 3>(x.imag(), x.real())));
-		TRUE_(check_f<-21>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 4>(x.imag(), x.real())));
-		TRUE_(check_f<-16>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 5>(x.imag(), x.real())));
-		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 6>(x.imag(), x.real())));
-		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template function< 7>(x.imag(), x.real())));
+		TRUE_(check_f<-40>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 0>(x.imag(), x.real())));
+		TRUE_(check_f<-35>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 1>(x.imag(), x.real())));
+		TRUE_(check_f<-29>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 2>(x.imag(), x.real())));
+		TRUE_(check_f<-26>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 3>(x.imag(), x.real())));
+		TRUE_(check_f<-21>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 4>(x.imag(), x.real())));
+		TRUE_(check_f<-16>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 5>(x.imag(), x.real())));
+		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 6>(x.imag(), x.real())));
+		TRUE_(check_f<-13>(atan2(x.imag(), x.real())/_fix::patio_1, tangy_t<-1, 1>::template static_method< 7>(x.imag(), x.real())));
 
 	};
 	/***/
@@ -207,7 +207,7 @@ TAG_("tangy")
 		T_aphex y{};
 		for (int i = 0x20; ~--i;) {
 			T_aphex const x{_fix::mantissa_f(mt19937_f), _fix::mantissa_f(mt19937_f)};
-			y += tangy_t<-1, 1>::template function<-1>(x.imag(), x.real());
+			y += tangy_t<-1, 1>::template static_method<-1>(x.imag(), x.real());
 		}
 		return y;
 
@@ -217,7 +217,7 @@ TAG_("tangy")
 		T_aphex y{};
 		for (int i = 0x20; ~--i;) {
 			T_aphex const x{_fix::mantissa_f(mt19937_f), _fix::mantissa_f(mt19937_f)};
-			y += tangy_t<-1, 1>::template function< 4>(x.imag(), x.real());
+			y += tangy_t<-1, 1>::template static_method< 4>(x.imag(), x.real());
 		}
 		return y;
 
@@ -227,7 +227,7 @@ TAG_("tangy")
 //		T_aphex y{};
 //		for (int i = 0x20; ~--i;) {
 //			T_aphex const x{_fix::mantissa_f(mt19937_f), _fix::mantissa_f(mt19937_f)};
-//			y += tangy_t<-1, 1>::template function< 2>(x.imag(), x.real());
+//			y += tangy_t<-1, 1>::template static_method< 2>(x.imag(), x.real());
 //		}
 //		return y;
 //
@@ -237,7 +237,7 @@ TAG_("tangy")
 //		T_aphex y{};
 //		for (int i = 0x20; ~--i;) {
 //			T_aphex const x{_fix::mantissa_f(mt19937_f), _fix::mantissa_f(mt19937_f)};
-//			y += tangy_t<-1, 1>::template function< 1>(x.imag(), x.real());
+//			y += tangy_t<-1, 1>::template static_method< 1>(x.imag(), x.real());
 //		}
 //		return y;
 //
@@ -247,7 +247,7 @@ TAG_("tangy")
 //		T_aphex y{};
 //		for (int i = 0x20; ~--i;) {
 //			T_aphex const x{_fix::mantissa_f(mt19937_f), _fix::mantissa_f(mt19937_f)};
-//			y += tangy_t<-1, 1>::template function< 0>(x.imag(), x.real());
+//			y += tangy_t<-1, 1>::template static_method< 0>(x.imag(), x.real());
 //		}
 //		return y;
 //

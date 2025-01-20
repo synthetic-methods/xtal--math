@@ -88,7 +88,7 @@ struct   term
 
 		template <auto ...>
 		XTAL_DEF_(short,static)
-		XTAL_LET function( auto &&...oo)
+		XTAL_LET static_method( auto &&...oo)
 		noexcept -> decltype(auto)
 		{
 			return term_f<Ms...>(XTAL_REF_(oo)...);

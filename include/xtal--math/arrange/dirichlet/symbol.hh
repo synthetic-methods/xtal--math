@@ -95,7 +95,7 @@ struct symbol<A>
 				U_data w =  1;
 				U_data u = -1;
 				if constexpr (complex_field_q<U_data>) {
-					u = pade::unity_t<1>::template function<6>(_fix::ratio_f(1, 2*K));
+					u = pade::unity_t<1>::template static_method<6>(_fix::ratio_f(1, 2*K));
 				}
 				bond::seek_forward_f<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
@@ -133,7 +133,7 @@ struct symbol<A>
 			else {
 				U_data w, u;
 				if constexpr (complex_field_q<U_data>) {
-					u = pade::unity_t<1>::template function<6>(_fix::ratio_f(1, 2*K));
+					u = pade::unity_t<1>::template static_method<6>(_fix::ratio_f(1, 2*K));
 				}
 				else {
 					u = 1;

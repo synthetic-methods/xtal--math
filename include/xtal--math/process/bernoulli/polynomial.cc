@@ -32,25 +32,25 @@ TAG_("whatever")
 
 	TRY_("stuff")
 	{
-		TRUE_(check_f<11>(polynomial_t<1, 0>::template function<-1>(0.250), abs(polynomial_t<1, 0>::template function< 7>(0.250))));
-		TRUE_(check_f< 8>(polynomial_t<1, 0>::template function<-1>(0.250), abs(polynomial_t<1, 0>::template function< 5>(0.250))));
-		TRUE_(check_f< 6>(polynomial_t<1, 0>::template function<-1>(0.250), abs(polynomial_t<1, 0>::template function< 3>(0.250))));
+		TRUE_(check_f<11>(polynomial_t<1, 0>::template static_method<-1>(0.250), abs(polynomial_t<1, 0>::template static_method< 7>(0.250))));
+		TRUE_(check_f< 8>(polynomial_t<1, 0>::template static_method<-1>(0.250), abs(polynomial_t<1, 0>::template static_method< 5>(0.250))));
+		TRUE_(check_f< 6>(polynomial_t<1, 0>::template static_method<-1>(0.250), abs(polynomial_t<1, 0>::template static_method< 3>(0.250))));
 		
-		TRUE_(check_f<10>(polynomial_t<1, 0>::template function<-2>(0.125), abs(polynomial_t<1, 0>::template function< 6>(0.125))));
-		TRUE_(check_f< 7>(polynomial_t<1, 0>::template function<-2>(0.125), abs(polynomial_t<1, 0>::template function< 4>(0.125))));
-		TRUE_(check_f< 2>(polynomial_t<1, 0>::template function<-2>(0.125), abs(polynomial_t<1, 0>::template function< 2>(0.125))));
+		TRUE_(check_f<10>(polynomial_t<1, 0>::template static_method<-2>(0.125), abs(polynomial_t<1, 0>::template static_method< 6>(0.125))));
+		TRUE_(check_f< 7>(polynomial_t<1, 0>::template static_method<-2>(0.125), abs(polynomial_t<1, 0>::template static_method< 4>(0.125))));
+		TRUE_(check_f< 2>(polynomial_t<1, 0>::template static_method<-2>(0.125), abs(polynomial_t<1, 0>::template static_method< 2>(0.125))));
 		
-		TRUE_(check_f<-1>(polynomial_t<1, 0>::template function<-1>( 0.25), polynomial_t<1, 1>::template function<-1>( 1.25)));
-		TRUE_(check_f<-1>(polynomial_t<1, 0>::template function< 7>( 0.25), polynomial_t<1, 1>::template function< 7>( 1.25)));
-		TRUE_(check_f<-1>(polynomial_t<1, 0>::template function< 5>( 0.25), polynomial_t<1, 1>::template function< 5>( 1.25)));
-		TRUE_(check_f<-1>(polynomial_t<1, 0>::template function< 3>( 0.25), polynomial_t<1, 1>::template function< 3>( 1.25)));
-		TRUE_(check_f<-1>(polynomial_t<1, 0>::template function< 1>( 0.25), polynomial_t<1, 1>::template function< 1>( 1.25)));
+		TRUE_(check_f<-1>(polynomial_t<1, 0>::template static_method<-1>( 0.25), polynomial_t<1, 1>::template static_method<-1>( 1.25)));
+		TRUE_(check_f<-1>(polynomial_t<1, 0>::template static_method< 7>( 0.25), polynomial_t<1, 1>::template static_method< 7>( 1.25)));
+		TRUE_(check_f<-1>(polynomial_t<1, 0>::template static_method< 5>( 0.25), polynomial_t<1, 1>::template static_method< 5>( 1.25)));
+		TRUE_(check_f<-1>(polynomial_t<1, 0>::template static_method< 3>( 0.25), polynomial_t<1, 1>::template static_method< 3>( 1.25)));
+		TRUE_(check_f<-1>(polynomial_t<1, 0>::template static_method< 1>( 0.25), polynomial_t<1, 1>::template static_method< 1>( 1.25)));
 		
-		TRUE_(check_f<-1>(polynomial_t<1, 0>::template function<-2>( 0.25), polynomial_t<1, 1>::template function<-2>(-0.25)));
-		TRUE_(check_f<-1>(polynomial_t<1, 0>::template function< 6>( 0.25), polynomial_t<1, 1>::template function< 6>(-0.25)));
-		TRUE_(check_f<-1>(polynomial_t<1, 0>::template function< 4>( 0.25), polynomial_t<1, 1>::template function< 4>(-0.25)));
-		TRUE_(check_f<-1>(polynomial_t<1, 0>::template function< 2>( 0.25), polynomial_t<1, 1>::template function< 2>(-0.25)));
-		TRUE_(check_f<-1>(polynomial_t<1, 0>::template function< 0>( 0.25), polynomial_t<1, 1>::template function< 0>(-0.25)));
+		TRUE_(check_f<-1>(polynomial_t<1, 0>::template static_method<-2>( 0.25), polynomial_t<1, 1>::template static_method<-2>(-0.25)));
+		TRUE_(check_f<-1>(polynomial_t<1, 0>::template static_method< 6>( 0.25), polynomial_t<1, 1>::template static_method< 6>(-0.25)));
+		TRUE_(check_f<-1>(polynomial_t<1, 0>::template static_method< 4>( 0.25), polynomial_t<1, 1>::template static_method< 4>(-0.25)));
+		TRUE_(check_f<-1>(polynomial_t<1, 0>::template static_method< 2>( 0.25), polynomial_t<1, 1>::template static_method< 2>(-0.25)));
+		TRUE_(check_f<-1>(polynomial_t<1, 0>::template static_method< 0>( 0.25), polynomial_t<1, 1>::template static_method< 0>(-0.25)));
 
 	};
 }

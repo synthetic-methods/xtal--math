@@ -50,30 +50,30 @@ struct dilated
 
 		template <auto ...Is>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto &&o)
+		XTAL_LET static_method(auto &&o)
 		noexcept -> decltype(auto)
-		requires         in_n<XTAL_TRY_(S ::template function<Is...>  (XTAL_REF_(o)))>
+		requires      in_n<requires {S ::template static_method<Is...>  (XTAL_REF_(o));}>
 		{
-			return around_f<XTAL_FUN_(S_::template function<Is...>)>(XTAL_REF_(o));
+			return around_f<XTAL_FUN_(S_::template static_method<Is...>)>(XTAL_REF_(o));
 		};
 
 		template <auto ...Is>
 		XTAL_DEF_(short)
 		XTAL_LET method(auto &&o) const
 		noexcept -> decltype(auto)
-		requires un_n<XTAL_TRY_(S::         template function<Is...>  (XTAL_REF_(o)))>
-		and XTAL_TRY_(XTAL_ANY_(S_ const &).template   method<Is...>  (XTAL_REF_(o)))
+		requires      un_n<requires {S ::template static_method<Is...>  (XTAL_REF_(o));}>
+		and requires (S_ const &s_) {s_ .template        method<Is...>  (XTAL_REF_(o));}
 		{
-			return around_f<XTAL_FUN_(S_::template   method<Is...>)>(XTAL_REF_(o));
+			return around_f<XTAL_FUN_(S_::template        method<Is...>)>(XTAL_REF_(o));
 		};
 		template <auto ...Is>
 		XTAL_DEF_(short)
 		XTAL_LET method(auto &&o)
 		noexcept -> decltype(auto)
-		requires un_n<XTAL_TRY_(S::         template function<Is...>  (XTAL_REF_(o)))>
-		and XTAL_TRY_(XTAL_ANY_(S_       &).template   method<Is...>  (XTAL_REF_(o)))
+		requires      un_n<requires {S ::template static_method<Is...>  (XTAL_REF_(o));}>
+		and requires (S_       &s_) {s_ .template        method<Is...>  (XTAL_REF_(o));}
 		{
-			return around_f<XTAL_FUN_(S_::template   method<Is...>)>(XTAL_REF_(o));
+			return around_f<XTAL_FUN_(S_::template        method<Is...>)>(XTAL_REF_(o));
 		};
 
 	};

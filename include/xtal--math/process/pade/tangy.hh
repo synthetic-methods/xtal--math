@@ -51,7 +51,7 @@ struct tangy<M_ism,-0>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(simplex_field_q auto &&o)
+		XTAL_LET static_method(simplex_field_q auto &&o)
 		noexcept -> auto
 		{
 			using _fix = bond::fixture<decltype(o)>;
@@ -63,16 +63,16 @@ struct tangy<M_ism,-0>
 				XTAL_0IF (2 == M_ism) {return tanh(XTAL_REF_(o)*_fix::patio_1);}
 			}
 			XTAL_0IF (N_lim == 0) {
-				return _fix::patio_1*gudermannian::tang_t<M_ism>::template function<N_lim>(XTAL_REF_(o));
+				return _fix::patio_1*gudermannian::tang_t<M_ism>::template static_method<N_lim>(XTAL_REF_(o));
 			}
 			XTAL_0IF (0 == (N_lim&1)) {
-				auto const [x1, y1] = destruct_f(impunity_t<M_ism,-0>::template function<N_lim>(o*_fix::haplo_1));
+				auto const [x1, y1] = destruct_f(impunity_t<M_ism,-0>::template static_method<N_lim>(o*_fix::haplo_1));
 				auto const x2 =  square_f(x1) + I_sgn*square_f(y1);
 				auto const y2 = _fix::diplo_1*x1*y1;
 				return y2*root_f<-1, 1>(x2);
 			}
 			XTAL_0IF (1 == (N_lim&1)) {
-				auto const [x1, y1] = destruct_f(impunity_t<M_ism,-0>::template function<N_lim>(o));
+				auto const [x1, y1] = destruct_f(impunity_t<M_ism,-0>::template static_method<N_lim>(o));
 				return y1*root_f<-1, 1>(x1);
 			}
 		}
@@ -94,15 +94,15 @@ struct tangy<M_ism, 1>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(simplex_field_q auto &&t)
+		XTAL_LET static_method(simplex_field_q auto &&t)
 		noexcept -> decltype(auto)
 		{
 			using _fix = bond::fixture<decltype(t)>;
-			return function<N_lim>(XTAL_REF_(t), _fix::alpha_1);
+			return static_method<N_lim>(XTAL_REF_(t), _fix::alpha_1);
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(simplex_field_q auto &&v, simplex_field_q auto &&u)
+		XTAL_LET static_method(simplex_field_q auto &&v, simplex_field_q auto &&u)
 		noexcept -> decltype(auto)
 		{
 			using _fix = bond::fixture<decltype(v), decltype(u)>;
@@ -120,7 +120,7 @@ struct tangy<M_ism, 1>
 			auto const &[co_0, co_1]  = co;
 			auto const u_flp = _fix::haplo_1 - _fix::haplo_1*co_0*u_sgn;
 
-			return term_f(u_flp*v_sgn, u_sgn, S_::template function<N_lim>(up.sum()/dn.sum()));
+			return term_f(u_flp*v_sgn, u_sgn, S_::template static_method<N_lim>(up.sum()/dn.sum()));
 		}
 
 	};
@@ -150,10 +150,10 @@ struct tangy<M_ism,-2>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(simplex_field_q auto &&o)
+		XTAL_LET static_method(simplex_field_q auto &&o)
 		noexcept -> auto
 		{
-			return S_::template function<N_lim>(XTAL_REF_(o));
+			return S_::template static_method<N_lim>(XTAL_REF_(o));
 		}
 		
 	};

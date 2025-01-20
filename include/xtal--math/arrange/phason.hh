@@ -88,10 +88,10 @@ struct phason<A>
 
 	public:// CONSTRUCT
 	//	using S_::S_;
-	~	homotype()                noexcept=default;
-	//	homotype()                noexcept=default;
-		XTAL_NEW_(copy, homotype, noexcept=default)
-		XTAL_NEW_(move, homotype, noexcept=default)
+	~	homotype()                 noexcept=default;
+	//	homotype()                 noexcept=default;
+		XTAL_NEW_(copy) (homotype, noexcept=default)
+		XTAL_NEW_(move) (homotype, noexcept=default)
 
 		XTAL_NEW_(implicit) homotype()
 		noexcept

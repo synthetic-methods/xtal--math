@@ -32,15 +32,15 @@ TAG_("whatever")
 
 	TRY_("stuff")
 	{
-		TRUE_(check_f<6>(tang_t< 1>::template function<-1>(0.25), tang_t< 1>::template function< 0>(0.25)));
-		TRUE_(check_f<7>(tang_t<-1>::template function<-1>(0.25), tang_t<-1>::template function< 0>(0.25)));
-		TRUE_(check_f<7>(tang_t< 2>::template function<-1>(0.25), tang_t< 2>::template function< 0>(0.25)));
-		TRUE_(check_f<7>(tang_t<-2>::template function<-1>(0.25), tang_t<-2>::template function< 0>(0.25)));
+		TRUE_(check_f<6>(tang_t< 1>::template static_method<-1>(0.25), tang_t< 1>::template static_method< 0>(0.25)));
+		TRUE_(check_f<7>(tang_t<-1>::template static_method<-1>(0.25), tang_t<-1>::template static_method< 0>(0.25)));
+		TRUE_(check_f<7>(tang_t< 2>::template static_method<-1>(0.25), tang_t< 2>::template static_method< 0>(0.25)));
+		TRUE_(check_f<7>(tang_t<-2>::template static_method<-1>(0.25), tang_t<-2>::template static_method< 0>(0.25)));
 
-		TRUE_(check_f<- 2>(sinh(_fix::patio_1*0.33), pade::tangy_t<1>::template function<~0>(tang_t<2>::template function<~0>(0.33))));
-		TRUE_(check_f<-46>(sinh(_fix::patio_1*0.33), pade::tangy_t<1>::template function< 0>(tang_t<2>::template function< 0>(0.33))));
-		TRUE_(check_f<-47>(sinh(_fix::patio_1*0.33), pade::tangy_t<1>::template function< 1>(tang_t<2>::template function< 0>(0.33))));
-		TRUE_(check_f<-47>(sinh(_fix::patio_1*0.33), tang_t<1>::template function<~0>(tang_t<2>::template function< 0>(0.33))*_fix::patio_1));
+		TRUE_(check_f<- 2>(sinh(_fix::patio_1*0.33), pade::tangy_t<1>::template static_method<~0>(tang_t<2>::template static_method<~0>(0.33))));
+		TRUE_(check_f<-46>(sinh(_fix::patio_1*0.33), pade::tangy_t<1>::template static_method< 0>(tang_t<2>::template static_method< 0>(0.33))));
+		TRUE_(check_f<-47>(sinh(_fix::patio_1*0.33), pade::tangy_t<1>::template static_method< 1>(tang_t<2>::template static_method< 0>(0.33))));
+		TRUE_(check_f<-47>(sinh(_fix::patio_1*0.33), tang_t<1>::template static_method<~0>(tang_t<2>::template static_method< 0>(0.33))*_fix::patio_1));
 
 	};
 	EST_("Computing `ArcTan`.")
@@ -48,7 +48,7 @@ TAG_("whatever")
 		T_alpha w{0};
 		for (T_sigma i = 0x10; ~--i;) {
 			auto x = _fix::mantissa_f(mt19937_f);
-			w += tang_t<-1>::template function<-1>(x);
+			w += tang_t<-1>::template static_method<-1>(x);
 		}
 		return w;
 	};
@@ -57,7 +57,7 @@ TAG_("whatever")
 		T_alpha w{0};
 		for (T_sigma i = 0x10; ~--i;) {
 			auto x = _fix::mantissa_f(mt19937_f);
-			w += tang_t<-1>::template function< 0>(x);
+			w += tang_t<-1>::template static_method< 0>(x);
 		}
 		return w;
 	};
@@ -75,7 +75,7 @@ TAG_("whatever")
 		T_alpha w{1};
 		for (T_sigma i = 0x10; ~--i;) {
 			auto x = _fix::mantissa_f(mt19937_f);
-			w *= pade::tangy_t<1>::template function< 1>(tang_t<2>::template function< 0>(x));
+			w *= pade::tangy_t<1>::template static_method< 1>(tang_t<2>::template static_method< 0>(x));
 		}
 		return w;
 	};
@@ -84,7 +84,7 @@ TAG_("whatever")
 		T_alpha w{1};
 		for (T_sigma i = 0x10; ~--i;) {
 			auto x = _fix::mantissa_f(mt19937_f);
-			w *= tang_t<1>::template function<~0>(tang_t<2>::template function< 0>(x))*_fix::patio_1;
+			w *= tang_t<1>::template static_method<~0>(tang_t<2>::template static_method< 0>(x))*_fix::patio_1;
 		}
 		return w;
 	};

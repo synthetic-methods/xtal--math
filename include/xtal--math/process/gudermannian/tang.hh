@@ -38,7 +38,7 @@ XTAL_DEF_(short)
 XTAL_LET tang_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return tang_t<M_ism, As...>::function(XTAL_REF_(o));
+	return tang_t<M_ism, As...>::static_method(XTAL_REF_(o));
 }
 
 
@@ -59,14 +59,14 @@ struct tang<M_ism, -0>
 
 		template <int N_lim=0>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto &&u)
+		XTAL_LET static_method(auto &&u)
 		noexcept -> decltype(auto)
 		{
 			static_assert(N_lim <= 0);
 
 			XTAL_IF0
 			XTAL_0IF (0 <= N_lim) {
-				return S_::template function<N_lim>(XTAL_REF_(u));
+				return S_::template static_method<N_lim>(XTAL_REF_(u));
 			}
 			XTAL_0IF (N_lim <  0) {
 				using _fix = bond::fixture<decltype(u)>;
@@ -104,14 +104,14 @@ struct tang<M_ism, -2>
 
 		template <int N_lim=0>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto &&w)
+		XTAL_LET static_method(auto &&w)
 		noexcept -> decltype(auto)
 		{
 			static_assert(N_lim <= 0);
 
 			if constexpr (N_lim < 0) {
 				auto const u = root_f<2>(XTAL_REF_(w));
-				return tang<M_ism, -0>::template function<N_lim>(u)/(u);
+				return tang<M_ism, -0>::template static_method<N_lim>(u)/(u);
 			}
 			else {
 				using _fix = bond::fixture<decltype(w)>;

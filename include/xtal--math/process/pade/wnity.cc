@@ -17,8 +17,8 @@ XTAL_LET wnity_check_f(auto const &t)
 noexcept -> bool
 {
 	int constexpr N_inf = -1;
-	auto const u = wnity_t<1>::template function<N_lim>(t);
-	auto const v = wnity_t<1>::template function<N_inf>(t);
+	auto const u = wnity_t<1>::template static_method<N_lim>(t);
+	auto const v = wnity_t<1>::template static_method<N_inf>(t);
 	return true
 		and check_f<N_trim>(get<0>(u), get<0>(v))
 		and check_f<N_trim>(get<1>(u), get<1>(v))
@@ -61,15 +61,15 @@ TAG_("wnity")
 		T_aphex x7{ 0.777777777777777, 0.777777777777777};
 		A_aphex xs{{x0, x1, x2, x3, x4, x5, x6, x7}};
 
-		auto y0 = wnity_t<1>::template function<4>(x0);
-		auto y1 = wnity_t<1>::template function<4>(x1);
-		auto y2 = wnity_t<1>::template function<4>(x2);
-		auto y3 = wnity_t<1>::template function<4>(x3);
-		auto y4 = wnity_t<1>::template function<4>(x4);
-		auto y5 = wnity_t<1>::template function<4>(x5);
-		auto y6 = wnity_t<1>::template function<4>(x6);
-		auto y7 = wnity_t<1>::template function<4>(x7);
-		auto ys = wnity_t<1>::template function<4>(xs);
+		auto y0 = wnity_t<1>::template static_method<4>(x0);
+		auto y1 = wnity_t<1>::template static_method<4>(x1);
+		auto y2 = wnity_t<1>::template static_method<4>(x2);
+		auto y3 = wnity_t<1>::template static_method<4>(x3);
+		auto y4 = wnity_t<1>::template static_method<4>(x4);
+		auto y5 = wnity_t<1>::template static_method<4>(x5);
+		auto y6 = wnity_t<1>::template static_method<4>(x6);
+		auto y7 = wnity_t<1>::template static_method<4>(x7);
+		auto ys = wnity_t<1>::template static_method<4>(xs);
 		auto [ys_0, ys_1] = ys;
 
 		TRUE_(check_f<19>(get<0>(y0), ys_0(0)));
@@ -121,15 +121,15 @@ TAG_("wnity")
 
 		_std::complex<A_alpha> xs{xs_re, xs_im};
 
-		auto y0 = wnity_t<1>::template function<4>(x0);
-		auto y1 = wnity_t<1>::template function<4>(x1);
-		auto y2 = wnity_t<1>::template function<4>(x2);
-		auto y3 = wnity_t<1>::template function<4>(x3);
-		auto y4 = wnity_t<1>::template function<4>(x4);
-		auto y5 = wnity_t<1>::template function<4>(x5);
-		auto y6 = wnity_t<1>::template function<4>(x6);
-		auto y7 = wnity_t<1>::template function<4>(x7);
-		auto ys = wnity_t<1>::template function<4>(xs);
+		auto y0 = wnity_t<1>::template static_method<4>(x0);
+		auto y1 = wnity_t<1>::template static_method<4>(x1);
+		auto y2 = wnity_t<1>::template static_method<4>(x2);
+		auto y3 = wnity_t<1>::template static_method<4>(x3);
+		auto y4 = wnity_t<1>::template static_method<4>(x4);
+		auto y5 = wnity_t<1>::template static_method<4>(x5);
+		auto y6 = wnity_t<1>::template static_method<4>(x6);
+		auto y7 = wnity_t<1>::template static_method<4>(x7);
+		auto ys = wnity_t<1>::template static_method<4>(xs);
 
 		TRUE_(get<0>(y0).real(), get<0>(ys).real(0));
 		TRUE_(get<0>(y1).real(), get<0>(ys).real(1));

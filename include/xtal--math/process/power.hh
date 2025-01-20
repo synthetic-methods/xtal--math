@@ -24,7 +24,7 @@ XTAL_DEF_(short)
 XTAL_LET power_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
-	return power_t<M_exp>::template function<Ns...>(XTAL_REF_(oo)...);
+	return power_t<M_exp>::template static_method<Ns...>(XTAL_REF_(oo)...);
 }
 
 
@@ -45,7 +45,7 @@ struct   power<M_exp, Ms...>
 
 		template <int ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto const &o)
+		XTAL_LET static_method(auto const &o)
 		noexcept -> auto
 		{
 			return XTAL_ALL_(o) {one};
@@ -68,7 +68,7 @@ struct   power<M_exp, Ms...>
 
 		template <int ...Ns> requires in_n<0, bond::fixture<>::template expound_f<2>(M_exp)>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto const &o)
+		XTAL_LET static_method(auto const &o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _fix = bond::fixture<decltype(o)>;
@@ -92,7 +92,7 @@ struct   power<M_exp, Ms...>
 
 		template <int ...Ns> requires in_n<0, bond::fixture<>::template expound_f<3>(M_exp)>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto const &o)
+		XTAL_LET static_method(auto const &o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _fix = bond::fixture<decltype(o)>;
@@ -117,7 +117,7 @@ struct   power<M_exp, Ms...>
 		}
 		template <int ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto const &o)
+		XTAL_LET static_method(auto const &o)
 		noexcept -> auto
 		requires un_n<0, bond::fixture<int>::template expound_f<2>(M_exp)>
 		and      un_n<0, bond::fixture<int>::template expound_f<3>(M_exp)>
@@ -125,7 +125,7 @@ struct   power<M_exp, Ms...>
 			using O = XTAL_ALL_(o);
 			XTAL_IF0
 			XTAL_0IF (arrange::collate_q<O>) {
-				return O::template map_f<XTAL_FUN_(function<Ns...>)>(o);
+				return O::template map_f<XTAL_FUN_(static_method<Ns...>)>(o);
 			}
 			XTAL_0IF (M_exp   == 0) {return                             O{1};}
 			XTAL_0IF (M_exp   == 1) {return                             o   ;}
@@ -153,10 +153,10 @@ struct   power<M_exp, Ms...>
 
 		template <int ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto &&o)
+		XTAL_LET static_method(auto &&o)
 		noexcept -> auto
 		{
-			return S_::template function<Ns...>(one/XTAL_REF_(o));
+			return S_::template static_method<Ns...>(one/XTAL_REF_(o));
 		}
 
 	};
