@@ -67,14 +67,14 @@ struct   factorial
 
 		template <auto ...>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(integral_variable_q auto &&o)
+		XTAL_LET static_method(integral_variable_q auto &&o)
 		noexcept -> decltype(auto)
 		{
 			return factorial_f(XTAL_REF_(o));
 		}
 		template <auto ...>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(real_variable_q auto &&o)
+		XTAL_LET static_method(real_variable_q auto &&o)
 		noexcept -> decltype(auto)
 		{
 			using U_fix = bond::fixture<decltype(o)>;

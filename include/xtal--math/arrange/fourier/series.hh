@@ -158,7 +158,7 @@ struct series<A>
 			auto const j = S_::rend() - 1;
 			
 		//	Compute the fractional sinusoid for this `N_data`:
-			auto const y = process::math::pade::unity_t<1>::template function<6>(_fix::ratio_f(-1, 2*N_data));// TODO: Make `constexpr`!
+			auto const y = process::math::pade::unity_t<1>::template static_method<6>(_fix::ratio_f(-1, 2*N_data));// TODO: Make `constexpr`!
 
 		//	Compute the initial `1/8`th then mirror the remaining segments:
 			typename S_::difference_type constexpr M = N_data >> 2U;// `1/8`th

@@ -27,7 +27,7 @@ struct near
 		/*/
 		template <auto ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(integral_variable_q auto n)
+		XTAL_LET static_method(integral_variable_q auto n)
 		noexcept -> XTAL_ALL_(n)
 		{
 			using U = XTAL_ALL_(n);
@@ -41,7 +41,7 @@ struct near
 		/***/
 		template <auto ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(real_variable_q auto u)
+		XTAL_LET static_method(real_variable_q auto u)
 		noexcept -> XTAL_ALL_(u)
 		{
 			using U = XTAL_ALL_(u);
@@ -55,10 +55,10 @@ struct near
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(complex_variable_q auto const &u)
+		XTAL_LET static_method(complex_variable_q auto const &u)
 		noexcept -> XTAL_ALL_(u)
 		{
-			return {function<Ns...>(u.real()), function<Ns...>(u.imag())};
+			return {static_method<Ns...>(u.real()), static_method<Ns...>(u.imag())};
 		}
 
 	};
@@ -76,8 +76,8 @@ XTAL_LET near_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
 	//\
-	return near_t<Ms...>::function(XTAL_REF_(oo)...);
-	return near_t<>::template function<Ns...>(XTAL_REF_(oo)...);
+	return near_t<Ms...>::static_method(XTAL_REF_(oo)...);
+	return near_t<>::template static_method<Ns...>(XTAL_REF_(oo)...);
 }
 
 

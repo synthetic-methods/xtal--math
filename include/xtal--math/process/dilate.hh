@@ -18,7 +18,7 @@ XTAL_DEF_(short)
 XTAL_LET dilate_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return dilate_t<M_val>::function(XTAL_REF_(o));
+	return dilate_t<M_val>::static_method(XTAL_REF_(o));
 }
 
 
@@ -50,7 +50,7 @@ struct dilate
 
 		template <auto ...>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto &&o)
+		XTAL_LET static_method(auto &&o)
 		noexcept -> auto
 		{
 			return after_f(XTAL_REF_(o));

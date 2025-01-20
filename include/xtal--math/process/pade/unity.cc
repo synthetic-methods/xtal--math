@@ -17,8 +17,8 @@ XTAL_LET unity_check_f(auto const &t)
 noexcept -> bool
 {
 	int constexpr N_inf = -1;
-	auto const u = unity_t<1>::template function<N_lim>(t);
-	auto const v = unity_t<1>::template function<N_inf>(t);
+	auto const u = unity_t<1>::template static_method<N_lim>(t);
+	auto const v = unity_t<1>::template static_method<N_inf>(t);
 	return check_f<N_trim>(u, v);
 }
 
@@ -53,9 +53,9 @@ TAG_("unity")
 		T_alpha roll  = 0.1;
 		T_alpha yaw   = 0.1;
 
-		auto const w = pade::unity_t<1>::template function<4>(pitch);
-		auto const x = pade::unity_t<1>::template function<4>(roll);
-		auto const y = pade::unity_t<1>::template function<4>(-yaw);
+		auto const w = pade::unity_t<1>::template static_method<4>(pitch);
+		auto const x = pade::unity_t<1>::template static_method<4>(roll);
+		auto const y = pade::unity_t<1>::template static_method<4>(-yaw);
 
 		auto const &[w_re, w_im] = destruct_f(w);
 		auto const &[x_re, x_im] = destruct_f(x);
@@ -89,34 +89,34 @@ TAG_("unity")
 		T_alpha x7{ 0.4444444444444444};
 
 	// 1
-		TRUE_(check_f<-39>(unity_t<1>::template function<-1>(x0), unity_t<1>::template function<1>(U_phi{x0, 0.})));
-		TRUE_(check_f<-43>(unity_t<1>::template function<-1>(x1), unity_t<1>::template function<1>(U_phi{x1, 0.})));
-		TRUE_(check_f<-43>(unity_t<1>::template function<-1>(x2), unity_t<1>::template function<1>(U_phi{x2, 0.})));
-		TRUE_(check_f<-42>(unity_t<1>::template function<-1>(x3), unity_t<1>::template function<1>(U_phi{x3, 0.})));
-		TRUE_(check_f<-42>(unity_t<1>::template function<-1>(x4), unity_t<1>::template function<1>(U_phi{x4, 0.})));
-		TRUE_(check_f<-43>(unity_t<1>::template function<-1>(x5), unity_t<1>::template function<1>(U_phi{x5, 0.})));
-		TRUE_(check_f<-43>(unity_t<1>::template function<-1>(x6), unity_t<1>::template function<1>(U_phi{x6, 0.})));
-		TRUE_(check_f<-39>(unity_t<1>::template function<-1>(x7), unity_t<1>::template function<1>(U_phi{x7, 0.})));
+		TRUE_(check_f<-39>(unity_t<1>::template static_method<-1>(x0), unity_t<1>::template static_method<1>(U_phi{x0, 0.})));
+		TRUE_(check_f<-43>(unity_t<1>::template static_method<-1>(x1), unity_t<1>::template static_method<1>(U_phi{x1, 0.})));
+		TRUE_(check_f<-43>(unity_t<1>::template static_method<-1>(x2), unity_t<1>::template static_method<1>(U_phi{x2, 0.})));
+		TRUE_(check_f<-42>(unity_t<1>::template static_method<-1>(x3), unity_t<1>::template static_method<1>(U_phi{x3, 0.})));
+		TRUE_(check_f<-42>(unity_t<1>::template static_method<-1>(x4), unity_t<1>::template static_method<1>(U_phi{x4, 0.})));
+		TRUE_(check_f<-43>(unity_t<1>::template static_method<-1>(x5), unity_t<1>::template static_method<1>(U_phi{x5, 0.})));
+		TRUE_(check_f<-43>(unity_t<1>::template static_method<-1>(x6), unity_t<1>::template static_method<1>(U_phi{x6, 0.})));
+		TRUE_(check_f<-39>(unity_t<1>::template static_method<-1>(x7), unity_t<1>::template static_method<1>(U_phi{x7, 0.})));
 	
 	// 2
-		TRUE_(check_f<-36>(unity_t<1>::template function<-1>(x0), unity_t<1>::template function<2>(U_phi{x0, 0.})));
-		TRUE_(check_f<-37>(unity_t<1>::template function<-1>(x1), unity_t<1>::template function<2>(U_phi{x1, 0.})));
-		TRUE_(check_f<-36>(unity_t<1>::template function<-1>(x2), unity_t<1>::template function<2>(U_phi{x2, 0.})));
-		TRUE_(check_f<-36>(unity_t<1>::template function<-1>(x3), unity_t<1>::template function<2>(U_phi{x3, 0.})));
-		TRUE_(check_f<-36>(unity_t<1>::template function<-1>(x4), unity_t<1>::template function<2>(U_phi{x4, 0.})));
-		TRUE_(check_f<-36>(unity_t<1>::template function<-1>(x5), unity_t<1>::template function<2>(U_phi{x5, 0.})));
-		TRUE_(check_f<-37>(unity_t<1>::template function<-1>(x6), unity_t<1>::template function<2>(U_phi{x6, 0.})));
-		TRUE_(check_f<-36>(unity_t<1>::template function<-1>(x7), unity_t<1>::template function<2>(U_phi{x7, 0.})));
+		TRUE_(check_f<-36>(unity_t<1>::template static_method<-1>(x0), unity_t<1>::template static_method<2>(U_phi{x0, 0.})));
+		TRUE_(check_f<-37>(unity_t<1>::template static_method<-1>(x1), unity_t<1>::template static_method<2>(U_phi{x1, 0.})));
+		TRUE_(check_f<-36>(unity_t<1>::template static_method<-1>(x2), unity_t<1>::template static_method<2>(U_phi{x2, 0.})));
+		TRUE_(check_f<-36>(unity_t<1>::template static_method<-1>(x3), unity_t<1>::template static_method<2>(U_phi{x3, 0.})));
+		TRUE_(check_f<-36>(unity_t<1>::template static_method<-1>(x4), unity_t<1>::template static_method<2>(U_phi{x4, 0.})));
+		TRUE_(check_f<-36>(unity_t<1>::template static_method<-1>(x5), unity_t<1>::template static_method<2>(U_phi{x5, 0.})));
+		TRUE_(check_f<-37>(unity_t<1>::template static_method<-1>(x6), unity_t<1>::template static_method<2>(U_phi{x6, 0.})));
+		TRUE_(check_f<-36>(unity_t<1>::template static_method<-1>(x7), unity_t<1>::template static_method<2>(U_phi{x7, 0.})));
 	
 	//	3
-		TRUE_(check_f<-26>(unity_t<1>::template function<-1>(x0), unity_t<1>::template function<3>(U_phi{x0, 0.})));
-		TRUE_(check_f<-29>(unity_t<1>::template function<-1>(x1), unity_t<1>::template function<3>(U_phi{x1, 0.})));
-		TRUE_(check_f<-27>(unity_t<1>::template function<-1>(x2), unity_t<1>::template function<3>(U_phi{x2, 0.})));
-		TRUE_(check_f<-29>(unity_t<1>::template function<-1>(x3), unity_t<1>::template function<3>(U_phi{x3, 0.})));
-		TRUE_(check_f<-29>(unity_t<1>::template function<-1>(x4), unity_t<1>::template function<3>(U_phi{x4, 0.})));
-		TRUE_(check_f<-27>(unity_t<1>::template function<-1>(x5), unity_t<1>::template function<3>(U_phi{x5, 0.})));
-		TRUE_(check_f<-29>(unity_t<1>::template function<-1>(x6), unity_t<1>::template function<3>(U_phi{x6, 0.})));
-		TRUE_(check_f<-26>(unity_t<1>::template function<-1>(x7), unity_t<1>::template function<3>(U_phi{x7, 0.})));
+		TRUE_(check_f<-26>(unity_t<1>::template static_method<-1>(x0), unity_t<1>::template static_method<3>(U_phi{x0, 0.})));
+		TRUE_(check_f<-29>(unity_t<1>::template static_method<-1>(x1), unity_t<1>::template static_method<3>(U_phi{x1, 0.})));
+		TRUE_(check_f<-27>(unity_t<1>::template static_method<-1>(x2), unity_t<1>::template static_method<3>(U_phi{x2, 0.})));
+		TRUE_(check_f<-29>(unity_t<1>::template static_method<-1>(x3), unity_t<1>::template static_method<3>(U_phi{x3, 0.})));
+		TRUE_(check_f<-29>(unity_t<1>::template static_method<-1>(x4), unity_t<1>::template static_method<3>(U_phi{x4, 0.})));
+		TRUE_(check_f<-27>(unity_t<1>::template static_method<-1>(x5), unity_t<1>::template static_method<3>(U_phi{x5, 0.})));
+		TRUE_(check_f<-29>(unity_t<1>::template static_method<-1>(x6), unity_t<1>::template static_method<3>(U_phi{x6, 0.})));
+		TRUE_(check_f<-26>(unity_t<1>::template static_method<-1>(x7), unity_t<1>::template static_method<3>(U_phi{x7, 0.})));
 
 	};
 	/*/
@@ -132,15 +132,15 @@ TAG_("unity")
 		T_aphex x7{ 0.7777777777777777, 0.7777777777777777};
 		A_aphex xs{{x0, x1, x2, x3, x4, x5, x6, x7}};
 
-		auto y0 = unity_t<1>::template function<4>(x0);
-		auto y1 = unity_t<1>::template function<4>(x1);
-		auto y2 = unity_t<1>::template function<4>(x2);
-		auto y3 = unity_t<1>::template function<4>(x3);
-		auto y4 = unity_t<1>::template function<4>(x4);
-		auto y5 = unity_t<1>::template function<4>(x5);
-		auto y6 = unity_t<1>::template function<4>(x6);
-		auto y7 = unity_t<1>::template function<4>(x7);
-		auto ys = unity_t<1>::template function<4>(xs);
+		auto y0 = unity_t<1>::template static_method<4>(x0);
+		auto y1 = unity_t<1>::template static_method<4>(x1);
+		auto y2 = unity_t<1>::template static_method<4>(x2);
+		auto y3 = unity_t<1>::template static_method<4>(x3);
+		auto y4 = unity_t<1>::template static_method<4>(x4);
+		auto y5 = unity_t<1>::template static_method<4>(x5);
+		auto y6 = unity_t<1>::template static_method<4>(x6);
+		auto y7 = unity_t<1>::template static_method<4>(x7);
+		auto ys = unity_t<1>::template static_method<4>(xs);
 
 		TRUE_(check_f<19>(y0, ys(0)));
 		TRUE_(check_f<19>(y1, ys(1)));
@@ -189,15 +189,15 @@ TAG_("unity")
 
 		_std::complex<A_alpha> xs{xs_re, xs_im};
 
-		auto y0 = unity_t<1>::template function<4>(x0);
-		auto y1 = unity_t<1>::template function<4>(x1);
-		auto y2 = unity_t<1>::template function<4>(x2);
-		auto y3 = unity_t<1>::template function<4>(x3);
-		auto y4 = unity_t<1>::template function<4>(x4);
-		auto y5 = unity_t<1>::template function<4>(x5);
-		auto y6 = unity_t<1>::template function<4>(x6);
-		auto y7 = unity_t<1>::template function<4>(x7);
-		auto ys = unity_t<1>::template function<4>(xs);
+		auto y0 = unity_t<1>::template static_method<4>(x0);
+		auto y1 = unity_t<1>::template static_method<4>(x1);
+		auto y2 = unity_t<1>::template static_method<4>(x2);
+		auto y3 = unity_t<1>::template static_method<4>(x3);
+		auto y4 = unity_t<1>::template static_method<4>(x4);
+		auto y5 = unity_t<1>::template static_method<4>(x5);
+		auto y6 = unity_t<1>::template static_method<4>(x6);
+		auto y7 = unity_t<1>::template static_method<4>(x7);
+		auto ys = unity_t<1>::template static_method<4>(xs);
 
 		TRUE_(y0.real(), ys.real(0));
 		TRUE_(y1.real(), ys.real(1));
@@ -238,7 +238,7 @@ TAG_("unity")
 			T_aphex z {1, 0};
 
 			for (T_sigma i = 0x100; ~--i;) {
-				z *= unity_t<1>::template function<-1>(t);
+				z *= unity_t<1>::template static_method<-1>(t);
 				t += _t;
 				t -= round(t);
 			}
@@ -253,7 +253,7 @@ TAG_("unity")
 			for (T_sigma i = 0x100; ~--i;) {
 				t += _t;
 				t -= round(t);
-				z *= unity_t<1>::template function<4>(t);
+				z *= unity_t<1>::template static_method<4>(t);
 			}
 			return z;
 
@@ -280,7 +280,7 @@ TAG_("unity")
 			T_aphex z {1, 0};
 
 			for (T_sigma i = 0x100; ~--i; ++t) {
-				z *= unity_t<1>::template function<4>(t);
+				z *= unity_t<1>::template static_method<4>(t);
 			}
 			return z;
 
@@ -293,20 +293,20 @@ TAG_("unity")
 
 		int constexpr N_lim = 4;
 
-		auto z = unity_t<1>::template function<N_lim>(t1);
+		auto z = unity_t<1>::template static_method<N_lim>(t1);
 
-		TRUE_(check_f<-1>(z, unity_t<1           >::template function<N_lim>(t1)));
-		TRUE_(check_f<-1>(z, unity_t<1, dilate<2>>::template function<N_lim>(t2)));
+		TRUE_(check_f<-1>(z, unity_t<1           >::template static_method<N_lim>(t1)));
+		TRUE_(check_f<-1>(z, unity_t<1, dilate<2>>::template static_method<N_lim>(t2)));
 		
-		TRUE_(check_f<-1>(z, process::lift_t<unity<1>, dilate<2>>::template function<N_lim>(t2)));
-		TRUE_(check_f<-1>(z, process::lift_t<unity<1>           >::template function<N_lim>(t1)));
+		TRUE_(check_f<-1>(z, process::lift_t<unity<1>, dilate<2>>::template static_method<N_lim>(t2)));
+		TRUE_(check_f<-1>(z, process::lift_t<unity<1>           >::template static_method<N_lim>(t1)));
 
 	}
 	TRY_("inversion<-1> (native)")
 	{
 		T_aphex const x{0.123, 0.456};
-		T_aphex const y = unity_t< 1>::template function<-1>(x);
-		T_aphex const z = unity_t<-1>::template function<-1>(y);
+		T_aphex const y = unity_t< 1>::template static_method<-1>(x);
+		T_aphex const z = unity_t<-1>::template static_method<-1>(y);
 
 		//\
 		echo(check_f(x, z));
@@ -316,8 +316,8 @@ TAG_("unity")
 	TRY_("inversion< 5> (native)")
 	{
 		T_aphex const x{0.123, 0.456};
-		T_aphex const y = unity_t< 1>::template function< 5>(x);
-		T_aphex const z = unity_t<-1>::template function< 5>(y);
+		T_aphex const y = unity_t< 1>::template static_method< 5>(x);
+		T_aphex const z = unity_t<-1>::template static_method< 5>(y);
 
 		//\
 		echo(check_f(x, z));
@@ -329,7 +329,7 @@ TAG_("unity")
 		T_aphex y{};
 		for (int i = 0x20; ~--i;) {
 			T_aphex const x{_fix::mantissa_f(mt19937_f), _fix::mantissa_f(mt19937_f)};
-			y += unity_t<-1>::template function<-1>(y);
+			y += unity_t<-1>::template static_method<-1>(y);
 		}
 		return y;
 
@@ -339,7 +339,7 @@ TAG_("unity")
 		T_aphex y{};
 		for (int i = 0x20; ~--i;) {
 			T_aphex const x{_fix::mantissa_f(mt19937_f), _fix::mantissa_f(mt19937_f)};
-			y += unity_t<-1>::template function< 3>(y);
+			y += unity_t<-1>::template static_method< 3>(y);
 		}
 		return y;
 
@@ -347,8 +347,8 @@ TAG_("unity")
 //	EST_("inversion (approximation)")
 //	{
 //		T_aphex const x{0.123, 0.456};
-//		T_aphex const y = unity_t< 1>::template function<5>(x);
-//		T_aphex const z = unity_t<-1>::template function<5>(y);
+//		T_aphex const y = unity_t< 1>::template static_method<5>(x);
+//		T_aphex const z = unity_t<-1>::template static_method<5>(y);
 //
 //		//\
 //		echo(check_f(x, z));

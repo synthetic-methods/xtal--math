@@ -22,7 +22,7 @@ XTAL_DEF_(short)
 XTAL_LET either_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
-	return either_t<M_side>::template function<Ns...>(XTAL_REF_(oo)...);
+	return either_t<M_side>::template static_method<Ns...>(XTAL_REF_(oo)...);
 }
 
 
@@ -42,14 +42,14 @@ struct either
 
 		template <auto ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto const &x)
+		XTAL_LET static_method(auto const &x)
 		noexcept -> auto
 		{
-			return function<Ns...>(x, XTAL_ALL_(x){});
+			return static_method<Ns...>(x, XTAL_ALL_(x){});
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto const &x, auto const &y)
+		XTAL_LET static_method(auto const &x, auto const &y)
 		noexcept -> auto
 		{
 			XTAL_IF0

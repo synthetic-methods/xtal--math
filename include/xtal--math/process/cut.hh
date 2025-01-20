@@ -32,7 +32,7 @@ XTAL_DEF_(short)
 XTAL_LET cut_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return cut_t<M_stop_, M_side>::template function<Ns...>(XTAL_REF_(o));
+	return cut_t<M_stop_, M_side>::template static_method<Ns...>(XTAL_REF_(o));
 }
 
 
@@ -121,7 +121,7 @@ struct cut
 
 		template <auto ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto o)
+		XTAL_LET static_method(auto o)
 		noexcept -> auto
 		{
 			(void) edit(o); return o;

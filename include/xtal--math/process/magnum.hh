@@ -26,14 +26,14 @@ struct magnum
 
 		template <int ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(_std::unsigned_integral auto const &o)
+		XTAL_LET static_method(_std::unsigned_integral auto const &o)
 		noexcept -> auto
 		{
 			return o;
 		}
 		template <int ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(_std::  signed_integral auto const &o)
+		XTAL_LET static_method(_std::  signed_integral auto const &o)
 		noexcept -> auto
 		{
 			using _fix = bond::fixture<decltype(o)>;
@@ -42,7 +42,7 @@ struct magnum
 		}
 		template <int ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(real_variable_q auto const &o)
+		XTAL_LET static_method(real_variable_q auto const &o)
 		noexcept -> auto
 		{
 			using _fix = bond::fixture<decltype(o)>;
@@ -50,7 +50,7 @@ struct magnum
 		}
 		template <int ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(complex_variable_q auto const &o)
+		XTAL_LET static_method(complex_variable_q auto const &o)
 		noexcept -> auto
 		{
 			using _fix = bond::fixture<decltype(o)>;
@@ -92,8 +92,8 @@ XTAL_LET magnum_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
 	//\
-	return magnum_t<Ms...>::function(XTAL_REF_(oo)...);
-	return magnum_t<>::template function<Ns...>(XTAL_REF_(oo)...);
+	return magnum_t<Ms...>::static_method(XTAL_REF_(oo)...);
+	return magnum_t<>::template static_method<Ns...>(XTAL_REF_(oo)...);
 }
 
 

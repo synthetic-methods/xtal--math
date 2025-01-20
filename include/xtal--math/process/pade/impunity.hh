@@ -22,7 +22,7 @@ XTAL_DEF_(short)
 XTAL_LET impunity_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return impunity_t<M_ism>::template function<Ns...>(XTAL_REF_(o));
+	return impunity_t<M_ism>::template static_method<Ns...>(XTAL_REF_(o));
 }
 
 
@@ -51,7 +51,7 @@ struct impunity<M_ism,-2>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(long,static)
-		XTAL_LET function(simplex_field_q auto const &o)
+		XTAL_LET static_method(simplex_field_q auto const &o)
 		noexcept -> decltype(auto)
 		{
 			using X = XTAL_ALL_(o); using _fix = bond::fixture<X>;
@@ -170,7 +170,7 @@ struct impunity<M_ism,-2>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(long,static)
-		XTAL_LET function(simplex_field_q auto o)
+		XTAL_LET static_method(simplex_field_q auto o)
 		noexcept -> auto
 		{
 			using    _fix = bond::fixture<decltype(o)>;

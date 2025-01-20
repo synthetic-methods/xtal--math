@@ -64,7 +64,7 @@ struct square
 
 		template <auto ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto &&...xs)
+		XTAL_LET static_method(auto &&...xs)
 		noexcept -> decltype(auto)
 		{
 			return square_f<Ns...>(XTAL_REF_(xs)...);

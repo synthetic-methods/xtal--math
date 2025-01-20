@@ -18,7 +18,7 @@ XTAL_DEF_(short)
 XTAL_LET wrap_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return wrap_t<As...>::function(XTAL_REF_(o));
+	return wrap_t<As...>::static_method(XTAL_REF_(o));
 };
 
 
@@ -41,29 +41,29 @@ struct wrap<As...>
 
 		template <auto ...>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto &&o)
+		XTAL_LET static_method(auto &&o)
 		noexcept -> auto
 		{
 			return o - round(o);
 		}
 		template <auto ...>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(arrange::math::phason_q auto &&t_)
+		XTAL_LET static_method(arrange::math::phason_q auto &&t_)
 		noexcept -> decltype(auto)
 		{
 			return XTAL_REF_(t_);
 		}
 		template <auto ...>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(complex_field_q auto &&o)
+		XTAL_LET static_method(complex_field_q auto &&o)
 		noexcept -> decltype(auto)
 		{
 			if constexpr (complex_variable_q<decltype(o)>) {
 				auto &xy = destruct_f(o);
-				return complexion_f(function(xy[0]), function(xy[1]));
+				return complexion_f(static_method(xy[0]), static_method(xy[1]));
 			}
 			else {
-				return complexion_f(function(o.real()), function(o.imag()));
+				return complexion_f(static_method(o.real()), static_method(o.imag()));
 			}
 		}
 

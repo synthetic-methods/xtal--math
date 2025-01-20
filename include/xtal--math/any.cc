@@ -20,7 +20,7 @@ noexcept -> decltype(auto)
 XTAL_DEF_(inline)
 XTAL_LET injective_f(auto &&o)
 noexcept -> decltype(auto)
-	requires XTAL_TRY_(o.real(); o.imag())
+requires requires {o.real(); o.imag();}
 {
 	return _std::make_pair(objective_f(o.real()), objective_f(o.imag()));
 }
@@ -50,7 +50,7 @@ struct complexion
 	XTAL_DEF_(short,friend)
 	XTAL_LET operator/ (T const &t, source_type const &s)
 	noexcept -> target_type
-		requires (not XTAL_TRY_(t.real();t.imag()))
+	requires un_n<requires {t.real(); t.imag();}>
 	{
 		auto const [s_re, s_im] = injective_f(s);
 		auto const s_abs = t/(s_re*s_re + s_im*s_im);
@@ -65,7 +65,7 @@ struct complexion
 	XTAL_DEF_(short,friend)
 	XTAL_LET operator/ (source_type const &s, target_type const &t)
 	noexcept -> target_type
-		requires un_n<isotropic_q<source_type, target_type>>
+	requires un_n<isotropic_q<source_type, target_type>>
 	{
 		return s*(one/t);
 	}
@@ -88,7 +88,7 @@ struct complexion
 	XTAL_DEF_(short,friend)
 	XTAL_LET operator* (source_type const &s, target_type const &t)
 	noexcept -> target_type
-		requires un_n<isotropic_q<source_type, target_type>>
+	requires un_n<isotropic_q<source_type, target_type>>
 	{
 		auto const [s_re, s_im] = injective_f(s);
 		auto const [t_re, t_im] = injective_f(t);
@@ -98,7 +98,7 @@ struct complexion
 	XTAL_DEF_(short,friend)
 	XTAL_LET operator* (source_type const &s, T const &t)
 	noexcept -> target_type
-		requires XTAL_TRY_(t.real()*t.imag())
+	requires in_n<requires {t.real()*t.imag();}>
 	{
 		auto const [s_re, s_im] = injective_f(s);
 		auto const [t_re, t_im] = injective_f(t);
@@ -109,7 +109,7 @@ struct complexion
 	XTAL_DEF_(short,friend)
 	XTAL_LET operator* (source_type const &s, T const &t)
 	noexcept -> target_type
-		requires (not XTAL_TRY_(t.real();t.imag()))
+	requires un_n<requires {t.real()*t.imag();}>
 	{
 		return {s.re*t, s.im*t};
 	}
@@ -134,7 +134,7 @@ struct complexion
 	XTAL_DEF_(short,friend)
 	XTAL_LET operator+ (source_type const &s, target_type const &t)
 	noexcept -> target_type
-		requires un_n<isotropic_q<source_type, target_type>>
+	requires un_n<isotropic_q<source_type, target_type>>
 	{
 		auto const [s_re, s_im] = reinterpret_cast<value_type const(&)[2]>(s);
 		auto const [t_re, t_im] = reinterpret_cast<valve_type const(&)[2]>(t);
@@ -144,7 +144,7 @@ struct complexion
 	XTAL_DEF_(short,friend)
 	XTAL_LET operator+ (source_type const &s, T const &t)
 	noexcept -> target_type
-		requires XTAL_TRY_(t.real() + t.imag())
+	requires in_n<requires {t.real() + t.imag();}>
 	{
 		auto const [s_re, s_im] = reinterpret_cast<value_type const(&)[2]>(s);
 		auto const [t_re, t_im] = injective_f(t);
@@ -155,7 +155,7 @@ struct complexion
 	XTAL_DEF_(short,friend)
 	XTAL_LET operator+ (source_type const &s, T const &t)
 	noexcept -> target_type
-		requires (not XTAL_TRY_(t.real() + t.imag()))
+	requires un_n<requires {t.real() + t.imag();}>
 	{
 		return {s.re+t, s.im};
 	}

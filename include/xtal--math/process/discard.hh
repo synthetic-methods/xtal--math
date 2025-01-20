@@ -34,7 +34,7 @@ struct discard
 
 		template <int N_car=0>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto const &x)
+		XTAL_LET static_method(auto const &x)
 		noexcept -> auto
 		{
 			auto constexpr m_car = M_car&1;
@@ -46,7 +46,7 @@ struct discard
 		}
 		template <int N_car=0>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto const &x, auto const &z)
+		XTAL_LET static_method(auto const &x, auto const &z)
 		noexcept -> XTAL_ALL_(x)
 		{
 			auto constexpr m_car = M_car&1;

@@ -18,7 +18,7 @@ XTAL_DEF_(short)
 XTAL_LET roots_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return roots_t<M_exp, M_cut>::function(XTAL_REF_(o));
+	return roots_t<M_exp, M_cut>::static_method(XTAL_REF_(o));
 }
 
 
@@ -38,7 +38,7 @@ struct roots
 
 		template <auto ...Ns>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto &&w)
+		XTAL_LET static_method(auto &&w)
 		noexcept -> auto
 		{
 			using    _fix = bond::fixture<XTAL_ALL_(w)>;

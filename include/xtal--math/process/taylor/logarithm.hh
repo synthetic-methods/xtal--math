@@ -22,7 +22,7 @@ XTAL_DEF_(short)
 XTAL_LET logarithm_f(auto &&o, constant_q auto ...oo)
 noexcept -> decltype(auto)
 {
-	return logarithm_t<Ms...>::template function<oo...>(XTAL_REF_(o));
+	return logarithm_t<Ms...>::template static_method<oo...>(XTAL_REF_(o));
 }
 
 
@@ -45,25 +45,25 @@ struct logarithm< 1, 0>
 
 		template <int N_lim=0>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto &&o)
+		XTAL_LET static_method(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim)                 {return dysfunction<N_lim>(XTAL_REF_(o));}
-			XTAL_0IF_(consteval)                  {return dysfunction<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim)                   {return approximate<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)                    {return approximate<   ~0>(XTAL_REF_(o));}
 #if XTAL_SYS_(builtin)
 			XTAL_0IF (real_variable_q<decltype(o)>) {return      __builtin_log(XTAL_REF_(o));}
 #endif
-			XTAL_0IF_(else)                       {return                log(XTAL_REF_(o));}
+			XTAL_0IF_(else)                         {return                log(XTAL_REF_(o));}
 		}
 
 	protected:
 		template <int N_lim=0>
 		XTAL_DEF_(short,static)
-		XTAL_LET dysfunction(auto o)
+		XTAL_LET approximate(auto o)
 		noexcept -> decltype(auto)
 		{
-			return superprocess::template function<N_lim>(roots_f<2>(XTAL_MOV_(o)).template sum<-1>());
+			return superprocess::template static_method<N_lim>(roots_f<2>(XTAL_MOV_(o)).template sum<-1>());
 		}
 
 	};
@@ -87,12 +87,12 @@ struct logarithm<-1, 0>
 
 		template <int N_lim=0>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto &&o)
+		XTAL_LET static_method(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim)                 {return dysfunction<N_lim>(XTAL_REF_(o));}
-			XTAL_0IF_(consteval)                  {return dysfunction<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim)                 {return approximate<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)                  {return approximate<   ~0>(XTAL_REF_(o));}
 #if XTAL_SYS_(builtin)
 			XTAL_0IF (real_variable_q<decltype(o)>) {return      __builtin_exp(XTAL_REF_(o));}
 #endif
@@ -102,7 +102,7 @@ struct logarithm<-1, 0>
 	protected:
 		template <int N_lim=0>
 		XTAL_DEF_(short,static)
-		XTAL_LET dysfunction(auto &&o)
+		XTAL_LET approximate(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			using _fix = bond::fixture<decltype(o)>;
@@ -114,9 +114,9 @@ struct logarithm<-1, 0>
 			else {
 				/**/
 				auto constexpr N = below_m<0x10, (unsigned) N_lim> << 2;
-				return square_f<N>(function<0>(XTAL_REF_(o)*_fix::haplo_f(N)));
+				return square_f<N>(static_method<0>(XTAL_REF_(o)*_fix::haplo_f(N)));
 				/*/
-				return monologarithm_t<-1>::template function<N_lim>(XTAL_REF_(o)) + one;
+				return monologarithm_t<-1>::template static_method<N_lim>(XTAL_REF_(o)) + one;
 				/***/
 			}
 		}
@@ -142,19 +142,19 @@ struct logarithm< 1, 1>
 
 		template <int N_lim=0>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto &&o)
+		XTAL_LET static_method(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim) {return dysfunction<N_lim>(XTAL_REF_(o));}
-			XTAL_0IF_(consteval)  {return dysfunction<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim) {return approximate<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)  {return approximate<   ~0>(XTAL_REF_(o));}
 			XTAL_0IF_(else)       {return                log(XTAL_REF_(o));}
 		}
 
 	protected:
 		template <int N_lim=0>
 		XTAL_DEF_(long,static)
-		XTAL_LET dysfunction(real_variable_q auto o)
+		XTAL_LET approximate(real_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _fix = bond::fixture<decltype(o)>;
@@ -181,11 +181,11 @@ struct logarithm< 1, 1>
 			auto const w    = w1 *  _xtd::bit_cast<U_alpha>(XTAL_MOV_(m));
 			auto const u    = u1 *     static_cast<U_alpha>(XTAL_MOV_(n));
 
-			return logarithm_t<1>::template function<N_lim>(XTAL_MOV_(w)) + XTAL_MOV_(u);
+			return logarithm_t<1>::template static_method<N_lim>(XTAL_MOV_(w)) + XTAL_MOV_(u);
 		}
 		template <int N_lim=0>
 		XTAL_DEF_(long,static)
-		XTAL_LET dysfunction(complex_variable_q auto o)
+		XTAL_LET approximate(complex_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _fix = bond::fixture<decltype(o)>;
@@ -197,8 +197,8 @@ struct logarithm< 1, 1>
 			auto const w_re = square_f(u_re);
 			auto const w_im = square_f(u_im);
 
-			auto const y_re = _fix::haplo_1*dysfunction<N_lim>(w_re + w_im);
-			auto const y_im = pade::tangy_t<-1, 1>::template function<N_lim>(u_im, u_re)*_fix::patio_1;
+			auto const y_re = _fix::haplo_1*approximate<N_lim>(w_re + w_im);
+			auto const y_im = pade::tangy_t<-1, 1>::template static_method<N_lim>(u_im, u_re)*_fix::patio_1;
 			return {y_re, y_im};
 		}
 
@@ -222,19 +222,19 @@ struct logarithm<-1, 1>
 
 		template <int N_lim=0>
 		XTAL_DEF_(short,static)
-		XTAL_LET function(auto &&o)
+		XTAL_LET static_method(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim) {return dysfunction<N_lim>(XTAL_REF_(o));}
-			XTAL_0IF_(consteval)  {return dysfunction<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim) {return approximate<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)  {return approximate<   ~0>(XTAL_REF_(o));}
 			XTAL_0IF_(else)       {return                exp(XTAL_REF_(o));}
 		}
 
 	protected:
 		template <int N_lim=0>
 		XTAL_DEF_(short,static)
-		XTAL_LET dysfunction(real_variable_q auto o)
+		XTAL_LET approximate(real_variable_q auto o)
 		noexcept -> decltype(auto)
 		{
 			using _fix = bond::fixture<decltype(o)>;
@@ -243,7 +243,7 @@ struct logarithm<-1, 1>
 			U_alpha constexpr N_log2 = _std::numbers::ln2_v<U_alpha>;
 			o *= one/N_log2; auto const n = round(o); o -= n;
 			o *=     N_log2;
-			return ldexp(logarithm_t<-1>::template function<N_lim>(XTAL_MOV_(o)), XTAL_MOV_(n));
+			return ldexp(logarithm_t<-1>::template static_method<N_lim>(XTAL_MOV_(o)), XTAL_MOV_(n));
 		}
 
 	};
