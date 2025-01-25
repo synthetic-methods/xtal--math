@@ -11,14 +11,15 @@ namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <typename ...As>
-struct prewarped;
+template <class ...As> struct   prewarped;
+template <class ...As> using    prewarped_t = confined_t<prewarped<As...>>;
+template <class ..._s> concept  prewarped_q = bond::tag_p<prewarped, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename ...As>
-struct prewarped
+template <constant_q I, typename ...As>
+struct prewarped<I, As...>
 {
 	using superkind = bond::compose<As..., bond::tag<prewarped>>;
 
@@ -32,14 +33,21 @@ struct prewarped
 
 		template <auto ...Ns>
 		XTAL_DEF_(short)
-		XTAL_LET method(auto &&u, real_variable_q auto &&f, auto &&...oo)
+		XTAL_LET method(auto ...oo)
 		noexcept -> decltype(auto)
 		{
-			auto const g = pade::tangy_t<1>::template static_method<2>(S_::sample().period()*XTAL_REF_(f));
-			return S_::template method<Ns...>(XTAL_REF_(u), g, XTAL_REF_(oo)...);
+			auto &o = get<I{}>(_std::tie(oo...));
+			o *= S_::sample().period();
+			o *= pade::tangy_t<1,-1>::template static_method<6>(o);
+			return S_::template method<Ns...>(XTAL_MOV_(oo)...);
 		};
 
 	};
+};
+template <variable_q I, typename ...As>
+struct prewarped<I, As...>
+:	prewarped<constant_t<0>, As...>
+{
 };
 
 

@@ -250,6 +250,46 @@ noexcept -> int
 
 
 ////////////////////////////////////////////////////////////////////////////////
+
+
+arrange::block_t<_std::string[2][4]> const plot_hole{{"─", "┴", " ", "┬"}, {"│", "╷", " ", "╵"}};
+
+template <int N, int I>
+auto plot_f(int const i)
+{
+	int constexpr Z = sizeof(int) << 2;
+
+	int constexpr I_pos = 0 <  I, I_neg = I < 0, I_non = I_pos or I_neg;
+	int const     i_pos = 0 <  i, i_neg = i < 0, i_non = i_pos or i_neg;
+	int constexpr I_sgn = I >> Z, I_abs = (I^I_sgn) - (I_sgn);
+	int const     i_sgn = i >> Z, i_abs = (i^i_sgn) - (i_sgn);
+
+	int v = i_sgn + i_pos;
+	int u = i_sgn == I_sgn and I_abs <= i_abs? 0b00: 0b10;
+
+	v &= -!I_non >> Z;
+	v += u*I_non;
+	return plot_hole[I_non][v&0b11];
+}
+template <int N, int I>
+auto plot_f(double i)
+{
+	return plot_f<N, I>(static_cast<int>(round(i)));
+}
+template <int N, int M=N - 1>
+void plot(iterated_q auto const o)
+{
+	int constexpr L = N*2 + 1;
+	bond::seek_backward_f<L>([&] (auto i) XTAL_0FN {
+		for (auto &&e:o) {
+			_std::cout << plot_f<N, i - N>(M*e);
+		};
+		_std::cout << _std::endl;
+	});
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 /*/
 TAG_("any")
 {

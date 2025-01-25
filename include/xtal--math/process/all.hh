@@ -16,6 +16,7 @@
 #include "./nearing.hh"
 #include "./phasor.hh"
 #include "./power.hh"
+#include "./rate.hh"
 #include "./root.hh"
 #include "./roots.hh"
 #include "./signum.hh"

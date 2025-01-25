@@ -56,6 +56,7 @@ TAG_("tangy")
 		TRUE_(check_f<-1>(tangy_t<-1, 1>::template static_method<-1>(0.000), tangy_t<-1, 1>::template static_method< 1>(0.000)));
 		TRUE_(check_f<-1>(tangy_t<-1, 1>::template static_method<-1>(0.000), tangy_t<-1, 1>::template static_method< 0>(0.000)));
 #endif
+
 	};
 	/***/
 	/**/

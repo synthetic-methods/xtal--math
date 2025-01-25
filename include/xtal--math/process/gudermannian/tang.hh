@@ -24,21 +24,20 @@ The (co)domain is normalized around `+/- 1/2`, with derivative `1` at `0`. \
 	using   Tanh = process::confined_t<dilated<2>, tang< 2>>;\
 	using ArTanh = process::confined_t<dilated<2>, tang<-2>>;\
 
-template <int M_ism=1, int M_car=0, typename ...As>
-	requires in_n<M_ism, 1, 2, -1, -2> and in_n<M_car, -0, -1, -2>
+template <int M_ism=1, int M_car=0, typename ...As> requires in_n<M_ism, 1, 2, -1, -2> and in_n<M_car, -0, -1, -2>
 struct   tang
 :	process::lift<tang<M_ism, M_car>, bond::compose<As...>>
 {
 };
-template <int M_ism=1, typename ...As>
-using    tang_t = process::confined_t<tang<M_ism, bond::seek_constant_n<As..., constant_t<0>>, As...>>;
+template <int M_ism=1, int M_car=0, typename ...As>
+using    tang_t = process::confined_t<tang<M_ism, M_car>, As...>;
 
-template <int M_ism=1, typename ...As>
+template <int M_ism=1, int M_car=0, typename ...As>
 XTAL_DEF_(short)
 XTAL_LET tang_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return tang_t<M_ism, As...>::static_method(XTAL_REF_(o));
+	return tang_t<M_ism, M_car, As...>::static_method(XTAL_REF_(o));
 }
 
 

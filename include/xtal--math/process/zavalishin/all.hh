@@ -1,5 +1,5 @@
 #include "./any.hh"
 #include "./differ.hh"
 #include "./filter.hh"
-#include "./filtering.hh"
+#include "./ring.hh"
 #include "./prewarped.hh"

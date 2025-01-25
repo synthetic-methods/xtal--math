@@ -16,6 +16,7 @@
 #include "./nearing.cc"
 #include "./phasor.cc"
 #include "./power.cc"
+#include "./rate.cc"
 #include "./root.cc"
 #include "./roots.cc"
 #include "./signum.cc"
