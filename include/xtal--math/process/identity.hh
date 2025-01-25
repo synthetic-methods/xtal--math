@@ -31,8 +31,8 @@ struct identity
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&...oo)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&...oo)
 		noexcept -> decltype(auto)
 		{
 			return S_::template static_method<Ns...>(XTAL_REF_(oo)...);

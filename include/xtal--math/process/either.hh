@@ -18,8 +18,8 @@ template <int M_side=0>
 using    either_t = process::confined_t<either<M_side>>;
 
 template <int M_side=0, auto ...Ns>
-XTAL_DEF_(short)
-XTAL_LET either_f(auto &&...oo)
+XTAL_DEF_(return,inline,let)
+either_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
 	return either_t<M_side>::template static_method<Ns...>(XTAL_REF_(oo)...);
@@ -41,15 +41,15 @@ struct either
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto const &x)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto const &x)
 		noexcept -> auto
 		{
 			return static_method<Ns...>(x, XTAL_ALL_(x){});
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto const &x, auto const &y)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto const &x, auto const &y)
 		noexcept -> auto
 		{
 			XTAL_IF0

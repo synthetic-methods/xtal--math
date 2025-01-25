@@ -49,31 +49,31 @@ struct differ<U_pole[N_pole]>
 	public:// FUNC*
 
 		template <int N_ord=1> requires un_n<N_ord, 1>
-		XTAL_DEF_(short)
-		XTAL_LET method(auto const &u, auto &&...oo)
+		XTAL_DEF_(return,inline,let)
+		method(auto const &u, auto &&...oo)
 		noexcept -> auto
 		{
 			return u;
 		}
 		template <int N_ord=1> requires in_n<N_ord, 1>
-		XTAL_DEF_(short)
-		XTAL_LET method(auto const &u)
+		XTAL_DEF_(return,inline,let)
+		method(auto const &u)
 		noexcept -> auto
 		{
 			auto [u_] = S_::cache(u);
 			return (u - u_);
 		}
 		template <int N_ord=1> requires in_n<N_ord, 1>
-		XTAL_DEF_(short)
-		XTAL_LET method(auto const &u, arrange::math::phason_q auto const &t_)
+		XTAL_DEF_(return,inline,let)
+		method(auto const &u, arrange::math::phason_q auto const &t_)
 		noexcept -> auto
 		{
 			auto [u_] = S_::cache(u);
 			return (u - u_)*root_f<-1>(t_(1));
 		}
 		template <int N_ord=1> requires in_n<N_ord, 1>
-		XTAL_DEF_(short)
-		XTAL_LET method(auto const &u, auto const &v, arrange::math::phason_q auto const &t_)
+		XTAL_DEF_(return,inline,let)
+		method(auto const &u, auto const &v, arrange::math::phason_q auto const &t_)
 		noexcept -> auto
 		{
 			auto [u_, v_] = S_::cache(u, v);

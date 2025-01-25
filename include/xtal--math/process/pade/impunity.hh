@@ -18,8 +18,8 @@ template <int M_ism=1, int M_car=0> struct   impunity;
 template <int M_ism=1, int M_car=0> using    impunity_t = process::confined_t<impunity<M_ism, M_car>>;
 
 template <int M_ism=1, auto ...Ns>
-XTAL_DEF_(short)
-XTAL_LET impunity_f(auto &&o)
+XTAL_DEF_(return,inline,let)
+impunity_f(auto &&o)
 noexcept -> decltype(auto)
 {
 	return impunity_t<M_ism>::template static_method<Ns...>(XTAL_REF_(o));
@@ -50,8 +50,8 @@ struct impunity<M_ism,-2>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(long,static)
-		XTAL_LET static_method(simplex_field_q auto const &o)
+		XTAL_DEF_(return,set)
+		static_method(simplex_field_q auto const &o)
 		noexcept -> decltype(auto)
 		{
 			using X = XTAL_ALL_(o); using _fix = bond::fixture<X>;
@@ -170,12 +170,12 @@ struct impunity<M_ism,-2>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(long,static)
-		XTAL_LET static_method(simplex_field_q auto o)
+		XTAL_DEF_(return,set)
+		static_method(simplex_field_q auto o)
 		noexcept -> auto
 		{
-			using    _fix = bond::fixture<decltype(o)>;
-			XTAL_LET _dn = one/_fix::patio_1;
+			using          _fix = bond::fixture<decltype(o)>;
+			auto constexpr _dn  = one/_fix::patio_1;
 			
 			using U_aphex = typename _fix::aphex_type;
 			using U_alpha = typename _fix::alpha_type;
@@ -301,8 +301,8 @@ struct impunity<M_ism,-2>
 			}
 			XTAL_0IF_(else) {
 				auto [d, q] = roots_f<2, 1>(o);
-				(void) cut_t<XTAL_VAL_(-_fix::maxilon_1)>::edit(d);
-				(void) cut_t<XTAL_VAL_(-_fix::maxilon_1)>::edit(q);
+				(void) cut_t<[] XTAL_0FN_(value) (-_fix::maxilon_1)>::static_edit(d);
+				(void) cut_t<[] XTAL_0FN_(value) (-_fix::maxilon_1)>::static_edit(q);
 				XTAL_IF0
 				XTAL_0IF (M_ism == -1) {return complexion_f(_fix::alpha_1, _dn*q*atan (d));}
 				XTAL_0IF (M_ism == -2) {return complexion_f(_fix::alpha_1, _dn*q*atanh(d));}

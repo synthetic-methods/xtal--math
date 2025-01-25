@@ -14,11 +14,11 @@ namespace xtal::process::math
 ////////////////////////////////////////////////////////////////////////////////
 
 template <auto N>
-XTAL_DEF_(short)
-XTAL_SET factorial_f()
+XTAL_DEF_(return,inline,let)
+factorial_f()
 noexcept -> auto
 {
-	XTAL_LET N_depth = sizeof(N) << 3;
+	auto constexpr N_depth = sizeof(N) << 3;
 	XTAL_IF0
 	XTAL_0IF (N_depth == 0x80) {static_assert(N <= 34);}
 	XTAL_0IF (N_depth == 0x40) {static_assert(N <= 20);}
@@ -28,15 +28,15 @@ noexcept -> auto
 	XTAL_0IF (2 <= N) {return N*factorial_f<N - 1>();}
 }
 template <integral_constant_q U>
-XTAL_DEF_(short)
-XTAL_SET factorial_f(U o)
+XTAL_DEF_(return,inline,let)
+factorial_f(U o)
 noexcept -> auto
 {
-	return constant_t<factorial_f<U::value>()>{};
+	return constant_n<factorial_f<U::value>()>;
 }
 template <integral_variable_q U>
-XTAL_DEF_(short)
-XTAL_SET factorial_f(U o)
+XTAL_DEF_(return,inline,let)
+factorial_f(U o)
 noexcept -> auto
 {
 	auto n{o}; while (--o) n *= o; return n;
@@ -66,15 +66,15 @@ struct   factorial
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(integral_variable_q auto &&o)
+		XTAL_DEF_(return,inline,set)
+		static_method(integral_variable_q auto &&o)
 		noexcept -> decltype(auto)
 		{
 			return factorial_f(XTAL_REF_(o));
 		}
 		template <auto ...>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(real_variable_q auto &&o)
+		XTAL_DEF_(return,inline,set)
+		static_method(real_variable_q auto &&o)
 		noexcept -> decltype(auto)
 		{
 			using U_fix = bond::fixture<decltype(o)>;

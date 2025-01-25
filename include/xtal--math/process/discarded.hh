@@ -34,7 +34,7 @@ struct discarded<0, M_aux>
 template <int M_aux>
 struct discarded<1, M_aux>
 {
-	XTAL_SET M_pow = sign_n<M_aux, 1>;
+	static int constexpr M_pow = sign_n<M_aux, 1>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -45,9 +45,9 @@ struct discarded<1, M_aux>
 		using S_::S_;
 
 	//	TODO: Account for `const &` and `&`, or find a cleaner way to express...
-		XTAL_DO2_(template <auto ...Is>
-		XTAL_DEF_(short)
-		XTAL_LET        method(auto &&u, auto &&...oo),
+		XTAL_FX2_(do) (template <auto ...Is>
+		XTAL_DEF_(return,inline,let)
+		method(auto &&u, auto &&...oo),
 		noexcept -> auto
 		{
 			auto  v = S_::template        method<Is...>(u, XTAL_REF_(oo)...);
@@ -57,9 +57,9 @@ struct discarded<1, M_aux>
 
 			return v*root_f<M_pow, 1>(XTAL_REF_(u));
 		})
-		XTAL_DO0_(template <auto ...Is>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&u, auto &&...oo),
+		template <auto ...Is>
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&u, auto &&...oo)
 		noexcept -> auto
 		{
 			auto  v = S_::template static_method<Is...>(u, XTAL_REF_(oo)...);
@@ -68,7 +68,7 @@ struct discarded<1, M_aux>
 			static_assert(same_q<U, V>);
 
 			return v*root_f<M_pow, 1>(XTAL_REF_(u));
-		})
+		}
 
 	};
 };
@@ -83,9 +83,9 @@ struct discarded<1>
 	public:
 		using S_::S_;
 
-		XTAL_DO2_(template <auto ...Is>
-		XTAL_DEF_(short)
-		XTAL_LET        method(auto &&u, auto &&...oo),
+		XTAL_FX2_(do) (template <auto ...Is>
+		XTAL_DEF_(return,inline,let)
+		method(auto &&u, auto &&...oo),
 		noexcept -> auto
 		{
 			auto  v = S_::template        method<Is...>(u, XTAL_REF_(oo)...);
@@ -103,9 +103,9 @@ struct discarded<1>
 				return complexion_f(v.real(), v.imag()*XTAL_REF_(u));
 			}
 		})
-		XTAL_DO0_(template <auto ...Is>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&u, auto &&...oo),
+		template <auto ...Is>
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&u, auto &&...oo)
 		noexcept -> auto
 		{
 			auto  v = S_::template static_method<Is...>(u, XTAL_REF_(oo)...);
@@ -122,7 +122,7 @@ struct discarded<1>
 			XTAL_0IF (complex_field_q<V>) {
 				return complexion_f(v.real(), v.imag()*XTAL_REF_(u));
 			}
-		})
+		}
 
 	};
 };
@@ -137,24 +137,24 @@ struct discarded<2, M_aux>
 	public:
 		using S_::S_;
 
-		XTAL_DO2_(template <auto ...Is>
-		XTAL_DEF_(short)
-		XTAL_LET        method(auto &&u, auto &&...oo),
+		XTAL_FX2_(do) (template <auto ...Is>
+		XTAL_DEF_(return,inline,let)
+		method(auto &&u, auto &&...oo),
 		noexcept -> decltype(auto)
 		{
 			using _fix = bond::fixture<decltype(u)>;
-			XTAL_LET v = _fix::alpha_f(sign_n<(M_aux&1)^1, -1>);
+			auto constexpr v = _fix::alpha_f(sign_n<(M_aux&1)^1, -1>);
 			return S_::template        method<Is...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
 		})
-		XTAL_DO0_(template <auto ...Is>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&u, auto &&...oo),
+		template <auto ...Is>
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&u, auto &&...oo)
 		noexcept -> decltype(auto)
 		{
 			using _fix = bond::fixture<decltype(u)>;
-			XTAL_LET v = _fix::alpha_f(sign_n<(M_aux&1)^1, -1>);
+			auto constexpr v = _fix::alpha_f(sign_n<(M_aux&1)^1, -1>);
 			return S_::template static_method<Is...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
-		})
+		}
 
 	};
 };

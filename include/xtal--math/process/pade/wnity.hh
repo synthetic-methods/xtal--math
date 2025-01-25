@@ -50,18 +50,18 @@ struct wnity<1> : wnity<>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(complex_field_q auto const &t)
+		XTAL_DEF_(return,inline,set)
+		static_method(complex_field_q auto const &t)
 		noexcept -> decltype(auto)
 		{
 			return static_method<N_lim>(t.real(), t.imag());
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&t_1, simplex_field_q auto &&t_i)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&t_1, simplex_field_q auto &&t_i)
 		noexcept -> decltype(auto)
 		{
-			auto constexpr exp = XTAL_FUN_(taylor::logarithm_t<-1, 1>::template static_method<2>);
+			auto constexpr exp = [] XTAL_0FN_(alias) (taylor::logarithm_t<-1, 1>::template static_method<2>);
 			using T_i = XTAL_ALL_(t_i); using _fix = bond::fixture<T_i>;
 
 			auto const o = static_method<N_lim>(XTAL_REF_(t_1));
@@ -69,8 +69,8 @@ struct wnity<1> : wnity<>
 			return o*roots_t<1>::static_method(e);
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(simplex_field_q auto &&t_1)
+		XTAL_DEF_(return,inline,set)
+		static_method(simplex_field_q auto &&t_1)
 		noexcept -> decltype(auto)
 		{
 			auto const o = objective_f(unity_t<1>::template static_method<N_lim>(XTAL_REF_(t_1)));

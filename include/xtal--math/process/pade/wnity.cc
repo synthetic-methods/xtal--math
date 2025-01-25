@@ -12,8 +12,8 @@ namespace xtal::process::math::pade::_test
 /////////////////////////////////////////////////////////////////////////////////
 
 template <int N_lim=0, int N_trim=0>
-XTAL_DEF_(return)
-XTAL_LET wnity_check_f(auto const &t)
+XTAL_DEF_(return,let)
+wnity_check_f(auto const &t)
 noexcept -> bool
 {
 	int constexpr N_inf = -1;

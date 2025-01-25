@@ -16,7 +16,7 @@ template <int M_ism=1, int N_car=0> using    sine_t = process::confined_t<sine<M
 
 template <int M_ism>
 struct sine<M_ism, +1>
-:	bond::compose<dilated<XTAL_VAL_(-bond::fixture<>::patio_2)>, sine<M_ism, -0>>
+:	bond::compose<dilated<[] XTAL_0FN_(value) (-bond::fixture<>::patio_2)>, sine<M_ism, -0>>
 {
 };
 template <int M_ism>
@@ -33,8 +33,8 @@ struct sine<M_ism, -0>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&o)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
@@ -62,8 +62,8 @@ struct sine<M_ism, -1>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&o)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
@@ -94,8 +94,8 @@ struct sine<M_ism, -2>
 
 	public:
 		template <int N_lim=-1>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&w)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&w)
 		noexcept -> auto
 		{
 			XTAL_IF0
@@ -114,19 +114,19 @@ struct sine<M_ism, -2>
 
 	protected:
 		template <int N_lim>
-		XTAL_DEF_(long,static)
-		XTAL_LET approximate(auto &&w)
+		XTAL_DEF_(return,set)
+		approximate(auto &&w)
 		noexcept -> auto
 		{
-			XTAL_LET N = 1 + 2*below_m<0x10, (unsigned) N_lim>;
+			auto constexpr N = 1 + 2*below_m<0x10, (unsigned) N_lim>;
 
 			using W = XTAL_ALL_(w); using _fix = bond::fixture<W>;
 			XTAL_IF0
 			XTAL_0IF (0 < M_ism) {
 				W x{one};
 
-				bond::seek_backward_f<N>([&] (auto i)
-					XTAL_0FN_(x = term_f(one
+				bond::seek_backward_f<N>([&] (auto i) XTAL_0FN_(return) (
+					x = term_f(one
 					,	+_fix::ratio_f(1, (2 + 2*i)*(3 + 2*i))
 					,	w
 					,	x
@@ -137,8 +137,8 @@ struct sine<M_ism, -2>
 			XTAL_0IF (M_ism < 0) {
 				W x = _fix::ratio_f(1, 1 + 2*N);
 
-				bond::seek_backward_f<N>([&] (auto i)
-					XTAL_0FN_(x = term_f(_fix::ratio_f(1, 1 + 2*i)
+				bond::seek_backward_f<N>([&] (auto i) XTAL_0FN_(return) (
+					x = term_f(_fix::ratio_f(1, 1 + 2*i)
 					,	-_fix::ratio_f(1 + 2*i, 2 + 2*i)
 					,	w
 					,	x

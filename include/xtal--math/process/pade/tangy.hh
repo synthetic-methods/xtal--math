@@ -50,8 +50,8 @@ struct tangy<M_ism,-0>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(simplex_field_q auto &&o)
+		XTAL_DEF_(return,inline,set)
+		static_method(simplex_field_q auto &&o)
 		noexcept -> auto
 		{
 			using _fix = bond::fixture<decltype(o)>;
@@ -93,15 +93,15 @@ struct tangy<M_ism, 1>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(simplex_field_q auto &&t)
+		XTAL_DEF_(return,inline,set)
+		static_method(simplex_field_q auto &&t)
 		noexcept -> decltype(auto)
 		{
 			return static_method<N_lim>(XTAL_REF_(t), absolve_u<decltype(t)>{one});
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(simplex_field_q auto &&v, simplex_field_q auto &&u)
+		XTAL_DEF_(return,inline,set)
+		static_method(simplex_field_q auto &&v, simplex_field_q auto &&u)
 		noexcept -> decltype(auto)
 		{
 			using _fix = bond::fixture<decltype(v), decltype(u)>;
@@ -109,8 +109,8 @@ struct tangy<M_ism, 1>
 			using U_alpha = typename _fix::alpha_type;
 			using W_alpha = arrange::collate_t<U_alpha[2]>;
 
-			auto u_abs = u, u_sgn = signum_t<>::edit(u_abs);
-			auto v_abs = v, v_sgn = signum_t<>::edit(v_abs);// v_sgn *= *_fix::haplo_1;
+			auto u_abs = u, u_sgn = signum_t<>::static_edit(u_abs);
+			auto v_abs = v, v_sgn = signum_t<>::static_edit(v_abs);// v_sgn *= *_fix::haplo_1;
 
 			W_alpha co(v_abs < u_abs);
 			W_alpha up{v, u_abs}; up *= co;
@@ -148,8 +148,8 @@ struct tangy<M_ism,-2>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(simplex_field_q auto &&o)
+		XTAL_DEF_(return,inline,set)
+		static_method(simplex_field_q auto &&o)
 		noexcept -> decltype(auto)
 		{
 			return rate_f<-1>(impunity_t<M_ism,-2>::template static_method<N_lim>(XTAL_REF_(o)));

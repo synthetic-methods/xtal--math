@@ -62,17 +62,17 @@ struct filter<U_pole[N_pole]>
 		using S_::S_;
 
 		template <signed N_ion>
-		XTAL_DEF_(short)
-		XTAL_LET fuse(auto &&o)
+		XTAL_DEF_(return,inline,let)
+		fuse(auto &&o)
 		noexcept -> signed
 		{
 			if constexpr (N_ion == +1) {
 				if constexpr (in_q<decltype(o), order_type, topology_type>) {
-					S_::cache(constant_t<0>{});
+					S_::cache(constant_n<0>);
 				}
 				if constexpr (occur::stage_q<decltype(o)>) {
 					if (o == 0) {
-						S_::cache(constant_t<0>{});
+						S_::cache(constant_n<0>);
 					}
 				}
 			}
@@ -80,8 +80,8 @@ struct filter<U_pole[N_pole]>
 		}
 
 		template <int N_sel=0, int N_ord=0, int N_top=0, auto ...Ns>
-		XTAL_DEF_(inline)
-		XTAL_LET method(auto &&x_input
+		XTAL_DEF_(inline,let)
+		method(auto &&x_input
 		,	absolve_u<decltype(x_input)> s_scale
 		,	absolve_u<decltype(x_input)> s_damping
 		,	absolve_u<decltype(x_input)> y_balance=0
@@ -111,11 +111,11 @@ struct filter<U_pole[N_pole]>
 					XTAL_0IF (4 == N_ord) {return {one, u04, w24, u04, one};}
 				}()};
 
-				(void) edit<N_ord, N_top, Ns...>(XTAL_REF_(x_input), s_scale, io);// io.scalars -> io.outputs
+				(void) static_edit<N_ord, N_top, Ns...>(XTAL_REF_(x_input), s_scale, io);// io.scalars -> io.outputs
 
-				XTAL_LET I_ =  static_cast<unsigned>(N_sel);
-				XTAL_LET I0 = _std::countr_one(I_ >>  0) +  0, J0 = I0 + 1;
-				XTAL_LET I1 = _std::countr_one(I_ >> J0) + J0, J1 = I1 + 1;
+				auto constexpr I_ =  static_cast<unsigned>(N_sel);
+				auto constexpr I0 = _std::countr_one(I_ >>  0) +  0, J0 = I0 + 1;
+				auto constexpr I1 = _std::countr_one(I_ >> J0) + J0, J1 = I1 + 1;
 				W const &y1 = y_balance;
 				//\
 				W const  y0 = one;
@@ -127,8 +127,8 @@ struct filter<U_pole[N_pole]>
 			}
 		}
 		template <int N_ord=0, int N_top=0, int N_lim=0, auto ...Ns> requires (1 <= N_ord and N_top == 0)
-		XTAL_DEF_(inline)
-		XTAL_LET edit(auto const &x_input
+		XTAL_DEF_(inline,let)
+		static_edit(auto const &x_input
 		,	absolve_u<decltype(x_input)> s_scale
 		,	auto &io
 		)
@@ -141,8 +141,8 @@ struct filter<U_pole[N_pole]>
 			using U_outputs_ = arrange::collate_t<X[N_ord]>;
 			using U_poles_   = arrange::collate_t<X[N_ord]>;
 
-			auto  scalars = io.scalars; auto scalars_ = scalars.self(constant_t<N_ord>{});
-			auto &outputs = io.outputs; auto outputs_ = outputs.self(constant_t<N_ord>{});
+			auto  scalars = io.scalars; auto scalars_ = scalars.self(constant_n<N_ord>);
+			auto &outputs = io.outputs; auto outputs_ = outputs.self(constant_n<N_ord>);
 
 			auto  cachet  = S_::template cache<U_poles_, U_poles_>();
 			auto &states_ = get<0>(cachet);
@@ -159,7 +159,7 @@ struct filter<U_pole[N_pole]>
 			});
 			get<N_ord>(outputs) = root_f<-1, (1)>(term_f(one, get<N_ord - 1>(outputs_), s_scale));
 
-			XTAL_LET K_lim = provision::shaper_q<S_> and above_p<0, N_lim>;
+			auto constexpr K_lim = provision::shaper_q<S_> and above_p<0, N_lim>;
 
 		//	Integrate `states*` with `scalars*` and `outputs*`:
 			bond::seek_forward_f<1 + 1*K_lim>([&] (auto K) XTAL_0FN {

@@ -22,8 +22,8 @@ so avoid invoking `static_method<N_ord>` when `in_n<M_car, 1, 0,-2>`. \
 template <int M_ism=1, int M_car=0> struct   polynomial;
 template <int M_ism=1, int M_car=0> using    polynomial_t = process::confined_t<polynomial<M_ism, M_car>>;
 template <int M_ism=1, int M_car=0, int M_ord=1>
-XTAL_DEF_(short)
-XTAL_LET polynomial_f(auto &&o)
+XTAL_DEF_(return,inline,let)
+polynomial_f(auto &&o)
 noexcept -> decltype(auto)
 {
 	return polynomial_t<M_ism, M_car>::template static_method<M_ord>(XTAL_REF_(o));
@@ -59,8 +59,8 @@ struct polynomial<M_ism,-0>
 		using S_::S_;
 
 		template <int N_ord=0>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&u)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&u)
 		noexcept -> decltype(auto)
 		{
 			using     _fix = bond::fixture<decltype(u)>;
@@ -99,7 +99,7 @@ struct polynomial<M_ism,-1>
 template <int M_ism>
 struct polynomial<M_ism,-2>
 {
-	XTAL_SET I_sgn = sign_n<(M_ism&1)^1, -1>;
+	static int constexpr I_sgn = sign_n<(M_ism&1)^1, -1>;
 
 	using superkind = polynomial<M_ism,-3>;
 
@@ -112,11 +112,11 @@ struct polynomial<M_ism,-2>
 		using S_::S_;
 
 		template <int N_ord=0>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto w)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto w)
 		noexcept -> decltype(auto)
 		{
-			XTAL_LET N_par = N_ord&1;
+			auto constexpr N_par = N_ord&1;
 
 			using _fix = bond::fixture<decltype(w)>;
 			w *= _fix::alpha_f(I_sgn);
@@ -126,8 +126,8 @@ struct polynomial<M_ism,-2>
 				return polynomial<M_ism, -0>::template static_method<N_ord>(u)/(u);
 			}
 			else {
-				XTAL_LET co_ = [] (auto num, auto nom)
-					XTAL_0FN_(_fix::ratio_f(num, nom*factorial_f<N_ord>())
+				auto constexpr co_ = [] (auto num, auto nom)
+					XTAL_0FN_(return) (_fix::ratio_f(num, nom*factorial_f<N_ord>())
 				);
 				XTAL_IF0
 				XTAL_0IF (1 == N_ord) {return                                                                  co_(1, 1);}
@@ -153,18 +153,18 @@ struct polynomial<M_ism,-3>
 		using S_::S_;
 
 		template <int N_ord=0>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto w)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto w)
 		noexcept -> decltype(auto)
 		{
-			XTAL_LET N_par = N_ord&1;
+			auto constexpr N_par = N_ord&1;
 			static_assert(1 == N_par);
 			static_assert(3 <= N_ord);
 
 			using _fix = bond::fixture<decltype(w)>;
 
-			XTAL_LET co_ = [] (auto num, auto nom)
-				XTAL_0FN_(_fix::ratio_f(num, nom*factorial_f<N_ord>())
+			auto constexpr co_ = [] (auto num, auto nom)
+				XTAL_0FN_(return) (_fix::ratio_f(num, nom*factorial_f<N_ord>())
 			);
 			XTAL_IF0
 			XTAL_0IF (3 == N_ord) {return termial_f(XTAL_MOV_(w),                          co_(1, 1));}

@@ -26,17 +26,17 @@ struct dilated;
 template <auto M_val>
 struct dilated
 {
-	XTAL_SET N_val = constant_t<M_val>{};
+	static auto constexpr N_val = constant_n<M_val>;
 
 	template <auto f>
-	XTAL_DEF_(short,static)
-	XTAL_LET around_f(auto &&o)
+	XTAL_DEF_(return,inline,set)
+	around_f(auto &&o)
 	noexcept -> decltype(auto)
 	{
 		using _fix = bond::fixture<decltype(o)>;
-		XTAL_LET n_val =   _fix::alpha_f(N_val);
-		XTAL_LET u     =       magnum_f(n_val);
-		XTAL_LET v     = (int) signum_f(n_val);
+		auto constexpr n_val =   _fix::alpha_f(N_val);
+		auto constexpr u     =       magnum_f(n_val);
+		auto constexpr v     = (int) signum_f(n_val);
 		return f(XTAL_REF_(o)*root_f<-v>(u))*root_f<+v>(u);
 	};
 
@@ -49,31 +49,31 @@ struct dilated
 		using S_::S_;
 
 		template <auto ...Is>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&o)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&o)
 		noexcept -> decltype(auto)
 		requires      in_n<requires {S ::template static_method<Is...>  (XTAL_REF_(o));}>
 		{
-			return around_f<XTAL_FUN_(S_::template static_method<Is...>)>(XTAL_REF_(o));
+			return around_f<[] XTAL_0FN_(alias) (S_::template static_method<Is...>)>(XTAL_REF_(o));
 		};
 
 		template <auto ...Is>
-		XTAL_DEF_(short)
-		XTAL_LET method(auto &&o) const
+		XTAL_DEF_(return,inline,let)
+		method(auto &&o) const
 		noexcept -> decltype(auto)
 		requires      un_n<requires {S ::template static_method<Is...>  (XTAL_REF_(o));}>
 		and requires (S_ const &s_) {s_ .template        method<Is...>  (XTAL_REF_(o));}
 		{
-			return around_f<XTAL_FUN_(S_::template        method<Is...>)>(XTAL_REF_(o));
+			return around_f<[] XTAL_0FN_(alias) (S_::template        method<Is...>)>(XTAL_REF_(o));
 		};
 		template <auto ...Is>
-		XTAL_DEF_(short)
-		XTAL_LET method(auto &&o)
+		XTAL_DEF_(return,inline,let)
+		method(auto &&o)
 		noexcept -> decltype(auto)
 		requires      un_n<requires {S ::template static_method<Is...>  (XTAL_REF_(o));}>
 		and requires (S_       &s_) {s_ .template        method<Is...>  (XTAL_REF_(o));}
 		{
-			return around_f<XTAL_FUN_(S_::template        method<Is...>)>(XTAL_REF_(o));
+			return around_f<[] XTAL_0FN_(alias) (S_::template        method<Is...>)>(XTAL_REF_(o));
 		};
 
 	};

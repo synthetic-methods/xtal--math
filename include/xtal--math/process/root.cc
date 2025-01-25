@@ -24,14 +24,14 @@ TAG_("root")
 	auto mt19937_f = typename _fix::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
 
-	XTAL_LET M_1i_root2 = root_f< 2>(T_aphex{1, 1});
-	XTAL_LET M_i1_root2 = root_f<-2>(T_aphex{1, 1});
+	auto constexpr M_1i_root2 = root_f< 2>(T_aphex{1, 1});
+	auto constexpr M_i1_root2 = root_f<-2>(T_aphex{1, 1});
 
-	XTAL_LET N_zero_root2 = root_f< 2>(_fix::alpha_0);
-	XTAL_LET N_half_root2 = root_f<-2>(_fix::diplo_1);
-	XTAL_LET N_half_root3 = root_f<-3>(_fix::diplo_1);
-	XTAL_LET N_half_root4 = root_f<-4>(_fix::diplo_1);
-	XTAL_LET N_half_root5 = root_f<-5>(_fix::diplo_1);
+	auto constexpr N_zero_root2 = root_f< 2>(_fix::alpha_0);
+	auto constexpr N_half_root2 = root_f<-2>(_fix::diplo_1);
+	auto constexpr N_half_root3 = root_f<-3>(_fix::diplo_1);
+	auto constexpr N_half_root4 = root_f<-4>(_fix::diplo_1);
+	auto constexpr N_half_root5 = root_f<-5>(_fix::diplo_1);
 
 	TRY_("evaluation")
 	{
