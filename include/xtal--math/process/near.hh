@@ -26,8 +26,8 @@ struct near
 
 		/*/
 		template <auto ...Ns>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(integral_variable_q auto n)
+		XTAL_DEF_(return,inline,set)
+		static_method(integral_variable_q auto n)
 		noexcept -> XTAL_ALL_(n)
 		{
 			using U = XTAL_ALL_(n);
@@ -40,8 +40,8 @@ struct near
 		}
 		/***/
 		template <auto ...Ns>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(real_variable_q auto u)
+		XTAL_DEF_(return,inline,set)
+		static_method(real_variable_q auto u)
 		noexcept -> XTAL_ALL_(u)
 		{
 			using U = XTAL_ALL_(u);
@@ -54,8 +54,8 @@ struct near
 			return _xtd::bit_cast<U_alpha>(_xtd::bit_cast<U_sigma>(u*N_half_sqrt)&N_mask);
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(complex_variable_q auto const &u)
+		XTAL_DEF_(return,inline,set)
+		static_method(complex_variable_q auto const &u)
 		noexcept -> XTAL_ALL_(u)
 		{
 			return {static_method<Ns...>(u.real()), static_method<Ns...>(u.imag())};
@@ -71,8 +71,8 @@ template <auto ...Ms>
 using    near_t = process::confined_t<near<Ms...>>;
 
 template <auto ...Ns>
-XTAL_DEF_(short)
-XTAL_LET near_f(auto &&...oo)
+XTAL_DEF_(return,inline,let)
+near_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
 	//\

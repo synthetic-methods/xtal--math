@@ -53,8 +53,8 @@ struct unity<M_ism> : unity<>
 		using S_::S_;
 
 		template <int N_lim=-1, class U>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(_std::initializer_list<U> o)
+		XTAL_DEF_(return,inline,set)
+		static_method(_std::initializer_list<U> o)
 		noexcept -> decltype(auto)
 		{
 			using _fix = bond::fixture<decltype(o)>;
@@ -63,25 +63,25 @@ struct unity<M_ism> : unity<>
 			return static_method<N_lim>(w);
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(complex_field_q auto const &t)
+		XTAL_DEF_(return,inline,set)
+		static_method(complex_field_q auto const &t)
 		noexcept -> decltype(auto)
 		{
 			return static_method<N_lim>(t.real(), t.imag());
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&t_re, simplex_field_q auto &&t_im)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&t_re, simplex_field_q auto &&t_im)
 		noexcept -> decltype(auto)
 		{
-			auto constexpr exp = XTAL_FUN_(taylor::logarithm_t<-1, 1>::template static_method<2>);
+			auto constexpr exp = [] XTAL_0FN_(alias) (taylor::logarithm_t<-1, 1>::template static_method<2>);
 			using U_fix = bond::fixture<decltype(t_re), decltype(t_im)>;
 			return static_method<N_lim>(XTAL_REF_(t_re))*exp(XTAL_REF_(t_im)*U_fix::patio_f(-2));
 		}
 
 		template <int N_lim=-1>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(simplex_field_q auto o)
+		XTAL_DEF_(return,inline,set)
+		static_method(simplex_field_q auto o)
 		noexcept -> decltype(auto)
 		{
 			using U       = XTAL_ALL_(o);
@@ -98,12 +98,12 @@ struct unity<M_ism> : unity<>
 				auto w = wrap_f(o);
 				auto m = objective_f(wrap_f(w*U_fix::diplo_1)*U_fix::haplo_1);
 				return superprocess::template static_method<N_lim>(m)*
-					operative_f<XTAL_FUN_(U_alpha)>(((m == w) << 1) - 1);
+					operative_f<[] XTAL_0FN_(alias) (U_alpha)>(((m == w) << 1) - 1);
 			}
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(long,static)
-		XTAL_LET static_method(arrange::math::phason_q auto t_)
+		XTAL_DEF_(return,set)
+		static_method(arrange::math::phason_q auto t_)
 		noexcept -> decltype(auto)
 		{
 			using T_ = XTAL_ALL_(t_);
@@ -126,7 +126,7 @@ struct unity<M_ism> : unity<>
 				vn <<= U_fix::full.depth - T_fix::full.depth;
 				vn  |= U_fix::unit.mask;
 				return superprocess::template static_method<N_lim>(t_(0))*
-					operative_f<XTAL_FUN_(_xtd::bit_cast<U_alpha>)>(vn);
+					operative_f<[] XTAL_0FN_(alias) (_xtd::bit_cast<U_alpha>)>(vn);
 			}
 		}
 
@@ -144,18 +144,18 @@ struct unity<M_ism> : unity<>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(complex_field_q auto &&o)
+		XTAL_DEF_(return,inline,set)
+		static_method(complex_field_q auto &&o)
 		noexcept -> decltype(auto)
 		{
 			using U       = XTAL_ALL_(o);
 			using U_fix    = bond::fixture<U>;
 
-			XTAL_LET N_lim_tan = N_lim;
-			XTAL_LET N_lim_log = 2;
+			auto constexpr N_lim_tan = N_lim;
+			auto constexpr N_lim_log = 2;
 
-			XTAL_LET _1 = U_fix::haplo_0, _2pi = _1/U_fix::patio_2;
-			XTAL_LET _2 = U_fix::haplo_1, _4pi = _2/U_fix::patio_2;
+			auto constexpr _1 = U_fix::haplo_0, _2pi = _1/U_fix::patio_2;
+			auto constexpr _2 = U_fix::haplo_1, _4pi = _2/U_fix::patio_2;
 
 			auto const &[x_re, x_im] = destruct_f(o);
 			auto const   y_re = tangy_t<-1, 1>::template static_method<N_lim_tan>(x_im, x_re);

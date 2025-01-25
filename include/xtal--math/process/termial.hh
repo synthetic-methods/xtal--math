@@ -28,8 +28,8 @@ Not to be confused with the Dijkstra's function `Binomial[n + 1, 2]`. \
 template <int M_sgn=1, int M_pow=1>	struct   termial;
 template <int M_sgn=1, int M_pow=1>	using    termial_t = process::confined_t<termial<M_sgn, M_pow>>;
 template <int M_sgn=1, int M_pow=1>
-XTAL_DEF_(short)
-XTAL_LET termial_f(auto &&x, auto const &k, auto const &...ks)
+XTAL_DEF_(return,inline,let)
+termial_f(auto &&x, auto const &k, auto const &...ks)
 noexcept -> auto
 {
 	XTAL_IF0
@@ -61,8 +61,8 @@ struct termial
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&...oo)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&...oo)
 		noexcept -> decltype(auto)
 		{
 			return termial_f<M_sgn, M_pow>(XTAL_REF_(oo)...);

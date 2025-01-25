@@ -18,8 +18,8 @@ template <int M_ism=1> struct   disunity;
 template <int M_ism=1> using    disunity_t = process::confined_t<disunity<M_ism>>;
 
 template <int M_ism=1, auto ...Ns>
-XTAL_DEF_(short)
-XTAL_LET disunity_f(auto &&o)
+XTAL_DEF_(return,inline,let)
+disunity_f(auto &&o)
 noexcept -> decltype(auto)
 {
 	return disunity_t<M_ism>::template static_method<Ns...>(XTAL_REF_(o));
@@ -40,8 +40,8 @@ struct disunity<M_ism>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&o)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			return XTAL_REF_(o);
@@ -63,14 +63,14 @@ struct disunity<M_ism>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(complex_field_q auto const &o)
+		XTAL_DEF_(return,inline,set)
+		static_method(complex_field_q auto const &o)
 		noexcept -> decltype(auto)
 		{
 			using U    = XTAL_ALL_(o);
 			using U_fix = bond::fixture<U>;
 
-			XTAL_LET i_sgn = U_fix::alpha_f(I_sgn);
+			auto constexpr i_sgn = U_fix::alpha_f(I_sgn);
 
 			auto y = o.imag();
 			auto x = o.real();

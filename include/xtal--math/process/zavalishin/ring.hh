@@ -44,25 +44,25 @@ struct ring<U_pole[N_pole]>
 		using S_::S_;
 
 	public:
-		XTAL_TO4_(XTAL_DEF_(let) damping(auto &&...oo), S_::template head<damping_type>(XTAL_REF_(oo)...))
-		XTAL_TO4_(XTAL_DEF_(let) balance(auto &&...oo), S_::template head<balance_type>(XTAL_REF_(oo)...))
+		XTAL_FX4_(alias) (XTAL_DEF_(return,inline,let) damping(auto &&...oo), S_::template head<damping_type>(XTAL_REF_(oo)...))
+		XTAL_FX4_(alias) (XTAL_DEF_(return,inline,let) balance(auto &&...oo), S_::template head<balance_type>(XTAL_REF_(oo)...))
 
 	public:// FLUX
 
 		template <signed N_ion>
-		XTAL_DEF_(short)
-		XTAL_LET fuse(auto &&o)
+		XTAL_DEF_(return,inline,let)
+		fuse(auto &&o)
 		noexcept -> signed
 		{
 			return S_::template fuse<N_ion>(XTAL_REF_(o));
 		}
 		template <signed N_ion> requires in_n<N_ion, +1>
-		XTAL_DEF_(short)
-		XTAL_LET fuse(auto &&o)
+		XTAL_DEF_(return,inline,let)
+		fuse(auto &&o)
 		noexcept -> signed
 		{
-			XTAL_LET N_dn = root_f<2>(control_type{two});
-			XTAL_LET N_up = power_f<-2*7>(N_dn);
+			auto constexpr N_dn = root_f<2>(control_type{two});
+			auto constexpr N_up = power_f<-2*7>(N_dn);
 
 			if constexpr (occur::stage_q<decltype(o)>) {
 				switch (o.head()) {
@@ -74,8 +74,8 @@ struct ring<U_pole[N_pole]>
 			return S_::template fuse<N_ion>(XTAL_REF_(o));
 		}
 		template <signed N_ion> requires in_n<N_ion, -1>
-		XTAL_DEF_(short)
-		XTAL_LET fuse(auto &&o)
+		XTAL_DEF_(return,inline,let)
+		fuse(auto &&o)
 		noexcept -> signed
 		{
 			using _fix = bond::fixture<control_type>;
@@ -84,9 +84,9 @@ struct ring<U_pole[N_pole]>
 					case  0: {break;}
 					case  1: {break;}
 					case -1: {
-						XTAL_LET N_thresh = _fix::haplo_f(7);
-						XTAL_LET M_thresh = square_f(N_thresh);
-						using    U_poles_ = arrange::collate_t<U_pole[N_pole]>;
+						auto constexpr N_thresh = _fix::haplo_f(7);
+						auto constexpr M_thresh = square_f(N_thresh);
+						using          U_poles_ = arrange::collate_t<U_pole[N_pole]>;
 						//\note\
 						Because `N_ord` may be less than `N_pole`, \
 						access to `U_poles_` requres resetting the `cache` when `N_ord` changes. \
@@ -105,8 +105,8 @@ struct ring<U_pole[N_pole]>
 
 	public:
 		template <auto ...Ns>
-		XTAL_DEF_(short)
-		XTAL_LET method(U_pole s_scale, auto &&...oo)
+		XTAL_DEF_(return,inline,let)
+		method(U_pole s_scale, auto &&...oo)
 		noexcept -> decltype(auto)
 		{
 			U_pole x_input{one};

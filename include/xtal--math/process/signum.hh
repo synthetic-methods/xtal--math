@@ -25,8 +25,8 @@ struct signum
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto const &o)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto const &o)
 		noexcept -> auto
 		requires un_n<anyplex_variable_q<decltype(o)>>
 		{
@@ -34,8 +34,8 @@ struct signum
 		}
 		/**/
 		template <auto ...Ns>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(ordinal_variable_q auto o)
+		XTAL_DEF_(return,inline,set)
+		static_method(ordinal_variable_q auto o)
 		noexcept -> auto
 		{
 			using _fix    = bond::fixture<decltype(o)>;
@@ -55,8 +55,8 @@ struct signum
 			}
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(cardinal_variable_q auto o)
+		XTAL_DEF_(return,inline,set)
+		static_method(cardinal_variable_q auto o)
 		noexcept -> auto
 		{
 			using _fix    = bond::fixture<decltype(o)>;
@@ -75,16 +75,16 @@ struct signum
 		}
 		/***/
 		template <auto ...Ns>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(real_variable_q auto const &o)
+		XTAL_DEF_(return,inline,set)
+		static_method(real_variable_q auto const &o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _fix = bond::fixture<decltype(o)>;
 			return _xtd::copysign(_fix::alpha_1, o);
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(complex_variable_q auto const &o)
+		XTAL_DEF_(return,inline,set)
+		static_method(complex_variable_q auto const &o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _fix = bond::fixture<decltype(o)>;
@@ -92,8 +92,8 @@ struct signum
 		}
 
 		template <int N_side=0> requires in_n<N_side, 1, 0, -1>
-		XTAL_DEF_(short)
-		XTAL_SET edit(ordinal_variable_q auto &u)
+		XTAL_DEF_(return,inline,set)
+		static_edit(ordinal_variable_q auto &u)
 		noexcept -> auto
 		{
 			auto const v = bond::math::bit_sign_f(u);
@@ -113,23 +113,23 @@ struct signum
 			return static_method(v);
 		}
 		template <int N_side=0> requires in_n<N_side, 1, 0, -1>
-		XTAL_DEF_(short)
-		XTAL_SET edit(cardinal_variable_q auto &u)
+		XTAL_DEF_(return,inline,set)
+		static_edit(cardinal_variable_q auto &u)
 		noexcept -> auto
 		{
 			using _fix = bond::fixture<decltype(u)>;
-			return edit<N_side>(reinterpret_cast<typename _fix::delta_type &>(u));
+			return static_edit<N_side>(reinterpret_cast<typename _fix::delta_type &>(u));
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(short,static)
-		XTAL_LET edit(real_variable_q auto &o)
+		XTAL_DEF_(return,inline,set)
+		static_edit(real_variable_q auto &o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			auto const o_sgn = static_method<Ns...>(o); o *= o_sgn; return o_sgn;
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(short,static)
-		XTAL_LET edit(complex_variable_q auto &o)
+		XTAL_DEF_(return,inline,set)
+		static_edit(complex_variable_q auto &o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _fix = bond::fixture<decltype(o)>;
@@ -150,8 +150,8 @@ template <auto ...Ms>
 using    signum_t = process::confined_t<signum<Ms...>>;
 
 template <auto ...Ns>
-XTAL_DEF_(short)
-XTAL_LET signum_f(auto &&...oo)
+XTAL_DEF_(return,inline,let)
+signum_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
 	//\
@@ -159,13 +159,13 @@ noexcept -> decltype(auto)
 	return signum_t<>::template static_method<Ns...>(XTAL_REF_(oo)...);
 }
 template <auto ...Ns>
-XTAL_DEF_(short)
-XTAL_LET signum_e(auto &&...oo)
+XTAL_DEF_(return,inline,let)
+signum_e(auto &&...oo)
 noexcept -> decltype(auto)
 {
 	//\
 	return signum_t<Ms...>::static_method(XTAL_REF_(oo)...);
-	return signum_t<>::template     edit<Ns...>(XTAL_REF_(oo)...);
+	return signum_t<>::template     static_edit<Ns...>(XTAL_REF_(oo)...);
 }
 
 

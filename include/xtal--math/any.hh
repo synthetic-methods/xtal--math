@@ -1,6 +1,8 @@
 #pragma once
 //#include_next <xtal/any.hh>
 #include <xtal/all.hh>
+//#include <xtal/bond/all.hh>
+//#include <xtal/arrange/all.hh>
 
 #if __has_include(<Eigen/Dense>)
 #include          <Eigen/Dense>
@@ -19,8 +21,8 @@ template <class U>	using    duple_t = arrange::collate_t<U[2]>;
 template <class T>	concept  duple_q = bond::pack_q<T> and bond::pack_size_n<T> == 2;
 
 template <int N_arity=-1> requires (N_arity == -1)
-XTAL_DEF_(short)
-XTAL_LET duple_f(auto &&...xs)
+XTAL_DEF_(return,inline,let)
+duple_f(auto &&...xs)
 noexcept -> decltype(auto)
 {
 	/*/
@@ -32,22 +34,22 @@ noexcept -> decltype(auto)
 	/***/
 }
 template <int N_arity=-1> requires (N_arity ==  0)
-XTAL_DEF_(short)
-XTAL_LET duple_f(auto &&x0, auto &&x1, auto &&...xs)
+XTAL_DEF_(return,inline,let)
+duple_f(auto &&x0, auto &&x1, auto &&...xs)
 noexcept -> decltype(auto)
 {
 	return XTAL_REF_(x0);
 }
 template <int N_arity=-1> requires (N_arity ==  1)
-XTAL_DEF_(short)
-XTAL_LET duple_f(auto &&x0, auto &&x1, auto &&...xs)
+XTAL_DEF_(return,inline,let)
+duple_f(auto &&x0, auto &&x1, auto &&...xs)
 noexcept -> decltype(auto)
 {
 	return duple_f(XTAL_REF_(x0));
 }
 template <int N_arity=-1> requires (N_arity ==  2)
-XTAL_DEF_(short)
-XTAL_LET duple_f(auto &&x0, auto &&x1, auto &&...xs)
+XTAL_DEF_(return,inline,let)
+duple_f(auto &&x0, auto &&x1, auto &&...xs)
 noexcept -> decltype(auto)
 {
 	return duple_f(XTAL_REF_(x0), XTAL_REF_(x1));
@@ -56,19 +58,19 @@ noexcept -> decltype(auto)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <auto f> XTAL_DEF_(inline) XTAL_LET operative_f(auto &&...xs) noexcept -> decltype(auto);
-template <auto f> XTAL_DEF_(inline) XTAL_LET operative_f(auto &&...xs) noexcept -> decltype(auto) {return f(XTAL_REF_(xs)...);}
+template <auto f> XTAL_DEF_(inline,let) operative_f(auto &&...xs) noexcept -> decltype(auto);
+template <auto f> XTAL_DEF_(inline,let) operative_f(auto &&...xs) noexcept -> decltype(auto) {return f(XTAL_REF_(xs)...);}
 
 template <template <class> class Y, class ...Xs>
-XTAL_DEF_(short)
-XTAL_LET construxion_f(Xs &&...xs)
+XTAL_DEF_(return,inline,let)
+construxion_f(Xs &&...xs)
 noexcept -> auto
 {
 	using X_ = common_t<Xs...>;
 	return operative_f<invoke_n<Y<X_>>>(XTAL_REF_(xs)...);
 }
-XTAL_DEF_(short)
-XTAL_LET complexion_f(auto &&...xs)
+XTAL_DEF_(return,inline,let)
+complexion_f(auto &&...xs)
 noexcept -> auto
 {
 	return construxion_f<_std::complex>(XTAL_REF_(xs)...);
@@ -80,23 +82,23 @@ template <class   ...Ts>	using     eigenvalue_t =	common_t<typename Eigen::inter
 template <class   ...Ts>	concept   eigenclass_q =	complete_q<eigenclass_t<Ts>...>;
 template <class   ...Ts>	concept   eigenvalue_q =	complete_q<eigenvalue_t<Ts>...>;//TODO: Restrict to `Array`-derived.
 
-XTAL_DEF_(let) objective_f(eigenvalue_q auto &&w) noexcept {return XTAL_REF_(w).eval();}
+XTAL_DEF_(return,inline,let) objective_f(eigenvalue_q auto &&w) noexcept {return XTAL_REF_(w).eval();}
 
-template <auto f> XTAL_DEF_(let) operative_f(eigenvalue_q auto &&x, auto &&...xs) noexcept requires (0 == sizeof...(xs)) {return XTAL_REF_(x).  unaryExpr(XTAL_REF_(xs)..., f);}
-template <auto f> XTAL_DEF_(let) operative_f(eigenvalue_q auto &&x, auto &&...xs) noexcept requires (1 == sizeof...(xs)) {return XTAL_REF_(x). binaryExpr(XTAL_REF_(xs)..., f);}
-template <auto f> XTAL_DEF_(let) operative_f(eigenvalue_q auto &&x, auto &&...xs) noexcept requires (2 == sizeof...(xs)) {return XTAL_REF_(x).ternaryExpr(XTAL_REF_(xs)..., f);}
+template <auto f> XTAL_DEF_(return,inline,let) operative_f(eigenvalue_q auto &&x, auto &&...xs) noexcept requires (0 == sizeof...(xs)) {return XTAL_REF_(x).  unaryExpr(XTAL_REF_(xs)..., f);}
+template <auto f> XTAL_DEF_(return,inline,let) operative_f(eigenvalue_q auto &&x, auto &&...xs) noexcept requires (1 == sizeof...(xs)) {return XTAL_REF_(x). binaryExpr(XTAL_REF_(xs)..., f);}
+template <auto f> XTAL_DEF_(return,inline,let) operative_f(eigenvalue_q auto &&x, auto &&...xs) noexcept requires (2 == sizeof...(xs)) {return XTAL_REF_(x).ternaryExpr(XTAL_REF_(xs)..., f);}
 
 template <template <class> class Y, eigenvalue_q ...Xs>
-XTAL_DEF_(short)
-XTAL_LET construxion_f(Xs &&...xs)
+XTAL_DEF_(return,inline,let)
+construxion_f(Xs &&...xs)
 noexcept -> auto
 {
 	using W = common_t<eigenvalue_t<Xs>...>;
 	return operative_f<invoke_n<Y<W>>>(XTAL_REF_(xs)...);
 }
 /**/
-XTAL_DEF_(short)
-XTAL_LET complexion_f(eigenvalue_q auto &&...xs)
+XTAL_DEF_(return,inline,let)
+complexion_f(eigenvalue_q auto &&...xs)
 noexcept -> auto
 {
 //	Inclusion returns complex-of-array.
@@ -114,7 +116,7 @@ noexcept -> auto
 #if __has_include(<Eigen/Dense>)
 namespace std
 {
-XTAL_DEF_(short)
+XTAL_DEF_(return,inline)
 auto conj(xtal::eigenclass_q auto &&x)
 {
 	using X = XTAL_ALL_(x);

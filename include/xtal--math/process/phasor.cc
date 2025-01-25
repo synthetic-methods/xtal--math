@@ -16,7 +16,7 @@ namespace xtal::process::math::_test
 /////////////////////////////////////////////////////////////////////////////////
 
 template <size_type N_columns>
-XTAL_DEF_(short,static)
+XTAL_DEF_(return,inline,static)
 auto ConvertToEigenMatrix(double **data, size_type n_rows)
 noexcept
 {
@@ -235,7 +235,7 @@ TAG_("phasor")
 		auto z_phi = Z_phi::bind_f();
 		static_assert(same_q<X_phi, decltype(z_phi.store().front())>);
 
-		XTAL_LET z_fix = _xtd::ranges::views::transform(XTAL_FUN_(W_phi));
+		auto constexpr z_fix = _xtd::ranges::views::transform([] XTAL_0FN_(alias) (W_phi));
 
 		occur::resize_t<> z_req(8);
 		occur::render_t<> z_ren(8);

@@ -33,8 +33,8 @@ template <int M_ism=1, int M_car=0, typename ...As>
 using    tang_t = process::confined_t<tang<M_ism, M_car>, As...>;
 
 template <int M_ism=1, int M_car=0, typename ...As>
-XTAL_DEF_(short)
-XTAL_LET tang_f(auto &&o)
+XTAL_DEF_(return,inline,let)
+tang_f(auto &&o)
 noexcept -> decltype(auto)
 {
 	return tang_t<M_ism, M_car, As...>::static_method(XTAL_REF_(o));
@@ -57,8 +57,8 @@ struct tang<M_ism, -0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&u)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&u)
 		noexcept -> decltype(auto)
 		{
 			static_assert(N_lim <= 0);
@@ -102,8 +102,8 @@ struct tang<M_ism, -2>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&w)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&w)
 		noexcept -> decltype(auto)
 		{
 			static_assert(N_lim <= 0);

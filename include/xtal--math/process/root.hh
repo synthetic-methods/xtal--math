@@ -18,8 +18,8 @@ template <int M_exp=1, int M_cut=0>
 using    root_t = process::confined_t<root<M_exp, M_cut>>;
 
 template <int M_exp=1, int M_cut=0, auto N_lim=0b11>
-XTAL_DEF_(short)
-XTAL_LET root_f(auto &&z)
+XTAL_DEF_(return,inline,let)
+root_f(auto &&z)
 noexcept -> decltype(auto)
 {
 	static_assert(M_exp != 0);
@@ -36,8 +36,8 @@ noexcept -> decltype(auto)
 template <int M_exp, int M_cut>
 struct root
 {
-	XTAL_SET M_exp_sgn = sign_n<M_exp>;
-	XTAL_SET M_exp_mag = M_exp*M_exp_sgn;
+	static int constexpr M_exp_sgn = sign_n<M_exp>;
+	static int constexpr M_exp_mag = M_exp*M_exp_sgn;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -48,36 +48,36 @@ struct root
 		using S_::S_;
 
 		template <int N_lim=0b11>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&z)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&z)
 		noexcept -> auto
 		{
 			using _fix = bond::fixture<decltype(z)>;
-			XTAL_LET I_lim = below_m<(1<<4), (unsigned) N_lim>;
+			auto constexpr I_lim = below_m<(1<<4), (unsigned) N_lim>;
 			XTAL_IF0
 			XTAL_0IF (integral_variable_q<decltype(z)>) {
 				return static_method<I_lim>(_fix::alpha_f(XTAL_REF_(z)));
 			}
-			XTAL_0IF XTAL_TRY_(return) (evaluate<I_lim>(XTAL_REF_(z)))
-			XTAL_0IF XTAL_TRY_(return) (evaluate<I_lim>(XTAL_REF_(z), constant_t<2>{}))
-			XTAL_0IF XTAL_TRY_(return) (evaluate<I_lim>(XTAL_REF_(z), constant_t<3>{}))
-			XTAL_0IF XTAL_TRY_(return) (evaluate<I_lim>(XTAL_REF_(z), constant_t<5>{}))
-			XTAL_0IF XTAL_TRY_(return) (evaluate<I_lim>(XTAL_REF_(z), constant_t<7>{}))
-			XTAL_0IF_(else)   {return pow(XTAL_REF_(z), _fix::alpha_1/M_exp);}
+			XTAL_0IF_(return) (evaluate<I_lim>(XTAL_REF_(z)))
+			XTAL_0IF_(return) (evaluate<I_lim>(XTAL_REF_(z), constant_n<2>))
+			XTAL_0IF_(return) (evaluate<I_lim>(XTAL_REF_(z), constant_n<3>))
+			XTAL_0IF_(return) (evaluate<I_lim>(XTAL_REF_(z), constant_n<5>))
+			XTAL_0IF_(return) (evaluate<I_lim>(XTAL_REF_(z), constant_n<7>))
+			XTAL_0IF_(else) {return pow(XTAL_REF_(z), _fix::alpha_1/M_exp);}
 		}
 
 	protected:
 		template <int I_lim>
-		XTAL_DEF_(short,static)
-		XTAL_LET evaluate(auto &&z, constant_q auto i_exp)
+		XTAL_DEF_(return,inline,set)
+		evaluate(auto &&z, constant_q auto i_exp)
 		noexcept -> XTAL_ALL_(z)
 		requires (M_exp%i_exp == 0 and 1 != M_exp/i_exp)
 		{
 			return root_t<M_exp/-i_exp>::template static_method<I_lim>(root_t<-i_exp>::template static_method<I_lim>(XTAL_REF_(z)));
 		}
 		template <int I_lim> requires in_n<M_exp_mag, 1>
-		XTAL_DEF_(short,static)
-		XTAL_LET evaluate(auto &&z)
+		XTAL_DEF_(return,inline,set)
+		evaluate(auto &&z)
 		noexcept -> XTAL_ALL_(z)
 		{
 			using _fix = bond::fixture<decltype(z)>;
@@ -94,8 +94,8 @@ struct root
 			}
 		}
 		template <int I_lim> requires in_n<M_exp_mag, 2>
-		XTAL_DEF_(short,static)
-		XTAL_LET evaluate(complex_variable_q auto z)
+		XTAL_DEF_(return,inline,set)
+		evaluate(complex_variable_q auto z)
 		noexcept -> XTAL_ALL_(z)
 		{
 			using _fix = bond::fixture<decltype(z)>;
@@ -125,8 +125,8 @@ struct root
 			}
 		}
 		template <int I_lim> requires in_n<M_exp_mag, 2, 3, 5, 7, 9>
-		XTAL_DEF_(short,static)
-		XTAL_LET evaluate(real_variable_q auto z)
+		XTAL_DEF_(return,inline,set)
+		evaluate(real_variable_q auto z)
 		noexcept -> XTAL_ALL_(z)
 		{
 			auto constexpr z_one = XTAL_ALL_(z){1};
@@ -145,8 +145,8 @@ struct root
 
 
 		template <int I_lim>
-		XTAL_DEF_(short,static)
-		XTAL_LET approximate(real_variable_q auto z)
+		XTAL_DEF_(return,inline,set)
+		approximate(real_variable_q auto z)
 		noexcept -> XTAL_ALL_(z)
 		{
 			XTAL_IF0
@@ -154,15 +154,15 @@ struct root
 			XTAL_0IF (M_exp < 0) {return infunction<I_lim>(z);}
 		}
 		template <int I_lim>
-		XTAL_DEF_(short,static)
-		XTAL_LET exfunction(real_variable_q auto z)
+		XTAL_DEF_(return,inline,set)
+		exfunction(real_variable_q auto z)
 		noexcept -> XTAL_ALL_(z)
 		{
 			return z*power_f<M_exp_mag - 1>(infunction<I_lim>(z));
 		}
 		template <int I_lim>
-		XTAL_DEF_(short,static)
-		XTAL_LET infunction(real_variable_q auto z)
+		XTAL_DEF_(return,inline,set)
+		infunction(real_variable_q auto z)
 		noexcept -> XTAL_ALL_(z)
 		{
 			using _fix = bond::fixture<decltype(z)>;

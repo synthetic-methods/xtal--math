@@ -18,8 +18,8 @@ template <int M_exp=1, int M_cut=0> requires in_n<M_exp, 1, 2,-1,-2>
 using    dot_t = process::confined_t<dot<M_exp, M_cut>>;
 
 template <int M_exp=1, int M_cut=0> requires in_n<M_exp, 1, 2,-1,-2>
-XTAL_DEF_(short)
-XTAL_LET dot_f(auto &&o)
+XTAL_DEF_(return,inline,let)
+dot_f(auto &&o)
 noexcept -> decltype(auto)
 {
 	return root_f<M_exp, M_cut>(norm(XTAL_REF_(o)));
@@ -41,8 +41,8 @@ struct dot//<M_exp, M_cut>
 		using S_::S_;
 
 		template <auto ...Is>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&o)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&o)
 		noexcept -> auto
 		{
 			return dot_f<M_exp, M_cut>(XTAL_REF_(o));

@@ -33,7 +33,7 @@ struct phasor<A, As...>
 	using inordinate_type = typename _ph::inordinate_type;
 	using   ordinate_type = typename _ph::  ordinate_type;
 
-	XTAL_SET N  = _std::extent_v<A>;
+	static auto constexpr N  = _std::extent_v<A>;
 
 	using U_lepton = arrange::math::fourier::series_t<coordinate_type[N]>;
 	using U_phason = arrange::math::phason_t<coordinate_type[N]>;
@@ -70,10 +70,10 @@ struct phasor<A, As...>
 		///\todo\
 		...find a cleaner way to define the conversion, perhaps via `refer`?
 
-		XTAL_TO4_(XTAL_DEF_(implicit operator) U_(), head())
+		XTAL_FX4_(alias) (XTAL_DEF_(implicit operator) U_(), head())
 		
-		XTAL_DEF_(short,static)
-		XTAL_LET bias()
+		XTAL_DEF_(return,inline,set)
+		bias()
 		noexcept -> auto
 		{
 			return S_::template bias<coordinate_type>();
@@ -88,8 +88,8 @@ struct phasor<A, As...>
 		Evaluation by (possibly indented) replacement then succession. \
 		
 		template <auto ...Is> requires (0 == sizeof...(Is))
-		XTAL_DEF_(short)
-		XTAL_LET method(subarray_q<N> auto &&a)
+		XTAL_DEF_(return,inline,let)
+		method(subarray_q<N> auto &&a)
 		noexcept -> decltype(auto)
 		{
 			(void) S_::template flux<+1>(XTAL_REF_(a));
@@ -100,8 +100,8 @@ struct phasor<A, As...>
 		Evaluation by uccession. \
 		
 		template <auto ...Is> requires (0 == sizeof...(Is))
-		XTAL_DEF_(short)
-		XTAL_LET method()
+		XTAL_DEF_(return,inline,let)
+		method()
 		noexcept -> decltype(auto)
 		{
 			///\todo\
@@ -120,7 +120,7 @@ struct phasor<A, As...>
 					return egress(bond::pack_f(phi(0), phi(1)*(rate)));
 				}
 				XTAL_0IF_(else) {
-					return egress(phi.template apply<XTAL_FUN_(bond::pack_f)>()*U_lepton(rate));
+					return egress(phi.template apply<[] XTAL_0FN_(alias) (bond::pack_f)>()*U_lepton(rate));
 				}
 			}
 			else {
@@ -132,8 +132,8 @@ struct phasor<A, As...>
 		///\
 		Evaluation by succession. \
 		
-		XTAL_DEF_(short)
-		XTAL_LET ingress()
+		XTAL_DEF_(return,inline,let)
+		ingress()
 		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
@@ -141,8 +141,8 @@ struct phasor<A, As...>
 			XTAL_0IF_(else)        {return   head();}
 		};
 		template <class Y>
-		XTAL_DEF_(short)
-		XTAL_LET egress(Y &&y)
+		XTAL_DEF_(return,inline,let)
+		egress(Y &&y)
 		noexcept -> auto
 		{
 			XTAL_IF0
@@ -166,7 +166,7 @@ struct phasor<A, As...>
 		///\note\
 		This is defined in-case `refine_head` is bypassed...
 
-		XTAL_TO4_(XTAL_DEF_(implicit operator) U_(), head())
+		XTAL_FX4_(alias) (XTAL_DEF_(implicit operator) U_(), head())
 		
 	public:// REEVALUATION
 		///\returns the current differential after scaling the incoming `phi` by `co`. \
@@ -175,8 +175,8 @@ struct phasor<A, As...>
 		Supply `precision` and/or `subdivision` `attach`ments? \
 
 		template <int N_root=1>
-		XTAL_DEF_(long)
-		XTAL_LET method(U_phason phi, coordinate_type co)
+		XTAL_DEF_(return,let)
+		method(U_phason phi, coordinate_type co)
 		noexcept -> auto
 			requires same_q<U_phason, typename S_::template head_t<constant_t<1>>>
 		{

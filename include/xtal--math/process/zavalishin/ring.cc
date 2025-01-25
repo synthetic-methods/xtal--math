@@ -20,6 +20,12 @@ TAG_("ring")
 	{
 		using _fix = bond::fixture<>;
 		using U = typename _fix::alpha_type;
+
+		using U_stage = occur::stage_t<>;
+		using U_chunk = schedule::chunk_t<provision::spooled<constant_t<0x10>>>;
+		using U_value = flow::packet_t<U_stage>;
+		using U_event = flow::cue_s<U_value>;
+
 		//\
 		using SVF = prewarped_t<constant_t<0>, ring<>>;
 		using SVF = confined_t<prewarped<constant_t<0>>, ring<>>;

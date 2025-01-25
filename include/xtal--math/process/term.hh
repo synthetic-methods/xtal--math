@@ -12,8 +12,8 @@ namespace xtal::process::math
 /////////////////////////////////////////////////////////////////////////////////
 
 template <int M_alt=1, int M_pow=1, class W, class X, class ...Xs>
-XTAL_DEF_(short)
-XTAL_LET term_f(W &&w, X &&x, Xs &&...xs)
+XTAL_DEF_(return,inline,let)
+term_f(W &&w, X &&x, Xs &&...xs)
 noexcept -> auto
 {
 	if constexpr (0 == sizeof...(Xs)) {
@@ -87,8 +87,8 @@ struct   term
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method( auto &&...oo)
+		XTAL_DEF_(return,inline,set)
+		static_method( auto &&...oo)
 		noexcept -> decltype(auto)
 		{
 			return term_f<Ms...>(XTAL_REF_(oo)...);

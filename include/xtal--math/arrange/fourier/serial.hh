@@ -16,8 +16,8 @@ template <class        ..._s>	using    serial_t = typename serial<_s...>::type;
 template <class        ...Ts>	concept  serial_q = bond::tag_p<serial_t, Ts...>;
 template <int N, class ...Ts>	concept  serial_p = serial_q<Ts...> and (...and (N == Ts::size()));
 template <class  V=void>
-XTAL_DEF_(short)
-XTAL_LET serial_f(auto &&...oo)
+XTAL_DEF_(return,inline,let)
+serial_f(auto &&...oo)
 noexcept -> auto
 {
 	return _detail::initialize<serial_t>::template via<V>(XTAL_REF_(oo)...);
@@ -59,14 +59,14 @@ struct serial<A>
 	public:// OPERATE
 		using S_::operator*=;
 
-		XTAL_DEF_(short)  XTAL_LET operator  * (auto           const &t) const noexcept -> auto   {return twin() *=   t ;}
-		XTAL_DEF_(inline) XTAL_LET operator  *=(initializer_s<U_data> t)       noexcept -> auto & {return self() *= T(t);}
+		XTAL_DEF_(return,inline,let)  operator  * (auto           const &t) const noexcept -> auto   {return twin() *=   t ;}
+		XTAL_DEF_(inline,let) operator  *=(initializer_s<U_data> t)       noexcept -> auto & {return self() *= T(t);}
 
 		///\
 		Multiplication by linear convolution, truncated by `N_data`. \
 
-	//	XTAL_DEF_(inline)
-		XTAL_LET operator *=(T const &t)
+		XTAL_DEF_(let)
+		operator *=(T const &t)
 		noexcept -> T &
 		{
 			auto &s = self();

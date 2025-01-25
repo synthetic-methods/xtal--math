@@ -33,8 +33,8 @@ struct discard
 		using S_::S_;
 
 		template <int N_car=0>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto const &x)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto const &x)
 		noexcept -> auto
 		{
 			auto constexpr m_car = M_car&1;
@@ -45,8 +45,8 @@ struct discard
 			XTAL_0IF (m_car ==     1) {return   root_f<-1, 1>(x);}
 		}
 		template <int N_car=0>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto const &x, auto const &z)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto const &x, auto const &z)
 		noexcept -> XTAL_ALL_(x)
 		{
 			auto constexpr m_car = M_car&1;

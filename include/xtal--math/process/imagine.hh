@@ -16,8 +16,8 @@ Applies complex quarter-rotation and conjugation. \
 template <int M_rot=0, int M_con=0> struct   imagine;
 template <int M_rot=0, int M_con=0> using    imagine_t = process::confined_t<imagine<M_rot, M_con>>;
 template <int M_rot=0, int M_con=0>
-XTAL_DEF_(short)
-XTAL_LET imagine_f(auto &&o)
+XTAL_DEF_(return,inline,let)
+imagine_f(auto &&o)
 noexcept -> decltype(auto)
 {
 	return imagine_t<M_rot, M_con>::static_method(XTAL_REF_(o));
@@ -43,8 +43,8 @@ struct imagine
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&o)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&o)
 		noexcept -> decltype(auto)
 			requires un_n<complex_field_q<decltype(o)>>
 		{
@@ -56,8 +56,8 @@ struct imagine
 			}
 		};
 		template <auto ...>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(complex_field_q auto const &o)
+		XTAL_DEF_(return,inline,set)
+		static_method(complex_field_q auto const &o)
 		noexcept -> decltype(auto)
 			requires un_n<complex_variable_q<decltype(o)>>
 		{
@@ -78,8 +78,8 @@ struct imagine
 			XTAL_0IF (N_rot == 0b11 and N_con == 1) {return complexion_f( y,  x);}
 		};
 		template <auto ...>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(complex_variable_q auto o)
+		XTAL_DEF_(return,inline,set)
+		static_method(complex_variable_q auto o)
 		noexcept -> decltype(auto)
 		{
 			auto &[x, y] = destruct_f(o);

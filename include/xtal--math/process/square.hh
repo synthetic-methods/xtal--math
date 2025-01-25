@@ -17,8 +17,8 @@ template <auto ...Ms> struct   square;
 template <auto ...Ms> using    square_t = process::confined_t<square<Ms...>>;
 
 template <int N_sqr=1, int N_alt=1, int N_sgn=1>
-XTAL_DEF_(short)
-XTAL_LET square_f(auto const &x, auto &&...xs)
+XTAL_DEF_(return,inline,let)
+square_f(auto const &x, auto &&...xs)
 noexcept -> auto
 {
 	XTAL_IF0
@@ -63,8 +63,8 @@ struct square
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&...xs)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&...xs)
 		noexcept -> decltype(auto)
 		{
 			return square_f<Ns...>(XTAL_REF_(xs)...);

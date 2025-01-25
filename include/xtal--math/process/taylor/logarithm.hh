@@ -18,8 +18,8 @@ template <auto ...Ms>
 using    logarithm_t = process::confined_t<logarithm<Ms...>>;
 
 template <auto ...Ms>
-XTAL_DEF_(short)
-XTAL_LET logarithm_f(auto &&o, constant_q auto ...oo)
+XTAL_DEF_(return,inline,let)
+logarithm_f(auto &&o, constant_q auto ...oo)
 noexcept -> decltype(auto)
 {
 	return logarithm_t<Ms...>::template static_method<oo...>(XTAL_REF_(o));
@@ -44,8 +44,8 @@ struct logarithm< 1, 0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&o)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
@@ -59,8 +59,8 @@ struct logarithm< 1, 0>
 
 	protected:
 		template <int N_lim=0>
-		XTAL_DEF_(short,static)
-		XTAL_LET approximate(auto o)
+		XTAL_DEF_(return,inline,set)
+		approximate(auto o)
 		noexcept -> decltype(auto)
 		{
 			return superprocess::template static_method<N_lim>(roots_f<2>(XTAL_MOV_(o)).template sum<-1>());
@@ -86,8 +86,8 @@ struct logarithm<-1, 0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&o)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
@@ -101,8 +101,8 @@ struct logarithm<-1, 0>
 
 	protected:
 		template <int N_lim=0>
-		XTAL_DEF_(short,static)
-		XTAL_LET approximate(auto &&o)
+		XTAL_DEF_(return,inline,set)
+		approximate(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			using _fix = bond::fixture<decltype(o)>;
@@ -141,8 +141,8 @@ struct logarithm< 1, 1>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&o)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
@@ -153,8 +153,8 @@ struct logarithm< 1, 1>
 
 	protected:
 		template <int N_lim=0>
-		XTAL_DEF_(long,static)
-		XTAL_LET approximate(real_variable_q auto o)
+		XTAL_DEF_(return,set)
+		approximate(real_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _fix = bond::fixture<decltype(o)>;
@@ -184,8 +184,8 @@ struct logarithm< 1, 1>
 			return logarithm_t<1>::template static_method<N_lim>(XTAL_MOV_(w)) + XTAL_MOV_(u);
 		}
 		template <int N_lim=0>
-		XTAL_DEF_(long,static)
-		XTAL_LET approximate(complex_variable_q auto o)
+		XTAL_DEF_(return,set)
+		approximate(complex_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _fix = bond::fixture<decltype(o)>;
@@ -221,8 +221,8 @@ struct logarithm<-1, 1>
 	//	TODO: Define `complex` variant!
 
 		template <int N_lim=0>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&o)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
@@ -233,8 +233,8 @@ struct logarithm<-1, 1>
 
 	protected:
 		template <int N_lim=0>
-		XTAL_DEF_(short,static)
-		XTAL_LET approximate(real_variable_q auto o)
+		XTAL_DEF_(return,inline,set)
+		approximate(real_variable_q auto o)
 		noexcept -> decltype(auto)
 		{
 			using _fix = bond::fixture<decltype(o)>;

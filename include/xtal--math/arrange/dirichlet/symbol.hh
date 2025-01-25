@@ -15,8 +15,8 @@ template <class   ..._s>	struct   symbol;
 template <class   ..._s>	using    symbol_t = typename symbol<_s...>::type;
 template <class   ...Ts>	concept  symbol_q = bond::tag_p<symbol_t, Ts...>;
 template <class  V=void>
-XTAL_DEF_(short)
-XTAL_LET symbol_f(auto &&...oo)
+XTAL_DEF_(return,inline,let)
+symbol_f(auto &&...oo)
 noexcept -> auto
 {
 	return _detail::initialize<symbol_t>::template via<V>(XTAL_REF_(oo)...);
@@ -49,7 +49,7 @@ struct symbol<A>
 		using          S_::N_data;
 		using typename S_::U_data;
 
-		static constexpr auto modulo = [] (I_ i) XTAL_0FN_(((i%N_data) + N_data)%N_data);
+		static constexpr auto modulo = [] (I_ i) XTAL_0FN_(return) (((i%N_data) + N_data)%N_data);
 
 	public:// ACCESS
 		using S_::element;
@@ -58,11 +58,11 @@ struct symbol<A>
 
 	public:// OPERATE
 
-		XTAL_DEF_(short) XTAL_LET element(I_ i) const &&noexcept -> decltype(auto) {return XTAL_MOV_(S_::operator[](modulo(i)));}
-		XTAL_DEF_(short) XTAL_LET element(I_ i) const  &noexcept -> decltype(auto) {return           S_::operator[](modulo(i)) ;}
+		XTAL_DEF_(return,inline,let) element(I_ i) const &&noexcept -> decltype(auto) {return XTAL_MOV_(S_::operator[](modulo(i)));}
+		XTAL_DEF_(return,inline,let) element(I_ i) const  &noexcept -> decltype(auto) {return           S_::operator[](modulo(i)) ;}
 
-		XTAL_DEF_(short) XTAL_LET element(I_ i)       &&noexcept -> decltype(auto) {return XTAL_MOV_(S_::operator[](modulo(i)));}
-		XTAL_DEF_(short) XTAL_LET element(I_ i)        &noexcept -> decltype(auto) {return           S_::operator[](modulo(i)) ;}
+		XTAL_DEF_(return,inline,let) element(I_ i)       &&noexcept -> decltype(auto) {return XTAL_MOV_(S_::operator[](modulo(i)));}
+		XTAL_DEF_(return,inline,let) element(I_ i)        &noexcept -> decltype(auto) {return           S_::operator[](modulo(i)) ;}
 
 
 	public:// CONSTRUCT
@@ -72,7 +72,8 @@ struct symbol<A>
 		Dirichlet character generation. \
 
 		template <int N_subscript=1> requires ((bool) (1&N_data))
-		XTAL_LET characterize()
+		XTAL_DEF_(let)
+		characterize()
 		noexcept -> T &
 		{
 			using namespace process::math;
@@ -108,7 +109,8 @@ struct symbol<A>
 			return self();
 		}
 		template <int N_subscript=1>
-		XTAL_LET subcharacterize()
+		XTAL_DEF_(let)
+		subcharacterize()
 		noexcept -> T &
 		{
 			using namespace process::math;

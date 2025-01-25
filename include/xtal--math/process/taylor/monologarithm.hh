@@ -26,7 +26,7 @@ approximated by `#/Sqrt[1 - #]`. \
 template <int M_ism> requires in_n<M_ism, 1, 2>
 struct monologarithm<M_ism, -0>
 {
-	XTAL_SET I_ism = M_ism&1;
+	static int constexpr I_ism = M_ism&1;
 
 	using superprocess = process::lift_t<void
 	,	bond::compose<dilated<2>, taylor::sine<-2>>
@@ -41,8 +41,8 @@ struct monologarithm<M_ism, -0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&o)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&o)
 		noexcept -> auto
 		{
 			using _fix = bond::fixture<decltype(o)>;
@@ -63,7 +63,7 @@ approximated by `(Sqrt[1 + (#/2)^2] - (#/2))*(#)`. \
 template <int M_ism> requires in_n<M_ism,-1,-2>
 struct monologarithm<M_ism, -0>
 {
-	XTAL_SET I_ism = M_ism&1;
+	static int constexpr I_ism = M_ism&1;
 
 	using superprocess = process::lift_t<void
 	,	bond::compose<discarded<1>, monologarithm<M_ism, -1>>
@@ -78,8 +78,8 @@ struct monologarithm<M_ism, -0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&o)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&o)
 		noexcept -> auto
 		{
 			using _fix = bond::fixture<decltype(o)>;
@@ -102,7 +102,7 @@ approximated by `1/Sqrt[1 - #]`. \
 template <int M_ism> requires in_n<M_ism, 1, 2>
 struct monologarithm<M_ism, -1>
 {
-	XTAL_SET I_ism = M_ism&1;
+	static int constexpr I_ism = M_ism&1;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -114,8 +114,8 @@ struct monologarithm<M_ism, -1>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&o)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&o)
 		noexcept -> auto
 		{
 			XTAL_IF0
@@ -133,7 +133,7 @@ approximated by `Sqrt[1 + (#/2)^2] + (#/2)`. \
 template <int M_ism> requires in_n<M_ism,-1,-2>
 struct monologarithm<M_ism, -1>
 {
-	XTAL_SET I_ism = M_ism&1;
+	static int constexpr I_ism = M_ism&1;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -145,8 +145,8 @@ struct monologarithm<M_ism, -1>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&o)
+		XTAL_DEF_(return,inline,set)
+		static_method(auto &&o)
 		noexcept -> auto
 		{
 			auto const u = half*XTAL_REF_(o);
@@ -163,12 +163,12 @@ struct monologarithm<M_ism, -1>
 ////////////////////////////////////////////////////////////////////////////////
 
 template <auto N>
-XTAL_DEF_(short)
-XTAL_LET monologarithm_f(auto &&...oo)
+XTAL_DEF_(return,inline,let)
+monologarithm_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
-	XTAL_LET N_sgn =   sign_n<N>;
-	XTAL_LET N_abs = N*sign_n<N>;
+	auto constexpr N_sgn =   sign_n<N>;
+	auto constexpr N_abs = N*sign_n<N>;
 	return monologarithm_t<1*N_sgn>::template static_method<N_abs>(XTAL_REF_(oo)...);
 }
 

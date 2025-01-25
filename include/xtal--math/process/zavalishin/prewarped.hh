@@ -32,8 +32,8 @@ struct prewarped<I, As...>
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(short)
-		XTAL_LET method(auto ...oo)
+		XTAL_DEF_(return,inline,let)
+		method(auto ...oo)
 		noexcept -> decltype(auto)
 		{
 			auto &o = get<I{}>(_std::tie(oo...));
