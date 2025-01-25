@@ -1,5 +1,5 @@
 #include "./any.cc"
 #include "./differ.cc"
 #include "./filter.cc"
-#include "./filtering.cc"
+#include "./ring.cc"
 #include "./prewarped.cc"

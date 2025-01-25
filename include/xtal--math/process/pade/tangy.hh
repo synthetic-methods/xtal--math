@@ -97,8 +97,7 @@ struct tangy<M_ism, 1>
 		XTAL_LET static_method(simplex_field_q auto &&t)
 		noexcept -> decltype(auto)
 		{
-			using _fix = bond::fixture<decltype(t)>;
-			return static_method<N_lim>(XTAL_REF_(t), _fix::alpha_1);
+			return static_method<N_lim>(XTAL_REF_(t), absolve_u<decltype(t)>{one});
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(short,static)
@@ -125,25 +124,25 @@ struct tangy<M_ism, 1>
 
 	};
 };
-template <int M_ism> requires in_n<M_ism,-1,-2>
+template <int M_ism>
 struct tangy<M_ism,-0>
 :	bond::compose<discarded<1>, tangy<M_ism,-1>>
 {
 };
-template <int M_ism> requires in_n<M_ism,-1,-2>
+template <int M_ism>
 struct tangy<M_ism,-1>
 :	bond::compose<discarded<2>, tangy<M_ism,-2>>
 {
 };
-template <int M_ism> requires in_n<M_ism,-1,-2>
+template <int M_ism>// requires in_n<M_ism,-1>
 struct tangy<M_ism,-2>
 {
-	using superkind = impunity<M_ism,-2>;
+	static constexpr int I_sgn = sign_n<(M_ism&1)^1, -1>;
 
 	template <class S>
-	class subtype : public bond::compose_s<S, superkind>
+	class subtype : public bond::compose_s<S>
 	{
-		using S_ = bond::compose_s<S, superkind>;
+		using S_ = bond::compose_s<S>;
 
 	public:
 		using S_::S_;
@@ -151,11 +150,11 @@ struct tangy<M_ism,-2>
 		template <int N_lim=-1>
 		XTAL_DEF_(short,static)
 		XTAL_LET static_method(simplex_field_q auto &&o)
-		noexcept -> auto
+		noexcept -> decltype(auto)
 		{
-			return S_::template static_method<N_lim>(XTAL_REF_(o));
+			return rate_f<-1>(impunity_t<M_ism,-2>::template static_method<N_lim>(XTAL_REF_(o)));
 		}
-		
+
 	};
 };
 

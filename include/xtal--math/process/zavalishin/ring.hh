@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-#include "../../provision/shaper.hh"
+#include "./filter.hh"
 
 
 
@@ -16,20 +16,21 @@ Manages a ringing filter with stored `damping` and `balance`.
 ///\note\
 Input is restricted to `U_pole` because the filter-state is managed out-of-band. \
 
-template <typename ...As> struct   filtering;
-template <typename ...As> using    filtering_t = process::confined_t<filtering<As...>>;
+template <typename ...As> struct   ring;
+template <typename ...As> using    ring_t = process::confined_t<ring<As...>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <class U_pole, int N_pole>
-struct filtering<U_pole[N_pole]>
+struct ring<U_pole[N_pole]>
+:	filter<U_pole[N_pole]>
 {
 	using control_type = absolve_u<U_pole>;
 	using damping_type = occur::inferred_t<struct DAMPING, control_type>;
 	using balance_type = occur::inferred_t<struct BALANCE, control_type>;
 
-	using superkind = bond::compose<bond::tag<filtering_t>
+	using superkind = bond::compose<bond::tag<ring_t>
 	,	typename damping_type::template attach<>
 	,	typename balance_type::template attach<>
 	,	filter<U_pole[N_pole]>
@@ -105,23 +106,26 @@ struct filtering<U_pole[N_pole]>
 	public:
 		template <auto ...Ns>
 		XTAL_DEF_(short)
-		XTAL_LET method(auto &&x_input, real_q auto s_scale)
+		XTAL_LET method(U_pole s_scale, auto &&...oo)
 		noexcept -> decltype(auto)
 		{
-			static_assert(same_q<U_pole, decltype(x_input)>);
-		//	static_assert(N_top == 0);// Necessary?
-
-			using X_fix = bond::fixture<decltype(x_input)>;
-			auto const s_damping = X_fix::alpha_f(S_::template head<damping_type>());
-			auto const y_balance = X_fix::alpha_f(S_::template head<balance_type>());
-			return S::template method<Ns...>(XTAL_REF_(x_input), s_scale, s_damping, y_balance);
+			U_pole x_input{one};
+			if constexpr XTAL_TRY_(do) (x_input *= S_::sample().rate())
+			auto const s_damping = static_cast<U_pole>(S_::template head<damping_type>());
+			auto const y_balance = static_cast<U_pole>(S_::template head<balance_type>());
+			return S_::template method<Ns...>(U_pole{one}, s_scale, s_damping, y_balance) - term_f<-1, 2>(one, y_balance)*(x_input);
 		}
 
 	};
 };
+template <scalar_q A>
+struct ring<A>
+:	ring<A[2]>
+{
+};
 template <>
-struct filtering<>
-:	filtering<typename bond::fixture<>::aphex_type[4]>
+struct ring<>
+:	ring<typename bond::fixture<>::alpha_type>
 {
 };
 

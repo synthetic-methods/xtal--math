@@ -79,17 +79,13 @@ struct filter<U_pole[N_pole]>
 			return S_::template fuse<N_ion>(XTAL_REF_(o));
 		}
 
-		template <auto ...Ns>
-		XTAL_DEF_(short)
-		XTAL_LET method(auto &&x_input, real_q auto s_scale, real_q auto s_damping)
-		noexcept -> decltype(auto)
-		{
-			using _fix = bond::fixture<decltype(x_input)>;
-			return method<Ns...>(XTAL_REF_(x_input), s_scale, s_damping, _fix::alpha_0);
-		}
 		template <int N_sel=0, int N_ord=0, int N_top=0, auto ...Ns>
 		XTAL_DEF_(inline)
-		XTAL_LET method(auto &&x_input, real_q auto s_scale, real_q auto s_damping, real_q auto y_balance)
+		XTAL_LET method(auto &&x_input
+		,	absolve_u<decltype(x_input)> s_scale
+		,	absolve_u<decltype(x_input)> s_damping
+		,	absolve_u<decltype(x_input)> y_balance=0
+		)
 		noexcept -> auto
 		{
 			using X = XTAL_ALL_(x_input);
@@ -120,10 +116,10 @@ struct filter<U_pole[N_pole]>
 				XTAL_LET I_ =  static_cast<unsigned>(N_sel);
 				XTAL_LET I0 = _std::countr_one(I_ >>  0) +  0, J0 = I0 + 1;
 				XTAL_LET I1 = _std::countr_one(I_ >> J0) + J0, J1 = I1 + 1;
-				W const y1 = y_balance;
+				W const &y1 = y_balance;
 				//\
-				W const y0 = one;
-				W const y0 = term_f<-1, 2>(one, y1);
+				W const  y0 = one;
+				W const  y0 = term_f<-1, 2>(one, y1);
 				return term_f(y0*get<I0>(io.outputs), y1, get<I1>(io.outputs));
 			}
 			XTAL_0IF (1 == N_top) {
@@ -132,7 +128,10 @@ struct filter<U_pole[N_pole]>
 		}
 		template <int N_ord=0, int N_top=0, int N_lim=0, auto ...Ns> requires (1 <= N_ord and N_top == 0)
 		XTAL_DEF_(inline)
-		XTAL_LET edit(auto const &x_input, real_q auto s_scale, auto &io)
+		XTAL_LET edit(auto const &x_input
+		,	absolve_u<decltype(x_input)> s_scale
+		,	auto &io
+		)
 		noexcept -> void
 		{
 			using X = XTAL_ALL_(x_input);

@@ -47,19 +47,19 @@ struct discarded<1, M_aux>
 	//	TODO: Account for `const &` and `&`, or find a cleaner way to express...
 		XTAL_DO2_(template <auto ...Is>
 		XTAL_DEF_(short)
-		XTAL_LET method(auto &&u, auto &&...oo),
+		XTAL_LET        method(auto &&u, auto &&...oo),
 		noexcept -> auto
 		{
-			auto  v = S_::template method<Is...>(u, XTAL_REF_(oo)...);
+			auto  v = S_::template        method<Is...>(u, XTAL_REF_(oo)...);
 			using V = XTAL_ALL_(v);
 			using U = XTAL_ALL_(u);
 			static_assert(same_q<U, V>);
 
 			return v*root_f<M_pow, 1>(XTAL_REF_(u));
 		})
-		template <auto ...Is>
+		XTAL_DO0_(template <auto ...Is>
 		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&u, auto &&...oo)
+		XTAL_LET static_method(auto &&u, auto &&...oo),
 		noexcept -> auto
 		{
 			auto  v = S_::template static_method<Is...>(u, XTAL_REF_(oo)...);
@@ -68,7 +68,7 @@ struct discarded<1, M_aux>
 			static_assert(same_q<U, V>);
 
 			return v*root_f<M_pow, 1>(XTAL_REF_(u));
-		}
+		})
 
 	};
 };
@@ -85,10 +85,10 @@ struct discarded<1>
 
 		XTAL_DO2_(template <auto ...Is>
 		XTAL_DEF_(short)
-		XTAL_LET method(auto &&u, auto &&...oo),
+		XTAL_LET        method(auto &&u, auto &&...oo),
 		noexcept -> auto
 		{
-			auto  v = S_::template method<Is...>(u, XTAL_REF_(oo)...);
+			auto  v = S_::template        method<Is...>(u, XTAL_REF_(oo)...);
 			using V = XTAL_ALL_(v);
 			using U = XTAL_ALL_(u);
 
@@ -103,9 +103,9 @@ struct discarded<1>
 				return complexion_f(v.real(), v.imag()*XTAL_REF_(u));
 			}
 		})
-		template <auto ...Is>
+		XTAL_DO0_(template <auto ...Is>
 		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&u, auto &&...oo)
+		XTAL_LET static_method(auto &&u, auto &&...oo),
 		noexcept -> auto
 		{
 			auto  v = S_::template static_method<Is...>(u, XTAL_REF_(oo)...);
@@ -122,7 +122,7 @@ struct discarded<1>
 			XTAL_0IF (complex_field_q<V>) {
 				return complexion_f(v.real(), v.imag()*XTAL_REF_(u));
 			}
-		}
+		})
 
 	};
 };
@@ -139,22 +139,22 @@ struct discarded<2, M_aux>
 
 		XTAL_DO2_(template <auto ...Is>
 		XTAL_DEF_(short)
-		XTAL_LET method(auto &&u, auto &&...oo),
+		XTAL_LET        method(auto &&u, auto &&...oo),
 		noexcept -> decltype(auto)
 		{
 			using _fix = bond::fixture<decltype(u)>;
 			XTAL_LET v = _fix::alpha_f(sign_n<(M_aux&1)^1, -1>);
-			return S_::template method<Is...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
+			return S_::template        method<Is...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
 		})
-		template <auto ...Is>
+		XTAL_DO0_(template <auto ...Is>
 		XTAL_DEF_(short,static)
-		XTAL_LET static_method(auto &&u, auto &&...oo)
+		XTAL_LET static_method(auto &&u, auto &&...oo),
 		noexcept -> decltype(auto)
 		{
 			using _fix = bond::fixture<decltype(u)>;
 			XTAL_LET v = _fix::alpha_f(sign_n<(M_aux&1)^1, -1>);
 			return S_::template static_method<Is...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
-		};
+		})
 
 	};
 };

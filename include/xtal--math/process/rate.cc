@@ -1,0 +1,37 @@
+#pragma once
+#include "./any.cc"
+#include "./rate.hh"// testing...
+
+
+
+
+
+XTAL_ENV_(push)
+namespace xtal::process::math::_test
+{/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/**/
+TAG_("rate")
+{
+	using T_fix = bond::fixture<>;
+	using T_sigma = typename T_fix::sigma_type;
+	using T_delta = typename T_fix::delta_type;
+	using T_alpha = typename T_fix::alpha_type;
+	using T_aphex = typename T_fix::aphex_type;
+
+	auto mt19937_f = typename T_fix::mt19937_t();
+	mt19937_f.seed(Catch::rngSeed());
+
+	TRY_("rate evaluation")
+	{
+		TRUE_(half == rate_f<-1>(T_aphex{2, 1}));
+
+	};
+}
+/***/
+
+///////////////////////////////////////////////////////////////////////////////
+}/////////////////////////////////////////////////////////////////////////////
+XTAL_ENV_(pop)
