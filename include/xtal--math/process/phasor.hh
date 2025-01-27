@@ -81,7 +81,7 @@ struct phasor<A, As...>
 
 	public:// OPERATE
 		///\todo\
-		Use `provision::example` to manage downsampling \
+		Use `occur::sample` to manage downsampling \
 		e.g. by integer multiplication followed by normalization. \
 
 		///\
@@ -107,8 +107,8 @@ struct phasor<A, As...>
 			///\todo\
 			Override constructors to apply fractional `bias`. \
 			
-			if constexpr (provision::example_q<S_>) {
-				auto const rate = S_::sample().rate();
+			if constexpr (requires {S_::sampling().rate();}) {
+				auto const rate = S_::sampling().rate();
 				auto &phi = ingress();
 				XTAL_IF0
 				XTAL_0IF (N == 1) {

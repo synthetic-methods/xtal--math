@@ -37,7 +37,7 @@ struct prewarped<I, As...>
 		noexcept -> decltype(auto)
 		{
 			auto &o = get<I{}>(_std::tie(oo...));
-			o *= S_::sample().period();
+			o *= S_::sampling().period();
 			o *= pade::tangy_t<1,-1>::template static_method<6>(o);
 			return S_::template method<Ns...>(XTAL_MOV_(oo)...);
 		};

@@ -28,7 +28,7 @@ struct   unity<>
 	using limit_type = occur::math::limit_t<(1<<3)>;
 
 	template <class S>
-	using subtype = bond::compose_s<S, provision::context<void
+	using subtype = bond::compose_s<S, provision::voiced<void
 	,	typename limit_type::template dispatch<>
 	>>;
 
