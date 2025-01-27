@@ -77,8 +77,8 @@ struct wnity<1> : wnity<>
 			auto const p = complexion_f(o.real(),  o.imag());
 			auto const q = complexion_f(o.real(), -o.imag());
 			//\
-			return duple_f(o, conj(o));
-			return duple_f(p, q);
+			return atom::couple_f(o, conj(o));
+			return atom::couple_f(p, q);
 		}
 
 	};

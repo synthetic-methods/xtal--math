@@ -124,8 +124,8 @@ struct   power<M_exp, Ms...>
 		{
 			using O = XTAL_ALL_(o);
 			XTAL_IF0
-			XTAL_0IF (arrange::collate_q<O>) {
-				return O::template map_f<[] XTAL_0FN_(alias) (static_method<Ns...>)>(o);
+			XTAL_0IF (atom::couple_q<O>) {
+				return O::template static_map<[] XTAL_0FN_(alias) (static_method<Ns...>)>(o);
 			}
 			XTAL_0IF (M_exp   == 0) {return                             O{1};}
 			XTAL_0IF (M_exp   == 1) {return                             o   ;}

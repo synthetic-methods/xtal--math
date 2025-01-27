@@ -107,7 +107,7 @@ struct tangy<M_ism, 1>
 			using _fix = bond::fixture<decltype(v), decltype(u)>;
 			using U_aphex = typename _fix::aphex_type;
 			using U_alpha = typename _fix::alpha_type;
-			using W_alpha = arrange::collate_t<U_alpha[2]>;
+			using W_alpha = atom::couple_t<U_alpha[2]>;
 
 			auto u_abs = u, u_sgn = signum_t<>::static_edit(u_abs);
 			auto v_abs = v, v_sgn = signum_t<>::static_edit(v_abs);// v_sgn *= *_fix::haplo_1;

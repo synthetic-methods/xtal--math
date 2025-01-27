@@ -45,16 +45,16 @@ struct roots
 			auto const o =   objective_f(XTAL_REF_(w));
 
 			XTAL_IF0
-			XTAL_0IF (M_exp ==  1) {auto const q = root_f<-1, M_cut>(o); return duple_f(o,       q);}
-			XTAL_0IF (M_exp ==  2) {auto const q = root_f<-2, M_cut>(o); return duple_f(o*q,     q);}
-			XTAL_0IF (M_exp ==  3) {auto const q = root_f<-3, M_cut>(o); return duple_f(o*q*q,   q);}
-			XTAL_0IF (M_exp ==  4) {auto const q = root_f<-4, M_cut>(o); return duple_f(o*q*q*q, q);}
-			XTAL_0IF (M_exp == -1) {auto const q = root_f<-1, M_cut>(o); return duple_f(q,       o);}
-			XTAL_0IF (M_exp == -2) {auto const q = root_f<-2, M_cut>(o); return duple_f(q,     q*o);}
-			XTAL_0IF (M_exp == -3) {auto const q = root_f<-3, M_cut>(o); return duple_f(q,   q*q*o);}
-			XTAL_0IF (M_exp == -4) {auto const q = root_f<-4, M_cut>(o); return duple_f(q, q*q*q*o);}
-			XTAL_0IF (0 <  M_exp) {auto const q = root_f<-M_exp, M_cut, Ns...>(o); return duple_f(o *power_f<+M_exp - 1>(q), q);}
-			XTAL_0IF (M_exp <  0) {auto const q = root_f<+M_exp, M_cut, Ns...>(o); return duple_f(q, power_f<-M_exp - 1>(q)* o);}
+			XTAL_0IF (M_exp ==  1) {auto const q = root_f<-1, M_cut>(o); return atom::couple_f(o,       q);}
+			XTAL_0IF (M_exp ==  2) {auto const q = root_f<-2, M_cut>(o); return atom::couple_f(o*q,     q);}
+			XTAL_0IF (M_exp ==  3) {auto const q = root_f<-3, M_cut>(o); return atom::couple_f(o*q*q,   q);}
+			XTAL_0IF (M_exp ==  4) {auto const q = root_f<-4, M_cut>(o); return atom::couple_f(o*q*q*q, q);}
+			XTAL_0IF (M_exp == -1) {auto const q = root_f<-1, M_cut>(o); return atom::couple_f(q,       o);}
+			XTAL_0IF (M_exp == -2) {auto const q = root_f<-2, M_cut>(o); return atom::couple_f(q,     q*o);}
+			XTAL_0IF (M_exp == -3) {auto const q = root_f<-3, M_cut>(o); return atom::couple_f(q,   q*q*o);}
+			XTAL_0IF (M_exp == -4) {auto const q = root_f<-4, M_cut>(o); return atom::couple_f(q, q*q*q*o);}
+			XTAL_0IF (0 <  M_exp) {auto const q = root_f<-M_exp, M_cut, Ns...>(o); return atom::couple_f(o *power_f<+M_exp - 1>(q), q);}
+			XTAL_0IF (M_exp <  0) {auto const q = root_f<+M_exp, M_cut, Ns...>(o); return atom::couple_f(q, power_f<-M_exp - 1>(q)* o);}
 		}
 
 	};

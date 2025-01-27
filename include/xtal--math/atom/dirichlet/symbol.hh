@@ -7,7 +7,7 @@
 
 
 XTAL_ENV_(push)
-namespace xtal::arrange::math::dirichlet
+namespace xtal::atom::math::dirichlet
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -19,13 +19,13 @@ XTAL_DEF_(return,inline,let)
 symbol_f(auto &&...oo)
 noexcept -> auto
 {
-	return _detail::initialize<symbol_t>::template via<V>(XTAL_REF_(oo)...);
+	return _detail::build<symbol_t>::template with<V>(XTAL_REF_(oo)...);
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
 ///\
-Extends `collate` with Dirichlet characterization and modulo access. \
+Extends `couple` with Dirichlet characterization and modulo access. \
 
 template <vector_q A>
 struct symbol<A>
@@ -33,7 +33,7 @@ struct symbol<A>
 	using _fix = bond::fixture<A>;
 	
 	template <class T>
-	using endotype = typename collate<A>::template homotype<T>;
+	using endotype = typename couple<A>::template homotype<T>;
 
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<symbol_t>>;
@@ -41,9 +41,8 @@ struct symbol<A>
 	template <class T>
 	class homotype : public holotype<T>
 	{
-		friend T;
-		using  S_ = holotype<T>;
-		using  I_ = typename S_::difference_type;
+		using S_ = holotype<T>;
+		using I_ = typename S_::difference_type;
 
 	protected:
 		using          S_::N_data;

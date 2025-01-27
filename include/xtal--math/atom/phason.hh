@@ -7,7 +7,7 @@
 
 
 XTAL_ENV_(push)
-namespace xtal::arrange::math
+namespace xtal::atom::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 ///\
@@ -39,7 +39,7 @@ XTAL_DEF_(return,inline,let)
 phason_f(auto &&...oo)
 noexcept -> auto
 {
-	return _detail::initialize<phason_t>::template via<V>(XTAL_REF_(oo)...);
+	return _detail::build<phason_t>::template with<V>(XTAL_REF_(oo)...);
 }
 
 
@@ -72,13 +72,18 @@ struct phason<A>
 	template <class T>
 	class homotype : public holotype<T>
 	{
-		using  S_ = holotype<T>;
+		using S_ = holotype<T>;
+		using I_ = _std::initializer_list<coordinate_type>;
 
 	protected:
 		using          S_::N_data;
 		using typename S_::U_data;
+		using typename S_::V_data;
+		using typename S_::W_data;
 
-	public:// MAP
+	public:// TYPE
+		using initializer_list = I_;
+
 		XTAL_DEF_(return,inline,set)   ordinate(coordinate_type const &co) noexcept {return bond::math::bit_fraction_f<  ordinate_type>(co);}
 		XTAL_DEF_(return,inline,set) coordinate(  ordinate_type const & o) noexcept {return bond::math::bit_fraction_f<coordinate_type>( o);}
 
@@ -103,17 +108,17 @@ struct phason<A>
 		:	S_(n)
 		{}
 
-		XTAL_NEW_(explicit) homotype(real_variable_q auto &&...oo)
+		XTAL_NEW_(explicit) homotype(continuous_field_q auto &&...oo)
 		noexcept
 		:	homotype(sizeof...(oo))
 		{
 			operator>>=({XTAL_REF_(oo)...});
 		}
-		XTAL_NEW_(implicit) homotype(initializer_s<coordinate_type> o)
+		XTAL_NEW_(implicit) homotype(I_ o)
 		noexcept
 		:	homotype(count_f(o))
 		{
-			operator>>=(XTAL_REF_(o));
+			operator>>=(XTAL_MOV_(o));
 		}
 		XTAL_NEW_(explicit) homotype(iterable_q auto &&o)
 		noexcept
@@ -126,12 +131,12 @@ struct phason<A>
 		using S_::operator >>=;
 		using S_::operator <<=;
 
-		XTAL_DEF_(inline,let) operator >>=(initializer_s<coordinate_type>  o) noexcept -> auto & {_detail::move_to<[] XTAL_0FN_(alias) (T::ordinate)>(S_::data(), XTAL_REF_(o)); return self();}
-		XTAL_DEF_(inline,let) operator >>=(iterable_q auto               &&o) noexcept -> auto & {_detail::move_to<[] XTAL_0FN_(alias) (T::ordinate)>(S_::data(), XTAL_REF_(o)); return self();}
-		XTAL_DEF_(inline,let) operator >>=(iterable_q auto const          &o) noexcept -> auto & {_detail::copy_to<[] XTAL_0FN_(alias) (T::ordinate)>(S_::data(), XTAL_REF_(o)); return self();}
+		XTAL_DEF_(inline,let) operator >>=(I_                      o) noexcept -> auto & {_detail::move_to<[] XTAL_0FN_(alias) (T::ordinate)>(S_::data(), XTAL_REF_(o)); return self();}
+		XTAL_DEF_(inline,let) operator >>=(iterable_q auto       &&o) noexcept -> auto & {_detail::move_to<[] XTAL_0FN_(alias) (T::ordinate)>(S_::data(), XTAL_REF_(o)); return self();}
+		XTAL_DEF_(inline,let) operator >>=(iterable_q auto const  &o) noexcept -> auto & {_detail::copy_to<[] XTAL_0FN_(alias) (T::ordinate)>(S_::data(), XTAL_REF_(o)); return self();}
 		
 		XTAL_DEF_(inline,let)
-		operator <<=(initializer_s<coordinate_type> o)
+		operator <<=(I_ o)
 		noexcept -> auto &
 		{
 			auto i0 = S_::data(), iN = _std::next(i0, S_::size() - o.size());
@@ -164,8 +169,8 @@ struct phason<A>
 		The symmetric signatures for `/=` and `*=` are declared-but-undefined \
 		to avoid compilation-failure when type-checking e.g. `multiplicative_group_q`. \
 
-		using S_::operator*=;
-		using S_::operator/=;
+	//	using S_::operator*=;
+	//	using S_::operator/=;
 
 		auto operator *= (T const &) noexcept -> T &;// Asymmetric!
 		auto operator /= (T const &) noexcept -> T &;// Asymmetric!
@@ -173,8 +178,8 @@ struct phason<A>
 		XTAL_DEF_(return,inline,let)  operator * (auto const &t) const noexcept -> auto {return twin() *= t;}
 		XTAL_DEF_(return,inline,let)  operator / (auto const &t) const noexcept -> auto {return twin() /= t;}
 
-		XTAL_DEF_(inline,let) operator *= (initializer_s<coordinate_type> t) noexcept -> auto & {return self() *= T(t);}
-		XTAL_DEF_(inline,let) operator /= (initializer_s<coordinate_type> t) noexcept -> auto & {return self() /= T(t);}
+		XTAL_DEF_(inline,let) operator *= (I_ t) noexcept -> auto & {return self() *= T(t);}
+		XTAL_DEF_(inline,let) operator /= (I_ t) noexcept -> auto & {return self() /= T(t);}
 
 		XTAL_DEF_(inline,let)
 		operator /= (simplex_variable_q auto const &f)

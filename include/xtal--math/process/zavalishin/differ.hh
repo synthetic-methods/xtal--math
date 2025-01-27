@@ -17,7 +17,7 @@ the result is renormalized w.r.t. the chain-rule of differentiation. \
 
 ///\note\
 The `method` uses local arena-like allocation to manage state. \
-Unless `As...` includes, `cached` the maximum `sizeof(input) + sizeof(modulator) <= 64`. \
+Unless `As...` includes, `stowed` the maximum `sizeof(input) + sizeof(modulator) <= 64`. \
 
 ///\todo\
 Enable logarithmic differentiation by including the original signal with the normalization factor? \
@@ -34,7 +34,7 @@ struct differ<U_pole[N_pole]>
 	using order_type = occur::inferred_t<struct ORDER, unsigned int, bond::seek_s<N_pole + 1>>;
 
 	using superkind = bond::compose<bond::tag<differ_t>
-	,	provision::cached<U_pole[N_pole << 1]>
+	,	provision::stowed<U_pole[N_pole << 1]>
 //	,	provision::example<>
 	,	typename order_type::template dispatch<>
 	>;
@@ -60,23 +60,23 @@ struct differ<U_pole[N_pole]>
 		method(auto const &u)
 		noexcept -> auto
 		{
-			auto [u_] = S_::cache(u);
+			auto [u_] = S_::stow(u);
 			return (u - u_);
 		}
 		template <int N_ord=1> requires in_n<N_ord, 1>
 		XTAL_DEF_(return,inline,let)
-		method(auto const &u, arrange::math::phason_q auto const &t_)
+		method(auto const &u, atom::math::phason_q auto const &t_)
 		noexcept -> auto
 		{
-			auto [u_] = S_::cache(u);
+			auto [u_] = S_::stow(u);
 			return (u - u_)*root_f<-1>(t_(1));
 		}
 		template <int N_ord=1> requires in_n<N_ord, 1>
 		XTAL_DEF_(return,inline,let)
-		method(auto const &u, auto const &v, arrange::math::phason_q auto const &t_)
+		method(auto const &u, auto const &v, atom::math::phason_q auto const &t_)
 		noexcept -> auto
 		{
-			auto [u_, v_] = S_::cache(u, v);
+			auto [u_, v_] = S_::stow(u, v);
 			return (u - u_)*root_f<-1>(t_(1) + v - v_);
 		}
 

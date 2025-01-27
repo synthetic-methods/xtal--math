@@ -1,8 +1,8 @@
 #pragma once
 #include "./any.hh"
 
-#include "../arrange/phason.hh"
-#include "../arrange/fourier/series.hh"
+#include "../atom/phason.hh"
+#include "../atom/fourier/series.hh"
 
 
 
@@ -28,16 +28,16 @@ template <vector_q A, typename ...As>
 struct phasor<A, As...>
 {
 	using _fix =         bond::fixture<A>;
-	using _ph = arrange::math::phason<A>;
+	using _ph = atom::math::phason<A>;
 	using coordinate_type = typename _ph::coordinate_type;
 	using inordinate_type = typename _ph::inordinate_type;
 	using   ordinate_type = typename _ph::  ordinate_type;
 
 	static auto constexpr N  = _std::extent_v<A>;
 
-	using U_lepton = arrange::math::fourier::series_t<coordinate_type[N]>;
-	using U_phason = arrange::math::phason_t<coordinate_type[N]>;
-	using V_phason = arrange::math::phason_t<inordinate_type[N]>;
+	using U_lepton = atom::math::fourier::series_t<coordinate_type[N]>;
+	using U_phason = atom::math::phason_t<coordinate_type[N]>;
+	using V_phason = atom::math::phason_t<inordinate_type[N]>;
 	
 	using semikind = bond::compose<void
 	//\

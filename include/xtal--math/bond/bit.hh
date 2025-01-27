@@ -302,10 +302,10 @@ noexcept -> auto
 	V       m = M | (o&X_fix::fraction.mask);
 	m  ^= z;
 	m  -= z;
-	return couple_t<V[2]>{m, n};
+	return atom::couple_t<V[2]>{m, n};
 }
 XTAL_DEF_(return,inline,let)
-bit_presentation_f(couple_q auto const &mn)
+bit_presentation_f(atom::couple_q auto const &mn)
 noexcept -> auto
 {
 	auto const &[m, n] = mn;

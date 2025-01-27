@@ -18,7 +18,7 @@ template <                                        class ..._s> concept  shaper_q
 
 ////////////////////////////////////////////////////////////////////////////////
 ///\
-Provides a specialization of `arrange::store`. \
+Provides a specialization of `atom::store`. \
 
 template <template <auto ...> class F>
 struct shaper

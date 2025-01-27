@@ -2,12 +2,12 @@
 #include "./any.hh"
 #include "./serial.hh"
 
-#include "../../process/power.hh"
 #include "../../process/pade/unity.hh"
 
 
+
 XTAL_ENV_(push)
-namespace xtal::arrange::math::fourier
+namespace xtal::atom::math::fourier
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -19,7 +19,7 @@ XTAL_DEF_(return,inline,let)
 series_f(auto &&...oo)
 noexcept -> auto
 {
-	return _detail::initialize<series_t>::template via<V>(XTAL_REF_(oo)...);
+	return _detail::build<series_t>::template with<V>(XTAL_REF_(oo)...);
 }
 
 
@@ -45,7 +45,8 @@ struct series<A>
 	template <class T>
 	class homotype : public holotype<T>
 	{
-		using  S_ = holotype<T>;
+		using S_ = holotype<T>;
+		using I_ = typename S_::initializer_list;
 
 	protected:
 		using          S_::N_data;
@@ -74,7 +75,7 @@ struct series<A>
 		}
 
 		//\
-		template <int N_count=N_data> requires complex_field_q<U_v1> and same_q<collate_t<U_v1[2]>, U_data>
+		template <int N_count=N_data> requires complex_field_q<U_v1> and same_q<couple_t<U_v1[2]>, U_data>
 		template <int N_count=N_data> requires complex_field_q<U_v1> and bond::dipack_q<U_data>
 		XTAL_DEF_(inline,let)
 		generate(U_v1 const &u1, U_v2 const &u2)
@@ -83,7 +84,7 @@ struct series<A>
 			auto &s = self();
 
 			using W1  = U_v1;
-			using U2  = collate_t<U_v2[2]>;
+			using U2  = couple_t<U_v2[2]>;
 			using W1_ = series_t<W1[N_data<<1U]>;
 			using U2_ = series_t<U2[N_data<<1U]>;
 			static_assert(sizeof(W1_) == sizeof(U2_));
@@ -251,18 +252,20 @@ struct series<A>
 		using `this` as the Fourier basis. \
 s
 		XTAL_DEF_(let)
-		convolve(isomorphic_q<T> auto &&y0, same_q<decltype(y0)> auto y1) const
+		convolve(isomorphic_q<T> auto &&y0, auto y1) const
 		noexcept -> decltype(auto)
 		{
+			static_assert(same_q<decltype(y0), decltype(y1)>);
 			return transform<-1>(transform<1>(XTAL_REF_(y0)) *= transform<1>(y1));
 		}
 		///\returns a new `series` representing the convolution of `y0` with `y1`, \
 		using `this` as the Fourier basis. \
 
 		XTAL_DEF_(return,inline,let)
-		convolution(isomorphic_q<T> auto y0, same_q<decltype(y0)> auto const &y1) const
+		convolution(isomorphic_q<T> auto y0, auto const &y1) const
 		noexcept -> auto
 		{
+			static_assert(same_q<decltype(y0), decltype(y1)>);
 			return convolve(XTAL_MOV_(y0), y1);
 		}
 
@@ -271,8 +274,8 @@ s
 
 		using S_::operator*=;
 
-		XTAL_DEF_(return,inline,let)  operator * (auto const &w)              const noexcept -> auto   {return twin() *=   w ;}
-		XTAL_DEF_(inline,let) operator *=(_std::initializer_list<U_data> w) noexcept -> auto & {return self() *= T(w);}
+		XTAL_DEF_(return,inline,let)  operator * (auto const &w) const noexcept -> auto   {return twin() *=   w ;}
+		XTAL_DEF_(inline,let)         operator *=(I_          w)       noexcept -> auto & {return self() *= T(w);}
 
 		XTAL_DEF_(let)
 		operator *=(T const &t)
@@ -298,13 +301,13 @@ s
 		
 		struct transverse
 		{
-			template <class R>
-			using holotype = typename group<A, _std::multiplies<void>>::template homotype<R>;
+			template <class Y>
+			using holotype = typename group<_std::multiplies<void>, A>::template homotype<Y>;
 
-			template <class R>
-			class homotype : public holotype<R>
+			template <class Y>
+			class homotype : public holotype<homotype<Y>>
 			{
-				using R_ = holotype<R>;
+				using R_ = holotype<homotype<Y>>;
 			
 			public:
 				using R_::R_;

@@ -40,7 +40,7 @@ TAG_("unity")
 	static constexpr T_alpha two =  2;
 	static constexpr T_alpha ten = 10;
 
-	using U_phi = arrange::math::phason_t<T_alpha[2]>;
+	using U_phi = atom::math::phason_t<T_alpha[2]>;
 
 	static_assert(same_q<T_alpha, decltype(U_phi{} (0))>);
 
@@ -64,7 +64,7 @@ TAG_("unity")
 		T_aphex foo{w_re*x_re, w_im*x_im}; foo *= y;
 		T_aphex bar{w_im*x_re, w_re*x_im}; bar *= y;
 
-		arrange::collate_t<T_alpha[4]> const o{foo.real(), bar.imag(), bar.real(), -foo.imag()};
+		atom::couple_t<T_alpha[4]> const o{foo.real(), bar.imag(), bar.real(), -foo.imag()};
 		TRUE_(check_f<-2>(o[0], 0.73258330748146527));
 		TRUE_(check_f<-2>(o[1], 0.10520194523965509));
 		TRUE_(check_f<-2>(o[2], 0.66421893908191321));
@@ -262,7 +262,7 @@ TAG_("unity")
 	TRY_("evaluation (fixed-point)")
 	{
 		//\
-		auto const [t0, t1] = arrange::math::phason_t<T_alpha[2]> {1.125, 0.0};
+		auto const [t0, t1] = atom::math::phason_t<T_alpha[2]> {1.125, 0.0};
 		T_alpha t0{1.125};
 
 		TRUE_(unity_check_f<0,  2>(t0));
