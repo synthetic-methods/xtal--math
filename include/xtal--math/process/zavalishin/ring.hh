@@ -110,7 +110,7 @@ struct ring<U_pole[N_pole]>
 		noexcept -> decltype(auto)
 		{
 			U_pole x_input{one};
-			if constexpr XTAL_TRY_(do) (x_input *= S_::sample().rate())
+			if constexpr XTAL_TRY_(do) (x_input *= S_::sampling().rate())
 			auto const s_damping = static_cast<U_pole>(S_::template head<damping_type>());
 			auto const y_balance = static_cast<U_pole>(S_::template head<balance_type>());
 			return S_::template method<Ns...>(U_pole{one}, s_scale, s_damping, y_balance) - term_f<-1, 2>(one, y_balance)*(x_input);

@@ -31,12 +31,13 @@ template <typename ...As> using    differ_t = process::confined_t<differ<As...>>
 template <class U_pole, int N_pole>
 struct differ<U_pole[N_pole]>
 {
-	using order_type = occur::inferred_t<struct ORDER, unsigned int, bond::seek_s<N_pole + 1>>;
+//	using sample_type = occur::sample_t<>;
+	using  order_type = occur::inferred_t<struct ORDER, unsigned int, bond::seek_s<N_pole + 1>>;
 
 	using superkind = bond::compose<bond::tag<differ_t>
 	,	provision::stowed<U_pole[N_pole << 1]>
-//	,	provision::example<>
-	,	typename order_type::template dispatch<>
+//	,	typename sample_type::template   attach<>
+	,	typename  order_type::template dispatch<>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>

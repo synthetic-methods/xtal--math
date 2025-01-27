@@ -37,8 +37,8 @@ TAG_("phasor")
 {
 	using namespace Eigen;
 	
-	using U_stored = provision::stored<unit_type[0x1000]>;
-	using U_example = provision::example<>;
+	using U_stored  = provision::stored<unit_type[0x1000]>;
+	using U_sampled = typename occur::sample_t<>::template attach<>;
 
 	using _Op = bond::fixture<>;
 	using T_sigma = typename _Op::sigma_type;
@@ -55,11 +55,11 @@ TAG_("phasor")
 	using W_phi = bond::repack_t<_phi>;
 	using X_phi = atom::math::phason_t<_phi>;
 	
-	using Y_chi = process::conveyor_t<phasor<_phi, provision::example<>>>;
+	using Y_chi = process::conveyor_t<phasor<_phi, U_sampled>>;
 //	using Y_chi = process::conveyor_t<phasor<_phi>>;
 	using Y_phi = phasor_t<_phi>;
 	//\
-	using Y_psi = phasor_t<_phi, U_example>;
+	using Y_psi = phasor_t<_phi, U_sampled>;
 	using Y_psi = process::lift_t<bond::repack_t<_phi>, phasor<_phi>>;
 	//\
 	using Y_eig = process::link_t<T_eigenrow, phasor<_phi>>;
@@ -70,7 +70,7 @@ TAG_("phasor")
 	using Z_psi = processor::monomer_t<Y_psi, U_stored>;
 	//\
 	using Z_eig = processor::monomer_t<process::lift<invoke_t<T_eigenrow>>, Y_chi>;
-//	using Z_eig = processor::monomer_t<confined_t<lift<invoke_t<_std::array<T_cell, 2>>>, phasor<_phi, provision::example<>>>>;
+//	using Z_eig = processor::monomer_t<confined_t<lift<invoke_t<_std::array<T_cell, 2>>>, phasor<_phi, U_sampled>>>;
 
 	using _fix = bond::template fixture<typename X_phi::value_type>;
 

@@ -78,8 +78,6 @@ struct phason<A>
 	protected:
 		using          S_::N_data;
 		using typename S_::U_data;
-		using typename S_::V_data;
-		using typename S_::W_data;
 
 	public:// TYPE
 		using initializer_list = I_;
@@ -108,7 +106,7 @@ struct phason<A>
 		:	S_(n)
 		{}
 
-		XTAL_NEW_(explicit) homotype(continuous_field_q auto &&...oo)
+		XTAL_NEW_(explicit) homotype(make_q<U_data> auto &&...oo)
 		noexcept
 		:	homotype(sizeof...(oo))
 		{

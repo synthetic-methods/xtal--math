@@ -38,6 +38,7 @@ template <typename ...As> using    filter_t = process::confined_t<filter<As...>>
 template <class U_pole, int N_pole>
 struct filter<U_pole[N_pole]>
 {
+	using   sample_type = occur::sample_t<>;
 	using     zoom_type = occur::inferred_t<struct     ZOOM, typename bond::fixture<>::alpha_type>;
 	using   select_type = occur::inferred_t<struct   SELECT, unsigned int, bond::word<2>>;
 	using    order_type = occur::inferred_t<struct    ORDER, unsigned int, bond::seek_s<N_pole + 1>>;
@@ -46,7 +47,7 @@ struct filter<U_pole[N_pole]>
 
 	using superkind = bond::compose<bond::tag<filter_t>
 	,	provision::stowed<U_pole[N_pole << 1]>
-	,	provision::example<>
+	,	typename   sample_type::template   attach<>
 	,	typename     zoom_type::template   attach<>
 	,	typename   select_type::template dispatch<>
 	,	typename    order_type::template dispatch<>
