@@ -43,7 +43,7 @@ TAG_("wnity")
 	static constexpr T_alpha two =  2;
 	static constexpr T_alpha ten = 10;
 
-	using U_phi = arrange::math::phason_t<T_alpha[2]>;
+	using U_phi = atom::math::phason_t<T_alpha[2]>;
 
 	auto mt19937_f = typename _fix::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());

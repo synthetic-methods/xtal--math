@@ -45,7 +45,7 @@ struct filter<U_pole[N_pole]>
 	using    limit_type = occur::inferred_t<struct    LIMIT, unsigned int, bond::word<2>>;
 
 	using superkind = bond::compose<bond::tag<filter_t>
-	,	provision::cached<U_pole[N_pole << 1]>
+	,	provision::stowed<U_pole[N_pole << 1]>
 	,	provision::example<>
 	,	typename     zoom_type::template   attach<>
 	,	typename   select_type::template dispatch<>
@@ -68,11 +68,11 @@ struct filter<U_pole[N_pole]>
 		{
 			if constexpr (N_ion == +1) {
 				if constexpr (in_q<decltype(o), order_type, topology_type>) {
-					S_::cache(constant_n<0>);
+					S_::stow(constant_n<0>);
 				}
 				if constexpr (occur::stage_q<decltype(o)>) {
 					if (o == 0) {
-						S_::cache(constant_n<0>);
+						S_::stow(constant_n<0>);
 					}
 				}
 			}
@@ -96,8 +96,8 @@ struct filter<U_pole[N_pole]>
 				return XTAL_REF_(x_input);
 			}
 			XTAL_0IF (0 == N_top) {
-				using U_outputs = arrange::collate_t<X[N_ord + 1]>;
-				using U_scalars = arrange::collate_t<W[N_ord + 1]>;
+				using U_outputs = atom::couple_t<X[N_ord + 1]>;
+				using U_scalars = atom::couple_t<W[N_ord + 1]>;
 				union U_io {U_outputs outputs; U_scalars scalars;};
 
 				U_io io{[=] () XTAL_0FN -> U_scalars {
@@ -120,7 +120,16 @@ struct filter<U_pole[N_pole]>
 				//\
 				W const  y0 = one;
 				W const  y0 = term_f<-1, 2>(one, y1);
-				return term_f(y0*get<I0>(io.outputs), y1, get<I1>(io.outputs));
+				if constexpr (I_ == 0) {
+					static_assert(I0 == 0);
+					static_assert(I1 == 1);
+				}
+				if constexpr (I1 < N_ord) {
+					return term_f(y0*get<I0>(io.outputs), y1, get<I1>(io.outputs));
+				}
+				else {
+					return y0;
+				}
 			}
 			XTAL_0IF (1 == N_top) {
 				return XTAL_REF_(x_input);
@@ -137,19 +146,19 @@ struct filter<U_pole[N_pole]>
 			using X = XTAL_ALL_(x_input);
 			using W = absolve_u<X>;
 
-			using U_scalars_ = arrange::collate_t<W[N_ord]>;
-			using U_outputs_ = arrange::collate_t<X[N_ord]>;
-			using U_poles_   = arrange::collate_t<X[N_ord]>;
+			using U_scalars_ = atom::couple_t<W[N_ord]>;
+			using U_outputs_ = atom::couple_t<X[N_ord]>;
+			using U_poles_   = atom::couple_t<X[N_ord]>;
 
 			auto  scalars = io.scalars; auto scalars_ = scalars.self(constant_n<N_ord>);
 			auto &outputs = io.outputs; auto outputs_ = outputs.self(constant_n<N_ord>);
 
-			auto  cachet  = S_::template cache<U_poles_, U_poles_>();
-			auto &states_ = get<0>(cachet);
-			auto &slopes_ = get<1>(cachet);
+			auto  stowed  = S_::template stow<U_poles_, U_poles_>();
+			auto &states_ = get<0>(stowed);
+			auto &slopes_ = get<1>(stowed);
 
 		//	Initialize `scalars*`:
-			slopes_.template unzero<1>();
+			slopes_.template blanket<1>();
 			slopes_ *= scalars_;
 
 		//	Initialize `outputs*`:

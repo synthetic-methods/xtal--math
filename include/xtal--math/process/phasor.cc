@@ -2,7 +2,7 @@
 #include "./any.cc"
 #include "./phasor.hh"// testing...
 
-#include "../arrange/phason.hh"
+#include "../atom/phason.hh"
 
 
 
@@ -53,7 +53,7 @@ TAG_("phasor")
 
 	using  _phi = T_cell[2];
 	using W_phi = bond::repack_t<_phi>;
-	using X_phi = arrange::math::phason_t<_phi>;
+	using X_phi = atom::math::phason_t<_phi>;
 	
 	using Y_chi = process::conveyor_t<phasor<_phi, provision::example<>>>;
 //	using Y_chi = process::conveyor_t<phasor<_phi>>;

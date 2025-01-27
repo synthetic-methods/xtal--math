@@ -1,5 +1,5 @@
 #include "./any.cc"
-#include "./arrange/all.cc"
+#include "./atom/all.cc"
 #include "./occur/all.cc"
 #include "./process/all.cc"
 #include "./processor/all.cc"

@@ -270,7 +270,9 @@ auto plot_f(int const i)
 	k &= -(I_abs <= i_abs);
 	k &= -(q_pos or q_neg);
 	k &= 0b11;
-	return _std::array<char, 4>{' ', ',', '|', '\''}[k];
+
+	_std::array<char, 4> constexpr table{' ', ',', '|', '\''};
+	return table[k];
 }
 template <int N, int I>
 auto plot_f(double i)

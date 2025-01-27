@@ -86,16 +86,16 @@ struct ring<U_pole[N_pole]>
 					case -1: {
 						auto constexpr N_thresh = _fix::haplo_f(7);
 						auto constexpr M_thresh = square_f(N_thresh);
-						using          U_poles_ = arrange::collate_t<U_pole[N_pole]>;
+						using          U_poles_ = atom::couple_t<U_pole[N_pole]>;
 						//\note\
 						Because `N_ord` may be less than `N_pole`, \
-						access to `U_poles_` requres resetting the `cache` when `N_ord` changes. \
+						access to `U_poles_` requres resetting `stow` when `N_ord` changes. \
 
 						//\note\
 						May need to finess checking the zeroness of `states_`, \
 						since the components are scaled by powers of gain. \
 
-						auto const [states_] = S_::template cache<U_poles_>();
+						auto const [states_] = S_::template stow<U_poles_>();
 						return bond::pack_dot_f(states_) < M_thresh and S_::template fuse<N_ion>(XTAL_REF_(o));
 					}
 				}

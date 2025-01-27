@@ -7,7 +7,7 @@
 
 
 XTAL_ENV_(push)
-namespace xtal::arrange::math::fourier
+namespace xtal::atom::math::fourier
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -20,7 +20,7 @@ XTAL_DEF_(return,inline,let)
 serial_f(auto &&...oo)
 noexcept -> auto
 {
-	return _detail::initialize<serial_t>::template via<V>(XTAL_REF_(oo)...);
+	return _detail::build<serial_t>::template with<V>(XTAL_REF_(oo)...);
 }
 
 
@@ -42,8 +42,9 @@ struct serial<A>
 	template <class T>
 	class homotype : public holotype<T>
 	{
-		using  S_ = holotype<T>;
-	
+		using S_ = holotype<T>;
+		using I_ = typename S_::initializer_list;
+
 	protected:
 		using          S_::N_data;
 		using typename S_::U_data;
@@ -59,8 +60,8 @@ struct serial<A>
 	public:// OPERATE
 		using S_::operator*=;
 
-		XTAL_DEF_(return,inline,let)  operator  * (auto           const &t) const noexcept -> auto   {return twin() *=   t ;}
-		XTAL_DEF_(inline,let) operator  *=(initializer_s<U_data> t)       noexcept -> auto & {return self() *= T(t);}
+		XTAL_DEF_(return,inline,let)  operator  * (auto const &t) const noexcept -> auto   {return twin() *=   t ;}
+		XTAL_DEF_(inline,let)         operator  *=(I_          t)       noexcept -> auto & {return self() *= T(t);}
 
 		///\
 		Multiplication by linear convolution, truncated by `N_data`. \
