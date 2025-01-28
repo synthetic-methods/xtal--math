@@ -75,7 +75,7 @@ struct   power<M_exp, Ms...>
 			if constexpr (M_exp == 2) {
 				if constexpr (complex_variable_q<decltype(o)>) {
 					auto const &[x, y] = destruct_f(o);
-					auto const      u  = _xtd::accumulator(x*x, y*y, _fix::alpha_f(-1));
+					auto const      u  = accumulator_f(x*x, y*y, _fix::alpha_f(-1));
 					auto const      v  = two*x*y;
 					return {u, v};
 				}
@@ -101,8 +101,8 @@ struct   power<M_exp, Ms...>
 					auto const &[x, y] = destruct_f(o);
 					auto const      xx =  x*x;
 					auto const     _yy = -y*y;
-					auto const      u  =  x*_xtd::accumulator( xx, _yy, _fix::alpha_f(3));
-					auto const      v  =  y*_xtd::accumulator(_yy,  xx, _fix::alpha_f(3));
+					auto const      u  =  x*accumulator_f( xx, _yy, _fix::alpha_f(3));
+					auto const      v  =  y*accumulator_f(_yy,  xx, _fix::alpha_f(3));
 					return {u, v};
 				}
 				else {
