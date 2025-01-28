@@ -44,18 +44,18 @@ noexcept -> auto
 			return XTAL_REF_(w);
 		}
 		XTAL_0IF (M_pow == 1 and M_alt ==  1) {
-			return _xtd::accumulator(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
+			return accumulator_f(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
 		}
 		XTAL_0IF (M_pow == 1 and M_alt == -1) {
-			return _xtd::accumulator(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)..., Y{M_alt});
+			return accumulator_f(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)..., Y{M_alt});
 		}
 		XTAL_0IF (M_pow == 2 and M_alt ==  1) {
 			auto const y = (XTAL_REF_(xs) *...* XTAL_REF_(x));
-			return _xtd::accumulator(XTAL_REF_(w), y, y);
+			return accumulator_f(XTAL_REF_(w), y, y);
 		}
 		XTAL_0IF (M_pow == 2 and M_alt == -1) {
 			auto const y = (XTAL_REF_(xs) *...* XTAL_REF_(x));
-			return _xtd::accumulator(XTAL_REF_(w), y, y, Y{M_alt});
+			return accumulator_f(XTAL_REF_(w), y, y, Y{M_alt});
 		}
 		XTAL_0IF_(void)
 	}

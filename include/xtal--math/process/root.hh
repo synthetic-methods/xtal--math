@@ -105,7 +105,7 @@ struct root
 				z *= _fix::haplo_f(M_exp >> 1);
 				auto const x_re = z.real();
 				auto const x_im = z.imag();
-				auto const x_a2 = _xtd::accumulator(x_re*x_re, x_im, x_im);
+				auto const x_a2 = accumulator_f(x_re*x_re, x_im, x_im);
 				auto const x_a1 = root_t<2>::template static_method<I_lim>(x_a2);
 
 				auto y_re = x_a1 + x_re, v_re = y_re;
@@ -193,16 +193,16 @@ struct root
 			XTAL_0IF_(consteval) {
 				auto v = z;
 				for (unsigned i{}; i < 0x10 and v != y; ++i) {
-					y *= _xtd::accumulator(k_, z_, power_f<M_exp_mag>(v = y));
+					y *= accumulator_f(k_, z_, power_f<M_exp_mag>(v = y));
 				}
 				{
-					y /= _xtd::accumulator(h, h, z*power_f<M_exp_mag>(v = y));
+					y /= accumulator_f(h, h, z*power_f<M_exp_mag>(v = y));
 				}
 			}
 			XTAL_0IF_(else) {
 				#pragma unroll
 				for (unsigned i{}; i < I_lim; ++i) {
-					y *= _xtd::accumulator(k_, z_, power_f<M_exp_mag>(y));
+					y *= accumulator_f(k_, z_, power_f<M_exp_mag>(y));
 				}
 			}
 			return y;

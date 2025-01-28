@@ -14,13 +14,10 @@ namespace xtal::atom::math::fourier
 template <class   ..._s>	struct   series;
 template <class   ..._s>	using    series_t = typename series<_s...>::type;
 template <class   ...Ts>	concept  series_q = bond::tag_p<series_t, Ts...>;
-template <class  V=void>
-XTAL_DEF_(return,inline,let)
-series_f(auto &&...oo)
-noexcept -> auto
-{
-	return _detail::build<series_t>::template with<V>(XTAL_REF_(oo)...);
-}
+
+XTAL_FX0_(alias) (template <auto f=null_type{}>
+XTAL_DEF_(return,inline,let) series_f(auto &&...oo),
+	_detail::build<series_t>::template static_factory<f>(XTAL_REF_(oo)...))
 
 
 ////////////////////////////////////////////////////////////////////////////////

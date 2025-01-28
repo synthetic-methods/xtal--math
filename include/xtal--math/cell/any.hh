@@ -1,13 +1,13 @@
 #pragma once
 #include "../any.hh"
 
-#include "../flow/any.hh"
+#include "../bond/all.hh"///NOTE: `bond/all` is included with all dependent `#import`s! 
 
 
 
 
 XTAL_ENV_(push)
-namespace xtal::process::math
+namespace xtal::cell::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 

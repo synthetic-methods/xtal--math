@@ -34,13 +34,10 @@ template <class   ...Ts>	concept          phason_q = bond::tag_p<phason_t, Ts...
 template <class   ...Ts>	concept     real_phason_q = bond::tag_p<phason_t, Ts...> and real_variable_q<initializer_u<Ts>...>;
 template <class   ...Ts>	concept  simplex_phason_q = bond::tag_p<phason_t, Ts...> and simplex_field_q<initializer_u<Ts>...>;
 template <class   ...Ts>	concept  complex_phason_q = bond::tag_p<phason_t, Ts...> and complex_field_q<initializer_u<Ts>...>;
-template <class  V=void>
-XTAL_DEF_(return,inline,let)
-phason_f(auto &&...oo)
-noexcept -> auto
-{
-	return _detail::build<phason_t>::template with<V>(XTAL_REF_(oo)...);
-}
+
+XTAL_FX0_(alias) (template <auto f=null_type{}>
+XTAL_DEF_(return,inline,let) phason_f(auto &&...oo),
+	_detail::build<phason_t>::template static_factory<f>(XTAL_REF_(oo)...))
 
 
 ////////////////////////////////////////////////////////////////////////////////
