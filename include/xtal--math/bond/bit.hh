@@ -30,7 +30,7 @@ XTAL_DEF_(return,inline,let)
 bit_depth_f(constant_q auto w)
 noexcept -> int
 {
-	return constant_n<bit_depth_f(w())>;
+	return constant_t<bit_depth_f(w())>{};
 }
 
 
@@ -53,7 +53,7 @@ XTAL_DEF_(return,inline,let)
 bit_sign_f(constant_q auto w)
 noexcept -> auto
 {
-	return constant_n<bit_sign_f(w())>;
+	return constant_t<bit_sign_f(w())>{};
 }
 
 
@@ -82,7 +82,7 @@ XTAL_DEF_(return,inline,let)
 bit_count_f(constant_q auto w)
 noexcept -> auto
 {
-	return constant_n<bit_count_f(w())>;
+	return constant_t<bit_count_f(w())>{};
 }
 
 
@@ -170,7 +170,7 @@ XTAL_DEF_(return,inline,let)
 bit_floor_f(constant_q auto w)
 noexcept -> auto
 {
-	return constant_n<bit_floor_f<N_zero>(w())>;
+	return constant_t<bit_floor_f<N_zero>(w())>{};
 }
 
 
@@ -228,7 +228,7 @@ XTAL_DEF_(return,inline,let)
 bit_ceiling_f(constant_q auto w)
 noexcept -> auto
 {
-	return constant_n<bit_ceiling_f<N_zero>(w())>;
+	return constant_t<bit_ceiling_f<N_zero>(w())>{};
 }
 
 
@@ -269,7 +269,7 @@ XTAL_DEF_(return,inline,let)
 bit_reverse_f(constant_q auto w, int const &n_subdepth)
 noexcept -> auto
 {
-	return constant_n<bit_reverse_f(w(), n_subdepth)>;
+	return constant_t<bit_reverse_f(w(), n_subdepth)>{};
 }
 template <int N_subdepth>
 XTAL_DEF_(return,inline,let)
@@ -334,7 +334,7 @@ noexcept -> auto
 	XTAL_0IF (    real_q<Y>) {
 		return Y_fix::haplo_f(Y_fix::full.depth);
 	}
-	XTAL_0IF_(void)
+	XTAL_0IF_(abort)
 }
 template <class Y_return=void>
 XTAL_DEF_(return,inline,let)
@@ -365,7 +365,7 @@ noexcept -> auto
 		return Y_fix::alpha_f(x)*Y_fix::haplo_f(X_fix::full.depth);
 		return Y_fix::alpha_f(static_cast<X_delta>(x))*Y_fix::haplo_f(X_fix::full.depth);
 	}
-	XTAL_0IF_(void)
+	XTAL_0IF_(abort)
 }
 template <class Y_return=void>
 XTAL_DEF_(return,inline,let)
@@ -417,7 +417,7 @@ noexcept -> auto
 		XTAL_0IF (cardinal_q<Y>) {
 			return _xtd::bit_cast<Y>(bit_fraction_f<Y_delta>(x));
 		}
-		XTAL_0IF_(void)
+		XTAL_0IF_(abort)
 	}
 	XTAL_0IF_(else) {
 		x -= round(x);
@@ -431,7 +431,7 @@ noexcept -> auto
 		XTAL_0IF (cardinal_q<Y>) {
 			return _xtd::bit_cast<Y>(bit_fraction_f<Y_delta>(x));
 		}
-		XTAL_0IF_(void)
+		XTAL_0IF_(abort)
 	}
 }
 template <class T_return=void>

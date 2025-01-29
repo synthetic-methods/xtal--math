@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-#include "../../provision/shaper.hh"
+#include "../../provision/saturated.hh"
 
 
 
@@ -15,7 +15,7 @@ Integrating filter based on the Topology Preserving Transform (TPT), \
 described in _The Art of VA Synthesis_ by Vadim Zavalishin. \
 
 ///\
-The non-linearity is supplied as a `process`-`template` using `provision::shaper`. \
+The non-linearity is supplied as a `process`-`template` using `provision::saturated`. \
 The process must conform to the signature `<M_ism, M_car>`, \
 defining a stateless `static_method<N_var, ...>` within the `subtype`. \
 
@@ -69,11 +69,11 @@ struct filter<U_pole[N_pole]>
 		{
 			if constexpr (N_ion == +1) {
 				if constexpr (in_q<decltype(o), order_type, topology_type>) {
-					S_::stow(constant_n<0>);
+					S_::stow(constant_t<0>{});
 				}
 				if constexpr (occur::stage_q<decltype(o)>) {
 					if (o == 0) {
-						S_::stow(constant_n<0>);
+						S_::stow(constant_t<0>{});
 					}
 				}
 			}
@@ -151,8 +151,8 @@ struct filter<U_pole[N_pole]>
 			using U_outputs_ = atom::couple_t<X[N_ord]>;
 			using U_poles_   = atom::couple_t<X[N_ord]>;
 
-			auto  scalars = io.scalars; auto scalars_ = scalars.self(constant_n<N_ord>);
-			auto &outputs = io.outputs; auto outputs_ = outputs.self(constant_n<N_ord>);
+			auto  scalars = io.scalars; auto scalars_ = scalars.self(constant_t<N_ord>{});
+			auto &outputs = io.outputs; auto outputs_ = outputs.self(constant_t<N_ord>{});
 
 			auto  stowed  = S_::template stow<U_poles_, U_poles_>();
 			auto &states_ = get<0>(stowed);
@@ -169,7 +169,7 @@ struct filter<U_pole[N_pole]>
 			});
 			get<N_ord>(outputs) = root_f<-1, (1)>(term_f(one, get<N_ord - 1>(outputs_), s_scale));
 
-			auto constexpr K_lim = provision::shaper_q<S_> and above_n<0, N_lim>;
+			auto constexpr K_lim = provision::saturated_q<S_> and above_n<0, N_lim>;
 
 		//	Integrate `states*` with `scalars*` and `outputs*`:
 			bond::seek_forward_f<1 + 1*K_lim>([&] (auto K) XTAL_0FN {
@@ -184,7 +184,7 @@ struct filter<U_pole[N_pole]>
 					}
 					XTAL_0IF (1 == K_lim) {
 						auto const exput = term_f(get<I>(states_), get<I + 1>(outputs), s_scale);
-						auto const slope = S_::template shape_t<-1, -1>::template static_method<N_lim, Ns...>(exput) + (get<I>(scalars_) - one);
+						auto const slope = S_::template saturate_t<-1, -1>::template static_method<N_lim, Ns...>(exput) + (get<I>(scalars_) - one);
 						get<I>(outputs_) = exput;
 						get<I>( slopes_) = slope;
 					}

@@ -27,7 +27,7 @@ noexcept -> decltype(auto)
 template <auto M_val>
 struct dilate
 {
-	static auto constexpr N_val = constant_n<M_val>;
+	static auto constexpr N_val = constant_t<M_val>{};
 
 	XTAL_DEF_(return,inline,set)
 	after_f(auto &&o)

@@ -122,12 +122,12 @@ struct   power<M_exp, Ms...>
 		requires un_n<0, bond::fixture<int>::template expound_f<2>(M_exp)>
 		and      un_n<0, bond::fixture<int>::template expound_f<3>(M_exp)>
 		{
-			using O = XTAL_ALL_(o);
+			using U = XTAL_ALL_(o);
 			XTAL_IF0
-			XTAL_0IF (atom::couple_q<O>) {
-				return O::template static_map<[] XTAL_0FN_(alias) (static_method<Ns...>)>(o);
+			XTAL_0IF (atom::couple_q<U>) {
+				return U::template zip_from<[] XTAL_0FN_(alias) (static_method<Ns...>)>(o);
 			}
-			XTAL_0IF (M_exp   == 0) {return                             O{1};}
+			XTAL_0IF (M_exp   == 0) {return                             U{1};}
 			XTAL_0IF (M_exp   == 1) {return                             o   ;}
 			XTAL_0IF (M_exp%3 == 0) {return power_f<M_exp/3>(power_f<3>(o)) ;}
 			XTAL_0IF (M_exp%2 == 0) {return power_f<M_exp/2>(power_f<2>(o)) ;}

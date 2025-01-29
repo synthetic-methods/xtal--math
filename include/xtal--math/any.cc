@@ -18,7 +18,7 @@ noexcept -> decltype(auto)
 	return Y{objective_f(o.real()), objective_f(o.imag())};
 }
 XTAL_DEF_(return,inline,let)
-injective_f(auto &&o)
+dinormalize_f(auto &&o)
 noexcept -> decltype(auto)
 requires requires {o.real(); o.imag();}
 {
@@ -52,7 +52,7 @@ struct complexion
 	noexcept -> target_type
 	requires un_n<requires {t.real(); t.imag();}>
 	{
-		auto const [s_re, s_im] = injective_f(s);
+		auto const [s_re, s_im] = dinormalize_f(s);
 		auto const s_abs = t/(s_re*s_re + s_im*s_im);
 		return {s_abs*s_re, -s_abs*s_im};
 	}
@@ -81,8 +81,8 @@ struct complexion
 	operator* (source_type const &s, source_type const &t)
 	noexcept -> target_type
 	{
-		auto const [s_re, s_im] = injective_f(s);
-		auto const [t_re, t_im] = injective_f(t);
+		auto const [s_re, s_im] = dinormalize_f(s);
+		auto const [t_re, t_im] = dinormalize_f(t);
 		return {s_re*t_re - s_im*t_im, s_im*t_re + s_re*t_im};
 	}
 	XTAL_DEF_(return,inline,friend,let)
@@ -90,8 +90,8 @@ struct complexion
 	noexcept -> target_type
 	requires un_n<isotropic_q<source_type, target_type>>
 	{
-		auto const [s_re, s_im] = injective_f(s);
-		auto const [t_re, t_im] = injective_f(t);
+		auto const [s_re, s_im] = dinormalize_f(s);
+		auto const [t_re, t_im] = dinormalize_f(t);
 		return {s_re*t_re - s_im*t_im, s_im*t_re + s_re*t_im};
 	}
 	template <class T> requires un_n<isotropic_q<T, source_type>> and un_n<isotropic_q<T, target_type>>
@@ -100,8 +100,8 @@ struct complexion
 	noexcept -> target_type
 	requires in_n<requires {t.real()*t.imag();}>
 	{
-		auto const [s_re, s_im] = injective_f(s);
-		auto const [t_re, t_im] = injective_f(t);
+		auto const [s_re, s_im] = dinormalize_f(s);
+		auto const [t_re, t_im] = dinormalize_f(t);
 		return {s_re*t_re - s_im*t_im, s_im*t_re + s_re*t_im};
 	}
 //	Scalar multiplication:
@@ -147,7 +147,7 @@ struct complexion
 	requires in_n<requires {t.real() + t.imag();}>
 	{
 		auto const [s_re, s_im] = reinterpret_cast<value_type const(&)[2]>(s);
-		auto const [t_re, t_im] = injective_f(t);
+		auto const [t_re, t_im] = dinormalize_f(t);
 		return {s_re + t_re, s_re + t_im};
 	}
 //	Scalar addition:
@@ -318,7 +318,6 @@ TAG_("any")
 		Y_aphex baz = car*car + bar;
 		Y_aphex baz = _std::exp(bar) * car;
 
-	//	echo(baz.real(0), baz.real(1));
 		TRUE_(true);
 
 	}

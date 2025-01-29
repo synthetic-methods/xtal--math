@@ -166,7 +166,6 @@ TAG_("symbol")
 		using W = symbol_t<T_alpha[N]>;
 		W w; w.template characterize<2>();
 		_detail::apply_to<[] XTAL_0FN_(alias) (_fix::template trim_f<16>)>(w);
-	//	echo(w);
 	}
 	/***/
 }

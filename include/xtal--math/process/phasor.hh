@@ -27,11 +27,11 @@ Accommodate `std::complex` `value_type`s? \
 template <vector_q A, typename ...As>
 struct phasor<A, As...>
 {
-	using _fix =         bond::fixture<A>;
-	using _ph = atom::math::phason<A>;
-	using coordinate_type = typename _ph::coordinate_type;
-	using inordinate_type = typename _ph::inordinate_type;
-	using   ordinate_type = typename _ph::  ordinate_type;
+	using _fix = bond::fixture<A>;
+	using _phi = atom::math::phason<A>;
+	using coordinate_type = typename _phi::coordinate_type;
+	using inordinate_type = typename _phi::inordinate_type;
+	using   ordinate_type = typename _phi::  ordinate_type;
 
 	static auto constexpr N  = _std::extent_v<A>;
 
@@ -55,7 +55,6 @@ struct phasor<A, As...>
 	{
 		static_assert(any_q<S>);
 		using S_ = bond::compose_s<S, superkind>;
-		using U_ = typename S_::head_type;
 
 	public:// CONSTRUCT
 		using S_::S_;
@@ -70,7 +69,7 @@ struct phasor<A, As...>
 		///\todo\
 		...find a cleaner way to define the conversion, perhaps via `refer`?
 
-		XTAL_FX4_(alias) (XTAL_DEF_(implicit operator) U_(), head())
+		XTAL_FX4_(alias) (XTAL_DEF_(implicit operator) typename S_::head_type(), head())
 		
 		XTAL_DEF_(return,inline,set)
 		bias()
@@ -89,9 +88,10 @@ struct phasor<A, As...>
 		
 		template <auto ...Is> requires (0 == sizeof...(Is))
 		XTAL_DEF_(return,inline,let)
-		method(subarray_q<N> auto &&a)
+		method(fixed_shaped_q auto &&a)
 		noexcept -> decltype(auto)
 		{
+			static_assert(fixed_shaped<decltype(a)>::size() <= N);
 			(void) S_::template flux<+1>(XTAL_REF_(a));
 			return method();
 		}
@@ -156,7 +156,6 @@ struct phasor<A, As...>
 	{
 		static_assert(any_q<S>);
 		using S_ = bond::compose_s<S, semikind>;
-		using U_ = typename S_::head_type;
 
 	public:// ACCESS
 		using S_::S_;
@@ -166,7 +165,7 @@ struct phasor<A, As...>
 		///\note\
 		This is defined in-case `refine_head` is bypassed...
 
-		XTAL_FX4_(alias) (XTAL_DEF_(implicit operator) U_(), head())
+		XTAL_FX4_(alias) (XTAL_DEF_(implicit operator) typename S_::head_type(), head())
 		
 	public:// REEVALUATION
 		///\returns the current differential after scaling the incoming `phi` by `co`. \
@@ -180,7 +179,7 @@ struct phasor<A, As...>
 		noexcept -> auto
 			requires same_q<U_phason, typename S_::template head_t<constant_t<1>>>
 		{
-			static_assert(bond::dipack_q<U_phason>);
+			static_assert(2 == U_phason::size());
 
 			auto &_phi = S_::template head<1>();
 			auto &_psi = S_::template head<0>();

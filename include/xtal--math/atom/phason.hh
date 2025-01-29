@@ -35,13 +35,21 @@ template <class   ...Ts>	concept     real_phason_q = bond::tag_p<phason_t, Ts...
 template <class   ...Ts>	concept  simplex_phason_q = bond::tag_p<phason_t, Ts...> and simplex_field_q<initializer_u<Ts>...>;
 template <class   ...Ts>	concept  complex_phason_q = bond::tag_p<phason_t, Ts...> and complex_field_q<initializer_u<Ts>...>;
 
-XTAL_FX0_(alias) (template <auto f=null_type{}>
-XTAL_DEF_(return,inline,let) phason_f(auto &&...oo),
-	_detail::build<phason_t>::template static_factory<f>(XTAL_REF_(oo)...))
+
+XTAL_FX0_(alias) (template <auto f=_std::identity{}>
+XTAL_DEF_(return,inline,let)
+phason_f(auto &&...oo),
+	_detail::factory<phason_t>::
+		template make<f>(XTAL_REF_(oo)...))
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
+template <scalar_q ..._s> requires common_q<_s...>
+struct phason<_s ...>
+:	phason<common_t<_s...>[sizeof...(_s)]>
+{
+};
 template <vector_q A> requires integral_variable_q<absolve_u<A>>
 struct phason<A>
 :	grade<A>
@@ -52,7 +60,8 @@ struct phason<A>
 {
 	static auto constexpr M_data = _std::extent_v<based_t<A>>;
 
-	using coordinate_type = valued_u<A>;
+	using coordinate_type = array_valued_u<A>;
+	static_assert(continuous_field_q<coordinate_type>);
 
 	using U_    = bond::  forge<coordinate_type>;
 	using U_fix = bond::fixture<coordinate_type>;
@@ -70,93 +79,90 @@ struct phason<A>
 	class homotype : public holotype<T>
 	{
 		using S_ = holotype<T>;
-		using I_ = _std::initializer_list<coordinate_type>;
-
-	protected:
-		using          S_::N_data;
-		using typename S_::U_data;
 
 	public:// TYPE
-		using initializer_list = I_;
-
-		XTAL_DEF_(return,inline,set)   ordinate(coordinate_type const &co) noexcept {return bond::math::bit_fraction_f<  ordinate_type>(co);}
-		XTAL_DEF_(return,inline,set) coordinate(  ordinate_type const & o) noexcept {return bond::math::bit_fraction_f<coordinate_type>( o);}
+		using typename S_::value_type;
 
 	public:// ACCESS
+		using S_::size;
 		using S_::self;
 		using S_::twin;
+
+		static auto constexpr   ordinate = [] XTAL_0FN_(alias) (bond::math::bit_fraction_f<  ordinate_type>);
+		static auto constexpr coordinate = [] XTAL_0FN_(alias) (bond::math::bit_fraction_f<coordinate_type>);
 
 	public:// CONSTRUCT
 	//	using S_::S_;
 	~	homotype()                 noexcept=default;
-	//	homotype()                 noexcept=default;
+		homotype()                 noexcept=default;
 		XTAL_NEW_(copy) (homotype, noexcept=default)
 		XTAL_NEW_(move) (homotype, noexcept=default)
 
-		XTAL_NEW_(implicit) homotype()
-		noexcept
-		:	homotype(size_type{0})
-		{}
-		
-		XTAL_NEW_(explicit) homotype(same_q<size_type> auto const n)
-		noexcept
-		:	S_(n)
-		{}
-
-		XTAL_NEW_(explicit) homotype(make_q<U_data> auto &&...oo)
-		noexcept
-		:	homotype(sizeof...(oo))
-		{
-			operator>>=({XTAL_REF_(oo)...});
-		}
-		XTAL_NEW_(implicit) homotype(I_ o)
-		noexcept
-		:	homotype(count_f(o))
-		{
-			operator>>=(XTAL_MOV_(o));
-		}
 		XTAL_NEW_(explicit) homotype(iterable_q auto &&o)
 		noexcept
-		:	homotype(count_f(o))
+		:	S_(count_f(o))
 		{
 			operator>>=(XTAL_REF_(o));
+		}
+		XTAL_NEW_(implicit) homotype(_std::initializer_list<coordinate_type> o)
+		noexcept
+		:	S_(count_f(o))
+		{
+			operator>>=(XTAL_MOV_(o));
 		}
 		
 	public:// RECONSTRUCT
 		using S_::operator >>=;
 		using S_::operator <<=;
 
-		XTAL_DEF_(inline,let) operator >>=(I_                      o) noexcept -> auto & {_detail::move_to<[] XTAL_0FN_(alias) (T::ordinate)>(S_::data(), XTAL_REF_(o)); return self();}
-		XTAL_DEF_(inline,let) operator >>=(iterable_q auto       &&o) noexcept -> auto & {_detail::move_to<[] XTAL_0FN_(alias) (T::ordinate)>(S_::data(), XTAL_REF_(o)); return self();}
-		XTAL_DEF_(inline,let) operator >>=(iterable_q auto const  &o) noexcept -> auto & {_detail::copy_to<[] XTAL_0FN_(alias) (T::ordinate)>(S_::data(), XTAL_REF_(o)); return self();}
+		XTAL_DEF_(mutate,inline,let)
+		operator >>=(_std::initializer_list<coordinate_type> o)
+		noexcept -> auto &
+		{
+			_detail::move_to<T::ordinate>(S_::data(), XTAL_REF_(o));
+			return self();
+		}
+		XTAL_DEF_(mutate,inline,let)
+		operator >>=(iterable_q auto       &&o)
+		noexcept -> auto &
+		{
+			_detail::move_to<T::ordinate>(S_::data(), XTAL_REF_(o));
+			return self();
+		}
+		XTAL_DEF_(mutate,inline,let)
+		operator >>=(iterable_q auto const  &o)
+		noexcept -> auto &
+		{
+			_detail::copy_to<T::ordinate>(S_::data(), XTAL_REF_(o));
+			return self();
+		}
 		
-		XTAL_DEF_(inline,let)
-		operator <<=(I_ o)
+		XTAL_DEF_(mutate,inline,let)
+		operator <<=(_std::initializer_list<coordinate_type> o)
 		noexcept -> auto &
 		{
 			auto i0 = S_::data(), iN = _std::next(i0, S_::size() - o.size());
-			_detail::move_to<[] XTAL_0FN_(alias) (T::ordinate)>(iN, XTAL_REF_(o));
+			_detail::move_to<T::ordinate>(iN, XTAL_REF_(o));
 			return self();
 		}
-		XTAL_DEF_(inline,let)
+		XTAL_DEF_(mutate,inline,let)
 		operator <<=(iterable_q auto &&o)
 		noexcept -> auto &
 		{
 			auto i0 = S_::data(), iN = _std::next(i0, S_::size() - o.size());
-			_detail::move_to<[] XTAL_0FN_(alias) (T::ordinate)>(iN, XTAL_REF_(o));
+			_detail::move_to<T::ordinate>(iN, XTAL_REF_(o));
 			return self();
 		}
-		XTAL_DEF_(inline,let)
+		XTAL_DEF_(mutate,inline,let)
 		operator <<=(iterable_q auto const &o)
 		noexcept -> auto &
 		{
 			auto i0 = S_::data(), iN = _std::next(i0, S_::size() - o.size());
-			_detail::copy_to<[] XTAL_0FN_(alias) (T::ordinate)>(iN, XTAL_REF_(o));
+			_detail::copy_to<T::ordinate>(iN, XTAL_REF_(o));
 			return self();
 		}
 
 	public:// OPERATE
-		
 		///\
 		Scales all elements. \
 
@@ -164,43 +170,33 @@ struct phason<A>
 		The symmetric signatures for `/=` and `*=` are declared-but-undefined \
 		to avoid compilation-failure when type-checking e.g. `multiplicative_group_q`. \
 
-	//	using S_::operator*=;
-	//	using S_::operator/=;
-
-		auto operator *= (T const &) noexcept -> T &;// Asymmetric!
-		auto operator /= (T const &) noexcept -> T &;// Asymmetric!
-
-		XTAL_DEF_(return,inline,let)  operator * (auto const &t) const noexcept -> auto {return twin() *= t;}
-		XTAL_DEF_(return,inline,let)  operator / (auto const &t) const noexcept -> auto {return twin() /= t;}
-
-		XTAL_DEF_(inline,let) operator *= (I_ t) noexcept -> auto & {return self() *= T(t);}
-		XTAL_DEF_(inline,let) operator /= (I_ t) noexcept -> auto & {return self() /= T(t);}
-
-		XTAL_DEF_(inline,let)
-		operator /= (simplex_variable_q auto const &f)
+		XTAL_DEF_(mutate,inline,let)
+		operator /= (auto &&x)
 		noexcept -> auto &
-		{
-			return operator*=(U_fix::alpha_1/f);
-		}
-		XTAL_DEF_(let)
-		operator *= (real_variable_q auto const &f)
+		requires XTAL_TRY_(return) (operator*=(bond::fixture<decltype(x)>::alpha_1/XTAL_REF_(x)))
+
+		XTAL_DEF_(mutate,inline,let)
+		operator *= (auto &&x)
 		noexcept -> auto &
+		requires un_n<simplex_variable_q<decltype(x)>>
+		and      XTAL_TRY_(return) (S_::operator*=(XTAL_REF_(x)))
+
+		XTAL_DEF_(mutate,inline,let)
+		operator *= (auto &&x)
+		noexcept -> auto &
+		requires in_n<simplex_variable_q<decltype(x)>>
 		{
-			using _fix = bond::fixture<decltype(f)>;
-			auto &s = reinterpret_cast<phason_t<inordinate_type[N_data]> &>(self());
-			/*/
-			unsigned constexpr M_bias = T_fix::half.depth >> T_fix::half.width;
-			unsigned constexpr M_size = T_fix::half.depth - M_bias;
-			auto [m, n] = bond::math::bit_representation_f(f);
-			m >>= n - M_size;
-			s >>=     M_size;
-			s  *= m;
-			/*/
+			using _fix = bond::fixture<decltype(x)>;
+			auto &s = reinterpret_cast<phason_t<inordinate_type[size]> &>(self());
+
 			XTAL_IF0
+			XTAL_0IF (integral_variable_q<decltype(x)>) {
+				S_::operator*=(x);
+			}
 			XTAL_0IF (1*sizeof(ordinate_type) == sizeof(coordinate_type)) {
 				unsigned constexpr M_bias = T_fix::half.depth >> T_fix::half.width;
 				unsigned constexpr M_size = T_fix::half.depth - M_bias;
-				auto [m, n] = bond::math::bit_representation_f(f);
+				auto [m, n] = bond::math::bit_representation_f(x);
 				m >>= n - M_size;
 				s >>=     M_size;
 				s  *= m;
@@ -208,62 +204,48 @@ struct phason<A>
 			XTAL_IF0
 			XTAL_0IF (2*sizeof(ordinate_type) == sizeof(coordinate_type)) {
 				typename T_fix::sigma_type t_[2];
-				typename U_fix::sigma_type const u(f*_fix::diplo_f(T_fix::full.depth));
+				typename U_fix::sigma_type const u(x*_fix::diplo_f(T_fix::full.depth));
 				#pragma unroll
-				for (int i{}; i < N_data; ++i) {
+				for (XTAL_ALL_(size()) i{}; i < size; ++i) {
 					reinterpret_cast<typename U_fix::sigma_type &>(t_) = u*s[i];
 				//	t_[1] += t_[0] >> T_fix::positive.depth;// Round...
 					s [i]  = t_[1];
 				}
 			}
-			/***/
 			return self();
 		}
-		XTAL_DEF_(inline,let)
-		operator *= (integral_variable_q auto const &i)
-		noexcept -> auto &
-		{
-			return S_::operator*=(i);
-		}
+		XTAL_DEF_(return,inline,met) operator * (simplex_variable_q auto const &x, T const &t) noexcept -> auto {return t.twin() *= x;}
+	//	XTAL_DEF_(return,inline,met) operator * (T const &t, simplex_variable_q auto const &x) noexcept -> auto {return t.twin() *= x;}
 
 		///\
 		Offsets the first element. \
 		
-	//	using S_::operator-=;
-	//	using S_::operator+=;
+		XTAL_DEF_(mutate,inline,let)
+		operator -= (auto &&x)
+		noexcept -> auto &
+		requires XTAL_TRY_(return) (operator+=(-XTAL_REF_(x)))
 
-		XTAL_DEF_(inline,let)
-		operator -= (auto const &f)
+		XTAL_DEF_(mutate,inline,let)
+		operator += (auto &&x)
 		noexcept -> auto &
-		{
-			return S_::operator-=(f);
-		}
-		XTAL_DEF_(inline,let)
-		operator += (auto const &f)
-		noexcept -> auto &
-		{
-			return S_::operator+=(f);
-		}
+		requires un_n<simplex_variable_q<decltype(x)>>
+		and      XTAL_TRY_(return) (S_::operator+=( XTAL_REF_(x)))
 
-		XTAL_DEF_(inline,let)
-		operator -= (simplex_variable_q auto const &f)
+		XTAL_DEF_(mutate,inline,let)
+		operator += (auto &&x)
 		noexcept -> auto &
+		requires in_n<simplex_variable_q<decltype(x)>>
 		{
-			return operator+=(-f);
-		}
-		XTAL_DEF_(inline,let)
-		operator += (integral_variable_q auto const &i)
-		noexcept -> auto &
-		{
+			if constexpr (real_variable_q<decltype(x)>) {
+				get<0>(self()) += bond::math::bit_fraction_f<_std::make_signed_t<ordinate_type>>(x);
+			}
 			return self();
 		}
-		XTAL_DEF_(inline,let)
-		operator += (real_variable_q auto const &f)
-		noexcept -> auto &
-		{
-			get<0>(*this) += bond::math::bit_fraction_f<_std::make_signed_t<ordinate_type>>(f);
-			return self();
-		}
+
+	//	XTAL_DEF_(return,inline,met) operator + (T const &t, auto const &o) noexcept -> auto                                        {return t.twin() += o;}
+	//	XTAL_DEF_(return,inline,met) operator + (auto const &o, T const &t) noexcept -> auto   requires un_n<phason_q<decltype(o)>> {return t.twin() += o;}
+
+		///\returns `condition_f<Y>` indicating whether the current state is continuous. \
 
 		template <class Y=coordinate_type>
 		XTAL_DEF_(return,inline,let)
@@ -272,12 +254,14 @@ struct phason<A>
 		{
 			return condition_f<Y>(not discontinuity<bool>());
 		}
+		///\returns `condition_f<Y>` indicating whether the current state is discontinuous. \
+
 		template <class Y=coordinate_type>
 		XTAL_DEF_(return,inline,let)
 		discontinuity()
 		noexcept -> Y
 		{
-			auto [u0, u1] = *this;
+			auto [u0, u1] =  self();
 			auto const v0 = _xtd::bit_cast<inordinate_type>(u0) >> T_fix::positive.depth; u0 ^= v0; u0 -= v0;
 			auto const v1 = _xtd::bit_cast<inordinate_type>(u1) >> T_fix::positive.depth; u1 ^= v1; u1 -= v1;
 			return condition_f<Y>(v0 == v1 and u0 < u1);

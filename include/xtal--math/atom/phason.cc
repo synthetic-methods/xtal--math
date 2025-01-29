@@ -60,6 +60,19 @@ TAG_("phason")
 	}
 	/***/
 	/**/
+	TRY_("real of phason")
+	{
+		U_phi a{0.1, 0.2};
+		U_phi b{0.1, 0.2};
+		//\
+		U_phi c = 2.0 * a;
+		U_phi c = b + a;
+
+		TRUE_(check_f(c(0), 0.2));
+
+	}
+	/***/
+	/*/
 	TRY_("complex of phason")
 	{
 		W_phi a{{0.1, 0.0}, {0.2, 0.0}};
@@ -68,7 +81,12 @@ TAG_("phason")
 		W_phi c = 2.0 * a;
 		W_phi c = b + a;
 
+		TRUE_(check_f(a.real() (0), 0.1));
+		TRUE_(check_f(b.real() (0), 0.1));
 		TRUE_(check_f(c.real() (0), 0.2));
+
+		TRUE_(check_f(a.imag() (0), 0.2));
+		TRUE_(check_f(b.imag() (0), 0.2));
 		TRUE_(check_f(c.imag() (0), 0.4));
 
 	}

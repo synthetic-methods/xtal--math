@@ -15,15 +15,23 @@ template <class   ..._s>	struct   series;
 template <class   ..._s>	using    series_t = typename series<_s...>::type;
 template <class   ...Ts>	concept  series_q = bond::tag_p<series_t, Ts...>;
 
-XTAL_FX0_(alias) (template <auto f=null_type{}>
-XTAL_DEF_(return,inline,let) series_f(auto &&...oo),
-	_detail::build<series_t>::template static_factory<f>(XTAL_REF_(oo)...))
+
+XTAL_FX0_(alias) (template <auto f=_std::identity{}>
+XTAL_DEF_(return,inline,let)
+series_f(auto &&...oo),
+	_detail::factory<series_t>::
+		template make<f>(XTAL_REF_(oo)...))
 
 
 ////////////////////////////////////////////////////////////////////////////////
 ///\
 Extends `serial` with multiplication via circular convolution. \
 
+template <scalar_q ..._s> requires common_q<_s...>
+struct series<_s ...>
+:	series<common_t<_s...>[sizeof...(_s)]>
+{
+};
 template <vector_q A>
 struct series<A>
 {
@@ -43,16 +51,17 @@ struct series<A>
 	class homotype : public holotype<T>
 	{
 		using S_ = holotype<T>;
-		using I_ = typename S_::initializer_list;
 
-	protected:
-		using          S_::N_data;
-		using typename S_::U_data;
+	public:// TYPE
+		using typename S_::value_type;
 
-	public:
-		using S_::S_;
+	public:// ACCESS
+		using S_::size;
 		using S_::self;
 		using S_::twin;
+
+	public:// CONSTRUCT
+		using S_::S_;
 
 		///\
 		Generates part of the complex sinusoid determined by `std::pow(2, o_shift{})`. \
@@ -71,9 +80,7 @@ struct series<A>
 			generate(XTAL_REF_(oo)...);
 		}
 
-		//\
-		template <int N_count=N_data> requires complex_field_q<U_v1> and same_q<couple_t<U_v1[2]>, U_data>
-		template <int N_count=N_data> requires complex_field_q<U_v1> and bond::dipack_q<U_data>
+		template <int N_count=size>
 		XTAL_DEF_(inline,let)
 		generate(U_v1 const &u1, U_v2 const &u2)
 		noexcept -> T &
@@ -81,14 +88,14 @@ struct series<A>
 			auto &s = self();
 
 			using W1  = U_v1;
-			using U2  = couple_t<U_v2[2]>;
-			using W1_ = series_t<W1[N_data<<1U]>;
-			using U2_ = series_t<U2[N_data<<1U]>;
+			using U2  = couple_t<U_v2   [2]>;
+			using W1_ = series_t<W1[size*2]>;
+			using U2_ = series_t<U2[size*2]>;
 			static_assert(sizeof(W1_) == sizeof(U2_));
 			
-			reinterpret_cast<W1_ &>(self()).template generate<N_data, 0, 2, 0>(u1);
-			reinterpret_cast<U2_ &>(self()).template generate<N_data, 0, 2, 1>({u2, one/u2});
-			bond::seek_forward_f<N_data>([&, this] (auto I) XTAL_0FN {
+			reinterpret_cast<W1_ &>(self()).template generate<size, 0, 2, 0>(u1);
+			reinterpret_cast<U2_ &>(self()).template generate<size, 0, 2, 1>({u2, one/u2});
+			bond::seek_forward_f<size>([&, this] (auto I) XTAL_0FN {
 				auto &[o, e] = get<I>(s);
 				auto &[f, g] = destruct_f(e);
 				get<I>(s) = {o*f, _std::conj(o)*g};
@@ -98,9 +105,9 @@ struct series<A>
 		///\returns `this` with the elements `N_index, ..., N_index + N_count - 1` \
 			filled by the corresponding powers of `u`. \
 
-		template <int N_count=N_data, int N_index=0, int N_step=1, int N_skip=0>
+		template <int N_count=size, int N_index=0, int N_step=1, int N_skip=0>
 		XTAL_DEF_(inline,let)
-		generate(U_data const &u)
+		generate(value_type const &u)
 		noexcept -> T &
 		{
 			auto &s = self();
@@ -143,7 +150,7 @@ struct series<A>
 		///\note\
 		To generate the FFT basis used by `transform` etc, use `N_shift == -1`. \
 
-		template <int N_shift=0> requires complex_field_q<U_data>
+		template <int N_shift=0> requires complex_field_q<value_type>
 		XTAL_DEF_(let)
 		generate()
 		noexcept -> T &
@@ -156,16 +163,16 @@ struct series<A>
 			auto const i = S_::begin();
 			auto const j = S_::rend() - 1;
 			
-		//	Compute the fractional sinusoid for this `N_data`:
-			auto const y = process::math::pade::unity_t<1>::template static_method<6>(_fix::ratio_f(-1, 2*N_data));// TODO: Make `constexpr`!
+		//	Compute the fractional sinusoid for this `size`:
+			auto const y = process::math::pade::unity_t<1>::template static_method<6>(_fix::ratio_f(-1, size << 1));// TODO: Make `constexpr`!
 
 		//	Compute the initial `1/8`th then mirror the remaining segments:
-			typename S_::difference_type constexpr M = N_data >> 2U;// `1/8`th
+			typename S_::difference_type constexpr M = size >> 2U;// `1/8`th
 			static_assert(-4 <  N_shift);
 			generate<M + (-3 <  N_shift)>(y);
-			if constexpr (-2 <= N_shift) _detail::copy_to<[] (U_data const &v) XTAL_0FN_(return) (U_data{-v.imag(), -v.real()})>(prev(j, 2*M), span(i, next(i, 1*M)));
-			if constexpr (-1 <= N_shift) _detail::copy_to<[] (U_data const &v) XTAL_0FN_(return) (U_data{ v.imag(), -v.real()})>(next(i, 2*M), span(i, next(i, 2*M)));
-			if constexpr (-0 <= N_shift) _detail::copy_to<[] (U_data const &v) XTAL_0FN_(return) (U_data{-v.real(), -v.imag()})>(next(i, 4*M), span(i, next(i, 4*M)));
+			if constexpr (-2 <= N_shift) _detail::copy_to<[] (value_type const &v) XTAL_0FN_(return) (value_type{-v.imag(), -v.real()})>(prev(j, 2*M), span(i, next(i, 1*M)));
+			if constexpr (-1 <= N_shift) _detail::copy_to<[] (value_type const &v) XTAL_0FN_(return) (value_type{ v.imag(), -v.real()})>(next(i, 2*M), span(i, next(i, 2*M)));
+			if constexpr (-0 <= N_shift) _detail::copy_to<[] (value_type const &v) XTAL_0FN_(return) (value_type{-v.real(), -v.imag()})>(next(i, 4*M), span(i, next(i, 4*M)));
 			static_assert( 0 >= N_shift);// TODO: Extend to allow multiple copies using `bond::seek`.
 			
 			return self();
@@ -177,7 +184,7 @@ struct series<A>
 		The size of both `this` and `that` must be expressible as an integral power of two, \
 		and `1 < that.size() <= this->size()`. \
 
-		template <int N_direction=1> requires in_n<N_direction, 1, -1> and complex_field_q<U_data>
+		template <int N_direction=1> requires in_n<N_direction, 1, -1> and complex_field_q<value_type>
 		XTAL_DEF_(let)
 		transform(isomorphic_q<T> auto &that) const
 		noexcept -> decltype(auto)
@@ -187,7 +194,7 @@ struct series<A>
 			using I  = typename Xs:: difference_type;
 		
 		//	Ensure the size of both domain and codomain are powers of two:
-			I constexpr N_width = N_data;
+			I constexpr N_width =      size();
 			I const     n_width = that.size();
 			I const     h_width = n_width >> 1U; assert(1 <= h_width);
 			I const     n_depth = bond::math::bit_ceiling_f(n_width); assert(n_width == I{1} << n_depth);
@@ -210,9 +217,9 @@ struct series<A>
 				for (I u{ }; u < u_width; u +=     one) {auto const &o = S_::element(u << un_depth);
 				for (I w{u}; w < n_width; w += w_width) {
 					auto const m = w + u_width;
-					U_data &y = that[m];
-					U_data &x = that[w];
-					U_data const yo = y*o;
+					value_type &y = that[m];
+					value_type &x = that[w];
+					value_type const yo = y*o;
 					y  = x - yo;
 					x +=     yo;
 				}}
@@ -226,7 +233,7 @@ struct series<A>
 		//	Cast the output to the transformed domain:
 			return reinterpret_cast<Ys &>(that);
 		}
-		template <int N_direction=1> requires in_n<N_direction, 1, -1> and complex_field_q<U_data>
+		template <int N_direction=1> requires in_n<N_direction, 1, -1> and complex_field_q<value_type>
 		XTAL_DEF_(let)
 		transform(isomorphic_q<T> auto &&that) const
 		noexcept -> decltype(auto)
@@ -271,23 +278,23 @@ s
 
 		using S_::operator*=;
 
-		XTAL_DEF_(return,inline,let)  operator * (auto const &w) const noexcept -> auto   {return twin() *=   w ;}
-		XTAL_DEF_(inline,let)         operator *=(I_          w)       noexcept -> auto & {return self() *= T(w);}
+		XTAL_DEF_(return,inline,let)  operator * (auto const &                       w) const noexcept -> auto   {return twin() *=   w ;}
+		XTAL_DEF_(inline,let)         operator *=(_std::initializer_list<value_type> w)       noexcept -> auto & {return self() *= T(w);}
 
 		XTAL_DEF_(let)
 		operator *=(T const &t)
 		noexcept -> T &
 		{
 			auto &s = self();
-			if constexpr (complex_field_q<U_data>) {
-				T(constant_n<-1>).convolve(s, t);
+			if constexpr (complex_field_q<value_type>) {
+				T(constant_t<-1>{}).convolve(s, t);
 			}
 			else {
 				using X = typename _fix::aphex_type;
-				using Y = typename series<X[N_data]>::type;
+				using Y = typename series<X[size]>::type;
 				Y s_(s);
 				Y t_(t);
-				Y(constant_n<-1>).convolve(s_, t_);
+				Y(constant_t<-1>{}).convolve(s_, t_);
 				_detail::move_to<[] XTAL_0FN_(alias) (_std::real)>(s.begin(), s_);
 			}
 			return s;
@@ -299,7 +306,7 @@ s
 		struct transverse
 		{
 			template <class Y>
-			using holotype = typename group<_std::multiplies<void>, A>::template homotype<Y>;
+			using holotype = typename multiplicative_group<A>::template homotype<Y>;
 
 			template <class Y>
 			class homotype : public holotype<homotype<Y>>

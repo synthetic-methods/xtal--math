@@ -13,6 +13,7 @@
 #include "./identity.cc"
 #include "./imagine.cc"
 #include "./magnum.cc"
+#include "./modulo.cc"
 #include "./near.cc"
 #include "./nearing.cc"
 #include "./phasor.cc"

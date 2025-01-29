@@ -308,8 +308,6 @@ TAG_("unity")
 		T_aphex const y = unity_t< 1>::template static_method<-1>(x);
 		T_aphex const z = unity_t<-1>::template static_method<-1>(y);
 
-		//\
-		echo(check_f(x, z));
 		TRUE_(check_f<-19>(x, z));
 
 	}
@@ -319,8 +317,6 @@ TAG_("unity")
 		T_aphex const y = unity_t< 1>::template static_method< 5>(x);
 		T_aphex const z = unity_t<-1>::template static_method< 5>(y);
 
-		//\
-		echo(check_f(x, z));
 		TRUE_(check_f<-19>(x, z));
 
 	}
@@ -350,8 +346,6 @@ TAG_("unity")
 //		T_aphex const y = unity_t< 1>::template static_method<5>(x);
 //		T_aphex const z = unity_t<-1>::template static_method<5>(y);
 //
-//		//\
-//		echo(check_f(x, z));
 //		TRUE_(check_f<-16>(x, z));
 //
 //	};

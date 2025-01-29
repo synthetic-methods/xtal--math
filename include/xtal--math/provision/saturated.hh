@@ -11,9 +11,9 @@ namespace xtal::provision
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <template <auto ...> class F=process::math::identity> struct   shaper;
-template <template <auto ...> class F=process::math::identity> using    shaper_t = confined_t<shaper<F>>;
-template <                                        class ..._s> concept  shaper_q = bond::tab_p<shaper<>, _s...>;
+template <template <auto ...> class F=process::math::identity> struct   saturated;
+template <template <auto ...> class F=process::math::identity> using    saturated_t = confined_t<saturated<F>>;
+template <                                        class ..._s> concept  saturated_q = bond::tab_p<saturated<>, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -21,9 +21,9 @@ template <                                        class ..._s> concept  shaper_q
 Provides a specialization of `atom::store`. \
 
 template <template <auto ...> class F>
-struct shaper
+struct saturated
 {
-	using superkind = bond::tab<shaper<>>;
+	using superkind = bond::tab<saturated<>>;
 	
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -34,7 +34,7 @@ struct shaper
 		using S_::S_;
 		
 		template <auto ...Ms>
-		using shape_t = process::confined_t<F<Ms...>>;
+		using saturate_t = process::confined_t<F<Ms...>>;
 
 	};
 };
