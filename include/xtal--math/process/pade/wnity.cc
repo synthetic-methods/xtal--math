@@ -19,10 +19,8 @@ noexcept -> bool
 	int constexpr N_inf = -1;
 	auto const u = wnity_t<1>::template static_method<N_lim>(t);
 	auto const v = wnity_t<1>::template static_method<N_inf>(t);
-	return true
-		and check_f<N_trim>(get<0>(u), get<0>(v))
-		and check_f<N_trim>(get<1>(u), get<1>(v))
-		and true;
+	return check_f<N_trim>(get<0>(u), get<0>(v))
+		and check_f<N_trim>(get<1>(u), get<1>(v));
 }
 
 
@@ -142,18 +140,25 @@ TAG_("wnity")
 	
 	};
 	/***/
-	TRY_("evaluation (floating-point)")
+	TRY_("`wnity` evaluation")
 	{
-		double const t0 = 1.125;
+		TRUE_(wnity_check_f<0,  2>(T_alpha{1.125}));
+		TRUE_(wnity_check_f<1,  6>(T_alpha{1.125}));
+		TRUE_(wnity_check_f<2, 14>(T_alpha{1.125}));
+		TRUE_(wnity_check_f<3, 20>(T_alpha{1.125}));
+		TRUE_(wnity_check_f<4, 28>(T_alpha{1.125}));
+		TRUE_(wnity_check_f<5, 37>(T_alpha{1.125}));
+		TRUE_(wnity_check_f<6, 47>(T_alpha{1.125}));
+		TRUE_(wnity_check_f<7, 49>(T_alpha{1.125}));
 
-		TRUE_(wnity_check_f<0,  2>(t0));
-		TRUE_(wnity_check_f<1,  6>(t0));
-		TRUE_(wnity_check_f<2, 14>(t0));
-		TRUE_(wnity_check_f<3, 20>(t0));
-		TRUE_(wnity_check_f<4, 28>(t0));
-		TRUE_(wnity_check_f<5, 37>(t0));
-		TRUE_(wnity_check_f<6, 47>(t0));
-		TRUE_(wnity_check_f<7, 49>(t0));
+		TRUE_(wnity_check_f<0,  1>(T_aphex{0.1, 0.2}));
+		TRUE_(wnity_check_f<1,  6>(T_aphex{0.1, 0.2}));
+		TRUE_(wnity_check_f<2, 13>(T_aphex{0.1, 0.2}));
+		TRUE_(wnity_check_f<3, 20>(T_aphex{0.1, 0.2}));
+		TRUE_(wnity_check_f<4, 28>(T_aphex{0.1, 0.2}));
+		TRUE_(wnity_check_f<5, 37>(T_aphex{0.1, 0.2}));
+		TRUE_(wnity_check_f<6, 47>(T_aphex{0.1, 0.2}));
+		TRUE_(wnity_check_f<7, 49>(T_aphex{0.1, 0.2}));
 
 	}
 }

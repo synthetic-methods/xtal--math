@@ -16,15 +16,22 @@ template <class        ..._s>	using    serial_t = typename serial<_s...>::type;
 template <class        ...Ts>	concept  serial_q = bond::tag_p<serial_t, Ts...>;
 template <int N, class ...Ts>	concept  serial_p = serial_q<Ts...> and (...and (N == Ts::size()));
 
-XTAL_FX0_(alias) (template <auto f=null_type{}>
-XTAL_DEF_(return,inline,let) serial_f(auto &&...oo),
-	_detail::build<serial_t>::template static_factory<f>(XTAL_REF_(oo)...))
+XTAL_FX0_(alias) (template <auto f=_std::identity{}>
+XTAL_DEF_(return,inline,let)
+serial_f(auto &&...oo),
+	_detail::factory<serial_t>::
+		template make<f>(XTAL_REF_(oo)...))
 
 
 ////////////////////////////////////////////////////////////////////////////////
 ///\
 Extends `grade` with multiplication via linear convolution. \
 
+template <scalar_q ..._s> requires common_q<_s...>
+struct serial<_s ...>
+:	serial<common_t<_s...>[sizeof...(_s)]>
+{
+};
 template <vector_q A>
 struct serial<A>
 {
@@ -40,28 +47,27 @@ struct serial<A>
 	class homotype : public holotype<T>
 	{
 		using S_ = holotype<T>;
-		using I_ = typename S_::initializer_list;
 
-	protected:
-		using          S_::N_data;
-		using typename S_::U_data;
+	public:// TYPE
+		using typename S_::value_type;
 
 	public:// CONSTRUCT
 		using S_::S_;
 
 	public:// ACCESS
 		using S_::element;
+		using S_::size;
 		using S_::self;
 		using S_::twin;
 	
 	public:// OPERATE
 		using S_::operator*=;
 
-		XTAL_DEF_(return,inline,let)  operator  * (auto const &t) const noexcept -> auto   {return twin() *=   t ;}
-		XTAL_DEF_(inline,let)         operator  *=(I_          t)       noexcept -> auto & {return self() *= T(t);}
+		XTAL_DEF_(return,inline,let)  operator  * (auto const &                       t) const noexcept -> auto   {return twin() *=   t ;}
+		XTAL_DEF_(inline,let)         operator  *=(_std::initializer_list<value_type> t)       noexcept -> auto & {return self() *= T(t);}
 
 		///\
-		Multiplication by linear convolution, truncated by `N_data`. \
+		Multiplication by linear convolution, truncated by `size`. \
 
 		XTAL_DEF_(let)
 		operator *=(T const &t)
@@ -69,12 +75,12 @@ struct serial<A>
 		{
 			auto &s = self();
 			
-			if constexpr (_fix::alignment::value < N_data) {
-				for (auto i = N_data; ~--i;) {element(i) *= get<0>(t);
-				for (auto j = i; j-- ;) {element(i) += t.element(j)*element(i - j);}}
+			if constexpr (_fix::alignment::value < size()) {
+				for (auto i = size(); ~--i;) {element(i) *= get<0>(t);
+				for (auto j =      i; j-- ;) {element(i) += t.element(j)*element(i - j);}}
 			}
 			else {
-				bond::seek_backward_f<N_data, 0>([&, this] (auto I) XTAL_0FN {get<I>(s) *= get<0>(t);
+				bond::seek_backward_f<size(), 0>([&, this] (auto I) XTAL_0FN {get<I>(s) *= get<0>(t);
 				bond::seek_backward_f<     I, 1>([&, this] (auto J) XTAL_0FN {get<I>(s) += get<J>(t)*get<I - J>(s);});});
 			}
 			return s;

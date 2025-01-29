@@ -32,7 +32,7 @@ struct rate
 			XTAL_IF0
 			XTAL_0IF (M_ism == -1) {return o_im*root_f<-1, M_cut>(o_re);}
 			XTAL_0IF (M_ism == +1) {return o_re*root_f<-1, M_cut>(o_im);}
-			XTAL_0IF_(void)
+			XTAL_0IF_(abort)
 		}
 		template <int ...Ns>
 		XTAL_DEF_(return,inline,set)

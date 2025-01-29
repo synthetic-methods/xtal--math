@@ -58,26 +58,25 @@ struct wnity<1> : wnity<>
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&t_1, simplex_field_q auto &&t_i)
+		static_method(auto &&t_re, simplex_field_q auto &&t_im)
 		noexcept -> decltype(auto)
 		{
-			auto constexpr exp = [] XTAL_0FN_(alias) (taylor::logarithm_t<-1, 1>::template static_method<2>);
-			using T_i = XTAL_ALL_(t_i); using _fix = bond::fixture<T_i>;
+			static_assert(real_variable_q<decltype(t_re)>);
+			static_assert(real_variable_q<decltype(t_im)>);
 
-			auto const o = static_method<N_lim>(XTAL_REF_(t_1));
-			auto const e = exp(XTAL_REF_(t_i)*_fix::patio_f(-2));
-			return o*roots_t<1>::static_method(e);
+			auto constexpr exp = [] XTAL_0FN_(alias) (taylor::logarithm_t<-1, 1>::template static_method<2>);
+			using _fix = bond::fixture<decltype(t_re), decltype(t_im)>;
+
+			return static_method<N_lim>(XTAL_REF_(t_re))*
+				roots_t<1>::static_method(exp(XTAL_REF_(t_im)*_fix::patio_f(-2)));
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,set)
-		static_method(simplex_field_q auto &&t_1)
+		static_method(simplex_field_q auto &&t_re)
 		noexcept -> decltype(auto)
 		{
-			auto const o = objective_f(unity_t<1>::template static_method<N_lim>(XTAL_REF_(t_1)));
-			auto const p = complexion_f(o.real(),  o.imag());
-			auto const q = complexion_f(o.real(), -o.imag());
-			//\
-			return atom::couple_f(o, conj(o));
+			auto const p = objective_f(unity_t<1>::template static_method<N_lim>(XTAL_REF_(t_re)));
+			auto const q = objective_f(conj(p));
 			return atom::couple_f(p, q);
 		}
 

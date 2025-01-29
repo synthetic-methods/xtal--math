@@ -91,12 +91,12 @@ struct logarithm<-1, 0>
 		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim)                 {return approximate<N_lim>(XTAL_REF_(o));}
-			XTAL_0IF_(consteval)                  {return approximate<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim)          {return approximate<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)           {return approximate<   ~0>(XTAL_REF_(o));}
 #if XTAL_SYS_(builtin)
-			XTAL_0IF (real_variable_q<decltype(o)>) {return      __builtin_exp(XTAL_REF_(o));}
+			XTAL_0IF (real_q<decltype(o)>) {return      __builtin_exp(XTAL_REF_(o));}
 #endif
-			XTAL_0IF_(else)                       {return                exp(XTAL_REF_(o));}
+			XTAL_0IF_(else)                {return                exp(XTAL_REF_(o));}
 		}
 
 	protected:

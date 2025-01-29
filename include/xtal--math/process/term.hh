@@ -57,7 +57,7 @@ noexcept -> auto
 			auto const y = (XTAL_REF_(xs) *...* XTAL_REF_(x));
 			return accumulator_f(XTAL_REF_(w), y, y, Y{M_alt});
 		}
-		XTAL_0IF_(void)
+		XTAL_0IF_(abort)
 	}
 };
 

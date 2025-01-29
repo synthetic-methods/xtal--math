@@ -85,7 +85,7 @@ struct unity<M_ism> : unity<>
 		noexcept -> decltype(auto)
 		{
 			using U       = XTAL_ALL_(o);
-			using U_fix    = bond::fixture<U>;
+			using U_fix   = bond::fixture<U>;
 			using U_alpha = typename U_fix::alpha_type;
 
 			if constexpr (N_lim < 0) {
@@ -95,10 +95,10 @@ struct unity<M_ism> : unity<>
 				XTAL_0IF (2 == M_ism) {return complexion_f(cosh(w), sinh(w));}
 			}
 			else {
-				auto w = wrap_f(o);
-				auto m = objective_f(wrap_f(w*U_fix::diplo_1)*U_fix::haplo_1);
-				return superprocess::template static_method<N_lim>(m)*
-					operative_f<[] XTAL_0FN_(alias) (U_alpha)>(((m == w) << 1) - 1);
+				auto const  w = wrap_f(o);
+				auto const  m = objective_f(U_fix::haplo_1*wrap_f(U_fix::diplo_1*w));
+				auto const _1 = U_fix::alpha_1*(((m == w) << 1) - 1);
+				return superprocess::template static_method<N_lim>(m)*_1;
 			}
 		}
 		template <int N_lim=-1>

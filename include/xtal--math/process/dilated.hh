@@ -26,7 +26,7 @@ struct dilated;
 template <auto M_val>
 struct dilated
 {
-	static auto constexpr N_val = constant_n<M_val>;
+	static auto constexpr N_val = constant_t<M_val>{};
 
 	template <auto f>
 	XTAL_DEF_(return,inline,set)

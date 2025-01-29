@@ -59,10 +59,10 @@ struct root
 				return static_method<I_lim>(_fix::alpha_f(XTAL_REF_(z)));
 			}
 			XTAL_0IF_(return) (evaluate<I_lim>(XTAL_REF_(z)))
-			XTAL_0IF_(return) (evaluate<I_lim>(XTAL_REF_(z), constant_n<2>))
-			XTAL_0IF_(return) (evaluate<I_lim>(XTAL_REF_(z), constant_n<3>))
-			XTAL_0IF_(return) (evaluate<I_lim>(XTAL_REF_(z), constant_n<5>))
-			XTAL_0IF_(return) (evaluate<I_lim>(XTAL_REF_(z), constant_n<7>))
+			XTAL_0IF_(return) (evaluate<I_lim>(XTAL_REF_(z), constant_t<2>{}))
+			XTAL_0IF_(return) (evaluate<I_lim>(XTAL_REF_(z), constant_t<3>{}))
+			XTAL_0IF_(return) (evaluate<I_lim>(XTAL_REF_(z), constant_t<5>{}))
+			XTAL_0IF_(return) (evaluate<I_lim>(XTAL_REF_(z), constant_t<7>{}))
 			XTAL_0IF_(else) {return pow(XTAL_REF_(z), _fix::alpha_1/M_exp);}
 		}
 

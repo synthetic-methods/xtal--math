@@ -13,6 +13,7 @@
 #include "./identity.hh"
 #include "./imagine.hh"
 #include "./magnum.hh"
+#include "./modulo.hh"
 #include "./near.hh"
 #include "./nearing.hh"
 #include "./phasor.hh"
