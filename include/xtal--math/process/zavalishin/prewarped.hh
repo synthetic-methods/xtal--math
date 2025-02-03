@@ -46,7 +46,7 @@ struct prewarped<I, As...>
 };
 template <variable_q I, typename ...As>
 struct prewarped<I, As...>
-:	prewarped<constant_t<0>, As...>
+:	prewarped<ordinal_constant_t<0>, As...>
 {
 };
 

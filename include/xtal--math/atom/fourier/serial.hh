@@ -75,7 +75,7 @@ struct serial<A>
 		{
 			auto &s = self();
 			
-			if constexpr (_fix::alignment::value < size()) {
+			if constexpr (typename _fix::alignment{}() < size()) {
 				for (auto i = size(); ~--i;) {element(i) *= get<0>(t);
 				for (auto j =      i; j-- ;) {element(i) += t.element(j)*element(i - j);}}
 			}
