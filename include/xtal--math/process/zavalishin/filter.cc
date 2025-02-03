@@ -21,9 +21,9 @@ TAG_("filter")
 		using U = typename _fix::alpha_type;
 		//\
 		using SVF = confined_t<filter<>>;
-		using SVF = prewarped_t<constant_t<1>, filter<>>;
+		using SVF = prewarped_t<ordinal_constant_t<1>, filter<>>;
 		//\
-		using Z = processor::monomer_t<prewarped<constant_t<1>>, SVF>;
+		using Z = processor::monomer_t<prewarped<ordinal_constant_t<1>>, SVF>;
 		using Z = processor::monomer_t<SVF>;
 
 		SVF svf{};

@@ -69,11 +69,11 @@ struct filter<U_pole[N_pole]>
 		{
 			if constexpr (N_ion == +1) {
 				if constexpr (in_q<decltype(o), order_type, topology_type>) {
-					S_::stow(constant_t<0>{});
+					S_::stow(constant_t<>{});
 				}
 				if constexpr (occur::stage_q<decltype(o)>) {
 					if (o == 0) {
-						S_::stow(constant_t<0>{});
+						S_::stow(constant_t<>{});
 					}
 				}
 			}
@@ -151,8 +151,8 @@ struct filter<U_pole[N_pole]>
 			using U_outputs_ = atom::couple_t<X[N_ord]>;
 			using U_poles_   = atom::couple_t<X[N_ord]>;
 
-			auto  scalars = io.scalars; auto scalars_ = scalars.self(constant_t<N_ord>{});
-			auto &outputs = io.outputs; auto outputs_ = outputs.self(constant_t<N_ord>{});
+			auto  scalars = io.scalars; auto scalars_ = scalars.self(cardinal_constant_t<N_ord>{});
+			auto &outputs = io.outputs; auto outputs_ = outputs.self(cardinal_constant_t<N_ord>{});
 
 			auto  stowed  = S_::template stow<U_poles_, U_poles_>();
 			auto &states_ = get<0>(stowed);

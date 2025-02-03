@@ -28,7 +28,7 @@ struct signum
 		XTAL_DEF_(return,inline,set)
 		static_method(auto const &o)
 		noexcept -> auto
-		requires un_n<anyplex_variable_q<decltype(o)>>
+		requires un_n<numeric_variable_q<decltype(o)>>
 		{
 			return (0 < o) - (o < 0) + (o == 0);
 		}

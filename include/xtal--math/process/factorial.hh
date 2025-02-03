@@ -32,7 +32,7 @@ XTAL_DEF_(return,inline,let)
 factorial_f(U o)
 noexcept -> auto
 {
-	return constant_t<factorial_f<U::value>()>{};
+	return constant_t<factorial_f<U{}()>()>{};
 }
 template <integral_variable_q U>
 XTAL_DEF_(return,inline,let)
