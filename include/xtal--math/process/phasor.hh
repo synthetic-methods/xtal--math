@@ -43,7 +43,7 @@ struct phasor<A, As...>
 	//\
 	,	refer<U_phason>
 	,	cell::_detail::refer_multiplicative_group<U_phason>
-	,	typename occur::indent_s<U_phason>::template funnel<>
+	,	typename flow::indent_s<U_phason>::template afflux<>
 	,	As...
 	>;
 	using superkind = bond::compose<bond::tag<phasor>
