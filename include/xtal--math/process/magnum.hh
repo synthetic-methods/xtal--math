@@ -26,54 +26,54 @@ struct magnum
 
 		template <int ...Ns>
 		XTAL_DEF_(return,inline,set)
-		static_method(_std::unsigned_integral auto const &o)
+		method_f(_std::unsigned_integral auto const &o)
 		noexcept -> auto
 		{
 			return o;
 		}
 		template <int ...Ns>
 		XTAL_DEF_(return,inline,set)
-		static_method(_std::  signed_integral auto const &o)
+		method_f(_std::  signed_integral auto const &o)
 		noexcept -> auto
 		{
-			using _fix = bond::fixture<decltype(o)>;
-			auto const v = o >> _fix::sign.shift;
+			using _fit = bond::fit<decltype(o)>;
+			auto const v = o >> _fit::sign.shift;
 			return (o^v) - v;
 		}
 		template <int ...Ns>
 		XTAL_DEF_(return,inline,set)
-		static_method(real_variable_q auto const &o)
+		method_f(real_variable_q auto const &o)
 		noexcept -> auto
 		{
-			using _fix = bond::fixture<decltype(o)>;
-			return _xtd::copysign(o, _fix::alpha_1);
+			using _fit = bond::fit<decltype(o)>;
+			return _xtd::copysign(o, _fit::alpha_1);
 		}
 		template <int ...Ns>
 		XTAL_DEF_(return,inline,set)
-		static_method(complex_variable_q auto const &o)
+		method_f(complex_variable_q auto const &o)
 		noexcept -> auto
 		{
-			using _fix = bond::fixture<decltype(o)>;
+			using _fit = bond::fit<decltype(o)>;
 			return dot_f<2>(o);
 		}
 
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		static_edit(real_variable_q auto &o)
+		edit_f(real_variable_q auto &o)
 		noexcept -> auto
 		{
-			using _fix = bond::fixture<decltype(o)>;
-			auto const o_sgn = _xtd::copysign(_fix::alpha_1, o);
+			using _fit = bond::fit<decltype(o)>;
+			auto const o_sgn = _xtd::copysign(_fit::alpha_1, o);
 			auto const o_mgn = o*o_sgn;
 			o =    o_sgn;
 			return o_mgn;
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		static_edit(complex_variable_q auto &o)
+		edit_f(complex_variable_q auto &o)
 		noexcept -> auto
 		{
-			using _fix = bond::fixture<decltype(o)>;
+			using _fit = bond::fit<decltype(o)>;
 			auto [u, v] = dots_f<2>(o); o *= v; return u;
 		}
 
@@ -92,8 +92,8 @@ magnum_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
 	//\
-	return magnum_t<Ms...>::static_method(XTAL_REF_(oo)...);
-	return magnum_t<>::template static_method<Ns...>(XTAL_REF_(oo)...);
+	return magnum_t<Ms...>::method_f(XTAL_REF_(oo)...);
+	return magnum_t<>::template method_f<Ns...>(XTAL_REF_(oo)...);
 }
 
 

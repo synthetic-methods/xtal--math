@@ -27,38 +27,38 @@ struct near
 		/*/
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		static_method(integral_variable_q auto n)
+		method_f(integral_variable_q auto n)
 		noexcept -> XTAL_ALL_(n)
 		{
 			using U = XTAL_ALL_(n);
-			using U_fix = bond::fixture<U>;
+			using U_fit = bond::fit<U>;
 
 			--n;
-			bond::seek_forward_f<bond::math::bit_ceiling_f(U_fix::full.depth)>([&]<constant_q I> (I) XTAL_0FN {n |= n >> (1 << I{});});
+			bond::seek_forward_f<bond::math::bit_ceiling_f(U_fit::full.depth)>([&]<constant_q I> (I) XTAL_0FN {n |= n >> (1 << I{});});
 			++n;
 			return n;
 		}
 		/***/
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		static_method(real_variable_q auto u)
+		method_f(real_variable_q auto u)
 		noexcept -> XTAL_ALL_(u)
 		{
 			using U = XTAL_ALL_(u);
-			using U_fix = bond::fixture<U>;
-			using U_sigma = typename U_fix::sigma_type;
-			using U_alpha = typename U_fix::alpha_type;
+			using U_fit = bond::fit<U>;
+			using U_sigma = typename U_fit::sigma_type;
+			using U_alpha = typename U_fit::alpha_type;
 
 			U_alpha constexpr N_half_sqrt = root_f<2>(2.);
-			U_sigma constexpr N_mask      = U_fix::sign.mask|U_fix::exponent.mask;
+			U_sigma constexpr N_mask      = U_fit::sign.mask|U_fit::exponent.mask;
 			return _xtd::bit_cast<U_alpha>(_xtd::bit_cast<U_sigma>(u*N_half_sqrt)&N_mask);
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		static_method(complex_variable_q auto const &u)
+		method_f(complex_variable_q auto const &u)
 		noexcept -> XTAL_ALL_(u)
 		{
-			return {static_method<Ns...>(u.real()), static_method<Ns...>(u.imag())};
+			return {method_f<Ns...>(u.real()), method_f<Ns...>(u.imag())};
 		}
 
 	};
@@ -76,8 +76,8 @@ near_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
 	//\
-	return near_t<Ms...>::static_method(XTAL_REF_(oo)...);
-	return near_t<>::template static_method<Ns...>(XTAL_REF_(oo)...);
+	return near_t<Ms...>::method_f(XTAL_REF_(oo)...);
+	return near_t<>::template method_f<Ns...>(XTAL_REF_(oo)...);
 }
 
 

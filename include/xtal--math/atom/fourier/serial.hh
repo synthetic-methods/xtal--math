@@ -35,7 +35,7 @@ struct serial<_s ...>
 template <vector_q A>
 struct serial<A>
 {
-	using _fix = bond::fixture<A>;
+	using _fit = bond::fit<A>;
 	
 	template <class T>
 	using endotype = typename grade<A>::template homotype<T>;
@@ -75,7 +75,7 @@ struct serial<A>
 		{
 			auto &s = self();
 			
-			if constexpr (typename _fix::alignment{}() < size()) {
+			if constexpr (typename _fit::alignment{}() < size()) {
 				for (auto i = size(); ~--i;) {element(i) *= get<0>(t);
 				for (auto j =      i; j-- ;) {element(i) += t.element(j)*element(i - j);}}
 			}

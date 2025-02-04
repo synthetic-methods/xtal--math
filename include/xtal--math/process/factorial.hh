@@ -67,19 +67,19 @@ struct   factorial
 
 		template <auto ...>
 		XTAL_DEF_(return,inline,set)
-		static_method(integral_variable_q auto &&o)
+		method_f(integral_variable_q auto &&o)
 		noexcept -> decltype(auto)
 		{
 			return factorial_f(XTAL_REF_(o));
 		}
 		template <auto ...>
 		XTAL_DEF_(return,inline,set)
-		static_method(real_variable_q auto &&o)
+		method_f(real_variable_q auto &&o)
 		noexcept -> decltype(auto)
 		{
-			using U_fix = bond::fixture<decltype(o)>;
-			using U_sigma = typename U_fix::sigma_type;
-			using U_alpha = typename U_fix::alpha_type;
+			using U_fit = bond::fit<decltype(o)>;
+			using U_sigma = typename U_fit::sigma_type;
+			using U_alpha = typename U_fit::alpha_type;
 			return static_cast<U_alpha>(factorial_f(static_cast<U_sigma>(XTAL_REF_(o))));
 		}
 

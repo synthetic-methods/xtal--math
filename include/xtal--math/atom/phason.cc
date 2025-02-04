@@ -15,24 +15,24 @@ namespace xtal::atom::math::_test
 
 TAG_("phason")
 {
-	using U_fix = bond::fixture<int>;
-	using T_fix = bond::fixture<double>;
-	using T_delta = typename T_fix::delta_type;
-	using T_sigma = typename T_fix::sigma_type;
-	using T_alpha = typename T_fix::alpha_type;
-	using T_aphex = typename T_fix::aphex_type;
+	using U_fit = bond::fit<int>;
+	using T_fit = bond::fit<double>;
+	using T_delta = typename T_fit::delta_type;
+	using T_sigma = typename T_fit::sigma_type;
+	using T_alpha = typename T_fit::alpha_type;
+	using T_aphex = typename T_fit::aphex_type;
 	static constexpr T_alpha two =  2;
 	static constexpr T_alpha six =  6;
 	static constexpr T_alpha ten = 10;
 
-	auto mt19937_f = T_fix::mt19937_t(Catch::rngSeed());
+	auto mt19937_f = T_fit::mt19937_t(Catch::rngSeed());
 
 	using V_phi = T_alpha;
 	using U_phi = phason_t<V_phi[2]>;
 	using W_phi = _std::complex<phason_t<T_alpha[2]>>;
 	using A_phi = _std::array<V_phi, 2>;
 
-	using _qp = bond::template fixture<typename U_phi::value_type>;
+	using _qp = bond::template fit<typename U_phi::value_type>;
 
 	using D1 = phason_t<T_alpha[1]>;
 	using D2 = phason_t<T_alpha[2]>;
@@ -125,7 +125,7 @@ TAG_("phason")
 	}
 	TRY_("iteration")
 	{
-		U_phi   phi{0, T_fix::haplo_f(4)};
+		U_phi   phi{0, T_fit::haplo_f(4)};
 		auto constexpr N_tip = _qp::sign.mask;
 		auto           n_tip = N_tip;
 
@@ -153,7 +153,7 @@ TAG_("phason")
 	}
 	TRY_("addition")
 	{
-		T_alpha x =  0.33, x_dt = T_fix::haplo_f(4);
+		T_alpha x =  0.33, x_dt = T_fit::haplo_f(4);
 		T_alpha y =  5.55;
 		T_alpha z =  x+y; z -= _std::round(z);
 
@@ -166,13 +166,13 @@ TAG_("phason")
 	}
 	TRY_("multiplication")
 	{
-		T_alpha x = 1/3.L, x_dt = T_fix::haplo_f(4);
+		T_alpha x = 1/3.L, x_dt = T_fit::haplo_f(4);
 		U_phi phi{x, x_dt};
 		V_phi foo{x};
 
 		for (T_sigma i = 0; i < 0x4; ++i) {
 			auto const v = static_cast<T_alpha>(i + 1);
-			auto const u{exp(asinh(v*T_fix::haplo_1))};
+			auto const u{exp(asinh(v*T_fit::haplo_1))};
 			phi *= u;
 			foo *= u;
 			foo -= _std::round(foo);
@@ -185,26 +185,26 @@ TAG_("phason")
 	{
 		EST_("multiplication (fixed-point)")
 		{
-			T_alpha x = 0.33, x_dt = T_fix::haplo_f(4);
+			T_alpha x = 0.33, x_dt = T_fit::haplo_f(4);
 
 			U_phi   phi{x, x_dt};
 		//	T_alpha foo{x};
 
 			for (T_sigma i = 0x100; ~--i;) {
-				T_alpha const u = _std::pow(two, 1 + T_fix::mantissa_f(mt19937_f));
+				T_alpha const u = _std::pow(two, 1 + T_fit::mantissa_f(mt19937_f));
 				phi *= u;
 			}
 			return phi;
 		};
 		EST_("multiplication (floating-point)")
 		{
-			T_alpha x = 0.33, x_dt = T_fix::haplo_f(4);
+			T_alpha x = 0.33, x_dt = T_fit::haplo_f(4);
 
 		//	U_phi   phi{x, x_dt};
 			T_alpha foo{x};
 
 			for (T_sigma i = 0x100; ~--i;) {
-				T_alpha const u = _std::pow(two, 1 + T_fix::mantissa_f(mt19937_f));
+				T_alpha const u = _std::pow(two, 1 + T_fit::mantissa_f(mt19937_f));
 				foo *= u;
 				foo -= _std::round(foo);
 			}

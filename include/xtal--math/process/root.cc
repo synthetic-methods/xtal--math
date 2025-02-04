@@ -15,23 +15,23 @@ namespace xtal::process::math::_test
 /**/
 TAG_("root")
 {
-	using _fix = bond::fixture<>;
-	using T_sigma = typename _fix::sigma_type;
-	using T_delta = typename _fix::delta_type;
-	using T_alpha = typename _fix::alpha_type;
-	using T_aphex = typename _fix::aphex_type;
+	using _fit = bond::fit<>;
+	using T_sigma = typename _fit::sigma_type;
+	using T_delta = typename _fit::delta_type;
+	using T_alpha = typename _fit::alpha_type;
+	using T_aphex = typename _fit::aphex_type;
 
-	auto mt19937_f = typename _fix::mt19937_t();
+	auto mt19937_f = typename _fit::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
 
 	auto constexpr M_1i_root2 = root_f< 2>(T_aphex{1, 1});
 	auto constexpr M_i1_root2 = root_f<-2>(T_aphex{1, 1});
 
-	auto constexpr N_zero_root2 = root_f< 2>(_fix::alpha_0);
-	auto constexpr N_half_root2 = root_f<-2>(_fix::diplo_1);
-	auto constexpr N_half_root3 = root_f<-3>(_fix::diplo_1);
-	auto constexpr N_half_root4 = root_f<-4>(_fix::diplo_1);
-	auto constexpr N_half_root5 = root_f<-5>(_fix::diplo_1);
+	auto constexpr N_zero_root2 = root_f< 2>(_fit::alpha_0);
+	auto constexpr N_half_root2 = root_f<-2>(_fit::diplo_1);
+	auto constexpr N_half_root3 = root_f<-3>(_fit::diplo_1);
+	auto constexpr N_half_root4 = root_f<-4>(_fit::diplo_1);
+	auto constexpr N_half_root5 = root_f<-5>(_fit::diplo_1);
 
 	TRY_("evaluation")
 	{
@@ -42,14 +42,14 @@ TAG_("root")
 		TRUE_(check_f<-1>(N_half_root4, 0.8408964152537145430311254762332149L));
 		TRUE_(check_f<-1>(N_half_root5, 0.8705505632961241391362700174797461L));
 
-		TRUE_(check_f<-27>(pow(0.5, _fix::ratio_f(1,  3)), root_f< 3>(0.5)));
-		TRUE_(check_f<-28>(pow(0.5, _fix::ratio_f(1, -3)), root_f<-3>(0.5)));
+		TRUE_(check_f<-27>(pow(0.5, _fit::ratio_f(1,  3)), root_f< 3>(0.5)));
+		TRUE_(check_f<-28>(pow(0.5, _fit::ratio_f(1, -3)), root_f<-3>(0.5)));
 
-		TRUE_(check_f<-30>(pow(0.5, _fix::ratio_f(1,  5)), root_f< 5>(0.5)));
-		TRUE_(check_f<-27>(pow(0.5, _fix::ratio_f(1, -5)), root_f<-5>(0.5)));
+		TRUE_(check_f<-30>(pow(0.5, _fit::ratio_f(1,  5)), root_f< 5>(0.5)));
+		TRUE_(check_f<-27>(pow(0.5, _fit::ratio_f(1, -5)), root_f<-5>(0.5)));
 
-		TRUE_(check_f<-30>(pow(0.5, _fix::ratio_f(1,  7)), root_f< 7>(0.5)));
-		TRUE_(check_f<-28>(pow(0.5, _fix::ratio_f(1, -7)), root_f<-7>(0.5)));
+		TRUE_(check_f<-30>(pow(0.5, _fit::ratio_f(1,  7)), root_f< 7>(0.5)));
+		TRUE_(check_f<-28>(pow(0.5, _fit::ratio_f(1, -7)), root_f<-7>(0.5)));
 
 		TRUE_(check_f<-35>(1.0, cbrt(-0.500)*root_f<-3>(-0.500)));
 		TRUE_(check_f<-34>(1.0, cbrt(-0.250)*root_f<-3>(-0.250)));
@@ -83,7 +83,7 @@ TAG_("root")
 	{
 		double w{1};
 		for (int i = 0x100; ~--i;) {
-			w *= one/cbrt(_fix::mantissa_f(mt19937_f) + one);
+			w *= one/cbrt(_fit::mantissa_f(mt19937_f) + one);
 		}
 		return w;
 	};
@@ -91,7 +91,7 @@ TAG_("root")
 	{
 		double w{1};
 		for (int i = 0x100; ~--i;) {
-			w *= root_t<-3>::template static_method<3>(_fix::mantissa_f(mt19937_f) + one);
+			w *= root_t<-3>::template method_f<3>(_fit::mantissa_f(mt19937_f) + one);
 		}
 		return w;
 	};
@@ -99,7 +99,7 @@ TAG_("root")
 	{
 		double w{1};
 		for (int i = 0x100; ~--i;) {
-			w *= root_t<-3>::template static_method<2>(_fix::mantissa_f(mt19937_f) + one);
+			w *= root_t<-3>::template method_f<2>(_fit::mantissa_f(mt19937_f) + one);
 		}
 		return w;
 	};
@@ -107,7 +107,7 @@ TAG_("root")
 	{
 		double w{1};
 		for (int i = 0x100; ~--i;) {
-			w *= root_t<-3>::template static_method<1>(_fix::mantissa_f(mt19937_f) + one);
+			w *= root_t<-3>::template method_f<1>(_fit::mantissa_f(mt19937_f) + one);
 		}
 		return w;
 	};

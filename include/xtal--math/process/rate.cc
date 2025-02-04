@@ -15,13 +15,13 @@ namespace xtal::process::math::_test
 /**/
 TAG_("rate")
 {
-	using T_fix = bond::fixture<>;
-	using T_sigma = typename T_fix::sigma_type;
-	using T_delta = typename T_fix::delta_type;
-	using T_alpha = typename T_fix::alpha_type;
-	using T_aphex = typename T_fix::aphex_type;
+	using T_fit = bond::fit<>;
+	using T_sigma = typename T_fit::sigma_type;
+	using T_delta = typename T_fit::delta_type;
+	using T_alpha = typename T_fit::alpha_type;
+	using T_aphex = typename T_fit::aphex_type;
 
-	auto mt19937_f = typename T_fix::mt19937_t();
+	auto mt19937_f = typename T_fit::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
 
 	TRY_("rate evaluation")

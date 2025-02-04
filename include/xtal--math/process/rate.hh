@@ -26,7 +26,7 @@ struct rate
 
 		template <int ...Ns>
 		XTAL_DEF_(return,inline,set)
-		static_method(simplex_field_q auto const &o_re, simplex_field_q auto const &o_im)
+		method_f(simplex_field_q auto const &o_re, simplex_field_q auto const &o_im)
 		noexcept -> auto
 		{
 			XTAL_IF0
@@ -36,10 +36,10 @@ struct rate
 		}
 		template <int ...Ns>
 		XTAL_DEF_(return,inline,set)
-		static_method(complex_field_q auto const &o)
+		method_f(complex_field_q auto const &o)
 		noexcept -> auto
 		{
-			return static_method<Ns...>(o.real(), o.imag());
+			return method_f<Ns...>(o.real(), o.imag());
 		}
 
 	};
@@ -56,7 +56,7 @@ XTAL_DEF_(return,inline,let)
 rate_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
-	return rate_t<Ms...>::static_method(XTAL_REF_(oo)...);
+	return rate_t<Ms...>::method_f(XTAL_REF_(oo)...);
 }
 
 

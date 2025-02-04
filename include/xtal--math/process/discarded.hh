@@ -59,10 +59,10 @@ struct discarded<1, M_aux>
 		})
 		template <auto ...Is>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&u, auto &&...oo)
+		method_f(auto &&u, auto &&...oo)
 		noexcept -> auto
 		{
-			auto  v = S_::template static_method<Is...>(u, XTAL_REF_(oo)...);
+			auto  v = S_::template method_f<Is...>(u, XTAL_REF_(oo)...);
 			using V = XTAL_ALL_(v);
 			using U = XTAL_ALL_(u);
 			static_assert(same_q<U, V>);
@@ -105,10 +105,10 @@ struct discarded<1>
 		})
 		template <auto ...Is>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&u, auto &&...oo)
+		method_f(auto &&u, auto &&...oo)
 		noexcept -> auto
 		{
-			auto  v = S_::template static_method<Is...>(u, XTAL_REF_(oo)...);
+			auto  v = S_::template method_f<Is...>(u, XTAL_REF_(oo)...);
 			using V = XTAL_ALL_(v);
 			using U = XTAL_ALL_(u);
 
@@ -142,18 +142,18 @@ struct discarded<2, M_aux>
 		method(auto &&u, auto &&...oo),
 		noexcept -> decltype(auto)
 		{
-			using _fix = bond::fixture<decltype(u)>;
-			auto constexpr v = _fix::alpha_f(sign_n<(M_aux&1)^1, -1>);
+			using _fit = bond::fit<decltype(u)>;
+			auto constexpr v = _fit::alpha_f(sign_n<(M_aux&1)^1, -1>);
 			return S_::template        method<Is...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
 		})
 		template <auto ...Is>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&u, auto &&...oo)
+		method_f(auto &&u, auto &&...oo)
 		noexcept -> decltype(auto)
 		{
-			using _fix = bond::fixture<decltype(u)>;
-			auto constexpr v = _fix::alpha_f(sign_n<(M_aux&1)^1, -1>);
-			return S_::template static_method<Is...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
+			using _fit = bond::fit<decltype(u)>;
+			auto constexpr v = _fit::alpha_f(sign_n<(M_aux&1)^1, -1>);
+			return S_::template method_f<Is...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
 		}
 
 	};

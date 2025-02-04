@@ -37,7 +37,7 @@ XTAL_DEF_(return,inline,let)
 tang_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return tang_t<M_ism, M_car, As...>::static_method(XTAL_REF_(o));
+	return tang_t<M_ism, M_car, As...>::method_f(XTAL_REF_(o));
 }
 
 
@@ -58,19 +58,19 @@ struct tang<M_ism, -0>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&u)
+		method_f(auto &&u)
 		noexcept -> decltype(auto)
 		{
 			static_assert(N_lim <= 0);
 
 			XTAL_IF0
 			XTAL_0IF (0 <= N_lim) {
-				return S_::template static_method<N_lim>(XTAL_REF_(u));
+				return S_::template method_f<N_lim>(XTAL_REF_(u));
 			}
 			XTAL_0IF (N_lim <  0) {
-				using _fix = bond::fixture<decltype(u)>;
-				auto constexpr up =     _fix::patio_1;
-				auto constexpr dn = one/_fix::patio_1;
+				using _fit = bond::fit<decltype(u)>;
+				auto constexpr up =     _fit::patio_1;
+				auto constexpr dn = one/_fit::patio_1;
 				XTAL_IF0
 				XTAL_0IF (M_ism ==  2) {return atan(sinh(XTAL_REF_(u)*up))*dn;}// `Gudermannian`
 				XTAL_0IF (M_ism ==  1) {return       tan(XTAL_REF_(u)*up) *dn;}
@@ -103,26 +103,26 @@ struct tang<M_ism, -2>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&w)
+		method_f(auto &&w)
 		noexcept -> decltype(auto)
 		{
 			static_assert(N_lim <= 0);
 
 			if constexpr (N_lim < 0) {
 				auto const u = root_f<2>(XTAL_REF_(w));
-				return tang<M_ism, -0>::template static_method<N_lim>(u)/(u);
+				return tang<M_ism, -0>::template method_f<N_lim>(u)/(u);
 			}
 			else {
-				using _fix = bond::fixture<decltype(w)>;
-				auto const _1 = _fix::diplo_f(0);
-				auto const _2 = _fix::diplo_f(1);
-				auto const _4 = _fix::diplo_f(2);
-				auto const _8 = _fix::diplo_f(3);
+				using _fit = bond::fit<decltype(w)>;
+				auto const _1 = _fit::diplo_f(0);
+				auto const _2 = _fit::diplo_f(1);
+				auto const _4 = _fit::diplo_f(2);
+				auto const _8 = _fit::diplo_f(3);
 				XTAL_IF0
 				XTAL_0IF (M_ism ==  2) {return root_f<2>(term_f(one,  _1, w))/term_f(one, _2, XTAL_REF_(w));}
 				XTAL_0IF (M_ism ==  1) {return root_f<2>(term_f(one, -_2, w))/term_f(one,-_4, XTAL_REF_(w));}
-				XTAL_0IF (M_ism == -1) {auto const m = term_f(one, _8, XTAL_REF_(w)); return root_f<-2>(_fix::haplo_1*(root_f<2>(m) + m));}
-				XTAL_0IF (M_ism == -2) {auto const m = term_f(one,-_4, XTAL_REF_(w)); return root_f<-2>(_fix::haplo_1*(root_f<2>(m) + m));}
+				XTAL_0IF (M_ism == -1) {auto const m = term_f(one, _8, XTAL_REF_(w)); return root_f<-2>(_fit::haplo_1*(root_f<2>(m) + m));}
+				XTAL_0IF (M_ism == -2) {auto const m = term_f(one,-_4, XTAL_REF_(w)); return root_f<-2>(_fit::haplo_1*(root_f<2>(m) + m));}
 			}
 		}
 

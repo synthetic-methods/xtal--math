@@ -34,7 +34,7 @@ struct complexion
 	using source_type = _std::complex<U>;
 	using target_type = _std::complex<V>;
 
-	using _fix = xtal::bond::fixture<value_type>;
+	using _fit = xtal::bond::fit<value_type>;
 
 	value_type re;
 	value_type im;
@@ -215,8 +215,8 @@ XTAL_DEF_(return,let)
 check_f(auto const &u, auto const &v)
 noexcept -> bool
 {
-	using _fix = bond::fixture<decltype(u), decltype(v)>;
-	return _fix::template trim_f<N_index>(u) == _fix::template trim_f<N_index>(v);
+	using _fit = bond::fit<decltype(u), decltype(v)>;
+	return _fit::template trim_f<N_index>(u) == _fit::template trim_f<N_index>(v);
 }
 template <int N_index, int N_limit>
 XTAL_DEF_(return,let)
@@ -245,50 +245,32 @@ XTAL_DEF_(return,let)
 check_f(auto const &u, auto const &v)
 noexcept -> int
 {
-	return check_f<-1, 1 - (int) bond::fixture<>::fraction.depth>(u, v);
+	return check_f<-1, 1 - (int) bond::fit<>::fraction.depth>(u, v);
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
 /**/
-template <int N, int I>
-auto plot_f(int const i)
-{
-	int constexpr Z = sizeof(int) << 2;
-
-	int constexpr  I_pos = 0 < I, I_neg = I < 0, I_abs = (I^-I_neg) + I_neg;
-	int const      i_pos = 0 < i, i_neg = i < 0, i_abs = (i^-i_neg) + i_neg;
-	int const      q_pos = i_pos == I_pos;
-	int const      q_neg = i_neg == I_neg;
-
-	int k = i_pos - i_neg;
-
-	XTAL_IF0
-	XTAL_0IF (I == 0) {            k += 2;}
-	XTAL_0IF (I != 0) {if (I != i) k  = 2;}
-
-	k &= -(I_abs <= i_abs);
-	k &= -(q_pos or q_neg);
-	k &= 0b11;
-
-	_std::array<char, 4> constexpr table{' ', ',', '|', '\''};
-	return table[k];
-}
-template <int N, int I>
-auto plot_f(double i)
-{
-	return plot_f<N, I>(static_cast<int>(round(i)));
-}
-template <int N, int M=N - 1>
+template <int N>
 void plot(iterated_q auto const o)
 {
-	int constexpr L = N*2 + 1;
-	bond::seek_backward_f<L>([&] (auto i) XTAL_0FN {
-		for (auto &&e:o) {
-			_std::cout << plot_f<N, i - N>(M*e);
-		};
+	for (auto e: o) {
+		e *= N;
+		e *= 2;
+		e += 0 < e;
+		e -= e < 0;
+		e /= 2;
+		auto u = static_cast<int>(e);
+		for (int n = -N; n <= N; ++n) {
+			     if (n == 0)                     {}
+			else if (u < 0 and n < 0 and u == n) {_std::cout << '<';}
+			else if (u < 0 and n < 0 and u <= n) {_std::cout << '=';}
+			else if (0 < u and 0 < n and n == u) {_std::cout << '>';}
+			else if (0 < u and 0 < n and n <= u) {_std::cout << '=';}
+			else                                 {_std::cout << ' ';}
+		}
 		_std::cout << _std::endl;
-	});
+	}
 }
 /***/
 

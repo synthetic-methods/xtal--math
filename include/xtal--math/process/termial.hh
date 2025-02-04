@@ -62,7 +62,7 @@ struct termial
 
 		template <auto ...>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&...oo)
+		method_f(auto &&...oo)
 		noexcept -> decltype(auto)
 		{
 			return termial_f<M_sgn, M_pow>(XTAL_REF_(oo)...);

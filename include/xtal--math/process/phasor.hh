@@ -27,7 +27,7 @@ Accommodate `std::complex` `value_type`s? \
 template <vector_q A, typename ...As>
 struct phasor<A, As...>
 {
-	using _fix = bond::fixture<A>;
+	using _fit = bond::fit<A>;
 	using _phi = atom::math::phason<A>;
 	using coordinate_type = typename _phi::coordinate_type;
 	using inordinate_type = typename _phi::inordinate_type;
@@ -91,7 +91,7 @@ struct phasor<A, As...>
 		method(fixed_shaped_q auto &&a)
 		noexcept -> decltype(auto)
 		{
-			static_assert(fixed_shaped<decltype(a)>::size() <= N);
+			static_assert(fixed_shaped<decltype(a)>::extent() <= N);
 			(void) S_::template flux<+1>(XTAL_REF_(a));
 			return method();
 		}
