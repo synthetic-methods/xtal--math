@@ -19,7 +19,7 @@ TAG_("ring")
 	TRY_("instantiation")
 	{
 		using _fix = bond::fixture<>;
-		using U = typename _fix::alpha_type;
+		using U_alpha = typename _fix::alpha_type;
 
 		using U_stage = occur::stage_t<>;
 		using U_chunk = schedule::chunk_t<provision::spooled<extent_constant_t<0x10>>>;
@@ -41,16 +41,16 @@ TAG_("ring")
 		svf <<= typename ring<>::  damping_type{1};
 		svf <<= typename ring<>::  balance_type{1};
 	
-		U constexpr omega = 2*2*2*3*5*5*7;
-		U constexpr   rho = 1;
-		U constexpr    up = 1;
-		U constexpr    dn = 0;
+		U_alpha constexpr omega = 2*2*2*3*5*5*7;
+		U_alpha constexpr   rho = 1;
+		U_alpha constexpr    up = 1;
+		U_alpha constexpr    dn = 0;
 
-		U _LP0{};
-		U _LP1{};
+		U_alpha _LP0{};
+		U_alpha _LP1{};
 
-		_std::array<U, 0x100> u_; u_.fill(up);// u_[0] = up;
-		_std::array<U, 0x100> f_; f_.fill(omega);
+		_std::array<U_alpha, 0x100> u_; u_.fill(up);// u_[0] = up;
+		_std::array<U_alpha, 0x100> f_; f_.fill(omega);
 
 		//\
 		auto z = Z::bind_f(u_, f_);
@@ -75,6 +75,39 @@ TAG_("ring")
 
 		plot<5>(z.store());
 
+	}
+	TRY_("instantiation")
+	{
+		using _fix = bond::fixture<>;
+		using U_alpha = typename _fix::alpha_type;
+
+		using U_chunk = schedule::chunk_t<provision::spooled<extent_constant_t<0x10>>>;
+
+		using U_stage = occur::stage_t<>;
+		using U_value = flow::key_s<U_stage>;
+		using U_event = flow::cue_s<U_value>;
+
+		//\
+		using Z_process = prewarped_t<ordinal_constant_t<0>, ring<>>;
+		using Z_process = confined_t<prewarped<ordinal_constant_t<0>>, ring<>>;
+
+		using Z_processor = processor::polymer_t<Z_process
+		,	U_chunk::template inqueue<U_value>
+		,	provision::stored<>
+		,	provision::spooled<>
+		>;
+
+		U_alpha constexpr omega = 2*2*3*3*5*5*7;
+
+		_std::array<U_alpha, 0x100> f_; f_.fill(omega);
+//		Z_processor::template bind_t<> z_{processor::let_f(f_)};
+//
+//		z_ <<= U_resize(8);
+//
+//		z_ <<= U_stage(-1);
+//
+//		z_ <<= U_event(2, 65, 1);
+	
 	}
 }
 /***/
