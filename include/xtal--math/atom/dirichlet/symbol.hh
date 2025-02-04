@@ -35,7 +35,7 @@ struct symbol<_s ...>
 template <vector_q A>
 struct symbol<A>
 {
-	using _fix = bond::fixture<A>;
+	using _fit = bond::fit<A>;
 	
 	template <class T>
 	using endotype = typename couple<A>::template homotype<T>;
@@ -96,7 +96,7 @@ struct symbol<A>
 				value_type w =  1;
 				value_type u = -1;
 				if constexpr (complex_field_q<value_type>) {
-					u = pade::unity_t<1>::template static_method<6>(_fix::ratio_f(1, 2*K));
+					u = pade::unity_t<1>::template method_f<6>(_fit::ratio_f(1, 2*K));
 				}
 				bond::seek_forward_f<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
@@ -135,7 +135,7 @@ struct symbol<A>
 			else {
 				value_type w, u;
 				if constexpr (complex_field_q<value_type>) {
-					u = pade::unity_t<1>::template static_method<6>(_fix::ratio_f(1, 2*K));
+					u = pade::unity_t<1>::template method_f<6>(_fit::ratio_f(1, 2*K));
 				}
 				else {
 					u = 1;

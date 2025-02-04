@@ -42,14 +42,14 @@ struct monologarithm<M_ism, -0>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&o)
+		method_f(auto &&o)
 		noexcept -> auto
 		{
-			using _fix = bond::fixture<decltype(o)>;
-			auto constexpr k = _fix::alpha_f(sign_n<I_ism, -1>);
+			using _fit = bond::fit<decltype(o)>;
+			auto constexpr k = _fit::alpha_f(sign_n<I_ism, -1>);
 
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim) {return  superprocess::template static_method<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim) {return  superprocess::template method_f<N_lim>(XTAL_REF_(o));}
 			XTAL_0IF (0 == I_ism) {return -log(one - XTAL_REF_(o));}
 			XTAL_0IF (1 == I_ism) {return  log(one + XTAL_REF_(o));}
 		}
@@ -79,13 +79,13 @@ struct monologarithm<M_ism, -0>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&o)
+		method_f(auto &&o)
 		noexcept -> auto
 		{
-			using _fix = bond::fixture<decltype(o)>;
+			using _fit = bond::fit<decltype(o)>;
 
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim) {return superprocess::template static_method<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim) {return superprocess::template method_f<N_lim>(XTAL_REF_(o));}
 			XTAL_0IF (0 == I_ism) {return one - exp(-XTAL_REF_(o));}
 			XTAL_0IF (1 == I_ism) {return exp( XTAL_REF_(o)) - one;}
 		}
@@ -115,11 +115,11 @@ struct monologarithm<M_ism, -1>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&o)
+		method_f(auto &&o)
 		noexcept -> auto
 		{
 			XTAL_IF0
-			XTAL_0IF (N_lim <  0) {return S0::template static_method<-0, N_lim>(o)/o;}
+			XTAL_0IF (N_lim <  0) {return S0::template method_f<-0, N_lim>(o)/o;}
 			XTAL_0IF (0 == I_ism) {return root_f<-2>(one - XTAL_REF_(o));}
 			XTAL_0IF (1 == I_ism) {return root_f<-2>(one + XTAL_REF_(o));}
 		}
@@ -146,12 +146,12 @@ struct monologarithm<M_ism, -1>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&o)
+		method_f(auto &&o)
 		noexcept -> auto
 		{
 			auto const u = half*XTAL_REF_(o);
 			XTAL_IF0
-			XTAL_0IF (N_lim <  0) {return S0::template static_method<-0, N_lim>(o)/o;}
+			XTAL_0IF (N_lim <  0) {return S0::template method_f<-0, N_lim>(o)/o;}
 			XTAL_0IF (0 == I_ism) {return root_f<2>(term_f(one, u, u)) - u;}
 			XTAL_0IF (1 == I_ism) {return root_f<2>(term_f(one, u, u)) + u;}
 		}
@@ -169,7 +169,7 @@ noexcept -> decltype(auto)
 {
 	auto constexpr N_sgn =   sign_n<N>;
 	auto constexpr N_abs = N*sign_n<N>;
-	return monologarithm_t<1*N_sgn>::template static_method<N_abs>(XTAL_REF_(oo)...);
+	return monologarithm_t<1*N_sgn>::template method_f<N_abs>(XTAL_REF_(oo)...);
 }
 
 

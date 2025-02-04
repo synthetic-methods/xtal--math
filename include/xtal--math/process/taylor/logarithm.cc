@@ -15,39 +15,39 @@ namespace xtal::process::math::taylor::_test
 
 TAG_("logarithm")
 {
-	using _fix = bond::fixture<>;
+	using _fit = bond::fit<>;
 
-	using T_sigma = typename _fix::sigma_type;
-	using T_delta = typename _fix::delta_type;
-	using T_alpha = typename _fix::alpha_type;
-	using T_aphex = typename _fix::aphex_type;
+	using T_sigma = typename _fit::sigma_type;
+	using T_delta = typename _fit::delta_type;
+	using T_alpha = typename _fit::alpha_type;
+	using T_aphex = typename _fit::aphex_type;
 	static constexpr T_alpha egg =  1.23456789;
 	static constexpr T_alpha ten = 10;
 
 	using U_phi = atom::math::phason_t<T_alpha[2]>;
 
-	auto mt19937_f = typename _fix::mt19937_t();
+	auto mt19937_f = typename _fit::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
 
 	TRY_("evaluation")
 	{
-		TRUE_(check_f<-31>(logarithm_t< 1, 1>::template static_method<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1>::template static_method< 2>(T_aphex{0.3, 0.8})));
-		TRUE_(check_f<-46>(logarithm_t< 1, 1>::template static_method<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1>::template static_method< 0>(T_aphex{0.3, 0.8})));
+		TRUE_(check_f<-31>(logarithm_t< 1, 1>::template method_f<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1>::template method_f< 2>(T_aphex{0.3, 0.8})));
+		TRUE_(check_f<-46>(logarithm_t< 1, 1>::template method_f<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1>::template method_f< 0>(T_aphex{0.3, 0.8})));
 
-		TRUE_(check_f<-13>(logarithm_t< 1, 1>::template static_method<2>(egg), log(egg)));
-		TRUE_(check_f<-25>(logarithm_t<-1, 1>::template static_method<2>(egg), exp(egg)));
+		TRUE_(check_f<-13>(logarithm_t< 1, 1>::template method_f<2>(egg), log(egg)));
+		TRUE_(check_f<-25>(logarithm_t<-1, 1>::template method_f<2>(egg), exp(egg)));
 
-		TRUE_(check_f<- 1>(logarithm_t< 1>::template static_method<-1>(egg), log(egg)));
-		TRUE_(check_f<- 5>(logarithm_t< 1>::template static_method< 3>(egg), log(egg)));
-		TRUE_(check_f<-19>(logarithm_t< 1>::template static_method< 2>(egg), log(egg)));
-		TRUE_(check_f<-33>(logarithm_t< 1>::template static_method< 1>(egg), log(egg)));
-		TRUE_(check_f<-40>(logarithm_t< 1>::template static_method< 0>(egg), log(egg)));
+		TRUE_(check_f<- 1>(logarithm_t< 1>::template method_f<-1>(egg), log(egg)));
+		TRUE_(check_f<- 5>(logarithm_t< 1>::template method_f< 3>(egg), log(egg)));
+		TRUE_(check_f<-19>(logarithm_t< 1>::template method_f< 2>(egg), log(egg)));
+		TRUE_(check_f<-33>(logarithm_t< 1>::template method_f< 1>(egg), log(egg)));
+		TRUE_(check_f<-40>(logarithm_t< 1>::template method_f< 0>(egg), log(egg)));
 
-		TRUE_(check_f<- 1>(logarithm_t<-1>::template static_method<-1>(egg), exp(egg)));
-		TRUE_(check_f<-26>(logarithm_t<-1>::template static_method< 3>(egg), exp(egg)));
-		TRUE_(check_f<-34>(logarithm_t<-1>::template static_method< 2>(egg), exp(egg)));
-		TRUE_(check_f<-43>(logarithm_t<-1>::template static_method< 1>(egg), exp(egg)));
-	//	UNTRUE_(check_f(logarithm_t<-1>::template static_method< 0>(egg), exp(egg)));
+		TRUE_(check_f<- 1>(logarithm_t<-1>::template method_f<-1>(egg), exp(egg)));
+		TRUE_(check_f<-26>(logarithm_t<-1>::template method_f< 3>(egg), exp(egg)));
+		TRUE_(check_f<-34>(logarithm_t<-1>::template method_f< 2>(egg), exp(egg)));
+		TRUE_(check_f<-43>(logarithm_t<-1>::template method_f< 1>(egg), exp(egg)));
+	//	UNTRUE_(check_f(logarithm_t<-1>::template method_f< 0>(egg), exp(egg)));
 
 	}
 	/**/
@@ -55,8 +55,8 @@ TAG_("logarithm")
 	{
 		T_aphex w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _fix::mantissa_f(mt19937_f) + 1.0;
-			auto y = _fix::mantissa_f(mt19937_f) + 1.0;
+			auto x = _fit::mantissa_f(mt19937_f) + 1.0;
+			auto y = _fit::mantissa_f(mt19937_f) + 1.0;
 			w += log(T_aphex{x, y});
 		}
 		return w;
@@ -65,9 +65,9 @@ TAG_("logarithm")
 	{
 		T_aphex w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _fix::mantissa_f(mt19937_f) + 1.0;
-			auto y = _fix::mantissa_f(mt19937_f) + 1.0;
-			w += logarithm_t< 1, 1>::template static_method<2>(T_aphex{x, y});
+			auto x = _fit::mantissa_f(mt19937_f) + 1.0;
+			auto y = _fit::mantissa_f(mt19937_f) + 1.0;
+			w += logarithm_t< 1, 1>::template method_f<2>(T_aphex{x, y});
 		}
 		return w;
 	};
@@ -76,7 +76,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _fix::mantissa_f(mt19937_f) + 1.0;
+			auto x = _fit::mantissa_f(mt19937_f) + 1.0;
 			w += log(x);
 		}
 		return w;
@@ -85,8 +85,8 @@ TAG_("logarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _fix::mantissa_f(mt19937_f) + 1.0;
-			w += logarithm_t< 1, 1>::template static_method<2>(x);
+			auto x = _fit::mantissa_f(mt19937_f) + 1.0;
+			w += logarithm_t< 1, 1>::template method_f<2>(x);
 		}
 		return w;
 	};
@@ -94,8 +94,8 @@ TAG_("logarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _fix::mantissa_f(mt19937_f) + 1.0;
-			w += logarithm_t< 1>::template static_method<2>(x);
+			auto x = _fit::mantissa_f(mt19937_f) + 1.0;
+			w += logarithm_t< 1>::template method_f<2>(x);
 		}
 		return w;
 	};
@@ -103,8 +103,8 @@ TAG_("logarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _fix::mantissa_f(mt19937_f) + 1.0;
-			w += logarithm_t< 1>::template static_method<1>(x);
+			auto x = _fit::mantissa_f(mt19937_f) + 1.0;
+			w += logarithm_t< 1>::template method_f<1>(x);
 		}
 		return w;
 	};
@@ -112,8 +112,8 @@ TAG_("logarithm")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _fix::mantissa_f(mt19937_f) + 1.0;
-			w += logarithm_t< 1>::template static_method<0>(x);
+			auto x = _fit::mantissa_f(mt19937_f) + 1.0;
+			w += logarithm_t< 1>::template method_f<0>(x);
 		}
 		return w;
 	};
@@ -122,7 +122,7 @@ TAG_("logarithm")
 	{
 		T_alpha o{1};
 		for (T_sigma i = 0x100; ~--i;) {
-			o *= exp(_fix::mantissa_f(mt19937_f));
+			o *= exp(_fit::mantissa_f(mt19937_f));
 		}
 		return o;
 	
@@ -132,7 +132,7 @@ TAG_("logarithm")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
-			w *= logarithm_t<-1>::template static_method<~0>(_fix::mantissa_f(mt19937_f));
+			w *= logarithm_t<-1>::template method_f<~0>(_fit::mantissa_f(mt19937_f));
 		}
 		return w;
 	
@@ -141,8 +141,8 @@ TAG_("logarithm")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _fix::mantissa_f(mt19937_f) - 1.0;
-			w *= logarithm_t<-1, 1>::template static_method<2>(x);
+			auto x = _fit::mantissa_f(mt19937_f) - 1.0;
+			w *= logarithm_t<-1, 1>::template method_f<2>(x);
 		}
 		return w;
 	
@@ -151,8 +151,8 @@ TAG_("logarithm")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _fix::mantissa_f(mt19937_f) - 1.0;
-			w *= logarithm_t<-1>::template static_method<2>(x);
+			auto x = _fit::mantissa_f(mt19937_f) - 1.0;
+			w *= logarithm_t<-1>::template method_f<2>(x);
 		}
 		return w;
 	
@@ -161,8 +161,8 @@ TAG_("logarithm")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _fix::mantissa_f(mt19937_f) - 1.0;
-			w *= logarithm_t<-1>::template static_method<1>(x);
+			auto x = _fit::mantissa_f(mt19937_f) - 1.0;
+			w *= logarithm_t<-1>::template method_f<1>(x);
 		}
 		return w;
 	
@@ -171,8 +171,8 @@ TAG_("logarithm")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _fix::mantissa_f(mt19937_f) - 1.0;
-			w *= logarithm_t<-1>::template static_method<0>(x);
+			auto x = _fit::mantissa_f(mt19937_f) - 1.0;
+			w *= logarithm_t<-1>::template method_f<0>(x);
 		}
 		return w;
 	

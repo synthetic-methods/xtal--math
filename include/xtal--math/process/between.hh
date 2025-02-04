@@ -52,7 +52,7 @@ struct   between
 
 		template <auto ...>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&...oo)
+		method_f(auto &&...oo)
 		noexcept -> decltype(auto)
 		{
 			return between_f<Ms...>(XTAL_REF_(oo)...);

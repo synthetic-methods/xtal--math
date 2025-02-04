@@ -78,25 +78,25 @@ struct ring<U_pole[N_pole]>
 		fuse(auto &&o)
 		noexcept -> signed
 		{
-			using _fix = bond::fixture<control_type>;
+			using _fit = bond::fit<control_type>;
 			if constexpr (occur::stage_q<decltype(o)>) {
 				switch (o.head()) {
 					case  0: {break;}
 					case  1: {break;}
 					case -1: {
-						auto constexpr N_thresh = _fix::haplo_f(7);
+						auto constexpr N_thresh = _fit::haplo_f(7);
 						auto constexpr M_thresh = square_f(N_thresh);
 						using          U_poles_ = atom::couple_t<U_pole[N_pole]>;
 						//\note\
 						Because `N_ord` may be less than `N_pole`, \
-						access to `U_poles_` requres resetting `stow` when `N_ord` changes. \
+						access to `U_poles_` requres resetting `memory` when `N_ord` changes. \
 
 						//\note\
 						May need to finess checking the zeroness of `states_`, \
 						since the components are scaled by powers of gain. \
 
-						auto const [states_] = S_::template stow<U_poles_>();
-						return bond::pack_dot_f(states_) < M_thresh and S_::template fuse<N_ion>(XTAL_REF_(o));
+						auto const [states_] = S_::template memory<U_poles_>();
+						return states_.product() < M_thresh and S_::template fuse<N_ion>(XTAL_REF_(o));
 					}
 				}
 			}
@@ -125,12 +125,12 @@ struct ring<A>
 };
 template <>
 struct ring<>
-:	ring<typename bond::fixture<>::alpha_type>
+:	ring<typename bond::fit<>::alpha_type>
 {
 };
 
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////FIXME
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////

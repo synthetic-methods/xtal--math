@@ -38,7 +38,7 @@ struct prewarped<I, As...>
 		{
 			auto &o = get<I{}>(_std::tie(oo...));
 			o *= S_::sampling().period();
-			o *= pade::tangy_t<1,-1>::template static_method<6>(o);
+			o *= pade::tangy_t<1,-1>::template method_f<6>(o);
 			return S_::template method<Ns...>(XTAL_MOV_(oo)...);
 		};
 

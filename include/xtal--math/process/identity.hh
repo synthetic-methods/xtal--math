@@ -32,10 +32,10 @@ struct identity
 
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&...oo)
+		method_f(auto &&...oo)
 		noexcept -> decltype(auto)
 		{
-			return S_::template static_method<Ns...>(XTAL_REF_(oo)...);
+			return S_::template method_f<Ns...>(XTAL_REF_(oo)...);
 		};
 
 	};

@@ -22,7 +22,7 @@ XTAL_DEF_(return,inline,let)
 disunity_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return disunity_t<M_ism>::template static_method<Ns...>(XTAL_REF_(o));
+	return disunity_t<M_ism>::template method_f<Ns...>(XTAL_REF_(o));
 }
 
 
@@ -41,7 +41,7 @@ struct disunity<M_ism>
 
 		template <auto ...>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&o)
+		method_f(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			return XTAL_REF_(o);
@@ -64,13 +64,13 @@ struct disunity<M_ism>
 
 		template <auto ...>
 		XTAL_DEF_(return,inline,set)
-		static_method(complex_field_q auto const &o)
+		method_f(complex_field_q auto const &o)
 		noexcept -> decltype(auto)
 		{
 			using U    = XTAL_ALL_(o);
-			using U_fix = bond::fixture<U>;
+			using U_fit = bond::fit<U>;
 
-			auto constexpr i_sgn = U_fix::alpha_f(I_sgn);
+			auto constexpr i_sgn = U_fit::alpha_f(I_sgn);
 
 			auto y = o.imag();
 			auto x = o.real();

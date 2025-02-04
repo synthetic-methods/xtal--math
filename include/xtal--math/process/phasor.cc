@@ -40,7 +40,7 @@ TAG_("phasor")
 	using U_stored  = provision::stored<unit_type[0x1000]>;
 	using U_sampled = typename occur::sample_t<>::template attach<>;
 
-	using _Op = bond::fixture<>;
+	using _Op = bond::fit<>;
 	using T_sigma = typename _Op::sigma_type;
 	using T_delta = typename _Op::delta_type;
 	using T_alpha = typename _Op::alpha_type;
@@ -72,12 +72,12 @@ TAG_("phasor")
 	using Z_eig = processor::monomer_t<process::lift<evoke_t<T_eigenrow>>, Y_chi>;
 //	using Z_eig = processor::monomer_t<confined_t<lift<evoke_t<_std::array<T_cell, 2>>>, phasor<_phi, U_sampled>>>;
 
-	using _fix = bond::template fixture<typename X_phi::value_type>;
+	using _fit = bond::template fit<typename X_phi::value_type>;
 
 
 	TRY_("trial")
 	{
-		static constexpr T_alpha x_delta  = _fix::ratio_f(7);
+		static constexpr T_alpha x_delta  = _fit::ratio_f(7);
 		
 		T_sigma constexpr N_data = 0x1000;
 		T_alpha   z_data[2][N_data]{};
@@ -94,13 +94,13 @@ TAG_("phasor")
 		auto e_data  = Map<T_eigencolumns>(*z_data, N_data, 2).rowwise();
 		auto e_data  = ConvertToEigenMatrix<2>(y_data, N_data).rowwise();
 		
-		auto x_phi = X_phi{}; x_phi <<=                         {_fix::ratio_f(7)};
-		auto y_phi = Y_phi{}; y_phi <<= flow::indent_s<X_phi, 1>{_fix::ratio_f(7)}; y_phi <<= occur::resize_t<>(N_data);
+		auto x_phi = X_phi{}; x_phi <<=                         {_fit::ratio_f(7)};
+		auto y_phi = Y_phi{}; y_phi <<= flow::indent_s<X_phi, 1>{_fit::ratio_f(7)}; y_phi <<= occur::resize_t<>(N_data);
 		
-		auto z_chi = Z_chi::bind_f(); z_chi <<= flow::indent_s<X_phi, 1>{_fix::ratio_f(7)}; z_chi <<= occur::resize_t<>(N_data);
-		auto z_phi = Z_phi::bind_f(); z_phi <<= flow::indent_s<X_phi, 1>{_fix::ratio_f(7)}; z_phi <<= occur::resize_t<>(N_data);
-		auto z_psi = Z_psi::bind_f(); z_psi <<= flow::indent_s<X_phi, 1>{_fix::ratio_f(7)}; z_psi <<= occur::resize_t<>(N_data);
-	//	auto z_eig = Z_eig::bind_f(); z_eig <<= flow::indent_s<X_phi, 1>{_fix::ratio_f(7)}; z_eig <<= occur::resize_t<>(N_data);
+		auto z_chi = Z_chi::bind_f(); z_chi <<= flow::indent_s<X_phi, 1>{_fit::ratio_f(7)}; z_chi <<= occur::resize_t<>(N_data);
+		auto z_phi = Z_phi::bind_f(); z_phi <<= flow::indent_s<X_phi, 1>{_fit::ratio_f(7)}; z_phi <<= occur::resize_t<>(N_data);
+		auto z_psi = Z_psi::bind_f(); z_psi <<= flow::indent_s<X_phi, 1>{_fit::ratio_f(7)}; z_psi <<= occur::resize_t<>(N_data);
+	//	auto z_eig = Z_eig::bind_f(); z_eig <<= flow::indent_s<X_phi, 1>{_fit::ratio_f(7)}; z_eig <<= occur::resize_t<>(N_data);
 
 		occur::render_t<>         z_render(N_data);
 		flow ::indent_s<X_phi, 1> z_indent{x_delta};
@@ -134,8 +134,8 @@ TAG_("phasor")
 		using Y_source = phasor_t<_phi>;
 		using Y_target = phasor_t<_phi, phasor<_phi>>;
 
-		Y_source y_source{0, _fix::haplo_f(5)}; X_phi x_source;
-		Y_target y_target{0, _fix::haplo_f(4)}; X_phi x_target;
+		Y_source y_source{0, _fit::haplo_f(5)}; X_phi x_source;
+		Y_target y_target{0, _fit::haplo_f(4)}; X_phi x_target;
 		
 		x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-1>(2.0*x_source(0), x_target(0)));
 		x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-1>(2.0*x_source(0), x_target(0)));
@@ -151,8 +151,8 @@ TAG_("phasor")
 	/**/
 	TRY_("progression")
 	{
-		T_alpha x_d4 = _fix::haplo_f(4);
-		T_alpha x_d3 = _fix::haplo_f(3);
+		T_alpha x_d4 = _fit::haplo_f(4);
+		T_alpha x_d3 = _fit::haplo_f(3);
 		Y_phi y_phi{0, x_d4};
 		X_phi x_phi;
 
@@ -178,8 +178,8 @@ TAG_("phasor")
 	/**/
 	TRY_("procession in-place")
 	{
-		T_alpha x_d4 = _fix::haplo_f(4);
-		T_alpha x_d3 = _fix::haplo_f(3);
+		T_alpha x_d4 = _fit::haplo_f(4);
+		T_alpha x_d3 = _fit::haplo_f(3);
 		T_alpha z_outs[2][8]{};
 		auto  z_out = bond::transpack_f<void_type[2]>(8, z_outs);
 		using Z_out = reiterated_t<XTAL_ALL_(z_out)>;
@@ -227,15 +227,15 @@ TAG_("phasor")
 	}
 	TRY_("procession")
 	{
-		T_alpha x_d4 = _fix::haplo_f(4);
-		T_alpha x_d3 = _fix::haplo_f(3);
+		T_alpha x_d4 = _fit::haplo_f(4);
+		T_alpha x_d3 = _fit::haplo_f(3);
 		T_alpha z_outs[2][8]{};
 		auto z_out = bond::transpack_f<void_type[2]>(8, z_outs);
 
 		auto z_phi = Z_phi::bind_f();
 		static_assert(same_q<X_phi, decltype(z_phi.store().front())>);
 
-		auto constexpr z_fix = _xtd::ranges::views::transform([] XTAL_0FN_(alias) (W_phi));
+		auto constexpr z_fit = _xtd::ranges::views::transform([] XTAL_0FN_(alias) (W_phi));
 
 		occur::resize_t<> z_req(8);
 		occur::render_t<> z_ren(8);
@@ -245,8 +245,8 @@ TAG_("phasor")
 		z_phi <<= z_req;
 		z_phi >>= z_ren++;
 		//\
-		_xtd::ranges::move(z_phi|z_fix, z_out.begin());
-		_xtd::ranges::copy(z_phi|z_fix, z_out.begin());
+		_xtd::ranges::move(z_phi|z_fit, z_out.begin());
+		_xtd::ranges::copy(z_phi|z_fit, z_out.begin());
 
 		TRUE_(z_out[0] == bond::pack_f( 1*x_d4, x_d4));
 		TRUE_(z_out[1] == bond::pack_f( 2*x_d4, x_d4));
@@ -260,8 +260,8 @@ TAG_("phasor")
 		z_phi <<= flow::indent_s<X_phi, 1>{x_d3};
 		z_phi >>= z_ren++;
 		//\
-		_xtd::ranges::copy(z_phi|z_fix, z_out.begin());
-		_xtd::ranges::copy(z_phi|z_fix, z_out.begin());
+		_xtd::ranges::copy(z_phi|z_fit, z_out.begin());
+		_xtd::ranges::copy(z_phi|z_fit, z_out.begin());
 		
 		TRUE_(z_out[0] == bond::pack_f(-3*x_d3, x_d3));
 		TRUE_(z_out[1] == bond::pack_f(-2*x_d3, x_d3));
@@ -276,7 +276,7 @@ TAG_("phasor")
 	/***/
 	TRY_("multiplication")
 	{
-		T_alpha x =  0.33, x_d4 = _fix::haplo_f(4);
+		T_alpha x =  0.33, x_d4 = _fit::haplo_f(4);
 		T_alpha y =  5.55;
 		T_alpha z =  x*y;
 

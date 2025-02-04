@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         bt: [Debug, Release]
-        os: [macos, ubuntu] #, windows]
+        os: [macOS, Ubuntu] #, Windows]
     
     runs-on: ${{matrix.os}}-latest
 
@@ -23,10 +23,10 @@ jobs:
         path:       test_dependencies/xtal
 
     - run:  brew install conan
-      if:   ${{ matrix.os == 'macos' }}
+      if:   ${{ matrix.os == 'macOS' }}
 
     - run:  pip3 install wheel setuptools; pip3 install conan --upgrade
-      if:   ${{ matrix.os != 'macos' }}
+      if:   ${{ matrix.os != 'macOS' }}
 
     - run:  conan remote update conancenter --url="https://center2.conan.io"
     - run:  conan config install ${{github.workspace}}/.conan2

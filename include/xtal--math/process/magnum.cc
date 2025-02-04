@@ -15,13 +15,13 @@ namespace xtal::process::math::_test
 /**/
 TAG_("magnum")
 {
-	using T_fix = bond::fixture<>;
-	using T_sigma = typename T_fix::sigma_type;
-	using T_delta = typename T_fix::delta_type;
-	using T_alpha = typename T_fix::alpha_type;
-	using T_aphex = typename T_fix::aphex_type;
+	using T_fit = bond::fit<>;
+	using T_sigma = typename T_fit::sigma_type;
+	using T_delta = typename T_fit::delta_type;
+	using T_alpha = typename T_fit::alpha_type;
+	using T_aphex = typename T_fit::aphex_type;
 
-	auto mt19937_f = typename T_fix::mt19937_t();
+	auto mt19937_f = typename T_fit::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
 
 	TRY_("magnum edition")
@@ -35,8 +35,8 @@ TAG_("magnum")
 		T_aphex const aphex_sgn{-0.2604290310426322085923800386808580e0L, 0.9654929931336608817105116031598300e0L};
 		T_aphex const aphex_mgn{ 0.4722975756871932162539451383054256e0L, 0.0000000000000000000000000000000000e0L};
 
-		TRUE_(check_f<-1>(magnum_t<>::static_edit(alpha), alpha_mgn));
-		TRUE_(check_f<-1>(magnum_t<>::static_edit(aphex), aphex_mgn));
+		TRUE_(check_f<-1>(magnum_t<>::edit_f(alpha), alpha_mgn));
+		TRUE_(check_f<-1>(magnum_t<>::edit_f(aphex), aphex_mgn));
 
 		TRUE_(check_f<-1>(alpha, alpha_sgn));
 		TRUE_(check_f<-1>(aphex, aphex_sgn));

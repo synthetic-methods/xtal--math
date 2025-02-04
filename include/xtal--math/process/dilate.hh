@@ -18,7 +18,7 @@ XTAL_DEF_(return,inline,let)
 dilate_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return dilate_t<M_val>::static_method(XTAL_REF_(o));
+	return dilate_t<M_val>::method_f(XTAL_REF_(o));
 }
 
 
@@ -33,8 +33,8 @@ struct dilate
 	after_f(auto &&o)
 	noexcept -> decltype(auto)
 	{
-		using _fix = bond::fixture<decltype(o)>;
-		auto constexpr n_val =   _fix::alpha_f(N_val);
+		using _fit = bond::fit<decltype(o)>;
+		auto constexpr n_val =   _fit::alpha_f(N_val);
 		auto constexpr u     =       magnum_f(n_val);
 		auto constexpr v     = (int) signum_f(n_val);
 		return XTAL_REF_(o)*root_f<-v>(u);
@@ -50,7 +50,7 @@ struct dilate
 
 		template <auto ...>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&o)
+		method_f(auto &&o)
 		noexcept -> auto
 		{
 			return after_f(XTAL_REF_(o));

@@ -20,7 +20,7 @@ XTAL_DEF_(return,inline,let)
 imagine_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return imagine_t<M_rot, M_con>::static_method(XTAL_REF_(o));
+	return imagine_t<M_rot, M_con>::method_f(XTAL_REF_(o));
 }
 
 
@@ -44,7 +44,7 @@ struct imagine
 
 		template <auto ...>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&o)
+		method_f(auto &&o)
 		noexcept -> decltype(auto)
 			requires un_n<complex_field_q<decltype(o)>>
 		{
@@ -52,12 +52,12 @@ struct imagine
 				return XTAL_REF_(o);
 			}
 			else {
-				return static_method(complexion_f(o));
+				return method_f(complexion_f(o));
 			}
 		};
 		template <auto ...>
 		XTAL_DEF_(return,inline,set)
-		static_method(complex_field_q auto const &o)
+		method_f(complex_field_q auto const &o)
 		noexcept -> decltype(auto)
 			requires un_n<complex_variable_q<decltype(o)>>
 		{
@@ -79,7 +79,7 @@ struct imagine
 		};
 		template <auto ...>
 		XTAL_DEF_(return,inline,set)
-		static_method(complex_variable_q auto o)
+		method_f(complex_variable_q auto o)
 		noexcept -> decltype(auto)
 		{
 			auto &[x, y] = destruct_f(o);

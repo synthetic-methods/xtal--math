@@ -17,7 +17,7 @@ described in _The Art of VA Synthesis_ by Vadim Zavalishin. \
 ///\
 The non-linearity is supplied as a `process`-`template` using `provision::saturated`. \
 The process must conform to the signature `<M_ism, M_car>`, \
-defining a stateless `static_method<N_var, ...>` within the `subtype`. \
+defining a stateless `method_f<N_var, ...>` within the `subtype`. \
 
 ///\
 The parameters `M_ism` and `M_car` determine the type and return-value of curve, respectively. \
@@ -39,14 +39,14 @@ template <class U_pole, int N_pole>
 struct filter<U_pole[N_pole]>
 {
 	using   sample_type = occur::sample_t<>;
-	using     zoom_type = occur::inferred_t<struct     ZOOM, typename bond::fixture<>::alpha_type>;
+	using     zoom_type = occur::inferred_t<struct     ZOOM, typename bond::fit<>::alpha_type>;
 	using   select_type = occur::inferred_t<struct   SELECT, unsigned int, bond::word<2>>;
 	using    order_type = occur::inferred_t<struct    ORDER, unsigned int, bond::seek_s<N_pole + 1>>;
 	using topology_type = occur::inferred_t<struct TOPOLOGY, unsigned int, bond::word<2>>;
 	using    limit_type = occur::inferred_t<struct    LIMIT, unsigned int, bond::word<2>>;
 
 	using superkind = bond::compose<bond::tag<filter_t>
-	,	provision::stowed<U_pole[N_pole << 1]>
+	,	provision::memorized<U_pole[N_pole << 1]>
 	,	typename   sample_type::template   attach<>
 	,	typename     zoom_type::template   attach<>
 	,	typename   select_type::template dispatch<>
@@ -69,11 +69,11 @@ struct filter<U_pole[N_pole]>
 		{
 			if constexpr (N_ion == +1) {
 				if constexpr (in_q<decltype(o), order_type, topology_type>) {
-					S_::stow(constant_t<>{});
+					S_::memory(constant_t<>{});
 				}
 				if constexpr (occur::stage_q<decltype(o)>) {
 					if (o == 0) {
-						S_::stow(constant_t<>{});
+						S_::memory(constant_t<>{});
 					}
 				}
 			}
@@ -112,7 +112,7 @@ struct filter<U_pole[N_pole]>
 					XTAL_0IF (4 == N_ord) {return {one, u04, w24, u04, one};}
 				}()};
 
-				(void) static_edit<N_ord, N_top, Ns...>(XTAL_REF_(x_input), s_scale, io);// io.scalars -> io.outputs
+				(void) edit_f<N_ord, N_top, Ns...>(XTAL_REF_(x_input), s_scale, io);// io.scalars -> io.outputs
 
 				auto constexpr I_ =  static_cast<unsigned>(N_sel);
 				auto constexpr I0 = _std::countr_one(I_ >>  0) +  0, J0 = I0 + 1;
@@ -138,7 +138,7 @@ struct filter<U_pole[N_pole]>
 		}
 		template <int N_ord=0, int N_top=0, int N_lim=0, auto ...Ns> requires (1 <= N_ord and N_top == 0)
 		XTAL_DEF_(inline,let)
-		static_edit(auto const &x_input
+		edit_f(auto const &x_input
 		,	absolve_u<decltype(x_input)> s_scale
 		,	auto &io
 		)
@@ -154,9 +154,9 @@ struct filter<U_pole[N_pole]>
 			auto  scalars = io.scalars; auto scalars_ = scalars.self(cardinal_constant_t<N_ord>{});
 			auto &outputs = io.outputs; auto outputs_ = outputs.self(cardinal_constant_t<N_ord>{});
 
-			auto  stowed  = S_::template stow<U_poles_, U_poles_>();
-			auto &states_ = get<0>(stowed);
-			auto &slopes_ = get<1>(stowed);
+			auto  memorized  = S_::template memory<U_poles_, U_poles_>();
+			auto &states_ = get<0>(memorized);
+			auto &slopes_ = get<1>(memorized);
 
 		//	Initialize `scalars*`:
 			slopes_.template blanket<1>();
@@ -184,7 +184,7 @@ struct filter<U_pole[N_pole]>
 					}
 					XTAL_0IF (1 == K_lim) {
 						auto const exput = term_f(get<I>(states_), get<I + 1>(outputs), s_scale);
-						auto const slope = S_::template saturate_t<-1, -1>::template static_method<N_lim, Ns...>(exput) + (get<I>(scalars_) - one);
+						auto const slope = S_::template saturate_t<-1, -1>::template method_f<N_lim, Ns...>(exput) + (get<I>(scalars_) - one);
 						get<I>(outputs_) = exput;
 						get<I>( slopes_) = slope;
 					}
@@ -203,7 +203,7 @@ struct filter<U_pole[N_pole]>
 };
 template <>
 struct filter<>
-:	filter<typename bond::fixture<>::aphex_type[4]>
+:	filter<typename bond::fit<>::aphex_type[4]>
 {
 };
 

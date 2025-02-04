@@ -27,19 +27,19 @@ noexcept -> auto
 	}
 	XTAL_0IF (1 == N_sqr) {
 		using X    = XTAL_ALL_(x);
-		using X_fix = bond::fixture<X>;
+		using X_fit = bond::fit<X>;
 		
 		auto constexpr K_sgn = N_alt*N_sgn;
 
 		XTAL_IF0
 		XTAL_0IF (1 <= sizeof...(xs)) {
-			return term_f(X_fix::alpha_f(K_sgn)*square_f<1, N_alt, K_sgn>(XTAL_REF_(xs)...), x, x);
+			return term_f(X_fit::alpha_f(K_sgn)*square_f<1, N_alt, K_sgn>(XTAL_REF_(xs)...), x, x);
 		}
 		XTAL_0IF (complex_field_q<X>) {
 		//	auto const &[x_re, x_im] = destruct_f(x);
 			auto const x_re = x.real();
 			auto const x_im = x.imag();
-			return complexion_f(square_f<1, -N_alt>(x_re, x_im), X_fix::diplo_1*x_re*x_im);
+			return complexion_f(square_f<1, -N_alt>(x_re, x_im), X_fit::diplo_1*x_re*x_im);
 		}
 	//	XTAL_0IF (simplex_field_q<X>) {
 		XTAL_0IF_(else) {
@@ -64,7 +64,7 @@ struct square
 
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&...xs)
+		method_f(auto &&...xs)
 		noexcept -> decltype(auto)
 		{
 			return square_f<Ns...>(XTAL_REF_(xs)...);

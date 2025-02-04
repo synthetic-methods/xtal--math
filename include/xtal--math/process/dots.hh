@@ -42,7 +42,7 @@ struct dots//<M_exp, M_cut>
 
 		template <auto ...Is>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&o)
+		method_f(auto &&o)
 		noexcept -> auto
 		{
 			return dots_f<M_exp, M_cut>(XTAL_REF_(o));

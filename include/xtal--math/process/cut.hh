@@ -32,7 +32,7 @@ XTAL_DEF_(return,inline,let)
 cut_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return cut_t<M_stop_, M_side>::template static_method<Ns...>(XTAL_REF_(o));
+	return cut_t<M_stop_, M_side>::template method_f<Ns...>(XTAL_REF_(o));
 }
 
 
@@ -54,30 +54,30 @@ struct cut
 
 		template <auto ...Ns>
 		XTAL_DEF_(return,set)
-		static_edit(real_variable_q auto &o)
+		edit_f(real_variable_q auto &o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _xtd::bit_cast;
 
-			using _fix = bond::fixture<XTAL_ALL_(o)>;
-			using U_delta = typename _fix::delta_type;
-			using U_sigma = typename _fix::sigma_type;
-			using U_alpha = typename _fix::alpha_type;
+			using _fit = bond::fit<XTAL_ALL_(o)>;
+			using U_delta = typename _fit::delta_type;
+			using U_sigma = typename _fit::sigma_type;
+			using U_alpha = typename _fit::alpha_type;
 
 			auto constexpr o_stop = static_cast<U_alpha>(magnum_f(M_stop));
 			auto constexpr N_side = static_cast<U_delta>(M_side);
 			//\
-			if (_std::is_constant_evaluated() or not _fix::IEC) {
-			if (_std::is_constant_evaluated() or not _fix::IEC or XTAL_ENV_(GNUC)) {
-				U_alpha const s = signum_t<>::static_edit(o); o = either_f<N_side>(XTAL_MOV_(o), o_stop);
+			if (_std::is_constant_evaluated() or not _fit::IEC) {
+			if (_std::is_constant_evaluated() or not _fit::IEC or XTAL_ENV_(GNUC)) {
+				U_alpha const s = signum_t<>::edit_f(o); o = either_f<N_side>(XTAL_MOV_(o), o_stop);
 				U_alpha const q = o == o_stop;
 				o *= s; return q*s;
 			}
 			else {
 				U_sigma constexpr K_stop = bit_cast<U_sigma>(o_stop);
-				U_sigma constexpr K_side = N_side >> _fix::sign.shift;
-				auto constexpr sign = _fix::sign;
-				auto constexpr unit = _fix::unit;
+				U_sigma constexpr K_side = N_side >> _fit::sign.shift;
+				auto constexpr sign = _fit::sign;
+				auto constexpr unit = _fit::unit;
 
 				auto   &t = reinterpret_cast<U_sigma &>(o);
 				U_sigma s = t&sign.mask;
@@ -95,23 +95,23 @@ struct cut
 		/**/
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		static_edit(complex_variable_q auto &o)
+		edit_f(complex_variable_q auto &o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			auto &[x, y] = destruct_f(o);
-			return {static_edit<Ns...>(x), static_edit<Ns...>(y)};
+			return {edit_f<Ns...>(x), edit_f<Ns...>(y)};
 		}
 		/*/
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		static_edit(complex_variable_q auto &o)
+		edit_f(complex_variable_q auto &o)
 		noexcept -> XTAL_ALL_(abs(o))
 		{
-			using _fix = bond::fixture<decltype(o)>;
+			using _fit = bond::fit<decltype(o)>;
 
 			auto &[x, y] = destruct_f(o);
 			auto  [w, m] = dots_f<2>(o);
-			auto r = static_edit<Ns...>(w);
+			auto r = edit_f<Ns...>(w);
 			w *= m;
 			x *= w;
 			y *= w;
@@ -121,10 +121,10 @@ struct cut
 
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto o)
+		method_f(auto o)
 		noexcept -> auto
 		{
-			(void) static_edit(o); return o;
+			(void) edit_f(o); return o;
 		}
 
 	};

@@ -22,7 +22,7 @@ XTAL_DEF_(return,inline,let)
 logarithm_f(auto &&o, constant_q auto ...oo)
 noexcept -> decltype(auto)
 {
-	return logarithm_t<Ms...>::template static_method<oo...>(XTAL_REF_(o));
+	return logarithm_t<Ms...>::template method_f<oo...>(XTAL_REF_(o));
 }
 
 
@@ -45,7 +45,7 @@ struct logarithm< 1, 0>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&o)
+		method_f(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
@@ -63,7 +63,7 @@ struct logarithm< 1, 0>
 		approximate(auto o)
 		noexcept -> decltype(auto)
 		{
-			return superprocess::template static_method<N_lim>(roots_f<2>(XTAL_MOV_(o)).template sum<-1>());
+			return superprocess::template method_f<N_lim>(roots_f<2>(XTAL_MOV_(o)).template sum<-1>());
 		}
 
 	};
@@ -87,7 +87,7 @@ struct logarithm<-1, 0>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&o)
+		method_f(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
@@ -105,18 +105,18 @@ struct logarithm<-1, 0>
 		approximate(auto &&o)
 		noexcept -> decltype(auto)
 		{
-			using _fix = bond::fixture<decltype(o)>;
+			using _fit = bond::fit<decltype(o)>;
 
 			if constexpr (0 == N_lim) {
-				auto u = o*_fix::haplo_1; u += root_f<2>(term_f(one, u, u));
+				auto u = o*_fit::haplo_1; u += root_f<2>(term_f(one, u, u));
 				return term_f(one, XTAL_MOV_(u), XTAL_REF_(o));
 			}
 			else {
 				/**/
 				auto constexpr N = below_m<0x10, (unsigned) N_lim> << 2;
-				return square_f<N>(static_method<0>(XTAL_REF_(o)*_fix::haplo_f(N)));
+				return square_f<N>(method_f<0>(XTAL_REF_(o)*_fit::haplo_f(N)));
 				/*/
-				return monologarithm_t<-1>::template static_method<N_lim>(XTAL_REF_(o)) + one;
+				return monologarithm_t<-1>::template method_f<N_lim>(XTAL_REF_(o)) + one;
 				/***/
 			}
 		}
@@ -142,7 +142,7 @@ struct logarithm< 1, 1>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&o)
+		method_f(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
@@ -157,10 +157,10 @@ struct logarithm< 1, 1>
 		approximate(real_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
-			using _fix = bond::fixture<decltype(o)>;
-			using U_alpha = typename _fix::alpha_type;
-			using U_sigma = typename _fix::sigma_type;
-			using U_delta = typename _fix::delta_type;
+			using _fit = bond::fit<decltype(o)>;
+			using U_alpha = typename _fit::alpha_type;
+			using U_sigma = typename _fit::sigma_type;
+			using U_delta = typename _fit::delta_type;
 
 		//	Log[m 2^x]
 		//	Log[m] + Log[2^x]
@@ -170,10 +170,10 @@ struct logarithm< 1, 1>
 		//	Log[m/2^(1/2)] + (x*2 + 1)*Log[2]/2
 
 			U_sigma m = _xtd::bit_cast<U_sigma>(o);
-			U_delta n = m - _fix::unit.mask;
-			m  &= _fix::fraction.mask;
-			m  |= _fix::unit.mask;
-			n >>= _fix::unit.shift - one;
+			U_delta n = m - _fit::unit.mask;
+			m  &= _fit::fraction.mask;
+			m  |= _fit::unit.mask;
+			n >>= _fit::unit.shift - one;
 			n  |= one;
 
 			U_alpha constexpr w1 =                       root_f<-2>(2.) ;
@@ -181,24 +181,24 @@ struct logarithm< 1, 1>
 			auto const w    = w1 *  _xtd::bit_cast<U_alpha>(XTAL_MOV_(m));
 			auto const u    = u1 *     static_cast<U_alpha>(XTAL_MOV_(n));
 
-			return logarithm_t<1>::template static_method<N_lim>(XTAL_MOV_(w)) + XTAL_MOV_(u);
+			return logarithm_t<1>::template method_f<N_lim>(XTAL_MOV_(w)) + XTAL_MOV_(u);
 		}
 		template <int N_lim=0>
 		XTAL_DEF_(return,set)
 		approximate(complex_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
-			using _fix = bond::fixture<decltype(o)>;
+			using _fit = bond::fit<decltype(o)>;
 
-			auto constexpr up = one/_fix::patio_1;
-			auto constexpr dn =     _fix::patio_1;
+			auto constexpr up = one/_fit::patio_1;
+			auto constexpr dn =     _fit::patio_1;
 
 			auto const [u_re, u_im] = destruct_f(XTAL_REF_(o));
 			auto const w_re = square_f(u_re);
 			auto const w_im = square_f(u_im);
 
-			auto const y_re = _fix::haplo_1*approximate<N_lim>(w_re + w_im);
-			auto const y_im = pade::tangy_t<-1, 1>::template static_method<N_lim>(u_im, u_re)*_fix::patio_1;
+			auto const y_re = _fit::haplo_1*approximate<N_lim>(w_re + w_im);
+			auto const y_im = pade::tangy_t<-1, 1>::template method_f<N_lim>(u_im, u_re)*_fit::patio_1;
 			return {y_re, y_im};
 		}
 
@@ -222,7 +222,7 @@ struct logarithm<-1, 1>
 
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&o)
+		method_f(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
@@ -237,13 +237,13 @@ struct logarithm<-1, 1>
 		approximate(real_variable_q auto o)
 		noexcept -> decltype(auto)
 		{
-			using _fix = bond::fixture<decltype(o)>;
-			using U_alpha = typename _fix::alpha_type;
+			using _fit = bond::fit<decltype(o)>;
+			using U_alpha = typename _fit::alpha_type;
 
 			U_alpha constexpr N_log2 = _std::numbers::ln2_v<U_alpha>;
 			o *= one/N_log2; auto const n = round(o); o -= n;
 			o *=     N_log2;
-			return ldexp(logarithm_t<-1>::template static_method<N_lim>(XTAL_MOV_(o)), XTAL_MOV_(n));
+			return ldexp(logarithm_t<-1>::template method_f<N_lim>(XTAL_MOV_(o)), XTAL_MOV_(n));
 		}
 
 	};

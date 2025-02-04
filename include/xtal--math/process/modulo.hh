@@ -37,7 +37,7 @@ struct   modulo
 
 		template <auto ...>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&...oo)
+		method_f(auto &&...oo)
 		noexcept -> decltype(auto)
 		{
 			return modulo_f<Ms...>(XTAL_REF_(oo)...);

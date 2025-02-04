@@ -17,7 +17,7 @@ Defines the Bernoulli polynomials `BernoulliB[n, u + 1/2]*(2 Pi)^(n - 1)/n!`, wh
 
 ///\note\
 The even polynomials are only defined for ``implemented separately, \
-so avoid invoking `static_method<N_ord>` when `in_n<M_car, 1, 0,-2>`. \
+so avoid invoking `method_f<N_ord>` when `in_n<M_car, 1, 0,-2>`. \
 
 template <int M_ism=1, int M_car=0> struct   polynomial;
 template <int M_ism=1, int M_car=0> using    polynomial_t = process::confined_t<polynomial<M_ism, M_car>>;
@@ -26,7 +26,7 @@ XTAL_DEF_(return,inline,let)
 polynomial_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return polynomial_t<M_ism, M_car>::template static_method<M_ord>(XTAL_REF_(o));
+	return polynomial_t<M_ism, M_car>::template method_f<M_ord>(XTAL_REF_(o));
 }
 
 
@@ -60,18 +60,18 @@ struct polynomial<M_ism,-0>
 
 		template <int N_ord=0>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&u)
+		method_f(auto &&u)
 		noexcept -> decltype(auto)
 		{
-			using     _fix = bond::fixture<decltype(u)>;
-			using W_alpha = typename _fix::alpha_type;
-			using W_sigma = typename _fix::sigma_type;
+			using     _fit = bond::fit<decltype(u)>;
+			using W_alpha = typename _fit::alpha_type;
+			using W_sigma = typename _fit::sigma_type;
 			W_sigma constexpr N_par = magnum_f(N_ord)&1;
 			W_sigma constexpr N_ity = magnum_f(N_ord) >> 1;
 
 			if constexpr (N_ord < 0) {
-				auto const dn =          one/_fix::patio_1;
-				auto const up = XTAL_REF_(u)*_fix::patio_2;
+				auto const dn =          one/_fit::patio_1;
+				auto const up = XTAL_REF_(u)*_fit::patio_2;
 
 				XTAL_IF0
 				XTAL_0IF (N_par == 1 and M_ism == 2) {return sinh(up)*(dn);}
@@ -80,10 +80,10 @@ struct polynomial<M_ism,-0>
 				XTAL_0IF (N_par == 0 and M_ism == 1) {return cos (up)*(dn);}
 			}
 			else {
-				W_alpha constexpr dn = signum_f(N_ity)*power_f<N_ord - 1>(_fix::patio_2);
+				W_alpha constexpr dn = signum_f(N_ity)*power_f<N_ord - 1>(_fit::patio_2);
 				XTAL_IF0
-				XTAL_0IF (N_par == 0) {return dn*s_::template static_method<N_ord>(square_f(XTAL_REF_(u)));}
-				XTAL_0IF (N_par == 1) {return dn*S_::template static_method<N_ord>(         XTAL_REF_(u) );}
+				XTAL_0IF (N_par == 0) {return dn*s_::template method_f<N_ord>(square_f(XTAL_REF_(u)));}
+				XTAL_0IF (N_par == 1) {return dn*S_::template method_f<N_ord>(         XTAL_REF_(u) );}
 			}
 		}
 
@@ -113,25 +113,25 @@ struct polynomial<M_ism,-2>
 
 		template <int N_ord=0>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto w)
+		method_f(auto w)
 		noexcept -> decltype(auto)
 		{
 			auto constexpr N_par = N_ord&1;
 
-			using _fix = bond::fixture<decltype(w)>;
-			w *= _fix::alpha_f(I_sgn);
+			using _fit = bond::fit<decltype(w)>;
+			w *= _fit::alpha_f(I_sgn);
 
 			if constexpr (N_ord < 0) {
 				auto const u = root_f<2>(magnum_f(XTAL_MOV_(w)));
-				return polynomial<M_ism, -0>::template static_method<N_ord>(u)/(u);
+				return polynomial<M_ism, -0>::template method_f<N_ord>(u)/(u);
 			}
 			else {
 				auto constexpr co_ = [] (auto num, auto nom)
-					XTAL_0FN_(return) (_fix::ratio_f(num, nom*factorial_f<N_ord>())
+					XTAL_0FN_(return) (_fit::ratio_f(num, nom*factorial_f<N_ord>())
 				);
 				XTAL_IF0
 				XTAL_0IF (1 == N_ord) {return                                                                  co_(1, 1);}
-				XTAL_0IF (1 == N_par) {return     (_fix::ratio_f(1, 4) + w) * S_::template static_method<N_ord>(XTAL_MOV_(w));}
+				XTAL_0IF (1 == N_par) {return     (_fit::ratio_f(1, 4) + w) * S_::template method_f<N_ord>(XTAL_MOV_(w));}
 				XTAL_0IF (0 == N_ord) {return termial_f(XTAL_MOV_(w),                                         co_(1, 1));}
 				XTAL_0IF (2 == N_ord) {return termial_f(XTAL_MOV_(w),                             co_(1, 12), co_(1, 1));}
 				XTAL_0IF (4 == N_ord) {return termial_f(XTAL_MOV_(w),                co_(7, 240), co_(1,  2), co_(1, 1));}
@@ -154,17 +154,17 @@ struct polynomial<M_ism,-3>
 
 		template <int N_ord=0>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto w)
+		method_f(auto w)
 		noexcept -> decltype(auto)
 		{
 			auto constexpr N_par = N_ord&1;
 			static_assert(1 == N_par);
 			static_assert(3 <= N_ord);
 
-			using _fix = bond::fixture<decltype(w)>;
+			using _fit = bond::fit<decltype(w)>;
 
 			auto constexpr co_ = [] (auto num, auto nom)
-				XTAL_0FN_(return) (_fix::ratio_f(num, nom*factorial_f<N_ord>())
+				XTAL_0FN_(return) (_fit::ratio_f(num, nom*factorial_f<N_ord>())
 			);
 			XTAL_IF0
 			XTAL_0IF (3 == N_ord) {return termial_f(XTAL_MOV_(w),                          co_(1, 1));}

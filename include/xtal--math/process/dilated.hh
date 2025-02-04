@@ -33,8 +33,8 @@ struct dilated
 	around_f(auto &&o)
 	noexcept -> decltype(auto)
 	{
-		using _fix = bond::fixture<decltype(o)>;
-		auto constexpr n_val =   _fix::alpha_f(N_val);
+		using _fit = bond::fit<decltype(o)>;
+		auto constexpr n_val =   _fit::alpha_f(N_val);
 		auto constexpr u     =       magnum_f(n_val);
 		auto constexpr v     = (int) signum_f(n_val);
 		return f(XTAL_REF_(o)*root_f<-v>(u))*root_f<+v>(u);
@@ -50,18 +50,18 @@ struct dilated
 
 		template <auto ...Is>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&o)
+		method_f(auto &&o)
 		noexcept -> decltype(auto)
-		requires      in_n<requires {S ::template static_method<Is...>  (XTAL_REF_(o));}>
+		requires      in_n<requires {S ::template method_f<Is...>  (XTAL_REF_(o));}>
 		{
-			return around_f<[] XTAL_0FN_(alias) (S_::template static_method<Is...>)>(XTAL_REF_(o));
+			return around_f<[] XTAL_0FN_(alias) (S_::template method_f<Is...>)>(XTAL_REF_(o));
 		};
 
 		template <auto ...Is>
 		XTAL_DEF_(return,inline,let)
 		method(auto &&o) const
 		noexcept -> decltype(auto)
-		requires      un_n<requires {S ::template static_method<Is...>  (XTAL_REF_(o));}>
+		requires      un_n<requires {S ::template method_f<Is...>  (XTAL_REF_(o));}>
 		and requires (S_ const &s_) {s_ .template        method<Is...>  (XTAL_REF_(o));}
 		{
 			return around_f<[] XTAL_0FN_(alias) (S_::template        method<Is...>)>(XTAL_REF_(o));
@@ -70,7 +70,7 @@ struct dilated
 		XTAL_DEF_(return,inline,let)
 		method(auto &&o)
 		noexcept -> decltype(auto)
-		requires      un_n<requires {S ::template static_method<Is...>  (XTAL_REF_(o));}>
+		requires      un_n<requires {S ::template method_f<Is...>  (XTAL_REF_(o));}>
 		and requires (S_       &s_) {s_ .template        method<Is...>  (XTAL_REF_(o));}
 		{
 			return around_f<[] XTAL_0FN_(alias) (S_::template        method<Is...>)>(XTAL_REF_(o));

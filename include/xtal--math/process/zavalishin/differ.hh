@@ -17,7 +17,7 @@ the result is renormalized w.r.t. the chain-rule of differentiation. \
 
 ///\note\
 The `method` uses local arena-like allocation to manage state. \
-Unless `As...` includes, `stowed` the maximum `sizeof(input) + sizeof(modulator) <= 64`. \
+Unless `As...` includes, `memorized` the maximum `sizeof(input) + sizeof(modulator) <= 64`. \
 
 ///\todo\
 Enable logarithmic differentiation by including the original signal with the normalization factor? \
@@ -35,7 +35,7 @@ struct differ<U_pole[N_pole]>
 	using  order_type = occur::inferred_t<struct ORDER, unsigned int, bond::seek_s<N_pole + 1>>;
 
 	using superkind = bond::compose<bond::tag<differ_t>
-	,	provision::stowed<U_pole[N_pole << 1]>
+	,	provision::memorized<U_pole[N_pole << 1]>
 //	,	typename sample_type::template   attach<>
 	,	typename  order_type::template dispatch<>
 	>;
@@ -61,7 +61,7 @@ struct differ<U_pole[N_pole]>
 		method(auto const &u)
 		noexcept -> auto
 		{
-			auto [u_] = S_::stow(u);
+			auto [u_] = S_::memory(u);
 			return (u - u_);
 		}
 		template <int N_ord=1> requires in_n<N_ord, 1>
@@ -69,7 +69,7 @@ struct differ<U_pole[N_pole]>
 		method(auto const &u, atom::math::phason_q auto const &t_)
 		noexcept -> auto
 		{
-			auto [u_] = S_::stow(u);
+			auto [u_] = S_::memory(u);
 			return (u - u_)*root_f<-1>(t_(1));
 		}
 		template <int N_ord=1> requires in_n<N_ord, 1>
@@ -77,7 +77,7 @@ struct differ<U_pole[N_pole]>
 		method(auto const &u, auto const &v, atom::math::phason_q auto const &t_)
 		noexcept -> auto
 		{
-			auto [u_, v_] = S_::stow(u, v);
+			auto [u_, v_] = S_::memory(u, v);
 			return (u - u_)*root_f<-1>(t_(1) + v - v_);
 		}
 
@@ -85,7 +85,7 @@ struct differ<U_pole[N_pole]>
 };
 template <>
 struct differ<>
-:	differ<typename bond::fixture<>::aphex_type[2]>
+:	differ<typename bond::fit<>::aphex_type[2]>
 {
 };
 

@@ -24,7 +24,7 @@ XTAL_DEF_(return,inline,let)
 power_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
-	return power_t<M_exp>::template static_method<Ns...>(XTAL_REF_(oo)...);
+	return power_t<M_exp>::template method_f<Ns...>(XTAL_REF_(oo)...);
 }
 
 
@@ -45,7 +45,7 @@ struct   power<M_exp, Ms...>
 
 		template <int ...Ns>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto const &o)
+		method_f(auto const &o)
 		noexcept -> auto
 		{
 			return XTAL_ALL_(o) {one};
@@ -66,16 +66,16 @@ struct   power<M_exp, Ms...>
 
 	public:
 
-		template <int ...Ns> requires in_n<0, bond::fixture<>::template expound_f<2>(M_exp)>
+		template <int ...Ns> requires in_n<0, bond::fit<>::template expound_f<2>(M_exp)>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto const &o)
+		method_f(auto const &o)
 		noexcept -> XTAL_ALL_(o)
 		{
-			using _fix = bond::fixture<decltype(o)>;
+			using _fit = bond::fit<decltype(o)>;
 			if constexpr (M_exp == 2) {
 				if constexpr (complex_variable_q<decltype(o)>) {
 					auto const &[x, y] = destruct_f(o);
-					auto const      u  = accumulator_f(x*x, y*y, _fix::alpha_f(-1));
+					auto const      u  = accumulator_f(x*x, y*y, _fit::alpha_f(-1));
 					auto const      v  = two*x*y;
 					return {u, v};
 				}
@@ -90,19 +90,19 @@ struct   power<M_exp, Ms...>
 			}
 		}
 
-		template <int ...Ns> requires in_n<0, bond::fixture<>::template expound_f<3>(M_exp)>
+		template <int ...Ns> requires in_n<0, bond::fit<>::template expound_f<3>(M_exp)>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto const &o)
+		method_f(auto const &o)
 		noexcept -> XTAL_ALL_(o)
 		{
-			using _fix = bond::fixture<decltype(o)>;
+			using _fit = bond::fit<decltype(o)>;
 			if constexpr (M_exp == 3) {
 				if constexpr (complex_variable_q<decltype(o)>) {
 					auto const &[x, y] = destruct_f(o);
 					auto const      xx =  x*x;
 					auto const     _yy = -y*y;
-					auto const      u  =  x*accumulator_f( xx, _yy, _fix::alpha_f(3));
-					auto const      v  =  y*accumulator_f(_yy,  xx, _fix::alpha_f(3));
+					auto const      u  =  x*accumulator_f( xx, _yy, _fit::alpha_f(3));
+					auto const      v  =  y*accumulator_f(_yy,  xx, _fit::alpha_f(3));
 					return {u, v};
 				}
 				else {
@@ -117,15 +117,15 @@ struct   power<M_exp, Ms...>
 		}
 		template <int ...Ns>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto const &o)
+		method_f(auto const &o)
 		noexcept -> auto
-		requires un_n<0, bond::fixture<int>::template expound_f<2>(M_exp)>
-		and      un_n<0, bond::fixture<int>::template expound_f<3>(M_exp)>
+		requires un_n<0, bond::fit<int>::template expound_f<2>(M_exp)>
+		and      un_n<0, bond::fit<int>::template expound_f<3>(M_exp)>
 		{
 			using U = XTAL_ALL_(o);
 			XTAL_IF0
 			XTAL_0IF (atom::couple_q<U>) {
-				return U::template zip_from<[] XTAL_0FN_(alias) (static_method<Ns...>)>(o);
+				return U::template zip_from<[] XTAL_0FN_(alias) (method_f<Ns...>)>(o);
 			}
 			XTAL_0IF (M_exp   == 0) {return                             U{1};}
 			XTAL_0IF (M_exp   == 1) {return                             o   ;}
@@ -153,10 +153,10 @@ struct   power<M_exp, Ms...>
 
 		template <int ...Ns>
 		XTAL_DEF_(return,inline,set)
-		static_method(auto &&o)
+		method_f(auto &&o)
 		noexcept -> auto
 		{
-			return S_::template static_method<Ns...>(one/XTAL_REF_(o));
+			return S_::template method_f<Ns...>(one/XTAL_REF_(o));
 		}
 
 	};

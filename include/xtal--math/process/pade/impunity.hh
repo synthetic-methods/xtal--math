@@ -22,7 +22,7 @@ XTAL_DEF_(return,inline,let)
 impunity_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return impunity_t<M_ism>::template static_method<Ns...>(XTAL_REF_(o));
+	return impunity_t<M_ism>::template method_f<Ns...>(XTAL_REF_(o));
 }
 
 
@@ -51,58 +51,58 @@ struct impunity<M_ism,-2>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,set)
-		static_method(simplex_field_q auto const &o)
+		method_f(simplex_field_q auto const &o)
 		noexcept -> decltype(auto)
 		{
-			using X = XTAL_ALL_(o); using _fix = bond::fixture<X>;
+			using X = XTAL_ALL_(o); using _fit = bond::fit<X>;
 
-			using U_alpha = typename _fix::alpha_type;
+			using U_alpha = typename _fit::alpha_type;
 
 			auto const w = objective_f(o);
 
 			XTAL_IF0
 			XTAL_0IF (M_ism ==   1) {
-				return impunity_t< 2,-2>::template static_method<N_lim>(-o);
+				return impunity_t< 2,-2>::template method_f<N_lim>(-o);
 			}
 			XTAL_0IF (N_lim == 0x0) {// 0:1 D[...0]@0 && D[...0]@¼
-				U_alpha constexpr x0 = _fix::alpha_1;
-				U_alpha constexpr y0 = _fix::patio_1;
+				U_alpha constexpr x0 = _fit::alpha_1;
+				U_alpha constexpr y0 = _fit::patio_1;
 				auto const x = termial_f(w, x0);
 				auto const y = termial_f(w, y0);
 				return complexion_f(x, y);
 			}
 			XTAL_0IF (N_lim == 0x1) {// 2:1 D[...1]@0 && D[...0]@¼
-				U_alpha constexpr x0 = _fix::alpha_1;
+				U_alpha constexpr x0 = _fit::alpha_1;
 				U_alpha constexpr x1 = 3.433629385640827046149426466881988463L;
-				U_alpha constexpr y0 = _fix::patio_1;
+				U_alpha constexpr y0 = _fit::patio_1;
 				auto const x = termial_f(w, x0, x1);
 				auto const y = termial_f(w, y0);
 				return complexion_f(x, y);
 			}
 			XTAL_0IF (N_lim == 0x2) {// 2:3 D[...1]@0 && D[...1]@¼
-				U_alpha constexpr x0 = _fix::alpha_1;
+				U_alpha constexpr x0 = _fit::alpha_1;
 				U_alpha constexpr x1 = 3.968985697854261420737444775816737932L;
-				U_alpha constexpr y0 = _fix::patio_1;
+				U_alpha constexpr y0 = _fit::patio_1;
 				U_alpha constexpr y1 = 2.141425248853737498352073235738997875L;
 				auto const x = termial_f(w, x0, x1);
 				auto const y = termial_f(w, y0, y1);
 				return complexion_f(x, y);
 			}
 			XTAL_0IF (N_lim == 0x3) {// 4:3 D[...2]@0 && D[...2]@¼
-				U_alpha constexpr x0 = _fix::alpha_1;
+				U_alpha constexpr x0 = _fit::alpha_1;
 				U_alpha constexpr x1 = 4.237909660449236428693854535224051104L;
 				U_alpha constexpr x2 = 0.955351046282004540229507364731116905L;
-				U_alpha constexpr y0 = _fix::patio_1;
+				U_alpha constexpr y0 = _fit::patio_1;
 				U_alpha constexpr y1 = 2.978283337663136395120335432185471337L;
 				auto const x = termial_f(w, x0, x1, x2);
 				auto const y = termial_f(w, y0, y1);
 				return complexion_f(x, y);
 			}
 			XTAL_0IF (N_lim == 0x4) {// 4:5 D[...2]@0 && D[...3]@¼
-				U_alpha constexpr x0 = _fix::alpha_1;
+				U_alpha constexpr x0 = _fit::alpha_1;
 				U_alpha constexpr x1 = 4.390338960642080575102860479411085957L;
 				U_alpha constexpr x2 = 1.561426046129173147274250250239938996L;
-				U_alpha constexpr y0 = _fix::patio_1;
+				U_alpha constexpr y0 = _fit::patio_1;
 				U_alpha constexpr y1 = 3.457231542101901520792301595993191760L;
 				U_alpha constexpr y2 = 0.331996058066891068754049734988584509L;
 				auto const x = termial_f(w, x0, x1, x2);
@@ -110,11 +110,11 @@ struct impunity<M_ism,-2>
 				return complexion_f(x, y);
 			}
 			XTAL_0IF (N_lim == 0x5) {// 6:5 D[...3]@0 && D[...3]@¼
-				U_alpha constexpr x0 = _fix::alpha_1;
+				U_alpha constexpr x0 = _fit::alpha_1;
 				U_alpha constexpr x1 = 4.487894813803155707106642350629568074L;
 				U_alpha constexpr x2 = 1.975104599215236121543726210642557678L;
 				U_alpha constexpr x3 = 0.094096528134246695768752645930262507L;
-				U_alpha constexpr y0 = _fix::patio_1;
+				U_alpha constexpr y0 = _fit::patio_1;
 				U_alpha constexpr y1 = 3.763711817027786915281807613442402050L;
 				U_alpha constexpr y2 = 0.623295934882939155479821936321002832L;
 				auto const x = termial_f(w, x0, x1, x2, x3);
@@ -122,11 +122,11 @@ struct impunity<M_ism,-2>
 				return complexion_f(x, y);
 			}
 			XTAL_0IF (N_lim == 0x6) {// 6:7 D[...3]@0 && D[...4]@¼
-				U_alpha constexpr x0 = _fix::alpha_1;
+				U_alpha constexpr x0 = _fit::alpha_1;
 				U_alpha constexpr x1 = 4.556288946308768410678019439942678932L;
 				U_alpha constexpr x2 = 2.275378023833944536636939235400154936L;
 				U_alpha constexpr x3 = 0.200888908030920297664420149309522799L;
-				U_alpha constexpr y0 = _fix::patio_1;
+				U_alpha constexpr y0 = _fit::patio_1;
 				U_alpha constexpr y1 = 3.978578321256066662987441200793155884L;
 				U_alpha constexpr y2 = 0.859750287076040352418274981236440341L;
 				U_alpha constexpr y3 = 0.022706582386768037080226242510354953L;
@@ -135,12 +135,12 @@ struct impunity<M_ism,-2>
 				return complexion_f(x, y);
 			}
 			XTAL_0IF (N_lim == 0x7) {// 8:7 D[...4]@0 && D[...5]@¼
-				U_alpha constexpr x0 = _fix::alpha_1;
+				U_alpha constexpr x0 = _fit::alpha_1;
 				U_alpha constexpr x1 = 4.606547402370024772724248519073301565L;
 				U_alpha constexpr x2 = 2.500953736670776238483254500604284293L;
 				U_alpha constexpr x3 = 0.300243870518009486091801923099845388L;
 				U_alpha constexpr x4 = 0.004749448374844164315053279863807317L;
-				U_alpha constexpr y0 = _fix::patio_1;
+				U_alpha constexpr y0 = _fit::patio_1;
 				U_alpha constexpr y1 = 4.136469917598875065501883380414805209L;
 				U_alpha constexpr y2 = 1.048974757862995076084471175276645114L;
 				U_alpha constexpr y3 = 0.054095324243024101847331195900039153L;
@@ -150,8 +150,8 @@ struct impunity<M_ism,-2>
 			}
 			XTAL_0IF_(else) {
 				auto const [u, _u] = roots_f<2>(w);
-				auto const x = cos(u*_fix::patio_1);
-				auto const y = sin(u*_fix::patio_1)*_u;
+				auto const x = cos(u*_fit::patio_1);
+				auto const y = sin(u*_fit::patio_1)*_u;
 				return complexion_f(x, y);
 			}
 		}
@@ -171,14 +171,14 @@ struct impunity<M_ism,-2>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,set)
-		static_method(simplex_field_q auto o)
+		method_f(simplex_field_q auto o)
 		noexcept -> auto
 		{
-			using          _fix = bond::fixture<decltype(o)>;
-			auto constexpr _dn  = one/_fix::patio_1;
+			using          _fit = bond::fit<decltype(o)>;
+			auto constexpr _dn  = one/_fit::patio_1;
 			
-			using U_aphex = typename _fix::aphex_type;
-			using U_alpha = typename _fix::alpha_type;
+			using U_aphex = typename _fit::aphex_type;
+			using U_alpha = typename _fit::alpha_type;
 
 			auto const w = objective_f(o);
 
@@ -301,11 +301,11 @@ struct impunity<M_ism,-2>
 			}
 			XTAL_0IF_(else) {
 				auto [d, q] = roots_f<2, 1>(o);
-				(void) cut_t<[] XTAL_0FN_(value) (-_fix::maxilon_1)>::static_edit(d);
-				(void) cut_t<[] XTAL_0FN_(value) (-_fix::maxilon_1)>::static_edit(q);
+				(void) cut_t<[] XTAL_0FN_(value) (-_fit::maxilon_1)>::edit_f(d);
+				(void) cut_t<[] XTAL_0FN_(value) (-_fit::maxilon_1)>::edit_f(q);
 				XTAL_IF0
-				XTAL_0IF (M_ism == -1) {return complexion_f(_fix::alpha_1, _dn*q*atan (d));}
-				XTAL_0IF (M_ism == -2) {return complexion_f(_fix::alpha_1, _dn*q*atanh(d));}
+				XTAL_0IF (M_ism == -1) {return complexion_f(_fit::alpha_1, _dn*q*atan (d));}
+				XTAL_0IF (M_ism == -2) {return complexion_f(_fit::alpha_1, _dn*q*atanh(d));}
 			}
 		}
 

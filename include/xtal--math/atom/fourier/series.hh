@@ -35,11 +35,11 @@ struct series<_s ...>
 template <vector_q A>
 struct series<A>
 {
-	using U_v0 = _std::remove_extent_t<A>;
-	using U_v1 =  valued_u<U_v0>;
-	using U_v2 =  valued_u<U_v1>;
+	using U0 = _std::remove_extent_t<A>;
+	using U1 =  destruct_u<U0>;
+	using U2 =  destruct_u<U1>;
 
-	using _fix = bond::fixture<A>;
+	using _fit = bond::fit<A>;
 	
 	template <class T>
 	using endotype = typename serial<A>::template homotype<T>;
@@ -82,13 +82,14 @@ struct series<A>
 
 		template <int N_count=size>
 		XTAL_DEF_(inline,let)
-		generate(U_v1 const &u1, U_v2 const &u2)
+		generate(U1 const &u1, U2 const &u2)
 		noexcept -> T &
+		requires continuous_field_q<U1, U2>
 		{
 			auto &s = self();
 
-			using W1  = U_v1;
-			using U2  = couple_t<U_v2   [2]>;
+			using W1  = U1;
+			using U2  = couple_t<U2   [2]>;
 			using W1_ = series_t<W1[size*2]>;
 			using U2_ = series_t<U2[size*2]>;
 			static_assert(sizeof(W1_) == sizeof(U2_));
@@ -119,19 +120,19 @@ struct series<A>
 			A_delta constexpr _0 =  0*N_step;
 			A_delta constexpr _1 =  1*N_step;
 			A_delta constexpr _2 =  2*N_step;
-			A_delta constexpr U0 = _1*N_index + N_skip, W0 = _2*N_index + N_skip;
-			A_delta constexpr UZ = _1*N_limit + N_skip, WZ = _2*N_limit + N_skip;
+			A_delta constexpr I0 = _1*N_index + N_skip, J0 = _2*N_index + N_skip;
+			A_delta constexpr IZ = _1*N_limit + N_skip, JZ = _2*N_limit + N_skip;
 
 		//	Populate the 0th and 1st powers:
 			auto const o = process::math::power_f<N_index>(u);
-			get<U0 + _0>(s) = o;
-			get<U0 + _1>(s) = o*u;
+			get<I0 + _0>(s) = o;
+			get<I0 + _1>(s) = o*u;
 
 		//	Populate the remaining powers by squaring/multiplication:
 			bond::seek_forward_f<(N_count >> 1U)>([&] (auto M)
 				XTAL_0FN {
-					auto constexpr UM = U0 + _1*M;
-					auto constexpr WM = W0 + _2*M;
+					auto constexpr UM = I0 + _1*M;
+					auto constexpr WM = J0 + _2*M;
 					
 					auto const w = process::math::power_f<2>(get<UM>(s));
 					get<WM + _0>(s) =   w;
@@ -140,7 +141,7 @@ struct series<A>
 			);
 		//	Compute the final value if `N_count` is odd:
 			if constexpr ((N_count&1U) and (N_count^1U)) {
-				get<UZ - _1>(s) = get<UZ - _2>(s)*(u);
+				get<IZ - _1>(s) = get<IZ - _2>(s)*(u);
 			}
 			return self();
 		}
@@ -164,7 +165,7 @@ struct series<A>
 			auto const j = S_::rend() - 1;
 			
 		//	Compute the fractional sinusoid for this `size`:
-			auto const y = process::math::pade::unity_t<1>::template static_method<6>(_fix::ratio_f(-1, size << 1));// TODO: Make `constexpr`!
+			auto const y = process::math::pade::unity_t<1>::template method_f<6>(_fit::ratio_f(-1, size << 1));// TODO: Make `constexpr`!
 
 		//	Compute the initial `1/8`th then mirror the remaining segments:
 			typename S_::difference_type constexpr M = size >> 2U;// `1/8`th
@@ -290,7 +291,7 @@ s
 				T(constant_t<-1>{}).convolve(s, t);
 			}
 			else {
-				using X = typename _fix::aphex_type;
+				using X = typename _fit::aphex_type;
 				using Y = typename series<X[size]>::type;
 				Y s_(s);
 				Y t_(t);
