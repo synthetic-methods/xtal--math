@@ -16,7 +16,7 @@ template <class   ..._s>	using    symbol_t = typename symbol<_s...>::type;
 template <class   ...Ts>	concept  symbol_q = bond::tag_p<symbol_t, Ts...>;
 
 
-XTAL_FX0_(alias) (template <auto f=_std::identity{}>
+XTAL_FX0_(to) (template <auto f=_std::identity{}>
 XTAL_DEF_(return,inline,let)
 symbol_f(auto &&...oo),
 	_detail::factory<symbol_t>::

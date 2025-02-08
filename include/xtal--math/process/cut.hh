@@ -54,6 +54,16 @@ struct cut
 
 		template <auto ...Ns>
 		XTAL_DEF_(return,set)
+		edit_f(bond::pack_q auto &o)
+		noexcept -> auto
+		{
+		//	TODO: Accommodate returning materialized `atom::block` from `span`s...
+			return [&]<auto ...I> (bond::seek_t<I...>)
+				XTAL_0FN_(to) (bond::pack_f(edit_f(get<I>(o))...))
+			(bond::antiseek_s<bond::pack_size<decltype(o)>{}()>{});
+		}
+		template <auto ...Ns>
+		XTAL_DEF_(return,set)
 		edit_f(real_variable_q auto &o)
 		noexcept -> XTAL_ALL_(o)
 		{

@@ -69,7 +69,7 @@ struct phasor<A, As...>
 		///\todo\
 		...find a cleaner way to define the conversion, perhaps via `refer`?
 
-		XTAL_FX4_(alias) (XTAL_DEF_(implicit operator) typename S_::head_type(), head())
+		XTAL_FX4_(to) (XTAL_DEF_(implicit operator) typename S_::head_type(), head())
 		
 		XTAL_DEF_(return,inline,set)
 		bias()
@@ -120,7 +120,7 @@ struct phasor<A, As...>
 					return egress(bond::pack_f(phi(0), phi(1)*(rate)));
 				}
 				XTAL_0IF_(else) {
-					return egress(phi.template apply<[] XTAL_0FN_(alias) (bond::pack_f)>()*U_lepton(rate));
+					return egress(phi.template apply<[] XTAL_1FN_(function) (bond::pack_f)>()*U_lepton(rate));
 				}
 			}
 			else {
@@ -165,7 +165,7 @@ struct phasor<A, As...>
 		///\note\
 		This is defined in-case `refine_head` is bypassed...
 
-		XTAL_FX4_(alias) (XTAL_DEF_(implicit operator) typename S_::head_type(), head())
+		XTAL_FX4_(to) (XTAL_DEF_(implicit operator) typename S_::head_type(), head())
 		
 	public:// REEVALUATION
 		///\returns the current differential after scaling the incoming `phi` by `co`. \

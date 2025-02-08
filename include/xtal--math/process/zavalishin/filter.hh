@@ -102,7 +102,7 @@ struct filter<U_pole[N_pole]>
 				union U_io {U_outputs outputs; U_scalars scalars;};
 
 				U_io io{[=] () XTAL_0FN -> U_scalars {
-					auto const  &u = s_damping;
+					auto const  &u = cut_f<[] XTAL_1FN_(value) (bond::fit<X>::minilon_f(0))>(s_damping);
 					auto const u02 =             two*u , u04 = u02*two;
 					auto const u12 = term_f(one, two,u), w24 = u02*u12;
 					XTAL_IF0
@@ -121,16 +121,15 @@ struct filter<U_pole[N_pole]>
 				//\
 				W const  y0 = one;
 				W const  y0 = term_f<-1, 2>(one, y1);
+
 				if constexpr (I_ == 0) {
 					static_assert(I0 == 0);
 					static_assert(I1 == 1);
 				}
-				if constexpr (I1 < N_ord) {
-					return term_f(y0*get<I0>(io.outputs), y1, get<I1>(io.outputs));
-				}
-				else {
-					return y0;
-				}
+				XTAL_IF0
+				XTAL_0IF (0  == N_ord) {return x_input;}
+				XTAL_0IF (I1 >= N_ord) {return io.outputs.self(constant_t<1>{}).product(atom::couple_t<W[1]>{y0    });}
+				XTAL_0IF (I1 <  N_ord) {return io.outputs.self(constant_t<2>{}).product(atom::couple_t<W[2]>{y0, y1});}
 			}
 			XTAL_0IF (1 == N_top) {
 				return XTAL_REF_(x_input);
@@ -155,10 +154,11 @@ struct filter<U_pole[N_pole]>
 			auto &outputs = io.outputs; auto outputs_ = outputs.self(cardinal_constant_t<N_ord>{});
 
 			auto  memorized  = S_::template memory<U_poles_, U_poles_>();
+		//	(void) cut_t<[] XTAL_1FN_(value) (-bond::fit<X>::diplo_f(7))>::edit_f(memorized);
 			auto &states_ = get<0>(memorized);
 			auto &slopes_ = get<1>(memorized);
 
-		//	Initialize `scalars*`:
+		//	Initialize `slopes*`:
 			slopes_.template blanket<1>();
 			slopes_ *= scalars_;
 
@@ -176,6 +176,7 @@ struct filter<U_pole[N_pole]>
 				XTAL_IF0
 				XTAL_0IF (0 == K) {get<N_ord>(outputs) *= x_input - outputs_.product(states_);}
 				XTAL_0IF (1 <= K) {get<N_ord>(outputs)  = x_input - outputs_.product(slopes_);}
+
 
 				bond::seek_backward_f<N_ord>([&] (auto I) XTAL_0FN {
 					XTAL_IF0

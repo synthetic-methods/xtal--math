@@ -16,7 +16,7 @@ template <class   ..._s>	using    series_t = typename series<_s...>::type;
 template <class   ...Ts>	concept  series_q = bond::tag_p<series_t, Ts...>;
 
 
-XTAL_FX0_(alias) (template <auto f=_std::identity{}>
+XTAL_FX0_(to) (template <auto f=_std::identity{}>
 XTAL_DEF_(return,inline,let)
 series_f(auto &&...oo),
 	_detail::factory<series_t>::
@@ -171,9 +171,9 @@ struct series<A>
 			typename S_::difference_type constexpr M = size >> 2U;// `1/8`th
 			static_assert(-4 <  N_shift);
 			generate<M + (-3 <  N_shift)>(y);
-			if constexpr (-2 <= N_shift) _detail::copy_to<[] (value_type const &v) XTAL_0FN_(return) (value_type{-v.imag(), -v.real()})>(prev(j, 2*M), span(i, next(i, 1*M)));
-			if constexpr (-1 <= N_shift) _detail::copy_to<[] (value_type const &v) XTAL_0FN_(return) (value_type{ v.imag(), -v.real()})>(next(i, 2*M), span(i, next(i, 2*M)));
-			if constexpr (-0 <= N_shift) _detail::copy_to<[] (value_type const &v) XTAL_0FN_(return) (value_type{-v.real(), -v.imag()})>(next(i, 4*M), span(i, next(i, 4*M)));
+			if constexpr (-2 <= N_shift) _detail::copy_to<[] (value_type const &v) XTAL_0FN_(to) (value_type{-v.imag(), -v.real()})>(prev(j, 2*M), span(i, next(i, 1*M)));
+			if constexpr (-1 <= N_shift) _detail::copy_to<[] (value_type const &v) XTAL_0FN_(to) (value_type{ v.imag(), -v.real()})>(next(i, 2*M), span(i, next(i, 2*M)));
+			if constexpr (-0 <= N_shift) _detail::copy_to<[] (value_type const &v) XTAL_0FN_(to) (value_type{-v.real(), -v.imag()})>(next(i, 4*M), span(i, next(i, 4*M)));
 			static_assert( 0 >= N_shift);// TODO: Extend to allow multiple copies using `bond::seek`.
 			
 			return self();
@@ -208,7 +208,7 @@ struct series<A>
 		
 		//	Conjugate the input if computing the inverse transform of the codomain:
 			if constexpr (N_direction == -1) {
-				_detail::apply_to<[] XTAL_0FN_(alias) (_std::conj)>(that);
+				_detail::apply_to<[] XTAL_1FN_(function) (_std::conj)>(that);
 			}
 		//	Compute the transform of `that` using the precomputed half-period sinusoid in `this`:
 			for (I n{}; n < n_depth; ++n) {
@@ -227,7 +227,7 @@ struct series<A>
 			}
 		//	Conjugate and scale the output if computing the inverse transform of the codomain:
 			if constexpr (N_direction == -1) {
-				_detail::apply_to<[] XTAL_0FN_(alias) (_std::conj)>(that);
+				_detail::apply_to<[] XTAL_1FN_(function) (_std::conj)>(that);
 				that /= n_width;
 			}
 
@@ -296,7 +296,7 @@ s
 				Y s_(s);
 				Y t_(t);
 				Y(constant_t<-1>{}).convolve(s_, t_);
-				_detail::move_to<[] XTAL_0FN_(alias) (_std::real)>(s.begin(), s_);
+				_detail::move_to<[] XTAL_1FN_(function) (_std::real)>(s.begin(), s_);
 			}
 			return s;
 		}
