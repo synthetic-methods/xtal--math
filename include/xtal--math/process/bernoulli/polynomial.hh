@@ -127,7 +127,7 @@ struct polynomial<M_ism,-2>
 			}
 			else {
 				auto constexpr co_ = [] (auto num, auto nom)
-					XTAL_0FN_(return) (_fit::ratio_f(num, nom*factorial_f<N_ord>())
+					XTAL_0FN_(to) (_fit::ratio_f(num, nom*factorial_f<N_ord>())
 				);
 				XTAL_IF0
 				XTAL_0IF (1 == N_ord) {return                                                                  co_(1, 1);}
@@ -164,7 +164,7 @@ struct polynomial<M_ism,-3>
 			using _fit = bond::fit<decltype(w)>;
 
 			auto constexpr co_ = [] (auto num, auto nom)
-				XTAL_0FN_(return) (_fit::ratio_f(num, nom*factorial_f<N_ord>())
+				XTAL_0FN_(to) (_fit::ratio_f(num, nom*factorial_f<N_ord>())
 			);
 			XTAL_IF0
 			XTAL_0IF (3 == N_ord) {return termial_f(XTAL_MOV_(w),                          co_(1, 1));}

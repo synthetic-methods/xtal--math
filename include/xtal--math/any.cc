@@ -252,7 +252,15 @@ noexcept -> int
 ////////////////////////////////////////////////////////////////////////////////
 /**/
 template <int N>
-void plot(iterated_q auto const o)
+void echo_rule_()
+{
+	for (int n = -N; n <= N; ++n) {
+		_std::cout << '-';
+	}
+	_std::cout << _std::endl;
+}
+template <int N>
+void echo_plot_(iterated_q auto const o)
 {
 	for (auto e: o) {
 		e *= N;
@@ -262,12 +270,12 @@ void plot(iterated_q auto const o)
 		e /= 2;
 		auto u = static_cast<int>(e);
 		for (int n = -N; n <= N; ++n) {
-			     if (n == 0)                     {}
-			else if (u < 0 and n < 0 and u == n) {_std::cout << '<';}
-			else if (u < 0 and n < 0 and u <= n) {_std::cout << '=';}
-			else if (0 < u and 0 < n and n == u) {_std::cout << '>';}
-			else if (0 < u and 0 < n and n <= u) {_std::cout << '=';}
-			else                                 {_std::cout << ' ';}
+				if (n == 0)                     {}
+		else if (u < 0 and n < 0 and u == n) {_std::cout << '<';}
+		else if (u < 0 and n < 0 and u <= n) {_std::cout << '=';}
+		else if (0 < u and 0 < n and n == u) {_std::cout << '>';}
+		else if (0 < u and 0 < n and n <= u) {_std::cout << '=';}
+		else                                 {_std::cout << ' ';}
 		}
 		_std::cout << _std::endl;
 	}

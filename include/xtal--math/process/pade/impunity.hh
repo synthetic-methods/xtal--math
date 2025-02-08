@@ -301,8 +301,8 @@ struct impunity<M_ism,-2>
 			}
 			XTAL_0IF_(else) {
 				auto [d, q] = roots_f<2, 1>(o);
-				(void) cut_t<[] XTAL_0FN_(value) (-_fit::maxilon_1)>::edit_f(d);
-				(void) cut_t<[] XTAL_0FN_(value) (-_fit::maxilon_1)>::edit_f(q);
+				(void) cut_t<[] XTAL_1FN_(value) (-_fit::maxilon_1)>::edit_f(d);
+				(void) cut_t<[] XTAL_1FN_(value) (-_fit::maxilon_1)>::edit_f(q);
 				XTAL_IF0
 				XTAL_0IF (M_ism == -1) {return complexion_f(_fit::alpha_1, _dn*q*atan (d));}
 				XTAL_0IF (M_ism == -2) {return complexion_f(_fit::alpha_1, _dn*q*atanh(d));}

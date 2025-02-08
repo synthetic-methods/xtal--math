@@ -102,7 +102,7 @@ TAG_("phasor")
 		auto z_psi = Z_psi::bind_f(); z_psi <<= flow::indent_s<X_phi, 1>{_fit::ratio_f(7)}; z_psi <<= occur::resize_t<>(N_data);
 	//	auto z_eig = Z_eig::bind_f(); z_eig <<= flow::indent_s<X_phi, 1>{_fit::ratio_f(7)}; z_eig <<= occur::resize_t<>(N_data);
 
-		occur::render_t<>         z_render(N_data);
+		occur::cursor_t<>         z_cursor(N_data);
 		flow ::indent_s<X_phi, 1> z_indent{x_delta};
 		
 		z_phi <<= z_indent;
@@ -123,8 +123,8 @@ TAG_("phasor")
 		EST_("procession (processor in-place: `ranges::copy...`)")
 		{
 			//\
-			z_psi >>= z_render++ >> occur::review_f(w_data);
-			z_chi >>= z_render++ >> occur::review_f(w_data);
+			z_psi >>= z_cursor++ >> occur::review_f(w_data);
+			z_chi >>= z_cursor++ >> occur::review_f(w_data);
 
 		};
 	}
@@ -190,7 +190,7 @@ TAG_("phasor")
 		//\
 		occur::resize_t<> z_req(8);
 		occur::resize_t<unsigned int> z_req(8);//FIX
-		occur::render_t<> z_ren(8);
+		occur::cursor_t<> z_ren(8);
 		occur::review_t<Z_out> z_rev(z_out);
 
 		z_psi <<= flow::indent_s<X_phi, 1>{x_d4};
@@ -235,10 +235,10 @@ TAG_("phasor")
 		auto z_phi = Z_phi::bind_f();
 		static_assert(same_q<X_phi, decltype(z_phi.store().front())>);
 
-		auto constexpr z_fit = _xtd::ranges::views::transform([] XTAL_0FN_(alias) (W_phi));
+		auto constexpr z_fit = _xtd::ranges::views::transform([] XTAL_1FN_(function) (W_phi));
 
 		occur::resize_t<> z_req(8);
-		occur::render_t<> z_ren(8);
+		occur::cursor_t<> z_ren(8);
 
 
 		z_phi <<= flow::indent_s<X_phi, 1>{x_d4};

@@ -16,7 +16,7 @@ template <int M_ism=1, int N_car=0> using    sine_t = process::confined_t<sine<M
 
 template <int M_ism>
 struct sine<M_ism, +1>
-:	bond::compose<dilated<[] XTAL_0FN_(value) (-bond::fit<>::patio_2)>, sine<M_ism, -0>>
+:	bond::compose<dilated<[] XTAL_1FN_(value) (-bond::fit<>::patio_2)>, sine<M_ism, -0>>
 {
 };
 template <int M_ism>
@@ -125,7 +125,7 @@ struct sine<M_ism, -2>
 			XTAL_0IF (0 < M_ism) {
 				W x{one};
 
-				bond::seek_backward_f<N>([&] (auto i) XTAL_0FN_(return) (
+				bond::seek_backward_f<N>([&] (auto i) XTAL_0FN_(to) (
 					x = term_f(one
 					,	+_fit::ratio_f(1, (2 + 2*i)*(3 + 2*i))
 					,	w
@@ -137,7 +137,7 @@ struct sine<M_ism, -2>
 			XTAL_0IF (M_ism < 0) {
 				W x = _fit::ratio_f(1, 1 + 2*N);
 
-				bond::seek_backward_f<N>([&] (auto i) XTAL_0FN_(return) (
+				bond::seek_backward_f<N>([&] (auto i) XTAL_0FN_(to) (
 					x = term_f(_fit::ratio_f(1, 1 + 2*i)
 					,	-_fit::ratio_f(1 + 2*i, 2 + 2*i)
 					,	w

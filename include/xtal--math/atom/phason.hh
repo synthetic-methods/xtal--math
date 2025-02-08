@@ -36,7 +36,7 @@ template <class   ...Ts>	concept  simplex_phason_q = bond::tag_p<phason_t, Ts...
 template <class   ...Ts>	concept  complex_phason_q = bond::tag_p<phason_t, Ts...> and complex_field_q<initializer_u<Ts>...>;
 
 
-XTAL_FX0_(alias) (template <auto f=_std::identity{}>
+XTAL_FX0_(to) (template <auto f=_std::identity{}>
 XTAL_DEF_(return,inline,let)
 phason_f(auto &&...oo),
 	_detail::factory<phason_t>::
@@ -88,8 +88,8 @@ struct phason<A>
 		using S_::self;
 		using S_::twin;
 
-		static auto constexpr   ordinate = [] XTAL_0FN_(alias) (bond::math::bit_fraction_f<  ordinate_type>);
-		static auto constexpr coordinate = [] XTAL_0FN_(alias) (bond::math::bit_fraction_f<coordinate_type>);
+		static auto constexpr   ordinate = [] XTAL_1FN_(function) (bond::math::bit_fraction_f<  ordinate_type>);
+		static auto constexpr coordinate = [] XTAL_1FN_(function) (bond::math::bit_fraction_f<coordinate_type>);
 
 	public:// CONSTRUCT
 	//	using S_::S_;

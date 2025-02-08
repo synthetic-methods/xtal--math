@@ -23,29 +23,39 @@ template <typename ...As> using    ring_t = process::confined_t<ring<As...>>;
 ////////////////////////////////////////////////////////////////////////////////
 
 template <class U_pole, int N_pole>
-struct ring<U_pole[N_pole]>
-:	filter<U_pole[N_pole]>
+struct ring<U_pole[N_pole]> : filter<U_pole[N_pole]>
 {
+	using U_fit = bond::fit<U_pole>;
+
+	using filter_kind = filter<U_pole[N_pole]>;
+	using  order_type = typename filter_kind::order_type;
+
 	using control_type = absolve_u<U_pole>;
 	using damping_type = occur::inferred_t<struct DAMPING, control_type>;
 	using balance_type = occur::inferred_t<struct BALANCE, control_type>;
 
+	using stage_type = occur::stage_t<>;
+
 	using superkind = bond::compose<bond::tag<ring_t>
 	,	typename damping_type::template attach<>
 	,	typename balance_type::template attach<>
+	,	typename   stage_type::template expect<>
 	,	filter<U_pole[N_pole]>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
 	{
 		using S_ = bond::compose_s<S, superkind>;
+		using U_poles_ = atom::couple_t<U_pole[N_pole]>;
 
 	public:// CONSTRUCT
 		using S_::S_;
 
 	public:
-		XTAL_FX4_(alias) (XTAL_DEF_(return,inline,let) damping(auto &&...oo), S_::template head<damping_type>(XTAL_REF_(oo)...))
-		XTAL_FX4_(alias) (XTAL_DEF_(return,inline,let) balance(auto &&...oo), S_::template head<balance_type>(XTAL_REF_(oo)...))
+	//	TODO: Need parareter mapping/restriction on creation/update...
+		XTAL_FX4_(to) (XTAL_DEF_(return,inline,let) damping(auto &&...oo), S_::template head<damping_type>(XTAL_REF_(oo)...))
+		XTAL_FX4_(to) (XTAL_DEF_(return,inline,let) balance(auto &&...oo), S_::template head<balance_type>(XTAL_REF_(oo)...))
+		XTAL_FX4_(to) (XTAL_DEF_(return,inline,let)   stage(auto &&...oo), S_::template head<  stage_type>(XTAL_REF_(oo)...))
 
 	public:// FLUX
 
@@ -56,51 +66,43 @@ struct ring<U_pole[N_pole]>
 		{
 			return S_::template fuse<N_ion>(XTAL_REF_(o));
 		}
-		template <signed N_ion> requires in_n<N_ion, +1>
+		template <signed N_ion> requires in_n<N_ion,  1>
 		XTAL_DEF_(return,inline,let)
-		fuse(auto &&o)
+		fuse(occur::stage_q auto &&o)
 		noexcept -> signed
 		{
-			auto constexpr N_dn = root_f<2>(control_type{two});
-			auto constexpr N_up = power_f<-2*7>(N_dn);
+			auto const [states_] = S_::template memory<U_poles_>();
+			signed x = S_::template fuse<N_ion>(XTAL_REF_(o));
 
-			if constexpr (occur::stage_q<decltype(o)>) {
-				switch (o.head()) {
-					case  0: {(void) damping(-N_up); break;}
-					case  1: {(void) damping( N_up); break;}
-					case -1: {(void) damping( N_dn); break;}
-				}
+			switch (o.head()) {
+			//\
+			case  0: (void) damping(          (U_fit::minilon_f(0))); break;
+			case  0: (void) damping(          (U_fit::  alpha_f(0))); break;
+			case  1: (void) damping(root_f<-2>(U_fit::  haplo_f(1))); break;
+			case -1: (void) damping(root_f< 2>(U_fit::  diplo_f(1))); break;
 			}
-			return S_::template fuse<N_ion>(XTAL_REF_(o));
+			return x;
 		}
 		template <signed N_ion> requires in_n<N_ion, -1>
 		XTAL_DEF_(return,inline,let)
-		fuse(auto &&o)
+		fuse(occur::stage_q auto &&o)
 		noexcept -> signed
 		{
-			using _fit = bond::fit<control_type>;
-			if constexpr (occur::stage_q<decltype(o)>) {
-				switch (o.head()) {
-					case  0: {break;}
-					case  1: {break;}
-					case -1: {
-						auto constexpr N_thresh = _fit::haplo_f(7);
-						auto constexpr M_thresh = square_f(N_thresh);
-						using          U_poles_ = atom::couple_t<U_pole[N_pole]>;
-						//\note\
-						Because `N_ord` may be less than `N_pole`, \
-						access to `U_poles_` requres resetting `memory` when `N_ord` changes. \
+			auto const [states_] = S_::template memory<U_poles_>();
+			signed x = S_::template fuse<N_ion>(XTAL_REF_(o));
+			
+			switch (o.head()) {
+			case  0: break;
+			case  1: break;
+			case -1:
+				auto constexpr N_thresh = bond::fit<control_type>::haplo_f(7 + 1);// Squared...
 
-						//\note\
-						May need to finess checking the zeroness of `states_`, \
-						since the components are scaled by powers of gain. \
+			//	TODO: Use the `N_ord` parameter to truncate the product?
+			//	TODO: Accommodate frequency scaling when calculating the product?
 
-						auto const [states_] = S_::template memory<U_poles_>();
-						return states_.product() < M_thresh and S_::template fuse<N_ion>(XTAL_REF_(o));
-					}
-				}
+				x &= states_.product() < N_thresh;
 			}
-			return S_::template fuse<N_ion>(XTAL_REF_(o));
+			return x;
 		}
 
 	public:
@@ -109,11 +111,12 @@ struct ring<U_pole[N_pole]>
 		method(U_pole s_scale, auto &&...oo)
 		noexcept -> decltype(auto)
 		{
-			U_pole x_input{one};
-			if constexpr XTAL_TRY_(do) (x_input *= S_::sampling().rate())
+			//\
+			auto const x_input   = control_type{one};
+			auto const x_input   = static_cast<U_pole>(0 <= stage());
 			auto const s_damping = static_cast<U_pole>(S_::template head<damping_type>());
 			auto const y_balance = static_cast<U_pole>(S_::template head<balance_type>());
-			return S_::template method<Ns...>(U_pole{one}, s_scale, s_damping, y_balance) - term_f<-1, 2>(one, y_balance)*(x_input);
+			return S_::template method<Ns...>(x_input, s_scale, s_damping, y_balance) - term_f<-1, 2>(one, y_balance)*(x_input);
 		}
 
 	};
@@ -130,7 +133,7 @@ struct ring<>
 };
 
 
-////////////////////////////////////////////////////////////////////////////////FIXME
+////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////

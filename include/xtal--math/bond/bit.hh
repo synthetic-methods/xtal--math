@@ -324,17 +324,13 @@ XTAL_DEF_(return,inline,let)
 bit_fraction_f()
 noexcept -> auto
 {
-	using Y       = T_return;
-	using Y_fit    = bond::fit<Y>;
+	using Y     = T_return;
+	using Y_fit = bond::fit<Y>;
 
 	XTAL_IF0
-	XTAL_0IF (integral_q<Y>) {
-		return Y_fit::diplo_f(Y_fit::full.depth);
-	}
-	XTAL_0IF (    real_q<Y>) {
-		return Y_fit::haplo_f(Y_fit::full.depth);
-	}
-	XTAL_0IF_(abort)
+	XTAL_0IF (integral_q<Y>) {return Y_fit::diplo_f(Y_fit::full.depth);}
+	XTAL_0IF (    real_q<Y>) {return Y_fit::haplo_f(Y_fit::full.depth);}
+	XTAL_0IF_(terminate)
 }
 template <class Y_return=void>
 XTAL_DEF_(return,inline,let)
@@ -365,7 +361,7 @@ noexcept -> auto
 		return Y_fit::alpha_f(x)*Y_fit::haplo_f(X_fit::full.depth);
 		return Y_fit::alpha_f(static_cast<X_delta>(x))*Y_fit::haplo_f(X_fit::full.depth);
 	}
-	XTAL_0IF_(abort)
+	XTAL_0IF_(terminate)
 }
 template <class Y_return=void>
 XTAL_DEF_(return,inline,let)
@@ -417,7 +413,7 @@ noexcept -> auto
 		XTAL_0IF (cardinal_q<Y>) {
 			return _xtd::bit_cast<Y>(bit_fraction_f<Y_delta>(x));
 		}
-		XTAL_0IF_(abort)
+		XTAL_0IF_(terminate)
 	}
 	XTAL_0IF_(else) {
 		x -= round(x);
@@ -431,7 +427,7 @@ noexcept -> auto
 		XTAL_0IF (cardinal_q<Y>) {
 			return _xtd::bit_cast<Y>(bit_fraction_f<Y_delta>(x));
 		}
-		XTAL_0IF_(abort)
+		XTAL_0IF_(terminate)
 	}
 }
 template <class T_return=void>
