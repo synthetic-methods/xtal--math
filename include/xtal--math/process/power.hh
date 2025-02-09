@@ -53,7 +53,7 @@ struct   power<M_exp, Ms...>
 
 	};
 };
-template <int M_exp, auto ...Ms> requires above_n<0, M_exp>
+template <int M_exp, auto ...Ms> requires (0 < M_exp)
 struct   power<M_exp, Ms...>
 {
 	template <class S>
@@ -136,7 +136,7 @@ struct   power<M_exp, Ms...>
 
 	};
 };
-template <int M_exp, auto ...Ms> requires below_n<0, M_exp>
+template <int M_exp, auto ...Ms> requires (M_exp < 0)
 struct   power<M_exp, Ms...>
 {
 	using superkind = power<-M_exp, Ms...>;

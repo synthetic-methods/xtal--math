@@ -169,6 +169,9 @@ TAG_("ring")
 		TRUE_(0 == z.efflux(z_cursor++));
 		TRUE_(0 == z.ensemble().size());
 
+		echo_rule_<25>();
+		echo_rule_<25>();
+		
 	}
 	/***/
 }

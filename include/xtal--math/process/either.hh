@@ -52,9 +52,10 @@ struct either
 		method_f(auto const &x, auto const &y)
 		noexcept -> auto
 		{
+			using _fit = bond::fit<decltype(x), decltype(y)>;
 			XTAL_IF0
-			XTAL_0IF (M_side <= 0) return _std::min(x, y);
-			XTAL_0IF (M_side == 1) return _std::max(x, y);
+			XTAL_0IF (M_side <= 0) return _fit::minimum_f(x, y);
+			XTAL_0IF (M_side == 1) return _fit::maximum_f(x, y);
 		}
 
 	};

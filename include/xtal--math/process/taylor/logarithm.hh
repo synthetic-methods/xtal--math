@@ -113,7 +113,7 @@ struct logarithm<-1, 0>
 			}
 			else {
 				/**/
-				auto constexpr N = below_m<0x10, (unsigned) N_lim> << 2;
+				auto constexpr N = below_v<0x10, (unsigned) N_lim> << 2;
 				return square_f<N>(method_f<0>(XTAL_REF_(o)*_fit::haplo_f(N)));
 				/*/
 				return monologarithm_t<-1>::template method_f<N_lim>(XTAL_REF_(o)) + one;

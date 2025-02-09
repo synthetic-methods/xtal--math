@@ -37,13 +37,13 @@ TAG_("tangy")
 	TRY_("scalar evaluation")
 	{
 		TRUE_(check_f<-23>(tangy_t< 1>::template method_f<-1>(0.375), tangy_t< 1>::template method_f< 4>(0.375)));
-		TRUE_(check_f<-37>(tangy_t< 1>::template method_f<-1>(0.375), tangy_t< 1>::template method_f< 3>(0.375)));
+		TRUE_(check_f<-38>(tangy_t< 1>::template method_f<-1>(0.375), tangy_t< 1>::template method_f< 3>(0.375)));
 		TRUE_(check_f<-40>(tangy_t< 1>::template method_f<-1>(0.375), tangy_t< 1>::template method_f< 2>(0.375)));
 		TRUE_(check_f<-50>(tangy_t< 1>::template method_f<-1>(0.375), tangy_t< 1>::template method_f< 1>(0.375)));
 		TRUE_(check_f<-50>(tangy_t< 1>::template method_f<-1>(0.375), tangy_t< 1>::template method_f< 0>(0.375)));
 
 		TRUE_(check_f<-23>(tangy_t< 1>::template method_f<-1>(0.125), tangy_t< 1>::template method_f< 4>(0.125)));
-		TRUE_(check_f<-37>(tangy_t< 1>::template method_f<-1>(0.125), tangy_t< 1>::template method_f< 3>(0.125)));
+		TRUE_(check_f<-38>(tangy_t< 1>::template method_f<-1>(0.125), tangy_t< 1>::template method_f< 3>(0.125)));
 		TRUE_(check_f<-40>(tangy_t< 1>::template method_f<-1>(0.125), tangy_t< 1>::template method_f< 2>(0.125)));
 		TRUE_(check_f<-50>(tangy_t< 1>::template method_f<-1>(0.125), tangy_t< 1>::template method_f< 1>(0.125)));
 		TRUE_(check_f<-50>(tangy_t< 1>::template method_f<-1>(0.125), tangy_t< 1>::template method_f< 0>(0.125)));

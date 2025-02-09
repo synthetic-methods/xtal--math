@@ -34,19 +34,19 @@ TAG_("logarithm")
 		TRUE_(check_f<-31>(logarithm_t< 1, 1>::template method_f<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1>::template method_f< 2>(T_aphex{0.3, 0.8})));
 		TRUE_(check_f<-46>(logarithm_t< 1, 1>::template method_f<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1>::template method_f< 0>(T_aphex{0.3, 0.8})));
 
-		TRUE_(check_f<-13>(logarithm_t< 1, 1>::template method_f<2>(egg), log(egg)));
-		TRUE_(check_f<-25>(logarithm_t<-1, 1>::template method_f<2>(egg), exp(egg)));
+		TRUE_(check_f<-13>(logarithm_t< 1, 1>::template method_f< 2>(egg), log(egg)));
+		TRUE_(check_f<-26>(logarithm_t<-1, 1>::template method_f< 2>(egg), exp(egg)));
 
-		TRUE_(check_f<- 1>(logarithm_t< 1>::template method_f<-1>(egg), log(egg)));
-		TRUE_(check_f<- 5>(logarithm_t< 1>::template method_f< 3>(egg), log(egg)));
-		TRUE_(check_f<-19>(logarithm_t< 1>::template method_f< 2>(egg), log(egg)));
-		TRUE_(check_f<-33>(logarithm_t< 1>::template method_f< 1>(egg), log(egg)));
-		TRUE_(check_f<-40>(logarithm_t< 1>::template method_f< 0>(egg), log(egg)));
+		TRUE_(check_f<- 1>(logarithm_t< 1   >::template method_f<-1>(egg), log(egg)));
+		TRUE_(check_f<- 5>(logarithm_t< 1   >::template method_f< 3>(egg), log(egg)));
+		TRUE_(check_f<-19>(logarithm_t< 1   >::template method_f< 2>(egg), log(egg)));
+		TRUE_(check_f<-33>(logarithm_t< 1   >::template method_f< 1>(egg), log(egg)));
+		TRUE_(check_f<-41>(logarithm_t< 1   >::template method_f< 0>(egg), log(egg)));
 
-		TRUE_(check_f<- 1>(logarithm_t<-1>::template method_f<-1>(egg), exp(egg)));
-		TRUE_(check_f<-26>(logarithm_t<-1>::template method_f< 3>(egg), exp(egg)));
-		TRUE_(check_f<-34>(logarithm_t<-1>::template method_f< 2>(egg), exp(egg)));
-		TRUE_(check_f<-43>(logarithm_t<-1>::template method_f< 1>(egg), exp(egg)));
+		TRUE_(check_f<- 1>(logarithm_t<-1   >::template method_f<-1>(egg), exp(egg)));
+		TRUE_(check_f<-27>(logarithm_t<-1   >::template method_f< 3>(egg), exp(egg)));
+		TRUE_(check_f<-35>(logarithm_t<-1   >::template method_f< 2>(egg), exp(egg)));
+		TRUE_(check_f<-43>(logarithm_t<-1   >::template method_f< 1>(egg), exp(egg)));
 	//	UNTRUE_(check_f(logarithm_t<-1>::template method_f< 0>(egg), exp(egg)));
 
 	}

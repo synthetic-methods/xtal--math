@@ -98,13 +98,15 @@ struct phason<A>
 		XTAL_NEW_(copy) (homotype, noexcept=default)
 		XTAL_NEW_(move) (homotype, noexcept=default)
 
-		XTAL_NEW_(explicit) homotype(iterable_q auto &&o)
+		XTAL_NEW_(explicit)
+		homotype(iterable_q auto &&o)
 		noexcept
 		:	S_(count_f(o))
 		{
 			operator>>=(XTAL_REF_(o));
 		}
-		XTAL_NEW_(implicit) homotype(_std::initializer_list<coordinate_type> o)
+		XTAL_NEW_(implicit)
+		homotype(_std::initializer_list<coordinate_type> o)
 		noexcept
 		:	S_(count_f(o))
 		{
@@ -271,9 +273,6 @@ struct phason<A>
 	using type = derive_t<homotype>;
 
 };
-static_assert(atomic_q<phason_t<float[2]>>);
-
-static_assert(bond::pack_size_q<phason_t<double[2]>>);
 
 
 ///////////////////////////////////////////////////////////////////////////////

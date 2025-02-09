@@ -169,7 +169,7 @@ struct filter<U_pole[N_pole]>
 			});
 			get<N_ord>(outputs) = root_f<-1, (1)>(term_f(one, get<N_ord - 1>(outputs_), s_scale));
 
-			auto constexpr K_lim = provision::saturated_q<S_> and above_n<0, N_lim>;
+			auto constexpr K_lim = provision::saturated_q<S_> and (0 < N_lim);
 
 		//	Integrate `states*` with `scalars*` and `outputs*`:
 			bond::seek_forward_f<1 + 1*K_lim>([&] (auto K) XTAL_0FN {

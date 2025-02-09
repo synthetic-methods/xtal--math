@@ -36,7 +36,7 @@ noexcept -> decltype(auto)
 template <int M_exp, int M_cut>
 struct root
 {
-	static int constexpr M_exp_sgn = sign_n<M_exp>;
+	static int constexpr M_exp_sgn = sign_v<M_exp>;
 	static int constexpr M_exp_mag = M_exp*M_exp_sgn;
 
 	template <class S>
@@ -53,7 +53,7 @@ struct root
 		noexcept -> auto
 		{
 			using _fit = bond::fit<decltype(z)>;
-			auto constexpr I_lim = below_m<(1<<4), (unsigned) N_lim>;
+			auto constexpr I_lim = below_v<(1<<4), (unsigned) N_lim>;
 			XTAL_IF0
 			XTAL_0IF (integral_variable_q<decltype(z)>) {
 				return method_f<I_lim>(_fit::alpha_f(XTAL_REF_(z)));

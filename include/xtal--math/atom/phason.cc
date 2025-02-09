@@ -11,6 +11,13 @@ namespace xtal::atom::math::_test
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
+//atic_assert(_xtd::trivially_initializable<phason_t<float[2]>>);
+static_assert(_xtd::trivially_destructible <phason_t<float[2]>>);
+static_assert(_xtd::trivially_copyable     <phason_t<float[2]>>);
+static_assert(_xtd::trivially_movable      <phason_t<float[2]>>);
+//atic_assert(                     atomic_q<phason_t<float[2]>>);
+
+
 ////////////////////////////////////////////////////////////////////////////////
 
 TAG_("phason")

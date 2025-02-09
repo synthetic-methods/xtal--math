@@ -13,6 +13,24 @@ namespace xtal::bond::math::_test
 
 ////////////////////////////////////////////////////////////////////////////////
 
+TAG_("bit", "bit_trim_f")
+{
+	using T_fit = fit<>;
+	using T_sigma = typename T_fit::sigma_type;
+	using T_delta = typename T_fit::delta_type;
+	using T_alpha = typename T_fit::alpha_type;
+	using T_aphex = typename T_fit::aphex_type;
+	auto mt19937_f = typename T_fit::mt19937_t(Catch::rngSeed());
+
+	TRY_("trim")
+	{
+		TRUE_(bit_trim_f<2>(fit<>::patio_f(2, 1)) == 6.25);
+		TRUE_(bit_trim_f<3>(fit<>::patio_f(1, 1)) == 3.125);
+		TRUE_(bit_trim_f<4>(fit<>::patio_f(1, 2)) == 1.5625);
+
+	}
+}
+/**/
 TAG_("bit", "bit_reverse")
 {
 	using T_fit = fit<>;
@@ -310,7 +328,7 @@ TAG_("fraction")
 		return w;
 	};
 }
-
+/***/
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////

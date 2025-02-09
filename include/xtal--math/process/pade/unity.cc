@@ -89,14 +89,14 @@ TAG_("unity")
 		T_alpha x7{ 0.4444444444444444};
 
 	// 1
-		TRUE_(check_f<-39>(unity_t<1>::template method_f<-1>(x0), unity_t<1>::template method_f<1>(U_phi{x0, 0.})));
+		TRUE_(check_f<-40>(unity_t<1>::template method_f<-1>(x0), unity_t<1>::template method_f<1>(U_phi{x0, 0.})));
 		TRUE_(check_f<-43>(unity_t<1>::template method_f<-1>(x1), unity_t<1>::template method_f<1>(U_phi{x1, 0.})));
 		TRUE_(check_f<-43>(unity_t<1>::template method_f<-1>(x2), unity_t<1>::template method_f<1>(U_phi{x2, 0.})));
 		TRUE_(check_f<-42>(unity_t<1>::template method_f<-1>(x3), unity_t<1>::template method_f<1>(U_phi{x3, 0.})));
 		TRUE_(check_f<-42>(unity_t<1>::template method_f<-1>(x4), unity_t<1>::template method_f<1>(U_phi{x4, 0.})));
 		TRUE_(check_f<-43>(unity_t<1>::template method_f<-1>(x5), unity_t<1>::template method_f<1>(U_phi{x5, 0.})));
 		TRUE_(check_f<-43>(unity_t<1>::template method_f<-1>(x6), unity_t<1>::template method_f<1>(U_phi{x6, 0.})));
-		TRUE_(check_f<-39>(unity_t<1>::template method_f<-1>(x7), unity_t<1>::template method_f<1>(U_phi{x7, 0.})));
+		TRUE_(check_f<-40>(unity_t<1>::template method_f<-1>(x7), unity_t<1>::template method_f<1>(U_phi{x7, 0.})));
 	
 	// 2
 		TRUE_(check_f<-36>(unity_t<1>::template method_f<-1>(x0), unity_t<1>::template method_f<2>(U_phi{x0, 0.})));
@@ -109,14 +109,14 @@ TAG_("unity")
 		TRUE_(check_f<-36>(unity_t<1>::template method_f<-1>(x7), unity_t<1>::template method_f<2>(U_phi{x7, 0.})));
 	
 	//	3
-		TRUE_(check_f<-26>(unity_t<1>::template method_f<-1>(x0), unity_t<1>::template method_f<3>(U_phi{x0, 0.})));
+		TRUE_(check_f<-27>(unity_t<1>::template method_f<-1>(x0), unity_t<1>::template method_f<3>(U_phi{x0, 0.})));
 		TRUE_(check_f<-29>(unity_t<1>::template method_f<-1>(x1), unity_t<1>::template method_f<3>(U_phi{x1, 0.})));
 		TRUE_(check_f<-27>(unity_t<1>::template method_f<-1>(x2), unity_t<1>::template method_f<3>(U_phi{x2, 0.})));
 		TRUE_(check_f<-29>(unity_t<1>::template method_f<-1>(x3), unity_t<1>::template method_f<3>(U_phi{x3, 0.})));
 		TRUE_(check_f<-29>(unity_t<1>::template method_f<-1>(x4), unity_t<1>::template method_f<3>(U_phi{x4, 0.})));
 		TRUE_(check_f<-27>(unity_t<1>::template method_f<-1>(x5), unity_t<1>::template method_f<3>(U_phi{x5, 0.})));
 		TRUE_(check_f<-29>(unity_t<1>::template method_f<-1>(x6), unity_t<1>::template method_f<3>(U_phi{x6, 0.})));
-		TRUE_(check_f<-26>(unity_t<1>::template method_f<-1>(x7), unity_t<1>::template method_f<3>(U_phi{x7, 0.})));
+		TRUE_(check_f<-27>(unity_t<1>::template method_f<-1>(x7), unity_t<1>::template method_f<3>(U_phi{x7, 0.})));
 
 	};
 	/*/
