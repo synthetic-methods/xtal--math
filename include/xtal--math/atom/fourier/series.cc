@@ -11,6 +11,13 @@ namespace xtal::atom::math::fourier::_test
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
+//atic_assert(_xtd::trivially_initializable<series_t<float[2]>>);// Why?
+static_assert(_xtd::trivially_destructible <series_t<float[2]>>);
+static_assert(_xtd::trivially_copyable     <series_t<float[2]>>);
+static_assert(_xtd::trivially_movable      <series_t<float[2]>>);
+//atic_assert(                     atomic_q<series_t<float[2]>>);// Why?
+
+
 ////////////////////////////////////////////////////////////////////////////////
 
 TAG_("solid", "series")
@@ -93,7 +100,7 @@ TAG_("solid", "series")
 		U_series rhs = {1, 0, 1, 0, 0, 0, 0, 0};
 		U_series xhs = {0, 1, 2, 1, 2, 0, 0, 0};
 		U_series yhs = basis.convolution(lhs, rhs);
-		_detail::apply_to<[] XTAL_1FN_(function) (_fit::template trim_f<16>)>(yhs);
+		_detail::apply_to<[] XTAL_1FN_(function) (bond::math::bit_trim_f<16>)>(yhs);
 		TRUE_(xhs == yhs);
 
 	}

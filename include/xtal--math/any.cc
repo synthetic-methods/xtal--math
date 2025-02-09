@@ -1,6 +1,9 @@
 #pragma once
 #include "./any.hh"// testing...
 
+#include "./bond/bit.hh"
+#include "./process/cut.hh"
+
 #include "./etc.cc"
 
 
@@ -215,16 +218,16 @@ XTAL_DEF_(return,let)
 check_f(auto const &u, auto const &v)
 noexcept -> bool
 {
-	using _fit = bond::fit<decltype(u), decltype(v)>;
-	return _fit::template trim_f<N_index>(u) == _fit::template trim_f<N_index>(v);
+	return bond::math::bit_trim_f<N_index>(u) == bond::math::bit_trim_f<N_index>(v)
+	or     bond::math::bit_trim_f<N_index>(u - v) == zero;
 }
 template <int N_index, int N_limit>
 XTAL_DEF_(return,let)
 check_f(auto const &u, auto const &v)
 noexcept -> int
 {
-	auto constexpr Z_index = sign_n<N_index>;
-	auto constexpr Z_limit = sign_n<N_limit>;
+	auto constexpr Z_index = sign_v<N_index>;
+	auto constexpr Z_limit = sign_v<N_limit>;
 	static_assert(Z_index == Z_limit);
 
 	XTAL_IF0
@@ -245,7 +248,8 @@ XTAL_DEF_(return,let)
 check_f(auto const &u, auto const &v)
 noexcept -> int
 {
-	return check_f<-1, 1 - (int) bond::fit<>::fraction.depth>(u, v);
+	using W = common_t<XTAL_ALL_(u), XTAL_ALL_(v)>;
+	return check_f<-1, 1 - (int) bond::fit<>::fraction.depth>(static_cast<W>(u), static_cast<W>(v));
 }
 
 

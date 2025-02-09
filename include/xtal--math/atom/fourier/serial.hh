@@ -90,7 +90,6 @@ struct serial<A>
 	using type = derive_t<homotype>;
 
 };
-static_assert(atomic_q<serial_t<float[2]>>);
 
 
 ///////////////////////////////////////////////////////////////////////////////

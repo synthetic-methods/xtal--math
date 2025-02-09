@@ -278,7 +278,7 @@ noexcept -> auto
 {
 	auto constexpr N_depth = bond::fit<decltype(x)>::full.depth;
 	//\
-	int constexpr n_subdepth = below_m<N_depth, (unsigned) N_subdepth>;
+	int constexpr n_subdepth = below_v<N_depth, (unsigned) N_subdepth>;
 	int constexpr n_subdepth = 0 < N_subdepth? N_subdepth: N_depth;
 	return bit_reverse_f(XTAL_REF_(x), n_subdepth);
 }
@@ -338,7 +338,7 @@ bit_fraction_f(integral_variable_q auto x)
 noexcept -> auto
 {
 	using X       =              XTAL_ALL_(x);
-	using X_fit    =          bond::fit<X>;
+	using X_fit   =          bond::fit<X>;
 	using X_alpha = typename X_fit::alpha_type;
 	using X_sigma = typename X_fit::sigma_type;
 	using X_delta = typename X_fit::delta_type;
@@ -369,7 +369,7 @@ bit_fraction_f(real_variable_q auto x)
 noexcept -> auto
 {
 	using X       =              XTAL_ALL_(x);
-	using X_fit    =          bond::fit<X>;
+	using X_fit   =          bond::fit<X>;
 	using X_alpha = typename X_fit::alpha_type;
 	using X_sigma = typename X_fit::sigma_type;
 	using X_delta = typename X_fit::delta_type;
@@ -436,7 +436,7 @@ bit_fraction_f(complex_variable_q auto const &x)
 noexcept -> auto
 {
 	using X       = XTAL_ALL_(x);
-	using X_fit    = bond::fit<X>;
+	using X_fit   = bond::fit<X>;
 	using X_alpha = typename X_fit::alpha_type;
 	using X_sigma = typename X_fit::sigma_type;
 	using X_delta = typename X_fit::delta_type;
@@ -448,6 +448,52 @@ noexcept -> auto
 	return Y{bit_fraction_f<V>(x.real()), bit_fraction_f<V>(x.imag())};
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
+///\returns the `target` to `N_zoom` bits of precision after the decimal. \
+
+template <int N_zoom=0>
+XTAL_DEF_(return,verbatim,set)
+bit_trim_f(integral_variable_q auto x)
+noexcept -> XTAL_ALL_(x)
+{
+	return x;
+}
+#if XTAL_VER_(MSVC)
+#pragma optimize("", off)
+#endif
+template <int N_zoom=0>
+XTAL_DEF_(return,verbatim,set)
+bit_trim_f(real_variable_q auto x)
+noexcept -> XTAL_ALL_(x)
+{
+	using X       = XTAL_ALL_(x);
+	using X_fit   = bond::fit<X>;
+	using X_alpha = typename X_fit::alpha_type;
+	using X_sigma = typename X_fit::sigma_type;
+	using X_delta = typename X_fit::delta_type;
+	using X_lim   = _std::numeric_limits<X_alpha>;
+
+	X_delta constexpr N_unzoom = 0 < N_zoom? N_zoom - X_fit::fraction.depth: N_zoom - 1;
+	X_alpha constexpr N_minima = X_lim::min()*X_fit::diplo_f(N_unzoom);
+	x *= N_minima;
+	x /= N_minima;
+	return x;
+}
+#if XTAL_VER_(MSVC)
+#pragma optimize("",  on)
+#endif
+
+template <int N_zoom=0>
+XTAL_DEF_(return,verbatim,set)
+bit_trim_f(complex_variable_q auto x)
+noexcept -> XTAL_ALL_(x)
+{
+	return {bit_trim_f<N_zoom>(x.real()), bit_trim_f<N_zoom>(x.imag())};
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////

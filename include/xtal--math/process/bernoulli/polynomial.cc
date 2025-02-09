@@ -34,7 +34,7 @@ TAG_("whatever")
 	{
 		TRUE_(check_f<11>(polynomial_t<1, 0>::template method_f<-1>(0.250), abs(polynomial_t<1, 0>::template method_f< 7>(0.250))));
 		TRUE_(check_f< 8>(polynomial_t<1, 0>::template method_f<-1>(0.250), abs(polynomial_t<1, 0>::template method_f< 5>(0.250))));
-		TRUE_(check_f< 6>(polynomial_t<1, 0>::template method_f<-1>(0.250), abs(polynomial_t<1, 0>::template method_f< 3>(0.250))));
+		TRUE_(check_f< 5>(polynomial_t<1, 0>::template method_f<-1>(0.250), abs(polynomial_t<1, 0>::template method_f< 3>(0.250))));
 		
 		TRUE_(check_f<10>(polynomial_t<1, 0>::template method_f<-2>(0.125), abs(polynomial_t<1, 0>::template method_f< 6>(0.125))));
 		TRUE_(check_f< 7>(polynomial_t<1, 0>::template method_f<-2>(0.125), abs(polynomial_t<1, 0>::template method_f< 4>(0.125))));

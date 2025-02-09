@@ -38,7 +38,7 @@ TAG_("whatever")
 		TRUE_(check_f<7>(tang_t<-2>::template method_f<-1>(0.25), tang_t<-2>::template method_f< 0>(0.25)));
 
 		TRUE_(check_f<- 2>(sinh(_fit::patio_1*0.33), pade::tangy_t<1>::template method_f<~0>(tang_t<2>::template method_f<~0>(0.33))));
-		TRUE_(check_f<-46>(sinh(_fit::patio_1*0.33), pade::tangy_t<1>::template method_f< 0>(tang_t<2>::template method_f< 0>(0.33))));
+		TRUE_(check_f<-47>(sinh(_fit::patio_1*0.33), pade::tangy_t<1>::template method_f< 0>(tang_t<2>::template method_f< 0>(0.33))));
 		TRUE_(check_f<-47>(sinh(_fit::patio_1*0.33), pade::tangy_t<1>::template method_f< 1>(tang_t<2>::template method_f< 0>(0.33))));
 		TRUE_(check_f<-47>(sinh(_fit::patio_1*0.33), tang_t<1>::template method_f<~0>(tang_t<2>::template method_f< 0>(0.33))*_fit::patio_1));
 

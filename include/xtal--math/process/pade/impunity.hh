@@ -38,7 +38,7 @@ template <int M_ism> requires in_n<M_ism, 1, 2>
 struct impunity<M_ism,-2>
 {
 	//\
-	static constexpr int I_sgn = sign_n<(M_ism&1)^1, -1>;
+	static constexpr int I_sgn = sign_v<(M_ism&1)^1, -1>;
 	static constexpr int I_sgn = 1;
 
 	template <class S>

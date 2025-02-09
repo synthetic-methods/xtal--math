@@ -45,7 +45,7 @@ struct polynomial<M_ism, 1>
 template <int M_ism>
 struct polynomial<M_ism,-0>
 {
-	static constexpr int I_sgn = -sign_n<M_ism&1, -1>;
+	static constexpr int I_sgn = -sign_v<M_ism&1, -1>;
 
 	using superkind = bond::compose<discarded<1>, polynomial<M_ism,-1>>;
 
@@ -99,7 +99,7 @@ struct polynomial<M_ism,-1>
 template <int M_ism>
 struct polynomial<M_ism,-2>
 {
-	static int constexpr I_sgn = sign_n<(M_ism&1)^1, -1>;
+	static int constexpr I_sgn = sign_v<(M_ism&1)^1, -1>;
 
 	using superkind = polynomial<M_ism,-3>;
 

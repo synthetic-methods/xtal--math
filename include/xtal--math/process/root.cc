@@ -42,13 +42,13 @@ TAG_("root")
 		TRUE_(check_f<-1>(N_half_root4, 0.8408964152537145430311254762332149L));
 		TRUE_(check_f<-1>(N_half_root5, 0.8705505632961241391362700174797461L));
 
-		TRUE_(check_f<-27>(pow(0.5, _fit::ratio_f(1,  3)), root_f< 3>(0.5)));
+		TRUE_(check_f<-28>(pow(0.5, _fit::ratio_f(1,  3)), root_f< 3>(0.5)));
 		TRUE_(check_f<-28>(pow(0.5, _fit::ratio_f(1, -3)), root_f<-3>(0.5)));
 
 		TRUE_(check_f<-30>(pow(0.5, _fit::ratio_f(1,  5)), root_f< 5>(0.5)));
-		TRUE_(check_f<-27>(pow(0.5, _fit::ratio_f(1, -5)), root_f<-5>(0.5)));
+		TRUE_(check_f<-28>(pow(0.5, _fit::ratio_f(1, -5)), root_f<-5>(0.5)));
 
-		TRUE_(check_f<-30>(pow(0.5, _fit::ratio_f(1,  7)), root_f< 7>(0.5)));
+		TRUE_(check_f<-31>(pow(0.5, _fit::ratio_f(1,  7)), root_f< 7>(0.5)));
 		TRUE_(check_f<-28>(pow(0.5, _fit::ratio_f(1, -7)), root_f<-7>(0.5)));
 
 		TRUE_(check_f<-35>(1.0, cbrt(-0.500)*root_f<-3>(-0.500)));

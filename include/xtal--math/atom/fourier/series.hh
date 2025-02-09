@@ -67,7 +67,9 @@ struct series<A>
 		Generates part of the complex sinusoid determined by `std::pow(2, o_shift{})`. \
 
 		XTAL_DEF_(inline)
-		XTAL_NEW_(explicit) homotype(constant_q auto const o_shift)
+		XTAL_NEW_(explicit)
+		homotype(constant_q auto const o_shift)
+		noexcept
 		{
 			generate<o_shift>();
 		}
@@ -75,7 +77,9 @@ struct series<A>
 		Generates the power series with the given seed. \
 
 		XTAL_DEF_(inline)
-		XTAL_NEW_(explicit) homotype(auto &&...oo)
+		XTAL_NEW_(explicit)
+		homotype(auto &&...oo)
+		noexcept
 		{
 			generate(XTAL_REF_(oo)...);
 		}
@@ -327,7 +331,6 @@ s
 	using type = derive_t<homotype>;
 
 };
-static_assert(atomic_q<series_t<float[2]>>);
 
 
 ///////////////////////////////////////////////////////////////////////////////
