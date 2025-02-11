@@ -27,14 +27,12 @@ noexcept -> decltype(auto)
 template <auto M_val>
 struct dilate
 {
-	static auto constexpr N_val = constant_t<M_val>{};
-
 	XTAL_DEF_(return,inline,set)
 	after_f(auto &&o)
 	noexcept -> decltype(auto)
 	{
 		using _fit = bond::fit<decltype(o)>;
-		auto constexpr n_val =   _fit::alpha_f(N_val);
+		auto constexpr n_val =   _fit::alpha_f(M_val);
 		auto constexpr u     =       magnum_f(n_val);
 		auto constexpr v     = (int) signum_f(n_val);
 		return XTAL_REF_(o)*root_f<-v>(u);

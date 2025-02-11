@@ -58,11 +58,11 @@ struct root
 			XTAL_0IF (integral_variable_q<decltype(z)>) {
 				return method_f<I_lim>(_fit::alpha_f(XTAL_REF_(z)));
 			}
-			XTAL_0IF_(return) (evaluate<I_lim>(XTAL_REF_(z)))
-			XTAL_0IF_(return) (evaluate<I_lim>(XTAL_REF_(z), constant_t<2>{}))
-			XTAL_0IF_(return) (evaluate<I_lim>(XTAL_REF_(z), constant_t<3>{}))
-			XTAL_0IF_(return) (evaluate<I_lim>(XTAL_REF_(z), constant_t<5>{}))
-			XTAL_0IF_(return) (evaluate<I_lim>(XTAL_REF_(z), constant_t<7>{}))
+			XTAL_0IF_(to) (evaluate<I_lim>(XTAL_REF_(z)))
+			XTAL_0IF_(to) (evaluate<I_lim>(XTAL_REF_(z), constant_t<2>{}))
+			XTAL_0IF_(to) (evaluate<I_lim>(XTAL_REF_(z), constant_t<3>{}))
+			XTAL_0IF_(to) (evaluate<I_lim>(XTAL_REF_(z), constant_t<5>{}))
+			XTAL_0IF_(to) (evaluate<I_lim>(XTAL_REF_(z), constant_t<7>{}))
 			XTAL_0IF_(else) {return pow(XTAL_REF_(z), _fit::alpha_1/M_exp);}
 		}
 
@@ -105,7 +105,7 @@ struct root
 				z *= _fit::haplo_f(M_exp >> 1);
 				auto const x_re = z.real();
 				auto const x_im = z.imag();
-				auto const x_a2 = accumulator_f(x_re*x_re, x_im, x_im);
+				auto const x_a2 = _xtd::plus_multiplies(x_re*x_re, x_im, x_im);
 				auto const x_a1 = root_t<2>::template method_f<I_lim>(x_a2);
 
 				auto y_re = x_a1 + x_re, v_re = y_re;
@@ -192,17 +192,17 @@ struct root
 			XTAL_IF0
 			XTAL_0IF_(consteval) {
 				auto v = z;
-				for (unsigned i{}; i < 0x10 and v != y; ++i) {
-					y *= accumulator_f(k_, z_, power_f<M_exp_mag>(v = y));
+				for (int i{}; i < 0x10 and v != y; ++i) {
+					y *= _xtd::plus_multiplies(k_, z_, power_f<M_exp_mag>(v = y));
 				}
 				{
-					y /= accumulator_f(h, h, z*power_f<M_exp_mag>(v = y));
+					y /= _xtd::plus_multiplies(h, h, z*power_f<M_exp_mag>(v = y));
 				}
 			}
 			XTAL_0IF_(else) {
 				#pragma unroll
-				for (unsigned i{}; i < I_lim; ++i) {
-					y *= accumulator_f(k_, z_, power_f<M_exp_mag>(y));
+				for (int i{}; i < I_lim; ++i) {
+					y *= _xtd::plus_multiplies(k_, z_, power_f<M_exp_mag>(y));
 				}
 			}
 			return y;

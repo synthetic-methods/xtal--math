@@ -175,13 +175,13 @@ struct phason<A>
 		XTAL_DEF_(mutate,inline,let)
 		operator /= (auto &&x)
 		noexcept -> auto &
-		requires XTAL_TRY_(return) (operator*=(bond::fit<decltype(x)>::alpha_1/XTAL_REF_(x)))
+		requires XTAL_TRY_(to) (operator*=(bond::fit<decltype(x)>::alpha_1/XTAL_REF_(x)))
 
 		XTAL_DEF_(mutate,inline,let)
 		operator *= (auto &&x)
 		noexcept -> auto &
 		requires un_n<simplex_variable_q<decltype(x)>>
-		and      XTAL_TRY_(return) (S_::operator*=(XTAL_REF_(x)))
+		and      XTAL_TRY_(to) (S_::operator*=(XTAL_REF_(x)))
 
 		XTAL_DEF_(mutate,inline,let)
 		operator *= (auto &&x)
@@ -225,13 +225,13 @@ struct phason<A>
 		XTAL_DEF_(mutate,inline,let)
 		operator -= (auto &&x)
 		noexcept -> auto &
-		requires XTAL_TRY_(return) (operator+=(-XTAL_REF_(x)))
+		requires XTAL_TRY_(to) (operator+=(-XTAL_REF_(x)))
 
 		XTAL_DEF_(mutate,inline,let)
 		operator += (auto &&x)
 		noexcept -> auto &
 		requires un_n<simplex_variable_q<decltype(x)>>
-		and      XTAL_TRY_(return) (S_::operator+=( XTAL_REF_(x)))
+		and      XTAL_TRY_(to) (S_::operator+=( XTAL_REF_(x)))
 
 		XTAL_DEF_(mutate,inline,let)
 		operator += (auto &&x)

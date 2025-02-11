@@ -10,7 +10,7 @@ jobs:
   create:
     strategy:
       matrix:
-        bt: [Debug] #, Release]
+        bt: [Debug, Release]
         os: [macOS, Ubuntu] #, Windows]
     
     runs-on: ${{matrix.os}}-latest
