@@ -69,8 +69,8 @@ TAG_("phasor")
 	using Z_phi = processor::monomer_t<Y_phi, U_stored>;
 	using Z_psi = processor::monomer_t<Y_psi, U_stored>;
 	//\
-	using Z_eig = processor::monomer_t<process::lift<evoke_t<T_eigenrow>>, Y_chi>;
-//	using Z_eig = processor::monomer_t<confined_t<lift<evoke_t<_std::array<T_cell, 2>>>, phasor<_phi, U_sampled>>>;
+	using Z_eig = processor::monomer_t<process::lift<bond::operate<T_eigenrow>>, Y_chi>;
+//	using Z_eig = processor::monomer_t<confined_t<lift<bond::operate<_std::array<T_cell, 2>>>, phasor<_phi, U_sampled>>>;
 
 	using _fit = bond::template fit<typename X_phi::value_type>;
 

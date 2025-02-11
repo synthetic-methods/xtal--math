@@ -1,12 +1,11 @@
 #pragma once
-//#include_next <xtal/any.hh>
+#include "./any.h"
 #include <xtal/all.hh>
-//#include <xtal/bond/all.hh>
-//#include <xtal/atom/all.hh>
 
 #if __has_include(<Eigen/Dense>)
 #include          <Eigen/Dense>
 #endif
+
 
 XTAL_ENV_(push)
 namespace xtal
@@ -34,7 +33,7 @@ construxion_f(Xs &&...xs)
 noexcept -> auto
 {
 	using W = common_t<eigenvalue_t<Xs>...>;
-	return operative_f<evoke_t<Y<W>>{}>(XTAL_REF_(xs)...);
+	return operative_f<bond::operate<Y<W>>{}>(XTAL_REF_(xs)...);
 }
 /**/
 XTAL_DEF_(return,inline,let)
