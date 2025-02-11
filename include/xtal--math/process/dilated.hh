@@ -26,15 +26,13 @@ struct dilated;
 template <auto M_val>
 struct dilated
 {
-	static auto constexpr N_val = constant_t<M_val>{};
-
 	template <auto f>
 	XTAL_DEF_(return,inline,set)
 	around_f(auto &&o)
 	noexcept -> decltype(auto)
 	{
 		using _fit = bond::fit<decltype(o)>;
-		auto constexpr n_val =   _fit::alpha_f(N_val);
+		auto constexpr n_val =   _fit::alpha_f(M_val);
 		auto constexpr u     =       magnum_f(n_val);
 		auto constexpr v     = (int) signum_f(n_val);
 		return f(XTAL_REF_(o)*root_f<-v>(u))*root_f<+v>(u);
