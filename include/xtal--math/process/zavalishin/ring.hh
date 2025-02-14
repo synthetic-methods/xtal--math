@@ -95,12 +95,15 @@ struct ring<U_pole[N_pole]> : filter<U_pole[N_pole]>
 			case  0: break;
 			case  1: break;
 			case -1:
-				auto constexpr N_thresh = bond::fit<control_type>::haplo_f(7 + 1);// Squared...
-
-			//	TODO: Use the `N_ord` parameter to truncate the product?
 			//	TODO: Accommodate frequency scaling when calculating the product?
 
-				x &= states_.product() < N_thresh;
+				auto constexpr N_thresh_sqr = bond::fit<control_type>::haplo_f(7 + 1);
+				unsigned int const order = S_::template head<order_type>().head();
+				U_pole y{};
+				for (unsigned int i{}; i < order; ++i) {
+					y = term_f<1, 2>(y, states_[i]);
+				}
+				x &= y < N_thresh_sqr;
 			}
 			return x;
 		}
