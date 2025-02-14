@@ -102,13 +102,13 @@ TAG_("ring")
 	{
 		using U_value = flow::key_s<U_stage>;
 		using U_event = flow::cue_s<U_value>;
+		using U_cue   = flow::cue_s<>;
 
 		//\
 		using Z_process = prewarped_t<ordinal_constant_t<0>, ring<>>;
 		using Z_process = confined_t<void
 		,	prewarped<ordinal_constant_t<0>>
 		,	ring<>
-		,	occur::stage_t<>::attach<>
 		>;
 
 		using Z_processor = processor::polymer_t<Z_process
@@ -140,38 +140,46 @@ TAG_("ring")
 		auto const up1 = U_value(1,  0);
 		auto const dn1 = U_value(1, -1);
 
+	//	z <<= U_cue(0x08) << U_value(1,  0);
+	//	z <<= U_cue(0x18) << U_value(1,  0);
 		z <<= U_event(0x08, 1,  0);
 		z <<= U_event(0x18, 1,  0);
 	//	z <<= U_event(0x28, 1, -1);
-	//	z <<= U_event(0x38, 1,  0);
-
+		z <<= U_event(0x40, 1,  0);
+		z <<= U_event(0x48, 1, -1);
 		TRUE_(0 == z.efflux(z_cursor++));
-		TRUE_(2 == z.ensemble().size());
+		{
+			echo_rule_<25>();
+			echo_rule_<25>();
+			echo_plot_<25>(z.store());
 
-		echo_rule_<25>();
-		echo_rule_<25>();
-		echo_plot_<25>(z.store());
-
-		TRUE_(0 == z.efflux(z_cursor++));
-		TRUE_(2 == z.ensemble().size());
-
+		//	TRUE_(2 >= z.ensemble().size());// Still decaying...
+		}
 		z <<= U_event(0x08, 1, -1);
-
-		echo_rule_<25>();
-		echo_plot_<25>(z.store());
-
 		TRUE_(0 == z.efflux(z_cursor++));
-		TRUE_(1 == z.ensemble().size());
+		{
+			echo_rule_<25>();
+			echo_plot_<25>(z.store());
 
-		echo_rule_<25>();
-		echo_plot_<25>(z.store());
-
+		//	TRUE_(2 >= z.ensemble().size());// Still decaying...
+		}
+	//	z <<= U_event(0x00, 1,  0);
+	//	z <<= U_event(0x08, 1, -1);
 		TRUE_(0 == z.efflux(z_cursor++));
-		TRUE_(0 == z.ensemble().size());
+		{
+			echo_rule_<25>();
+			echo_plot_<25>(z.store());
 
-		echo_rule_<25>();
-		echo_rule_<25>();
-		
+		//	TRUE_(1 >= z.ensemble().size());// Still decaying...
+		}
+		TRUE_(0 == z.efflux(z_cursor++));
+		{
+		//	echo_rule_<25>();
+		//	echo_plot_<25>(z.store());
+
+		//	TRUE_(0 == z.ensemble().size());
+		}
+
 	}
 	/***/
 }

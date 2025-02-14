@@ -275,11 +275,11 @@ void echo_plot_(iterated_q auto const o)
 		auto u = static_cast<int>(e);
 		for (int n = -N; n <= N; ++n) {
 				if (n == 0)                     {}
-		else if (u < 0 and n < 0 and u == n) {_std::cout << '<';}
-		else if (u < 0 and n < 0 and u <= n) {_std::cout << '=';}
-		else if (0 < u and 0 < n and n == u) {_std::cout << '>';}
-		else if (0 < u and 0 < n and n <= u) {_std::cout << '=';}
-		else                                 {_std::cout << ' ';}
+		else if (u < 0 and n < 0 and u == n) {_std::cout << "╼";}//'<';}
+		else if (u < 0 and n < 0 and u <= n) {_std::cout << "━";}//'=';}
+		else if (0 < u and 0 < n and n == u) {_std::cout << "╾";}//'>';}
+		else if (0 < u and 0 < n and n <= u) {_std::cout << "━";}//'=';}
+		else                                 {_std::cout << " ";}//' ';}
 		}
 		_std::cout << _std::endl;
 	}
