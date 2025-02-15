@@ -19,7 +19,7 @@ TAG_("ring")
 	using U_alpha = typename bond::fit<>::alpha_type;
 	using U_stage = occur::stage_t<>;
 	using U_key   = flow::key_s<>;
-	using U_cue   = flow::cue_s<>;
+	using U0_cue   = flow::cue_s<>;
 
 	using U_chunk = schedule::chunk_t<provision::spooled<extent_constant_t<0x10>>>;
 
@@ -100,9 +100,11 @@ TAG_("ring")
 	/**/
 	TRY_("ring: polyphony")
 	{
-		using U_value = flow::key_s<U_stage>;
-		using U_event = flow::cue_s<U_value>;
-		using U_cue   = flow::cue_s<>;
+		using U_key_stage = flow::key_s<U_stage>;
+		using U_event = flow::cue_s<U_key_stage>;
+		
+		using U0_cue  = flow::cue_s<>;
+		using U1_cue  = flow::cue_s<flow::cue_s<>>;
 
 		//\
 		using Z_process = prewarped_t<ordinal_constant_t<0>, ring<>>;
@@ -112,7 +114,7 @@ TAG_("ring")
 		>;
 
 		using Z_processor = processor::polymer_t<Z_process
-		,	U_chunk::template inqueue<U_value>
+		,	U_chunk::template inqueue<U_key_stage>
 		,	provision::stored <null_type[0x100]>
 		,	provision::spooled<null_type[0x100]>
 		>;
@@ -137,25 +139,16 @@ TAG_("ring")
 		z <<= U_stage(-1);
 		z.lead() <<= U_stage(-1);
 
-		auto const up1 = U_value(1,  0);
-		auto const dn1 = U_value(1, -1);
+		auto const up1 = U_key_stage(1,  0);
+		auto const dn1 = U_key_stage(1, -1);
 
-	//	z <<= U_cue(0x08) << U_value(1,  0);
-	//	z <<= U_cue(0x18) << U_value(1,  0);
-		z <<= U_event(0x08, 1,  0);
-		z <<= U_event(0x18, 1,  0);
-	//	z <<= U_event(0x28, 1, -1);
-		z <<= U_event(0x40, 1,  0);
-		z <<= U_event(0x48, 1, -1);
-		TRUE_(0 == z.efflux(z_cursor++));
-		{
-			echo_rule_<25>();
-			echo_rule_<25>();
-			echo_plot_<25>(z.store());
-
-		//	TRUE_(2 >= z.ensemble().size());// Still decaying...
-		}
-		z <<= U_event(0x08, 1, -1);
+	//	z <<= U0_cue(0x08) << U_key_stage(1,  0);
+	//	z <<= U0_cue(0x18) << U_key_stage(1,  0);
+		z <<= U0_cue(0x08).then(U_key_stage{1,  0});
+		z <<= U0_cue(0x18).then(U_key_stage{1,  0});
+	//	z <<= U0_cue(0x28).then(U_key_stage{1, -1});
+		z <<= U0_cue(0x40).then(U_key_stage{1,  0});
+		z <<= U0_cue(0x48).then(U_key_stage{1, -1});
 		TRUE_(0 == z.efflux(z_cursor++));
 		{
 			echo_rule_<25>();
@@ -163,8 +156,16 @@ TAG_("ring")
 
 		//	TRUE_(2 >= z.ensemble().size());// Still decaying...
 		}
-	//	z <<= U_event(0x00, 1,  0);
-	//	z <<= U_event(0x08, 1, -1);
+		z <<= U0_cue(0x08).then(U_key_stage{1, -1});
+		TRUE_(0 == z.efflux(z_cursor++));
+		{
+			echo_rule_<25>();
+			echo_plot_<25>(z.store());
+
+		//	TRUE_(2 >= z.ensemble().size());// Still decaying...
+		}
+	//	z <<= U0_cue(0x00).then(U_key_stage{1,  0});
+	//	z <<= U0_cue(0x08).then(U_key_stage{1, -1});
 		TRUE_(0 == z.efflux(z_cursor++));
 		{
 			echo_rule_<25>();
