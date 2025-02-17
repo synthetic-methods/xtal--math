@@ -14,8 +14,8 @@ namespace xtal::process::math::pade
 Provides result-expansion (w.r.t. argument-reduction) for `unity`, \
 i.e. squaring for both circular and hyperbolic results.
 
-template <int M_ism=1> struct   disunity;
-template <int M_ism=1> using    disunity_t = process::confined_t<disunity<M_ism>>;
+template <int M_ism=1>	struct  disunity;
+template <int M_ism=1>	using   disunity_t = process::confined_t<disunity<M_ism>>;
 
 template <int M_ism=1, auto ...Ns>
 XTAL_DEF_(return,inline,let)

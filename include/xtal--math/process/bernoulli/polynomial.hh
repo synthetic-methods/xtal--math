@@ -19,8 +19,8 @@ Defines the Bernoulli polynomials `BernoulliB[n, u + 1/2]*(2 Pi)^(n - 1)/n!`, wh
 The even polynomials are only defined for ``implemented separately, \
 so avoid invoking `method_f<N_ord>` when `in_n<M_car, 1, 0,-2>`. \
 
-template <int M_ism=1, int M_car=0> struct   polynomial;
-template <int M_ism=1, int M_car=0> using    polynomial_t = process::confined_t<polynomial<M_ism, M_car>>;
+template <int M_ism=1, int M_car=0>	struct  polynomial;
+template <int M_ism=1, int M_car=0>	using   polynomial_t = process::confined_t<polynomial<M_ism, M_car>>;
 template <int M_ism=1, int M_car=0, int M_ord=1>
 XTAL_DEF_(return,inline,let)
 polynomial_f(auto &&o)
@@ -63,7 +63,8 @@ struct polynomial<M_ism,-0>
 		method_f(auto &&u)
 		noexcept -> decltype(auto)
 		{
-			using     _fit = bond::fit<decltype(u)>;
+			using _fit = bond::fit<decltype(u)>;
+
 			using W_alpha = typename _fit::alpha_type;
 			using W_sigma = typename _fit::sigma_type;
 			W_sigma constexpr N_par = magnum_f(N_ord)&1;

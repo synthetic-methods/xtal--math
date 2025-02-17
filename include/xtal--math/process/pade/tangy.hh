@@ -22,7 +22,7 @@ struct tangy
 {
 };
 template <>
-struct   tangy<>
+struct  tangy<>
 {
 	using limit_type = occur::math::limit_t<(1<<3)>;
 

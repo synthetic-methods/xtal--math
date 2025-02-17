@@ -25,7 +25,7 @@ noexcept -> auto
 ////////////////////////////////////////////////////////////////////////////////
 
 template <auto ...Ms>
-struct   modulo
+struct  modulo
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -46,7 +46,7 @@ struct   modulo
 	};
 };
 template <auto ...Ms>
-using    modulo_t = process::confined_t<modulo<Ms...>>;
+using   modulo_t = process::confined_t<modulo<Ms...>>;
 
 
 ///////////////////////////////////////////////////////////////////////////////

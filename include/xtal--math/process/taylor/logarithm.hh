@@ -12,10 +12,10 @@ namespace xtal::process::math::taylor
 /////////////////////////////////////////////////////////////////////////////////
 
 template <int M_ism=1, int M_car=0> requires in_n<M_ism, 1,-1> and in_n<M_car, 0, 1>
-struct   logarithm;
+struct  logarithm;
 
 template <auto ...Ms>
-using    logarithm_t = process::confined_t<logarithm<Ms...>>;
+using   logarithm_t = process::confined_t<logarithm<Ms...>>;
 
 template <auto ...Ms>
 XTAL_DEF_(return,inline,let)

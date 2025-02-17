@@ -19,7 +19,7 @@ Because it invokes the super-`function` directly, \
 it must be applied via `{compose,confined}` (etc) rather than `process::{lift,link}`.
 
 template <int M_car=0, int M_aux=0> requires in_n<M_car, 0, 1, 2>
-struct   discarded;
+struct  discarded;
 
 
 ////////////////////////////////////////////////////////////////////////////////

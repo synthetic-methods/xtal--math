@@ -11,8 +11,8 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <auto M_val=1> struct   dilate;
-template <auto M_val=1> using    dilate_t = process::confined_t<dilate<M_val>>;
+template <auto M_val=1>	struct  dilate;
+template <auto M_val=1>	using   dilate_t = process::confined_t<dilate<M_val>>;
 template <auto M_val=1>
 XTAL_DEF_(return,inline,let)
 dilate_f(auto &&o)

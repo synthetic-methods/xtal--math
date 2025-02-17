@@ -28,12 +28,12 @@ parameterized by an `continuous_field_q`-wrapper with a distinguished head. \
 ///\todo\
 Rework `operator`s to accommodate `std::complex`. \
 
-template <class   ..._s>	struct           phason;
-template <class   ..._s>	using            phason_t = typename phason<_s...>::type;
-template <class   ...Ts>	concept          phason_q = bond::tag_p<phason_t, Ts...>;
-template <class   ...Ts>	concept     real_phason_q = bond::tag_p<phason_t, Ts...> and real_variable_q<initializer_u<Ts>...>;
-template <class   ...Ts>	concept  simplex_phason_q = bond::tag_p<phason_t, Ts...> and simplex_field_q<initializer_u<Ts>...>;
-template <class   ...Ts>	concept  complex_phason_q = bond::tag_p<phason_t, Ts...> and complex_field_q<initializer_u<Ts>...>;
+template <class   ..._s>	struct          phason;
+template <class   ..._s>	using           phason_t = typename phason<_s...>::type;
+template <class   ...Ts>	concept         phason_q = bond::tag_p<phason_t, Ts...>;
+template <class   ...Ts>	concept    real_phason_q = bond::tag_p<phason_t, Ts...> and real_variable_q<initializer_u<Ts>...>;
+template <class   ...Ts>	concept simplex_phason_q = bond::tag_p<phason_t, Ts...> and simplex_field_q<initializer_u<Ts>...>;
+template <class   ...Ts>	concept complex_phason_q = bond::tag_p<phason_t, Ts...> and complex_field_q<initializer_u<Ts>...>;
 
 
 XTAL_FX0_(to) (template <auto f=_std::identity{}>

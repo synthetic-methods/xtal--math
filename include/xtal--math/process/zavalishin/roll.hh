@@ -2,7 +2,7 @@
 #include "./any.hh"
 
 #include "./filter.hh"
-#include "./gate.hh"
+
 
 
 
@@ -11,20 +11,19 @@ namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 ///\
-Manages a ringing filter with stored `damping` and `balance`, \
-where `damping` is dynamically configured by the `influx`ed `stage`. \
+Manages a negative-ramping filter with stored `damping` and `balance`.
 
 ///\note\
 Input is restricted to `U_pole` because the filter-state is managed out-of-band. \
 
-template <class ...As>	struct  ring;
-template <class ...As>	using   ring_t = process::confined_t<ring<As...>>;
+template <typename ...As>	struct  roll;
+template <typename ...As>	using   roll_t = process::confined_t<roll<As...>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <class ...As>
-struct any<ring<As...>> : any<filter<As...>>
+struct any<roll<As...>> : any<filter<As...>>
 {
 };
 
@@ -32,20 +31,20 @@ struct any<ring<As...>> : any<filter<As...>>
 ////////////////////////////////////////////////////////////////////////////////
 
 template <vector_q A>
-struct ring<A>
+struct roll<A>
 {
 	using _fit = bond::fit<A>;
 
-	using     metakind = any<ring<A>>;
+	using     metakind = any<roll<A>>;
 	using   state_type = typename metakind::   state_type;
 	using   scope_type = typename metakind::   scope_type;
 	using rescope_type = typename metakind:: rescope_type;
 	using damping_type = typename metakind:: damping_type;
 	using balance_type = typename metakind:: balance_type;
-
-	using superkind = bond::compose<bond::tag<ring_t>
-//	,	typename rescope_type::template attach<>
-	,	typename damping_type::template attend<>
+	
+	using superkind = bond::compose<bond::tag<roll_t>
+	,	typename rescope_type::template attach<>
+	,	typename damping_type::template attach<>
 	,	typename balance_type::template attend<>
 	>;
 	template <class S>
@@ -56,8 +55,9 @@ struct ring<A>
 
 	public:// CONSTRUCT
 		using S_::S_;
+		using typename S_::state_type;
 
-	public:
+	public:// ACCESS
 	//	TODO: Need parareter mapping/restriction on creation/update...
 
 		XTAL_FX4_(to) (XTAL_DEF_(return,inline,let)
@@ -66,41 +66,39 @@ struct ring<A>
 		XTAL_FX4_(to) (XTAL_DEF_(return,inline,let)
 		balance(auto &&...oo), S_::template head<balance_type>(XTAL_REF_(oo)...))
 
-	public:// FLOW
+	public:// OPERATE
 
-		template <signed N_ion>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,let)
-		fuse(auto &&o)
-		noexcept -> signed
+		method(auto x_input, auto s_scale, auto &&...oo)
+		noexcept -> decltype(auto)
 		{
-			return S_::template fuse<N_ion>(XTAL_REF_(o));
-		}
-		template <signed N_ion> requires in_n<N_ion,  1>
-		XTAL_DEF_(return,inline,let)
-		fuse(occur::stage_q auto &&o)
-		noexcept -> signed
-		{
-			auto const [states_] = S_::template memory<state_type>();
-			signed x = S_::template fuse<N_ion>(XTAL_REF_(o));
+		//	NOTE: Assumes `s_scale` is prewarped...
+		//	s_scale *= S_::sampling().period();
+			x_input *= root_f<-1>(s_scale);// Assuming `prewarped`...
 
-			switch (o.head()) {
-			case  0: (void) damping(          (_fit::alpha_0)); break;
-			case  1: (void) damping(root_f< 2>(_fit::haplo_1)); break;
-			case -1: (void) damping(root_f<-2>(_fit::haplo_1)); break;
-			}
-			return x;
+		//	TODO: Abstract `warp_f` as `shaper_f`...
+			auto constexpr warp_f = [] (auto &&x) XTAL_0FN_(to) (root_f<2>(term_f<1, 2>(one, x)) + x);
+
+			auto const & f_      = S_::template   head<rescope_type>();
+			auto const & t_      = f_ .template   head<  scope_type>();
+			auto const  [s_]     = S_::template memory<  state_type>();
+			auto const &[s0, s1] = s_;
+			auto const y_damping = warp_f(s1 + dot_f<-1>(s_, t_))*damping();
+
+			return S_::template method<Ns...>(x_input, s_scale, y_damping, XTAL_REF_(oo)...);
 		}
 
 	};
 };
 template <scalar_q A>
-struct ring<A>
-:	ring<A[2]>
+struct roll<A>
+:	roll<A[2]>
 {
 };
 template <>
-struct ring<>
-:	ring<typename bond::fit<>::alpha_type>
+struct roll<>
+:	roll<typename bond::fit<>::alpha_type>
 {
 };
 

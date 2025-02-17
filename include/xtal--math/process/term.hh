@@ -74,7 +74,7 @@ starting from the kernel `a[M_limit]`. \
 Co/domain scaling can be effected by multiplying `a`/`b`, respectively. \
 
 template <auto ...Ms>
-struct   term
+struct  term
 {
 //	static_assert(in_n<M_alt, 1,-1>);
 
@@ -97,7 +97,7 @@ struct   term
 	};
 };
 template <auto ...Ms>
-using    term_t = process::confined_t<term<Ms...>>;
+using   term_t = process::confined_t<term<Ms...>>;
 
 
 ///////////////////////////////////////////////////////////////////////////////

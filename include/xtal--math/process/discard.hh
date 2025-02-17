@@ -12,10 +12,10 @@ namespace xtal::process::math
 /////////////////////////////////////////////////////////////////////////////////
 
 template <int M_car=0>
-struct   discard;
+struct  discard;
 
 template <int M_car=0>
-using    discard_t = process::confined_t<discard<M_car>>;
+using   discard_t = process::confined_t<discard<M_car>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////

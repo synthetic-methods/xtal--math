@@ -11,9 +11,9 @@ namespace xtal::provision
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <template <auto ...> class F=process::math::identity> struct   saturated;
-template <template <auto ...> class F=process::math::identity> using    saturated_t = confined_t<saturated<F>>;
-template <                                        class ..._s> concept  saturated_q = bond::tab_p<saturated<>, _s...>;
+template <template <auto ...> class F=process::math::identity>	struct  saturated;
+template <template <auto ...> class F=process::math::identity>	using   saturated_t = confined_t<saturated<F>>;
+template <                                        class ..._s>	concept saturated_q = bond::tab_p<saturated<>, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////

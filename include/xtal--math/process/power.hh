@@ -14,10 +14,10 @@ namespace xtal::process::math
 Implements the function `#^m &`. \
 
 template <int M_exp=1, auto ...Ms>
-struct   power;
+struct  power;
 
 template <int M_exp=1, auto ...Ms>
-using    power_t = process::confined_t<power<M_exp, Ms...>>;
+using   power_t = process::confined_t<power<M_exp, Ms...>>;
 
 template <int M_exp=1, int ...Ns>
 XTAL_DEF_(return,inline,let)
@@ -31,7 +31,7 @@ noexcept -> decltype(auto)
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int M_exp, auto ...Ms> requires un_n<M_exp>
-struct   power<M_exp, Ms...>
+struct  power<M_exp, Ms...>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -54,7 +54,7 @@ struct   power<M_exp, Ms...>
 	};
 };
 template <int M_exp, auto ...Ms> requires (0 < M_exp)
-struct   power<M_exp, Ms...>
+struct  power<M_exp, Ms...>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -137,7 +137,7 @@ struct   power<M_exp, Ms...>
 	};
 };
 template <int M_exp, auto ...Ms> requires (M_exp < 0)
-struct   power<M_exp, Ms...>
+struct  power<M_exp, Ms...>
 {
 	using superkind = power<-M_exp, Ms...>;
 

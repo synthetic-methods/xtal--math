@@ -11,9 +11,9 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <typename ..._s> struct   phasor;
-template <typename ..._s> using    phasor_t = confined_t<phasor<_s...>>;
-template <typename ..._s> concept  phasor_q = bond::tag_p<phasor, _s...>;
+template <typename ..._s>	struct  phasor;
+template <typename ..._s>	using   phasor_t = confined_t<phasor<_s...>>;
+template <typename ..._s>	concept phasor_q = bond::tag_p<phasor, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -80,7 +80,7 @@ struct phasor<A, As...>
 
 	public:// OPERATE
 		///\todo\
-		Use `occur::sample` to manage downsampling \
+		Use `occur::sampling` to manage downsampling \
 		e.g. by integer multiplication followed by normalization. \
 
 		///\

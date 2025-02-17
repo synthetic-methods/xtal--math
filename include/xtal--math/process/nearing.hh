@@ -41,7 +41,7 @@ struct nearing
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int ...Ms>
-using    nearing_t = process::confined_t<nearing<Ms...>>;
+using   nearing_t = process::confined_t<nearing<Ms...>>;
 
 template <auto ...Ns>
 XTAL_DEF_(return,inline,let)

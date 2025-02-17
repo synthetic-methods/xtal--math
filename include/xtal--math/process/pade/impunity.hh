@@ -14,8 +14,8 @@ namespace xtal::process::math::pade
 Provides the argument-restricted implementations for `unity` and `tangy`. \
 
 
-template <int M_ism=1, int M_car=0> struct   impunity;
-template <int M_ism=1, int M_car=0> using    impunity_t = process::confined_t<impunity<M_ism, M_car>>;
+template <int M_ism=1, int M_car=0>	struct  impunity;
+template <int M_ism=1, int M_car=0>	using   impunity_t = process::confined_t<impunity<M_ism, M_car>>;
 
 template <int M_ism=1, auto ...Ns>
 XTAL_DEF_(return,inline,let)

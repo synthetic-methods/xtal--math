@@ -23,7 +23,7 @@ struct unity
 {
 };
 template <>
-struct   unity<>
+struct  unity<>
 {
 	using limit_type = occur::math::limit_t<(1<<3)>;
 
@@ -34,7 +34,7 @@ struct   unity<>
 
 };
 template <int M_ism=1, typename ...As>
-using    unity_t = process::confined_t<unity<M_ism, As...>, unity<>>;
+using   unity_t = process::confined_t<unity<M_ism, As...>, unity<>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////

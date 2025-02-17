@@ -13,8 +13,8 @@ namespace xtal::process::math
 ///\
 Evaluates `Total[{x, xs}^2]` (using fused multiply-add, if supported by the compiler). \
 
-template <auto ...Ms> struct   square;
-template <auto ...Ms> using    square_t = process::confined_t<square<Ms...>>;
+template <auto ...Ms>	struct  square;
+template <auto ...Ms>	using   square_t = process::confined_t<square<Ms...>>;
 
 template <int N_sqr=1, int N_alt=1, int N_sgn=1>
 XTAL_DEF_(return,inline,let)

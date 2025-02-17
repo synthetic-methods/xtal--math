@@ -88,7 +88,7 @@ struct signum
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _fit = bond::fit<decltype(o)>;
-			return o*dot_f<-2>(o);
+			return o*root_f<-2>(dot_f(o));
 		}
 
 		template <int N_side=0> requires in_n<N_side, 1, 0, -1>
@@ -147,7 +147,7 @@ struct signum
 ////////////////////////////////////////////////////////////////////////////////
 
 template <auto ...Ms>
-using    signum_t = process::confined_t<signum<Ms...>>;
+using   signum_t = process::confined_t<signum<Ms...>>;
 
 template <auto ...Ns>
 XTAL_DEF_(return,inline,let)

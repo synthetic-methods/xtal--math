@@ -22,7 +22,7 @@ struct wnity
 {
 };
 template <>
-struct   wnity<>
+struct  wnity<>
 {
 	using limit_type = occur::math::limit_t<(1<<3)>;
 
@@ -33,7 +33,7 @@ struct   wnity<>
 
 };
 template <int M_ism=1, typename ...As>
-using    wnity_t = process::confined_t<wnity<M_ism, As...>, wnity<>>;
+using   wnity_t = process::confined_t<wnity<M_ism, As...>, wnity<>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////

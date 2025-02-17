@@ -11,9 +11,9 @@ namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <class ...As> struct   prewarped;
-template <class ...As> using    prewarped_t = confined_t<prewarped<As...>>;
-template <class ..._s> concept  prewarped_q = bond::tag_p<prewarped, _s...>;
+template <class ...As>	struct  prewarped;
+template <class ...As>	using   prewarped_t = confined_t<prewarped<As...>>;
+template <class ..._s>	concept prewarped_q = bond::tag_p<prewarped, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////

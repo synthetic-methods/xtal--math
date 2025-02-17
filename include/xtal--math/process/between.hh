@@ -40,7 +40,7 @@ noexcept -> auto
 ////////////////////////////////////////////////////////////////////////////////
 
 template <auto ...Ms>
-struct   between
+struct  between
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -61,7 +61,7 @@ struct   between
 	};
 };
 template <auto ...Ms>
-using    between_t = process::confined_t<between<Ms...>>;
+using   between_t = process::confined_t<between<Ms...>>;
 
 
 ///////////////////////////////////////////////////////////////////////////////

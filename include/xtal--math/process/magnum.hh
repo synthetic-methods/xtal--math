@@ -54,7 +54,7 @@ struct magnum
 		noexcept -> auto
 		{
 			using _fit = bond::fit<decltype(o)>;
-			return dot_f<2>(o);
+			return root_f<2>(dot_f(o));
 		}
 
 		template <auto ...Ns>
@@ -84,7 +84,7 @@ struct magnum
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int ...Ms>
-using    magnum_t = process::confined_t<magnum<Ms...>>;
+using   magnum_t = process::confined_t<magnum<Ms...>>;
 
 template <auto ...Ns>
 XTAL_DEF_(return,inline,let)

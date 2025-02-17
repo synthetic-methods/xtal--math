@@ -11,9 +11,9 @@ namespace xtal::atom::math::dirichlet
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <class   ..._s>	struct   symbol;
-template <class   ..._s>	using    symbol_t = typename symbol<_s...>::type;
-template <class   ...Ts>	concept  symbol_q = bond::tag_p<symbol_t, Ts...>;
+template <class   ..._s>	struct  symbol;
+template <class   ..._s>	using   symbol_t = typename symbol<_s...>::type;
+template <class   ...Ts>	concept symbol_q = bond::tag_p<symbol_t, Ts...>;
 
 
 XTAL_FX0_(to) (template <auto f=_std::identity{}>

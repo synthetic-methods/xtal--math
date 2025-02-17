@@ -11,8 +11,8 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <typename ...As> struct   wrap;
-template <typename ...As> using    wrap_t = process::confined_t<wrap<As...>>;
+template <typename ...As>	struct  wrap;
+template <typename ...As>	using   wrap_t = process::confined_t<wrap<As...>>;
 template <typename ...As>
 XTAL_DEF_(return,inline,let)
 wrap_f(auto &&o)

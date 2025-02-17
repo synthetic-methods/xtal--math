@@ -12,10 +12,10 @@ namespace xtal::process::math
 /////////////////////////////////////////////////////////////////////////////////
 
 template <int M_exp=1, int M_cut=0>
-struct   root;
+struct  root;
 
 template <int M_exp=1, int M_cut=0>
-using    root_t = process::confined_t<root<M_exp, M_cut>>;
+using   root_t = process::confined_t<root<M_exp, M_cut>>;
 
 template <int M_exp=1, int M_cut=0, auto N_lim=0b11>
 XTAL_DEF_(return,inline,let)

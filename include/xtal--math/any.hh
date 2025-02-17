@@ -15,10 +15,10 @@ namespace xtal
 ////////////////////////////////////////////////////////////////////////////////
 
 #if __has_include(<Eigen/Dense>)
-template <class   ...Ts>	using     eigenclass_t =	common_t<         Eigen::internal::traits<based_t<Ts>>        ...>;
-template <class   ...Ts>	using     eigenvalue_t =	common_t<typename Eigen::internal::traits<based_t<Ts>>::Scalar...>;
-template <class   ...Ts>	concept   eigenclass_q =	complete_q<eigenclass_t<Ts>...>;
-template <class   ...Ts>	concept   eigenvalue_q =	complete_q<eigenvalue_t<Ts>...>;//TODO: Restrict to `Array`-derived.
+template <class   ...Ts>	using   eigenclass_t =	common_t<         Eigen::internal::traits<based_t<Ts>>        ...>;
+template <class   ...Ts>	using   eigenvalue_t =	common_t<typename Eigen::internal::traits<based_t<Ts>>::Scalar...>;
+template <class   ...Ts>	concept eigenclass_q =	complete_q<eigenclass_t<Ts>...>;
+template <class   ...Ts>	concept eigenvalue_q =	complete_q<eigenvalue_t<Ts>...>;//TODO: Restrict to `Array`-derived.
 
 template <auto f> XTAL_DEF_(return,inline,let) operative_f(eigenvalue_q auto &&x, auto &&...xs) noexcept requires (0 == sizeof...(xs)) {return XTAL_REF_(x).  unaryExpr(XTAL_REF_(xs)..., f);}
 template <auto f> XTAL_DEF_(return,inline,let) operative_f(eigenvalue_q auto &&x, auto &&...xs) noexcept requires (1 == sizeof...(xs)) {return XTAL_REF_(x). binaryExpr(XTAL_REF_(xs)..., f);}
