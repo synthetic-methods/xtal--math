@@ -25,33 +25,48 @@ The parameters `M_ism` and `M_car` determine the type and return-value of curve,
 and `M_car` is expected to return the slope when `== -1`. \
 
 ///\note\
-The filter is preconfigured to support `std::complex<double>[4]` poles. \
-With base-types of `double` and `std::complex<double>` respectively, \
+Despite the parameterization defined by `any<filter<...>>`, \
+`filter<...>::method` is polymorphic and can accomodate anything up to the given cache-width \
+(determined by `U_pole[N_pole][2]`). \
+\
+For example, with base-types of `double` and `std::complex<double>` respectively, \
 the storage required is `16` and `32` bytes-per-pole. \
 
-template <typename ...As> struct   filter;
-template <typename ...As> using    filter_t = process::confined_t<filter<As...>>;
+template <class ..._s>	struct  filter;
+template <class ..._s>	concept filter_q = bond::tag_p<filter, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <class U_pole, int N_pole>
-struct filter<U_pole[N_pole]>
+template <class U_pole, auto N_pole>
+struct any<filter<U_pole[N_pole]>>
 {
-	using   sample_type = occur::sample_t<>;
-	using     zoom_type = occur::inferred_t<struct     ZOOM, typename bond::fit<>::alpha_type>;
-	using   select_type = occur::inferred_t<struct   SELECT, unsigned int, bond::word<2>>;
-	using    order_type = occur::inferred_t<struct    ORDER, unsigned int, bond::seek_s<N_pole + 1>>;
-	using topology_type = occur::inferred_t<struct TOPOLOGY, unsigned int, bond::word<2>>;
-	using    limit_type = occur::inferred_t<struct    LIMIT, unsigned int, bond::word<2>>;
+//	USED
+	using        scope_type =  atom::couple_t<typename bond::fit<U_pole>::alpha_type[N_pole]>;
+	using        state_type =  atom::couple_t<U_pole[N_pole]>;
+	using        stage_type = occur::stage_t<>;
 
-	using superkind = bond::compose<bond::tag<filter_t>
-	,	provision::memorized<U_pole[N_pole << 1]>
-	,	typename   sample_type::template   attach<>
-	,	typename     zoom_type::template   attach<>
+//	ATTACHED
+	using        input_type = occur::inferred_t<struct   INPUT, valued_u<state_type>>;
+	using        scale_type = occur::inferred_t<struct   SCALE, valued_u<scope_type>>;
+	using      damping_type = occur::inferred_t<struct DAMPING, valued_u<scope_type>>;
+	using      balance_type = occur::inferred_t<struct BALANCE, valued_u<scope_type>>;
+	using      rescope_type = occur::inferred_t<struct RESCOPE,          scope_type >;
+	using         zoom_type = occur::inferred_t<struct    ZOOM, valued_u<scope_type>>;
+	using     sampling_type = occur::sampling_t<>;
+
+//	DISPATCHED
+	using       select_type = occur::inferred_t<struct  SELECT, unsigned int, bond::word<  2>>;
+	//\
+	using        order_type = occur::inferred_t<struct   ORDER, unsigned int, bond::seek_s<1 + state_type::size()>>;
+	using        order_type = occur::inferred_t<struct   ORDER, unsigned int, bond::word  <1 + state_type::size()>>;
+	using        patch_type = occur::inferred_t<struct   PATCH, unsigned int, bond::word  <2>>;
+	using        limit_type = occur::inferred_t<struct   LIMIT, unsigned int, bond::word  <2>>;
+
+	using superkind = provision::voiced<void
 	,	typename   select_type::template dispatch<>
 	,	typename    order_type::template dispatch<>
-	,	typename topology_type::template dispatch<>
+	,	typename patch_type::template dispatch<>
 	,	typename    limit_type::template dispatch<>// TODO: Replace with `shape`'s parameters?
 	>;
 	template <class S>
@@ -59,28 +74,72 @@ struct filter<U_pole[N_pole]>
 	{
 		using S_ = bond::compose_s<S, superkind>;
 
-	public:
+	public:// CONSTRUCT
 		using S_::S_;
 
-		template <signed N_ion>
-		XTAL_DEF_(return,inline,let)
-		fuse(auto &&o)
-		noexcept -> signed
-		{
-			if constexpr (N_ion == +1) {
-				if constexpr (in_q<decltype(o), order_type, topology_type>) {
-					S_::memory(constant_t<>{});
-				}
-				if constexpr (occur::stage_q<decltype(o)>) {
-					if (o == 0) {
-						S_::memory(constant_t<>{});
-					}
-				}
-			}
-			return S_::template fuse<N_ion>(XTAL_REF_(o));
-		}
+	//	USED
+		using        scope_type = any::       scope_type;
+		using        state_type = any::       state_type;
+		using        stage_type = any::       stage_type;
 
-		template <int N_sel=0, int N_ord=0, int N_top=0, auto ...Ns>
+	//	ATTACHED
+		using        input_type = any::       input_type;
+		using        scale_type = any::       scale_type;
+		using      damping_type = any::     damping_type;
+		using      balance_type = any::     balance_type;
+		using         zoom_type = any::        zoom_type;
+		using     sampling_type = any::    sampling_type;
+
+	//	DISPATCHED
+		using       select_type = any::      select_type;
+		using        order_type = any::       order_type;
+		using     patch_type = any::    patch_type;
+		using        limit_type = any::       limit_type;
+
+
+	};
+};
+template <scalar_q A>
+struct any<filter<A>>
+:	any<filter<A[2]>>
+{
+};
+template <>
+struct any<filter<>>
+:	any<filter<typename bond::fit<>::alpha_type>>
+{
+};
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <vector_q A>
+struct filter<A>
+{
+	using          metakind = any<filter<A>>;
+	using        state_type = typename metakind::        state_type;
+	using        stage_type = typename metakind::        stage_type;
+	using     sampling_type = typename metakind::     sampling_type;
+	using         zoom_type = typename metakind::         zoom_type;
+
+	using superkind = bond::compose<bond::tag<filter>
+	,	provision::memorized<state_type, state_type>
+	,	metakind
+	,	typename    stage_type::template expect<>
+	,	typename sampling_type::template attach<>
+	,	typename     zoom_type::template attach<>
+	>;
+	template <class S>
+	class subtype : public bond::compose_s<S, superkind>
+	{
+		using S_ = bond::compose_s<S, superkind>;
+
+	public:// CONSTRUCT
+		using S_::S_;
+
+	public:// OPERATE
+
+		template <int N_sel=0, int N_ord=0, int N_pat=0, auto ...Ns>
 		XTAL_DEF_(inline,let)
 		method(auto &&x_input
 		,	absolve_u<decltype(x_input)> s_scale
@@ -96,7 +155,7 @@ struct filter<U_pole[N_pole]>
 			XTAL_0IF (0 == N_ord) {
 				return XTAL_REF_(x_input);
 			}
-			XTAL_0IF (0 == N_top) {
+			XTAL_0IF (0 == N_pat) {
 				using U_outputs = atom::couple_t<X[N_ord + 1]>;
 				using U_scalars = atom::couple_t<W[N_ord + 1]>;
 				union U_io {U_outputs outputs; U_scalars scalars;};
@@ -112,7 +171,7 @@ struct filter<U_pole[N_pole]>
 					XTAL_0IF (4 == N_ord) {return {one, u04, w24, u04, one};}
 				}()};
 
-				(void) edit_f<N_ord, N_top, Ns...>(XTAL_REF_(x_input), s_scale, io);// io.scalars -> io.outputs
+				(void) edit_f<N_ord, N_pat, Ns...>(XTAL_REF_(x_input), s_scale, io);// io.scalars -> io.outputs
 
 				auto constexpr I_ =  static_cast<unsigned>(N_sel);
 				auto constexpr I0 = _std::countr_one(I_ >>  0) +  0, J0 = I0 + 1;
@@ -131,11 +190,11 @@ struct filter<U_pole[N_pole]>
 				XTAL_0IF (I1 >= N_ord) {return io.outputs.self(constant_t<1>{}).product(atom::couple_t<W[1]>{y0    });}
 				XTAL_0IF (I1 <  N_ord) {return io.outputs.self(constant_t<2>{}).product(atom::couple_t<W[2]>{y0, y1});}
 			}
-			XTAL_0IF (1 == N_top) {
+			XTAL_0IF (1 == N_pat) {
 				return XTAL_REF_(x_input);
 			}
 		}
-		template <int N_ord=0, int N_top=0, int N_lim=0, auto ...Ns> requires (1 <= N_ord and N_top == 0)
+		template <int N_ord=0, int N_pat=0, int N_lim=0, auto ...Ns> requires (1 <= N_ord and N_pat == 0)
 		XTAL_DEF_(inline,let)
 		edit_f(auto const &x_input
 		,	absolve_u<decltype(x_input)> s_scale
@@ -177,7 +236,6 @@ struct filter<U_pole[N_pole]>
 				XTAL_0IF (0 == K) {get<N_ord>(outputs) *= x_input - outputs_.product(states_);}
 				XTAL_0IF (1 <= K) {get<N_ord>(outputs)  = x_input - outputs_.product(slopes_);}
 
-
 				bond::seek_backward_f<N_ord>([&] (auto I) XTAL_0FN {
 					XTAL_IF0
 					XTAL_0IF (0 == K_lim) {
@@ -202,9 +260,14 @@ struct filter<U_pole[N_pole]>
 
 	};
 };
+template <scalar_q A>
+struct filter<A>
+:	filter<A[2]>
+{
+};
 template <>
 struct filter<>
-:	filter<typename bond::fit<>::aphex_type[4]>
+:	filter<typename bond::fit<>::alpha_type>
 {
 };
 

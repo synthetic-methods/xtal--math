@@ -68,7 +68,7 @@ struct near
 ////////////////////////////////////////////////////////////////////////////////
 
 template <auto ...Ms>
-using    near_t = process::confined_t<near<Ms...>>;
+using   near_t = process::confined_t<near<Ms...>>;
 
 template <auto ...Ns>
 XTAL_DEF_(return,inline,let)

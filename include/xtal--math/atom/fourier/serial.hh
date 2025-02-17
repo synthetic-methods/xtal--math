@@ -11,10 +11,10 @@ namespace xtal::atom::math::fourier
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <class        ..._s>	struct   serial;
-template <class        ..._s>	using    serial_t = typename serial<_s...>::type;
-template <class        ...Ts>	concept  serial_q = bond::tag_p<serial_t, Ts...>;
-template <int N, class ...Ts>	concept  serial_p = serial_q<Ts...> and (...and (N == Ts::size()));
+template <class        ..._s>	struct  serial;
+template <class        ..._s>	using   serial_t = typename serial<_s...>::type;
+template <class        ...Ts>	concept serial_q = bond::tag_p<serial_t, Ts...>;
+template <int N, class ...Ts>	concept serial_p = serial_q<Ts...> and (...and (N == Ts::size()));
 
 XTAL_FX0_(to) (template <auto f=_std::identity{}>
 XTAL_DEF_(return,inline,let)

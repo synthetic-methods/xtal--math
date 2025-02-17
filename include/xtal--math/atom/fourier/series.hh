@@ -11,9 +11,9 @@ namespace xtal::atom::math::fourier
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <class   ..._s>	struct   series;
-template <class   ..._s>	using    series_t = typename series<_s...>::type;
-template <class   ...Ts>	concept  series_q = bond::tag_p<series_t, Ts...>;
+template <class   ..._s>	struct  series;
+template <class   ..._s>	using   series_t = typename series<_s...>::type;
+template <class   ...Ts>	concept series_q = bond::tag_p<series_t, Ts...>;
 
 
 XTAL_FX0_(to) (template <auto f=_std::identity{}>

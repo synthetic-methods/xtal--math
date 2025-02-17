@@ -9,8 +9,8 @@
 
 namespace xtal
 {
-template <class U, class V=U> struct   complexion;
-template <class        ...Ts> concept  complexion_q = bond::tag_p<complexion, Ts...>;
+template <class U, class V=U>	struct  complexion;
+template <class        ...Ts>	concept complexion_q = bond::tag_p<complexion, Ts...>;
 
 XTAL_DEF_(return,inline,let)
 objective_f(complexion_q auto &&o)
@@ -256,10 +256,10 @@ noexcept -> int
 ////////////////////////////////////////////////////////////////////////////////
 /**/
 template <int N>
-void echo_rule_()
+void echo_rule_(char const c='-')
 {
 	for (int n = -N; n <= N; ++n) {
-		_std::cout << '-';
+		_std::cout << c;
 	}
 	_std::cout << _std::endl;
 }

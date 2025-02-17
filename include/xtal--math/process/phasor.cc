@@ -38,7 +38,7 @@ TAG_("phasor")
 	using namespace Eigen;
 	
 	using U_stored  = provision::stored<unit_type[0x1000]>;
-	using U_sampled = typename occur::sample_t<>::template attach<>;
+	using U_sampled = typename occur::sampling_t<>::template attach<>;
 
 	using _Op = bond::fit<>;
 	using T_sigma = typename _Op::sigma_type;

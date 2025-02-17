@@ -12,10 +12,10 @@ namespace xtal::process::math::taylor
 /////////////////////////////////////////////////////////////////////////////////
 
 template <int M_ism=1, int M_car=0> requires in_n<M_ism, 1, 2, -1, -2> and in_n<M_car, -0, -1>
-struct   monologarithm;
+struct  monologarithm;
 
 template <auto ...Ms>
-using    monologarithm_t = process::confined_t<monologarithm<Ms...>>;
+using   monologarithm_t = process::confined_t<monologarithm<Ms...>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////

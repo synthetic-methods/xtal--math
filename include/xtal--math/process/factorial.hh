@@ -55,7 +55,7 @@ starting from the kernel `a[M_limit]`. \
 Co/domain scaling can be effected by multiplying `a`/`b`, respectively. \
 
 template <auto ...Ms>
-struct   factorial
+struct  factorial
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -86,7 +86,7 @@ struct   factorial
 	};
 };
 template <auto ...Ms>
-using    factorial_t = process::confined_t<factorial<Ms...>>;
+using   factorial_t = process::confined_t<factorial<Ms...>>;
 
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -25,8 +25,8 @@ Co/domain scaling can be effected by multiplying `a`/`b`, respectively. \
 Not to be confused with the Dijkstra's function `Binomial[n + 1, 2]`. \
 
 
-template <int M_sgn=1, int M_pow=1>	struct   termial;
-template <int M_sgn=1, int M_pow=1>	using    termial_t = process::confined_t<termial<M_sgn, M_pow>>;
+template <int M_sgn=1, int M_pow=1>	struct  termial;
+template <int M_sgn=1, int M_pow=1>	using   termial_t = process::confined_t<termial<M_sgn, M_pow>>;
 template <int M_sgn=1, int M_pow=1>
 XTAL_DEF_(return,inline,let)
 termial_f(auto &&x, auto const &k, auto const &...ks)

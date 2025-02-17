@@ -13,8 +13,8 @@ namespace xtal::process::math
 ///\
 Provides the generic type signature for all `process`es. \
 
-template <auto ...Ms> struct   identity;
-template <auto ...Ms> using    identity_t = process::confined_t<identity<Ms...>>;
+template <auto ...Ms>	struct  identity;
+template <auto ...Ms>	using   identity_t = process::confined_t<identity<Ms...>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////

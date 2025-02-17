@@ -11,8 +11,8 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_exp=1, int M_cut=0> struct   roots;
-template <int M_exp=1, int M_cut=0> using    roots_t = process::confined_t<roots<M_exp>>;
+template <int M_exp=1, int M_cut=0>	struct  roots;
+template <int M_exp=1, int M_cut=0>	using   roots_t = process::confined_t<roots<M_exp>>;
 template <int M_exp=1, int M_cut=0>
 XTAL_DEF_(return,inline,let)
 roots_f(auto &&o)

@@ -25,12 +25,12 @@ The (co)domain is normalized around `+/- 1/2`, with derivative `1` at `0`. \
 	using ArTanh = process::confined_t<dilated<2>, tang<-2>>;\
 
 template <int M_ism=1, int M_car=0, typename ...As> requires in_n<M_ism, 1, 2, -1, -2> and in_n<M_car, -0, -1, -2>
-struct   tang
+struct  tang
 :	process::lift<tang<M_ism, M_car>, bond::compose<As...>>
 {
 };
 template <int M_ism=1, int M_car=0, typename ...As>
-using    tang_t = process::confined_t<tang<M_ism, M_car>, As...>;
+using   tang_t = process::confined_t<tang<M_ism, M_car>, As...>;
 
 template <int M_ism=1, int M_car=0, typename ...As>
 XTAL_DEF_(return,inline,let)

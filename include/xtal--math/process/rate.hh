@@ -49,7 +49,7 @@ struct rate
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int ...Ms>
-using    rate_t = process::confined_t<rate<Ms...>>;
+using   rate_t = process::confined_t<rate<Ms...>>;
 
 template <auto ...Ms>
 XTAL_DEF_(return,inline,let)

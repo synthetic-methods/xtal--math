@@ -12,10 +12,10 @@ namespace xtal::process::math
 /////////////////////////////////////////////////////////////////////////////////
 
 template <int M_side=0>
-struct   either;
+struct  either;
 
 template <int M_side=0>
-using    either_t = process::confined_t<either<M_side>>;
+using   either_t = process::confined_t<either<M_side>>;
 
 template <int M_side=0, auto ...Ns>
 XTAL_DEF_(return,inline,let)
