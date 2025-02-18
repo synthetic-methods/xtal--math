@@ -18,22 +18,27 @@ TAG_("filter")
 	TRY_("instantiation")
 	{
 		using _fit = bond::fit<>;
+		using meta = any<filter<>>;
+
 		using U_alpha = typename _fit::alpha_type;
 		//\
 		using SVF = confined_t<staged<0>, filter<>>;
-		using SVF = prewarped_t<ordinal_constant_t<1>, staged<0>, filter<>>;
+		using SVF = prewarped_t<ordinal_constant_t<1>
+		,	typename meta::balance_type::template attend<>
+		,	staged< 0>
+		,	filter  <>
+		>;
 
-		using meta = any<filter<>>;
 		//\
 		using Z = processor::monomer_t<prewarped<ordinal_constant_t<1>>, SVF>;
 		using Z = processor::monomer_t<SVF>;
 
 		SVF svf{};
 		svf <<= typename occur::sampling_t<>{44100};
-		svf <<= typename meta::   limit_type{0};
-		svf <<= typename meta::   order_type{2};
-		svf <<= typename meta::  select_type{0};
-		svf <<= typename meta::patch_type{0};
+		svf <<= typename  meta::  limit_type{0};
+		svf <<= typename  meta::  order_type{2};
+		svf <<= typename  meta::  patch_type{0};
+		svf <<= typename  meta::balance_type{0};
 	
 		U_alpha constexpr omega = 2*2*3*3*5*5*7;
 		U_alpha constexpr   rho = 1;

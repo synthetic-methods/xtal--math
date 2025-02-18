@@ -56,25 +56,22 @@ struct dot
 		XTAL_DEF_(return,inline,set)
 		method_f(auto &&x)
 		noexcept -> auto
-		requires in_n<complex_field_q<decltype(x)>>
 		{
-			return norm(XTAL_REF_(x));
+			if constexpr (complex_field_q<decltype(x)> and 1 == M_alt) {
+				return norm(XTAL_REF_(x));
+			}
+			else {
+				static_assert(fixed_shaped_q<decltype(x)>);
+				auto const &[x0, x1] = destruct_f(XTAL_REF_(x));
+				return term_f<M_alt>(x0*x0, x1,x1);
+			}
 		}
 		template <auto ...Is>
 		XTAL_DEF_(return,inline,set)
-		method_f(fixed_shaped_q auto &&x)
-		noexcept -> auto
-		requires un_n<complex_field_q<decltype(x)>>
-		{
-			auto const &[x0, x1] = destruct_f(XTAL_REF_(x));
-			return term_f<M_alt>(x0*x0, x1,x1);
-		}
-		template <auto ...Is>
-		XTAL_DEF_(return,inline,set)
-		method_f(fixed_shaped_q auto &&x, fixed_shaped_q auto &&y)
+		method_f(auto &&x, auto &&y)
 		noexcept -> auto
 		{
-			static_assert(same_q<decltype(x), decltype(y)>);
+			static_assert(fixed_shaped_q<decltype(x), decltype(y)>);
 			auto const &[x0, x1] = destruct_f(XTAL_REF_(x));
 			auto const &[y0, y1] = destruct_f(XTAL_REF_(y));
 			return term_f<M_alt>(x0*y0, x1,y1);
