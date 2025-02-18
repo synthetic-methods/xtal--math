@@ -40,6 +40,7 @@ TAG_("roll")
 		,	roll    <>
 		,	staged<-1>
 		,	staged< 0>
+		,	typename _process::balance_type::template attend<>
 		,	filter  <>
 		>;
 		using Z_processor = processor::monomer_t<Z_process
@@ -51,20 +52,19 @@ TAG_("roll")
 		_std::array<U_alpha, 0x100> f_; f_.fill(omega);
 		auto z = Z_processor::bind_f(processor::let_f(f_));
 
-		using rescope_type = typename _process::rescope_type;
+		using restyle_type = typename _process::restyle_type;
 
 		auto z_resize = occur::  resize_t<>(0x020);
 		auto z_cursor = occur::  cursor_t<>(0x020);
 		auto z_sample = occur::sampling_t<>(44100);
 
-		z <<= typename _process::    limit_type{0};
-		z <<= typename _process::    order_type{2};
-		z <<= typename _process::   select_type{0};
-		z <<= typename _process:: patch_type{0};
-		z <<= typename _process::  damping_type{1};
-		z <<= typename _process::  balance_type{0.5};
+		z <<= typename _process::   limit_type{0};
+		z <<= typename _process::   order_type{2};
+		z <<= typename _process::   patch_type{0};
+		z <<= typename _process:: damping_type{1};
+		z <<= typename _process:: balance_type{0.5};
 
-		z <<= rescope_type({0.5, 0.25});
+		z <<= restyle_type({0.5, one - 0.25});
 
 		z <<= z_sample;
 		z <<= z_resize;

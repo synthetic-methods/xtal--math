@@ -18,7 +18,7 @@ TAG_("ring")
 	using U_alpha = typename bond::fit<>::alpha_type;
 	using U_stage = occur::stage_t<>;
 	using U_key   = flow::key_s<>;
-	using U0_cue   = flow::cue_s<>;
+	using U0_cue  = flow::cue_s<>;
 
 	using U_chunk = schedule::chunk_t<provision::spooled<extent_constant_t<0x10>>>;
 
@@ -40,6 +40,7 @@ TAG_("ring")
 		,	ring    <>
 		,	staged<-1>
 		,	staged< 0>
+		,	typename _process::balance_type::template attend<>
 		,	filter  <>
 		>;
 		using Z_processor = processor::monomer_t<Z_process
@@ -55,12 +56,11 @@ TAG_("ring")
 		auto z_cursor = occur::  cursor_t<>(0x020);
 		auto z_sample = occur::sampling_t<>(44100);
 
-		z <<= typename _process::    limit_type{0};
-		z <<= typename _process::    order_type{2};
-		z <<= typename _process::   select_type{0};
-		z <<= typename _process:: patch_type{0};
-		z <<= typename _process::  damping_type{1};
-		z <<= typename _process::  balance_type{1};
+		z <<= typename _process::   limit_type{0};
+		z <<= typename _process::   order_type{2};
+		z <<= typename _process::   patch_type{0};
+		z <<= typename _process:: damping_type{1};
+		z <<= typename _process:: balance_type{1};
 
 		z <<= z_sample;
 		z <<= z_resize;
@@ -107,6 +107,7 @@ TAG_("ring")
 		,	ring    <>
 		,	staged<-1>
 		,	staged< 0>
+		,	typename _process::balance_type::template attend<>
 		,	filter  <>
 		>;
 		using Z_processor = processor::polymer_t<Z_process
@@ -122,12 +123,11 @@ TAG_("ring")
 		auto z_cursor = occur::  cursor_t<>(0x020);
 		auto z_sample = occur::sampling_t<>(44100);
 
-		z <<= typename _process::    limit_type{0};
-		z <<= typename _process::    order_type{2};
-		z <<= typename _process::   select_type{0};
-		z <<= typename _process:: patch_type{0};
-		z <<= typename _process::  damping_type{1};
-		z <<= typename _process::  balance_type{1};
+		z <<= typename _process::   limit_type{0};
+		z <<= typename _process::   order_type{2};
+		z <<= typename _process::   patch_type{0};
+		z <<= typename _process:: damping_type{1};
+		z <<= typename _process:: balance_type{1};
 
 		z <<= z_sample;
 		z <<= z_resize;

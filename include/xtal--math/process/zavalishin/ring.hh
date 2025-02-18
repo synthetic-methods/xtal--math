@@ -11,8 +11,8 @@ namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 ///\
-Manages a ringing filter with stored `damping` and `balance`, \
-where `damping` is dynamically configured by the `influx`ed `stage`. \
+Manages a ringing filter with stored `damping`, \
+which is dynamically configured by the `influx`ed `stage`. \
 
 ///\note\
 Input is restricted to `U_pole` because the filter-state is managed out-of-band. \
@@ -38,15 +38,13 @@ struct ring<A>
 
 	using     metakind = any<ring<A>>;
 	using   state_type = typename metakind::   state_type;
-	using   scope_type = typename metakind::   scope_type;
-	using rescope_type = typename metakind:: rescope_type;
+	using   style_type = typename metakind::   style_type;
+	using restyle_type = typename metakind:: restyle_type;
 	using damping_type = typename metakind:: damping_type;
-	using balance_type = typename metakind:: balance_type;
 
 	using superkind = bond::compose<bond::tag<ring_t>
-//	,	typename rescope_type::template attach<>
+//	,	typename restyle_type::template attach<>
 	,	typename damping_type::template attend<>
-	,	typename balance_type::template attend<>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -56,15 +54,6 @@ struct ring<A>
 
 	public:// CONSTRUCT
 		using S_::S_;
-
-	public:
-	//	TODO: Need parareter mapping/restriction on creation/update...
-
-		XTAL_FX4_(to) (XTAL_DEF_(return,inline,let)
-		damping(auto &&...oo), S_::template head<damping_type>(XTAL_REF_(oo)...))
-
-		XTAL_FX4_(to) (XTAL_DEF_(return,inline,let)
-		balance(auto &&...oo), S_::template head<balance_type>(XTAL_REF_(oo)...))
 
 	public:// FLOW
 
@@ -84,9 +73,9 @@ struct ring<A>
 			signed x = S_::template fuse<N_ion>(XTAL_REF_(o));
 
 			switch (o.head()) {
-			case  0: (void) damping(          (_fit::alpha_0)); break;
-			case  1: (void) damping(root_f< 2>(_fit::haplo_1)); break;
-			case -1: (void) damping(root_f<-2>(_fit::haplo_1)); break;
+			case  0: (void) S_::template head<damping_type>(          (_fit::alpha_0)); break;
+			case  1: (void) S_::template head<damping_type>(root_f< 2>(_fit::haplo_1)); break;
+			case -1: (void) S_::template head<damping_type>(root_f<-2>(_fit::haplo_1)); break;
 			}
 			return x;
 		}
