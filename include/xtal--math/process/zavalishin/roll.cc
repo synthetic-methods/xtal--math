@@ -52,11 +52,11 @@ TAG_("roll")
 		_std::array<U_alpha, 0x100> f_; f_.fill(omega);
 		auto z = Z_processor::bind_f(processor::let_f(f_));
 
-		using restyle_type = typename _process::restyle_type;
+		using recurve_type = typename _process::recurve_type;
 
-		auto z_resize = occur::  resize_t<>(0x020);
-		auto z_cursor = occur::  cursor_t<>(0x020);
-		auto z_sample = occur::sampling_t<>(44100);
+		auto z_resize = occur::resize_t<>(0x020);
+		auto z_cursor = occur::cursor_t<>(0x020);
+		auto z_sample = occur::resample_f(44100);
 
 		z <<= typename _process::   limit_type{0};
 		z <<= typename _process::   order_type{2};
@@ -64,7 +64,7 @@ TAG_("roll")
 		z <<= typename _process:: damping_type{1};
 		z <<= typename _process:: balance_type{0.5};
 
-		z <<= restyle_type({0.5, one - 0.25});
+		z <<= recurve_type({+0.25, one - 0.25});
 
 		z <<= z_sample;
 		z <<= z_resize;

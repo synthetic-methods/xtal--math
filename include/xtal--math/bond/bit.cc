@@ -142,16 +142,16 @@ TAG_("bit_floor_f")
 		TRUE_(bit_floor_f(8.0) == bit_floor_f(8));
 		TRUE_(bit_floor_f(9.0) == bit_floor_f(9));
 
-	//	TRUE_(bit_floor_f(0.0*T_fit::diplo_1*T_fit::dnsilon_1) == bit_ceiling_f(0));
-		TRUE_(bit_floor_f(1.0*T_fit::diplo_1*T_fit::dnsilon_1) == bit_ceiling_f(1));
-		TRUE_(bit_floor_f(2.0*T_fit::diplo_1*T_fit::dnsilon_1) == bit_ceiling_f(2));
-		TRUE_(bit_floor_f(3.0*T_fit::diplo_1*T_fit::dnsilon_1) == bit_ceiling_f(3));
-		TRUE_(bit_floor_f(4.0*T_fit::diplo_1*T_fit::dnsilon_1) == bit_ceiling_f(4));
-		TRUE_(bit_floor_f(5.0*T_fit::diplo_1*T_fit::dnsilon_1) == bit_ceiling_f(5));
-		TRUE_(bit_floor_f(6.0*T_fit::diplo_1*T_fit::dnsilon_1) == bit_ceiling_f(6));
-		TRUE_(bit_floor_f(7.0*T_fit::diplo_1*T_fit::dnsilon_1) == bit_ceiling_f(7));
-		TRUE_(bit_floor_f(8.0*T_fit::diplo_1*T_fit::dnsilon_1) == bit_ceiling_f(8));
-		TRUE_(bit_floor_f(9.0*T_fit::diplo_1*T_fit::dnsilon_1) == bit_ceiling_f(9));
+	//	TRUE_(bit_floor_f(0.0*T_fit::diplo_1*T_fit::dnsilon_f(1)) == bit_ceiling_f(0));
+		TRUE_(bit_floor_f(1.0*T_fit::diplo_1*T_fit::dnsilon_f(1)) == bit_ceiling_f(1));
+		TRUE_(bit_floor_f(2.0*T_fit::diplo_1*T_fit::dnsilon_f(1)) == bit_ceiling_f(2));
+		TRUE_(bit_floor_f(3.0*T_fit::diplo_1*T_fit::dnsilon_f(1)) == bit_ceiling_f(3));
+		TRUE_(bit_floor_f(4.0*T_fit::diplo_1*T_fit::dnsilon_f(1)) == bit_ceiling_f(4));
+		TRUE_(bit_floor_f(5.0*T_fit::diplo_1*T_fit::dnsilon_f(1)) == bit_ceiling_f(5));
+		TRUE_(bit_floor_f(6.0*T_fit::diplo_1*T_fit::dnsilon_f(1)) == bit_ceiling_f(6));
+		TRUE_(bit_floor_f(7.0*T_fit::diplo_1*T_fit::dnsilon_f(1)) == bit_ceiling_f(7));
+		TRUE_(bit_floor_f(8.0*T_fit::diplo_1*T_fit::dnsilon_f(1)) == bit_ceiling_f(8));
+		TRUE_(bit_floor_f(9.0*T_fit::diplo_1*T_fit::dnsilon_f(1)) == bit_ceiling_f(9));
 
 	//	TRUE_(bit_ceiling_f(0) == _std::bit_width(0U - 1));
 		TRUE_(bit_ceiling_f(1) == _std::bit_width(1U - 1));

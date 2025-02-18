@@ -213,7 +213,7 @@ bit_ceiling_f(real_variable_q auto &&x)
 noexcept -> int
 {
 	using X_fit = bond::fit<decltype(x)>;
-	return bit_floor_f<N_zero>(X_fit::diplo_1*X_fit::dnsilon_1*XTAL_REF_(x));
+	return bit_floor_f<N_zero>(X_fit::diplo_1*X_fit::dnsilon_f(1)*XTAL_REF_(x));
 }
 template <int N_zero=+1>
 XTAL_DEF_(return,inline,let)

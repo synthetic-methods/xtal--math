@@ -16,7 +16,8 @@ XTAL_DEF_(return,inline,let)
 term_f(W &&w, X &&x, Xs &&...xs)
 noexcept -> auto
 {
-	if constexpr (0 == sizeof...(Xs)) {
+	XTAL_IF0
+	XTAL_0IF (none_q<Xs...>) {
 		XTAL_IF0
 		XTAL_0IF (M_pow == 0) {
 			return XTAL_REF_(w);
@@ -28,7 +29,7 @@ noexcept -> auto
 			return term_f<M_alt>(XTAL_REF_(w), x, x);
 		}
 	}
-	else {
+	XTAL_0IF (some_q<Xs...>) {
 		using Y = absolve_u<Xs...>;// NOTE: Constants interpreted as scalar quantities...
 		XTAL_IF0
 		XTAL_0IF (constant_q<W, X> or integral_variable_q<W, X> and real_variable_q<Y>) {
