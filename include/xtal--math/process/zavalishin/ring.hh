@@ -38,12 +38,9 @@ struct ring<A>
 
 	using     metakind = any<ring<A>>;
 	using   state_type = typename metakind::   state_type;
-	using   style_type = typename metakind::   style_type;
-	using restyle_type = typename metakind:: restyle_type;
 	using damping_type = typename metakind:: damping_type;
 
 	using superkind = bond::compose<bond::tag<ring_t>
-//	,	typename restyle_type::template attach<>
 	,	typename damping_type::template attend<>
 	>;
 	template <class S>

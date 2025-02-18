@@ -24,11 +24,11 @@ noexcept -> decltype(auto)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename ...As> requires (1 <= sizeof...(As))
+template <typename ...As> requires some_q<As...>
 struct wrap<As...>
 :	process::lift<wrap<>, bond::compose<As...>>
 {};
-template <typename ...As> requires (0 == sizeof...(As))
+template <typename ...As> requires none_q<As...>
 struct wrap<As...>
 {
 	template <class S>

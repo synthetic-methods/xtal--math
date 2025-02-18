@@ -33,14 +33,14 @@ TAG_("cut")
 		TRUE_(cut_f<+half>(0.25) == 0.5);
 		TRUE_(cut_f<-half>(0.75) == 0.5);
 
-		TRUE_(cut_f<[] XTAL_1FN_(value) (_fit::upsilon_1*_fit::haplo_1)>(0.5) > 0.5);
-		TRUE_(cut_f<[] XTAL_1FN_(value) (_fit::dnsilon_1*_fit::haplo_1)>(0.5) < 0.5);
+		TRUE_(cut_f<[] XTAL_1FN_(value) (_fit::upsilon_f(1)*_fit::haplo_1)>(0.5) > 0.5);
+		TRUE_(cut_f<[] XTAL_1FN_(value) (_fit::dnsilon_f(1)*_fit::haplo_1)>(0.5) < 0.5);
 
 		TRUE_(cut_f<[] XTAL_1FN_(value) (-_fit::maxilon_f(0))>(inf) < inf);
 		TRUE_(cut_f<[] XTAL_1FN_(value) (+_fit::minilon_f(0))>(0.0) > 0.0);
 
-		TRUE_(cut_f<[] XTAL_1FN_(value) (_fit::dnsilon_1*_fit::maxilon_f(0))>(inf) < inf);
-		TRUE_(cut_f<[] XTAL_1FN_(value) (_fit::upsilon_1*_fit::minilon_f(0))>(0.0) > 0.0);
+		TRUE_(cut_f<[] XTAL_1FN_(value) (_fit::dnsilon_f(1)*_fit::maxilon_f(0))>(inf) < inf);
+		TRUE_(cut_f<[] XTAL_1FN_(value) (_fit::upsilon_f(1)*_fit::minilon_f(0))>(0.0) > 0.0);
 
 	};
 	TRY_("in-place evaluation via parameterization")
@@ -99,21 +99,21 @@ TAG_("cut")
 		T_alpha o;
 
 	//	Inside:
-		o = +0.75; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::upsilon_1*_fit::haplo_1)>::edit_f(o) ==  0); TRUE_(o == +0.75);
-		o = -0.75; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::upsilon_1*_fit::haplo_1)>::edit_f(o) ==  0); TRUE_(o == -0.75);
-		o = +0.25; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::dnsilon_1*_fit::haplo_1)>::edit_f(o) ==  0); TRUE_(o == +0.25);
-		o = -0.25; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::dnsilon_1*_fit::haplo_1)>::edit_f(o) ==  0); TRUE_(o == -0.25);
+		o = +0.75; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::upsilon_f(1)*_fit::haplo_1)>::edit_f(o) ==  0); TRUE_(o == +0.75);
+		o = -0.75; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::upsilon_f(1)*_fit::haplo_1)>::edit_f(o) ==  0); TRUE_(o == -0.75);
+		o = +0.25; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::dnsilon_f(1)*_fit::haplo_1)>::edit_f(o) ==  0); TRUE_(o == +0.25);
+		o = -0.25; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::dnsilon_f(1)*_fit::haplo_1)>::edit_f(o) ==  0); TRUE_(o == -0.25);
 
 	//	Outside:
-		o = +0.50; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::upsilon_1*_fit::haplo_1)>::edit_f(o) == +1); TRUE_(o  > +0.50);
-		o = -0.50; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::upsilon_1*_fit::haplo_1)>::edit_f(o) == -1); TRUE_(o <  -0.50);
-		o = +0.50; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::dnsilon_1*_fit::haplo_1)>::edit_f(o) == +1); TRUE_(o <  +0.50);
-		o = -0.50; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::dnsilon_1*_fit::haplo_1)>::edit_f(o) == -1); TRUE_(o  > -0.50);
+		o = +0.50; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::upsilon_f(1)*_fit::haplo_1)>::edit_f(o) == +1); TRUE_(o  > +0.50);
+		o = -0.50; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::upsilon_f(1)*_fit::haplo_1)>::edit_f(o) == -1); TRUE_(o <  -0.50);
+		o = +0.50; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::dnsilon_f(1)*_fit::haplo_1)>::edit_f(o) == +1); TRUE_(o <  +0.50);
+		o = -0.50; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::dnsilon_f(1)*_fit::haplo_1)>::edit_f(o) == -1); TRUE_(o  > -0.50);
 
-		o = +inf; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::dnsilon_1*_fit::maxilon_f(0))>::edit_f(o) == +1); TRUE_(o <  +inf);
-		o = -inf; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::dnsilon_1*_fit::maxilon_f(0))>::edit_f(o) == -1); TRUE_(o  > -inf);
-		o = +0.0; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::upsilon_1*_fit::minilon_f(0))>::edit_f(o) == +1); TRUE_(o  > +0.0);
-		o = -0.0; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::upsilon_1*_fit::minilon_f(0))>::edit_f(o) == -1); TRUE_(o <  -0.0);
+		o = +inf; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::dnsilon_f(1)*_fit::maxilon_f(0))>::edit_f(o) == +1); TRUE_(o <  +inf);
+		o = -inf; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::dnsilon_f(1)*_fit::maxilon_f(0))>::edit_f(o) == -1); TRUE_(o  > -inf);
+		o = +0.0; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::upsilon_f(1)*_fit::minilon_f(0))>::edit_f(o) == +1); TRUE_(o  > +0.0);
+		o = -0.0; TRUE_(cut_t<[] XTAL_1FN_(value) (_fit::upsilon_f(1)*_fit::minilon_f(0))>::edit_f(o) == -1); TRUE_(o <  -0.0);
 
 	};
 }

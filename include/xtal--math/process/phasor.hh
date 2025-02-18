@@ -80,7 +80,7 @@ struct phasor<A, As...>
 
 	public:// OPERATE
 		///\todo\
-		Use `occur::sampling` to manage downsampling \
+		Use `occur::resample` to manage downsampling \
 		e.g. by integer multiplication followed by normalization. \
 
 		///\
@@ -104,11 +104,14 @@ struct phasor<A, As...>
 		method()
 		noexcept -> decltype(auto)
 		{
+			using SR = occur::resample_t<>;
 			///\todo\
 			Override constructors to apply fractional `bias`. \
 			
-			if constexpr (requires {S_::sampling().rate();}) {
-				auto const rate = S_::sampling().rate();
+			//\
+			if constexpr (requires {S_::template head<SR>();}) {
+			if constexpr (same_q<typename S_::template head_t<SR>, SR>) {
+				auto const rate = S_::template head<SR>().sample().rate();
 				auto &phi = ingress();
 				XTAL_IF0
 				XTAL_0IF (N == 1) {

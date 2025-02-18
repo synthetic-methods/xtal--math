@@ -18,8 +18,9 @@ Prepends an input signal to `method`'s arguments: \
 ///\note\
 Advances the current stage to `1` once the first sample has been processed. \
 
-template <typename ...As>	struct  trigger;
-template <typename ...As>	using   trigger_t = process::confined_t<trigger<As...>>;
+template <class ..._s>	struct  trigger;
+template <class ..._s>	using   trigger_t =  confined_t<trigger<_s...>>;
+template <class ..._s>	concept trigger_q = bond::tag_p<trigger, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -27,11 +28,13 @@ template <typename ...As>	using   trigger_t = process::confined_t<trigger<As...>
 template <vector_q A>
 struct trigger<A>
 {
+	using superkind = bond::tag<trigger>;
+
 	template <class S>
-	class subtype : public bond::compose_s<S>
+	class subtype : public bond::compose_s<S, superkind>
 	{
 		static_assert(filter_q<S>);
-		using S_ = bond::compose_s<S>;
+		using S_ = bond::compose_s<S, superkind>;
 
 	public:// CONSTRUCT
 		using S_::S_;

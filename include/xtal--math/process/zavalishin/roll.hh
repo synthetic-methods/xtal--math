@@ -2,8 +2,8 @@
 #include "./any.hh"
 
 #include "./filter.hh"
-
-
+#include "./trigger.hh"
+#include "../taylor/logarithm.hh"
 
 
 XTAL_ENV_(push)
@@ -36,13 +36,14 @@ struct roll<A>
 	using _fit = bond::fit<A>;
 
 	using     metakind = any<roll<A>>;
+	using   order_type = typename metakind::   order_type;
 	using   state_type = typename metakind::   state_type;
-	using   style_type = typename metakind::   style_type;
-	using restyle_type = typename metakind:: restyle_type;
+	using   curve_type = typename metakind::   curve_type;
+	using recurve_type = typename metakind:: recurve_type;
 	using damping_type = typename metakind:: damping_type;
 	
 	using superkind = bond::compose<bond::tag<roll_t>
-	,	typename restyle_type::template attach<>
+	,	typename recurve_type::template attach<>
 	,	typename damping_type::template attach<>
 	>;
 	template <class S>
@@ -50,6 +51,7 @@ struct roll<A>
 	{
 		static_assert(filter_q<S>);
 		using S_ = bond::compose_s<S, superkind>;
+		using T_ = typename S_::self_type;
 
 	public:// CONSTRUCT
 		using S_::S_;
@@ -62,19 +64,16 @@ struct roll<A>
 		method(auto x_input, auto s_scale, auto &&...oo)
 		noexcept -> decltype(auto)
 		{
-		//	NOTE: Assumes `s_scale` is prewarped...
-		//	s_scale *= S_::sampling().period();
-			x_input *= root_f<-1>(s_scale);// Assuming `prewarped`...
+			auto constexpr warp_f = [] XTAL_1FN_(function) (taylor::logarithm_t<-1>::template method_f<0>);
 
-		//	TODO: Abstract `warp_f` as `shaper_f`...
-			auto constexpr warp_f = [] (auto &&x) XTAL_0FN_(to) (root_f<2>(term_f<1, 2>(one, x)) + x);
+			auto const [s_]       = S_::template memory<  state_type>();
+			auto const &s_recurve = S_::template   head<recurve_type>().head();
+			auto const  s_damping = S_::template   head<damping_type>()*warp_f(dot_f(s_, s_recurve));
 
-			auto const & f_      = S_::template   head<restyle_type>();
-			auto const & t_      = f_ .template   head<  style_type>();
-			auto const  [s_]     = S_::template memory<  state_type>();
-			auto const y_damping = S_::template   head<damping_type>()*warp_f(dot_f(s_, t_));
-
-			return S_::template method<Ns...>(x_input, s_scale, y_damping, XTAL_REF_(oo)...);
+			if constexpr (prewarped_q<T_> and trigger_q<T_>) {
+				x_input *= root_f<-1>(s_scale);
+			}
+			return S_::template method<Ns...>(x_input, s_scale, s_damping, XTAL_REF_(oo)...);
 		}
 
 	};

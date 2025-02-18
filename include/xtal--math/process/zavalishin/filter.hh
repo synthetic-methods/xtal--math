@@ -41,19 +41,20 @@ template <class ..._s>	concept filter_q = bond::tag_p<filter, _s...>;
 template <class U_pole, auto N_pole>
 struct any<filter<U_pole[N_pole]>>
 {
+	using         pole_type =          U_pole ;
+	using  coefficient_type = valued_u<U_pole>;
 //	USED
-	using        style_type =  atom::couple_t<typename bond::fit<U_pole>::alpha_type[N_pole]>;
-	using        state_type =  atom::couple_t<U_pole[N_pole]>;
+	using        state_type =  atom::couple_t<          U_pole[N_pole]>;
+	using        curve_type =  atom::couple_t<coefficient_type[N_pole]>;
 	using        stage_type = occur::stage_t<>;
 
 //	ATTACHED
-	using        input_type = occur::inferred_t<struct   INPUT, valued_u<state_type>>;
-	using        scale_type = occur::inferred_t<struct   SCALE, valued_u<style_type>>;
-	using      damping_type = occur::inferred_t<struct DAMPING, valued_u<style_type>>;
-	using      balance_type = occur::inferred_t<struct BALANCE, valued_u<style_type>>;
-	using      restyle_type = occur::inferred_t<struct RESCOPE,          style_type >;
-	using         zoom_type = occur::inferred_t<struct    ZOOM, valued_u<style_type>>;
-	using     sampling_type = occur::sampling_t<>;
+	using        input_type = occur::inferred_t<struct   INPUT, coefficient_type>;
+	using        scale_type = occur::inferred_t<struct   SCALE, coefficient_type>;
+	using      damping_type = occur::inferred_t<struct DAMPING, coefficient_type>;
+	using      balance_type = occur::inferred_t<struct BALANCE, coefficient_type>;
+	using      recurve_type = occur::inferred_t<struct RECURVE,       curve_type>;
+	using         zoom_type = occur::inferred_t<struct    ZOOM, coefficient_type>;
 
 //	DISPATCHED
 	//\
@@ -76,7 +77,7 @@ struct any<filter<U_pole[N_pole]>>
 		using S_::S_;
 
 	//	USED
-		using        style_type = any::       style_type;
+		using        curve_type = any::       curve_type;
 		using        state_type = any::       state_type;
 		using        stage_type = any::       stage_type;
 
@@ -86,7 +87,6 @@ struct any<filter<U_pole[N_pole]>>
 		using      damping_type = any::     damping_type;
 		using      balance_type = any::     balance_type;
 		using         zoom_type = any::        zoom_type;
-		using     sampling_type = any::    sampling_type;
 
 	//	DISPATCHED
 		using        order_type = any::       order_type;
@@ -113,18 +113,18 @@ struct any<filter<>>
 template <vector_q A>
 struct filter<A>
 {
-	using            metakind = any<filter<A>>;
-	using          state_type = typename metakind::    state_type;
-	using          stage_type = typename metakind::    stage_type;
-	using       sampling_type = typename metakind:: sampling_type;
-	using           zoom_type = typename metakind::     zoom_type;
+	using      metakind = any<filter<A>>;
+	using    state_type = typename metakind::state_type;
+	using    stage_type = typename metakind::stage_type;
+	using     zoom_type = typename metakind:: zoom_type;
+	using resample_type = occur::resample_t<>;
 
 	using superkind = bond::compose<bond::tag<filter>
 	,	provision::memorized<state_type, state_type>
 	,	metakind
-	,	typename    stage_type:: template expect<>
-	,	typename sampling_type:: template attach<>
-	,	typename     zoom_type:: template attach<>
+	,	typename    stage_type::template expect<>
+	,	typename     zoom_type::template attach<>
+	,	typename resample_type::template attach<>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -195,15 +195,15 @@ struct filter<A>
 			using X = XTAL_ALL_(x); using X2 = atom::couple_t<X[2]>;
 			using W = absolve_u<X>; using W2 = atom::couple_t<W[2]>;
 
-			using U_states_ = atom::couple_t<X[N_ord]>;
-			using U_slopes_ = atom::couple_t<X[N_ord]>;
+			using U_state_ = atom::couple_t<X[N_ord]>;
+			using U_slope_ = atom::couple_t<X[N_ord]>;
 
 			atom::couple_t<X[N_ord + 1]> outputs{};
 
 			auto outputs_ = outputs.self(cardinal_constant_t<N_ord>{});
 			auto scalars_ = scalars.self(cardinal_constant_t<N_ord>{});
 
-			auto     mem  = S_::template memory<U_states_, U_slopes_>();
+			auto     mem  = S_::template memory<U_state_, U_slope_>();
 		//	(void) cut_t<[] XTAL_1FN_(value) (-bond::fit<X>::diplo_f(7))>::edit_f(mem);
 			auto &states_ = get<0>(mem);
 			auto &slopes_ = get<1>(mem);
