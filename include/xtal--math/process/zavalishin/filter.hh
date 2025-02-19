@@ -172,7 +172,7 @@ struct filter<A>
 			XTAL_0IF (0 == N_pat) {
 				return method<N_ord, N_pat, Ns...>(XTAL_REF_(x), s_scale
 				,	[=] () XTAL_0FN -> atom::couple_t<W[N_ord + 1]> {
-						auto const  &u = cut_f<[] XTAL_1FN_(value) (bond::fit<X>::minilon_f(0))>(s_damping);
+						auto const  &u = cut_f<[] XTAL_1FN_(to) (bond::fit<X>::minilon_f(0))>(s_damping);
 						auto const u02 =             two*u , u04 = u02*two;
 						auto const u12 = term_f(one, two,u), w24 = u02*u12;
 						XTAL_IF0
@@ -207,7 +207,7 @@ struct filter<A>
 			auto scalars_ = scalars.self(cardinal_constant_t<N_ord>{});
 
 			auto     mem  = S_::template memory<U_state_, U_slope_>();
-		//	(void) cut_t<[] XTAL_1FN_(value) (-bond::fit<X>::diplo_f(7))>::edit_f(mem);
+		//	(void) cut_t<[] XTAL_1FN_(to) (-bond::fit<X>::diplo_f(7))>::edit_f(mem);
 			auto &states_ = get<0>(mem);
 			auto &slopes_ = get<1>(mem);
 
@@ -217,7 +217,7 @@ struct filter<A>
 
 		//	Initialize `outputs*`:
 			get<0 >(outputs) = get<0>(slopes_);
-			bond::seek_forward_f<N_ord - 1>([&] (auto I) XTAL_0FN {
+			bond::seek_out_f<N_ord - 1>([&] (auto I) XTAL_0FN {
 				get<I + 1>(outputs_) = term_f(get<I + 1>(slopes_), get<I>(outputs_), s_scale);
 			});
 			get<N_ord>(outputs) = root_f<-1, (1)>(term_f(one, get<N_ord - 1>(outputs_), s_scale));
@@ -225,12 +225,12 @@ struct filter<A>
 			auto constexpr K_lim = provision::saturated_q<S_> and (0 < N_lim);
 
 		//	Integrate `states*` with `scalars*` and `outputs*`:
-			bond::seek_forward_f<1 + 1*K_lim>([&] (auto K) XTAL_0FN {
+			bond::seek_out_f<1 + 1*K_lim>([&] (auto K) XTAL_0FN {
 				XTAL_IF0
 				XTAL_0IF (0 == K) {get<N_ord>(outputs) *= x - outputs_.product(states_);}
 				XTAL_0IF (1 <= K) {get<N_ord>(outputs)  = x - outputs_.product(slopes_);}
 
-				bond::seek_backward_f<N_ord>([&] (auto I) XTAL_0FN {
+				bond::seek_out_f<-N_ord>([&] (auto I) XTAL_0FN {
 					XTAL_IF0
 					XTAL_0IF (0 == K_lim) {
 						get<I>(outputs_) = term_f(get<I>(states_), get<I + 1>(outputs), s_scale);
@@ -245,7 +245,7 @@ struct filter<A>
 			});
 
 		//	Finalize states and `outputs*`/`scalars*`:
-			bond::seek_forward_f<N_ord>([&] (auto I) XTAL_0FN {
+			bond::seek_out_f<N_ord>([&] (auto I) XTAL_0FN {
 				get<I>(states_) = term_f(-get<I>(states_), two, get<I>(outputs_));
 			});
 			slopes_ /= scalars_;

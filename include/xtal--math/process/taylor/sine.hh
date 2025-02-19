@@ -16,7 +16,7 @@ template <int M_ism=1, int N_car=0>	using   sine_t = process::confined_t<sine<M_
 
 template <int M_ism>
 struct sine<M_ism, +1>
-:	bond::compose<dilated<bond::operate{[] XTAL_1FN_(value) (-bond::fit<>::patio_2)}>, sine<M_ism, -0>>
+:	bond::compose<dilated<bond::operate{[] XTAL_1FN_(to) (-bond::fit<>::patio_2)}>, sine<M_ism, -0>>
 {
 };
 template <int M_ism>
@@ -118,16 +118,16 @@ struct sine<M_ism, -2>
 		approximate(auto &&w)
 		noexcept -> auto
 		{
-			auto constexpr N = 1 + 2*below_v<0x10, (unsigned) N_lim>;
+			int constexpr N = 1 + 2*below_v<0x10, (unsigned) N_lim>;
 
 			using W = XTAL_ALL_(w); using _fit = bond::fit<W>;
 			XTAL_IF0
 			XTAL_0IF (0 < M_ism) {
 				W x{one};
 
-				bond::seek_backward_f<N>([&] (auto i) XTAL_0FN_(to) (
+				bond::seek_out_f<-N>([&] (auto I) XTAL_0FN_(to) (
 					x = term_f(one
-					,	+_fit::ratio_f(1, (2 + 2*i)*(3 + 2*i))
+					,	+_fit::ratio_f(1, (2 + 2*I)*(3 + 2*I))
 					,	w
 					,	x
 					)
@@ -137,9 +137,9 @@ struct sine<M_ism, -2>
 			XTAL_0IF (M_ism < 0) {
 				W x = _fit::ratio_f(1, 1 + 2*N);
 
-				bond::seek_backward_f<N>([&] (auto i) XTAL_0FN_(to) (
-					x = term_f(_fit::ratio_f(1, 1 + 2*i)
-					,	-_fit::ratio_f(1 + 2*i, 2 + 2*i)
+				bond::seek_out_f<-N>([&] (auto I) XTAL_0FN_(to) (
+					x = term_f(_fit::ratio_f(1, 1 + 2*I)
+					,	-_fit::ratio_f(1 + 2*I, 2 + 2*I)
 					,	w
 					,	x
 					)

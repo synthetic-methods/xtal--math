@@ -125,7 +125,7 @@ struct  power<M_exp, Ms...>
 			using U = XTAL_ALL_(o);
 			XTAL_IF0
 			XTAL_0IF (atom::couple_q<U>) {
-				return U::template zip_from<[] XTAL_1FN_(function) (method_f<Ns...>)>(o);
+				return U::template zip_from<[] XTAL_1FN_(call) (method_f<Ns...>)>(o);
 			}
 			XTAL_0IF (M_exp   == 0) {return                             U{1};}
 			XTAL_0IF (M_exp   == 1) {return                             o   ;}

@@ -235,7 +235,7 @@ TAG_("phasor")
 		auto z_phi = Z_phi::bind_f();
 		static_assert(same_q<X_phi, decltype(z_phi.store().front())>);
 
-		auto constexpr z_fit = _xtd::ranges::views::transform([] XTAL_1FN_(function) (W_phi));
+		auto constexpr z_fit = _xtd::ranges::views::transform([] XTAL_1FN_(call) (W_phi));
 
 		occur::resize_t<> z_req(8);
 		occur::cursor_t<> z_ren(8);

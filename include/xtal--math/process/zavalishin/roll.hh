@@ -62,9 +62,9 @@ struct roll<A>
 		{
 			auto const [s_]       = S_::template memory<  state_type>();
 			auto const &s_recurve = S_::template   head<recurve_type>();
+			auto const  s_product = dot_f(s_, s_recurve.head());
 			
-			auto constexpr warp_f = [] XTAL_1FN_(function) (taylor::logarithm_t<-1>::template method_f<0>);
-			s_damping *= warp_f(dot_f(s_, s_recurve.head()));
+			s_damping *= taylor::logarithm_t<-1>::template method_f<0>(s_product);
 
 			if constexpr (prewarped_q<T_> and trigger_q<T_>) {
 				x_input *= root_f<-1>(s_scale);

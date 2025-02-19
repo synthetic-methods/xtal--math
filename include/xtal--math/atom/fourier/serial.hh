@@ -80,8 +80,9 @@ struct serial<A>
 				for (auto j =      i; j-- ;) {element(i) += t.element(j)*element(i - j);}}
 			}
 			else {
-				bond::seek_backward_f<size(), 0>([&, this] (auto I) XTAL_0FN {get<I>(s) *= get<0>(t);
-				bond::seek_backward_f<     I, 1>([&, this] (auto J) XTAL_0FN {get<I>(s) += get<J>(t)*get<I - J>(s);});});
+				int constexpr N{size};
+				bond::seek_out_f<-N, 0>([&, this] (auto I) XTAL_0FN {get<I>(s) *= get<0>(t);
+				bond::seek_out_f<-I, 1>([&, this] (auto J) XTAL_0FN {get<I>(s) += get<J>(t)*get<I - J>(s);});});
 			}
 			return s;
 		}

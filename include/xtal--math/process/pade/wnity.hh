@@ -64,7 +64,7 @@ struct wnity<1> : wnity<>
 			static_assert(real_variable_q<decltype(t_re)>);
 			static_assert(real_variable_q<decltype(t_im)>);
 
-			auto constexpr exp = [] XTAL_1FN_(function) (taylor::logarithm_t<-1, 1>::template method_f<2>);
+			auto constexpr exp = [] XTAL_1FN_(call) (taylor::logarithm_t<-1, 1>::template method_f<2>);
 			using _fit = bond::fit<decltype(t_re), decltype(t_im)>;
 
 			return method_f<N_lim>(XTAL_REF_(t_re))*

@@ -34,7 +34,7 @@ TAG_("filter")
 		using Z = processor::monomer_t<SVF>;
 
 		SVF svf{};
-		svf <<= typename occur::resample_t<>{44100};
+		svf <<= occur::resample_f(44100);
 		svf <<= typename  meta::  limit_type{0};
 		svf <<= typename  meta::  order_type{2};
 		svf <<= typename  meta::  patch_type{0};

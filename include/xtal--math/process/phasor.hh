@@ -104,14 +104,12 @@ struct phasor<A, As...>
 		method()
 		noexcept -> decltype(auto)
 		{
-			using SR = occur::resample_t<>;
+			using resample_type = occur::resample_t<>;
 			///\todo\
 			Override constructors to apply fractional `bias`. \
 			
-			//\
-			if constexpr (requires {S_::template head<SR>();}) {
-			if constexpr (same_q<typename S_::template head_t<SR>, SR>) {
-				auto const rate = S_::template head<SR>().sample().rate();
+			if constexpr (S_::template head_q<resample_type>) {
+				auto const rate = S_::template head<resample_type>().rate();
 				auto &phi = ingress();
 				XTAL_IF0
 				XTAL_0IF (N == 1) {
@@ -123,7 +121,7 @@ struct phasor<A, As...>
 					return egress(bond::pack_f(phi(0), phi(1)*(rate)));
 				}
 				XTAL_0IF_(else) {
-					return egress(phi.template apply<[] XTAL_1FN_(function) (bond::pack_f)>()*U_lepton(rate));
+					return egress(phi.template apply<[] XTAL_1FN_(call) (bond::pack_f)>()*U_lepton(rate));
 				}
 			}
 			else {
