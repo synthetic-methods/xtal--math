@@ -34,13 +34,12 @@ TAG_("ring")
 		using U_event = flow::cue_s<U_value>;
 
 		using  _process = any<filter<>>;
-		using Z_process = confined_t<void
-		,	prewarped<ordinal_constant_t<0>>
-		,	gate    <>
+		using Z_process = prewarped_t<ordinal_constant_t<0>, gate<>
+		,	typename _process::damping_type::template attend<>
+		,	typename _process::balance_type::template attend<>
 		,	ring    <>
 		,	staged<-1>
 		,	staged< 0>
-		,	typename _process::balance_type::template attend<>
 		,	filter  <>
 		>;
 		using Z_processor = processor::monomer_t<Z_process
@@ -99,15 +98,12 @@ TAG_("ring")
 		using U1_cue  = flow::cue_s<flow::cue_s<>>;
 
 		using  _process = any<filter<>>;
-		//\
-		using Z_process = prewarped_t<ordinal_constant_t<0>, ring<>>;
-		using Z_process = confined_t<void
-		,	prewarped<ordinal_constant_t<0>>
-		,	gate    <>
+		using Z_process = prewarped_t<ordinal_constant_t<0>, gate<>
+		,	typename _process::damping_type::template attend<>
+		,	typename _process::balance_type::template attend<>
 		,	ring    <>
 		,	staged<-1>
 		,	staged< 0>
-		,	typename _process::balance_type::template attend<>
 		,	filter  <>
 		>;
 		using Z_processor = processor::polymer_t<Z_process

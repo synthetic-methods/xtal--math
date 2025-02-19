@@ -11,8 +11,8 @@ namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 ///\
-Manages a ringing filter with stored `damping`, \
-which is dynamically configured by the `influx`ed `stage`. \
+Manages a ringing filter, \
+scaling `damping` according to the stored `stage`. \
 
 ///\note\
 Input is restricted to `U_pole` because the filter-state is managed out-of-band. \
@@ -34,15 +34,8 @@ struct any<ring<As...>> : any<filter<As...>>
 template <vector_q A>
 struct ring<A>
 {
-	using _fit = bond::fit<A>;
+	using superkind = bond::tag<ring_t>;
 
-	using     metakind = any<ring<A>>;
-	using   state_type = typename metakind::   state_type;
-	using damping_type = typename metakind:: damping_type;
-
-	using superkind = bond::compose<bond::tag<ring_t>
-	,	typename damping_type::template attend<>
-	>;
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
 	{
@@ -52,29 +45,25 @@ struct ring<A>
 	public:// CONSTRUCT
 		using S_::S_;
 
-	public:// FLOW
+	public:// OPERATE
 
-		template <signed N_ion>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,let)
-		fuse(auto &&o)
-		noexcept -> signed
+		method(auto &&x_input, auto s_scale, auto s_damping, auto &&...oo)
+		noexcept -> decltype(auto)
 		{
-			return S_::template fuse<N_ion>(XTAL_REF_(o));
-		}
-		template <signed N_ion> requires in_n<N_ion,  1>
-		XTAL_DEF_(return,inline,let)
-		fuse(occur::stage_q auto &&o)
-		noexcept -> signed
-		{
-			auto const [states_] = S_::template memory<state_type>();
-			signed x = S_::template fuse<N_ion>(XTAL_REF_(o));
+			using S_stage = typename S_::stage_type;
+			using U = XTAL_ALL_(s_damping);
+			U constexpr N0{0};
+			U constexpr N1{1};
+			U constexpr N2{2};
+			U constexpr N2_up = root_f< 2>(N2);
+			U constexpr N2_dn = root_f<-2>(N2);
 
-			switch (o.head()) {
-			case  0: (void) S_::template head<damping_type>(          (_fit::alpha_0)); break;
-			case  1: (void) S_::template head<damping_type>(root_f< 2>(_fit::haplo_1)); break;
-			case -1: (void) S_::template head<damping_type>(root_f<-2>(_fit::haplo_1)); break;
-			}
-			return x;
+			_std::array<U, 4> constexpr stage_damping{N0, N2_dn, N1, N2_up};
+			s_damping *= stage_damping[0b11&S_::template head<S_stage>()];
+
+			return S_::template method<Ns...>(XTAL_REF_(x_input), s_scale, s_damping, XTAL_REF_(oo)...);
 		}
 
 	};

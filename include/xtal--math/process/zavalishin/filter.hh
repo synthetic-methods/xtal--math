@@ -41,10 +41,11 @@ template <class ..._s>	concept filter_q = bond::tag_p<filter, _s...>;
 template <class U_pole, auto N_pole>
 struct any<filter<U_pole[N_pole]>>
 {
+//	USED
 	using         pole_type =          U_pole ;
 	using  coefficient_type = valued_u<U_pole>;
-//	USED
 	using        state_type =  atom::couple_t<          U_pole[N_pole]>;
+	using        slope_type =  atom::couple_t<          U_pole[N_pole]>;
 	using        curve_type =  atom::couple_t<coefficient_type[N_pole]>;
 	using        stage_type = occur::stage_t<>;
 
@@ -58,8 +59,8 @@ struct any<filter<U_pole[N_pole]>>
 
 //	DISPATCHED
 	//\
-	using        order_type = occur::inferred_t<struct   ORDER, unsigned int, bond::seek_s<1 + state_type::size()>>;
-	using        order_type = occur::inferred_t<struct   ORDER, unsigned int, bond::word  <1 + state_type::size()>>;
+	using        order_type = occur::inferred_t<struct   ORDER, unsigned int, bond::seek_s<1 + N_pole>>;
+	using        order_type = occur::inferred_t<struct   ORDER, unsigned int, bond::word  <1 + N_pole>>;
 	using        patch_type = occur::inferred_t<struct   PATCH, unsigned int, bond::word  <2>>;
 	using        limit_type = occur::inferred_t<struct   LIMIT, unsigned int, bond::word  <2>>;
 
@@ -77,8 +78,11 @@ struct any<filter<U_pole[N_pole]>>
 		using S_::S_;
 
 	//	USED
-		using        curve_type = any::       curve_type;
+		using  coefficient_type = any:: coefficient_type;
+		using         pole_type = any::        pole_type;
 		using        state_type = any::       state_type;
+		using        slope_type = any::       slope_type;
+		using        curve_type = any::       curve_type;
 		using        stage_type = any::       stage_type;
 
 	//	ATTACHED
@@ -92,7 +96,6 @@ struct any<filter<U_pole[N_pole]>>
 		using        order_type = any::       order_type;
 		using        patch_type = any::       patch_type;
 		using        limit_type = any::       limit_type;
-
 
 	};
 };
