@@ -100,7 +100,7 @@ struct series<A>
 			
 			reinterpret_cast<W1_ &>(self()).template generate<size, 0, 2, 0>(u1);
 			reinterpret_cast<U2_ &>(self()).template generate<size, 0, 2, 1>({u2, one/u2});
-			bond::seek_forward_f<size>([&, this] (auto I) XTAL_0FN {
+			bond::seek_out_f<+size>([&, this] (auto I) XTAL_0FN {
 				auto &[o, e] = get<I>(s);
 				auto &[f, g] = destruct_f(e);
 				get<I>(s) = {o*f, _std::conj(o)*g};
@@ -133,7 +133,7 @@ struct series<A>
 			get<I0 + _1>(s) = o*u;
 
 		//	Populate the remaining powers by squaring/multiplication:
-			bond::seek_forward_f<(N_count >> 1U)>([&] (auto M)
+			bond::seek_out_f<(N_count >> 1U)>([&] (auto M)
 				XTAL_0FN {
 					auto constexpr UM = I0 + _1*M;
 					auto constexpr WM = J0 + _2*M;
@@ -212,7 +212,7 @@ struct series<A>
 		
 		//	Conjugate the input if computing the inverse transform of the codomain:
 			if constexpr (N_direction == -1) {
-				_detail::apply_to<[] XTAL_1FN_(function) (_std::conj)>(that);
+				_detail::apply_to<[] XTAL_1FN_(call) (_std::conj)>(that);
 			}
 		//	Compute the transform of `that` using the precomputed half-period sinusoid in `this`:
 			for (I n{}; n < n_depth; ++n) {
@@ -231,7 +231,7 @@ struct series<A>
 			}
 		//	Conjugate and scale the output if computing the inverse transform of the codomain:
 			if constexpr (N_direction == -1) {
-				_detail::apply_to<[] XTAL_1FN_(function) (_std::conj)>(that);
+				_detail::apply_to<[] XTAL_1FN_(call) (_std::conj)>(that);
 				that /= n_width;
 			}
 
@@ -300,7 +300,7 @@ s
 				Y s_(s);
 				Y t_(t);
 				Y(constant_t<-1>{}).convolve(s_, t_);
-				_detail::move_to<[] XTAL_1FN_(function) (_std::real)>(s.begin(), s_);
+				_detail::move_to<[] XTAL_1FN_(call) (_std::real)>(s.begin(), s_);
 			}
 			return s;
 		}

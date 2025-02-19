@@ -84,7 +84,7 @@ struct symbol<A>
 			element(0) = {};
 
 			if constexpr (integral_variable_q<value_type>) {
-				bond::seek_forward_f<K>([&, this] (auto i) XTAL_0FN {
+				bond::seek_out_f<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
 					element(    o) =  i;
 					element(N - o) =  i - K;
@@ -98,7 +98,7 @@ struct symbol<A>
 				if constexpr (complex_field_q<value_type>) {
 					u = pade::unity_t<1>::template method_f<6>(_fit::ratio_f(1, 2*K));
 				}
-				bond::seek_forward_f<K>([&, this] (auto i) XTAL_0FN {
+				bond::seek_out_f<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
 					element(    o) =  w;
 					element(N - o) = -w;
@@ -120,7 +120,7 @@ struct symbol<A>
 			extent_type           k = size;
 
 			if constexpr (integral_variable_q<value_type>) {
-				bond::seek_forward_f<K>([&, this] (auto i) XTAL_0FN {
+				bond::seek_out_f<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
 					if (K < o) {
 						element(M - o) = (1 + i) - K;
@@ -141,7 +141,7 @@ struct symbol<A>
 					u = 1;
 				}
 				w = u;
-				bond::seek_forward_f<K>([&, this] (auto i) XTAL_0FN {
+				bond::seek_out_f<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
 					if (K < o) {
 						element(M - o) = -w;

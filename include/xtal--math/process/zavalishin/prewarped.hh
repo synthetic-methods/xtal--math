@@ -36,9 +36,9 @@ struct prewarped<I, As...>
 		method(auto ...oo)
 		noexcept -> decltype(auto)
 		{
-			using SR = occur::resample_t<>;
+			using resample_type = occur::resample_t<>;
 			auto &o = get<I{}>(_std::tie(oo...));
-			o *= S_::template head<SR>().sample().period();
+			o *= S_::template head<resample_type>().period();
 			o *= pade::tangy_t<1,-1>::template method_f<6>(o);
 			return S_::template method<Ns...>(XTAL_MOV_(oo)...);
 		};

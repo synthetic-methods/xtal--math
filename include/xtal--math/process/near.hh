@@ -34,7 +34,7 @@ struct near
 			using U_fit = bond::fit<U>;
 
 			--n;
-			bond::seek_forward_f<bond::math::bit_ceiling_f(U_fit::full.depth)>([&]<constant_q I> (I) XTAL_0FN {n |= n >> (1 << I{});});
+			bond::seek_out_f<bond::math::bit_ceiling_f(U_fit::full.depth)>([&]<constant_q I> (I) XTAL_0FN {n |= n >> (1 << I{});});
 			++n;
 			return n;
 		}

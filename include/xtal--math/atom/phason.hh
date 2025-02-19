@@ -63,12 +63,11 @@ struct phason<A>
 	using coordinate_type = array_valued_u<A>;
 	static_assert(continuous_field_q<coordinate_type>);
 
-	using U_    = bond::mint<coordinate_type>;
-	using U_fit = bond:: fit<coordinate_type>;
+	using U_fit = bond::fit<coordinate_type>;
 	using T_fit = typename U_fit::template widen<-1>;
 	
-	using   ordinate_type = bond::compose_s<typename T_fit::sigma_type, U_>;
-	using inordinate_type = bond::compose_s<typename T_fit::delta_type, U_>;
+	using   ordinate_type = bond::compose_s<typename T_fit::sigma_type, U_fit>;
+	using inordinate_type = bond::compose_s<typename T_fit::delta_type, U_fit>;
 
 	static_assert(_std::numeric_limits<absolve_u<ordinate_type>>::is_modulo);// D'oh!
 
@@ -88,8 +87,8 @@ struct phason<A>
 		using S_::self;
 		using S_::twin;
 
-		static auto constexpr   ordinate = [] XTAL_1FN_(function) (bond::math::bit_fraction_f<  ordinate_type>);
-		static auto constexpr coordinate = [] XTAL_1FN_(function) (bond::math::bit_fraction_f<coordinate_type>);
+		static auto constexpr   ordinate = [] XTAL_1FN_(call) (bond::math::bit_fraction_f<  ordinate_type>);
+		static auto constexpr coordinate = [] XTAL_1FN_(call) (bond::math::bit_fraction_f<coordinate_type>);
 
 	public:// CONSTRUCT
 	//	using S_::S_;

@@ -74,7 +74,7 @@ struct unity<M_ism> : unity<>
 		method_f(auto &&t_re, simplex_field_q auto &&t_im)
 		noexcept -> decltype(auto)
 		{
-			auto constexpr exp = [] XTAL_1FN_(function) (taylor::logarithm_t<-1, 1>::template method_f<2>);
+			auto constexpr exp = [] XTAL_1FN_(call) (taylor::logarithm_t<-1, 1>::template method_f<2>);
 			using U_fit = bond::fit<decltype(t_re), decltype(t_im)>;
 			return method_f<N_lim>(XTAL_REF_(t_re))*exp(XTAL_REF_(t_im)*U_fit::patio_f(-2));
 		}
@@ -126,7 +126,7 @@ struct unity<M_ism> : unity<>
 				vn <<= U_fit::full.depth - T_fit::full.depth;
 				vn  |= U_fit::unit.mask;
 				return superprocess::template method_f<N_lim>(t_(0))*
-					operative_f<[] XTAL_1FN_(function) (_xtd::bit_cast<U_alpha>)>(vn);
+					operative_f<[] XTAL_1FN_(call) (_xtd::bit_cast<U_alpha>)>(vn);
 			}
 		}
 
