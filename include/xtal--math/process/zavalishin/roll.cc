@@ -22,7 +22,7 @@ TAG_("roll")
 
 	using U_chunk = schedule::chunk_t<provision::spooled<extent_constant_t<0x10>>>;
 
-	U_alpha constexpr omega = 2*3*5*5*7;
+	U_alpha constexpr omega = 2*2*3*3*5*5;
 	U_alpha constexpr   rho = 1;
 	U_alpha constexpr    up = 1;
 	U_alpha constexpr    dn = 0;
@@ -35,12 +35,12 @@ TAG_("roll")
 
 		using  _process = any<filter<>>;
 		using Z_process = confined_t<void
-		,	prewarped<ordinal_constant_t<0>>
-		,	trigger <>
+		,	prewarped<ordinal_constant_t<0>>, trigger<>
+		,	typename _process::damping_type::template attend<>
+		,	typename _process::balance_type::template attend<>
 		,	roll    <>
 		,	staged<-1>
 		,	staged< 0>
-		,	typename _process::balance_type::template attend<>
 		,	filter  <>
 		>;
 		using Z_processor = processor::monomer_t<Z_process
@@ -64,14 +64,14 @@ TAG_("roll")
 		z <<= typename _process:: damping_type{1};
 		z <<= typename _process:: balance_type{0.5};
 
-		z <<= recurve_type({+0.25, one - 0.25});
+		z <<= recurve_type({0.25, one - 0.25});
 
 		z <<= z_sample;
 		z <<= z_resize;
 		z <<= U_stage(     -1);
 
 		z <<= U_event(0x08,  0);
-		z <<= U_event(0x10,  0);
+		z <<= U_event(0x18,  0);
 		z <<= U_event(0x28, -1);
 	//	z <<= U_event(0x38,  0);
 
