@@ -20,7 +20,7 @@ TAG_("ring")
 	using U_key   = flow::key_s<>;
 	using U0_cue  = flow::cue_s<>;
 
-	using U_chunk = schedule::chunk_t<provision::spooled<extent_constant_t<0x10>>>;
+	using U_slicer = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
 
 	U_alpha constexpr omega = 2*2*2*3*5*5*7;
 	U_alpha constexpr   rho = 1;
@@ -43,7 +43,7 @@ TAG_("ring")
 		,	filter  <>
 		>;
 		using Z_processor = processor::monomer_t<Z_process
-		,	U_chunk::template inqueue<U_value>
+		,	U_slicer::template inqueue<U_value>
 		,	provision::stored <null_type[0x100]>
 		,	provision::spooled<null_type[0x100]>
 		>;
@@ -70,18 +70,16 @@ TAG_("ring")
 		z <<= U_event(0x28, -1);
 	//	z <<= U_event(0x38,  0);
 
-		echo_rule_<25>('=');
-
 		TRUE_(0 == z.efflux(z_cursor++));
 		TRUE_(0 == z.efflux(occur::stage_f(-1)));
 
-		echo_rule_<25>();
+		echo_rule_<25>('=');
 		echo_plot_<25>(z.store());
 
 		TRUE_(0 == z.efflux(z_cursor++));
 		TRUE_(1 == z.efflux(occur::stage_f(-1)));
 
-		echo_rule_<25>();
+		echo_rule_<25>('-');
 		echo_plot_<25>(z.store());
 
 	}
@@ -107,7 +105,7 @@ TAG_("ring")
 		,	filter  <>
 		>;
 		using Z_processor = processor::polymer_t<Z_process
-		,	U_chunk::template inqueue<U_payload>
+		,	U_slicer::template inqueue<U_payload>
 		,	provision::stored <null_type[0x100]>
 		,	provision::spooled<null_type[0x100]>
 		>;
@@ -142,11 +140,10 @@ TAG_("ring")
 		z <<= U0_cue(0x40).then(U_payload{1,  0});
 		z <<= U0_cue(0x48).then(U_payload{1, -1});
 
-		echo_rule_<25>('=');
 
 		TRUE_(0 == z.efflux(z_cursor++));
 		{
-			echo_rule_<25>();
+			echo_rule_<25>('=');
 			echo_plot_<25>(z.store());
 
 		//	TRUE_(2 >= z.ensemble().size());// Still decaying...
@@ -154,7 +151,7 @@ TAG_("ring")
 		z <<= U0_cue(0x08).then(U_payload{1, -1});
 		TRUE_(0 == z.efflux(z_cursor++));
 		{
-			echo_rule_<25>();
+			echo_rule_<25>('-');
 			echo_plot_<25>(z.store());
 
 		//	TRUE_(2 >= z.ensemble().size());// Still decaying...
@@ -163,14 +160,14 @@ TAG_("ring")
 	//	z <<= U0_cue(0x08).then(U_payload{1, -1});
 		TRUE_(0 == z.efflux(z_cursor++));
 		{
-			echo_rule_<25>();
+			echo_rule_<25>('-');
 			echo_plot_<25>(z.store());
 
 		//	TRUE_(1 >= z.ensemble().size());// Still decaying...
 		}
 		TRUE_(0 == z.efflux(z_cursor++));
 		{
-		//	echo_rule_<25>();
+		//	echo_rule_<25>('-');
 		//	echo_plot_<25>(z.store());
 
 		//	TRUE_(0 == z.ensemble().size());

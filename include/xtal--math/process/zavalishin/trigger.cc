@@ -21,7 +21,7 @@ TAG_("trigger")
 	using U_key   = flow::key_s<>;
 	using U0_cue   = flow::cue_s<>;
 
-	using U_chunk = schedule::chunk_t<provision::spooled<extent_constant_t<0x10>>>;
+	using U_slicer = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
 
 	U_alpha constexpr omega = 2*2*2*3*5*5*7;
 	U_alpha constexpr   rho = 1;
