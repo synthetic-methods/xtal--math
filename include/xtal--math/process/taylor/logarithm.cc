@@ -49,6 +49,15 @@ TAG_("logarithm")
 		TRUE_(check_f<-43>(logarithm_t<-1   >::template method_f< 1>(egg), exp(egg)));
 	//	UNTRUE_(check_f(logarithm_t<-1>::template method_f< 0>(egg), exp(egg)));
 
+	//	_std::array<T_alpha, 0x20> food{};
+	//	for (int i{}; i < food.size(); ++i) {
+	//		auto x = _fit::ratio_f(i - 0x10, 0x10);
+	//		x  = taylor::logarithm_t<-1>::template method_f<0>(x);
+	//		x -= one;
+	//		x *= _fit::ratio_f(1, 3);
+	//		food[i] = x;
+	//	}
+	//	echo_plot_<49>(food);
 	}
 	/**/
 	EST_("complex std::log")
