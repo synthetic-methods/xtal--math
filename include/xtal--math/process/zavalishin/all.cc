@@ -1,7 +1,7 @@
 #include "./any.cc"
 #include "./differ.cc"
 #include "./filter.cc"
-#include "./gate.cc"
+#include "./iota.cc"
 #include "./prewarped.cc"
 #include "./ring.cc"
 #include "./staged.cc"

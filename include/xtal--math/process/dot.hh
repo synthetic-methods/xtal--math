@@ -2,7 +2,7 @@
 #include "./any.hh"
 
 #include "./term.hh"
-
+#include "./square.hh"
 
 
 
@@ -56,42 +56,73 @@ struct dot
 		XTAL_DEF_(return,inline,set)
 		method_f(auto &&x)
 		noexcept -> auto
+		requires un_n<fixed_shaped_q<decltype(x)>>
 		{
-			if constexpr (complex_field_q<decltype(x)> and 1 == M_alt) {
+		//	static_assert(M_alt == 1);
+			XTAL_IF1_(to) (norm(XTAL_REF_(x)))
+			XTAL_0IF_(to) (square_f(abs(x)))
+		}
+		template <auto ...Is>
+		XTAL_DEF_(return,inline,set)
+		method_f(auto &&x)
+		noexcept -> auto
+		requires in_n<fixed_shaped_q<decltype(x)>>
+		{
+			using X = XTAL_ALL_(x);
+			auto constexpr N = fixed_shaped<X>::extent();
+
+			XTAL_IF0
+			XTAL_0IF (complex_field_q<decltype(x)> and 1 == M_alt) {
 				return norm(XTAL_REF_(x));
 			}
-			else {
-			//	static_assert(fixed_shaped_q<decltype(x)>);
-			//	auto const &[x0, x1] = destruct_f(XTAL_REF_(x));
-			//	return term_f<M_alt>(x0*x0, x1,x1);
-				return method_f(x, x);
+			XTAL_0IF (1 == N) {
+				auto const &[x0] = destruct_f(XTAL_REF_(x));
+				return x0;
+			}
+			XTAL_0IF (2 == N) {
+				auto const &[x0, x1] = destruct_f(XTAL_REF_(x));
+				return term_f<M_alt, 2>(square_f(x0), x1);
+			}
+			XTAL_0IF (3 <= N) {
+				fixed_valued_u<X> w{0};
+				bond::seek_out_f<N>([&]<constant_q I> (I) XTAL_0FN {
+					XTAL_IF0
+					XTAL_0IF (0 < M_alt) {w = term_f<                    2>(XTAL_MOV_(w), get<I{}>(x));}
+					XTAL_0IF (M_alt < 0) {w = term_f<-sign_v<I{}&1, -1>, 2>(XTAL_MOV_(w), get<I{}>(x));}
+				});
+				return w;
 			}
 		}
 		template <auto ...Is>
 		XTAL_DEF_(return,inline,set)
 		method_f(auto &&x, auto &&y)
 		noexcept -> auto
+		requires in_n<fixed_shaped_q<decltype(x), decltype(y)>>
 		{
 			using X = XTAL_ALL_(x);
 			using Y = XTAL_ALL_(y);
-			static_assert(fixed_shaped_q<X, Y>);
 			auto constexpr N = fixed_shaped<X>::extent();
-			if constexpr (N == 2) {
+
+			XTAL_IF0
+			XTAL_0IF (1 == N) {
+				auto const &[x0] = destruct_f(XTAL_REF_(x));
+				auto const &[y0] = destruct_f(XTAL_REF_(y));
+				return x0*y0;
+			}
+			XTAL_0IF (2 == N) {
 				auto const &[x0, x1] = destruct_f(XTAL_REF_(x));
 				auto const &[y0, y1] = destruct_f(XTAL_REF_(y));
 				return term_f<M_alt>(x0*y0, x1,y1);
 			}
-			using value_type = fixed_valued_u<X, Y>;
-			using scale_type = absolve_u<value_type>;
-			value_type u{0};
-			
-			bond::seek_out_f<N>([&]<constant_q I> (I) XTAL_0FN {
-				XTAL_IF0
-				XTAL_0IF (0 < M_alt) {u = term_f(                    XTAL_MOV_(u), get<I{}>(x), get<I{}>(y));}
-				XTAL_0IF (M_alt < 0) {u = term_f<-sign_v<I{}&1, -1>>(XTAL_MOV_(u), get<I{}>(x), get<I{}>(y));}
-			});
-			
-			return u;
+			XTAL_0IF (3 <= N) {
+				fixed_valued_u<X, Y> w{0};
+				bond::seek_out_f<N>([&]<constant_q I> (I) XTAL_0FN {
+					XTAL_IF0
+					XTAL_0IF (0 < M_alt) {w = term_f<                    1>(XTAL_MOV_(w), get<I{}>(x), get<I{}>(y));}
+					XTAL_0IF (M_alt < 0) {w = term_f<-sign_v<I{}&1, -1>, 1>(XTAL_MOV_(w), get<I{}>(x), get<I{}>(y));}
+				});
+				return w;
+			}
 		}
 
 	};

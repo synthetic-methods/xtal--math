@@ -3,7 +3,7 @@
 
 #include "./prewarped.hh"
 #include "./staged.hh"
-#include "./gate.hh"
+#include "./iota.hh"
 
 #include "./ring.hh"// testing...
 XTAL_ENV_(push)
@@ -33,24 +33,24 @@ TAG_("ring")
 		using Z_filter = filter<>;
 		using Z = any<Z_filter>;
 
-		using balance_type = typename Z::balance_type;
-		using damping_type = typename Z::damping_type;
-		using recurve_type = typename Z::recurve_type;
-		using   curve_type = typename Z::  curve_type;
+		using refade_type = typename Z::refade_type;
+		using redamp_type = typename Z::redamp_type;
+		using reshape_type = typename Z::reshape_type;
+		using   shape_type = typename Z::  shape_type;
 		using   stage_type = typename Z::  stage_type;
 
 		//\
 		using Z_packet = stage_type;
-		using Z_packet = flow::packet_t<stage_type, damping_type>;
+		using Z_packet = flow::packet_t<stage_type, redamp_type>;
 		using Z_event  = flow::cue_s<Z_packet>;
 		using Z_cue    = flow::cue_s<>;
 
 		using A_filter = filter<>;
 
 		using A = any<A_filter>;
-		using Z_process = prewarped_t<ordinal_constant_t<0>, gate<-1>
-		,	typename A::damping_type::template attend<>
-		,	typename A::balance_type::template attend<>
+		using Z_process = prewarped_t<ordinal_constant_t<0>, iota<-1>
+		,	typename A::redamp_type::template attend<>
+		,	typename A::refade_type::template attend<>
 		,	ring    <>
 		,	staged<-1>
 		,	staged< 0>
@@ -72,19 +72,16 @@ TAG_("ring")
 		z <<= typename A::   limit_type{0};
 		z <<= typename A::   order_type{2};
 		z <<= typename A::   patch_type{0};
-		z <<= typename A:: damping_type{1};
-		z <<= typename A:: balance_type{1};
+		z <<= typename A:: redamp_type{1};
+		z <<= typename A:: refade_type{1};
 
 		z <<= z_sample;
 		z <<= z_resize;
 		z <<= U_stage(-1);
 
 		z <<= Z_cue(0x08).then(Z_packet{ 0, 0});
-		//\
-		z <<= Z_cue(0x10).then(Z_packet{ 0, 1});
 		z <<= Z_cue(0x10).then(Z_packet{ 0, 0});
 		z <<= Z_cue(0x27).then(Z_packet{-1, root_f<-2>(2.F)});
-	//	z <<= Z_event(0x38,  0);
 
 		TRUE_(0 == z.efflux(z_cursor++));
 		TRUE_(0 == z.efflux(occur::stage_f(-1)));
@@ -114,9 +111,9 @@ TAG_("ring")
 		using A_filter = filter<>;
 
 		using A = any<A_filter>;
-		using Z_process = prewarped_t<ordinal_constant_t<0>, gate<-1>
-		,	typename A::damping_type::template attend<>
-		,	typename A::balance_type::template attend<>
+		using Z_process = prewarped_t<ordinal_constant_t<0>, iota<-1>
+		,	typename A::redamp_type::template attend<>
+		,	typename A::refade_type::template attend<>
 		,	ring    <>
 		,	staged<-1>
 		,	staged< 0>
@@ -138,8 +135,8 @@ TAG_("ring")
 		z <<= typename A::   limit_type{0};
 		z <<= typename A::   order_type{2};
 		z <<= typename A::   patch_type{0};
-		z <<= typename A:: damping_type{1};
-		z <<= typename A:: balance_type{1};
+		z <<= typename A:: redamp_type{1};
+		z <<= typename A:: refade_type{1};
 
 		z <<= z_sample;
 		z <<= z_resize;

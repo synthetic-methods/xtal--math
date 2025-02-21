@@ -80,8 +80,9 @@ struct staged<-1>
 
 	public:// CONSTRUCT
 		using S_::S_;
-		using typename S_::state_type;
 		using typename S_::order_type;
+		using typename S_::state_type;
+		using typename S_::input_type;
 
 	public:// ACCESS
 		using S_::self;
@@ -102,18 +103,17 @@ struct staged<-1>
 		{
 			auto const [states_] = S_::template memory<state_type>();
 			signed x = S_::template fuse<N_ion>(XTAL_REF_(o));
-			using  Y = valued_u<state_type>;
 
 			if (o.head() == -1) {
-			//	TODO: Accommodate frequency scaling when calculating the product?
+			//	TODO: Accommodate gain when calculating the product?
 			//	TODO: Address clumsy dynamic-sized dot-product?
 
 				auto const order = order_type{self()};
-				Y y{};
+				input_type y{};
 				for (unsigned int i{}; i < order; ++i) {
 					y = term_f<1, 2>(y, states_[i]);
 				}
-				x &= y < bond::fit<Y>::haplo_f(7 + 1);//NOTE: Threshold is squared.
+				x &= dot_f(y) < bond::fit<input_type>::haplo_f(7 + 1);//NOTE: Squared...
 			}
 			return x;
 		}

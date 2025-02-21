@@ -3,7 +3,7 @@
 
 #include "./prewarped.hh"
 #include "./staged.hh"
-#include "./gate.hh"
+#include "./iota.hh"
 
 #include "./vactrol.hh"// testing...
 XTAL_ENV_(push)
@@ -33,20 +33,20 @@ TAG_("vactrol")
 		using Z_filter = filter<>;
 		using Z = any<Z_filter>;
 
-		using balance_type = typename Z::balance_type;
-		using damping_type = typename Z::damping_type;
-		using recurve_type = typename Z::recurve_type;
-		using   curve_type = typename Z::  curve_type;
+		using refade_type = typename Z::refade_type;
+		using redamp_type = typename Z::redamp_type;
+		using reshape_type = typename Z::reshape_type;
+		using   shape_type = typename Z::  shape_type;
 		using   stage_type = typename Z::  stage_type;
 
-		using Z_packet = flow::packet_t<stage_type, recurve_type>;
+		using Z_packet = flow::packet_t<stage_type, reshape_type>;
 		using Z_event  = flow::cue_s<Z_packet>;
 		using Z_cue    = flow::cue_s<>;
 
 		using Z_process = confined_t<void
-		,	prewarped<ordinal_constant_t<0>>, gate<1>
-		,	typename damping_type::template attend<>
-		,	typename balance_type::template attend<>
+		,	prewarped<ordinal_constant_t<0>>, iota<1>
+		,	typename redamp_type::template attend<>
+		,	typename refade_type::template attend<>
 		,	vactrol <>
 		,	staged<-1>
 		,	staged< 0>
@@ -54,7 +54,7 @@ TAG_("vactrol")
 		>;
 		using Z_processor = processor::monomer_t<Z_process
 		//\
-		,	U_slicer::template inqueue<stage_type, recurve_type>
+		,	U_slicer::template inqueue<stage_type, reshape_type>
 		,	U_slicer::template inqueue<Z_packet>
 		,	provision::stored <null_type[0x100]>
 		,	provision::spooled<null_type[0x100]>
@@ -70,17 +70,17 @@ TAG_("vactrol")
 		z <<= typename Z::   limit_type{0};
 		z <<= typename Z::   order_type{2};
 		z <<= typename Z::   patch_type{0};
-		z <<= typename Z:: damping_type{root_f<2>(2.F)};
-		z <<= typename Z:: balance_type{0};
+		z <<= typename Z:: redamp_type{root_f<2>(2.F)};
+		z <<= typename Z:: refade_type{0};
 
-	//	z <<= recurve_type({0.25, one - 0.25});
+	//	z <<= reshape_type({0.25, one - 0.25});
 
 		z <<= z_sample;
 		z <<= z_resize;
 		z <<= U_stage{-1};
 
-		z <<= U0_cue{0x08}.then(Z_packet{ 0, curve_type{0.125, 0.25}});
-		z <<= U0_cue{0x18}.then(Z_packet{-1, curve_type{0.500, 0.25}});
+		z <<= U0_cue{0x08}.then(Z_packet{ 0, shape_type{0.125, 0.25}});
+		z <<= U0_cue{0x18}.then(Z_packet{-1, shape_type{0.500, 0.25}});
 
 		echo_rule_<25>('=');
 		TRUE_(0 == z.efflux(z_cursor++));

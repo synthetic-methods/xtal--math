@@ -1,7 +1,7 @@
 #include "./any.hh"
 #include "./differ.hh"
 #include "./filter.hh"
-#include "./gate.hh"
+#include "./iota.hh"
 #include "./prewarped.hh"
 #include "./ring.hh"
 #include "./staged.hh"

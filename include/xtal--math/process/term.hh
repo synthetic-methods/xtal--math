@@ -31,7 +31,7 @@ noexcept -> auto
 	}
 	XTAL_0IF (some_q<Xs...>) {
 		auto constexpr _f = [] XTAL_1FN_(call) (term_f<M_alt, M_pow>);
-		using Y = absolve_u<Xs...>;// NOTE: Constants interpreted as scalar quantities...
+		using Y = unstruct_u<Xs...>;// NOTE: Constants interpreted as scalar quantities...
 		XTAL_IF0
 		XTAL_0IF (atom::point_q<W>) {
 			return based_t<W>::template zip_from<_f>(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);

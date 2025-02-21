@@ -5,7 +5,7 @@
 
 
 
-#include "./gate.hh"// testing...
+#include "./iota.hh"// testing...
 XTAL_ENV_(push)
 namespace xtal::process::math::zavalishin::_test
 {/////////////////////////////////////////////////////////////////////////////////
@@ -13,7 +13,7 @@ namespace xtal::process::math::zavalishin::_test
 
 ////////////////////////////////////////////////////////////////////////////////
 /*/
-TAG_("gate")
+TAG_("iota")
 {
 	using U_alpha = typename bond::fit<>::alpha_type;
 	using U_stage = occur::stage_t<>;
@@ -27,7 +27,7 @@ TAG_("gate")
 	U_alpha constexpr    up = 1;
 	U_alpha constexpr    dn = 0;
 
-	TRY_("gate: generation")
+	TRY_("iota: generation")
 	{
 		TRUE_(true);
 

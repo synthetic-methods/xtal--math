@@ -3,7 +3,7 @@
 
 #include "./prewarped.hh"
 #include "./staged.hh"
-#include "./gate.hh"
+#include "./iota.hh"
 
 #include "./vectrol.hh"// testing...
 XTAL_ENV_(push)
@@ -37,9 +37,9 @@ TAG_("vectrol")
 
 		using A = any<A_filter>;
 		using Z_process = confined_t<void
-		,	prewarped<ordinal_constant_t<0>>, gate<0>
-		,	typename A::damping_type::template attend<>
-		,	typename A::balance_type::template attend<>
+		,	prewarped<ordinal_constant_t<0>>, iota<0>
+		,	typename A::redamp_type::template attend<>
+		,	typename A::refade_type::template attend<>
 		,	vectrol    <>
 		,	staged<-1>
 		,	staged< 0>
@@ -54,7 +54,8 @@ TAG_("vectrol")
 		_std::array<U_alpha, 0x100> f_; f_.fill(omega);
 		auto z = Z_processor::bind_f(processor::let_f(f_));
 
-		using recurve_type = typename A::recurve_type;
+		using   shape_type = typename A::  shape_type;
+		using reshape_type = typename A::reshape_type;
 
 		auto z_resize = occur::resize_t<>(0x020);
 		auto z_cursor = occur::cursor_t<>(0x020);
@@ -63,10 +64,10 @@ TAG_("vectrol")
 		z <<= typename A::   limit_type{0};
 		z <<= typename A::   order_type{2};
 		z <<= typename A::   patch_type{0};
-		z <<= typename A:: damping_type{1};
-		z <<= typename A:: balance_type{0.5};
+		z <<= typename A:: redamp_type{1};
+		z <<= typename A:: refade_type{0.5};
 
-		z <<= recurve_type({0.25, one - 0.25});
+		z <<= reshape_type{shape_type{0.25, one - 0.25}};
 
 		z <<= z_sample;
 		z <<= z_resize;
