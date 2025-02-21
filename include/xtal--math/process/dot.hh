@@ -61,9 +61,10 @@ struct dot
 				return norm(XTAL_REF_(x));
 			}
 			else {
-				static_assert(fixed_shaped_q<decltype(x)>);
-				auto const &[x0, x1] = destruct_f(XTAL_REF_(x));
-				return term_f<M_alt>(x0*x0, x1,x1);
+			//	static_assert(fixed_shaped_q<decltype(x)>);
+			//	auto const &[x0, x1] = destruct_f(XTAL_REF_(x));
+			//	return term_f<M_alt>(x0*x0, x1,x1);
+				return method_f(x, x);
 			}
 		}
 		template <auto ...Is>
@@ -71,10 +72,26 @@ struct dot
 		method_f(auto &&x, auto &&y)
 		noexcept -> auto
 		{
-			static_assert(fixed_shaped_q<decltype(x), decltype(y)>);
-			auto const &[x0, x1] = destruct_f(XTAL_REF_(x));
-			auto const &[y0, y1] = destruct_f(XTAL_REF_(y));
-			return term_f<M_alt>(x0*y0, x1,y1);
+			using X = XTAL_ALL_(x);
+			using Y = XTAL_ALL_(y);
+			static_assert(fixed_shaped_q<X, Y>);
+			auto constexpr N = fixed_shaped<X>::extent();
+			if constexpr (N == 2) {
+				auto const &[x0, x1] = destruct_f(XTAL_REF_(x));
+				auto const &[y0, y1] = destruct_f(XTAL_REF_(y));
+				return term_f<M_alt>(x0*y0, x1,y1);
+			}
+			using value_type = fixed_valued_u<X, Y>;
+			using scale_type = absolve_u<value_type>;
+			value_type u{0};
+			
+			bond::seek_out_f<N>([&]<constant_q I> (I) XTAL_0FN {
+				XTAL_IF0
+				XTAL_0IF (0 < M_alt) {u = term_f(                    XTAL_MOV_(u), get<I{}>(x), get<I{}>(y));}
+				XTAL_0IF (M_alt < 0) {u = term_f<-sign_v<I{}&1, -1>>(XTAL_MOV_(u), get<I{}>(x), get<I{}>(y));}
+			});
+			
+			return u;
 		}
 
 	};

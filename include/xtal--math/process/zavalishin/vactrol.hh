@@ -2,17 +2,16 @@
 #include "./any.hh"
 
 #include "./filter.hh"
-#include "./trigger.hh"
 #include "../pade/tangy.hh"
 #include "../taylor/logarithm.hh"
+
 
 XTAL_ENV_(push)
 namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 ///\
-Manages a negative-ramping filter, \
-scaling `damping` by the product of `recurve` and the internal state.
+Scales the frequency using the input/state difference and the supplied `recurve`. \
 
 ///\note\
 Input is restricted to `U_pole` because the filter-state is managed out-of-band. \

@@ -1,12 +1,11 @@
 #pragma once
 #include "./any.cc"
+
+
+
+
+
 #include "./gate.hh"// testing...
-
-
-
-
-
-
 XTAL_ENV_(push)
 namespace xtal::process::math::zavalishin::_test
 {/////////////////////////////////////////////////////////////////////////////////

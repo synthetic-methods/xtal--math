@@ -1,11 +1,11 @@
 #pragma once
 #include "./any.cc"
+
 #include "./prewarped.hh"
 #include "./staged.hh"
-#include "./trigger.hh"
+#include "./gate.hh"
 
-
-#include "./roll.hh"// testing...
+#include "./vectrol.hh"// testing...
 XTAL_ENV_(push)
 namespace xtal::process::math::zavalishin::_test
 {/////////////////////////////////////////////////////////////////////////////////
@@ -13,7 +13,7 @@ namespace xtal::process::math::zavalishin::_test
 
 ////////////////////////////////////////////////////////////////////////////////
 
-TAG_("roll")
+TAG_("vectrol")
 {
 	using U_alpha = typename bond::fit<>::alpha_type;
 	using U_stage = occur::stage_t<>;
@@ -28,20 +28,22 @@ TAG_("roll")
 	U_alpha constexpr    dn = 0;
 
 	/**/
-	TRY_("roll: monophony")
+	TRY_("vectrol: monophony")
 	{
 		using U_value =             U_stage ;
 		using U_event = flow::cue_s<U_value>;
 
-		using  _process = any<filter<>>;
+		using A_filter = filter<>;
+
+		using A = any<A_filter>;
 		using Z_process = confined_t<void
-		,	prewarped<ordinal_constant_t<0>>, trigger<>
-		,	typename _process::damping_type::template attend<>
-		,	typename _process::balance_type::template attend<>
-		,	roll    <>
+		,	prewarped<ordinal_constant_t<0>>, gate<0>
+		,	typename A::damping_type::template attend<>
+		,	typename A::balance_type::template attend<>
+		,	vectrol    <>
 		,	staged<-1>
 		,	staged< 0>
-		,	filter  <>
+		,	A_filter
 		>;
 		using Z_processor = processor::monomer_t<Z_process
 		,	U_slicer::template inqueue<U_value>
@@ -52,17 +54,17 @@ TAG_("roll")
 		_std::array<U_alpha, 0x100> f_; f_.fill(omega);
 		auto z = Z_processor::bind_f(processor::let_f(f_));
 
-		using recurve_type = typename _process::recurve_type;
+		using recurve_type = typename A::recurve_type;
 
 		auto z_resize = occur::resize_t<>(0x020);
 		auto z_cursor = occur::cursor_t<>(0x020);
 		auto z_sample = occur::resample_f(44100);
 
-		z <<= typename _process::   limit_type{0};
-		z <<= typename _process::   order_type{2};
-		z <<= typename _process::   patch_type{0};
-		z <<= typename _process:: damping_type{1};
-		z <<= typename _process:: balance_type{0.5};
+		z <<= typename A::   limit_type{0};
+		z <<= typename A::   order_type{2};
+		z <<= typename A::   patch_type{0};
+		z <<= typename A:: damping_type{1};
+		z <<= typename A:: balance_type{0.5};
 
 		z <<= recurve_type({0.25, one - 0.25});
 

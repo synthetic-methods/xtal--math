@@ -1,9 +1,9 @@
 #pragma once
 #include "./any.cc"
+
 #include "./prewarped.hh"
 #include "./staged.hh"
 #include "./gate.hh"
-
 
 #include "./ring.hh"// testing...
 XTAL_ENV_(push)
@@ -30,20 +30,34 @@ TAG_("ring")
 	/**/
 	TRY_("ring: monophony")
 	{
-		using U_value =             U_stage ;
-		using U_event = flow::cue_s<U_value>;
+		using Z_filter = filter<>;
+		using Z = any<Z_filter>;
 
-		using  _process = any<filter<>>;
-		using Z_process = prewarped_t<ordinal_constant_t<0>, gate<>
-		,	typename _process::damping_type::template attend<>
-		,	typename _process::balance_type::template attend<>
+		using balance_type = typename Z::balance_type;
+		using damping_type = typename Z::damping_type;
+		using recurve_type = typename Z::recurve_type;
+		using   curve_type = typename Z::  curve_type;
+		using   stage_type = typename Z::  stage_type;
+
+		//\
+		using Z_packet = stage_type;
+		using Z_packet = flow::packet_t<stage_type, damping_type>;
+		using Z_event  = flow::cue_s<Z_packet>;
+		using Z_cue    = flow::cue_s<>;
+
+		using A_filter = filter<>;
+
+		using A = any<A_filter>;
+		using Z_process = prewarped_t<ordinal_constant_t<0>, gate<-1>
+		,	typename A::damping_type::template attend<>
+		,	typename A::balance_type::template attend<>
 		,	ring    <>
 		,	staged<-1>
 		,	staged< 0>
-		,	filter  <>
+		,	A_filter
 		>;
 		using Z_processor = processor::monomer_t<Z_process
-		,	U_slicer::template inqueue<U_value>
+		,	U_slicer::template inqueue<Z_packet>
 		,	provision::stored <null_type[0x100]>
 		,	provision::spooled<null_type[0x100]>
 		>;
@@ -55,20 +69,22 @@ TAG_("ring")
 		auto z_cursor = occur::cursor_t<>(0x020);
 		auto z_sample = occur::resample_f(44100);
 
-		z <<= typename _process::   limit_type{0};
-		z <<= typename _process::   order_type{2};
-		z <<= typename _process::   patch_type{0};
-		z <<= typename _process:: damping_type{1};
-		z <<= typename _process:: balance_type{1};
+		z <<= typename A::   limit_type{0};
+		z <<= typename A::   order_type{2};
+		z <<= typename A::   patch_type{0};
+		z <<= typename A:: damping_type{1};
+		z <<= typename A:: balance_type{1};
 
 		z <<= z_sample;
 		z <<= z_resize;
 		z <<= U_stage(-1);
 
-		z <<= U_event(0x08,  0);
-		z <<= U_event(0x10,  0);
-		z <<= U_event(0x28, -1);
-	//	z <<= U_event(0x38,  0);
+		z <<= Z_cue(0x08).then(Z_packet{ 0, 0});
+		//\
+		z <<= Z_cue(0x10).then(Z_packet{ 0, 1});
+		z <<= Z_cue(0x10).then(Z_packet{ 0, 0});
+		z <<= Z_cue(0x27).then(Z_packet{-1, root_f<-2>(2.F)});
+	//	z <<= Z_event(0x38,  0);
 
 		TRUE_(0 == z.efflux(z_cursor++));
 		TRUE_(0 == z.efflux(occur::stage_f(-1)));
@@ -95,10 +111,12 @@ TAG_("ring")
 		using U0_cue  = flow::cue_s<>;
 		using U1_cue  = flow::cue_s<flow::cue_s<>>;
 
-		using  _process = any<filter<>>;
-		using Z_process = prewarped_t<ordinal_constant_t<0>, gate<>
-		,	typename _process::damping_type::template attend<>
-		,	typename _process::balance_type::template attend<>
+		using A_filter = filter<>;
+
+		using A = any<A_filter>;
+		using Z_process = prewarped_t<ordinal_constant_t<0>, gate<-1>
+		,	typename A::damping_type::template attend<>
+		,	typename A::balance_type::template attend<>
 		,	ring    <>
 		,	staged<-1>
 		,	staged< 0>
@@ -117,11 +135,11 @@ TAG_("ring")
 		auto z_cursor = occur::    cursor_t<>(0x020);
 		auto z_sample = occur::resample_f(44100);
 
-		z <<= typename _process::   limit_type{0};
-		z <<= typename _process::   order_type{2};
-		z <<= typename _process::   patch_type{0};
-		z <<= typename _process:: damping_type{1};
-		z <<= typename _process:: balance_type{1};
+		z <<= typename A::   limit_type{0};
+		z <<= typename A::   order_type{2};
+		z <<= typename A::   patch_type{0};
+		z <<= typename A:: damping_type{1};
+		z <<= typename A:: balance_type{1};
 
 		z <<= z_sample;
 		z <<= z_resize;

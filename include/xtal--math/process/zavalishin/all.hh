@@ -4,6 +4,6 @@
 #include "./gate.hh"
 #include "./prewarped.hh"
 #include "./ring.hh"
-#include "./roll.hh"
 #include "./staged.hh"
-#include "./trigger.hh"
+#include "./vactrol.hh"
+#include "./vectrol.hh"

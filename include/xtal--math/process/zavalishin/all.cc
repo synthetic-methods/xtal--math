@@ -4,6 +4,6 @@
 #include "./gate.cc"
 #include "./prewarped.cc"
 #include "./ring.cc"
-#include "./roll.cc"
 #include "./staged.cc"
-#include "./trigger.cc"
+#include "./vactrol.cc"
+#include "./vectrol.cc"

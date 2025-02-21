@@ -2,8 +2,8 @@
 #include "./any.hh"
 
 #include "./filter.hh"
-#include "./trigger.hh"
 #include "../taylor/logarithm.hh"
+
 
 
 XTAL_ENV_(push)
@@ -11,20 +11,19 @@ namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 ///\
-Manages a negative-ramping filter, \
-scaling `damping` by the product of `recurve` and the internal state.
+Scales `damping` by the dot-product of the internal state and supplied `recurve`. \
 
 ///\note\
 Input is restricted to `U_pole` because the filter-state is managed out-of-band. \
 
-template <typename ...As>	struct  roll;
-template <typename ...As>	using   roll_t = process::confined_t<roll<As...>>;
+template <typename ...As>	struct  vectrol;
+template <typename ...As>	using   vectrol_t = process::confined_t<vectrol<As...>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <class ...As>
-struct any<roll<As...>> : any<filter<As...>>
+struct any<vectrol<As...>> : any<filter<As...>>
 {
 };
 
@@ -32,15 +31,15 @@ struct any<roll<As...>> : any<filter<As...>>
 ////////////////////////////////////////////////////////////////////////////////
 
 template <vector_q A>
-struct roll<A>
+struct vectrol<A>
 {
-	using metakind = any<roll<A>>;
+	using metakind = any<vectrol<A>>;
 
 	using   state_type = typename metakind::   state_type;
 	using   curve_type = typename metakind::   curve_type;
 	using recurve_type = typename metakind:: recurve_type;
 	
-	using superkind = bond::compose<bond::tag<roll_t>
+	using superkind = bond::compose<bond::tag<vectrol_t>
 	,	typename recurve_type::template attach<>
 	>;
 	template <class S>
@@ -66,22 +65,19 @@ struct roll<A>
 			
 			s_damping *= taylor::logarithm_t<-1>::template method_f<0>(s_product);
 
-			if constexpr (prewarped_q<T_> and trigger_q<T_>) {
-				x_input *= root_f<-1>(s_scale);
-			}
 			return S_::template method<Ns...>(x_input, s_scale, s_damping, XTAL_REF_(oo)...);
 		}
 
 	};
 };
 template <scalar_q A>
-struct roll<A>
-:	roll<A[2]>
+struct vectrol<A>
+:	vectrol<A[2]>
 {
 };
 template <>
-struct roll<>
-:	roll<typename bond::fit<>::alpha_type>
+struct vectrol<>
+:	vectrol<typename bond::fit<>::alpha_type>
 {
 };
 
