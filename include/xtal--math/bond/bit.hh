@@ -127,14 +127,14 @@ XTAL_DEF_(return,inline,let)
 bit_floor_f(real_variable_q auto &&x)
 noexcept -> int
 {
-	using          X_fit =  bond::fit<absolve_u<decltype(x)>>;
-	auto constexpr Z     = -static_cast<int>(X_fit::unit.mark);
+	using _fit = bond::fit<decltype(x)>;
+	auto constexpr Z = -static_cast<int>(_fit::unit.mark);
 
-	auto constexpr      unit = X_fit::    unit;
-	auto constexpr      sign = X_fit::    sign;
-	auto constexpr  exponent = X_fit::exponent;
-	using U = typename X_fit::sigma_type;
-	using V = typename X_fit::delta_type;
+	auto constexpr      unit = _fit::    unit;
+	auto constexpr      sign = _fit::    sign;
+	auto constexpr  exponent = _fit::exponent;
+	using U = typename _fit::sigma_type;
+	using V = typename _fit::delta_type;
 
 	auto n = _xtd::bit_cast<V>(XTAL_REF_(x));
 	n >>= exponent.shift;
@@ -157,10 +157,10 @@ noexcept -> int
 XTAL_DEF_(return,inline,let)
 bit_floor_f(auto &&x)
 noexcept -> int
-requires real_variable_q<absolve_u<decltype(x)>>
+requires real_variable_q<unstruct_u<decltype(x)>>
 {
-	using          X_fit =  bond::fit<absolve_u<decltype(x)>>;
-	auto constexpr Z     = -static_cast<int>(X_fit::unit.mark);
+	using _fit = bond::fit<decltype(x)>;
+	auto constexpr Z = -static_cast<int>(_fit::unit.mark);
 
 	return bit_floor_f<Z>(XTAL_REF_(x));
 }

@@ -11,7 +11,7 @@ namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 ///\
-Scales `damping` by the dot-product of the internal state and supplied `recurve`. \
+Scales `damping` by the dot-product of the internal state and supplied `reshape`. \
 
 ///\note\
 Input is restricted to `U_pole` because the filter-state is managed out-of-band. \
@@ -36,11 +36,11 @@ struct vectrol<A>
 	using metakind = any<vectrol<A>>;
 
 	using   state_type = typename metakind::   state_type;
-	using   curve_type = typename metakind::   curve_type;
-	using recurve_type = typename metakind:: recurve_type;
+	using   shape_type = typename metakind::   shape_type;
+	using reshape_type = typename metakind:: reshape_type;
 	
 	using superkind = bond::compose<bond::tag<vectrol_t>
-	,	typename recurve_type::template attach<>
+	,	typename reshape_type::template attach<>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -60,8 +60,8 @@ struct vectrol<A>
 		noexcept -> decltype(auto)
 		{
 			auto const [s_]       = S_::template memory<  state_type>();
-			auto const &s_recurve = S_::template   head<recurve_type>();
-			auto const  s_product = dot_f(s_, s_recurve.head());
+			auto const &s_reshape = S_::template   head<reshape_type>();
+			auto const  s_product = dot_f(s_, s_reshape.head());
 			
 			s_damping *= taylor::logarithm_t<-1>::template method_f<0>(s_product);
 

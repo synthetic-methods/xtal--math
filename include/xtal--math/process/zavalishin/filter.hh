@@ -42,27 +42,26 @@ template <class U_pole, auto N_pole>
 struct any<filter<U_pole[N_pole]>>
 {
 //	USED
-	using         pole_type =          U_pole ;
-	using  coefficient_type = valued_u<U_pole>;
-	using        state_type =  atom::couple_t<          U_pole[N_pole]>;
-	using        slope_type =  atom::couple_t<          U_pole[N_pole]>;
-	using        curve_type =  atom::couple_t<coefficient_type[N_pole]>;
-	using        stage_type = occur::stage_t<>;
+	using   input_type = U_pole;
+	using   shape_type =   atom::couple_t<unstruct_u<U_pole>[N_pole]>;
+	using   state_type =   atom::couple_t<          U_pole [N_pole]>;
+	using   slope_type =   atom::couple_t<          U_pole [N_pole]>;
+	using   stage_type =  occur::stage_t<>;
 
 //	ATTACHED
-	using        input_type = occur::inferred_t<struct   INPUT, coefficient_type>;
-	using        scale_type = occur::inferred_t<struct   SCALE, coefficient_type>;
-	using      damping_type = occur::inferred_t<struct DAMPING, coefficient_type>;
-	using      balance_type = occur::inferred_t<struct BALANCE, coefficient_type>;
-	using      recurve_type = occur::inferred_t<struct RECURVE,       curve_type>;
-	using         zoom_type = occur::inferred_t<struct    ZOOM, coefficient_type>;
+	using reinput_type = occur::inferred_t<struct REINPUT, input_type>;
+	using reshape_type = occur::inferred_t<struct RECURVE, shape_type>;
+	using rescale_type = occur::inferred_t<struct RESCALE, unstruct_u<U_pole>>;
+	using  redamp_type = occur::inferred_t<struct  REDAMP, unstruct_u<U_pole>>;
+	using  refade_type = occur::inferred_t<struct  REFADE, unstruct_u<U_pole>>;
+	using  rezoom_type = occur::inferred_t<struct  REZOOM, unstruct_u<U_pole>>;
 
 //	DISPATCHED
 	//\
-	using        order_type = occur::inferred_t<struct   ORDER, unsigned int, bond::seek_s<1 + N_pole>>;
-	using        order_type = occur::inferred_t<struct   ORDER, unsigned int, bond::word  <1 + N_pole>>;
-	using        patch_type = occur::inferred_t<struct   PATCH, unsigned int, bond::word  <2>>;
-	using        limit_type = occur::inferred_t<struct   LIMIT, unsigned int, bond::word  <2>>;
+	using   order_type = occur::inferred_t<struct   ORDER, unsigned int, bond::seek_s<1 + N_pole>>;
+	using   order_type = occur::inferred_t<struct   ORDER, unsigned int, bond::word  <1 + N_pole>>;
+	using   patch_type = occur::inferred_t<struct   PATCH, unsigned int, bond::word  <2>>;
+	using   limit_type = occur::inferred_t<struct   LIMIT, unsigned int, bond::word  <2>>;
 
 	using superkind = provision::voiced<void
 	,	typename order_type::template dispatch<>
@@ -77,25 +76,21 @@ struct any<filter<U_pole[N_pole]>>
 	public:// CONSTRUCT
 		using S_::S_;
 
-	//	USED
-		using  coefficient_type = any:: coefficient_type;
-		using         pole_type = any::        pole_type;
-		using        state_type = any::       state_type;
-		using        slope_type = any::       slope_type;
-		using        curve_type = any::       curve_type;
-		using        stage_type = any::       stage_type;
+		using   input_type = any::   input_type;
+		using   state_type = any::   state_type;
+		using   slope_type = any::   slope_type;
+		using   shape_type = any::   shape_type;
+		using   stage_type = any::   stage_type;
 
-	//	ATTACHED
-		using        input_type = any::       input_type;
-		using        scale_type = any::       scale_type;
-		using      damping_type = any::     damping_type;
-		using      balance_type = any::     balance_type;
-		using         zoom_type = any::        zoom_type;
+		using reinput_type = any:: reinput_type;
+		using rescale_type = any:: rescale_type;
+		using  redamp_type = any::  redamp_type;
+		using  refade_type = any::  refade_type;
+		using  rezoom_type = any::  rezoom_type;
 
-	//	DISPATCHED
-		using        order_type = any::       order_type;
-		using        patch_type = any::       patch_type;
-		using        limit_type = any::       limit_type;
+		using   order_type = any::   order_type;
+		using   patch_type = any::   patch_type;
+		using   limit_type = any::   limit_type;
 
 	};
 };
@@ -119,14 +114,14 @@ struct filter<A>
 	using      metakind = any<filter<A>>;
 	using    state_type = typename metakind::state_type;
 	using    stage_type = typename metakind::stage_type;
-	using     zoom_type = typename metakind:: zoom_type;
+	using     rezoom_type = typename metakind:: rezoom_type;
 	using resample_type = occur::resample_t<>;
 
 	using superkind = bond::compose<bond::tag<filter>
 	,	provision::memorized<state_type, state_type>
 	,	metakind
 	,	typename    stage_type::template expect<>
-	,	typename     zoom_type::template attach<>
+	,	typename     rezoom_type::template attach<>
 	,	typename resample_type::template attach<>
 	>;
 	template <class S>
@@ -142,28 +137,29 @@ struct filter<A>
 		template <int N_ord=0, int N_pat=0, auto ...Ns>
 		XTAL_DEF_(inline,let)
 		method(auto &&x
-		,	absolve_u<decltype(x)> s_scale
-		,	absolve_u<decltype(x)> s_damping
-		,	absolve_u<decltype(x)> y_balance
+		,	unstruct_u<decltype(x)> s_scale
+		,	unstruct_u<decltype(x)> s_damping
+		,	unstruct_u<decltype(x)> y_balance
 		)
 		noexcept -> auto
 		{
 			using X = XTAL_ALL_(x); using X2 = atom::couple_t<X[2]>;
-			using W = absolve_u<X>; using W2 = atom::couple_t<W[2]>;
+			using W = unstruct_u<X>; using W2 = atom::couple_t<W[2]>;
 
-			return method<N_ord, N_pat, Ns...>(XTAL_REF_(x), s_scale, s_damping)
-			.	product(W2{term_f<-1, 2>(one, y_balance), y_balance});//TODO: Replace with `fade`.
+			return dot_f(method<N_ord, N_pat, Ns...>(XTAL_REF_(x), s_scale, s_damping)
+			,	W2{term_f<-1, 2>(one, y_balance), y_balance}
+			);//TODO: Replace with `fade`.
 		}
 		template <int N_ord=0, int N_pat=0, auto ...Ns>
 		XTAL_DEF_(inline,let)
 		method(auto &&x
-		,	absolve_u<decltype(x)> s_scale
-		,	absolve_u<decltype(x)> s_damping
+		,	unstruct_u<decltype(x)> s_scale
+		,	unstruct_u<decltype(x)> s_damping
 		)
 		noexcept -> auto
 		{
 			using X = XTAL_ALL_(x); using X2 = atom::couple_t<X[2]>;
-			using W = absolve_u<X>; using W2 = atom::couple_t<W[2]>;
+			using W = unstruct_u<X>; using W2 = atom::couple_t<W[2]>;
 
 			XTAL_IF0
 			XTAL_0IF (0 == N_ord) {
@@ -190,13 +186,13 @@ struct filter<A>
 		template <int N_ord=0, int N_pat=0, int N_lim=0, auto ...Ns> requires (1 <= N_ord and N_pat == 0)
 		XTAL_DEF_(inline,let)
 		method(auto const &x
-		,	absolve_u<decltype(x)> s_scale
+		,	unstruct_u<decltype(x)> s_scale
 		,	atom::couple_q<unit_type[N_ord + 1]> auto &&scalars
 		)
 		noexcept -> auto
 		{
 			using X = XTAL_ALL_(x); using X2 = atom::couple_t<X[2]>;
-			using W = absolve_u<X>; using W2 = atom::couple_t<W[2]>;
+			using W = unstruct_u<X>; using W2 = atom::couple_t<W[2]>;
 
 			using U_state_ = atom::couple_t<X[N_ord]>;
 			using U_slope_ = atom::couple_t<X[N_ord]>;
@@ -227,8 +223,8 @@ struct filter<A>
 		//	Integrate `states*` with `scalars*` and `outputs*`:
 			bond::seek_out_f<1 + 1*K_lim>([&] (auto K) XTAL_0FN {
 				XTAL_IF0
-				XTAL_0IF (0 == K) {get<N_ord>(outputs) *= x - outputs_.product(states_);}
-				XTAL_0IF (1 <= K) {get<N_ord>(outputs)  = x - outputs_.product(slopes_);}
+				XTAL_0IF (0 == K) {get<N_ord>(outputs) *= x - dot_f(outputs_, states_);}
+				XTAL_0IF (1 <= K) {get<N_ord>(outputs)  = x - dot_f(outputs_, slopes_);}
 
 				bond::seek_out_f<-N_ord>([&] (auto I) XTAL_0FN {
 					XTAL_IF0

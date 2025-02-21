@@ -1,22 +1,27 @@
 name: Conan Create
 
 on:
+
   push:
     branches: [main]
+
   pull_request:
     branches: [main]
 
 jobs:
   create:
+
     strategy:
       matrix:
-        bt: [Debug, Release]
-        os: [macOS, Ubuntu] #, Windows]
+        bt: [Debug,         Release]
+        os: [macOS, Ubuntu         ]
+      # os: [macOS, Ubuntu, Windows]
     
     runs-on: ${{matrix.os}}-latest
 
     steps:
     - uses: actions/checkout@v3
+
     - uses: actions/checkout@v3
       with:
         repository: synthetic-methods/xtal
@@ -28,7 +33,10 @@ jobs:
     - run:  pip3 install wheel setuptools; pip3 install conan --upgrade
       if:   ${{ matrix.os != 'macOS' }}
 
-    - run:  conan remote update conancenter --url="https://center2.conan.io"
-    - run:  conan config install ${{github.workspace}}/.conan2
-    - run:  conan export ${{github.workspace}}/test_dependencies/xtal
-    - run:  conan create ${{github.workspace}} --build=missing -s build_type=${{matrix.bt}} --profile:all=${{matrix.os}} -o "test_package/*:benchmark=True"
+    - run:  conan remote update conancenter   --url="https://center2.conan.io" -vquiet
+    - run:  conan config install ${{github.workspace}}/.conan2                 -vquiet
+    - run:  conan export         ${{github.workspace}}/test_dependencies/xtal  -vquiet
+    - run:  conan create         ${{github.workspace}}        --build=missing  -vquiet -s build_type=${{matrix.bt}} --profile:all=${{matrix.os}}
+      if:   ${{ matrix.bt != 'Release' }}
+    - run:  conan create         ${{github.workspace}}        --build=missing  -vquiet -s build_type=${{matrix.bt}} --profile:all=${{matrix.os}} -o "test_package/*:benchmark=True"
+      if:   ${{ matrix.bt == 'Release' }}

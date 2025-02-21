@@ -24,7 +24,7 @@ TAG_("filter")
 		//\
 		using SVF = confined_t<staged<0>, filter<>>;
 		using SVF = prewarped_t<ordinal_constant_t<1>
-		,	typename meta::balance_type::template attend<>
+		,	typename meta::refade_type::template attend<>
 		,	staged< 0>
 		,	filter  <>
 		>;
@@ -38,7 +38,7 @@ TAG_("filter")
 		svf <<= typename  meta::  limit_type{0};
 		svf <<= typename  meta::  order_type{2};
 		svf <<= typename  meta::  patch_type{0};
-		svf <<= typename  meta::balance_type{0};
+		svf <<= typename  meta::refade_type{0};
 	
 		U_alpha constexpr omega = 2*2*3*3*5*5*7;
 		U_alpha constexpr   rho = 1;

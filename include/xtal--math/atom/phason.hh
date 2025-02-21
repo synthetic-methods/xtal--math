@@ -50,12 +50,12 @@ struct phason<_s ...>
 :	phason<common_t<_s...>[sizeof...(_s)]>
 {
 };
-template <vector_q A> requires integral_variable_q<absolve_u<A>>
+template <vector_q A> requires integral_variable_q<unstruct_u<A>>
 struct phason<A>
 :	grade<A>
 {
 };
-template <vector_q A> requires     real_variable_q<absolve_u<A>>
+template <vector_q A> requires     real_variable_q<unstruct_u<A>>
 struct phason<A>
 {
 	static auto constexpr M_data = _std::extent_v<based_t<A>>;
@@ -69,7 +69,7 @@ struct phason<A>
 	using   ordinate_type = bond::compose_s<typename T_fit::sigma_type, U_fit>;
 	using inordinate_type = bond::compose_s<typename T_fit::delta_type, U_fit>;
 
-	static_assert(_std::numeric_limits<absolve_u<ordinate_type>>::is_modulo);// D'oh!
+	static_assert(_std::numeric_limits<unstruct_u<ordinate_type>>::is_modulo);// D'oh!
 
 	template <class T>
 	using holotype = bond::compose_s<typename grade<ordinate_type[M_data]>::template homotype<T>, bond::tag<phason_t>>;

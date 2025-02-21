@@ -97,7 +97,7 @@ struct tangy<M_ism, 1>
 		method_f(simplex_field_q auto &&t)
 		noexcept -> decltype(auto)
 		{
-			return method_f<N_lim>(XTAL_REF_(t), absolve_u<decltype(t)>{one});
+			return method_f<N_lim>(XTAL_REF_(t), unstruct_u<decltype(t)>{one});
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,set)
