@@ -35,7 +35,7 @@ struct series<_s ...>
 template <vector_q A>
 struct series<A>
 {
-	using U0 = _std::remove_extent_t<A>;
+	using U0 = _xtd::remove_extent_t<A>;
 	using U1 =  destruct_u<U0>;
 	using U2 =  destruct_u<U1>;
 
@@ -93,7 +93,7 @@ struct series<A>
 			auto &s = self();
 
 			using W1  = U1;
-			using U2  = couple_t<U2   [2]>;
+			using U2  = couple_t<U2     [2]>;
 			using W1_ = series_t<W1[size*2]>;
 			using U2_ = series_t<U2[size*2]>;
 			static_assert(sizeof(W1_) == sizeof(U2_));

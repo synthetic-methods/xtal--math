@@ -30,16 +30,26 @@ noexcept -> auto
 		}
 	}
 	XTAL_0IF (some_q<Xs...>) {
+		auto constexpr _f = [] XTAL_1FN_(call) (term_f<M_alt, M_pow>);
 		using Y = absolve_u<Xs...>;// NOTE: Constants interpreted as scalar quantities...
 		XTAL_IF0
+		XTAL_0IF (atom::point_q<W>) {
+			return based_t<W>::template zip_from<_f>(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
+		}
+		XTAL_0IF (atom::point_q<X>) {
+			return based_t<X>::template zip_from<_f>(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
+		}
+		XTAL_0IF (atom::point_q<Y>) {
+			return based_t<Y>::template zip_from<_f>(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
+		}
 		XTAL_0IF (constant_q<W, X> or integral_variable_q<W, X> and real_variable_q<Y>) {
-			return term_f<M_alt, M_pow>(static_cast<Y>(XTAL_REF_(w)), static_cast<Y>(XTAL_REF_(x)), XTAL_REF_(xs)...);
+			return _f(static_cast<Y>(XTAL_REF_(w)), static_cast<Y>(XTAL_REF_(x)), XTAL_REF_(xs)...);
 		}
 		XTAL_0IF (constant_q<W   > or integral_variable_q<W   > and real_variable_q<Y>) {
-			return term_f<M_alt, M_pow>(static_cast<Y>(XTAL_REF_(w)), XTAL_REF_(x), XTAL_REF_(xs)...);
+			return _f(static_cast<Y>(XTAL_REF_(w)), XTAL_REF_(x), XTAL_REF_(xs)...);
 		}
 		XTAL_0IF (constant_q<   X> or integral_variable_q<   X> and real_variable_q<Y>) {
-			return term_f<M_alt, M_pow>(XTAL_REF_(w), static_cast<Y>(XTAL_REF_(x)), XTAL_REF_(xs)...);
+			return _f(XTAL_REF_(w), static_cast<Y>(XTAL_REF_(x)), XTAL_REF_(xs)...);
 		}
 		XTAL_0IF (M_pow == 0  or M_alt ==  0) {
 			return XTAL_REF_(w);

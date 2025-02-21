@@ -17,30 +17,16 @@ scaling `damping` according to the stored `stage`. \
 ///\note\
 Input is restricted to `U_pole` because the filter-state is managed out-of-band. \
 
-template <class ...As>	struct  ring;
-template <class ...As>	using   ring_t = process::confined_t<ring<As...>>;
-
-
 ////////////////////////////////////////////////////////////////////////////////
 
-template <class ...As>
-struct any<ring<As...>> : any<filter<As...>>
+template <int M_end=0>
+struct ring
 {
-};
-
-
-////////////////////////////////////////////////////////////////////////////////
-
-template <vector_q A>
-struct ring<A>
-{
-	using superkind = bond::tag<ring_t>;
-
 	template <class S>
-	class subtype : public bond::compose_s<S, superkind>
+	class subtype : public bond::compose_s<S>
 	{
 		static_assert(filter_q<S>);
-		using S_ = bond::compose_s<S, superkind>;
+		using S_ = bond::compose_s<S>;
 
 	public:// CONSTRUCT
 		using S_::S_;
@@ -59,24 +45,12 @@ struct ring<A>
 			U constexpr N2{2};
 			U constexpr N2_up = root_f< 2>(N2);
 			U constexpr N2_dn = root_f<-2>(N2);
-
-			_std::array<U, 4> constexpr stage_damping{N0, N2_dn, N1, N2_up};
-			s_damping *= stage_damping[0b11&S_::template head<S_stage>()];
+			s_damping *= _std::array<U, 4>{N0, N2_dn, N1, N2_up}[0b11&S_::template head<S_stage>()];
 
 			return S_::template method<Ns...>(XTAL_REF_(x_input), s_scale, s_damping, XTAL_REF_(oo)...);
 		}
 
 	};
-};
-template <scalar_q A>
-struct ring<A>
-:	ring<A[2]>
-{
-};
-template <>
-struct ring<>
-:	ring<typename bond::fit<>::alpha_type>
-{
 };
 
 

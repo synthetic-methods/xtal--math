@@ -1,9 +1,9 @@
 #pragma once
 #include "./any.cc"
+
 #include "./prewarped.hh"
 #include "./staged.hh"
 #include "./gate.hh"
-
 
 #include "./vactrol.hh"// testing...
 XTAL_ENV_(push)
@@ -30,7 +30,8 @@ TAG_("vactrol")
 	/**/
 	TRY_("vactrol: monophony")
 	{
-		using Z = any<filter<>>;
+		using Z_filter = filter<>;
+		using Z = any<Z_filter>;
 
 		using balance_type = typename Z::balance_type;
 		using damping_type = typename Z::damping_type;
@@ -40,11 +41,10 @@ TAG_("vactrol")
 
 		using Z_packet = flow::packet_t<stage_type, recurve_type>;
 		using Z_event  = flow::cue_s<Z_packet>;
-
-		static_assert(same_q<flow::packet_t<Z_packet>, Z_packet>);
+		using Z_cue    = flow::cue_s<>;
 
 		using Z_process = confined_t<void
-		,	prewarped<ordinal_constant_t<0>>, gate<>
+		,	prewarped<ordinal_constant_t<0>>, gate<1>
 		,	typename damping_type::template attend<>
 		,	typename balance_type::template attend<>
 		,	vactrol <>
@@ -81,10 +81,6 @@ TAG_("vactrol")
 
 		z <<= U0_cue{0x08}.then(Z_packet{ 0, curve_type{0.125, 0.25}});
 		z <<= U0_cue{0x18}.then(Z_packet{-1, curve_type{0.500, 0.25}});
-	//	z <<= U0_cue{0x08}.then(flow::packet_f(U_stage{ 0}, recurve_type({0.125, 0.25})));
-	//	z <<= U0_cue{0x18}.then(flow::packet_f(U_stage{-1}, recurve_type({0.500, 0.25})));
-	//	z <<= U0_cue{0x28}.then(flow::packet_f(U_stage{-1}, recurve_type({0.25, one - 0.25})));
-	//	z <<= U0_cue{0x38}.then(flow::packet_f(U_stage{ 0}, recurve_type({0.25, one - 0.25})));
 
 		echo_rule_<25>('=');
 		TRUE_(0 == z.efflux(z_cursor++));
