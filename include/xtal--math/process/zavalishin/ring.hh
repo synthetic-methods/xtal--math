@@ -43,9 +43,8 @@ struct ring
 			U constexpr N0{0};
 			U constexpr N1{1};
 			U constexpr N2{2};
-			U constexpr N2_up = root_f< 2>(N2);
-			U constexpr N2_dn = root_f<-2>(N2);
-			s_damping *= _std::array<U, 4>{N0, N2_dn, N1, N2_up}[0b11&S_::template head<S_stage>()];
+			U constexpr N3{3};
+			s_damping *= _std::array<U, 4>{N0, root_f<-1>(N2), N1, root_f< 2>(N2)}[0b11&S_::template head<S_stage>()];
 
 			return S_::template method<Ns...>(XTAL_REF_(x_input), s_scale, s_damping, XTAL_REF_(oo)...);
 		}

@@ -112,17 +112,17 @@ template <vector_q A>
 struct filter<A>
 {
 	using      metakind = any<filter<A>>;
-	using    state_type = typename metakind::state_type;
-	using    stage_type = typename metakind::stage_type;
-	using     rezoom_type = typename metakind:: rezoom_type;
+	using    state_type = typename metakind:: state_type;
+	using    stage_type = typename metakind:: stage_type;
+	using   rezoom_type = typename metakind::rezoom_type;
 	using resample_type = occur::resample_t<>;
 
 	using superkind = bond::compose<bond::tag<filter>
 	,	provision::memorized<state_type, state_type>
 	,	metakind
-	,	typename    stage_type::template expect<>
-	,	typename     rezoom_type::template attach<>
-	,	typename resample_type::template attach<>
+	,	typename    stage_type::template inspect<>
+	,	typename   rezoom_type::template  attach<>
+	,	typename resample_type::template  attach<>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
