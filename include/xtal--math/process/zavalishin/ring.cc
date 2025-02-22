@@ -8,7 +8,7 @@
 #include "./ring.hh"// testing...
 XTAL_ENV_(push)
 namespace xtal::process::math::zavalishin::_test
-{/////////////////////////////////////////////////////////////////////////////////
+{/////////////////////////////////////////////////////////////////////////////////FIXME
 /////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -33,8 +33,8 @@ TAG_("ring")
 		using Z_filter = filter<>;
 		using Z = any<Z_filter>;
 
-		using refade_type = typename Z::refade_type;
-		using redamp_type = typename Z::redamp_type;
+		using  refade_type = typename Z:: refade_type;
+		using  redamp_type = typename Z:: redamp_type;
 		using reshape_type = typename Z::reshape_type;
 		using   shape_type = typename Z::  shape_type;
 		using   stage_type = typename Z::  stage_type;
@@ -51,7 +51,7 @@ TAG_("ring")
 		using Z_process = prewarped_t<ordinal_constant_t<0>, iota<-1>
 		,	typename A::redamp_type::template attend<>
 		,	typename A::refade_type::template attend<>
-		,	ring    <>
+	//	,	ring    <>
 		,	staged<-1>
 		,	staged< 0>
 		,	A_filter
@@ -69,9 +69,9 @@ TAG_("ring")
 		auto z_cursor = occur::cursor_t<>(0x020);
 		auto z_sample = occur::resample_f(44100);
 
-		z <<= typename A::   limit_type{0};
-		z <<= typename A::   order_type{2};
-		z <<= typename A::   patch_type{0};
+		z <<= typename A::  limit_type{0};
+		z <<= typename A::  order_type{2};
+		z <<= typename A::  patch_type{0};
 		z <<= typename A:: redamp_type{1};
 		z <<= typename A:: refade_type{1};
 

@@ -71,7 +71,7 @@ TAG_("vectrol")
 
 		z <<= z_sample;
 		z <<= z_resize;
-		z <<= U_stage(     -1);
+		z <<= U_stage(-1);
 
 		z <<= U_event(0x08,  0);
 		z <<= U_event(0x18,  0);
