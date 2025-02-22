@@ -71,21 +71,21 @@ TAG_("vectrol")
 
 		z <<= z_sample;
 		z <<= z_resize;
-		z <<= U_stage(-1);
 
-		z <<= U_event(0x08,  0);
-		z <<= U_event(0x18,  0);
-		z <<= U_event(0x28, -1);
-	//	z <<= U_event(0x38,  0);
+		z >>= U_stage(-1);
+		z >>= U_event(0x08,  0);
+		z >>= U_event(0x18,  0);
+		z >>= U_event(0x28, -1);
+	//	z >>= U_event(0x38,  0);
 
 		TRUE_(0 == z.efflux(z_cursor++));
-		TRUE_(0 == z.efflux(occur::stage_f(-1)));
+		TRUE_(0 == z.influx(occur::stage_f(-1)));
 
 		echo_rule_<25>('=');
 		echo_plot_<25>(z.store());
 
 		TRUE_(0 == z.efflux(z_cursor++));
-	//	TRUE_(1 == z.efflux(occur::stage_f(-1)));
+	//	TRUE_(1 == z.influx(occur::stage_f(-1)));
 
 		echo_rule_<25>('-');
 		echo_plot_<25>(z.store());

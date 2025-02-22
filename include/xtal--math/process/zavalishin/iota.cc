@@ -18,7 +18,6 @@ TAG_("iota")
 	using U_alpha = typename bond::fit<>::alpha_type;
 	using U_stage = occur::stage_t<>;
 	using U_key   = flow::key_s<>;
-	using U0_cue   = flow::cue_s<>;
 
 	using U_slicer = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
 

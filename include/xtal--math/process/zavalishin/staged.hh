@@ -17,7 +17,7 @@ template <auto  ...Ms>	using   staged_t = process::confined_t<staged<Ms...>>;
 
 ////////////////////////////////////////////////////////////////////////////////
 ///\
-Responds to `influx(occur::stage_f(+0))` by resetting the filter state. \
+Responds to `efflux(occur::stage_f(+0))` by resetting the filter state. \
 
 ///\todo\
 Allow reset for any `dispatch`ed parameters. \
@@ -46,7 +46,7 @@ struct staged< 0>
 		{
 			return S_::template fuse<N_ion>(XTAL_REF_(o));
 		}
-		template <signed N_ion> requires in_n<N_ion, +1>
+		template <signed N_ion> requires in_n<N_ion, -1>
 		XTAL_DEF_(return,inline,let)
 		fuse(occur::stage_q auto &&o)
 		noexcept -> signed
@@ -63,7 +63,7 @@ struct staged< 0>
 
 ////////////////////////////////////////////////////////////////////////////////
 ///\
-Responds to `efflux(occur::stage_f(-1))` by returning `1` if the state is under threshold, \
+Responds to `influx(occur::stage_f(-1))` by returning `1` if the state is under threshold, \
 `0` otherwise. \
 
 ///\todo\
@@ -96,7 +96,7 @@ struct staged<-1>
 		{
 			return S_::template fuse<N_ion>(XTAL_REF_(o));
 		}
-		template <signed N_ion> requires in_n<N_ion, -1>
+		template <signed N_ion> requires in_n<N_ion, +1>
 		XTAL_DEF_(return,inline,let)
 		fuse(occur::stage_q auto &&o)
 		noexcept -> signed
