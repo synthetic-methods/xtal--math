@@ -67,7 +67,7 @@ TAG_("vectrol")
 		z <<= typename A:: redamp_type{1};
 		z <<= typename A:: refade_type{0.5};
 
-		z <<= reshape_type{shape_type{0.25, one - 0.25}};
+		z <<= reshape_type{shape_type{0.125, one - 0.125}};
 
 		z <<= z_sample;
 		z <<= z_resize;
@@ -78,17 +78,17 @@ TAG_("vectrol")
 		z >>= U_event(0x28, -1);
 	//	z >>= U_event(0x38,  0);
 
+		echo_rule_<28>("\u2500");
+
 		TRUE_(0 == z.efflux(z_cursor++));
 		TRUE_(0 == z.influx(occur::stage_f(-1)));
 
-		echo_rule_<25>('=');
-		echo_plot_<25>(z.store());
+		echo_plot_<28>(z.store(), 0x08, 0x18);
 
 		TRUE_(0 == z.efflux(z_cursor++));
 	//	TRUE_(1 == z.influx(occur::stage_f(-1)));
 
-		echo_rule_<25>('-');
-		echo_plot_<25>(z.store());
+		echo_plot_<28>(z.store(), 0x08);
 
 	}
 	/***/
