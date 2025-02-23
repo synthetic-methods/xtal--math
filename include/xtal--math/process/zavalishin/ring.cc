@@ -46,6 +46,11 @@ TAG_("ring")
 		using Z_packet = flow::packet_t<stage_type, redamp_type>;
 		using Z_event  = flow::cue_s<Z_packet>;
 
+		flow::packed_t<          > constexpr note{};
+		flow::packed_t<stage_type> constexpr note_on { 0};
+		flow::packed_t<stage_type> constexpr note_off{ 1};
+		flow::packed_t<stage_type> constexpr note_out{-1};
+
 		using A_filter = filter<>;
 
 		using A = any<A_filter>;
@@ -80,21 +85,27 @@ TAG_("ring")
 		z <<= z_resize;
 
 		z >>= occur::stage_f(-1);
+		/*/
+		z >>= flow::cue_f(0x08).then((note_on , redamp_type{0}));
+		z >>= flow::cue_f(0x10).then((note_on , redamp_type{0}));
+		z >>= flow::cue_f(0x27).then((note_off, redamp_type{root_f<-2>(2.F)}));
+		/*/
 		z >>= flow::cue_f(0x08).then(Z_packet{ 0, 0});
 		z >>= flow::cue_f(0x10).then(Z_packet{ 0, 0});
-		z >>= flow::cue_f(0x27).then(Z_packet{-1, root_f<-2>(2.F)});
+		z >>= flow::cue_f(0x27).then(Z_packet{ 1, root_f<-2>(2.F)});
+		/***/
+
+		echo_rule_<28>("\u2500");
 
 		TRUE_(0 == z.efflux(z_cursor++));
-		TRUE_(0 == z.influx(occur::stage_f(-1)));
+		TRUE_(0 == z.influx(occur::stage_f( 1)));
 
-		echo_rule_<25>('=');
-		echo_plot_<25>(z.store());
+		echo_plot_<28>(z.store(), 0x08, 0x10);
 
 		TRUE_(0 == z.efflux(z_cursor++));
-		TRUE_(1 == z.influx(occur::stage_f(-1)));
+		TRUE_(1 == z.influx(occur::stage_f( 1)));
 
-		echo_rule_<25>('-');
-		echo_plot_<25>(z.store());
+		echo_plot_<28>(z.store(), 0x07);
 
 	}
 	/***/
@@ -153,19 +164,18 @@ TAG_("ring")
 		z >>= flow::cue_f(0x40).then(U_payload{1,  0});
 		z >>= flow::cue_f(0x48).then(U_payload{1, -1});
 
+		echo_rule_<28>("\u2500");
 
 		TRUE_(0 == z.efflux(z_cursor++));
 		{
-			echo_rule_<25>('=');
-			echo_plot_<25>(z.store());
+			echo_plot_<28>(z.store(), 0x08, 0x18);
 
 		//	TRUE_(2 >= z.ensemble().size());// Still decaying...
 		}
 		z >>= flow::cue_f(0x08).then(U_payload{1,  1});
 		TRUE_(0 == z.efflux(z_cursor++));
 		{
-			echo_rule_<25>('-');
-			echo_plot_<25>(z.store());
+			echo_plot_<28>(z.store(), 0x08);
 
 		//	TRUE_(2 >= z.ensemble().size());// Still decaying...
 		}
@@ -173,15 +183,13 @@ TAG_("ring")
 	//	z >>= flow::cue_f(0x08).then(U_payload{1, -1});
 		TRUE_(0 == z.efflux(z_cursor++));
 		{
-			echo_rule_<25>('-');
-			echo_plot_<25>(z.store());
+			echo_plot_<28>(z.store(), 0x08);
 
 		//	TRUE_(1 >= z.ensemble().size());// Still decaying...
 		}
 		TRUE_(0 == z.efflux(z_cursor++));
 		{
-		//	echo_rule_<25>('-');
-		//	echo_plot_<25>(z.store());
+		//	echo_plot_<28>(z.store());
 
 		//	TRUE_(0 == z.ensemble().size());
 		}

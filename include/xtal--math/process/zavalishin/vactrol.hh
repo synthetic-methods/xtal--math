@@ -59,7 +59,7 @@ struct vactrol<A>
 		method(auto x_input, auto s_scale, auto &&...oo)
 		noexcept -> decltype(auto)
 		{
-			auto const abs = [] XTAL_1FN_(call) (taylor::logarithm_t<-1>::template method_f<0>);
+			auto constexpr abs = [] XTAL_1FN_(call) (taylor::logarithm_t<-1>::template method_f<0>);
 
 			auto const &[d0, d1] = S_::template head<reshape_type>().head();
 			auto const  [s_]     = S_::template memory<state_type>();

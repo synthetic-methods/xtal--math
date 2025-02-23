@@ -5,7 +5,7 @@
 #include "./bond/bit.hh"
 #include "./process/cut.hh"
 
-
+#include <string>
 
 namespace xtal
 {
@@ -256,35 +256,62 @@ noexcept -> int
 ////////////////////////////////////////////////////////////////////////////////
 /**/
 template <int N>
-void echo_rule_(char const c='-')
+void echo_rule_(auto const z)
 {
-	for (int n = -N; n <= N; ++n) {
-		_std::cout << c;
+	for (int n = -N; n <= -1; ++n) {
+		_std::cout << z;
+	}
+	for (int n = +1; n <= +N; ++n) {
+		_std::cout << z;
 	}
 	_std::cout << _std::endl;
 }
 template <int N>
-void echo_plot_(iterated_q auto const o)
+void echo_rule_()
 {
+	echo_rule_<N>("\u2500");
+}
+template <int N>
+void echo_plot_(iterated_q auto const o, integral_q auto ...ms)
+{
+	using namespace _std;
+	auto uZERO = "\u2504";
+	_std::vector<int> m_{ms...};
+	int l{};
 	for (auto e: o) {
+		bool marked = _xtd::ranges::contains(m_, l);
 		e *= N;
 		e *= 2;
 		e += 0 < e;
 		e -= e < 0;
+		auto w = static_cast<int>(e);
 		e /= 2;
 		auto u = static_cast<int>(e);
-		for (int n = -N; n <= N; ++n) {
-		     if (n == 0)                     {}
-		else if (u < 0 and n < 0 and u == n) {_std::cout << "╼";}//'<';}
-		else if (u < 0 and n < 0 and u <= n) {_std::cout << "━";}//'=';}
-		else if (0 < u and 0 < n and n == u) {_std::cout << "╾";}//'>';}
-		else if (0 < u and 0 < n and n <= u) {_std::cout << "━";}//'=';}
-		else                                 {_std::cout << " ";}//' ';}
+		for (int n = -N; n <= -1; ++n) {
+			auto const m = n << 1;
+			if (m <  w     and n == -1 and marked) cout << "\u22A3"; else
+			if (m <  w - 1 and n != -1 or  u == 0) cout <<   uZERO ; else
+			if (m == w - 1 and             l == 0) cout << "\u2574"; else
+			if (n <  u)                            cout << "\u0020"; else
+			if (u <  n)                            cout << "\u2501"; else
+			if (w <  m)                            cout << "\u257A"; else cout << "\u0020";
+		}
+		for (int n = +1; n <= +N; ++n) {
+			auto const m = n << 1;
+			if (w <  m     and n == +1 and marked) cout << "\u22A2"; else
+			if (w <  m - 1 and n != +1 or  u == 0) cout <<   uZERO ; else
+			if (w == m - 1 and             l == 0) cout << "\u2576"; else
+			if (u <  n - 0)                        cout << "\u0020"; else
+			if (n <  u)                            cout << "\u2501"; else
+			if (m <  w)                            cout << "\u2578"; else cout << "\u0020";
 		}
 		_std::cout << _std::endl;
+		uZERO = "\u0020";
+		++l;
 	}
+//	cout << "\u202C";
 }
-/***/
+/***/ 
 
 ////////////////////////////////////////////////////////////////////////////////
 /*/

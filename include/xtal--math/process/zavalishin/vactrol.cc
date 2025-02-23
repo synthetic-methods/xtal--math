@@ -82,18 +82,17 @@ TAG_("vactrol")
 		z >>= U0_cue{0x08}.then(Z_packet{ 0, shape_type{0.125, 0.25}});
 		z >>= U0_cue{0x18}.then(Z_packet{-1, shape_type{0.500, 0.25}});
 
-		echo_rule_<25>('=');
+		echo_rule_<28>("\u2500");
+
 		TRUE_(0 == z.efflux(z_cursor++));
 	//	TRUE_(0 == z.influx(occur::stage_f(-1)));
 
-		echo_plot_<25>(z.store());
+		echo_plot_<28>(z.store(), 0x08, 0x18);
 
-		echo_rule_<25>();
 		TRUE_(0 == z.efflux(z_cursor++));
 //		TRUE_(1 == z.influx(occur::stage_f(-1)));
 //
-		echo_plot_<25>(z.store());
-//		echo_rule_<25>();
+		echo_plot_<28>(z.store());
 
 	}
 	/***/

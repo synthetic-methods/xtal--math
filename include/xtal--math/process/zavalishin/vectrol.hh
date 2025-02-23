@@ -59,11 +59,13 @@ struct vectrol<A>
 		method(auto x_input, auto s_scale, auto s_damping, auto &&...oo)
 		noexcept -> decltype(auto)
 		{
+			auto constexpr abs = [] XTAL_1FN_(call) (taylor::logarithm_t<-1>::template method_f<0>);
+
 			auto const [s_]       = S_::template memory<  state_type>();
-			auto const &s_reshape = S_::template   head<reshape_type>();
-			auto const  s_product = dot_f(s_, s_reshape.head());
+			auto const &s_reshape = S_::template   head<reshape_type>().head();
+			auto const  s_product = dot_f(s_, s_reshape);
 			
-			s_damping *= taylor::logarithm_t<-1>::template method_f<0>(s_product);
+			s_damping *= abs(s_product*half);
 
 			return S_::template method<Ns...>(x_input, s_scale, s_damping, XTAL_REF_(oo)...);
 		}
