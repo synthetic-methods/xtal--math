@@ -94,16 +94,16 @@ TAG_("phasor")
 		auto e_data  = Map<T_eigencolumns>(*z_data, N_data, 2).rowwise();
 		auto e_data  = ConvertToEigenMatrix<2>(y_data, N_data).rowwise();
 		
-		auto x_phi = X_phi{}; x_phi <<=                         {_fit::ratio_f(7)};
-		auto y_phi = Y_phi{}; y_phi <<= flow::indent_s<X_phi, 1>{_fit::ratio_f(7)}; y_phi <<= occur::resize_t<>(N_data);
+		auto x_phi = X_phi{}; x_phi <<=                          {_fit::ratio_f(7)};
+		auto y_phi = Y_phi{}; y_phi <<= occur::indent_s<X_phi, 1>{_fit::ratio_f(7)}; y_phi <<= occur::resize_t<>(N_data);
 		
-		auto z_chi = Z_chi::bind_f(); z_chi <<= flow::indent_s<X_phi, 1>{_fit::ratio_f(7)}; z_chi <<= occur::resize_t<>(N_data);
-		auto z_phi = Z_phi::bind_f(); z_phi <<= flow::indent_s<X_phi, 1>{_fit::ratio_f(7)}; z_phi <<= occur::resize_t<>(N_data);
-		auto z_psi = Z_psi::bind_f(); z_psi <<= flow::indent_s<X_phi, 1>{_fit::ratio_f(7)}; z_psi <<= occur::resize_t<>(N_data);
-	//	auto z_eig = Z_eig::bind_f(); z_eig <<= flow::indent_s<X_phi, 1>{_fit::ratio_f(7)}; z_eig <<= occur::resize_t<>(N_data);
+		auto z_chi = Z_chi::bind_f(); z_chi <<= occur::indent_s<X_phi, 1>{_fit::ratio_f(7)}; z_chi <<= occur::resize_t<>(N_data);
+		auto z_phi = Z_phi::bind_f(); z_phi <<= occur::indent_s<X_phi, 1>{_fit::ratio_f(7)}; z_phi <<= occur::resize_t<>(N_data);
+		auto z_psi = Z_psi::bind_f(); z_psi <<= occur::indent_s<X_phi, 1>{_fit::ratio_f(7)}; z_psi <<= occur::resize_t<>(N_data);
+	//	auto z_eig = Z_eig::bind_f(); z_eig <<= occur::indent_s<X_phi, 1>{_fit::ratio_f(7)}; z_eig <<= occur::resize_t<>(N_data);
 
 		occur::cursor_t<>         z_cursor(N_data);
-		flow ::indent_s<X_phi, 1> z_indent{x_delta};
+		occur::indent_s<X_phi, 1> z_indent{x_delta};
 		
 		z_phi <<= z_indent;
 		z_psi <<= z_indent;
@@ -141,7 +141,7 @@ TAG_("phasor")
 		x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-1>(2.0*x_source(0), x_target(0)));
 		x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-1>(2.0*x_source(0), x_target(0)));
 		x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-1>(2.0*x_source(0), x_target(0)));
-		y_source <<= flow::indent_s<X_phi, 0>{0.1};
+		y_source <<= occur::indent_s<X_phi, 0>{0.1};
 		x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-18>(2.0*x_source(0), x_target(0)));
 		x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-18>(2.0*x_source(0), x_target(0)));
 		x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-18>(2.0*x_source(0), x_target(0)));
@@ -163,7 +163,7 @@ TAG_("phasor")
 		TRUE_(y_phi() == X_phi{ 5*x_d4, x_d4});
 		TRUE_(y_phi() == X_phi{ 6*x_d4, x_d4});
 		TRUE_(y_phi() == X_phi{ 7*x_d4, x_d4});
-		y_phi <<= flow::indent_s<X_phi, 1>{x_d3};
+		y_phi <<= occur::indent_s<X_phi, 1>{x_d3};
 	//	TRUE_(y_phi() == X_phi{-8*x_d4, x_d3});
 		TRUE_(y_phi() == X_phi{-7*x_d4, x_d3});
 	//	TRUE_(y_phi() == X_phi{-6*x_d4, x_d3});
@@ -193,7 +193,7 @@ TAG_("phasor")
 		occur::cursor_t<> z_ren(8);
 		occur::review_t<Z_out> z_rev(z_out);
 
-		z_psi <<= flow::indent_s<X_phi, 1>{x_d4};
+		z_psi <<= occur::indent_s<X_phi, 1>{x_d4};
 		z_psi <<= z_req;
 		
 		//\
@@ -210,7 +210,7 @@ TAG_("phasor")
 		TRUE_(z_out[6] == bond::pack_f( 7*x_d4, x_d4));
 		TRUE_(z_out[7] == bond::pack_f(-8*x_d4, x_d4));
 
-		z_psi <<= flow::indent_s<X_phi, 1>{x_d3};
+		z_psi <<= occur::indent_s<X_phi, 1>{x_d3};
 
 		//\
 		(void) z_psi.efflux(z_rev, z_ren++);
@@ -241,7 +241,7 @@ TAG_("phasor")
 		occur::cursor_t<> z_ren(8);
 
 
-		z_phi <<= flow::indent_s<X_phi, 1>{x_d4};
+		z_phi <<= occur::indent_s<X_phi, 1>{x_d4};
 		z_phi <<= z_req;
 		z_phi >>= z_ren++;
 		//\
@@ -257,7 +257,7 @@ TAG_("phasor")
 		TRUE_(z_out[6] == bond::pack_f( 7*x_d4, x_d4));
 		TRUE_(z_out[7] == bond::pack_f(-8*x_d4, x_d4));
 		
-		z_phi <<= flow::indent_s<X_phi, 1>{x_d3};
+		z_phi <<= occur::indent_s<X_phi, 1>{x_d3};
 		z_phi >>= z_ren++;
 		//\
 		_xtd::ranges::copy(z_phi|z_fit, z_out.begin());
