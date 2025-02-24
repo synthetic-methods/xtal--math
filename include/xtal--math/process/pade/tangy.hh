@@ -39,7 +39,7 @@ struct  tangy<>
 template <int M_ism> requires in_n<M_ism, 1, 2>
 struct tangy<M_ism,-0>
 {
-	static constexpr int I_sgn = sign_v<(M_ism&1)^1, -1>;
+	static constexpr int I_sgn = cosign_v<M_ism>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -137,7 +137,7 @@ struct tangy<M_ism,-1>
 template <int M_ism>// requires in_n<M_ism,-1>
 struct tangy<M_ism,-2>
 {
-	static constexpr int I_sgn = sign_v<(M_ism&1)^1, -1>;
+	static constexpr int I_sgn = cosign_v<M_ism>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
