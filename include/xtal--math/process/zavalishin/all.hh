@@ -3,7 +3,6 @@
 #include "./filter.hh"
 #include "./iota.hh"
 #include "./prewarped.hh"
-#include "./ring.hh"
 #include "./staged.hh"
 #include "./vactrol.hh"
 #include "./vectrol.hh"
