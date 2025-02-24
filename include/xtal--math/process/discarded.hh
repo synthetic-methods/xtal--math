@@ -143,7 +143,7 @@ struct discarded<2, M_aux>
 		noexcept -> decltype(auto)
 		{
 			using _fit = bond::fit<decltype(u)>;
-			auto constexpr v = _fit::alpha_f(sign_v<(M_aux&1)^1, -1>);
+			auto constexpr v = _fit::alpha_f(cosign_v<M_aux>);
 			return S_::template        method<Is...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
 		})
 		template <auto ...Is>
@@ -152,7 +152,7 @@ struct discarded<2, M_aux>
 		noexcept -> decltype(auto)
 		{
 			using _fit = bond::fit<decltype(u)>;
-			auto constexpr v = _fit::alpha_f(sign_v<(M_aux&1)^1, -1>);
+			auto constexpr v = _fit::alpha_f(cosign_v<M_aux>);
 			return S_::template method_f<Is...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
 		}
 
