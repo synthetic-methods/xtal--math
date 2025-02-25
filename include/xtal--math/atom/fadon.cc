@@ -1,0 +1,37 @@
+#pragma once
+#include "./any.cc"
+#include "./fadon.hh"// testing...
+
+
+
+
+
+XTAL_ENV_(push)
+namespace xtal::atom::math::_test
+{/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+
+TAG_("fadon")
+{
+	using _fit = bond::fit<>;
+	using T_delta = typename _fit::delta_type;
+	using T_sigma = typename _fit::sigma_type;
+	using T_alpha = typename _fit::alpha_type;
+	using T_aphex = typename _fit::aphex_type;
+
+	TRY_("fadon (multiplicative)")
+	{
+		couple_t <T_alpha[2]> u_couple {2, 3};
+		fadon_t  <T_alpha[2]> u_fadon  {4, 9};
+		TRUE_(u_fadon*u_couple == 35.);
+		TRUE_(u_couple*u_fadon == 35.);
+
+	}
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+}/////////////////////////////////////////////////////////////////////////////
+XTAL_ENV_(pop)

@@ -3,7 +3,7 @@
 
 #include "./prewarped.hh"
 #include "./staged.hh"
-#include "./iota.hh"
+#include "./gate.hh"
 
 #include "./vectrol.hh"// testing...
 XTAL_ENV_(push)
@@ -37,7 +37,7 @@ TAG_("vectrol")
 
 		using A = any<A_filter>;
 		using Z_process = confined_t<void
-		,	prewarped<ordinal_constant_t<0>>, iota<0>
+		,	prewarped<ordinal_constant_t<0>>, gate<0>
 		,	typename A::redamp_type::template attend<>
 		,	typename A::refade_type::template attend<>
 		,	vectrol    <>

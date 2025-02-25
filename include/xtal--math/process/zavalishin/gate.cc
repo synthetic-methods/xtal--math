@@ -1,33 +1,34 @@
 #pragma once
 #include "./any.cc"
-#include "./between.hh"// testing...
 
 
 
 
 
+#include "./gate.hh"// testing...
 XTAL_ENV_(push)
-namespace xtal::process::math::_test
+namespace xtal::process::math::zavalishin::_test
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-/**/
-TAG_("math")
+/*/
+TAG_("gate")
 {
-	using _fit = bond::fit<>;
-	using U_delta = typename _fit::delta_type;
-	using U_sigma = typename _fit::sigma_type;
-	using U_alpha = typename _fit::alpha_type;
-	using U_aphex = typename _fit::aphex_type;
-	
-	using W_alpha = atom::couple_t<U_alpha[2]>;
-	using W_aphex = atom::couple_t<U_aphex[2]>;
+	using U_alpha = typename bond::fit<>::alpha_type;
+	using U_stage = occur::stage_t<>;
+	using U_key   = flow::key_s<>;
 
-	TRY_("between")
+	using U_slicer = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
+
+	U_alpha constexpr omega = 2*2*2*3*5*5*7;
+	U_alpha constexpr   rho = 1;
+	U_alpha constexpr    up = 1;
+	U_alpha constexpr    dn = 0;
+
+	TRY_("gate: generation")
 	{
-		TRUE_(between_f<-1, 1>(0) == 0);
-		TRUE_(between_f<-1, 1>(2) == 1);
+		TRUE_(true);
 
 	}
 }

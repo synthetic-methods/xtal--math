@@ -3,7 +3,7 @@
 
 #include "./prewarped.hh"
 #include "./staged.hh"
-#include "./iota.hh"
+#include "./gate.hh"
 
 #include "./vactrol.hh"// testing...
 XTAL_ENV_(push)
@@ -44,7 +44,7 @@ TAG_("vactrol")
 		using Z_cue    = flow::cue_s<>;
 
 		using Z_process = confined_t<void
-		,	prewarped<ordinal_constant_t<0>>, iota<1>
+		,	prewarped<ordinal_constant_t<0>>, gate<1>
 		,	typename redamp_type::template attend<>
 		,	typename refade_type::template attend<>
 		,	vactrol <>

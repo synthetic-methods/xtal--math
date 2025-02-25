@@ -13,14 +13,9 @@ namespace xtal::atom::math::dirichlet
 
 template <class   ..._s>	struct  symbol;
 template <class   ..._s>	using   symbol_t = typename symbol<_s...>::type;
-template <class   ...Ts>	concept symbol_q = bond::tag_p<symbol_t, Ts...>;
+template <class   ...Ts>	concept symbol_q = bond::any_tags_p<symbol_t, Ts...>;
 
-
-XTAL_FX0_(to) (template <auto f=_std::identity{}>
-XTAL_DEF_(return,inline,let)
-symbol_f(auto &&...oo),
-	_detail::factory<symbol_t>::
-		template make<f>(XTAL_REF_(oo)...))
+XTAL_DEF_(let) symbol_f = [] XTAL_1FN_(call) (_detail::fake_f<symbol_t>);
 
 
 ////////////////////////////////////////////////////////////////////////////////

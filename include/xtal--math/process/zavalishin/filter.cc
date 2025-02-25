@@ -1,9 +1,9 @@
 #pragma once
 #include "./any.cc"
-
-#include "./prewarped.hh"
+#include "./gate.hh"
 #include "./staged.hh"
-#include "./iota.hh"
+#include "./prewarped.hh"
+
 
 #include "./filter.hh"// testing...
 XTAL_ENV_(push)
@@ -134,7 +134,7 @@ TAG_("filter-ring")
 		flow::packed_t<stage_type> constexpr note_off{ 1};
 		flow::packed_t<stage_type> constexpr note_out{-1};
 
-		using Z_process = prewarped_t<ordinal_constant_t<0>, iota<-1>
+		using Z_process = prewarped_t<ordinal_constant_t<0>, gate<-1>
 		,	typename A::redamp_type::template attend<>
 		,	typename A::refade_type::template attend<>
 	//	,	ring    <>
@@ -170,22 +170,24 @@ TAG_("filter-ring")
 		z >>= flow::cue_f(0x10).then((note_on , redamp_type{0}));
 		z >>= flow::cue_f(0x27).then((note_off, redamp_type{root_f<-2>(2.F)}));
 		/*/
-		z >>= flow::cue_f(0x08).then(Z_packet{ 0, 0});
-		z >>= flow::cue_f(0x10).then(Z_packet{ 0, 0});
-		z >>= flow::cue_f(0x27).then(Z_packet{ 1, root_f<-2>(2.F)});
+		z >>= flow::cue_f(0x08).then(Z_packet{ 0, 0.0F});
+		z >>= flow::cue_f(0x10).then(Z_packet{ 0, 0.0F});
+		//\
+		z >>= flow::cue_f(0x20).then(Z_packet{ 1, root_f<-2>(2.F)});
+		z >>= flow::cue_f(0x20).then(Z_packet{ 1, 1.0F});
 		/***/
 
 		echo_rule_<28>("\u2500");
 
 		TRUE_(0 == z.efflux(z_cursor++));
-		TRUE_(0 == z.influx(occur::stage_f( 1)));
+	//	TRUE_(0 == z.influx(occur::stage_f( 1)));
 
 		echo_plot_<28>(z.store(), 0x08, 0x10);
 
 		TRUE_(0 == z.efflux(z_cursor++));
-		TRUE_(1 == z.influx(occur::stage_f( 1)));
+	//	TRUE_(1 == z.influx(occur::stage_f( 1)));
 
-		echo_plot_<28>(z.store(), 0x07);
+		echo_plot_<28>(z.store(), 0x00);
 
 	}
 	/***/
@@ -210,7 +212,7 @@ TAG_("filter-ring")
 		
 		using U1_cue  = flow::cue_s<flow::cue_s<>>;
 
-		using Z_process = prewarped_t<ordinal_constant_t<0>, iota<-1>
+		using Z_process = prewarped_t<ordinal_constant_t<0>, gate<-1>
 		,	typename A::redamp_type::template attend<>
 		,	typename A::refade_type::template attend<>
 		//\

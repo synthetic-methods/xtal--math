@@ -106,7 +106,7 @@ struct staged<-1>
 
 			if (o.head() == -1) {
 			//	TODO: Accommodate gain when calculating the product?
-			//	TODO: Address clumsy dynamic-sized dot-product?
+			//	TODO: Address clumsy dynamic-sized dot-product.
 
 				auto const order = order_type{self()};
 				input_type y{};

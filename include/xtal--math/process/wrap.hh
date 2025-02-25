@@ -44,7 +44,7 @@ struct wrap<As...>
 		method_f(auto &&o)
 		noexcept -> auto
 		{
-			return o - round(o);
+			return bond::math::bit_fraction_f(o);
 		}
 		template <auto ...>
 		XTAL_DEF_(return,inline,set)

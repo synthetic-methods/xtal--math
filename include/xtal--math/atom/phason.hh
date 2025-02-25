@@ -30,17 +30,12 @@ Rework `operator`s to accommodate `std::complex`. \
 
 template <class   ..._s>	struct          phason;
 template <class   ..._s>	using           phason_t = typename phason<_s...>::type;
-template <class   ...Ts>	concept         phason_q = bond::tag_p<phason_t, Ts...>;
-template <class   ...Ts>	concept    real_phason_q = bond::tag_p<phason_t, Ts...> and real_variable_q<initializer_t<Ts>...>;
-template <class   ...Ts>	concept simplex_phason_q = bond::tag_p<phason_t, Ts...> and simplex_field_q<initializer_t<Ts>...>;
-template <class   ...Ts>	concept complex_phason_q = bond::tag_p<phason_t, Ts...> and complex_field_q<initializer_t<Ts>...>;
+template <class   ...Ts>	concept         phason_q = bond::array_or_any_tags_p<phason_t, Ts...>;
+template <class   ...Ts>	concept    real_phason_q = bond::array_or_any_tags_p<phason_t, Ts...> and real_variable_q<initializer_t<Ts>...>;
+template <class   ...Ts>	concept simplex_phason_q = bond::array_or_any_tags_p<phason_t, Ts...> and simplex_field_q<initializer_t<Ts>...>;
+template <class   ...Ts>	concept complex_phason_q = bond::array_or_any_tags_p<phason_t, Ts...> and complex_field_q<initializer_t<Ts>...>;
 
-
-XTAL_FX0_(to) (template <auto f=_std::identity{}>
-XTAL_DEF_(return,inline,let)
-phason_f(auto &&...oo),
-	_detail::factory<phason_t>::
-		template make<f>(XTAL_REF_(oo)...))
+XTAL_DEF_(let) phason_f = [] XTAL_1FN_(call) (_detail::fake_f<phason_t>);
 
 
 ////////////////////////////////////////////////////////////////////////////////

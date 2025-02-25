@@ -1,6 +1,6 @@
 #include "./any.cc"
-
-#include "./between.cc"
+#include "./clamp.cc"
+#include "./cross.cc"
 #include "./cut.cc"
 #include "./dilate.cc"
 #include "./dilated.cc"

@@ -24,7 +24,7 @@ When `M_end != 0`, a gate/hold is generated. \
 This mode simulates `HeavisidePi[# - 1/2]`. \
 
 template <int M_end=1>
-struct iota
+struct gate
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -56,7 +56,7 @@ struct iota
 	};
 };
 template <>
-struct iota<0>
+struct gate<0>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>

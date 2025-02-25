@@ -15,7 +15,7 @@ namespace xtal::process::math
 
 template <int M_dn=0, int M_up=0>
 XTAL_DEF_(return,inline,let)
-between_f(auto &&u)
+clamp_f(auto &&u)
 noexcept -> auto
 {
 	XTAL_IF0
@@ -40,7 +40,7 @@ noexcept -> auto
 ////////////////////////////////////////////////////////////////////////////////
 
 template <auto ...Ms>
-struct  between
+struct  clamp
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -55,13 +55,13 @@ struct  between
 		method_f(auto &&...oo)
 		noexcept -> decltype(auto)
 		{
-			return between_f<Ms...>(XTAL_REF_(oo)...);
+			return clamp_f<Ms...>(XTAL_REF_(oo)...);
 		}
 
 	};
 };
 template <auto ...Ms>
-using   between_t = process::confined_t<between<Ms...>>;
+using   clamp_t = process::confined_t<clamp<Ms...>>;
 
 
 ///////////////////////////////////////////////////////////////////////////////
