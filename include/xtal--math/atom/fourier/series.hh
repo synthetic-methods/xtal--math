@@ -13,14 +13,9 @@ namespace xtal::atom::math::fourier
 
 template <class   ..._s>	struct  series;
 template <class   ..._s>	using   series_t = typename series<_s...>::type;
-template <class   ...Ts>	concept series_q = bond::tag_p<series_t, Ts...>;
+template <class   ...Ts>	concept series_q = bond::any_tags_p<series_t, Ts...>;
 
-
-XTAL_FX0_(to) (template <auto f=_std::identity{}>
-XTAL_DEF_(return,inline,let)
-series_f(auto &&...oo),
-	_detail::factory<series_t>::
-		template make<f>(XTAL_REF_(oo)...))
+XTAL_DEF_(let) series_f = [] XTAL_1FN_(call) (_detail::fake_f<series_t>);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -169,7 +164,7 @@ struct series<A>
 			auto const j = S_::rend() - 1;
 			
 		//	Compute the fractional sinusoid for this `size`:
-			auto const y = process::math::pade::unity_t<1>::template method_f<6>(_fit::ratio_f(-1, size << 1));// TODO: Make `constexpr`!
+			auto constexpr y = process::math::pade::unity_t<1>::template method_f<6>(_fit::ratio_f(-1, size << 1));
 
 		//	Compute the initial `1/8`th then mirror the remaining segments:
 			typename S_::difference_type constexpr M = size >> 2U;// `1/8`th

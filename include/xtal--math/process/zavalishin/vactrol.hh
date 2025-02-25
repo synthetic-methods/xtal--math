@@ -64,7 +64,7 @@ struct vactrol<A>
 			auto const &[d0, d1] = S_::template head<reshape_type>().head();
 			auto const  [s_]     = S_::template memory<state_type>();
 
-			auto const v = pade::tangy_t< 1>::template method_f< 1>(half*d1);
+			auto const v = pade::tangy_t<1>::template method_f< 1>(half*d1);
 			auto const w = abs(x_input - s_.sum());
 			s_scale /= d0*term_f(v, one - v, w);
 

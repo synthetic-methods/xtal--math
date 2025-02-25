@@ -374,8 +374,8 @@ noexcept -> auto
 	using X_sigma = typename X_fit::sigma_type;
 	using X_delta = typename X_fit::delta_type;
 
-	using Y       = complete_t<Y_return, X_delta>;
-	using Y_fit    = bond::fit<Y>;
+	using Y       = complete_t<Y_return, X>;
+	using Y_fit   = bond::fit<Y>;
 	using Y_alpha = typename Y_fit::alpha_type;
 	using Y_sigma = typename Y_fit::sigma_type;
 	using Y_delta = typename Y_fit::delta_type;

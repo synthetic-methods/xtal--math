@@ -1,6 +1,6 @@
 #include "./any.hh"
-
-#include "./between.hh"
+#include "./clamp.hh"
+#include "./cross.hh"
 #include "./cut.hh"
 #include "./dilate.hh"
 #include "./dilated.hh"

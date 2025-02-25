@@ -33,7 +33,7 @@ For example, with base-types of `double` and `std::complex<double>` respectively
 the storage required is `16` and `32` bytes-per-pole. \
 
 template <class ..._s>	struct  filter;
-template <class ..._s>	concept filter_q = bond::tag_p<filter, _s...>;
+template <class ..._s>	concept filter_q = bond::any_tags_p<filter, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////

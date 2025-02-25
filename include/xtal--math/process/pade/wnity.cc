@@ -79,8 +79,6 @@ TAG_("wnity")
 		TRUE_(check_f<19>(get<0>(y6), ys_0(6)));
 		TRUE_(check_f<19>(get<0>(y7), ys_0(7)));
 
-	//	TODO: Compare performance of `processor` vs `Eigen`. \
-	
 	};
 	/***/
 	/*/
