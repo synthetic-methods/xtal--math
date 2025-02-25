@@ -169,7 +169,7 @@ struct series<A>
 			auto const j = S_::rend() - 1;
 			
 		//	Compute the fractional sinusoid for this `size`:
-			auto const y = process::math::pade::unity_t<1>::template method_f<6>(_fit::ratio_f(-1, size << 1));// TODO: Make `constexpr`!
+			auto constexpr y = process::math::pade::unity_t<1>::template method_f<6>(_fit::ratio_f(-1, size << 1));
 
 		//	Compute the initial `1/8`th then mirror the remaining segments:
 			typename S_::difference_type constexpr M = size >> 2U;// `1/8`th

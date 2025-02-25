@@ -50,7 +50,7 @@ struct discarded<1, M_aux>
 		method(auto &&u, auto &&...oo),
 		noexcept -> auto
 		{
-			auto  v = S_::template        method<Is...>(u, XTAL_REF_(oo)...);
+			auto  v = S_::template method<Is...>(u, XTAL_REF_(oo)...);
 			using V = XTAL_ALL_(v);
 			using U = XTAL_ALL_(u);
 			static_assert(same_q<U, V>);
@@ -88,7 +88,7 @@ struct discarded<1>
 		method(auto &&u, auto &&...oo),
 		noexcept -> auto
 		{
-			auto  v = S_::template        method<Is...>(u, XTAL_REF_(oo)...);
+			auto  v = S_::template method<Is...>(u, XTAL_REF_(oo)...);
 			using V = XTAL_ALL_(v);
 			using U = XTAL_ALL_(u);
 
@@ -97,7 +97,12 @@ struct discarded<1>
 				return v*XTAL_REF_(u);
 			}
 			XTAL_0IF (complex_variable_q<V>) {
-				destruct_f(v)[1] *= XTAL_REF_(u); return v;
+				XTAL_IF1_(consteval) {
+					return V{v.real(), v.imag()*XTAL_REF_(u)};
+				}
+				XTAL_0IF_(else) {
+					destruct_f(v)[1] *= XTAL_REF_(u); return v;
+				}
 			}
 			XTAL_0IF (complex_field_q<V>) {
 				return complexion_f(v.real(), v.imag()*XTAL_REF_(u));
@@ -117,7 +122,12 @@ struct discarded<1>
 				return v*XTAL_REF_(u);
 			}
 			XTAL_0IF (complex_variable_q<V>) {
-				destruct_f(v)[1] *= XTAL_REF_(u); return v;
+				XTAL_IF1_(consteval) {
+					return V{v.real(), v.imag()*XTAL_REF_(u)};
+				}
+				XTAL_0IF_(else) {
+					destruct_f(v)[1] *= XTAL_REF_(u); return v;
+				}
 			}
 			XTAL_0IF (complex_field_q<V>) {
 				return complexion_f(v.real(), v.imag()*XTAL_REF_(u));

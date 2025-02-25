@@ -16,8 +16,8 @@ namespace xtal::process::math::_test
 /////////////////////////////////////////////////////////////////////////////////
 
 template <size_type N_columns>
-XTAL_DEF_(return,inline,static)
-auto ConvertToEigenMatrix(double **data, size_type n_rows)
+XTAL_DEF_(return,let)
+ConvertToEigenMatrix(double **data, size_type n_rows)
 noexcept
 {
 	using namespace Eigen;
