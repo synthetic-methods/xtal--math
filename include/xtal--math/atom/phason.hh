@@ -30,10 +30,10 @@ Rework `operator`s to accommodate `std::complex`. \
 
 template <class   ..._s>	struct          phason;
 template <class   ..._s>	using           phason_t = typename phason<_s...>::type;
-template <class   ...Ts>	concept         phason_q = bond::array_or_any_tags_p<phason_t, Ts...>;
-template <class   ...Ts>	concept    real_phason_q = bond::array_or_any_tags_p<phason_t, Ts...> and real_variable_q<initializer_t<Ts>...>;
-template <class   ...Ts>	concept simplex_phason_q = bond::array_or_any_tags_p<phason_t, Ts...> and simplex_field_q<initializer_t<Ts>...>;
-template <class   ...Ts>	concept complex_phason_q = bond::array_or_any_tags_p<phason_t, Ts...> and complex_field_q<initializer_t<Ts>...>;
+template <class   ...Ts>	concept         phason_q = bond::fixed_tagged_with_p<phason_t, Ts...>;
+template <class   ...Ts>	concept    real_phason_q = bond::fixed_tagged_with_p<phason_t, Ts...> and real_variable_q<initializer_t<Ts>...>;
+template <class   ...Ts>	concept simplex_phason_q = bond::fixed_tagged_with_p<phason_t, Ts...> and simplex_field_q<initializer_t<Ts>...>;
+template <class   ...Ts>	concept complex_phason_q = bond::fixed_tagged_with_p<phason_t, Ts...> and complex_field_q<initializer_t<Ts>...>;
 
 XTAL_DEF_(let) phason_f = [] XTAL_1FN_(call) (_detail::fake_f<phason_t>);
 
@@ -58,11 +58,15 @@ struct phason<A>
 	using coordinate_type = array_valued_u<A>;
 	static_assert(continuous_field_q<coordinate_type>);
 
-	using U_fit = bond::fit<coordinate_type>;
-	using T_fit = typename U_fit::template widen<-1>;
-	
-	using   ordinate_type = bond::compose_s<typename T_fit::sigma_type, U_fit>;
-	using inordinate_type = bond::compose_s<typename T_fit::delta_type, U_fit>;
+	using W_fit   = bond::fit<coordinate_type>;
+	using U_fit   = typename W_fit::template widen<-1>;
+	using W_sigma = typename W_fit::sigma_type;
+	using U_sigma = typename U_fit::sigma_type;
+	using W_delta = typename W_fit::delta_type;
+	using U_delta = typename U_fit::delta_type;
+
+	using   ordinate_type = bond::compose_s<U_sigma, W_fit>;
+	using inordinate_type = bond::compose_s<U_delta, W_fit>;
 
 	static_assert(_std::numeric_limits<unstruct_u<ordinate_type>>::is_modulo);// D'oh!
 
@@ -182,7 +186,7 @@ struct phason<A>
 		noexcept -> auto &
 		requires in_n<simplex_variable_q<decltype(x)>>
 		{
-			using _fit = bond::fit<decltype(x)>;
+			using X_fit = bond::fit<decltype(x)>;
 			auto &s = reinterpret_cast<phason_t<inordinate_type[size]> &>(self());
 
 			XTAL_IF0
@@ -190,8 +194,8 @@ struct phason<A>
 				S_::operator*=(x);
 			}
 			XTAL_0IF (1*sizeof(ordinate_type) == sizeof(coordinate_type)) {
-				unsigned constexpr M_bias = T_fit::half.depth >> T_fit::half.width;
-				unsigned constexpr M_size = T_fit::half.depth - M_bias;
+				unsigned constexpr M_bias = U_fit::half.depth >> U_fit::half.width;
+				unsigned constexpr M_size = U_fit::half.depth - M_bias;
 				auto [m, n] = bond::math::bit_representation_f(x);
 				m >>= n - M_size;
 				s >>=     M_size;
@@ -199,12 +203,12 @@ struct phason<A>
 			}
 			XTAL_IF0
 			XTAL_0IF (2*sizeof(ordinate_type) == sizeof(coordinate_type)) {
-				typename T_fit::sigma_type t_[2];
-				typename U_fit::sigma_type const u(x*_fit::diplo_f(T_fit::full.depth));
+				U_sigma t_[2];
+				W_sigma const u(x*X_fit::diplo_f(U_fit::full.depth));
 				#pragma unroll
 				for (XTAL_ALL_(size()) i{}; i < size; ++i) {
-					reinterpret_cast<typename U_fit::sigma_type &>(t_) = u*s[i];
-				//	t_[1] += t_[0] >> T_fit::positive.depth;// Round...
+					reinterpret_cast<W_sigma &>(t_) = u*s[i];
+				//	t_[1] += t_[0] >> U_fit::positive.depth;// Round...
 					s [i]  = t_[1];
 				}
 			}
@@ -257,9 +261,11 @@ struct phason<A>
 		discontinuity()
 		noexcept -> Y
 		{
+		//	TODO: Accommodate `discontinuity` for `complex_variable_q<inordinate_type>`...
+			auto constexpr N1 = U_fit::positive.depth;
 			auto [u0, u1] =  self();
-			auto const v0 = _xtd::bit_cast<inordinate_type>(u0) >> T_fit::positive.depth; u0 ^= v0; u0 -= v0;
-			auto const v1 = _xtd::bit_cast<inordinate_type>(u1) >> T_fit::positive.depth; u1 ^= v1; u1 -= v1;
+			auto const v0 = _xtd::bit_cast<inordinate_type>(u0) >> N1; u0 ^= v0; u0 -= v0;
+			auto const v1 = _xtd::bit_cast<inordinate_type>(u1) >> N1; u1 ^= v1; u1 -= v1;
 			return condition_f<Y>(v0 == v1 and u0 < u1);
 		}
 

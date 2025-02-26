@@ -31,7 +31,7 @@ template <typename ...As>	using   differ_t = process::confined_t<differ<As...>>;
 template <class U_pole, auto N_pole>
 struct differ<U_pole[N_pole]>
 {
-	using  order_type = occur::inferred_t<struct ORDER, unsigned int, bond::seek_s<N_pole + 1>>;
+	using  order_type = occur::inferred_t<union ORDER, unsigned int, bond::seek_s<N_pole + 1>>;
 
 	using superkind = bond::compose<bond::tag<differ_t>
 	,	provision::memorized<U_pole[N_pole << 1]>

@@ -13,7 +13,7 @@ namespace xtal::process::math
 
 template <typename ..._s>	struct  phasor;
 template <typename ..._s>	using   phasor_t = confined_t<phasor<_s...>>;
-template <typename ..._s>	concept phasor_q = bond::any_tags_p<phasor, _s...>;
+template <typename ..._s>	concept phasor_q = bond::tagged_with_p<phasor, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -36,11 +36,11 @@ struct vectrol<A>
 	using metakind = any<vectrol<A>>;
 
 	using   state_type = typename metakind::   state_type;
-	using   shape_type = typename metakind::   shape_type;
-	using reshape_type = typename metakind:: reshape_type;
+	using   curve_type = typename metakind::   curve_type;
+	using recurve_type = typename metakind:: recurve_type;
 	
 	using superkind = bond::compose<bond::tag<vectrol_t>
-	,	typename reshape_type::template attach<>
+	,	typename recurve_type::template attach<>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -62,7 +62,7 @@ struct vectrol<A>
 			auto constexpr abs = [] XTAL_1FN_(call) (taylor::logarithm_t<-1>::template method_f<0>);
 
 			auto const [s_]       = S_::template memory<  state_type>();
-			auto const &s_reshape = S_::template   head<reshape_type>().head();
+			auto const &s_reshape = S_::template   head<recurve_type>().head();
 			auto const  s_product = dot_f(s_, s_reshape);
 			
 			s_damping *= abs(s_product*half);
