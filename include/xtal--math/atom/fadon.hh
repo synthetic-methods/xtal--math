@@ -23,7 +23,7 @@ Specialize `plus_multiplies` or `fma`? \
 
 template <class ..._s>	struct  fadon;
 template <class ..._s>	using   fadon_t = typename fadon<_s...>::type;
-template <class ..._s>	concept fadon_q = bond::array_or_any_tags_p<fadon_t, _s...> and fixed_shaped_q<_s...>;
+template <class ..._s>	concept fadon_q = bond::fixed_tagged_with_p<fadon_t, _s...>;
 
 XTAL_DEF_(let) fadon_f = [] XTAL_1FN_(call) (_detail::fake_f<fadon_t>);
 

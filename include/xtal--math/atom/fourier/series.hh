@@ -13,7 +13,7 @@ namespace xtal::atom::math::fourier
 
 template <class   ..._s>	struct  series;
 template <class   ..._s>	using   series_t = typename series<_s...>::type;
-template <class   ...Ts>	concept series_q = bond::any_tags_p<series_t, Ts...>;
+template <class   ...Ts>	concept series_q = bond::tagged_with_p<series_t, Ts...>;
 
 XTAL_DEF_(let) series_f = [] XTAL_1FN_(call) (_detail::fake_f<series_t>);
 

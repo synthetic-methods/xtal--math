@@ -13,7 +13,7 @@ namespace xtal::provision
 
 template <template <auto ...> class F=process::math::identity>	struct  saturated;
 template <template <auto ...> class F=process::math::identity>	using   saturated_t = confined_t<saturated<F>>;
-template <                                        class ..._s>	concept saturated_q = bond::any_tabs_p<saturated<>, _s...>;
+template <                                        class ..._s>	concept saturated_q = bond::tabbed_with_p<saturated<>, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////

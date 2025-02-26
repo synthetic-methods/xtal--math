@@ -96,6 +96,13 @@ struct staged<-1>
 		{
 			return S_::template fuse<N_ion>(XTAL_REF_(o));
 		}
+		template <signed N_ion>
+		XTAL_DEF_(return,inline,let)
+		fuse(flow::assessing_q<occur::stage_t<>> auto &&o)
+		noexcept -> signed
+		{
+			return fuse<+1>(XTAL_REF_(o).tail());
+		}
 		template <signed N_ion> requires in_n<N_ion, +1>
 		XTAL_DEF_(return,inline,let)
 		fuse(occur::stage_q auto &&o)

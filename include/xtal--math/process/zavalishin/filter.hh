@@ -33,35 +33,48 @@ For example, with base-types of `double` and `std::complex<double>` respectively
 the storage required is `16` and `32` bytes-per-pole. \
 
 template <class ..._s>	struct  filter;
-template <class ..._s>	concept filter_q = bond::any_tags_p<filter, _s...>;
+template <class ..._s>	concept filter_q = bond::tagged_with_p<filter, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <class U_pole, auto N_pole>
-struct any<filter<U_pole[N_pole]>>
+template <bond::compose_q A, class ..._s>
+struct any<filter<A, _s...>>
+:	bond::compose<A, any<filter<_s...>>>
 {
+};
+template <incomplete_q A, class ..._s>
+struct any<filter<A, _s...>>
+:	bond::compose<any<A>, any<filter<_s...>>>
+{
+};
+template <class U_pole, auto N_pole, class ..._s>
+struct any<filter<U_pole[N_pole], _s...>>
+{
+	static_assert(incomplete_q<_s...>);
 //	USED
 	using   input_type = U_pole;
-	using   shape_type =   atom::couple_t<unstruct_u<U_pole>[N_pole]>;
-	using   state_type =   atom::couple_t<          U_pole [N_pole]>;
-	using   slope_type =   atom::couple_t<          U_pole [N_pole]>;
-	using   stage_type =  occur::stage_t<>;
+	using   curve_type =  atom::couple_t<unstruct_u<U_pole>[N_pole]>;
+	using   state_type =  atom::couple_t<           U_pole [N_pole]>;
+	using   slope_type =  atom::couple_t<           U_pole [N_pole]>;
+	using   stage_type = occur::stage_t<>;
 
 //	ATTACHED
-	using reinput_type = occur::inferred_t<struct REINPUT, input_type>;
-	using reshape_type = occur::inferred_t<struct RECURVE, shape_type>;
-	using rescale_type = occur::inferred_t<struct RESCALE, unstruct_u<U_pole>>;
-	using  redamp_type = occur::inferred_t<struct  REDAMP, unstruct_u<U_pole>>;
-	using  refade_type = occur::inferred_t<struct  REFADE, unstruct_u<U_pole>>;
-	using  rezoom_type = occur::inferred_t<struct  REZOOM, unstruct_u<U_pole>>;
+	using recurve_type = occur::inferred_t<_s..., union FILTER, union RECURVE, curve_type>;
+	using reinput_type = occur::inferred_t<_s..., union FILTER, union REINPUT, input_type>;
+	using rescale_type = occur::inferred_t<_s..., union FILTER, union RESCALE, unstruct_u<U_pole>>;
+	using  redamp_type = occur::inferred_t<_s..., union FILTER, union  REDAMP, unstruct_u<U_pole>>;
+	using  refade_type = occur::inferred_t<_s..., union FILTER, union  REFADE, unstruct_u<U_pole>>;
+	using  rezoom_type = occur::inferred_t<_s..., union FILTER, union  REZOOM, unstruct_u<U_pole>>;
 
 //	DISPATCHED
 	//\
-	using   order_type = occur::inferred_t<struct   ORDER, unsigned int, bond::seek_s<1 + N_pole>>;
-	using   order_type = occur::inferred_t<struct   ORDER, unsigned int, bond::word  <1 + N_pole>>;
-	using   patch_type = occur::inferred_t<struct   PATCH, unsigned int, bond::word  <2>>;
-	using   limit_type = occur::inferred_t<struct   LIMIT, unsigned int, bond::word  <2>>;
+	using   order_type = occur::inferred_t<_s..., union FILTER, union   ORDER, unsigned int, bond::seek_s<1 + N_pole>, _s...>;
+	using   order_type = occur::inferred_t<_s..., union FILTER, union   ORDER, unsigned int, bond::word  <1 + N_pole>>;
+	using   patch_type = occur::inferred_t<_s..., union FILTER, union   PATCH, unsigned int, bond::word  <2>>;
+	using   limit_type = occur::inferred_t<_s..., union FILTER, union   LIMIT, unsigned int, bond::word  <2>>;
+
+//	static_assert(same_q<LIMIT, zavalishin::LIMIT>);
 
 	using superkind = provision::voiced<void
 	,	typename order_type::template dispatch<>
@@ -79,7 +92,7 @@ struct any<filter<U_pole[N_pole]>>
 		using   input_type = any::   input_type;
 		using   state_type = any::   state_type;
 		using   slope_type = any::   slope_type;
-		using   shape_type = any::   shape_type;
+		using   curve_type = any::   curve_type;
 		using   stage_type = any::   stage_type;
 
 		using reinput_type = any:: reinput_type;
@@ -94,7 +107,7 @@ struct any<filter<U_pole[N_pole]>>
 
 	};
 };
-template <scalar_q A>
+template <scalar_q A> requires complete_q<A>
 struct any<filter<A>>
 :	any<filter<A[2]>>
 {
@@ -108,10 +121,22 @@ struct any<filter<>>
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <vector_q A>
-struct filter<A>
+//template <bond::compose_q A, class ..._s>
+//struct filter<A, _s...>
+//:	bond::compose<A, filter<_s...>>
+//{
+//};
+//template <incomplete_q A, class ..._s>
+//struct filter<A, _s...>
+//:	bond::compose<any<A>, filter<_s...>>
+//{
+//};
+//template <vector_q A, class ..._s>
+//struct filter<A, _s...>
+template <class ..._s>
+struct filter
 {
-	using      metakind = any<filter<A>>;
+	using      metakind = any<filter<_s...>>;
 	using    state_type = typename metakind:: state_type;
 	using    stage_type = typename metakind:: stage_type;
 	using   rezoom_type = typename metakind::rezoom_type;
@@ -254,16 +279,16 @@ struct filter<A>
 
 	};
 };
-template <scalar_q A>
-struct filter<A>
-:	filter<A[2]>
-{
-};
-template <>
-struct filter<>
-:	filter<typename bond::fit<>::alpha_type>
-{
-};
+//template <scalar_q A> requires complete_q<A>
+//struct filter<A>
+//:	filter<A[2]>
+//{
+//};
+//template <>
+//struct filter<>
+//:	filter<typename bond::fit<>::alpha_type>
+//{
+//};
 
 
 ////////////////////////////////////////////////////////////////////////////////

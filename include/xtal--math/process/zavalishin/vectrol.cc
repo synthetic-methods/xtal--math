@@ -54,8 +54,8 @@ TAG_("vectrol")
 		_std::array<U_alpha, 0x100> f_; f_.fill(omega);
 		auto z = Z_processor::bind_f(processor::let_f(f_));
 
-		using   shape_type = typename A::  shape_type;
-		using reshape_type = typename A::reshape_type;
+		using   curve_type = typename A::  curve_type;
+		using recurve_type = typename A::recurve_type;
 
 		auto z_resize = occur::resize_t<>(0x020);
 		auto z_cursor = occur::cursor_t<>(0x020);
@@ -67,7 +67,7 @@ TAG_("vectrol")
 		z <<= typename A:: redamp_type{1};
 		z <<= typename A:: refade_type{0.5};
 
-		z <<= reshape_type{shape_type{0.125, one - 0.125}};
+		z <<= recurve_type{curve_type{0.125, one - 0.125}};
 
 		z <<= z_sample;
 		z <<= z_resize;

@@ -10,7 +10,7 @@
 namespace xtal
 {
 template <class U, class V=U>	struct  complexion;
-template <class        ...Ts>	concept complexion_q = bond::any_tags_p<complexion, Ts...>;
+template <class        ...Ts>	concept complexion_q = bond::tagged_with_p<complexion, Ts...>;
 
 XTAL_DEF_(return,inline,let)
 objective_f(complexion_q auto &&o)

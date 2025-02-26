@@ -13,7 +13,7 @@ namespace xtal::atom::math::fourier
 
 template <class        ..._s>	struct  serial;
 template <class        ..._s>	using   serial_t = typename serial<_s...>::type;
-template <class        ...Ts>	concept serial_q = bond::any_tags_p<serial_t, Ts...>;
+template <class        ...Ts>	concept serial_q = bond::tagged_with_p<serial_t, Ts...>;
 template <int N, class ...Ts>	concept serial_p = serial_q<Ts...> and (...and (N == Ts::size()));
 
 XTAL_DEF_(let) serial_f = [] XTAL_1FN_(call) (_detail::fake_f<serial_t>);
