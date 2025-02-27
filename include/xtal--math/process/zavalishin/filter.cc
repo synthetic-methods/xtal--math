@@ -28,48 +28,45 @@ struct filter_parameters
 /**/
 TAG_("filter")
 {
-	TRY_("parameterization")
-	{
-		using T_fit = bond::fit<>;
-		using T_alpha = typename T_fit::alpha_type;
+	using T_alpha   = typename bond::fit<>::alpha_type;
+	using T_aphex   = typename bond::fit<>::aphex_type;
 
+	using A_filter  = filter<>;
+	using W_filter  = any_t<A_filter>;
+	using U_limit   = typename W_filter::   limit_type;
+	using U_order   = typename W_filter::   order_type;
+	using U_patch   = typename W_filter::   patch_type;
+	using U_stage   = typename W_filter::   stage_type;
+	using U_shape   = typename W_filter::   shape_type;
+	using U_refade  = typename W_filter::  refade_type;
+	using U_redamp  = typename W_filter::  redamp_type;
+	using U_reshape = typename W_filter:: reshape_type;
 
-		using Y_ramp = prewarped_t<ordinal_constant_t<1>
-		,	filter<T_alpha[2], union RAMP>
-		>;
-		using Y_ring = prewarped_t<ordinal_constant_t<1>
-		,	filter<T_alpha[2], union RING>
-		>;
-		static_assert(different_q<typename Y_ramp::order_type, typename Y_ring::order_type>);
+	using _0 = ordinal_constant_t<0>;
+	using _1 = ordinal_constant_t<1>;
 
-	};
 	TRY_("instantiation")
 	{
-		using T_fit = bond::fit<>;
-		using T_alpha = typename T_fit::alpha_type;
-
-		using A_filter = filter<T_alpha[2], union MAIN>;
-
-		using meta = any<A_filter>;
-
 		//\
 		using SVF = confined_t<staged<0>, filter<>>;
-		using SVF = prewarped_t<ordinal_constant_t<1>
-		,	typename meta::refade_type::template attend<>
+		using SVF = prewarped_t<_1
 		,	staged< 0>
+		,	typename U_refade::template   attend<>
+		,	typename W_filter::template   attach<>
+		,	typename W_filter::template dispatch<>
 		,	A_filter
 		>;
 
 		//\
-		using Z = processor::monomer_t<prewarped<ordinal_constant_t<1>>, SVF>;
+		using Z = processor::monomer_t<prewarped<_1>, SVF>;
 		using Z = processor::monomer_t<SVF>;
 
 		SVF svf{};
 		svf <<= occur::resample_f(44100);
-		svf <<= typename  meta::  limit_type{0};
-		svf <<= typename  meta::  order_type{2};
-		svf <<= typename  meta::  patch_type{0};
-		svf <<= typename  meta::refade_type{0};
+		svf <<= U_limit{0};
+		svf <<= U_order{2};
+		svf <<= U_patch{0};
+		svf <<= U_refade{0};
 	
 		T_alpha constexpr omega = 2*2*3*3*5*5*7;
 		T_alpha constexpr   rho = 1;
@@ -122,6 +119,21 @@ TAG_("filter")
 //		TRUE_(true);
 
 	}
+	TRY_("filter parameterization")
+	{
+		using Y_ramp = prewarped_t<_1
+		//\
+		,	filter<union RAMP>
+		,	filter<T_alpha[2], union RAMP>
+		>;
+		using Y_ring = prewarped_t<_1
+		//\
+		,	filter<union RING>
+		,	filter<T_alpha[2], union RING>
+		>;
+		static_assert(different_q<typename Y_ramp::order_type, typename Y_ring::order_type>);
+
+	};
 }
 /***/
 
@@ -129,52 +141,47 @@ TAG_("filter")
 
 TAG_("filter-ring")
 {
-	using T_fit   = bond::fit<>;
-	using T_alpha = typename T_fit::alpha_type;
-	using T_delta = typename T_fit::delta_type;
-	using T_sigma = typename T_fit::sigma_type;
+	using T_alpha   = typename bond::fit<>::alpha_type;
+	using T_aphex   = typename bond::fit<>::aphex_type;
 
-	using U_stage = occur::stage_t<>;
-	using U_key   = flow::key_s<>;
+	using A_filter  = filter<T_alpha[2], union RING>;
+	using W_filter  = any_t<A_filter>;
+	using U_limit   = typename W_filter::   limit_type;
+	using U_order   = typename W_filter::   order_type;
+	using U_patch   = typename W_filter::   patch_type;
+	using U_stage   = typename W_filter::   stage_type;
+	using U_shape   = typename W_filter::   shape_type;
+	using U_refade  = typename W_filter::  refade_type;
+	using U_redamp  = typename W_filter::  redamp_type;
+	using U_reshape = typename W_filter:: reshape_type;
 
-	using U_slicer = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
+	using _0 = ordinal_constant_t<0>;
+	using _1 = ordinal_constant_t<1>;
 
-	T_alpha constexpr omega = 2*2*2*3*5*5*7;
-	T_alpha constexpr   rho = 1;
-	T_alpha constexpr    up = 1;
-	T_alpha constexpr    dn = 0;
+	using Z_slicer = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
 
 	/**/
 	TRY_("filter-ring monophony")
 	{
-		using A_filter = filter<>;
-		using A = any<A_filter>;
+		using U_event = flow::packet_t<U_stage, U_redamp>;
+		using Z_event = flow::cue_s<U_event>;
 
-		using   input_type = typename A::   input_type;
-		using   limit_type = typename A::   limit_type;
-		using   order_type = typename A::   order_type;
-		using   patch_type = typename A::   patch_type;
-		using   stage_type = typename A::   stage_type;
-		using   curve_type = typename A::   curve_type;
-		using  refade_type = typename A::  refade_type;
-		using  redamp_type = typename A::  redamp_type;
-		using recurve_type = typename A:: recurve_type;
-
-		using Z_packet = flow::packet_t<stage_type, redamp_type>;
-		using Z_event  = flow::cue_s<Z_packet>;
-
-		using Z_process = prewarped_t<ordinal_constant_t<0>, gate<-1>
-		,	redamp_type::template attend<>
-		,	refade_type::template attend<>
+		using Z_process = prewarped_t<_0, gate<-1>
 		,	staged<-1>
 		,	staged< 0>
+		,	typename U_redamp::template   attend<>
+		,	typename U_refade::template   attend<>
+		,	typename W_filter::template   attach<>
+		,	typename W_filter::template dispatch<>
 		,	A_filter
 		>;
 		using Z_processor = processor::monomer_t<Z_process
-		,	U_slicer::template inqueue<Z_packet>
-		,	provision::stored <null_type[0x100]>
-		,	provision::spooled<null_type[0x100]>
+		,	Z_slicer::template inqueue<U_event>
+		,	provision::stored  <null_type[0x100]>
+		,	provision::spooled <null_type[0x100]>
 		>;
+
+		T_alpha constexpr omega = 2*2*2*3*5*5*7;
 
 		_std::array<T_alpha, 0x100> f_; f_.fill(omega);
 		auto z = Z_processor::bind_f(processor::let_f(f_));
@@ -183,71 +190,64 @@ TAG_("filter-ring")
 		auto z_cursor = occur::cursor_t<>(0x020);
 		auto z_sample = occur::resample_f(44100);
 
-		z <<=  limit_type{0};
-		z <<=  order_type{2};
-		z <<=  patch_type{0};
-		z <<= redamp_type{1};
-		z <<= refade_type{1};
+		z <<= U_limit  {0};
+		z <<= U_order  {2};
+		z <<= U_patch  {0};
+		z <<= U_redamp {1};
+		z <<= U_refade {1};
 
 		z <<= z_sample;
 		z <<= z_resize;
 
 		z >>= occur::stage_f(-1);
-		z >>= flow::cue_f(0x08).then(Z_packet{ 0, 0.0F});
-		z >>= flow::cue_f(0x10).then(Z_packet{ 0, 0.0F});
+		z >>= flow::cue_f(0x08).then(U_event{ 0, 0.0F});
+		z >>= flow::cue_f(0x10).then(U_event{ 0, 0.0F});
 		//\
-		z >>= flow::cue_f(0x20).then(Z_packet{ 1, root_f<-2>(2.F)});
-		z >>= flow::cue_f(0x20).then(Z_packet{ 1, 1.0F});
+		z >>= flow::cue_f(0x20).then(U_event{ 1, 0.5F});
+		z >>= flow::cue_f(0x21).then(U_event{ 1, 0.5F});
 
 		echo_rule_<28>("\u2500");
 
 		TRUE_(0 == z.efflux(z_cursor++));
-	//	TRUE_(0 == z.influx(occur::stage_f( 1)));
-
+		TRUE_(1 == z.influx(flow::assess_f(occur::stage_f( 0))));// Would be unchanged...
+		TRUE_(0 == z.influx(flow::assess_f(occur::stage_f( 1))));
+		TRUE_(0 == z.influx(flow::assess_f(occur::stage_f(-1))));
 		echo_plot_<28>(z.store(), 0x08, 0x10);
 
 		TRUE_(0 == z.efflux(z_cursor++));
-	//	TRUE_(1 == z.influx(occur::stage_f( 1)));
-
+		TRUE_(0 == z.influx(flow::assess_f(occur::stage_f( 0))));
+		TRUE_(1 == z.influx(flow::assess_f(occur::stage_f( 1))));// Would be unchanged...
+		TRUE_(0 == z.influx(flow::assess_f(occur::stage_f(-1))));
+		//\
 		echo_plot_<28>(z.store(), 0x00);
+		echo_plot_<28>(z.store(), 0x01);
 
 	}
 	/***/
 	/**/
 	TRY_("filter-ring polyphony")
 	{
-		using A_filter = filter<>;
-		using A = any<A_filter>;
-
-		using   limit_type = typename A::   limit_type;
-		using   order_type = typename A::   order_type;
-		using   patch_type = typename A::   patch_type;
-		using   stage_type = typename A::   stage_type;
-		using   curve_type = typename A::   curve_type;
-		using  refade_type = typename A::  refade_type;
-		using  redamp_type = typename A::  redamp_type;
-		using recurve_type = typename A:: recurve_type;
-		using T_alpha = typename bond::fit<>::alpha_type;
-
-		using V_event = flow::key_s<U_stage>;
-		using U_event = flow::cue_s<V_event>;
+		using U_event = flow::key_s<U_stage>;
+		using Z_event = flow::cue_s<U_event>;
+		using Z_cue   = flow::cue_s<       >;
 		
-		using U0_cue  = flow::cue_s<      >;
-		using U1_cue  = flow::cue_s<U0_cue>;
-
-		using Z_process = prewarped_t<ordinal_constant_t<0>, gate<-1>
-		,	A::redamp_type::template attend<>
-		,	A::refade_type::template attend<>
-		,	stage_type::template assignment<redamp_type>
+		using Z_process = prewarped_t<_0, gate<-1>
 		,	staged<-1>
 		,	staged< 0>
-		,	filter  <>
+		,	typename U_redamp ::template   attend<>
+		,	typename U_refade ::template   attend<>
+		,	typename W_filter ::template   attach<>
+		,	typename W_filter ::template dispatch<>
+		,	typename U_stage  ::template assignment<U_redamp>
+		,	A_filter
 		>;
 		using Z_processor = processor::polymer_t<Z_process
-		,	U_slicer::template inqueue<V_event>
+		,	Z_slicer::template inqueue<U_event>
 		,	provision::stored <null_type[0x100]>
 		,	provision::spooled<null_type[0x100]>
 		>;
+
+		T_alpha constexpr omega = 2*2*2*3*5*5*7;
 
 		_std::array<T_alpha, 0x100> f_; f_.fill(omega);
 		auto z = Z_processor::template bind_f(processor::let_f(f_));
@@ -256,28 +256,25 @@ TAG_("filter-ring")
 		auto z_cursor = occur::cursor_t<>(0x020);
 		auto z_sample = occur::resample_f(44100);
 
-		z <<=  limit_type{0};
-		z <<=  order_type{2};
-		z <<=  patch_type{0};
-		z <<= redamp_type{1};
-		z <<= refade_type{1};
-		z <<= flow::assign_f(stage_type{ 0}) << redamp_type{         (0.F)};
-		z <<= flow::assign_f(stage_type{ 1}) << redamp_type{         (1.F)};
-		z <<= flow::assign_f(stage_type{-1}) << redamp_type{root_f<2>(2.F)};
+		z <<= U_limit{0};
+		z <<= U_order{2};
+		z <<= U_patch{0};
+		z <<= U_redamp{1};
+		z <<= U_refade{1};
+		z <<= flow::assign_f(U_stage{ 0}) << U_redamp{          (0.F)};
+		z <<= flow::assign_f(U_stage{ 1}) << U_redamp{root_f<-1>(2.F)};
+		z <<= flow::assign_f(U_stage{-1}) << U_redamp{root_f<-2>(2.F)};
 
 		z <<= z_sample;
 		z <<= z_resize;
 
-		auto const up1 = V_event(1,  0);
-		auto const dn1 = V_event(1, -1);
+		z.lead() >>= U_stage{-1};
 
-		z.lead() >>= U_stage(-1);
-
-		z >>= flow::cue_f(0x08).then(V_event{1,  0});
-		z >>= flow::cue_f(0x18).then(V_event{1,  0});
-	//	z >>= flow::cue_f(0x28).then(V_event{1,  1});// Inlined below...
-		z >>= flow::cue_f(0x40).then(V_event{1,  0});
-		z >>= flow::cue_f(0x48).then(V_event{1, -1});
+		z >>= Z_cue{0x08}.then(U_event{1,  0});
+		z >>= Z_cue{0x18}.then(U_event{1,  0});
+	//	z >>= Z_cue{0x28}.then(U_event{1,  1});// Inlined below...
+		z >>= Z_cue{0x40}.then(U_event{1,  0});
+		z >>= Z_cue{0x48}.then(U_event{1, -1});
 
 		echo_rule_<28>("\u2500");
 
@@ -285,14 +282,14 @@ TAG_("filter-ring")
 		TRUE_(0 == z.efflux(z_cursor++));
 		echo_plot_<28>(z.store(), 0x08, 0x18);
 
-		z >>= flow::cue_f(0x08).then(V_event{1,  1});
+		z >>= Z_cue{0x08}.then(U_event{1,  1});// Inlined from above...
 
 		TRUE_(2 >= z.ensemble().size());// Still decaying...
 		TRUE_(0 == z.efflux(z_cursor++));
 		echo_plot_<28>(z.store(), 0x08);
 
-	//	z >>= flow::cue_f(0x00).then(V_event{1,  0});
-	//	z >>= flow::cue_f(0x08).then(V_event{1, -1});
+	//	z >>= Z_cue{0x00}.then(U_event{1,  0});// Outlined above...
+	//	z >>= Z_cue{0x08}.then(U_event{1, -1});// Outlined above...
 
 		TRUE_(2 >= z.ensemble().size());// Still decaying...
 		TRUE_(0 == z.efflux(z_cursor++));
@@ -302,7 +299,7 @@ TAG_("filter-ring")
 		TRUE_(0 == z.efflux(z_cursor++));
 	//	echo_plot_<28>(z.store());
 
-	//	TRUE_(0 == z.ensemble().size());
+		TRUE_(0 == z.ensemble().size());
 
 	}
 	/***/

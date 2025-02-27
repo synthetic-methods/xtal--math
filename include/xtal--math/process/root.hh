@@ -52,18 +52,22 @@ struct root
 		method_f(auto &&z)
 		noexcept -> auto
 		{
-			using _fit = bond::fit<decltype(z)>;
+			using Z     = XTAL_ALL_(z);
+			using Z_fit = bond::fit<Z>;
+
 			auto constexpr I_lim = below_v<(1<<4), (unsigned) N_lim>;
+
 			XTAL_IF0
-			XTAL_0IF (integral_variable_q<decltype(z)>) {
-				return method_f<I_lim>(_fit::alpha_f(XTAL_REF_(z)));
+			XTAL_0IF (integral_variable_q<Z>) {
+				return method_f<I_lim>(Z_fit::alpha_f(XTAL_REF_(z)));
 			}
+			XTAL_0IF_(to) (evaluate<I_lim>(XTAL_REF_(z)))
 			XTAL_0IF_(to) (evaluate<I_lim>(XTAL_REF_(z)))
 			XTAL_0IF_(to) (evaluate<I_lim>(XTAL_REF_(z), constant_t<2>{}))
 			XTAL_0IF_(to) (evaluate<I_lim>(XTAL_REF_(z), constant_t<3>{}))
 			XTAL_0IF_(to) (evaluate<I_lim>(XTAL_REF_(z), constant_t<5>{}))
 			XTAL_0IF_(to) (evaluate<I_lim>(XTAL_REF_(z), constant_t<7>{}))
-			XTAL_0IF_(else) {return pow(XTAL_REF_(z), _fit::alpha_1/M_exp);}
+			XTAL_0IF_(else) {return pow(XTAL_REF_(z), Z_fit::alpha_1/M_exp);}
 		}
 
 	protected:

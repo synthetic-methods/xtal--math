@@ -82,7 +82,7 @@ struct staged<-1>
 		using S_::S_;
 		using typename S_::order_type;
 		using typename S_::state_type;
-		using typename S_::input_type;
+		using typename S_::pole_type;
 
 	public:// ACCESS
 		using S_::self;
@@ -116,11 +116,11 @@ struct staged<-1>
 			//	TODO: Address clumsy dynamic-sized dot-product.
 
 				auto const order = order_type{self()};
-				input_type y{};
+				pole_type y{};
 				for (unsigned int i{}; i < order; ++i) {
 					y = term_f<1, 2>(y, states_[i]);
 				}
-				x &= dot_f(y) < bond::fit<input_type>::haplo_f(7 + 1);//NOTE: Squared...
+				x &= dot_f(y) < bond::fit<pole_type>::haplo_f(7 + 1);//NOTE: Squared...
 			}
 			return x;
 		}

@@ -17,6 +17,9 @@ template <class ..._s>	concept prewarped_q = bond::tagged_with_p<prewarped, _s..
 
 
 ////////////////////////////////////////////////////////////////////////////////
+///\
+Prewarps the `gain` parameter of `method`, \
+indexed from zero by the constant `I`. \
 
 template <constant_q I, typename ...As>
 struct prewarped<I, As...>
