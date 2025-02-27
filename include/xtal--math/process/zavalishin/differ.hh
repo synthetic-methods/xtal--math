@@ -28,14 +28,57 @@ template <typename ...As>	using   differ_t = process::confined_t<differ<As...>>;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <class U_pole, auto N_pole>
-struct differ<U_pole[N_pole]>
+template <class ..._s>
+struct any<differ<_s...>>
 {
-	using  order_type = occur::inferred_t<union ORDER, unsigned int, bond::seek_s<N_pole + 1>>;
+	using superkind = any<abstract<_s...>>;
+
+	template <class S>
+	class subtype : public bond::compose_s<S, superkind>
+	{
+		using S_ = bond::compose_s<S, superkind>;
+		using T_ = typename S_::self_type;
+	
+	public:
+		using S_::S_;
+		//\
+
+		template <extent_type N_mask=-1>
+		struct dispatch
+		{
+			template <class R>
+			using subtype = bond::compose_s<R, provision::voiced<void
+			,	typename T_::order_type::template dispatch<N_mask>
+			>>;
+
+		};
+
+	};
+};
+template <scalar_q A>
+struct any<differ<A>> : any<differ<A[1]>>
+{
+};
+template <>
+struct any<differ< >> : any<differ<typename bond::fit<>::alpha_type>>
+{
+};
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <class ..._s>
+struct differ
+{
+	using metakind = any  <differ>;
+	using metatype = any_t<differ>;
+
+	using state_type = typename metatype::state_type;
+//	using slope_type = typename metatype::slope_type;
 
 	using superkind = bond::compose<bond::tag<differ_t>
-	,	provision::memorized<U_pole[N_pole << 1]>
-	,	typename  order_type::template dispatch<>
+	,	metakind
+	,	provision::memorized<state_type>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -80,11 +123,6 @@ struct differ<U_pole[N_pole]>
 		}
 
 	};
-};
-template <>
-struct differ<>
-:	differ<typename bond::fit<>::aphex_type[2]>
-{
 };
 
 

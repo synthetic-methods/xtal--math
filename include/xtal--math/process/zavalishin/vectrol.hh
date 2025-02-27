@@ -11,37 +11,46 @@ namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 ///\
-Scales `damping` by the dot-product of the internal state and supplied `reshape`. \
+Scales `damp` by the dot-product of the internal state and supplied `reshape`. \
 
 ///\note\
 Input is restricted to `U_pole` because the filter-state is managed out-of-band. \
 
-template <typename ...As>	struct  vectrol;
-template <typename ...As>	using   vectrol_t = process::confined_t<vectrol<As...>>;
+template <auto ...As>	struct  vectrol;
+template <auto ...As>	using   vectrol_t = process::confined_t<vectrol<As...>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <class ...As>
-struct any<vectrol<As...>> : any<filter<As...>>
+template <auto ...As>
+struct any<vectrol<As...>>
 {
+	template <class S>
+	class subtype : public S
+	{
+	public:// CONSTRUCT
+		using S::S;
+
+		template <extent_type N_mask=-1>
+		struct attach
+		{
+			template <class R>
+			using subtype = bond::compose_s<R,
+				typename R::reshape_type::template attach<N_mask>>;
+
+		};
+
+	};
 };
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <vector_q A>
-struct vectrol<A>
+template <auto ...As>
+struct vectrol
 {
-	using metakind = any<vectrol<A>>;
+	using superkind = typename any_t<vectrol>::template attach<>;
 
-	using   state_type = typename metakind::   state_type;
-	using   curve_type = typename metakind::   curve_type;
-	using recurve_type = typename metakind:: recurve_type;
-	
-	using superkind = bond::compose<bond::tag<vectrol_t>
-	,	typename recurve_type::template attach<>
-	>;
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
 	{
@@ -51,36 +60,28 @@ struct vectrol<A>
 
 	public:// CONSTRUCT
 		using S_::S_;
+		using typename S_::reshape_type;
+		using typename S_::  state_type;
 
 	public:// OPERATE
 
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,let)
-		method(auto x_input, auto s_scale, auto s_damping, auto &&...oo)
+		method(auto x, auto s_gain, auto s_damp, auto &&...oo)
 		noexcept -> decltype(auto)
 		{
 			auto constexpr abs = [] XTAL_1FN_(call) (taylor::logarithm_t<-1>::template method_f<0>);
 
 			auto const [s_]       = S_::template memory<  state_type>();
-			auto const &s_reshape = S_::template   head<recurve_type>().head();
+			auto const &s_reshape = S_::template   head<reshape_type>().head();
 			auto const  s_product = dot_f(s_, s_reshape);
 			
-			s_damping *= abs(s_product*half);
+			s_damp *= abs(s_product*half);
 
-			return S_::template method<Ns...>(x_input, s_scale, s_damping, XTAL_REF_(oo)...);
+			return S_::template method<Ns...>(x, s_gain, s_damp, XTAL_REF_(oo)...);
 		}
 
 	};
-};
-template <scalar_q A>
-struct vectrol<A>
-:	vectrol<A[2]>
-{
-};
-template <>
-struct vectrol<>
-:	vectrol<typename bond::fit<>::alpha_type>
-{
 };
 
 

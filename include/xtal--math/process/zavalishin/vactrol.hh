@@ -16,32 +16,41 @@ Scales the frequency using the input/state difference and the supplied `reshape`
 ///\note\
 Input is restricted to `U_pole` because the filter-state is managed out-of-band. \
 
-template <typename ...As>	struct  vactrol;
-template <typename ...As>	using   vactrol_t = process::confined_t<vactrol<As...>>;
+template <auto ...As>	struct  vactrol;
+template <auto ...As>	using   vactrol_t = process::confined_t<vactrol<As...>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <class ...As>
-struct any<vactrol<As...>> : any<filter<As...>>
+template <auto ...As>
+struct any<vactrol<As...>>
 {
+	template <class S>
+	class subtype : public S
+	{
+	public:// CONSTRUCT
+		using S::S;
+
+		template <extent_type N_mask=-1>
+		struct attach
+		{
+			template <class R>
+			using subtype = bond::compose_s<R,
+				typename R::reshape_type::template attach<N_mask>>;
+
+		};
+
+	};
 };
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <vector_q A>
-struct vactrol<A>
+template <auto ...As>
+struct vactrol
 {
-	using metakind = any<vactrol<A>>;
+	using superkind = typename any_t<vactrol>::template attach<>;
 
-	using   state_type = typename metakind::   state_type;
-	using   curve_type = typename metakind::   curve_type;
-	using recurve_type = typename metakind:: recurve_type;
-	
-	using superkind = bond::compose<bond::tag<vactrol_t>
-	,	typename recurve_type::template attach<>
-	>;
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
 	{
@@ -51,37 +60,29 @@ struct vactrol<A>
 
 	public:// CONSTRUCT
 		using S_::S_;
+		using typename S_::reshape_type;
+		using typename S_::  state_type;
 
 	public:// OPERATE
 
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,let)
-		method(auto x_input, auto s_scale, auto &&...oo)
+		method(auto x, auto s_gain, auto &&...oo)
 		noexcept -> decltype(auto)
 		{
 			auto constexpr abs = [] XTAL_1FN_(call) (taylor::logarithm_t<-1>::template method_f<0>);
 
-			auto const &[d0, d1] = S_::template head<recurve_type>().head();
+			auto const &[d0, d1] = S_::template head<reshape_type>().head();
 			auto const  [s_]     = S_::template memory<state_type>();
 
 			auto const v = pade::tangy_t<1>::template method_f< 1>(half*d1);
-			auto const w = abs(x_input - s_.sum());
-			s_scale /= d0*term_f(v, one - v, w);
+			auto const w = abs(x - s_.sum());
+			s_gain /= d0*term_f(v, one - v, w);
 
-			return S_::template method<Ns...>(x_input, s_scale, XTAL_REF_(oo)...);
+			return S_::template method<Ns...>(x, s_gain, XTAL_REF_(oo)...);
 		}
 
 	};
-};
-template <scalar_q A>
-struct vactrol<A>
-:	vactrol<A[2]>
-{
-};
-template <>
-struct vactrol<>
-:	vactrol<typename bond::fit<>::alpha_type>
-{
 };
 
 

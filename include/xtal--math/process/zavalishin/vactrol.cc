@@ -1,9 +1,9 @@
 #pragma once
 #include "./any.cc"
-
-#include "./prewarped.hh"
-#include "./staged.hh"
 #include "./gate.hh"
+#include "./staged.hh"
+#include "./prewarped.hh"
+
 
 #include "./vactrol.hh"// testing...
 XTAL_ENV_(push)
@@ -15,72 +15,76 @@ namespace xtal::process::math::zavalishin::_test
 
 TAG_("vactrol")
 {
-	using U_alpha = typename bond::fit<>::alpha_type;
-	using U_stage = occur::stage_t<>;
-	using U_key   = flow::key_s<>;
-	using U0_cue  = flow::cue_s<>;
+	using T_alpha   = typename bond::fit<>::alpha_type;
+	using T_aphex   = typename bond::fit<>::aphex_type;
+	//\
+	using A_filter  = filter<T_alpha[2], union RING>;
+	using A_filter  = filter<>;
+	using W_filter  = any_t<A_filter>;
+	using U_limit   = typename W_filter::   limit_type;
+	using U_order   = typename W_filter::   order_type;
+	using U_patch   = typename W_filter::   patch_type;
+	using U_stage   = typename W_filter::   stage_type;
+	using U_shape   = typename W_filter::   shape_type;
+	using U_refade  = typename W_filter::  refade_type;
+	using U_redamp  = typename W_filter::  redamp_type;
+	using U_reshape = typename W_filter:: reshape_type;
 
-	using U_slicer = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
+	using _0 = ordinal_constant_t<0>;
+	using _1 = ordinal_constant_t<1>;
 
-	U_alpha constexpr omega = 2*2*2*3*3*5*5;
-	U_alpha constexpr   rho = 1;
-	U_alpha constexpr    up = 1;
-	U_alpha constexpr    dn = 0;
+	using Z_slicer = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
 
 	/**/
 	TRY_("vactrol: monophony")
 	{
-		using Z_filter = filter<>;
-		using Z = any<Z_filter>;
-
-		using refade_type = typename Z::refade_type;
-		using redamp_type = typename Z::redamp_type;
-		using recurve_type = typename Z::recurve_type;
-		using   curve_type = typename Z::  curve_type;
-		using   stage_type = typename Z::  stage_type;
-
-		using Z_packet = flow::packet_t<stage_type, recurve_type>;
-		using Z_event  = flow::cue_s<Z_packet>;
-		using Z_cue    = flow::cue_s<>;
+		using U_event = flow::packet_t<U_stage, U_reshape>;
+		using Z_event = flow::cue_s<U_event>;
+		using Z_cue   = flow::cue_s<>;
 
 		using Z_process = confined_t<void
-		,	prewarped<ordinal_constant_t<0>>, gate<1>
-		,	typename redamp_type::template attend<>
-		,	typename refade_type::template attend<>
-		,	vactrol <>
+		,	prewarped<_0>, gate<1>
 		,	staged<-1>
 		,	staged< 0>
-		,	filter  <>
+		,	typename U_redamp::template   attend<>
+		,	typename U_refade::template   attend<>
+		,	typename W_filter::template   attach<>
+		,	typename W_filter::template dispatch<>
+		,	vactrol<>
+		,	A_filter
 		>;
 		using Z_processor = processor::monomer_t<Z_process
 		//\
-		,	U_slicer::template inqueue<stage_type, recurve_type>
-		,	U_slicer::template inqueue<Z_packet>
-		,	provision::stored <null_type[0x100]>
-		,	provision::spooled<null_type[0x100]>
+		,	Z_slicer::template inqueue<stage_type, U_reshape>
+		,	Z_slicer::template inqueue<U_event>
+		,	provision::stored  <null_type[0x100]>
+		,	provision::spooled <null_type[0x100]>
 		>;
 
-		_std::array<U_alpha, 0x100> f_; f_.fill(omega);
+		T_alpha constexpr omega = 2*2*2*3*3*5*5;
+
+		_std::array<T_alpha, 0x100> f_; f_.fill(omega);
 		auto z = Z_processor::bind_f(processor::let_f(f_));
 
 		auto z_resize = occur::resize_t<>(0x020);
 		auto z_cursor = occur::cursor_t<>(0x020);
 		auto z_sample = occur::resample_f(44100);
 
-		z <<= typename Z::   limit_type{0};
-		z <<= typename Z::   order_type{2};
-		z <<= typename Z::   patch_type{0};
-		z <<= typename Z:: redamp_type{root_f<2>(2.F)};
-		z <<= typename Z:: refade_type{0};
+		z <<= U_limit  {0};
+		z <<= U_order  {2};
+		z <<= U_patch  {0};
+		z <<= U_redamp {root_f<2>(2.F)};
+		z <<= U_refade {0};
 
-	//	z <<= recurve_type({0.25, one - 0.25});
+	//	z <<= U_reshape({0.25, one - 0.25});
 
 		z <<= z_sample;
 		z <<= z_resize;
 
 		z >>= U_stage{-1};
-		z >>= U0_cue{0x08}.then(Z_packet{ 0, curve_type{0.125, 0.25}});
-		z >>= U0_cue{0x18}.then(Z_packet{-1, curve_type{0.500, 0.25}});
+
+		z >>= Z_cue{0x08}.then(U_event{ 0, U_shape{0.125, 0.25}});
+		z >>= Z_cue{0x18}.then(U_event{-1, U_shape{0.500, 0.25}});
 
 		echo_rule_<28>("\u2500");
 

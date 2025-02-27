@@ -1,9 +1,9 @@
 #pragma once
 #include "./any.cc"
-
-#include "./prewarped.hh"
-#include "./staged.hh"
 #include "./gate.hh"
+#include "./staged.hh"
+#include "./prewarped.hh"
+
 
 #include "./vectrol.hh"// testing...
 XTAL_ENV_(push)
@@ -15,68 +15,74 @@ namespace xtal::process::math::zavalishin::_test
 
 TAG_("vectrol")
 {
-	using U_alpha = typename bond::fit<>::alpha_type;
-	using U_stage = occur::stage_t<>;
-	using U_key   = flow::key_s<>;
-	using U0_cue  = flow::cue_s<>;
+	using T_alpha   = typename bond::fit<>::alpha_type;
+	using T_aphex   = typename bond::fit<>::aphex_type;
+	//\
+	using A_filter  = filter<T_alpha[2], union RING>;
+	using A_filter  = filter<>;
+	using W_filter  = any_t<A_filter>;
+	using U_limit   = typename W_filter::   limit_type;
+	using U_order   = typename W_filter::   order_type;
+	using U_patch   = typename W_filter::   patch_type;
+	using U_stage   = typename W_filter::   stage_type;
+	using U_shape   = typename W_filter::   shape_type;
+	using U_refade  = typename W_filter::  refade_type;
+	using U_redamp  = typename W_filter::  redamp_type;
+	using U_reshape = typename W_filter:: reshape_type;
 
-	using U_slicer = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
+	using _0 = ordinal_constant_t<0>;
+	using _1 = ordinal_constant_t<1>;
 
-	U_alpha constexpr omega = 2*2*3*3*5*5;
-	U_alpha constexpr   rho = 1;
-	U_alpha constexpr    up = 1;
-	U_alpha constexpr    dn = 0;
+	using Z_slicer = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
 
 	/**/
 	TRY_("vectrol: monophony")
 	{
-		using U_value =             U_stage ;
-		using U_event = flow::cue_s<U_value>;
+		using U_event =             U_stage ;
+		using Z_event = flow::cue_s<U_event>;
 
-		using A_filter = filter<>;
-
-		using A = any<A_filter>;
 		using Z_process = confined_t<void
-		,	prewarped<ordinal_constant_t<0>>, gate<0>
-		,	typename A::redamp_type::template attend<>
-		,	typename A::refade_type::template attend<>
-		,	vectrol    <>
+		,	prewarped<_0>, gate<0>
 		,	staged<-1>
 		,	staged< 0>
+		,	typename U_redamp::template   attend<>
+		,	typename U_refade::template   attend<>
+		,	typename W_filter::template   attach<>
+		,	typename W_filter::template dispatch<>
+		,	vectrol<>
 		,	A_filter
 		>;
 		using Z_processor = processor::monomer_t<Z_process
-		,	U_slicer::template inqueue<U_value>
-		,	provision::stored <null_type[0x100]>
-		,	provision::spooled<null_type[0x100]>
+		,	Z_slicer::template inqueue<U_event>
+		,	provision::stored  <null_type[0x100]>
+		,	provision::spooled <null_type[0x100]>
 		>;
 
-		_std::array<U_alpha, 0x100> f_; f_.fill(omega);
-		auto z = Z_processor::bind_f(processor::let_f(f_));
+		T_alpha constexpr omega = 2*2*3*3*5*5;
 
-		using   curve_type = typename A::  curve_type;
-		using recurve_type = typename A::recurve_type;
+		_std::array<T_alpha, 0x100> f_; f_.fill(omega);
+		auto z = Z_processor::bind_f(processor::let_f(f_));
 
 		auto z_resize = occur::resize_t<>(0x020);
 		auto z_cursor = occur::cursor_t<>(0x020);
 		auto z_sample = occur::resample_f(44100);
 
-		z <<= typename A::   limit_type{0};
-		z <<= typename A::   order_type{2};
-		z <<= typename A::   patch_type{0};
-		z <<= typename A:: redamp_type{1};
-		z <<= typename A:: refade_type{0.5};
+		z <<= U_limit  {0};
+		z <<= U_order  {2};
+		z <<= U_patch  {0};
+		z <<= U_redamp {1};
+		z <<= U_refade {0.5};
 
-		z <<= recurve_type{curve_type{0.125, one - 0.125}};
+		z <<= U_reshape{U_shape{0.125, one - 0.125}};
 
 		z <<= z_sample;
 		z <<= z_resize;
 
-		z >>= U_stage(-1);
-		z >>= U_event(0x08,  0);
-		z >>= U_event(0x18,  0);
-		z >>= U_event(0x28, -1);
-	//	z >>= U_event(0x38,  0);
+		z >>= U_stage{-1};
+		z >>= Z_event(0x08,  0);
+		z >>= Z_event(0x18,  0);
+		z >>= Z_event(0x28, -1);
+	//	z >>= Z_event(0x38,  0);
 
 		echo_rule_<28>("\u2500");
 
