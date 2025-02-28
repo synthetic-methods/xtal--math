@@ -38,8 +38,18 @@ noexcept -> decltype(auto)
 	return dot_t<M_alt>::method_f(XTAL_REF_(oo)...);
 }
 
+namespace _detail
+{///////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
+template <class ...Ts>
+using multiplied_t = common_t<return_t<_std::multiplies<void>, Ts, Ts>...>;
+
+template <class ...Ts>
+using multiplied_u = multiplied_t<fluid_u<Ts>...>;
+
+
+
+}///////////////////////////////////////////////////////////////////////////////
 
 template <int M_alt> requires in_n<M_alt, 0, 1,-1>
 struct dot
@@ -84,7 +94,7 @@ struct dot
 				return term_f<M_alt, 2>(square_f(x0), x1);
 			}
 			XTAL_0IF (3 <= N) {
-				fixed_valued_u<X> w{0};
+				_detail::multiplied_u<X> w{0};
 				bond::seek_out_f<N>([&]<constant_q I> (I) XTAL_0FN {
 					XTAL_IF0
 					XTAL_0IF (0 < M_alt) {w = term_f<               2>(XTAL_MOV_(w), get<I{}>(x));}
@@ -115,7 +125,7 @@ struct dot
 				return term_f<M_alt>(x0*y0, x1,y1);
 			}
 			XTAL_0IF (3 <= N) {
-				fixed_valued_u<X, Y> w{0};
+				_detail::multiplied_u<X, Y> w{0};
 				bond::seek_out_f<N>([&]<constant_q I> (I) XTAL_0FN {
 					XTAL_IF0
 					XTAL_0IF (0 < M_alt) {w = term_f<               1>(XTAL_MOV_(w), get<I{}>(x), get<I{}>(y));}

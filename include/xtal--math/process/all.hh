@@ -10,7 +10,6 @@
 #include "./dots.hh"
 #include "./either.hh"
 #include "./factorial.hh"
-#include "./identity.hh"
 #include "./imagine.hh"
 #include "./magnum.hh"
 #include "./modulo.hh"

@@ -214,8 +214,11 @@ struct phason<A>
 			}
 			return self();
 		}
-		XTAL_DEF_(return,inline,met) operator * (simplex_variable_q auto const &x, T const &t) noexcept -> auto {return t.twin() *= x;}
-	//	XTAL_DEF_(return,inline,met) operator * (T const &t, simplex_variable_q auto const &x) noexcept -> auto {return t.twin() *= x;}
+		XTAL_DEF_(return,inline,met)
+		operator * (simplex_variable_q auto const &x, T const &t)
+		noexcept -> auto {
+			return t.twin() *= x;
+		}
 
 		///\
 		Offsets the first element. \
@@ -242,8 +245,23 @@ struct phason<A>
 			return self();
 		}
 
-	//	XTAL_DEF_(return,inline,met) operator + (T const &t, auto const &o) noexcept -> auto                                        {return t.twin() += o;}
-	//	XTAL_DEF_(return,inline,met) operator + (auto const &o, T const &t) noexcept -> auto   requires un_n<phason_q<decltype(o)>> {return t.twin() += o;}
+		XTAL_DEF_(inline,let)
+		scale(coordinate_type u, coordinate_type w=one)
+		noexcept -> auto &
+		{
+			bond::seek_out_f<size - 1, 1>([&, this]<constant_q I> (I)
+				XTAL_0FN_(do) (get<I{}>(self()) = T::ordinate(got<I{}>(self())*(w *= u))));
+			return self();
+		}
+		XTAL_DEF_(inline,let)
+		scaled(coordinate_type u, coordinate_type w=one) const
+		noexcept -> auto
+		{
+			using T_ = XTAL_ALL_(twin());
+			return [&, this]<auto ...I> (bond::seek_t<I...>)
+				XTAL_0FN_(to) (T_{_detail::thunk_f(got<I>(self())*(w)) (w *= u)...})
+			(bond::seek_s<size>{});
+		}
 
 		///\returns `condition_f<Y>` indicating whether the current state is continuous. \
 

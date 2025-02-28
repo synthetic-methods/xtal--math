@@ -2,7 +2,7 @@
 #include "./any.hh"
 
 #include "./dot.hh"
-
+#include "../occur/indent.hh"
 
 
 
@@ -26,7 +26,7 @@ template <class W, class U, typename ...As>
 struct cross<W, U, As...>
 {
 	using superkind = bond::compose<void
-	,	typename occur::indent_s<W>::template incept<>
+	,	typename occur::math::indent_s<W>::template incept<>
 	,	confer<U>
 	,	As...
 	,	bond::tag<cross>

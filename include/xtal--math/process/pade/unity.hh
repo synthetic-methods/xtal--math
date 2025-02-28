@@ -25,7 +25,7 @@ struct unity
 template <>
 struct  unity<>
 {
-	using limit_type = occur::math::limit_t<(1<<3)>;
+	using limit_type = occur::inferred_t<union LIMIT, bond::seek_s<(1<<3)>>;
 
 	template <class S>
 	using subtype = bond::compose_s<S, provision::voiced<void
