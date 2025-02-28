@@ -10,7 +10,6 @@
 #include "./dots.cc"
 #include "./either.cc"
 #include "./factorial.cc"
-#include "./identity.cc"
 #include "./imagine.cc"
 #include "./magnum.cc"
 #include "./modulo.cc"

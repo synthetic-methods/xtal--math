@@ -46,6 +46,14 @@ TAG_("phason")
 	using D3 = phason_t<T_alpha[3]>;
 	using D4 = phason_t<T_alpha[4]>;
 	
+	TRY_("phason scaling")
+	{
+		U_phi u_phi{0.2, 0.1}, u_psi = u_phi.scaled(0.3);
+		u_phi.scale(0.3);
+
+		TRUE_(u_phi == u_psi);
+
+	}
 	/**/
 	TRY_("phason of complex")
 	{

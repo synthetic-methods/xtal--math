@@ -11,7 +11,7 @@ namespace xtal::process::math::taylor
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism=1, int M_car=0> requires in_n<M_ism, 1,-1> and in_n<M_car, 0, 1>
+template <int M_ism=1, int M_car=0, int M_bas=0>
 struct  logarithm;
 
 template <auto ...Ms>
@@ -31,7 +31,7 @@ noexcept -> decltype(auto)
 Defines `function` as the logarithm `Log[#]`, approximated by `(# - 1)/Sqrt[#]`. \
 
 template <>
-struct logarithm< 1, 0>
+struct logarithm< 1, 0, 0>
 {
 	using superprocess = process::confined_t<dilated<2>, taylor::sine<-2>>;
 	
@@ -73,7 +73,7 @@ Defines `function` as the antilogarithm `Exp[#]`, \
 approximated by `(Sqrt[(#/2)^2 + 1] + (#/2))*# + 1`. \
 
 template <>
-struct logarithm<-1, 0>
+struct logarithm<-1, 0, 0>
 {
 	using superprocess = process::confined_t<dilated<2>, taylor::sine<+2>>;
 	
@@ -130,7 +130,7 @@ struct logarithm<-1, 0>
 Defines the argument-restricted approximation of the logarithm `Log[#]`. \
 
 template <>
-struct logarithm< 1, 1>
+struct logarithm< 1, 1, 0>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -208,7 +208,7 @@ struct logarithm< 1, 1>
 Defines argument-restricted approximation of the antilogarithm `Exp[#]`. \
 
 template <>
-struct logarithm<-1, 1>
+struct logarithm<-1, 1, 0>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -251,6 +251,48 @@ struct logarithm<-1, 1>
 
 
 ////////////////////////////////////////////////////////////////////////////////
+
+template <int M_car>
+struct logarithm<+1, M_car, 2>
+:	process::lift<void
+	,	dilate<bond::operate{[] XTAL_1FN_(to)
+			(one*logarithm_f(bond::fit<>::alpha_f(2)))}>
+	,	logarithm<+1, M_car, 0>
+	>
+{
+};
+template <int M_car>
+struct logarithm<-1, M_car, 2>
+:	process::lift<void
+	,	logarithm<-1, M_car, 0>
+	,	dilate<bond::operate{[] XTAL_1FN_(to)
+			(one/logarithm_f(bond::fit<>::alpha_f(2)))}>
+	>
+{
+};
+
+
+template <int M_car>
+struct logarithm<+1, M_car, 1>
+:	process::lift<void
+	,	dilate<bond::operate{[] XTAL_1FN_(to)
+			(one*bond::fit<>::patio_f(2))}>
+	,	imagine<-1>
+	,	logarithm<+1, M_car, 0>
+	>
+{
+};
+template <int M_car>
+struct logarithm<-1, M_car, 1>
+:	process::lift<void
+	,	logarithm<-1, M_car, 0>
+	,	imagine<+1>
+	,	dilate<bond::operate{[] XTAL_1FN_(to)
+			(one/bond::fit<>::patio_f(2))}>
+	>
+{
+};
+
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////

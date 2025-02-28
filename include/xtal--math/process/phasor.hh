@@ -2,7 +2,7 @@
 #include "./any.hh"
 
 #include "../atom/phason.hh"
-#include "../atom/fourier/series.hh"
+#include "../occur/indent.hh"
 
 
 
@@ -34,8 +34,6 @@ struct phasor<A, As...>
 	using   ordinate_type = typename _phi::  ordinate_type;
 
 	static auto constexpr N  = _std::extent_v<A>;
-
-	using U_lepton = atom::math::fourier::series_t<coordinate_type[N]>;
 	using U_phason = atom::math::phason_t<coordinate_type[N]>;
 	using V_phason = atom::math::phason_t<inordinate_type[N]>;
 	
@@ -43,7 +41,7 @@ struct phasor<A, As...>
 	//\
 	,	refer<U_phason>
 	,	cell::_detail::refer_multiplicative_group<U_phason>
-	,	typename occur::indent_s<U_phason>::template incept<>
+	,	typename occur::math::indent_s<U_phason>::template incept<>
 	,	As...
 	>;
 	using superkind = bond::compose<bond::tag<phasor>
@@ -111,18 +109,8 @@ struct phasor<A, As...>
 			if constexpr (S_::template head_q<resample_type>) {
 				auto const rate = S_::template head<resample_type>().rate();
 				auto &phi = ingress();
-				XTAL_IF0
-				XTAL_0IF (N == 1) {
-					//\
-					return egress(bond::pack_f(phi(0)));
-					return egress(phi(0));
-				}
-				XTAL_0IF (N == 2) {
-					return egress(bond::pack_f(phi(0), phi(1)*(rate)));
-				}
-				XTAL_0IF_(else) {
-					return egress(phi.template apply<[] XTAL_1FN_(call) (bond::pack_f)>()*U_lepton(rate));
-				}
+				auto  psi = phi.scaled(rate);
+				return egress(psi.template apply<[] XTAL_1FN_(call) (bond::pack_f)>());
 			}
 			else {
 				return egress(ingress());

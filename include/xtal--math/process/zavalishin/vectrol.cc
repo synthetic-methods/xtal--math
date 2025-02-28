@@ -59,9 +59,7 @@ TAG_("vectrol")
 		>;
 
 		T_alpha constexpr omega = 2*2*3*3*5*5;
-
-		_std::array<T_alpha, 0x100> f_; f_.fill(omega);
-		auto z = Z_processor::bind_f(processor::let_f(f_));
+		auto z = Z_processor::bind_f(processor::let_f(omega));
 
 		auto z_resize = occur::resize_t<>(0x020);
 		auto z_cursor = occur::cursor_t<>(0x020);
