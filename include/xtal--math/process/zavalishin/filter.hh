@@ -41,7 +41,7 @@ template <class ..._s>	concept filter_q = bond::tagged_with_p<filter, _s...>;
 template <class ..._s>
 struct any<filter<_s...>>
 {
-	using superkind = any<abstract<_s...>>;
+	using superkind = any<class_template<_s...>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>

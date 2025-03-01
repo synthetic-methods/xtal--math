@@ -53,9 +53,14 @@ TAG_("unity")
 		T_alpha roll  = 0.1;
 		T_alpha yaw   = 0.1;
 
-		auto const w = pade::unity_t<1>::template method_f<4>(pitch);
-		auto const x = pade::unity_t<1>::template method_f<4>(roll);
-		auto const y = pade::unity_t<1>::template method_f<4>(-yaw);
+		using T_foo = unity<1>;
+		using W_foo = any_t<T_foo>;
+		using Z_foo = typename W_foo::template dispatch<>;
+
+
+		auto const w = unity_t<1>::template method_f<4>(pitch);
+		auto const x = unity_t<1>::template method_f<4>(roll);
+		auto const y = unity_t<1>::template method_f<4>(-yaw);
 
 		auto const &[w_re, w_im] = destruct_f(w);
 		auto const &[x_re, x_im] = destruct_f(x);
@@ -295,9 +300,6 @@ TAG_("unity")
 
 		auto z = unity_t<1>::template method_f<N_lim>(t1);
 
-		TRUE_(check_f<-1>(z, unity_t<1           >::template method_f<N_lim>(t1)));
-		TRUE_(check_f<-1>(z, unity_t<1, dilate<2>>::template method_f<N_lim>(t2)));
-		
 		TRUE_(check_f<-1>(z, process::lift_t<unity<1>, dilate<2>>::template method_f<N_lim>(t2)));
 		TRUE_(check_f<-1>(z, process::lift_t<unity<1>           >::template method_f<N_lim>(t1)));
 

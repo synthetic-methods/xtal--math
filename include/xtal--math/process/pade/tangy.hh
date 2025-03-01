@@ -1,8 +1,8 @@
 #pragma once
 #include "./any.hh"
 
-#include "./impunity.hh"
 #include "../gudermannian/tang.hh"
+
 
 
 
@@ -16,22 +16,8 @@ Defines `Tan[Pi #] &` and `Tanh[Pi #] &`. \
 ///\param M_ism \f$\in {1, 2}\f$ specifies the underlying morphism, \
 generating either the circular or hyperbolic tangent. \
 
-template <int M_ism=0, int M_car=0, typename ...As>// requires in_n<M_ism, 0, 1,-1, 2,-2> and in_n<M_car, 1,-0,-1,-2>
-struct tangy
-:	process::lift<tangy<M_ism, M_car>, bond::compose<As...>>
-{
-};
-template <>
-struct  tangy<>
-{
-	using limit_type = occur::inferred_t<union LIMIT, bond::seek_s<(1<<3)>>;
-
-	template <class S>
-	using subtype = bond::compose_s<S, provision::voiced<void
-	,	typename limit_type::template dispatch<>
-	>>;
-
-};
+template <int M_ism=0, int M_car=0>
+struct tangy;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -66,13 +52,13 @@ struct tangy<M_ism,-0>
 				return _fit::patio_1*gudermannian::tang_t<M_ism>::template method_f<N_lim>(XTAL_REF_(o));
 			}
 			XTAL_0IF (0 == (N_lim&1)) {
-				auto const [x1, y1] = destruct_f(impunity_t<M_ism,-0>::template method_f<N_lim>(o*_fit::haplo_1));
+				auto const [x1, y1] = destruct_f(_detail::impunity_t<M_ism,-0>::template method_f<N_lim>(o*_fit::haplo_1));
 				auto const x2 =  square_f(x1) + I_sgn*square_f(y1);
 				auto const y2 = _fit::diplo_1*x1*y1;
 				return y2*root_f<-1, 1>(x2);
 			}
 			XTAL_0IF (1 == (N_lim&1)) {
-				auto const [x1, y1] = destruct_f(impunity_t<M_ism,-0>::template method_f<N_lim>(o));
+				auto const [x1, y1] = destruct_f(_detail::impunity_t<M_ism,-0>::template method_f<N_lim>(o));
 				return y1*root_f<-1, 1>(x1);
 			}
 		}
@@ -152,14 +138,20 @@ struct tangy<M_ism,-2>
 		method_f(simplex_field_q auto &&o)
 		noexcept -> decltype(auto)
 		{
-			return rate_f<-1>(impunity_t<M_ism,-2>::template method_f<N_lim>(XTAL_REF_(o)));
+			return rate_f<-1>(_detail::impunity_t<M_ism,-2>::template method_f<N_lim>(XTAL_REF_(o)));
 		}
 
 	};
 };
 
-template <int M_ism=1, int M_car=0, typename ...As>
-using tangy_t = process::confined_t<tangy<M_ism, M_car, As...>>;//, tangy<>>;
+///////////////////////////////////////////////////////////////////////////////
+
+template <int M_ism=1, int M_car=0>
+using tangy_t = process::confined_t<tangy<M_ism, M_car>>;
+
+template <int M_ism=1, int M_car=0, int ...Ns>
+XTAL_DEF_(let)
+tangy_f = [] XTAL_1FN_(call) (tangy_t<M_ism, M_car>::template method_f<Ns...>);
 
 
 ///////////////////////////////////////////////////////////////////////////////

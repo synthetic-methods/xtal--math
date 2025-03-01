@@ -14,22 +14,14 @@ namespace xtal::process::math::pade
 Provides result-expansion (w.r.t. argument-reduction) for `unity`, \
 i.e. squaring for both circular and hyperbolic results.
 
-template <int M_ism=1>	struct  disunity;
-template <int M_ism=1>	using   disunity_t = process::confined_t<disunity<M_ism>>;
-
-template <int M_ism=1, auto ...Ns>
-XTAL_DEF_(return,inline,let)
-disunity_f(auto &&o)
-noexcept -> decltype(auto)
-{
-	return disunity_t<M_ism>::template method_f<Ns...>(XTAL_REF_(o));
-}
+template <int M_ism=1>
+struct unify;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int M_ism> requires in_n<M_ism, 0>
-struct disunity<M_ism>
+struct unify<M_ism>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -50,7 +42,7 @@ struct disunity<M_ism>
 	};
 };
 template <int M_ism> requires in_n<M_ism, 1, 2>
-struct disunity<M_ism>
+struct unify<M_ism>
 {
 	static constexpr int I_sgn = cosign_v<M_ism>;
 
@@ -88,6 +80,14 @@ struct disunity<M_ism>
 
 
 ////////////////////////////////////////////////////////////////////////////////
+
+template <int M_ism=1>
+using unify_t = process::confined_t<unify<M_ism>>;
+
+template <int M_ism=1, int ...Ns>
+XTAL_DEF_(let)
+unify_f = [] XTAL_1FN_(call) (unify_t<M_ism>::template method_f<Ns...>);
+
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////

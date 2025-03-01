@@ -16,30 +16,14 @@ Defines the pair `1^{#,-#} &`. \
 ///\note\
 Pronounced "double-unity". \
 
-template <int M_ism=0, typename ...As> requires in_n<M_ism, 0, 1, 2>
-struct wnity
-:	process::lift<wnity<M_ism>, bond::compose<As...>>
-{
-};
-template <>
-struct  wnity<>
-{
-	using limit_type = occur::inferred_t<union LIMIT, bond::seek_s<(1<<3)>>;
-
-	template <class S>
-	using subtype = bond::compose_s<S, provision::voiced<void
-	,	typename limit_type::template dispatch<>
-	>>;
-
-};
-template <int M_ism=1, typename ...As>
-using   wnity_t = process::confined_t<wnity<M_ism, As...>, wnity<>>;
+template <int M_ism=1, int M_car=0>
+struct wnity;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <>
-struct wnity<1> : wnity<>
+struct wnity<1, 0>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -82,6 +66,16 @@ struct wnity<1> : wnity<>
 
 	};
 };
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <int M_ism=1, int M_car=0>
+using wnity_t = process::confined_t<wnity<M_ism, M_car>>;
+
+template <int M_ism=1, int M_car=0, int ...Ns>
+XTAL_DEF_(let)
+wnity_f = [] XTAL_1FN_(call) (wnity_t<M_ism, M_car>::template method_f<Ns...>);
 
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -1,39 +1,28 @@
-#pragma once
-#include "./any.hh"
 
 
 
 
 
 
-XTAL_ENV_(push)
-namespace xtal::process::math::pade
+
+
+
+namespace _detail
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Provides the argument-restricted implementations for `unity` and `tangy`. \
 
+////////////////////////////////////////////////////////////////////////////////
+///\
+Provides the argument-restricted approximations for `unity` and `tangy`. \
 
 template <int M_ism=1, int M_car=0>	struct  impunity;
 template <int M_ism=1, int M_car=0>	using   impunity_t = process::confined_t<impunity<M_ism, M_car>>;
-
-template <int M_ism=1, auto ...Ns>
-XTAL_DEF_(return,inline,let)
-impunity_f(auto &&o)
-noexcept -> decltype(auto)
-{
-	return impunity_t<M_ism>::template method_f<Ns...>(XTAL_REF_(o));
-}
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int M_ism> struct impunity<M_ism,-0>: bond::compose<discarded<1       >, impunity<M_ism,-1>> {};
 template <int M_ism> struct impunity<M_ism,-1>: bond::compose<discarded<2, M_ism>, impunity<2    ,-2>> {};
-
-
-////////////////////////////////////////////////////////////////////////////////
-
 template <int M_ism> requires in_n<M_ism, 1, 2>
 struct impunity<M_ism,-2>
 {
@@ -175,7 +164,7 @@ struct impunity<M_ism,-2>
 		noexcept -> auto
 		{
 			using          _fit = bond::fit<decltype(o)>;
-			auto constexpr _dn  = one/_fit::patio_1;
+			auto constexpr _pi  = one/_fit::patio_1;
 			
 			using U_aphex = typename _fit::aphex_type;
 			using U_alpha = typename _fit::alpha_type;
@@ -187,8 +176,8 @@ struct impunity<M_ism,-2>
 				U_alpha constexpr x0 =     1.00000000000000000e-0;
 				U_alpha constexpr x1 =     0.50387678776821820e-0;
 
-				U_alpha constexpr y0 = _dn*1.00000000000000000e-0;
-				U_alpha constexpr y1 = _dn*0.18114206708921260e-0;
+				U_alpha constexpr y0 = _pi*1.00000000000000000e-0;
+				U_alpha constexpr y1 = _pi*0.18114206708921260e-0;
 
 				auto const x = termial_f(w, x0, x1);
 				auto const y = termial_f(w, y0, y1);
@@ -199,8 +188,8 @@ struct impunity<M_ism,-2>
 				U_alpha constexpr x1 =     0.74755993126133540e-0;
 				U_alpha constexpr x2 =     0.05410519758331759e-0;
 				
-				U_alpha constexpr y0 = _dn*1.00000000000000000e-0;
-				U_alpha constexpr y1 = _dn*0.41502448325181734e-0;
+				U_alpha constexpr y0 = _pi*1.00000000000000000e-0;
+				U_alpha constexpr y1 = _pi*0.41502448325181734e-0;
 
 				auto const x = termial_f(w, x0, x1, x2);
 				auto const y = termial_f(w, y0, y1);
@@ -211,9 +200,9 @@ struct impunity<M_ism,-2>
 				U_alpha constexpr x1 =     0.98379496428721650e-0;
 				U_alpha constexpr x2 =     0.16793026979785060e-0;
 				
-				U_alpha constexpr y0 = _dn*1.00000000000000000e-0;
-				U_alpha constexpr y1 = _dn*0.65051629987764580e-0;
-				U_alpha constexpr y2 = _dn*0.03944474710871034e-0;
+				U_alpha constexpr y0 = _pi*1.00000000000000000e-0;
+				U_alpha constexpr y1 = _pi*0.65051629987764580e-0;
+				U_alpha constexpr y2 = _pi*0.03944474710871034e-0;
 
 				auto const x = termial_f(w, x0, x1, x2);
 				auto const y = termial_f(w, y0, y1, y2);
@@ -225,9 +214,9 @@ struct impunity<M_ism,-2>
 				U_alpha constexpr x2 =     0.33731712522645585e-0;
 				U_alpha constexpr x3 =     0.11588697106135937e-1;
 				
-				U_alpha constexpr y0 = _dn*1.00000000000000000e-0;
-				U_alpha constexpr y1 = _dn*0.88375887183199590e-0;
-				U_alpha constexpr y2 = _dn*0.13156850890207750e-0;
+				U_alpha constexpr y0 = _pi*1.00000000000000000e-0;
+				U_alpha constexpr y1 = _pi*0.88375887183199590e-0;
+				U_alpha constexpr y2 = _pi*0.13156850890207750e-0;
 
 				auto const x = termial_f(w, x0, x1, x2, x3);
 				auto const y = termial_f(w, y0, y1, y2);
@@ -239,10 +228,10 @@ struct impunity<M_ism,-2>
 				U_alpha constexpr x2 =     0.54620442139995930e-0;
 				U_alpha constexpr x3 =     0.45869073871868164e-1;
 				
-				U_alpha constexpr y0 = _dn*1.00000000000000000e-0;
-				U_alpha constexpr y1 = _dn*1.10086520358652850e-0;
-				U_alpha constexpr y2 = _dn*0.26813142431485410e-0;
-				U_alpha constexpr y3 = _dn*0.07831573963866360e-1;
+				U_alpha constexpr y0 = _pi*1.00000000000000000e-0;
+				U_alpha constexpr y1 = _pi*1.10086520358652850e-0;
+				U_alpha constexpr y2 = _pi*0.26813142431485410e-0;
+				U_alpha constexpr y3 = _pi*0.07831573963866360e-1;
 
 				auto const x = termial_f(w, x0, x1, x2, x3);
 				auto const y = termial_f(w, y0, y1, y2, y3);
@@ -255,10 +244,10 @@ struct impunity<M_ism,-2>
 				U_alpha constexpr x3 =     1.18407591369199770e-1;
 				U_alpha constexpr x4 =     0.23067742495692903e-2;
 				
-				U_alpha constexpr y0 = _dn*1.00000000000000000e-0;
-				U_alpha constexpr y1 = _dn*1.33357813056109360e-0;
-				U_alpha constexpr y2 = _dn*0.46539035057169720e-0;
-				U_alpha constexpr y3 = _dn*0.35261607756788310e-1;
+				U_alpha constexpr y0 = _pi*1.00000000000000000e-0;
+				U_alpha constexpr y1 = _pi*1.33357813056109360e-0;
+				U_alpha constexpr y2 = _pi*0.46539035057169720e-0;
+				U_alpha constexpr y3 = _pi*0.35261607756788310e-1;
 
 				auto const x = termial_f(w, x0, x1, x2, x3, x4);
 				auto const y = termial_f(w, y0, y1, y2, y3);
@@ -271,11 +260,11 @@ struct impunity<M_ism,-2>
 				U_alpha constexpr x3 =     2.32185184843683330e-1;
 				U_alpha constexpr x4 =     1.15781734483417240e-2;
 
-				U_alpha constexpr y0 = _dn*1.00000000000000000e-0;
-				U_alpha constexpr y1 = _dn*1.54923781439012060e-0;
-				U_alpha constexpr y2 = _dn*0.69848490582322830e-0;
-				U_alpha constexpr y3 = _dn*0.90506751518911740e-1;
-				U_alpha constexpr y4 = _dn*0.15530589255192263e-2;
+				U_alpha constexpr y0 = _pi*1.00000000000000000e-0;
+				U_alpha constexpr y1 = _pi*1.54923781439012060e-0;
+				U_alpha constexpr y2 = _pi*0.69848490582322830e-0;
+				U_alpha constexpr y3 = _pi*0.90506751518911740e-1;
+				U_alpha constexpr y4 = _pi*0.15530589255192263e-2;
 
 				auto const x = termial_f(w, x0, x1, x2, x3, x4);
 				auto const y = termial_f(w, y0, y1, y2, y3, y4);
@@ -289,11 +278,11 @@ struct impunity<M_ism,-2>
 				U_alpha constexpr x4 =     0.36584362720576720e-1;
 				U_alpha constexpr x5 =     0.45821007587559800e-3;
 
-				U_alpha constexpr y0 = _dn*1.00000000000000000e-0;
-				U_alpha constexpr y1 = _dn*1.78189081352097830e-0;
-				U_alpha constexpr y2 = _dn*1.00031477243997680e-0;
-				U_alpha constexpr y3 = _dn*0.19176306039358512e-0;
-				U_alpha constexpr y4 = _dn*0.88074505355593190e-2;
+				U_alpha constexpr y0 = _pi*1.00000000000000000e-0;
+				U_alpha constexpr y1 = _pi*1.78189081352097830e-0;
+				U_alpha constexpr y2 = _pi*1.00031477243997680e-0;
+				U_alpha constexpr y3 = _pi*0.19176306039358512e-0;
+				U_alpha constexpr y4 = _pi*0.88074505355593190e-2;
 
 				auto const x = termial_f(w, x0, x1, x2, x3, x4, x5);
 				auto const y = termial_f(w, y0, y1, y2, y3, y4);
@@ -304,8 +293,8 @@ struct impunity<M_ism,-2>
 				(void) cut_t<[] XTAL_1FN_(to) (-_fit::maxilon_f(1))>::edit_f(d);
 				(void) cut_t<[] XTAL_1FN_(to) (-_fit::maxilon_f(1))>::edit_f(q);
 				XTAL_IF0
-				XTAL_0IF (M_ism == -1) {return complexion_f(_fit::alpha_1, _dn*q*atan (d));}
-				XTAL_0IF (M_ism == -2) {return complexion_f(_fit::alpha_1, _dn*q*atanh(d));}
+				XTAL_0IF (M_ism == -1) {return complexion_f(_fit::alpha_1, _pi*q*atan (d));}
+				XTAL_0IF (M_ism == -2) {return complexion_f(_fit::alpha_1, _pi*q*atanh(d));}
 			}
 		}
 
@@ -317,4 +306,3 @@ struct impunity<M_ism,-2>
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////
-XTAL_ENV_(pop)
