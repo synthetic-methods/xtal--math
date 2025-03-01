@@ -2,7 +2,7 @@
 #include "./any.hh"
 
 #include "../atom/phason.hh"
-#include "../occur/indent.hh"
+
 
 
 
@@ -33,7 +33,7 @@ struct phasor<A, As...>
 	using inordinate_type = typename _phi::inordinate_type;
 	using   ordinate_type = typename _phi::  ordinate_type;
 
-	static auto constexpr N  = _std::extent_v<A>;
+	static auto constexpr N  = _xtd::extent_v<A>;
 	using U_phason = atom::math::phason_t<coordinate_type[N]>;
 	using V_phason = atom::math::phason_t<inordinate_type[N]>;
 	
@@ -176,11 +176,11 @@ struct phasor<A, As...>
 		//	Calculates the deviation of `phi[0]` w.r.t. phi[1], \
 		//	using the difference in `phi[1]` to determine the threshold for reset. \
 
-			auto  u_delta = _phi - phi; u_delta[0] += phi[1];
+			auto  u_delta = _phi; u_delta[1] -= phi[1];
 			auto &v_delta = reinterpret_cast<V_phason const &>(u_delta);
 			auto  n_delta = bond::math::bit_ceiling_f(magnum_f(v_delta[1]));
 			auto  i_delta = condition_f<ordinate_type>(v_delta[0] >> n_delta);
-
+			
 			_phi = XTAL_MOV_(phi);
 
 			_phi *= co;

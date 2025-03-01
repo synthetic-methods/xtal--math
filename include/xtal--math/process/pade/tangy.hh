@@ -138,7 +138,8 @@ struct tangy<M_ism,-2>
 		method_f(simplex_field_q auto &&o)
 		noexcept -> decltype(auto)
 		{
-			return rate_f<-1>(_detail::impunity_t<M_ism,-2>::template method_f<N_lim>(XTAL_REF_(o)));
+			auto const [t_re, t_im] = destruct_f(_detail::impunity_t<M_ism,-2>::template method_f<N_lim>(XTAL_REF_(o)));
+			return t_im*root_f<-1, 1>(t_re);
 		}
 
 	};

@@ -50,10 +50,15 @@ struct phason<A>
 :	grade<A>
 {
 };
+template <vector_q A, scalar_q ..._s>
+struct phason<A, _s...>
+:	couple_t<phason_t<A>, _s...>
+{
+};
 template <vector_q A> requires     real_variable_q<unstruct_u<A>>
 struct phason<A>
 {
-	static auto constexpr M_data = _std::extent_v<based_t<A>>;
+	static auto constexpr M_data = _xtd::extent_v<based_t<A>>;
 
 	using coordinate_type = array_valued_u<A>;
 	static_assert(continuous_field_q<coordinate_type>);
@@ -80,6 +85,7 @@ struct phason<A>
 
 	public:// TYPE
 		using typename S_::value_type;
+		using typename S_:: size_type;
 
 	public:// ACCESS
 		using S_::size;
@@ -112,8 +118,8 @@ struct phason<A>
 		}
 		
 	public:// RECONSTRUCT
-		using S_::operator >>=;
-		using S_::operator <<=;
+	//	using S_::operator >>=;
+	//	using S_::operator <<=;
 
 		XTAL_DEF_(mutate,inline,let)
 		operator >>=(_std::initializer_list<coordinate_type> o)
@@ -166,49 +172,62 @@ struct phason<A>
 		///\
 		Scales all elements. \
 
-		///\note\
-		The symmetric signatures for `/=` and `*=` are declared-but-undefined \
-		to avoid compilation-failure when type-checking e.g. `multiplicative_group_q`. \
+		XTAL_DEF_(mutate,inline,let)
+		operator /= (auto &&x)
+		noexcept -> auto &
+		requires un_n<requires (coordinate_type u) {u /= x;}>
+		and      XTAL_TRY_(to) (S_::operator/=(XTAL_REF_(x)))
+
+		XTAL_DEF_(mutate,inline,let)
+		operator *= (auto &&x)
+		noexcept -> auto &
+		requires un_n<requires (coordinate_type u) {u *= x;}>
+		and      XTAL_TRY_(to) (S_::operator*=(XTAL_REF_(x)))
 
 		XTAL_DEF_(mutate,inline,let)
 		operator /= (auto &&x)
 		noexcept -> auto &
-		requires XTAL_TRY_(to) (operator*=(bond::fit<decltype(x)>::alpha_1/XTAL_REF_(x)))
-
-		XTAL_DEF_(mutate,inline,let)
-		operator *= (auto &&x)
-		noexcept -> auto &
-		requires un_n<simplex_variable_q<decltype(x)>>
-		and      XTAL_TRY_(to) (S_::operator*=(XTAL_REF_(x)))
-
-		XTAL_DEF_(mutate,inline,let)
-		operator *= (auto &&x)
-		noexcept -> auto &
-		requires in_n<simplex_variable_q<decltype(x)>>
+		requires in_n<requires (coordinate_type u) {u *= x;}>
 		{
-			using X_fit = bond::fit<decltype(x)>;
+			using X     = XTAL_ALL_(x);
+			using X_fit = bond::fit<X>;
+			return operator*=(X_fit::alpha_1/XTAL_REF_(x));
+		}
+		XTAL_DEF_(mutate,inline,let)
+		operator *= (auto &&x)
+		noexcept -> auto &
+		requires in_n<requires (coordinate_type u) {u *= x;}>
+		{
+			using X     = XTAL_ALL_(x);
+			using X_fit = bond::fit<X>;
 			auto &s = reinterpret_cast<phason_t<inordinate_type[size]> &>(self());
 
+			auto constexpr N0 = U_fit::full.depth - 1;
+			auto constexpr N1 = U_fit::full.depth;
+			auto constexpr N2 = U_fit::half.depth;
+			auto constexpr M2 = U_fit::half.width;
+
+		//	TODO: Adapt for `std::complex`?
 			XTAL_IF0
-			XTAL_0IF (integral_variable_q<decltype(x)>) {
-				S_::operator*=(x);
+			XTAL_0IF (integral_variable_q<X>) {
+				S_::operator*=(XTAL_REF_(x));
 			}
 			XTAL_0IF (1*sizeof(ordinate_type) == sizeof(coordinate_type)) {
-				unsigned constexpr M_bias = U_fit::half.depth >> U_fit::half.width;
-				unsigned constexpr M_size = U_fit::half.depth - M_bias;
-				auto [m, n] = bond::math::bit_representation_f(x);
+				unsigned constexpr M_bias = N2 >> M2;
+				unsigned constexpr M_size = N2  - M_bias;
+				auto [m, n] = bond::math::bit_representation_f(XTAL_REF_(x));
 				m >>= n - M_size;
 				s >>=     M_size;
 				s  *= m;
 			}
 			XTAL_IF0
 			XTAL_0IF (2*sizeof(ordinate_type) == sizeof(coordinate_type)) {
+				W_sigma const u = W_fit::sigma_f(X_fit::diplo_f(N1)*XTAL_REF_(x));
 				U_sigma t_[2];
-				W_sigma const u(x*X_fit::diplo_f(U_fit::full.depth));
 				#pragma unroll
-				for (XTAL_ALL_(size()) i{}; i < size; ++i) {
+				for (size_type i{}; i < size; ++i) {
 					reinterpret_cast<W_sigma &>(t_) = u*s[i];
-				//	t_[1] += t_[0] >> U_fit::positive.depth;// Round...
+				//	t_[1] += t_[0] >> N0;// Rounding...
 					s [i]  = t_[1];
 				}
 			}
@@ -223,24 +242,29 @@ struct phason<A>
 		///\
 		Offsets the first element. \
 		
+	//	XTAL_DEF_(mutate,inline,let) operator +=(_std::initializer_list<coordinate_type> o) noexcept -> auto & {return S_::operator+=(T(o));}
+	//	XTAL_DEF_(mutate,inline,let) operator -=(_std::initializer_list<coordinate_type> o) noexcept -> auto & {return S_::operator-=(T(o));}
+
+		XTAL_DEF_(mutate,inline,get) operator -= (auto &&x) noexcept {return S_::operator-=(XTAL_REF_(x));}
+		XTAL_DEF_(mutate,inline,get) operator += (auto &&x) noexcept {return S_::operator+=(XTAL_REF_(x));}
+
 		XTAL_DEF_(mutate,inline,let)
 		operator -= (auto &&x)
 		noexcept -> auto &
-		requires XTAL_TRY_(to) (operator+=(-XTAL_REF_(x)))
-
-		XTAL_DEF_(mutate,inline,let)
-		operator += (auto &&x)
-		noexcept -> auto &
-		requires un_n<simplex_variable_q<decltype(x)>>
-		and      XTAL_TRY_(to) (S_::operator+=( XTAL_REF_(x)))
-
-		XTAL_DEF_(mutate,inline,let)
-		operator += (auto &&x)
-		noexcept -> auto &
-		requires in_n<simplex_variable_q<decltype(x)>>
+		requires additive_group_p<1, coordinate_type, decltype(x)>
 		{
-			if constexpr (real_variable_q<decltype(x)>) {
-				get<0>(self()) += bond::math::bit_fraction_f<_std::make_signed_t<ordinate_type>>(x);
+			if constexpr (un_n<integral_q<unstruct_u<decltype(x)>>>) {
+				get<0>(self()) -= bond::math::bit_fraction_f<inordinate_type>(x);
+			}
+			return self();
+		}
+		XTAL_DEF_(mutate,inline,let)
+		operator += (auto &&x)
+		noexcept -> auto &
+		requires additive_group_p<1, coordinate_type, decltype(x)>
+		{
+			if constexpr (un_n<integral_q<unstruct_u<decltype(x)>>>) {
+				get<0>(self()) += bond::math::bit_fraction_f<inordinate_type>(x);
 			}
 			return self();
 		}

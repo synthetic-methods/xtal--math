@@ -1,11 +1,11 @@
 #pragma once
 #include "./any.cc"
-#include "./term.hh"// testing...
 
 
 
 
 
+#include "./factorial.hh"// testing...
 XTAL_ENV_(push)
 namespace xtal::process::math::_test
 {/////////////////////////////////////////////////////////////////////////////////
@@ -24,7 +24,7 @@ TAG_("math")
 	using W_alpha = atom::couple_t<U_alpha[2]>;
 	using W_aphex = atom::couple_t<U_aphex[2]>;
 
-	TRY_("term")
+	TRY_("factorial")
 	{
 		TRUE_(factorial_f<5>() == 120);
 

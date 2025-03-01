@@ -1,10 +1,10 @@
 #pragma once
 #include "./any.hh"
-#include "./either.hh"
 #include "./nearing.hh"
 #include "./magnum.hh"
 #include "./signum.hh"
 #include "./dots.hh"
+
 
 XTAL_ENV_(push)
 namespace xtal::process::math
@@ -79,7 +79,10 @@ struct cut
 			//\
 			if (_std::is_constant_evaluated() or not _fit::IEC) {
 			if (_std::is_constant_evaluated() or not _fit::IEC or XTAL_ENV_(GNUC)) {
-				U_alpha const s = signum_t<>::edit_f(o); o = either_f<N_side>(XTAL_MOV_(o), o_stop);
+				U_alpha const s = signum_t<>::edit_f(o);
+				XTAL_IF0
+				XTAL_0IF (M_side <= 0) {o = _fit::minimum_f(XTAL_MOV_(o), o_stop);}
+				XTAL_0IF (M_side == 1) {o = _fit::maximum_f(XTAL_MOV_(o), o_stop);}
 				U_alpha const q = o == o_stop;
 				o *= s; return q*s;
 			}
