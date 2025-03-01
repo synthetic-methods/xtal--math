@@ -31,7 +31,7 @@ template <typename ...As>	using   differ_t = process::confined_t<differ<As...>>;
 template <class ..._s>
 struct any<differ<_s...>>
 {
-	using superkind = any<abstract<_s...>>;
+	using superkind = any<class_template<_s...>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>

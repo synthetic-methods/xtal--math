@@ -1,8 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-#include "./impunity.hh"
-#include "./disunity.hh"
+#include "./unify.hh"
 #include "./tangy.hh"
 #include "../taylor/logarithm.hh"
 
@@ -17,37 +16,23 @@ Defines `function` by `(-1)^(2 #) &`; spiritually equivalent to `1^# &`. \
 ///\param M_ism \f$\in {1, 2}\f$ specifies the underlying morphism, \
 generating either circular or hyperbolic `{cosine, sine}` pairs. \
 
-template <int M_ism=0, typename ...As> requires in_n<M_ism, 0, 1,-1, 2,-2>
-struct unity
-:	process::lift<unity<M_ism>, bond::compose<As...>>
-{
-};
-template <>
-struct  unity<>
-{
-	using limit_type = occur::inferred_t<union LIMIT, bond::seek_s<(1<<3)>>;
-
-	template <class S>
-	using subtype = bond::compose_s<S, provision::voiced<void
-	,	typename limit_type::template dispatch<>
-	>>;
-
-};
-template <int M_ism=1, typename ...As>
-using   unity_t = process::confined_t<unity<M_ism, As...>, unity<>>;
+template <int M_ism=1, int M_car=0>
+struct unity;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int M_ism> requires in_n<M_ism, 0, 1, 2>
-struct unity<M_ism> : unity<>
+struct unity<M_ism, 0>
 {
-	using superprocess = process::lift_t<disunity<M_ism>, impunity<M_ism>>;
+	using superprocess = process::lift_t<unify<M_ism>, _detail::impunity<M_ism>>;
+
+	using superkind = any<unity>;
 
 	template <class S>
-	class subtype : public bond::compose_s<S>
+	class subtype : public bond::compose_s<S, superkind>
 	{
-		using S_ = bond::compose_s<S>;
+		using S_ = bond::compose_s<S, superkind>;
 
 	public:
 		using S_::S_;
@@ -132,13 +117,15 @@ struct unity<M_ism> : unity<>
 
 	};
 };
-template <int M_ism> requires in_n<M_ism,-1,-2>
-struct unity<M_ism> : unity<>
+template <int M_ism> requires in_n<M_ism, -1, -2>
+struct unity<M_ism, 0>
 {
+	using superkind = any<unity>;
+
 	template <class S>
-	class subtype : public bond::compose_s<S>
+	class subtype : public bond::compose_s<S, superkind>
 	{
-		using S_ = bond::compose_s<S>;
+		using S_ = bond::compose_s<S, superkind>;
 
 	public:
 		using S_::S_;
@@ -168,6 +155,16 @@ struct unity<M_ism> : unity<>
 
 	};
 };
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <int M_ism=1, int M_car=0>
+using unity_t = process::confined_t<unity<M_ism, M_car>>;
+
+template <int M_ism=1, int M_car=0, int ...Ns>
+XTAL_DEF_(let)
+unity_f = [] XTAL_1FN_(call) (unity_t<M_ism, M_car>::template method_f<Ns...>);
 
 
 ///////////////////////////////////////////////////////////////////////////////
