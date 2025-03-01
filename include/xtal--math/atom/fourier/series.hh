@@ -227,7 +227,7 @@ struct series<A>
 		//	Conjugate and scale the output if computing the inverse transform of the codomain:
 			if constexpr (N_direction == -1) {
 				_detail::apply_to<[] XTAL_1FN_(call) (_std::conj)>(that);
-				that /= n_width;
+				that /= _fit::alpha_f(n_width);
 			}
 
 		//	Cast the output to the transformed domain:

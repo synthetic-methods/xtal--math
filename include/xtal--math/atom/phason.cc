@@ -48,10 +48,16 @@ TAG_("phason")
 	
 	TRY_("phason scaling")
 	{
-		U_phi u_phi{0.2, 0.1}, u_psi = u_phi.scaled(0.3);
+		U_phi u_phi{0.2, 0.1}, v_phi = u_phi.scaled(0.3);
 		u_phi.scale(0.3);
 
-		TRUE_(u_phi == u_psi);
+		TRUE_(u_phi == v_phi);
+		TRUE_(check_f<-20>(u_phi(1), 0.03));
+		TRUE_(check_f<-20>(u_phi(0), 0.20));
+		//\
+		u_phi +=      {0.1};
+		u_phi += U_phi{0.1};
+		TRUE_(check_f<-20>(u_phi(0), 0.30));
 
 	}
 	/**/
@@ -87,7 +93,7 @@ TAG_("phason")
 
 	}
 	/***/
-	/*/
+	/**/
 	TRY_("complex of phason")
 	{
 		W_phi a{{0.1, 0.0}, {0.2, 0.0}};
@@ -105,7 +111,29 @@ TAG_("phason")
 		TRUE_(check_f(c.imag() (0), 0.4));
 
 	}
+	TRY_("tuple with phason")
+	{
+		using U_psi = additive_group_t<T_alpha[2]>;
+		using W = additive_group_t<U_phi, U_psi>;
+
+		TRUE_(sizeof(W) == sizeof(U_phi) + sizeof(U_psi));
+
+		W w0{{0.1, 0.2}, {0.3, 0.4}};
+		W w1{{0.1, 0.2}, {0.3, 0.4}};
+		w0 *= 2.0;
+		TRUE_(check_f<-22>( 0.2, get<0>(w0)(0)));
+		TRUE_(check_f<-22>( 0.4, get<0>(w0)(1)));
+		TRUE_(check_f<- 1>( 0.6, get<1>(w0)(0)));
+		TRUE_(check_f<- 1>( 0.8, get<1>(w0)(1)));
+		w0 += w1;
+		TRUE_(check_f<-22>( 0.3, get<0>(w0)(0)));
+		TRUE_(check_f<-22>(-0.4, get<0>(w0)(1)));
+		TRUE_(check_f<- 1>( 0.9, get<1>(w0)(0)));
+		TRUE_(check_f<- 1>( 1.2, get<1>(w0)(1)));
+
+	}
 	/***/
+	/**/
 	TRY_("construction")
 	{
 		D2 a_d2{0.250, 0.250};
@@ -138,6 +166,8 @@ TAG_("phason")
 		TRUE_(check_f<4>(0.1, phason_t<T_alpha[2]>{0.1, 0.1}(0)));
 
 	}
+	/***/
+	/**/
 	TRY_("iteration")
 	{
 		U_phi   phi{0, T_fit::haplo_f(4)};
@@ -166,6 +196,8 @@ TAG_("phason")
 		}
 
 	}
+	/***/
+	/**/
 	TRY_("addition")
 	{
 		T_alpha x =  0.33, x_dt = T_fit::haplo_f(4);
@@ -179,6 +211,8 @@ TAG_("phason")
 		TRUE_(check_f<8>(phi(0), z));
 
 	}
+	/***/
+	/**/
 	TRY_("multiplication")
 	{
 		T_alpha x = 1/3.L, x_dt = T_fit::haplo_f(4);
@@ -195,6 +229,7 @@ TAG_("phason")
 		}
 
 	}
+	/***/
 	/**/
 	TRY_("trial")
 	{

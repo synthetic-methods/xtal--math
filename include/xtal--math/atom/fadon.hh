@@ -60,6 +60,13 @@ struct fadon
 		{
 			return S_::product(reinterpret_cast<T const &>(t));
 		}
+		template <class U>
+		XTAL_DEF_(return,inline,met)
+		operator * (U const &u, homotype const &s)
+		noexcept requires bond::tab_preference_p<T, U>
+		{
+			return s.operator*(u);
+		}
 
 	};
 	using type = bond::derive_t<homotype>;

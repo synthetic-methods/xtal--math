@@ -32,7 +32,7 @@ noexcept
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/**/
+
 TAG_("phasor")
 {
 	using namespace Eigen;
@@ -75,6 +75,7 @@ TAG_("phasor")
 	using _fit = bond::template fit<typename X_phi::value_type>;
 
 
+	/**/
 	TRY_("trial")
 	{
 		static constexpr T_alpha x_delta  = _fit::ratio_f(7);
@@ -128,6 +129,7 @@ TAG_("phasor")
 
 		};
 	}
+	/***/
 	/**/
 	TRY_("reprogression")
 	{
@@ -225,6 +227,8 @@ TAG_("phasor")
 		TRUE_(z_out[7] == bond::pack_f(-4*x_d3, x_d3));
 
 	}
+	/***/
+	/**/
 	TRY_("procession")
 	{
 		T_alpha x_d4 = _fit::haplo_f(4);
@@ -274,6 +278,7 @@ TAG_("phasor")
 
 	}
 	/***/
+	/**/
 	TRY_("multiplication")
 	{
 		T_alpha x =  0.33, x_d4 = _fit::haplo_f(4);
@@ -291,8 +296,9 @@ TAG_("phasor")
 		TRUE_(check_f<6>(y_phi.head() (0), z - _std::round(z)));
 
 	}
+	/***/
 }
-/***/
+
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////
