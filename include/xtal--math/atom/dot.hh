@@ -11,38 +11,38 @@ namespace xtal::atom::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 ///\
-Extends `couple` with `operator*` redefined by the scalar product. \
+Extends `additive_group` with `operator*` defined by the scalar product. \
 Indended to act as a coefficient of a similar type where a scalar result is required. \
 
-///\note\
-May get refactored as either rational addition (numerator), \
-or complex multiplication (imaginary component). \
+///\todo\
+Either define `std::complex` construction/operation, \
+or create a similar complex sentinel that applies multiplication/projection. \
 
 ///\todo\
 Specialize `plus_multiplies` or `fma`? \
 
-template <class ..._s>	struct  fadon;
-template <class ..._s>	using   fadon_t = typename fadon<_s...>::type;
-template <class ..._s>	concept fadon_q = bond::fixed_tagged_with_p<fadon_t, _s...>;
+template <class ..._s>	struct  dot;
+template <class ..._s>	using   dot_t = typename dot<_s...>::type;
+template <class ..._s>	concept dot_q = bond::fixed_tagged_with_p<dot_t, _s...>;
 
-XTAL_DEF_(let) fadon_f = [] XTAL_1FN_(call) (_detail::fake_f<fadon_t>);
+XTAL_DEF_(let) dot_f = [] XTAL_1FN_(call) (_detail::fake_f<dot_t>);
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <scalar_q ..._s> requires same_q<_s...>
-struct fadon<_s ...>
-:	fadon<common_t<_s...>[sizeof...(_s)]>
+struct dot<_s ...>
+:	dot<common_t<_s...>[sizeof...(_s)]>
 {
 };
 template <class ..._s>
-struct fadon
+struct dot
 {
 	template <class T>
-	using endotype = typename couple<_s...>::template homotype<T>;
+	using endotype = typename additive_group<_s...>::template homotype<T>;
 
 	template <class T>
-	using holotype = bond::compose_s<endotype<T>, bond::tag<fadon_t>>;
+	using holotype = bond::compose_s<endotype<T>, bond::tag<dot_t>>;
 
 	template <class T>
 	class homotype : public holotype<T>
@@ -52,18 +52,35 @@ struct fadon
 	public:// CONSTRUCT
 		using S_::S_;
 
+	public:// ACCESS
+		using S_::size;
+		using S_::self;
+		using S_::twin;
+
 	public:// OPERATE
 
 		XTAL_DEF_(return,inline,let)
 		operator * (auto const &t) const
 		noexcept -> auto
 		{
-			return S_::product(reinterpret_cast<T const &>(t));
+			if constexpr (bond::pack_q<decltype(t)>) {
+				auto &s = self();
+				typename T::coordinate_type u{0};
+				
+				bond::seek_out_f<size>([&]<constant_q I> (I)
+					XTAL_0FN_(do) (u = _xtd::plus_multiplies(XTAL_MOV_(u), got<I{}>(s), got<I{}>(t))));
+				
+				return u;
+			}
+			else {
+				S_::operator*(t);
+			}
 		}
 		template <class U>
 		XTAL_DEF_(return,inline,met)
 		operator * (U const &u, homotype const &s)
-		noexcept requires bond::tab_preference_p<T, U>
+		noexcept
+		requires un_n<_std::derived_from<U, homotype>>
 		{
 			return s.operator*(u);
 		}
@@ -73,8 +90,8 @@ struct fadon
 
 };
 template <scalar_q U>
-struct fadon<U>
-:	fadon<U[2]>
+struct dot<U>
+:	dot<U[2]>
 {
 };
 

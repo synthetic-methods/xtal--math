@@ -220,7 +220,12 @@ XTAL_DEF_(return,inline,let)
 bit_ceiling_f(complex_variable_q auto &&x)
 noexcept -> int
 {
-	return bit_ceiling_f<N_zero>(norm(XTAL_REF_(x))) >> 1;
+	auto  y = bit_ceiling_f<N_zero>(norm(XTAL_REF_(x)));
+	y  += y&1;
+	y >>=   1;
+	return  y;
+	//\
+	return bit_floor_f<N_zero>(XTAL_REF_(x)) + 1;
 }
 
 template <int N_zero=-1>

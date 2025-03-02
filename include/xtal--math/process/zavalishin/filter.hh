@@ -121,18 +121,17 @@ struct filter
 		)
 		noexcept -> auto
 		{
-			using X =  XTAL_ALL_(x); using X2 = atom::couple_t<X[2]>;
-			using W = unstruct_u<X>; using W2 = atom::couple_t<W[2]>;
+			using X =  XTAL_ALL_(x);
+			using U = unstruct_u<X>;
+			using X_state_ = atom::couple_t<X[N_ord]>;
+			using X_slope_ = atom::couple_t<X[N_ord]>;
 
-			using U_state_ = atom::couple_t<X[N_ord]>;
-			using U_slope_ = atom::couple_t<X[N_ord]>;
-
-			atom::couple_t<X[N_ord + 1]> outputs{};
+			atom::math::dot_t<X[N_ord + 1]> outputs{};
 
 			auto outputs_ = outputs.self(cardinal_constant_t<N_ord>{});
 			auto scalars_ = scalars.self(cardinal_constant_t<N_ord>{});
 
-			auto     mem  = S_::template memory<U_state_, U_slope_>();
+			auto     mem  = S_::template memory<X_state_, X_slope_>();
 		//	(void) cut_t<[] XTAL_1FN_(to) (-bond::fit<X>::diplo_f(7))>::edit_f(mem);
 			auto &states_ = get<0>(mem);
 			auto &slopes_ = get<1>(mem);
@@ -178,9 +177,7 @@ struct filter
 			slopes_ /= scalars_;
 		//	outputs_ *= slopes_;// TODO: Make this line optional?
 
-			//\
-			return X2{get<0>(outputs), get<1>(outputs)};
-			return X2{outputs.self(constant_t<2>{})};
+			return outputs.twin(constant_t<2>{});
 		}
 		template <int N_ord=0, int N_pat=0, auto ...Ns>
 		XTAL_DEF_(inline,let)
@@ -190,16 +187,15 @@ struct filter
 		)
 		noexcept -> auto
 		{
-			using X =  XTAL_ALL_(x); using X2 = atom::couple_t<X[2]>;
-			using W = unstruct_u<X>; using W2 = atom::couple_t<W[2]>;
-
+			using X =  XTAL_ALL_(x);
+			using U = unstruct_u<X>;
 			XTAL_IF0
 			XTAL_0IF (0 == N_ord) {
-				return X2{XTAL_REF_(x)};
+				return atom::math::dot_t<X[2]>{XTAL_REF_(x)};
 			}
 			XTAL_0IF (0 == N_pat) {
 				return method<N_ord, N_pat, Ns...>(XTAL_REF_(x), s_gain
-				,	[=] () XTAL_0FN -> atom::couple_t<W[N_ord + 1]> {
+				,	[=] () XTAL_0FN -> atom::couple_t<U[N_ord + 1]> {
 						auto const  &u = cut_f<[] XTAL_1FN_(to) (bond::fit<X>::minilon_f(0))>(s_damp);
 						auto const u02 =             two*u , u04 = u02*two;
 						auto const u12 = term_f(one, two,u), w24 = u02*u12;
@@ -212,7 +208,7 @@ struct filter
 				);
 			}
 			XTAL_0IF (1 == N_pat) {
-				return X2{XTAL_REF_(x)};
+				return atom::math::dot_t<X[2]>{XTAL_REF_(x)};
 			}
 		}
 		template <int N_ord=0, int N_pat=0, auto ...Ns>
@@ -224,12 +220,16 @@ struct filter
 		)
 		noexcept -> auto
 		{
-			using X =  XTAL_ALL_(x); using X2 = atom::couple_t<X[2]>;
-			using W = unstruct_u<X>; using W2 = atom::couple_t<W[2]>;
-
+			using X =  XTAL_ALL_(x);
+			using U = unstruct_u<X>;
+			/**/
+			return method<N_ord, N_pat, Ns...>(XTAL_REF_(x), s_gain, s_damp)*
+				atom::math::dot_t<U[2]>{term_f<-1, 2>(one, y_fade), y_fade};
+			/*/
 			return dot_f(method<N_ord, N_pat, Ns...>(XTAL_REF_(x), s_gain, s_damp)
 			,	W2{term_f<-1, 2>(one, y_fade), y_fade}
 			);//TODO: Replace with `fade`.
+			/***/
 		}
 
 		///\

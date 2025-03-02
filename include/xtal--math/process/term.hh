@@ -1,6 +1,6 @@
 #pragma once
 #include "./any.hh"
-
+#include "../atom/dot.hh"
 
 
 
@@ -11,11 +11,14 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////
+
 template <int M_alt=1, int M_pow=1, class W, class X, class ...Xs>
 XTAL_DEF_(return,inline,let)
 term_f(W &&w, X &&x, Xs &&...xs)
 noexcept -> auto
 {
+	using _xtd::plus_multiplies;
 	XTAL_IF0
 	XTAL_0IF (none_q<Xs...>) {
 		XTAL_IF0
@@ -33,13 +36,13 @@ noexcept -> auto
 		auto constexpr _f = [] XTAL_1FN_(call) (term_f<M_alt, M_pow>);
 		using Y = unstruct_u<Xs...>;// NOTE: Constants interpreted as scalar quantities...
 		XTAL_IF0
-		XTAL_0IF (atom::point_q<W>) {
+		XTAL_0IF (atom::point_q<W> and not atom::math::dot_q<W>) {
 			return based_t<W>::template zip_from<_f>(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
 		}
-		XTAL_0IF (atom::point_q<X>) {
+		XTAL_0IF (atom::point_q<X> and not atom::math::dot_q<X>) {
 			return based_t<X>::template zip_from<_f>(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
 		}
-		XTAL_0IF (atom::point_q<Y>) {
+		XTAL_0IF (atom::point_q<Y> and not atom::math::dot_q<Y>) {
 			return based_t<Y>::template zip_from<_f>(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
 		}
 		XTAL_0IF (constant_q<W, X> or integral_variable_q<W, X> and real_variable_q<Y>) {
@@ -55,18 +58,18 @@ noexcept -> auto
 			return XTAL_REF_(w);
 		}
 		XTAL_0IF (M_pow == 1 and M_alt ==  1) {
-			return _xtd::plus_multiplies(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
+			return plus_multiplies(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
 		}
 		XTAL_0IF (M_pow == 1 and M_alt == -1) {
-			return _xtd::plus_multiplies(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)..., Y{M_alt});
+			return plus_multiplies(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)..., Y{M_alt});
 		}
 		XTAL_0IF (M_pow == 2 and M_alt ==  1) {
 			auto const y = (XTAL_REF_(xs) *...* XTAL_REF_(x));
-			return _xtd::plus_multiplies(XTAL_REF_(w), y, y);
+			return plus_multiplies(XTAL_REF_(w), y, y);
 		}
 		XTAL_0IF (M_pow == 2 and M_alt == -1) {
 			auto const y = (XTAL_REF_(xs) *...* XTAL_REF_(x));
-			return _xtd::plus_multiplies(XTAL_REF_(w), y, y, Y{M_alt});
+			return plus_multiplies(XTAL_REF_(w), y, y, Y{M_alt});
 		}
 		XTAL_0IF_(terminate)
 	}

@@ -183,6 +183,13 @@ TAG_("bit_floor_f")
 		TRUE_(bit_floor_f(8.0) ==  3);
 		TRUE_(bit_floor_f(9.0) ==  3);
 
+		TRUE_(bit_floor_f  (T_aphex{3.0, 3.0}) ==  2);
+		TRUE_(bit_floor_f  (T_aphex{0.3, 0.3}) == -2);
+	
+		TRUE_(bit_ceiling_f(T_aphex{3.0, 3.0}) ==  3);
+	//	echo_(bit_ceiling_f(T_aphex{0.3, 0.3}), -1);//FIX:	Improper rounding?
+
+
 	};
 }
 
