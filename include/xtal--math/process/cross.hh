@@ -43,9 +43,9 @@ struct cross<W, U, As...>
 		using S_::self;
 		using S_::head;
 
-		template <auto ...Is>
+		XTAL_FX2_(do) (template <auto ...Is>
 		XTAL_DEF_(return,let)
-		method(auto &&...xs) const
+		method(auto &&...xs),
 		noexcept -> auto
 		{
 			auto const &x_ = head();
@@ -53,7 +53,7 @@ struct cross<W, U, As...>
 			return [&, this]<auto ...I>(bond::seek_t<I...>)
 				XTAL_0FN_(to) (S_::template method<Is...>(dot_f(get<I>(x_), y)...))
 			(bond::seek_s<bond::pack_size_n<decltype(x_)>> {});
-		}
+		})
 
 	};
 };

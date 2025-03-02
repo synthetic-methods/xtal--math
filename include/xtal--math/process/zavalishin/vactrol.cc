@@ -15,76 +15,59 @@ namespace xtal::process::math::zavalishin::_test
 
 TAG_("vactrol")
 {
-	using T_alpha   = typename bond::fit<>::alpha_type;
-	using T_aphex   = typename bond::fit<>::aphex_type;
-	//\
-	using A_filter  = filter<T_alpha[2], union RING>;
-	using A_filter  = filter<>;
-	using W_filter  = any_t<A_filter>;
-	using U_limit   = typename W_filter::   limit_type;
-	using U_order   = typename W_filter::   order_type;
-	using U_patch   = typename W_filter::   patch_type;
-	using U_stage   = typename W_filter::   stage_type;
-	using U_shape   = typename W_filter::   shape_type;
-	using U_refade  = typename W_filter::  refade_type;
-	using U_redamp  = typename W_filter::  redamp_type;
-	using U_reshape = typename W_filter:: reshape_type;
+	using U_alpha = typename bond::fit<>::alpha_type;
+	using W_alpha = atom::math::dot_t<U_alpha[2]>;
+	using Z_slice = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
 
 	using _0 = ordinal_constant_t<0>;
 	using _1 = ordinal_constant_t<1>;
 
-	using Z_slicer = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
-
 	/**/
 	TRY_("vactrol: monophony")
 	{
-		using U_event = flow::packet_t<U_stage, U_reshape>;
-		using Z_event = flow::cue_s<U_event>;
-		using Z_cue   = flow::cue_s<>;
-
-		using Z_process = confined_t<void
+		//\
+		using E_def = filter<U_alpha[2], union ENV>;
+		using E_def = filter<>;
+		using E_env = any_t<E_def>;
+		using E_eve = flow::packet_t<typename E_env::stage_type, typename E_env::reshape_type>;
+		using E_pro = confined_t<void
 		,	prewarped<_0>, gate<1>
 		,	staged<-1>
 		,	staged< 0>
-		,	typename U_redamp::template   attend<>
-		,	typename U_refade::template   attend<>
-		,	typename W_filter::template   attach<>
-		,	typename W_filter::template dispatch<>
+		,	typename E_env::redamp_type::template   attend<>
+		,	typename E_env::refade_type::template   attend<>
+		,	typename E_env::             template   attach<>
+		,	typename E_env::             template dispatch<>
 		,	vactrol<>
-		,	A_filter
+		,	E_def
 		>;
-		using Z_processor = processor::monomer_t<Z_process
+		using E_prx = processor::monomer_t<E_pro
 		//\
-		,	Z_slicer::template inqueue<stage_type, U_reshape>
-		,	Z_slicer::template inqueue<U_event>
+		,	Z_slice::template inqueue<stage_type, typename E_env::reshape_type>
+		,	Z_slice::template inqueue<E_eve>
 		,	provision::stored  <null_type[0x100]>
 		,	provision::spooled <null_type[0x100]>
 		>;
 
-		T_alpha constexpr omega = 2*2*2*3*3*5*5;
-
-		_std::array<T_alpha, 0x100> f_; f_.fill(omega);
-		auto z = Z_processor::bind_f(processor::let_f(f_));
-
+		U_alpha constexpr e_omega = 2*2*2*3*3*5*5;
 		auto z_resize = occur::resize_t<>(0x020);
 		auto z_cursor = occur::cursor_t<>(0x020);
 		auto z_sample = occur::resample_f(44100);
 
-		z <<= U_limit  {0};
-		z <<= U_order  {2};
-		z <<= U_patch  {0};
-		z <<= U_redamp {root_f<2>(2.F)};
-		z <<= U_refade {0};
-
-	//	z <<= U_reshape({0.25, one - 0.25});
+		auto z = E_prx::bind_f(processor::let_f(e_omega));
+		z <<= typename E_env::  limit_type{0};
+		z <<= typename E_env::  order_type{2};
+		z <<= typename E_env::  patch_type{0};
+		z <<= typename E_env:: redamp_type{root_f<2>(2.F)};
+		z <<= typename E_env:: refade_type{0};
+	//	z <<= typename E_env::reshape_type({0.25, one - 0.25});
 
 		z <<= z_sample;
 		z <<= z_resize;
+		z >>= typename E_env::stage_type{-1};
 
-		z >>= U_stage{-1};
-
-		z >>= Z_cue{0x08}.then(U_event{ 0, U_shape{0.125, 0.25}});
-		z >>= Z_cue{0x18}.then(U_event{-1, U_shape{0.500, 0.25}});
+		z >>= flow::cue_f(0x08).then(E_eve{ 0, typename E_env::shape_type{0.125, 0.25}});
+		z >>= flow::cue_f(0x18).then(E_eve{-1, typename E_env::shape_type{0.500, 0.25}});
 
 		echo_rule_<28>("\u2500");
 

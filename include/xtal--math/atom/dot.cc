@@ -1,11 +1,11 @@
 #pragma once
 #include "./any.cc"
-#include "./fadon.hh"// testing...
 
 
 
 
 
+#include "./dot.hh"// testing...
 XTAL_ENV_(push)
 namespace xtal::atom::math::_test
 {/////////////////////////////////////////////////////////////////////////////////
@@ -13,7 +13,7 @@ namespace xtal::atom::math::_test
 
 ////////////////////////////////////////////////////////////////////////////////
 
-TAG_("fadon")
+TAG_("dot")
 {
 	using _fit = bond::fit<>;
 	using T_delta = typename _fit::delta_type;
@@ -21,12 +21,12 @@ TAG_("fadon")
 	using T_alpha = typename _fit::alpha_type;
 	using T_aphex = typename _fit::aphex_type;
 
-	TRY_("fadon (multiplicative)")
+	TRY_("dot (multiplicative)")
 	{
-		couple_t <T_alpha[2]> u_couple {2, 3};
-		fadon_t  <T_alpha[2]> u_fadon  {4, 9};
-		TRUE_(u_fadon*u_couple == 35.);
-		TRUE_(u_couple*u_fadon == 35.);
+		couple_t<T_alpha[2]> u_couple{2, 3};
+		dot_t<T_alpha[2]> u_dot{4, 9};
+		TRUE_(u_dot*u_couple == 35.);
+		TRUE_(u_couple*u_dot == 35.);
 
 	}
 }

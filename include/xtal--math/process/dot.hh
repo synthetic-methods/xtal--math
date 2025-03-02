@@ -48,7 +48,6 @@ template <class ...Ts>
 using multiplied_u = multiplied_t<fluid_u<Ts>...>;
 
 
-
 }///////////////////////////////////////////////////////////////////////////////
 
 template <int M_alt> requires in_n<M_alt, 0, 1,-1>
@@ -68,6 +67,7 @@ struct dot
 		noexcept -> auto
 		requires un_n<fixed_shaped_q<decltype(x)>>
 		{
+			using _std::norm;// In case...
 		//	static_assert(M_alt == 1);
 			XTAL_IF1_(to) (norm(XTAL_REF_(x)))
 			XTAL_0IF_(to) (square_f(abs(x)))
@@ -78,6 +78,7 @@ struct dot
 		noexcept -> auto
 		requires in_n<fixed_shaped_q<decltype(x)>>
 		{
+			using _std::norm;// In case...
 			using X = XTAL_ALL_(x);
 			auto constexpr N = fixed_shaped<X>::extent();
 

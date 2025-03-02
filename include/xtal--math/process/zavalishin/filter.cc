@@ -28,95 +28,81 @@ struct filter_parameters
 /**/
 TAG_("filter")
 {
-	using T_alpha   = typename bond::fit<>::alpha_type;
-	using T_aphex   = typename bond::fit<>::aphex_type;
-
-	using A_filter  = filter<>;
-	using W_filter  = any_t<A_filter>;
-	using U_limit   = typename W_filter::   limit_type;
-	using U_order   = typename W_filter::   order_type;
-	using U_patch   = typename W_filter::   patch_type;
-	using U_stage   = typename W_filter::   stage_type;
-	using U_shape   = typename W_filter::   shape_type;
-	using U_refade  = typename W_filter::  refade_type;
-	using U_redamp  = typename W_filter::  redamp_type;
-	using U_reshape = typename W_filter:: reshape_type;
+	using U_alpha = typename bond::fit<>::alpha_type;
+	using W_alpha = atom::math::dot_t<U_alpha[2]>;
+	using Z_slice = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
 
 	using _0 = ordinal_constant_t<0>;
 	using _1 = ordinal_constant_t<1>;
 
 	TRY_("instantiation")
 	{
+		using R_def = filter<>;
+		using R_env = any_t<R_def>;
 		//\
-		using SVF = confined_t<staged<0>, filter<>>;
-		using SVF = prewarped_t<_1
+		using R_pro = confined_t<staged<0>, filter<>>;
+		using R_pro = prewarped_t<_1
 		,	staged< 0>
-		,	typename U_refade::template   attend<>
-		,	typename W_filter::template   attach<>
-		,	typename W_filter::template dispatch<>
-		,	A_filter
+		,	typename R_env::refade_type::template   attend<>
+		,	typename R_env::             template   attach<>
+		,	typename R_env::             template dispatch<>
+		,	R_def
 		>;
-
 		//\
-		using Z = processor::monomer_t<prewarped<_1>, SVF>;
-		using Z = processor::monomer_t<SVF>;
+		using R_prx = processor::monomer_t<prewarped<_1>, R_pro>;
+		using R_prx = processor::monomer_t<R_pro>;
 
-		SVF svf{};
+		R_pro svf{};
 		svf <<= occur::resample_f(44100);
-		svf <<= U_limit{0};
-		svf <<= U_order{2};
-		svf <<= U_patch{0};
-		svf <<= U_refade{0};
+		svf <<= typename R_env::  limit_type{0};
+		svf <<= typename R_env::  order_type{2};
+		svf <<= typename R_env::  patch_type{0};
+		svf <<= typename R_env:: refade_type{0};
 	
-		T_alpha constexpr omega = 2*2*3*3*5*5*7;
-		T_alpha constexpr   rho = 1;
-		T_alpha constexpr    up = 1;
-		T_alpha constexpr    dn = 0;
+		U_alpha constexpr r_omega = 2*2*3*3*5*5*7;
+		U_alpha constexpr   rho = 1;
+		U_alpha constexpr    up = 1;
+		U_alpha constexpr    dn = 0;
 
-		T_alpha _LP0{};
-		T_alpha _LP1{};
+		U_alpha _LP0{};
+		U_alpha _LP1{};
 
-		_LP1 = svf(up, omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
 
-		_LP1 = svf(dn, omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
 
-		_std::array<T_alpha, 4> u_{1, 2, 0, 1};
-		_std::array<T_alpha, 4> f_{3, 3, 3, 3};
-
-		//\
-		auto z = Z::bind_f(u_, f_);
-//		auto z = Z::bind_f(processor::let_f(u_), processor::let_f(f_));
-//		TRUE_(true);
+		_std::array<U_alpha, 4> u_{1, 2, 0, 1};
+		_std::array<U_alpha, 4> f_{3, 3, 3, 3};
 
 	}
 	TRY_("filter parameterization")
@@ -124,12 +110,12 @@ TAG_("filter")
 		using Y_ramp = prewarped_t<_1
 		//\
 		,	filter<union RAMP>
-		,	filter<T_alpha[2], union RAMP>
+		,	filter<U_alpha[2], union RAMP>
 		>;
 		using Y_ring = prewarped_t<_1
 		//\
 		,	filter<union RING>
-		,	filter<T_alpha[2], union RING>
+		,	filter<U_alpha[2], union RING>
 		>;
 		static_assert(different_q<typename Y_ramp::order_type, typename Y_ring::order_type>);
 
@@ -141,70 +127,55 @@ TAG_("filter")
 
 TAG_("filter-ring")
 {
-	using T_alpha   = typename bond::fit<>::alpha_type;
-	using T_aphex   = typename bond::fit<>::aphex_type;
-
-	using A_filter  = filter<T_alpha[2], union RING>;
-	using W_filter  = any_t<A_filter>;
-	using U_limit   = typename W_filter::   limit_type;
-	using U_order   = typename W_filter::   order_type;
-	using U_patch   = typename W_filter::   patch_type;
-	using U_stage   = typename W_filter::   stage_type;
-	using U_shape   = typename W_filter::   shape_type;
-	using U_refade  = typename W_filter::  refade_type;
-	using U_redamp  = typename W_filter::  redamp_type;
-	using U_reshape = typename W_filter:: reshape_type;
+	using U_alpha = typename bond::fit<>::alpha_type;
+	using T_aphex = typename bond::fit<>::aphex_type;
+	using Z_slice = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
 
 	using _0 = ordinal_constant_t<0>;
 	using _1 = ordinal_constant_t<1>;
 
-	using Z_slicer = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
-
 	/**/
 	TRY_("filter-ring monophony")
 	{
-		using U_event = flow::packet_t<U_stage, U_redamp>;
-		using Z_event = flow::cue_s<U_event>;
-
-		using Z_process = prewarped_t<_0, gate<-1>
+		using R_def = filter<U_alpha[2], union RING>;
+		using R_env = any_t<R_def>;
+		using R_eve = flow::packet_t<typename R_env::stage_type, typename R_env::redamp_type>;
+		using R_pro = prewarped_t<_0, gate<-1>
 		,	staged<-1>
 		,	staged< 0>
-		,	typename U_redamp::template   attend<>
-		,	typename U_refade::template   attend<>
-		,	typename W_filter::template   attach<>
-		,	typename W_filter::template dispatch<>
-		,	A_filter
+		,	typename R_env::redamp_type::template   attend<>
+		,	typename R_env::refade_type::template   attend<>
+		,	typename R_env::             template   attach<>
+		,	typename R_env::             template dispatch<>
+		,	R_def
 		>;
-		using Z_processor = processor::monomer_t<Z_process
-		,	Z_slicer::template inqueue<U_event>
+		using R_prx = processor::monomer_t<R_pro
+		,	Z_slice::template inqueue<R_eve>
 		,	provision::stored  <null_type[0x100]>
 		,	provision::spooled <null_type[0x100]>
 		>;
 
-		T_alpha constexpr omega = 2*2*2*3*5*5*7;
-
-		_std::array<T_alpha, 0x100> f_; f_.fill(omega);
-		auto z = Z_processor::bind_f(processor::let_f(f_));
-
+		U_alpha constexpr r_omega = 2*2*2*3*5*5*7;
 		auto z_resize = occur::resize_t<>(0x020);
 		auto z_cursor = occur::cursor_t<>(0x020);
 		auto z_sample = occur::resample_f(44100);
 
-		z <<= U_limit  {0};
-		z <<= U_order  {2};
-		z <<= U_patch  {0};
-		z <<= U_redamp {1};
-		z <<= U_refade {1};
+		auto z = R_prx::bind_f(processor::let_f(r_omega));
+		z <<= typename R_env::  limit_type{0};
+		z <<= typename R_env::  order_type{2};
+		z <<= typename R_env::  patch_type{0};
+		z <<= typename R_env:: redamp_type{1};
+		z <<= typename R_env:: refade_type{1};
 
 		z <<= z_sample;
 		z <<= z_resize;
 
 		z >>= occur::stage_f(-1);
-		z >>= flow::cue_f(0x08).then(U_event{ 0, 0.0F});
-		z >>= flow::cue_f(0x10).then(U_event{ 0, 0.0F});
+		z >>= flow::cue_f(0x08).then(R_eve{ 0, 0.0F});
+		z >>= flow::cue_f(0x10).then(R_eve{ 0, 0.0F});
 		//\
-		z >>= flow::cue_f(0x20).then(U_event{ 1, 0.5F});
-		z >>= flow::cue_f(0x21).then(U_event{ 1, 0.5F});
+		z >>= flow::cue_f(0x20).then(R_eve{ 1, 0.5F});
+		z >>= flow::cue_f(0x21).then(R_eve{ 1, 0.5F});
 
 		echo_rule_<28>("\u2500");
 
@@ -227,54 +198,50 @@ TAG_("filter-ring")
 	/**/
 	TRY_("filter-ring polyphony")
 	{
-		using U_event = flow::key_s<U_stage>;
-		using Z_event = flow::cue_s<U_event>;
-		using Z_cue   = flow::cue_s<       >;
-		
-		using Z_process = prewarped_t<_0, gate<-1>
+		using R_def = filter<U_alpha[2], union RING>;
+		using R_env = any_t<R_def>;
+		using R_eve = flow::key_s<typename R_env::stage_type>;
+		using R_pro = prewarped_t<_0, gate<-1>
 		,	staged<-1>
 		,	staged< 0>
-		,	typename U_redamp ::template   attend<>
-		,	typename U_refade ::template   attend<>
-		,	typename W_filter ::template   attach<>
-		,	typename W_filter ::template dispatch<>
-		,	typename U_stage  ::template assignment<U_redamp>
-		,	A_filter
+		,	typename R_env::redamp_type::template   attend<>
+		,	typename R_env::refade_type::template   attend<>
+		,	typename R_env             ::template   attach<>
+		,	typename R_env             ::template dispatch<>
+		,	typename R_env:: stage_type::template assignment<typename R_env::redamp_type>
+		,	R_def
 		>;
-		using Z_processor = processor::polymer_t<Z_process
-		,	Z_slicer::template inqueue<U_event>
+		using R_prx = processor::polymer_t<R_pro
+		,	Z_slice::template inqueue<R_eve>
 		,	provision::stored <null_type[0x100]>
 		,	provision::spooled<null_type[0x100]>
 		>;
 
-		T_alpha constexpr omega = 2*2*2*3*5*5*7;
-
-		_std::array<T_alpha, 0x100> f_; f_.fill(omega);
-		auto z = Z_processor::template bind_f(processor::let_f(f_));
-
+		U_alpha constexpr r_omega = 2*2*2*3*5*5*7;
 		auto z_resize = occur::resize_t<>(0x020);
 		auto z_cursor = occur::cursor_t<>(0x020);
 		auto z_sample = occur::resample_f(44100);
 
-		z <<= U_limit{0};
-		z <<= U_order{2};
-		z <<= U_patch{0};
-		z <<= U_redamp{1};
-		z <<= U_refade{1};
-		z <<= flow::assign_f(U_stage{ 0}) << U_redamp{          (0.F)};
-		z <<= flow::assign_f(U_stage{ 1}) << U_redamp{root_f<-1>(2.F)};
-		z <<= flow::assign_f(U_stage{-1}) << U_redamp{root_f<-2>(2.F)};
+		auto z = R_prx::bind_f(processor::let_f(r_omega));
+		z <<= typename R_env::  limit_type{0};
+		z <<= typename R_env::  order_type{2};
+		z <<= typename R_env::  patch_type{0};
+		z <<= typename R_env:: redamp_type{1};
+		z <<= typename R_env:: refade_type{1};
+		z <<= flow::assign_f(typename R_env::stage_type{ 0}) << typename R_env::redamp_type{          (0.F)};
+		z <<= flow::assign_f(typename R_env::stage_type{ 1}) << typename R_env::redamp_type{root_f<-1>(2.F)};
+		z <<= flow::assign_f(typename R_env::stage_type{-1}) << typename R_env::redamp_type{root_f<-2>(2.F)};
 
 		z <<= z_sample;
 		z <<= z_resize;
 
-		z.lead() >>= U_stage{-1};
+		z.lead() >>= typename R_env::stage_type{-1};
 
-		z >>= Z_cue{0x08}.then(U_event{1,  0});
-		z >>= Z_cue{0x18}.then(U_event{1,  0});
-	//	z >>= Z_cue{0x28}.then(U_event{1,  1});// Inlined below...
-		z >>= Z_cue{0x40}.then(U_event{1,  0});
-		z >>= Z_cue{0x48}.then(U_event{1, -1});
+		z >>= flow::cue_f(0x08).then(R_eve{1,  0});
+		z >>= flow::cue_f(0x18).then(R_eve{1,  0});
+	//	z >>= flow::cue_f(0x28).then(R_eve{1,  1});// Inlined below...
+		z >>= flow::cue_f(0x40).then(R_eve{1,  0});
+		z >>= flow::cue_f(0x48).then(R_eve{1, -1});
 
 		echo_rule_<28>("\u2500");
 
@@ -282,14 +249,14 @@ TAG_("filter-ring")
 		TRUE_(0 == z.efflux(z_cursor++));
 		echo_plot_<28>(z.store(), 0x08, 0x18);
 
-		z >>= Z_cue{0x08}.then(U_event{1,  1});// Inlined from above...
+		z >>= flow::cue_f(0x08).then(R_eve{1,  1});// Inlined from above...
 
 		TRUE_(2 >= z.ensemble().size());// Still decaying...
 		TRUE_(0 == z.efflux(z_cursor++));
 		echo_plot_<28>(z.store(), 0x08);
 
-	//	z >>= Z_cue{0x00}.then(U_event{1,  0});// Outlined above...
-	//	z >>= Z_cue{0x08}.then(U_event{1, -1});// Outlined above...
+	//	z >>= flow::cue_f(0x00).then(R_eve{1,  0});// Outlined above...
+	//	z >>= flow::cue_f(0x08).then(R_eve{1, -1});// Outlined above...
 
 		TRUE_(2 >= z.ensemble().size());// Still decaying...
 		TRUE_(0 == z.efflux(z_cursor++));

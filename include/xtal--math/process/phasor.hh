@@ -27,15 +27,14 @@ Accommodate `std::complex` `value_type`s? \
 template <vector_q A, typename ...As>
 struct phasor<A, As...>
 {
-	using _fit = bond::fit<A>;
-	using _phi = atom::math::phason<A>;
-	using coordinate_type = typename _phi::coordinate_type;
-	using inordinate_type = typename _phi::inordinate_type;
-	using   ordinate_type = typename _phi::  ordinate_type;
+	static auto constexpr N = _xtd::extent_v<A>;
 
-	static auto constexpr N  = _xtd::extent_v<A>;
-	using U_phason = atom::math::phason_t<coordinate_type[N]>;
+	using U_phason = atom::math::phason_t<A>;
+	using coordinate_type = typename U_phason::coordinate_type;
+	using inordinate_type = typename U_phason::inordinate_type;
+	using   ordinate_type = typename U_phason::  ordinate_type;
 	using V_phason = atom::math::phason_t<inordinate_type[N]>;
+
 	
 	using semikind = bond::compose<void
 	//\
@@ -170,26 +169,28 @@ struct phasor<A, As...>
 		{
 			static_assert(2 == U_phason::size());
 
-			auto &_phi = S_::template head<1>();
-			auto &_psi = S_::template head<0>();
+			auto &u_phi = S_::template head<1>();
+			auto &u_psi = S_::template head<0>();
 
 		//	Calculates the deviation of `phi[0]` w.r.t. phi[1], \
 		//	using the difference in `phi[1]` to determine the threshold for reset. \
 
-			auto  u_delta = _phi; u_delta[1] -= phi[1];
+			auto  u_delta = u_phi; u_delta[1] -= phi[1];
+			//\
+			auto &v_delta = u_delta.template self<inordinate_type>(constant_t<N>{});
 			auto &v_delta = reinterpret_cast<V_phason const &>(u_delta);
 			auto  n_delta = bond::math::bit_ceiling_f(magnum_f(v_delta[1]));
 			auto  i_delta = condition_f<ordinate_type>(v_delta[0] >> n_delta);
 			
-			_phi = XTAL_MOV_(phi);
+			u_phi = XTAL_MOV_(phi);
 
-			_phi *= co;
-			_psi[1]  = _phi[1];
-			_psi.operator++();
-			_psi[0] &=        ~i_delta;
-			_psi[0] |= _phi[0]&i_delta;
+			u_phi *= co;
+			u_psi[1]  = u_phi[1];
+			u_psi.operator++();
+			u_psi[0] &=        ~i_delta;
+			u_psi[0] |= u_phi[0]&i_delta;
 
-			return _psi;
+			return u_psi;
 		}
 
 	};
