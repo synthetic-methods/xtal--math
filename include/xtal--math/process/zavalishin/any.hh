@@ -41,20 +41,20 @@ struct any<class_template<A, _s...>>
 	public:// INTERNAL
 		using        pole_size = constant_t<N_pole>;
 		using        pole_type =            U_pole ;
-		using coefficient_type = unstruct_u<U_pole>;
+		using       scale_type = unstruct_u<U_pole>;
 
-		using       state_type = atom::couple_t<       pole_type[N_pole]>;
-		using       slope_type = atom::couple_t<       pole_type[N_pole]>;
-		using       shape_type = atom::couple_t<coefficient_type[N_pole]>;
+		using       state_type = atom::couple_t< pole_type[N_pole]>;
+		using       slope_type = atom::couple_t< pole_type[N_pole]>;
+		using       shape_type = atom::couple_t<scale_type[N_pole]>;
 
 	public:// ATTEND
-		using      regain_type = occur::inferred_t<_s..., union  REGAIN, coefficient_type>;
-		using      redamp_type = occur::inferred_t<_s..., union  REDAMP, coefficient_type>;
-		using      refade_type = occur::inferred_t<_s..., union  REFADE, coefficient_type>;
+		using      regain_type = occur::inferred_t<_s..., union  REGAIN, scale_type>;
+		using      redamp_type = occur::inferred_t<_s..., union  REDAMP, scale_type>;
+		using      refade_type = occur::inferred_t<_s..., union  REFADE, scale_type>;
 
 	public:// ATTACH
-		using     reshape_type = occur::inferred_t<_s..., union RESHAPE,       shape_type>;
-		using      rezoom_type = occur::inferred_t<_s..., union  REZOOM, coefficient_type>;
+		using     reshape_type = occur::inferred_t<_s..., union RESHAPE, shape_type>;
+		using      rezoom_type = occur::inferred_t<_s..., union  REZOOM, scale_type>;
 
 	public:// DISPATCH
 		using       order_type = occur::inferred_t<_s..., union   ORDER, bond::seek_s<1 + N_pole>>;

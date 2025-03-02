@@ -73,7 +73,7 @@ struct dot
 				return u;
 			}
 			else {
-				S_::operator*(t);
+				return S_::operator*(t);
 			}
 		}
 		template <class U>

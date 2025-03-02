@@ -15,19 +15,19 @@ template <class ..._s>	struct  cross;
 template <class ..._s>	using   cross_t = confined_t<cross<_s...>>;
 template <class ..._s>	concept cross_q = bond::tagged_with_p<cross, _s...>;
 
-template <class W, typename ...As>
+template <class M, typename ...As>
 XTAL_DEF_(let) cross_f = []<class U> (U &&u)
-XTAL_0FN_(to) (cross_t<W, based_t<U>, As...>(XTAL_REF_(u)));
+XTAL_0FN_(to) (cross_t<M, based_t<U>, As...>(XTAL_REF_(u)));
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <class W, class U, typename ...As>
-struct cross<W, U, As...>
+template <class M, class U, typename ...As>
+struct cross<M, U, As...>
 {
 	using superkind = bond::compose<void
-	,	typename occur::math::indent_s<W>::template incept<>
-	,	confer<U>
+	,	typename occur::math::indent_s<M>::template incept<>
+	,	infer<U>
 	,	As...
 	,	bond::tag<cross>
 	>;
@@ -38,21 +38,29 @@ struct cross<W, U, As...>
 		static_assert(any_q<S>);
 		using S_ = bond::compose_s<S, superkind>;
 		
-	public:
+	public:// CONSTRUCT
 		using S_::S_;
+	
+	public:// ACCESS
 		using S_::self;
 		using S_::head;
 
-		XTAL_FX2_(do) (template <auto ...Is>
+		XTAL_FX4_(to) (XTAL_DEF_(return,inline,get)
+		matrix(auto &&...oo), S_::template head<0>(XTAL_REF_(oo)...))
+
+	public:// OPERATE
+	
+		XTAL_FX2_(do) (template <auto ...Ns>
 		XTAL_DEF_(return,let)
 		method(auto &&...xs),
 		noexcept -> auto
 		{
-			auto const &x_ = head();
-			auto const  y  = bond::pack_f(XTAL_REF_(xs)...);
+			auto const &m_ = matrix();
+			auto const  x_ = bond::pack_f(XTAL_REF_(xs)...);
+
 			return [&, this]<auto ...I>(bond::seek_t<I...>)
-				XTAL_0FN_(to) (S_::template method<Is...>(dot_f(get<I>(x_), y)...))
-			(bond::seek_s<bond::pack_size_n<decltype(x_)>> {});
+				XTAL_0FN_(to) (S_::template method<Ns...>(dot_f(get<I>(m_), x_)...))
+			(bond::seek_s<fixed_shaped_n<decltype(m_)>> {});
 		})
 
 	};
