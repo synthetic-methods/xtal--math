@@ -25,7 +25,6 @@ struct filter_parameters
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/**/
 TAG_("filter")
 {
 	using U_alpha = typename bond::fit<>::alpha_type;
@@ -35,6 +34,7 @@ TAG_("filter")
 	using _0 = ordinal_constant_t<0>;
 	using _1 = ordinal_constant_t<1>;
 
+	/**/
 	TRY_("instantiation")
 	{
 		using R_def = filter<>;
@@ -120,8 +120,8 @@ TAG_("filter")
 		static_assert(different_q<typename Y_ramp::order_type, typename Y_ring::order_type>);
 
 	};
+	/***/
 }
-/***/
 
 ////////////////////////////////////////////////////////////////////////////////
 
