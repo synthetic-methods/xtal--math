@@ -1,6 +1,6 @@
 #pragma once
 #include "./any.hh"
-
+#include "./prewarped.hh"
 #include "../../provision/saturated.hh"
 
 
@@ -106,61 +106,13 @@ struct filter
 	class subtype : public bond::compose_s<S, superkind>
 	{
 		using S_ = bond::compose_s<S, superkind>;
+		using T_ = typename S_::self_type;
 
 	public:// CONSTRUCT
 		using S_::S_;
 
 	public:// OPERATE
 
-		template <int N_ord=0, int N_pat=0, auto ...Ns>
-		XTAL_DEF_(inline,let)
-		method(auto &&x
-		,	unstruct_u<decltype(x)> s_gain
-		,	unstruct_u<decltype(x)> s_damp
-		,	unstruct_u<decltype(x)> y_fade
-		)
-		noexcept -> auto
-		{
-			using X =  XTAL_ALL_(x); using X2 = atom::couple_t<X[2]>;
-			using W = unstruct_u<X>; using W2 = atom::couple_t<W[2]>;
-
-			return dot_f(method<N_ord, N_pat, Ns...>(XTAL_REF_(x), s_gain, s_damp)
-			,	W2{term_f<-1, 2>(one, y_fade), y_fade}
-			);//TODO: Replace with `fade`.
-		}
-		template <int N_ord=0, int N_pat=0, auto ...Ns>
-		XTAL_DEF_(inline,let)
-		method(auto &&x
-		,	unstruct_u<decltype(x)> s_gain
-		,	unstruct_u<decltype(x)> s_damp
-		)
-		noexcept -> auto
-		{
-			using X =  XTAL_ALL_(x); using X2 = atom::couple_t<X[2]>;
-			using W = unstruct_u<X>; using W2 = atom::couple_t<W[2]>;
-
-			XTAL_IF0
-			XTAL_0IF (0 == N_ord) {
-				return X2{XTAL_REF_(x)};
-			}
-			XTAL_0IF (0 == N_pat) {
-				return method<N_ord, N_pat, Ns...>(XTAL_REF_(x), s_gain
-				,	[=] () XTAL_0FN -> atom::couple_t<W[N_ord + 1]> {
-						auto const  &u = cut_f<[] XTAL_1FN_(to) (bond::fit<X>::minilon_f(0))>(s_damp);
-						auto const u02 =             two*u , u04 = u02*two;
-						auto const u12 = term_f(one, two,u), w24 = u02*u12;
-						XTAL_IF0
-						XTAL_0IF (1 == N_ord) {return {one, one};}
-						XTAL_0IF (2 == N_ord) {return {one, u02, one};}
-						XTAL_0IF (3 == N_ord) {return {one, u12, u12, one};}
-						XTAL_0IF (4 == N_ord) {return {one, u04, w24, u04, one};}
-					}()
-				);
-			}
-			XTAL_0IF (1 == N_pat) {
-				return X2{XTAL_REF_(x)};
-			}
-		}
 		template <int N_ord=0, int N_pat=0, int N_lim=0, auto ...Ns> requires (1 <= N_ord and N_pat == 0)
 		XTAL_DEF_(inline,let)
 		method(auto const &x
@@ -229,6 +181,114 @@ struct filter
 			//\
 			return X2{get<0>(outputs), get<1>(outputs)};
 			return X2{outputs.self(constant_t<2>{})};
+		}
+		template <int N_ord=0, int N_pat=0, auto ...Ns>
+		XTAL_DEF_(inline,let)
+		method(auto &&x
+		,	unstruct_u<decltype(x)> s_gain
+		,	unstruct_u<decltype(x)> s_damp
+		)
+		noexcept -> auto
+		{
+			using X =  XTAL_ALL_(x); using X2 = atom::couple_t<X[2]>;
+			using W = unstruct_u<X>; using W2 = atom::couple_t<W[2]>;
+
+			XTAL_IF0
+			XTAL_0IF (0 == N_ord) {
+				return X2{XTAL_REF_(x)};
+			}
+			XTAL_0IF (0 == N_pat) {
+				return method<N_ord, N_pat, Ns...>(XTAL_REF_(x), s_gain
+				,	[=] () XTAL_0FN -> atom::couple_t<W[N_ord + 1]> {
+						auto const  &u = cut_f<[] XTAL_1FN_(to) (bond::fit<X>::minilon_f(0))>(s_damp);
+						auto const u02 =             two*u , u04 = u02*two;
+						auto const u12 = term_f(one, two,u), w24 = u02*u12;
+						XTAL_IF0
+						XTAL_0IF (1 == N_ord) {return {one, one};}
+						XTAL_0IF (2 == N_ord) {return {one, u02, one};}
+						XTAL_0IF (3 == N_ord) {return {one, u12, u12, one};}
+						XTAL_0IF (4 == N_ord) {return {one, u04, w24, u04, one};}
+					}()
+				);
+			}
+			XTAL_0IF (1 == N_pat) {
+				return X2{XTAL_REF_(x)};
+			}
+		}
+		template <int N_ord=0, int N_pat=0, auto ...Ns>
+		XTAL_DEF_(inline,let)
+		method(auto &&x
+		,	unstruct_u<decltype(x)> s_gain
+		,	unstruct_u<decltype(x)> s_damp
+		,	unstruct_u<decltype(x)> y_fade
+		)
+		noexcept -> auto
+		{
+			using X =  XTAL_ALL_(x); using X2 = atom::couple_t<X[2]>;
+			using W = unstruct_u<X>; using W2 = atom::couple_t<W[2]>;
+
+			return dot_f(method<N_ord, N_pat, Ns...>(XTAL_REF_(x), s_gain, s_damp)
+			,	W2{term_f<-1, 2>(one, y_fade), y_fade}
+			);//TODO: Replace with `fade`.
+		}
+
+		///\
+		Produces the `gain` and `damp` parameters from the supplied `phason` \
+		and the `complex_field_q` `s`, where `1 <= Abs@s && Re@s <= 0 && 0 <= Im@s`. \
+
+		template <auto ...Ns>
+		XTAL_DEF_(return,let)
+		method(auto &&x
+		,	atom::math::simplex_phason_q auto const &t_
+		,	complex_field_q auto const &s
+		,	auto &&...oo
+		)
+		noexcept -> auto
+		{
+			auto const &[s_re,  s_im] = destruct_f(XTAL_REF_(s));
+			auto const  [s_a1, _s_a1] = roots_f<2>(square_f(s_re, s_im));
+
+			auto const s_damp = s_im*_s_a1;
+			auto       s_gain = t_(1)*s_a1;
+			if constexpr (prewarped_q<T_>) {
+				s_gain *= pade::tangy_t<1, -1>::template method_f<6>(s_gain);
+			}
+			return method<Ns...>(XTAL_REF_(x), s_gain, s_damp, XTAL_REF_(oo)...);
+		}
+		///\
+		Produces the `gain` and `damp` parameters from the supplied \
+		`phason` and `additive_quason_q` triple `{beta, zeta, omega}`. \
+
+		template <auto ...Ns>
+		XTAL_DEF_(return,let)
+		method(auto &&x
+		,	atom::math::simplex_phason_q auto const &t_
+		,	atom::math::additive_quason_q<null_type[3]> auto const &o
+		,	auto &&...oo
+		)
+		noexcept -> auto
+		{
+			auto const &[s_bend, s_damp, tau_abs] = o;
+			auto s_gain = t_(1)/tau_abs;
+			if constexpr (prewarped_q<T_>) {
+				s_gain *= pade::tangy_t<1, -1>::template method_f<6>(s_gain);
+			}
+			return method<Ns...>(XTAL_REF_(x), s_gain, s_damp, s_bend, XTAL_REF_(oo)...);
+		}
+		///\
+		Produces the `gain` and `damp` parameters from the supplied \
+		`additive_quason_q` triple `{beta, zeta, omega, phi}`. \
+
+		template <auto ...Ns>
+		XTAL_DEF_(return,let)
+		method(auto &&x
+		,	atom::math::additive_quason_q<null_type[4]> auto const &o
+		,	auto &&...oo
+		)
+		noexcept -> auto
+		{
+			auto t_ = destruct_f<-1>(o);
+			return method(XTAL_REF_(x), XTAL_MOV_(t_), XTAL_REF_(o).self(constant_t<-1>{}));
 		}
 
 	};

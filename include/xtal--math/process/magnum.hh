@@ -13,7 +13,7 @@ namespace xtal::process::math
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int ...Ms>
+template <auto ...Ms>
 struct magnum
 {
 	template <class S>
@@ -24,14 +24,14 @@ struct magnum
 	public:
 		using S_::S_;
 
-		template <int ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
 		method_f(_std::unsigned_integral auto const &o)
 		noexcept -> auto
 		{
 			return o;
 		}
-		template <int ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
 		method_f(_std::  signed_integral auto const &o)
 		noexcept -> auto
@@ -40,7 +40,7 @@ struct magnum
 			auto const v = o >> _fit::sign.shift;
 			return (o^v) - v;
 		}
-		template <int ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
 		method_f(real_variable_q auto const &o)
 		noexcept -> auto
@@ -48,7 +48,7 @@ struct magnum
 			using _fit = bond::fit<decltype(o)>;
 			return _xtd::copysign(o, _fit::alpha_1);
 		}
-		template <int ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
 		method_f(complex_variable_q auto const &o)
 		noexcept -> auto
@@ -83,7 +83,7 @@ struct magnum
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int ...Ms>
+template <auto ...Ms>
 using   magnum_t = process::confined_t<magnum<Ms...>>;
 
 template <auto ...Ns>
