@@ -18,13 +18,13 @@ the parent-`method` applied to the trailing arguments. \
 Implement positional parameter `M_pos`?
 
 template <auto ...Ms>
-struct attuned;
+struct coefficient;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <auto ...Ms>
-struct attuned
+struct coefficient
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>

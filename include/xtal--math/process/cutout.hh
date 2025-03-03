@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-#include "./magnum.hh"
+#include "./aspect.hh"
 
 
 
@@ -15,7 +15,7 @@ namespace xtal::process::math
 
 template <int M_dn=0, int M_up=0>
 XTAL_DEF_(return,inline,let)
-clamp_f(auto &&u)
+cutout_f(auto &&u)
 noexcept -> auto
 {
 	XTAL_IF0
@@ -28,10 +28,10 @@ noexcept -> auto
 		U constexpr  n1 = M_up;
 		U constexpr n01 = M_dn + M_up;
 		if constexpr (integral_variable_q<U>) {
-			return (magnum_f(u - n0) - magnum_f(u - n1) + n01) >> 1;
+			return (aspect_f<unsigned>(u - n0) - aspect_f<unsigned>(u - n1) + n01) >> 1;
 		}
 		else {
-			return (magnum_f(u - n0) - magnum_f(u - n1) + n01)*0.5f;
+			return (aspect_f<unsigned>(u - n0) - aspect_f<unsigned>(u - n1) + n01)*0.5f;
 		}
 	}
 };
@@ -40,7 +40,7 @@ noexcept -> auto
 ////////////////////////////////////////////////////////////////////////////////
 
 template <auto ...Ms>
-struct  clamp
+struct  cutout
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -55,13 +55,13 @@ struct  clamp
 		method_f(auto &&...oo)
 		noexcept -> decltype(auto)
 		{
-			return clamp_f<Ms...>(XTAL_REF_(oo)...);
+			return cutout_f<Ms...>(XTAL_REF_(oo)...);
 		}
 
 	};
 };
 template <auto ...Ms>
-using   clamp_t = process::confined_t<clamp<Ms...>>;
+using   cutout_t = process::confined_t<cutout<Ms...>>;
 
 
 ///////////////////////////////////////////////////////////////////////////////

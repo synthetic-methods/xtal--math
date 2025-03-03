@@ -11,19 +11,15 @@ namespace xtal::process::math::taylor
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism=1, int M_car=0, int M_bas=0>
+template <int M_ism=1, int M_car=0>
 struct  logarithm;
 
-template <auto ...Ms>
-using   logarithm_t = process::confined_t<logarithm<Ms...>>;
+template <int M_ism=1, int M_car=0>
+using   logarithm_t = process::confined_t<logarithm<M_ism, M_car>>;
 
-template <auto ...Ms>
-XTAL_DEF_(return,inline,let)
-logarithm_f(auto &&o, constant_q auto ...oo)
-noexcept -> decltype(auto)
-{
-	return logarithm_t<Ms...>::template method_f<oo...>(XTAL_REF_(o));
-}
+template <int M_ism=1, int M_car=0, int ...Ns>
+XTAL_DEF_(let)
+logarithm_f = [] XTAL_1FN_(call) (logarithm_t<M_ism, M_car>::template method_f<Ns...>);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -31,7 +27,7 @@ noexcept -> decltype(auto)
 Defines `function` as the logarithm `Log[#]`, approximated by `(# - 1)/Sqrt[#]`. \
 
 template <>
-struct logarithm< 1, 0, 0>
+struct logarithm< 1, 0>
 {
 	using superprocess = process::confined_t<dilated<2>, taylor::sine<-2>>;
 	
@@ -73,7 +69,7 @@ Defines `function` as the antilogarithm `Exp[#]`, \
 approximated by `(Sqrt[(#/2)^2 + 1] + (#/2))*# + 1`. \
 
 template <>
-struct logarithm<-1, 0, 0>
+struct logarithm<-1, 0>
 {
 	using superprocess = process::confined_t<dilated<2>, taylor::sine<+2>>;
 	
@@ -130,7 +126,7 @@ struct logarithm<-1, 0, 0>
 Defines the argument-restricted approximation of the logarithm `Log[#]`. \
 
 template <>
-struct logarithm< 1, 1, 0>
+struct logarithm< 1, 1>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -177,7 +173,7 @@ struct logarithm< 1, 1, 0>
 			n  |= one;
 
 			U_alpha constexpr w1 =                       root_f<-2>(2.) ;
-			U_alpha constexpr u1 =           logarithm_f(root_f< 2>(2.));
+			U_alpha constexpr u1 =        logarithm_f<1>(root_f< 2>(2.));
 			auto const w    = w1 *  _xtd::bit_cast<U_alpha>(XTAL_MOV_(m));
 			auto const u    = u1 *     static_cast<U_alpha>(XTAL_MOV_(n));
 
@@ -208,7 +204,7 @@ struct logarithm< 1, 1, 0>
 Defines argument-restricted approximation of the antilogarithm `Exp[#]`. \
 
 template <>
-struct logarithm<-1, 1, 0>
+struct logarithm<-1, 1>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -251,48 +247,6 @@ struct logarithm<-1, 1, 0>
 
 
 ////////////////////////////////////////////////////////////////////////////////
-
-template <int M_car>
-struct logarithm<+1, M_car, 2>
-:	process::lift<void
-	,	dilate<bond::operate{[] XTAL_1FN_(to)
-			(one*logarithm_f(bond::fit<>::alpha_f(2)))}>
-	,	logarithm<+1, M_car, 0>
-	>
-{
-};
-template <int M_car>
-struct logarithm<-1, M_car, 2>
-:	process::lift<void
-	,	logarithm<-1, M_car, 0>
-	,	dilate<bond::operate{[] XTAL_1FN_(to)
-			(one/logarithm_f(bond::fit<>::alpha_f(2)))}>
-	>
-{
-};
-
-
-template <int M_car>
-struct logarithm<+1, M_car, 1>
-:	process::lift<void
-	,	dilate<bond::operate{[] XTAL_1FN_(to)
-			(one*bond::fit<>::patio_f(2))}>
-	,	imagine<-1>
-	,	logarithm<+1, M_car, 0>
-	>
-{
-};
-template <int M_car>
-struct logarithm<-1, M_car, 1>
-:	process::lift<void
-	,	logarithm<-1, M_car, 0>
-	,	imagine<+1>
-	,	dilate<bond::operate{[] XTAL_1FN_(to)
-			(one/bond::fit<>::patio_f(2))}>
-	>
-{
-};
-
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////

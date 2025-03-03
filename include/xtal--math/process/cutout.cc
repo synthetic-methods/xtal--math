@@ -1,6 +1,6 @@
 #pragma once
 #include "./any.cc"
-#include "./clamp.hh"// testing...
+#include "./cutout.hh"// testing...
 
 
 
@@ -24,10 +24,10 @@ TAG_("math")
 	using W_alpha = atom::couple_t<U_alpha[2]>;
 	using W_aphex = atom::couple_t<U_aphex[2]>;
 
-	TRY_("clamp")
+	TRY_("cutout")
 	{
-		TRUE_(clamp_f<-1, 1>(0) == 0);
-		TRUE_(clamp_f<-1, 1>(2) == 1);
+		TRUE_(cutout_f<-1, 1>(0) == 0);
+		TRUE_(cutout_f<-1, 1>(2) == 1);
 
 	}
 }

@@ -16,7 +16,7 @@ template <int M_ism=1, int N_car=0>	using   sine_t = process::confined_t<sine<M_
 
 template <int M_ism>
 struct sine<M_ism, +1>
-:	bond::compose<dilated<bond::operate{[] XTAL_1FN_(to) (-bond::fit<>::patio_2)}>, sine<M_ism, -0>>
+:	bond::compose<dilated<[] XTAL_1FN_(to) (-bond::fit<>::patio_2)>, sine<M_ism, -0>>
 {
 };
 template <int M_ism>
