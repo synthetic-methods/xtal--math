@@ -2,14 +2,16 @@
 #include "./any.hh"
 
 #include "./root.hh"
-#include "./signum.hh"
-#include "./magnum.hh"
+#include "./aspect.hh"
+
 
 
 XTAL_ENV_(push)
 namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
+///\
+Scales the argument by `M_val`. \
 
 template <auto M_val=1>	struct  dilate;
 template <auto M_val=1>	using   dilate_t = process::confined_t<dilate<M_val>>;
@@ -32,9 +34,9 @@ struct dilate
 	noexcept -> decltype(auto)
 	{
 		using _fit = bond::fit<decltype(o)>;
-		auto constexpr n_val =   _fit::alpha_f(M_val);
-		auto constexpr u     =       magnum_f(n_val);
-		auto constexpr v     = (int) signum_f(n_val);
+		auto constexpr n_val = _fit::alpha_f(bond::operate_v<M_val>);
+		auto constexpr u     =       aspect_f<unsigned>(n_val);
+		auto constexpr v     = (int) aspect_f<  signed>(n_val);
 		return XTAL_REF_(o)*root_f<-v>(u);
 	};
 

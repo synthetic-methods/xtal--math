@@ -67,8 +67,8 @@ struct polynomial<M_ism,-0>
 
 			using W_alpha = typename _fit::alpha_type;
 			using W_sigma = typename _fit::sigma_type;
-			W_sigma constexpr N_par = magnum_f(N_ord)&1;
-			W_sigma constexpr N_ity = magnum_f(N_ord) >> 1;
+			W_sigma constexpr N_par = aspect_f<unsigned>(N_ord)&1;
+			W_sigma constexpr N_ity = aspect_f<unsigned>(N_ord) >> 1;
 
 			if constexpr (N_ord < 0) {
 				auto const dn =          one/_fit::patio_1;
@@ -81,7 +81,7 @@ struct polynomial<M_ism,-0>
 				XTAL_0IF (N_par == 0 and M_ism == 1) {return cos (up)*(dn);}
 			}
 			else {
-				W_alpha constexpr dn = signum_f(N_ity)*power_f<N_ord - 1>(_fit::patio_2);
+				W_alpha constexpr dn = aspect_f<signed>(N_ity)*power_f<N_ord - 1>(_fit::patio_2);
 				XTAL_IF0
 				XTAL_0IF (N_par == 0) {return dn*s_::template method_f<N_ord>(square_f(XTAL_REF_(u)));}
 				XTAL_0IF (N_par == 1) {return dn*S_::template method_f<N_ord>(         XTAL_REF_(u) );}
@@ -123,7 +123,7 @@ struct polynomial<M_ism,-2>
 			w *= _fit::alpha_f(I_sgn);
 
 			if constexpr (N_ord < 0) {
-				auto const u = root_f<2>(magnum_f(XTAL_MOV_(w)));
+				auto const u = root_f<2>(aspect_f<unsigned>(XTAL_MOV_(w)));
 				return polynomial<M_ism, -0>::template method_f<N_ord>(u)/(u);
 			}
 			else {

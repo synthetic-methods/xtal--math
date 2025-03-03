@@ -1,8 +1,7 @@
 #pragma once
 #include "./any.hh"
 #include "./nearing.hh"
-#include "./magnum.hh"
-#include "./signum.hh"
+#include "./aspect.hh"
 #include "./dots.hh"
 
 
@@ -16,7 +15,7 @@ namespace _detail
 {///////////////////////////////////////////////////////////////////////////////
 
 template <auto N>
-auto constexpr flank_n = (int) signum_f(signum_f(N())*nearing_f(magnum_f(N())));
+auto constexpr flank_n = (int) aspect_f<signed>(aspect_f<signed>(N())*nearing_f(aspect_f<unsigned>(N())));
 
 
 }///////////////////////////////////////////////////////////////////////////////
@@ -74,12 +73,12 @@ struct cut
 			using U_sigma = typename _fit::sigma_type;
 			using U_alpha = typename _fit::alpha_type;
 
-			auto constexpr o_stop = static_cast<U_alpha>(magnum_f(M_stop));
+			auto constexpr o_stop = static_cast<U_alpha>(aspect_f<unsigned>(M_stop));
 			auto constexpr N_side = static_cast<U_delta>(M_side);
 			//\
 			if (_std::is_constant_evaluated() or not _fit::IEC) {
 			if (_std::is_constant_evaluated() or not _fit::IEC or XTAL_ENV_(GNUC)) {
-				U_alpha const s = signum_t<>::edit_f(o);
+				U_alpha const s = aspect_t<signed>::edit_f(o);
 				XTAL_IF0
 				XTAL_0IF (M_side <= 0) {o = _fit::minimum_f(XTAL_MOV_(o), o_stop);}
 				XTAL_0IF (M_side == 1) {o = _fit::maximum_f(XTAL_MOV_(o), o_stop);}

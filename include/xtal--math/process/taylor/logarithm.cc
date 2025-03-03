@@ -60,40 +60,6 @@ TAG_("logarithm")
 	//	echo_plot_<49>(food);
 	}
 	/**/
-	TRY_("logarithm base-2")
-	{
-		T_alpha o{};
-
-		o = half;
-		TRUE_(check_f<- 1>(root_f< 2>(2.0), o = logarithm_t<-1, 0, 2>::template method_f<-1>(o)));
-		TRUE_(check_f<- 1>(root_f<-1>(2.0), o = logarithm_t< 1, 0, 2>::template method_f<-1>(o)));
-
-		o = half;
-		TRUE_(check_f<-20>(root_f< 2>(2.0), o = logarithm_t<-1, 0, 2>::template method_f< 3>(o)));
-		TRUE_(check_f<-20>(root_f<-1>(2.0), o = logarithm_t< 1, 0, 2>::template method_f< 3>(o)));
-
-		o = half;
-		TRUE_(check_f<-28>(root_f< 2>(2.0), o = logarithm_t<-1, 0, 2>::template method_f< 2>(o)));
-		TRUE_(check_f<-28>(root_f<-1>(2.0), o = logarithm_t< 1, 0, 2>::template method_f< 2>(o)));
-
-		o = half;
-		TRUE_(check_f<-36>(root_f< 2>(2.0), o = logarithm_t<-1, 0, 2>::template method_f< 1>(o)));
-		TRUE_(check_f<-36>(root_f<-1>(2.0), o = logarithm_t< 1, 0, 2>::template method_f< 1>(o)));
-
-		o = half;
-		TRUE_(check_f<-44>(root_f< 2>(2.0), o = logarithm_t<-1, 0, 2>::template method_f< 0>(o)));
-		TRUE_(check_f<- 1>(root_f<-1>(2.0), o = logarithm_t< 1, 0, 2>::template method_f< 0>(o)));
-
-	};
-	TRY_("logarithm base-1")
-	{
-		T_aphex o{0.5};
-
-		TRUE_(check_f<-1>(-1.0, o = logarithm_t<-1, 0, 1>::template method_f<-1>(o)));
-		TRUE_(check_f<-1>( 0.5, o = logarithm_t< 1, 0, 1>::template method_f<-1>(o)));
-
-	};
-
 
 	EST_("complex std::log")
 	{

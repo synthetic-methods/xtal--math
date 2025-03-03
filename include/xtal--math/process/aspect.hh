@@ -10,11 +10,18 @@ XTAL_ENV_(push)
 namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
+///\
+Resolves the aspect indicated by the supplied type, \
+providing related utility w.r.t. e.g. `signed`/`unsigned` i.o.w. sign/magnitude. \
+
+template <typename ...As>
+struct aspect;
+
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <auto ...Ms>
-struct signum
+template <>
+struct aspect<signed>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -146,27 +153,82 @@ struct signum
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <auto ...Ms>
-using   signum_t = process::confined_t<signum<Ms...>>;
+template <>
+struct aspect<unsigned>
+{
+	template <class S>
+	class subtype : public bond::compose_s<S>
+	{
+		using S_ = bond::compose_s<S>;
 
-template <auto ...Ns>
-XTAL_DEF_(return,inline,let)
-signum_f(auto &&...oo)
-noexcept -> decltype(auto)
-{
-	//\
-	return signum_t<Ms...>::method_f(XTAL_REF_(oo)...);
-	return signum_t<>::template method_f<Ns...>(XTAL_REF_(oo)...);
-}
-template <auto ...Ns>
-XTAL_DEF_(return,inline,let)
-signum_e(auto &&...oo)
-noexcept -> decltype(auto)
-{
-	//\
-	return signum_t<Ms...>::method_f(XTAL_REF_(oo)...);
-	return signum_t<>::template     edit_f<Ns...>(XTAL_REF_(oo)...);
-}
+	public:
+		using S_::S_;
+
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		method_f(_std::unsigned_integral auto const &o)
+		noexcept -> auto
+		{
+			return o;
+		}
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		method_f(_std::  signed_integral auto const &o)
+		noexcept -> auto
+		{
+			using _fit = bond::fit<decltype(o)>;
+			auto const v = o >> _fit::sign.shift;
+			return (o^v) - v;
+		}
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		method_f(real_variable_q auto const &o)
+		noexcept -> auto
+		{
+			using _fit = bond::fit<decltype(o)>;
+			return _xtd::copysign(o, _fit::alpha_1);
+		}
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		method_f(complex_variable_q auto const &o)
+		noexcept -> auto
+		{
+			using _fit = bond::fit<decltype(o)>;
+			return root_f<2>(dot_f(o));
+		}
+
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		edit_f(real_variable_q auto &o)
+		noexcept -> auto
+		{
+			using _fit = bond::fit<decltype(o)>;
+			auto const o_sgn = _xtd::copysign(_fit::alpha_1, o);
+			auto const o_mgn = o*o_sgn;
+			o =    o_sgn;
+			return o_mgn;
+		}
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		edit_f(complex_variable_q auto &o)
+		noexcept -> auto
+		{
+			using _fit = bond::fit<decltype(o)>;
+			auto [u, v] = dots_f<2>(o); o *= v; return u;
+		}
+
+	};
+};
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <typename ...As>
+using aspect_t = process::confined_t<aspect<As...>>;
+
+template <typename ...As>
+XTAL_DEF_(let)
+aspect_f = [] XTAL_1FN_(call) (aspect_t<As...>::method_f);
 
 
 ///////////////////////////////////////////////////////////////////////////////

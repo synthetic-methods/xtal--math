@@ -11,7 +11,7 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 ///\
-Wraps the super-`function`, unscaling/scaling the domain/codomain by `2^$1 Pi*$2`. \
+Wraps the super-`function`, unscaling/scaling the domain/codomain by the given `M_val`. \
 
 ///\note\
 Because it invokes the super-`function` directly, \
@@ -32,9 +32,9 @@ struct dilated
 	noexcept -> decltype(auto)
 	{
 		using _fit = bond::fit<decltype(o)>;
-		auto constexpr n_val =   _fit::alpha_f(M_val);
-		auto constexpr u     =       magnum_f(n_val);
-		auto constexpr v     = (int) signum_f(n_val);
+		auto constexpr n_val = _fit::alpha_f(bond::operate_v<M_val>);
+		auto constexpr u     =       aspect_f<unsigned>(n_val);
+		auto constexpr v     = (int) aspect_f<signed>(n_val);
 		return f(XTAL_REF_(o)*root_f<-v>(u))*root_f<+v>(u);
 	};
 

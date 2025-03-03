@@ -95,8 +95,8 @@ struct tangy<M_ism, 1>
 			using U_alpha = typename _fit::alpha_type;
 			using W_alpha = atom::couple_t<U_alpha[2]>;
 
-			auto u_abs = u, u_sgn = signum_t<>::edit_f(u_abs);
-			auto v_abs = v, v_sgn = signum_t<>::edit_f(v_abs);// v_sgn *= *_fit::haplo_1;
+			auto u_abs = u, u_sgn = aspect_t<signed>::edit_f(u_abs);
+			auto v_abs = v, v_sgn = aspect_t<signed>::edit_f(v_abs);// v_sgn *= *_fit::haplo_1;
 
 			W_alpha co(v_abs < u_abs);
 			W_alpha up{v, u_abs}; up *= co;

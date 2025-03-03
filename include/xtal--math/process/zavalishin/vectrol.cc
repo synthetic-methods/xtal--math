@@ -117,7 +117,7 @@ TAG_("vectrol")
 		//\
 		using O_pro = prewarped_t<_0, gate<-1>
 		using O_pro = process::confined_t<void
-		,	attuned<>
+		,	coefficient<>
 		,	prewarped<_0, gate<-1>>
 	//	,	staged<-1>
 		,	staged< 0>
