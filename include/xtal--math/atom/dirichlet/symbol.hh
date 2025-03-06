@@ -13,15 +13,15 @@ namespace xtal::atom::math::dirichlet
 
 template <class   ..._s>	struct  symbol;
 template <class   ..._s>	using   symbol_t = typename symbol<_s...>::type;
-template <class   ...Ts>	concept symbol_q = bond::tagged_with_p<symbol_t, Ts...>;
+template <class   ...Ts>	concept symbol_q = bond::tag_in_p<symbol_t, Ts...>;
 
 XTAL_DEF_(let) symbol_f = [] XTAL_1FN_(call) (_detail::fake_f<symbol_t>);
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///\
-Extends `couple` with Dirichlet characterization and modulo access. \
-
+/*!
+\brief   Extends `couple` with Dirichlet characterization and modulo access.
+*/
 template <scalar_q ..._s> requires common_q<_s...>
 struct symbol<_s ...>
 :	symbol<common_t<_s...>[sizeof...(_s)]>
@@ -30,6 +30,7 @@ struct symbol<_s ...>
 template <vector_q A>
 struct symbol<A>
 {
+private:
 	using _fit = bond::fit<A>;
 	
 	template <class T>
@@ -38,6 +39,7 @@ struct symbol<A>
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<symbol_t>>;
 
+public:
 	template <class T>
 	class homotype : public holotype<T>
 	{
@@ -63,9 +65,9 @@ struct symbol<A>
 	public:// CONSTRUCT
 		using S_::S_;
 
-		///\
-		Dirichlet character generation. \
-
+		/*!
+		\brief   Dirichlet character generation.
+		*/
 		template <int N_subscript=1> requires ((bool) (1&size))
 		XTAL_DEF_(let)
 		characterize()

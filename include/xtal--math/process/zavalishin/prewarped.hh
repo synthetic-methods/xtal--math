@@ -13,14 +13,13 @@ namespace xtal::process::math::zavalishin
 
 template <class ...As>	struct  prewarped;
 template <class ...As>	using   prewarped_t = confined_t<prewarped<As...>>;
-template <class ..._s>	concept prewarped_q = bond::tagged_with_p<prewarped, _s...>;
+template <class ..._s>	concept prewarped_q = bond::tag_in_p<prewarped, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///\
-Prewarps the `gain` parameter of `method`, \
-indexed from zero by the constant `I`. \
-
+/*!
+\brief   Prewarps the `gain` parameter of `method`, indexed from zero by the constant `I`.
+*/
 template <constant_q I, typename ...As>
 struct prewarped<I, As...>
 {

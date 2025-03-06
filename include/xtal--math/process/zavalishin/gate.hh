@@ -10,19 +10,19 @@ XTAL_ENV_(push)
 namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Prepends a discrete/non-bandlimited control signal to the `method` arguments, \
-with the final stage specified by `M_end`. \
+/*!
+\brief   Prepends a discrete/non-bandlimited control signal to the `method` arguments,
 
-///\
-When `M_end == 0`, an impulse/trigger is generated, \
-which is scaled by the sample-rate if `prewarped_q`. \
-This mode simulates a finite `DiracDelta[x]`. \
+\tparam   M_end
+Specifies the final `stage`.
 
-///\
-When `M_end != 0`, a gate/hold is generated. \
-This mode simulates `HeavisidePi[# - 1/2]`. \
+When `M_end == 0`, an impulse/trigger is generated,
+which is scaled by the sample-rate if `prewarped_q`.
+This mode simulates a finite `DiracDelta[x]`.
 
+When `M_end != 0`, a gate/hold is generated.
+This mode simulates `HeavisidePi[# - 1/2]`.
+*/
 template <int M_end=1>
 struct gate
 {

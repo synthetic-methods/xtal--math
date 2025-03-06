@@ -12,9 +12,9 @@ namespace _detail
 /////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///\
-Provides the argument-restricted approximations for `unity` and `tangy`. \
-
+/*!
+\brief   Provides the argument-restricted approximations for `unity` and `tangy`.
+*/
 template <int M_ism=1, int M_car=0>	struct  impunity;
 template <int M_ism=1, int M_car=0>	using   impunity_t = process::confined_t<impunity<M_ism, M_car>>;
 

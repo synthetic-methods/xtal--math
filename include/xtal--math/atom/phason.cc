@@ -113,8 +113,8 @@ TAG_("phason")
 	}
 	TRY_("tuple with phason")
 	{
-		using U_psi = additive_group_t<T_alpha[2]>;
-		using W = additive_group_t<U_phi, U_psi>;
+		using U_psi = group_addition_t<T_alpha[2]>;
+		using W     = group_addition_t<U_phi, U_psi>;
 
 		TRUE_(sizeof(W) == sizeof(U_phi) + sizeof(U_psi));
 
@@ -230,38 +230,61 @@ TAG_("phason")
 
 	}
 	/***/
-	/**/
-	TRY_("trial")
+}
+TAG_("phason trials")
+{
+	using U_fit = bond::fit<int>;
+	using T_fit = bond::fit<double>;
+	using T_delta = typename T_fit::delta_type;
+	using T_sigma = typename T_fit::sigma_type;
+	using T_alpha = typename T_fit::alpha_type;
+	using T_aphex = typename T_fit::aphex_type;
+	static constexpr T_alpha two =  2;
+	static constexpr T_alpha six =  6;
+	static constexpr T_alpha ten = 10;
+
+	auto mt19937_o = typename T_fit::mt19937_t{}; mt19937_o.seed(Catch::rngSeed());
+	auto mt19937_f = [&] XTAL_1FN_(to) (T_fit::mantissa_f(mt19937_o));
+
+	using V_phi = T_alpha;
+	using U_phi = phason_t<V_phi[2]>;
+	using W_phi = _std::complex<phason_t<T_alpha[2]>>;
+	using A_phi = _std::array<V_phi, 2>;
+
+	using _qp = bond::template fit<typename U_phi::value_type>;
+
+	using D1 = phason_t<T_alpha[1]>;
+	using D2 = phason_t<T_alpha[2]>;
+	using D3 = phason_t<T_alpha[3]>;
+	using D4 = phason_t<T_alpha[4]>;
+	
+	EST_("atom::phason_t\n   #1*#2&\n   (*fixed-point*)")
 	{
-		EST_("multiplication (fixed-point)")
-		{
-			T_alpha x = 0.33, x_dt = T_fit::haplo_f(4);
+		T_alpha x = 0.33, x_dt = T_fit::haplo_f(4);
 
-			U_phi   phi{x, x_dt};
-		//	T_alpha foo{x};
+		U_phi   phi{x, x_dt};
+	//	T_alpha foo{x};
 
-			for (T_sigma i = 0x100; ~--i;) {
-				T_alpha const u = _std::pow(two, 1 + T_fit::mantissa_f(mt19937_f));
-				phi *= u;
-			}
-			return phi;
-		};
-		EST_("multiplication (floating-point)")
-		{
-			T_alpha x = 0.33, x_dt = T_fit::haplo_f(4);
+		for (T_sigma i = 0x100; ~--i;) {
+			T_alpha const u = _std::pow(two, 1 + mt19937_f());
+			phi *= u;
+		}
+		return phi;
+	};
+	EST_("atom::phason_t\n   #1*#2&\n   (*floating-point*)")
+	{
+		T_alpha x = 0.33, x_dt = T_fit::haplo_f(4);
 
-		//	U_phi   phi{x, x_dt};
-			T_alpha foo{x};
+	//	U_phi   phi{x, x_dt};
+		T_alpha foo{x};
 
-			for (T_sigma i = 0x100; ~--i;) {
-				T_alpha const u = _std::pow(two, 1 + T_fit::mantissa_f(mt19937_f));
-				foo *= u;
-				foo -= _std::round(foo);
-			}
-			return foo;
-		};
-	}
-	/***/
+		for (T_sigma i = 0x100; ~--i;) {
+			T_alpha const u = _std::pow(two, 1 + mt19937_f());
+			foo *= u;
+			foo -= _std::round(foo);
+		}
+		return foo;
+	};
 }
 
 

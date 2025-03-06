@@ -10,9 +10,9 @@ XTAL_ENV_(push)
 namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-
-///\returns the argument restricted to the closed interval `[M_dn, M_up]`. \
-
+/*!
+\returns The argument restricted to the closed interval `[M_dn, M_up]`. \
+*/
 template <int M_dn=0, int M_up=0>
 XTAL_DEF_(return,inline,let)
 cutout_f(auto &&u)

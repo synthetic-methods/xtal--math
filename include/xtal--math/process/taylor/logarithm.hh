@@ -23,9 +23,9 @@ logarithm_f = [] XTAL_1FN_(call) (logarithm_t<M_ism, M_car>::template method_f<N
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///\
-Defines `function` as the logarithm `Log[#]`, approximated by `(# - 1)/Sqrt[#]`. \
-
+/*!
+\brief   Defines `function` as the logarithm `Log[#]`, approximated by `(# - 1)/Sqrt[#]`.
+*/
 template <>
 struct logarithm< 1, 0>
 {
@@ -64,10 +64,11 @@ struct logarithm< 1, 0>
 
 	};
 };
-///\
-Defines `function` as the antilogarithm `Exp[#]`, \
-approximated by `(Sqrt[(#/2)^2 + 1] + (#/2))*# + 1`. \
+/*!
+\brief   Defines `function` as the antilogarithm `Exp[#]`,
 
+Approximated by `(Sqrt[(#/2)^2 + 1] + (#/2))*# + 1`.
+*/
 template <>
 struct logarithm<-1, 0>
 {
@@ -122,9 +123,9 @@ struct logarithm<-1, 0>
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///\
-Defines the argument-restricted approximation of the logarithm `Log[#]`. \
-
+/*!
+\brief   Defines the argument-restricted approximation of the logarithm `Log[#]`.
+*/
 template <>
 struct logarithm< 1, 1>
 {
@@ -200,9 +201,9 @@ struct logarithm< 1, 1>
 
 	};
 };
-///\
-Defines argument-restricted approximation of the antilogarithm `Exp[#]`. \
-
+/*!
+\brief   Defines argument-restricted approximation of the antilogarithm `Exp[#]`.
+*/
 template <>
 struct logarithm<-1, 1>
 {

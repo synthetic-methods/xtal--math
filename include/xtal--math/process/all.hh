@@ -24,7 +24,6 @@
 #include "./termial.hh"
 #include "./wrap.hh"
 
-#include "./bernoulli/all.hh"
 #include "./gudermannian/all.hh"
 #include "./pade/all.hh"
 #include "./taylor/all.hh"

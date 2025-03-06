@@ -10,30 +10,23 @@ XTAL_ENV_(push)
 namespace xtal::atom::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Extends `grade` as a fixed-point fractional/cyclic value with a bisected representation. \
-\
-Allows floating-point construction via `std::initializer_list`, \
-and access to the floating-point value via `operator()`/`operator(int)`. \
-\
-Implements truncated floating-point multiplication (affecting all elements) \
-and addition (affecting only the initial element). \
+/*!
+\brief   Extends `grade` as a fixed-point fractional/cyclic value with a bisected representation.
 
-///\todo\
-Might be worth implementing multiplication for the first element only, \
-either by truncating the type or by parameterizing the operator. \
-The latter could be achieved using `std::initializer_list`s, \
-parameterized by an `continuous_field_q`-wrapper with a distinguished head. \
+Allows floating-point construction via `std::initializer_list`,
+and access to the floating-point value via `operator()`/`operator(int)`.
 
-///\todo\
-Rework `operator`s to accommodate `std::complex`. \
+Implements truncated floating-point multiplication (affecting all elements)
+and addition (affecting only the initial element).
 
+\todo    Rework `operator`s to accommodate `std::complex`.
+*/
 template <class   ..._s>	struct          phason;
 template <class   ..._s>	using           phason_t = typename phason<_s...>::type;
-template <class   ...Ts>	concept         phason_q = bond::fixed_tagged_with_p<phason_t, Ts...>;
-template <class   ...Ts>	concept    real_phason_q = bond::fixed_tagged_with_p<phason_t, Ts...> and real_variable_q<initializer_t<Ts>...>;
-template <class   ...Ts>	concept simplex_phason_q = bond::fixed_tagged_with_p<phason_t, Ts...> and simplex_field_q<initializer_t<Ts>...>;
-template <class   ...Ts>	concept complex_phason_q = bond::fixed_tagged_with_p<phason_t, Ts...> and complex_field_q<initializer_t<Ts>...>;
+template <class   ...Ts>	concept         phason_q = bond::tag_infixed_p<phason_t, Ts...>;
+template <class   ...Ts>	concept    real_phason_q = bond::tag_infixed_p<phason_t, Ts...> and real_variable_q<initializer_t<Ts>...>;
+template <class   ...Ts>	concept simplex_phason_q = bond::tag_infixed_p<phason_t, Ts...> and simplex_field_q<initializer_t<Ts>...>;
+template <class   ...Ts>	concept complex_phason_q = bond::tag_infixed_p<phason_t, Ts...> and complex_field_q<initializer_t<Ts>...>;
 
 XTAL_DEF_(let) phason_f = [] XTAL_1FN_(call) (_detail::fake_f<phason_t>);
 
@@ -58,6 +51,7 @@ struct phason<A, _s...>
 template <vector_q A> requires     real_variable_q<unstruct_u<A>>
 struct phason<A>
 {
+private:
 	static auto constexpr M_data = _xtd::extent_v<based_t<A>>;
 
 	using W = array_valued_u<A>;
@@ -82,6 +76,7 @@ struct phason<A>
 	template <class T>
 	using holotype = bond::compose_s<typename grade<U[M_data]>::template homotype<T>, bond::tag<phason_t>>;
 
+public:
 	template <class T>
 	class homotype : public holotype<T>
 	{
@@ -177,9 +172,9 @@ struct phason<A>
 		}
 
 	public:// OPERATE
-		///\
-		Scales all elements. \
-
+		/*!
+		\brief   Scales all elements.
+		*/
 		XTAL_DEF_(mutate,inline,let)
 		operator /= (auto &&x)
 		noexcept -> auto &
@@ -247,9 +242,9 @@ struct phason<A>
 			return t.twin() *= x;
 		}
 
-		///\
-		Offsets the first element. \
-		
+		/*!
+		\brief   Offsets the first element.
+		*/		
 	//	XTAL_DEF_(mutate,inline,let) operator +=(_std::initializer_list<W> o) noexcept -> auto & {return S_::operator+=(T(o));}
 	//	XTAL_DEF_(mutate,inline,let) operator -=(_std::initializer_list<W> o) noexcept -> auto & {return S_::operator-=(T(o));}
 
@@ -295,8 +290,9 @@ struct phason<A>
 			(bond::seek_s<size>{});
 		}
 
-		///\returns `condition_f<Y>` indicating whether the current state is continuous. \
-
+		/*!
+		\returns `condition_f<Y>` indicating whether the current state is continuous.
+		*/
 		template <class Y=W>
 		XTAL_DEF_(return,inline,let)
 		continuity()
@@ -304,8 +300,9 @@ struct phason<A>
 		{
 			return condition_f<Y>(not discontinuity<bool>());
 		}
-		///\returns `condition_f<Y>` indicating whether the current state is discontinuous. \
-
+		/*!
+		\returns `condition_f<Y>` indicating whether the current state is discontinuous.
+		*/
 		template <class Y=W>
 		XTAL_DEF_(return,inline,let)
 		discontinuity()

@@ -10,12 +10,13 @@ XTAL_ENV_(push)
 namespace xtal::process::math::pade
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Defines `Tan[Pi #] &` and `Tanh[Pi #] &`. \
+/*!
+\brief   Defines `Tan[Pi #] &` and `Tanh[Pi #] &`.
 
-///\param M_ism \f$\in {1, 2}\f$ specifies the underlying morphism, \
-generating either the circular or hyperbolic tangent. \
-
+\tparam  M_ism
+Specifies the underlying morphism \f$\in {1, 2}\f$,
+generating either the circular or hyperbolic tangent.
+*/
 template <int M_ism=0, int M_car=0>
 struct tangy;
 

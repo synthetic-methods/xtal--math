@@ -298,6 +298,100 @@ TAG_("phasor")
 	}
 	/***/
 }
+TAG_("phasor trials")
+{
+	using namespace Eigen;
+	
+	using U_stored  = provision::stored<unit_type[0x1000]>;
+	using U_sampled = occur::resample_t<>::template attach<>;
+
+	using _Op = bond::fit<>;
+	using T_sigma = typename _Op::sigma_type;
+	using T_delta = typename _Op::delta_type;
+	using T_alpha = typename _Op::alpha_type;
+	
+	using T_cell = T_alpha;
+	using T_eigencolumns = Array<T_cell, Dynamic, 2, ColMajor>;
+	using T_eigenrows    = Array<T_cell, Dynamic, 2, RowMajor>;
+	using T_eigenrow     = Array<T_cell,       1, 2, RowMajor>;
+
+
+	using  _phi = T_cell[2];
+	using W_phi = bond::repack_t<_phi>;
+	using X_phi = atom::math::phason_t<_phi>;
+	
+	using Y_chi = process::conveyor_t<phasor<_phi, U_sampled>>;
+//	using Y_chi = process::conveyor_t<phasor<_phi>>;
+	using Y_phi = phasor_t<_phi>;
+	//\
+	using Y_psi = phasor_t<_phi, U_sampled>;
+	using Y_psi = process::lift_t<bond::repack_t<_phi>, phasor<_phi>>;
+	//\
+	using Y_eig = process::link_t<T_eigenrow, phasor<_phi>>;
+	using Y_eig = process::lift_t<T_eigenrow, phasor<_phi>>;
+
+	using Z_chi = processor::monomer_t<Y_chi, U_stored>;
+	using Z_phi = processor::monomer_t<Y_phi, U_stored>;
+	using Z_psi = processor::monomer_t<Y_psi, U_stored>;
+	//\
+	using Z_eig = processor::monomer_t<process::lift<bond::operate<T_eigenrow>>, Y_chi>;
+//	using Z_eig = processor::monomer_t<confined_t<lift<bond::operate<_std::array<T_cell, 2>>>, phasor<_phi, U_sampled>>>;
+
+	using _fit = bond::template fit<typename X_phi::value_type>;
+
+
+	/**/
+	static constexpr T_alpha x_delta  = _fit::ratio_f(7);
+	
+	T_sigma constexpr N_data = 0x1000;
+	T_alpha   z_data[2][N_data]{};
+	T_alpha  *y_data   [N_data]{z_data[0], z_data[1]};
+	T_alpha **x_data = y_data;
+	for (int i = 0; i < N_data; ++i) {
+		z_data[0][i] =  i;
+		z_data[1][i] = -1;
+	}
+
+
+	auto w_data  = bond::transpack_f<void_type[2]>(N_data, z_data);
+	//\
+	auto e_data  = Map<T_eigencolumns>(*z_data, N_data, 2).rowwise();
+	auto e_data  = ConvertToEigenMatrix<2>(y_data, N_data).rowwise();
+	
+	auto x_phi = X_phi{}; x_phi <<=                                {_fit::ratio_f(7)};
+	auto y_phi = Y_phi{}; y_phi <<= occur::math::indent_s<X_phi, 1>{_fit::ratio_f(7)}; y_phi <<= occur::resize_t<>(N_data);
+	
+	auto z_chi = Z_chi::bind_f(); z_chi <<= occur::math::indent_s<X_phi, 1>{_fit::ratio_f(7)}; z_chi <<= occur::resize_t<>(N_data);
+	auto z_phi = Z_phi::bind_f(); z_phi <<= occur::math::indent_s<X_phi, 1>{_fit::ratio_f(7)}; z_phi <<= occur::resize_t<>(N_data);
+	auto z_psi = Z_psi::bind_f(); z_psi <<= occur::math::indent_s<X_phi, 1>{_fit::ratio_f(7)}; z_psi <<= occur::resize_t<>(N_data);
+//	auto z_eig = Z_eig::bind_f(); z_eig <<= occur::math::indent_s<X_phi, 1>{_fit::ratio_f(7)}; z_eig <<= occur::resize_t<>(N_data);
+
+	occur::cursor_t<>               z_cursor(N_data);
+	occur::math::indent_s<X_phi, 1> z_indent{x_delta};
+	
+	z_phi <<= z_indent;
+	z_psi <<= z_indent;
+//	z_eig <<= z_indent;
+
+	EST_("procession (process in-place)")
+	{
+		auto &z_d0 = z_data[0];
+		auto &z_d1 = z_data[1];
+		for (int i = 0; i < N_data; ++i) {
+			auto const &y = y_phi();
+			z_d0[i] = y(0);
+			z_d1[i] = y(1);
+		}
+
+	};
+	EST_("procession (processor in-place: `ranges::copy...`)")
+	{
+		//\
+		z_psi >>= z_cursor++ >> occur::review_f(w_data);
+		z_chi >>= z_cursor++ >> occur::review_f(w_data);
+
+	};
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////

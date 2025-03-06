@@ -44,8 +44,8 @@ TAG_("unity")
 
 	static_assert(same_q<T_alpha, decltype(U_phi{} (0))>);
 
-	auto mt19937_f = typename _fit::mt19937_t();
-	mt19937_f.seed(Catch::rngSeed());
+	auto mt19937_o = typename _fit::mt19937_t{}; mt19937_o.seed(Catch::rngSeed());
+	auto mt19937_f = [&] XTAL_1FN_(to) (_fit::mantissa_f(mt19937_o));
 
 	TRY_("flight")
 	{
@@ -74,13 +74,7 @@ TAG_("unity")
 		TRUE_(check_f<-2>(o[1], 0.10520194523965509));
 		TRUE_(check_f<-2>(o[2], 0.66421893908191321));
 		TRUE_(check_f<-2>(o[3], 0.10520194523965509));
-
-	//	{ foo.real(), bar.imag()}, {bar.real(), -foo.imag()}
-	//	{-bar.real(),-foo.imag()}, {foo.real(), -bar.imag()}
-
-
 	}
-
 	/**/
 	TRY_("scalar evaluation")
 	{
@@ -213,18 +207,9 @@ TAG_("unity")
 		TRUE_(y6.real(), ys.real(6));
 		TRUE_(y7.real(), ys.real(7));
 
-	//	TRUE_(check_f<19>(y0.real(), ys.real() (0)));
-	//	TRUE_(check_f<19>(y1.real(), ys.real() (1)));
-	//	TRUE_(check_f<19>(y2.real(), ys.real() (2)));
-	//	TRUE_(check_f<19>(y3.real(), ys.real() (3)));
-	//	TRUE_(check_f<19>(y4.real(), ys.real() (4)));
-	//	TRUE_(check_f<19>(y5.real(), ys.real() (5)));
-	//	TRUE_(check_f<19>(y6.real(), ys.real() (6)));
-	//	TRUE_(check_f<19>(y7.real(), ys.real() (7)));
-
 	};
 	/***/
-	TRY_("evaluation (floating-point)")
+	TRY_("unity evaluation")
 	{
 		double const t0 = 1.125;
 
@@ -237,59 +222,6 @@ TAG_("unity")
 		TRUE_(unity_check_f<6, 47>(t0));
 		TRUE_(unity_check_f<7, 49>(t0));
 
-		EST_("evaluation <N_lim=-1>")
-		{
-			T_alpha t = 0.618, _t = 0.414;
-			T_aphex z {1, 0};
-
-			for (T_sigma i = 0x100; ~--i;) {
-				z *= unity_t<1>::template method_f<-1>(t);
-				t += _t;
-				t -= round(t);
-			}
-			return z;
-
-		};
-		EST_("bench <N_lim=4>")
-		{
-			T_alpha t = 0.618, _t = 0.414;
-			T_aphex z {1, 0};
-
-			for (T_sigma i = 0x100; ~--i;) {
-				t += _t;
-				t -= round(t);
-				z *= unity_t<1>::template method_f<4>(t);
-			}
-			return z;
-
-		};
-	}
-	TRY_("evaluation (fixed-point)")
-	{
-		//\
-		auto const [t0, t1] = atom::math::phason_t<T_alpha[2]> {1.125, 0.0};
-		T_alpha t0{1.125};
-
-		TRUE_(unity_check_f<0,  2>(t0));
-		TRUE_(unity_check_f<1,  6>(t0));
-		TRUE_(unity_check_f<2, 14>(t0));
-		TRUE_(unity_check_f<3, 20>(t0));
-		TRUE_(unity_check_f<4, 28>(t0));
-		TRUE_(unity_check_f<5, 37>(t0));
-		TRUE_(unity_check_f<6, 47>(t0));
-		TRUE_(unity_check_f<7, 49>(t0));
-
-		EST_("bench <N_lim=4>")
-		{
-			U_phi t {0.618, 0.414};
-			T_aphex z {1, 0};
-
-			for (T_sigma i = 0x100; ~--i; ++t) {
-				z *= unity_t<1>::template method_f<4>(t);
-			}
-			return z;
-
-		};
 	}
 	TRY_("dilution")
 	{
@@ -304,7 +236,8 @@ TAG_("unity")
 		TRUE_(check_f<-1>(z, process::lift_t<unity<1>           >::template method_f<N_lim>(t1)));
 
 	}
-	TRY_("inversion<-1> (native)")
+
+	TRY_("unity<-1, -1> (native)")
 	{
 		T_aphex const x{0.123, 0.456};
 		T_aphex const y = unity_t< 1>::template method_f<-1>(x);
@@ -313,7 +246,7 @@ TAG_("unity")
 		TRUE_(check_f<-19>(x, z));
 
 	}
-	TRY_("inversion< 5> (native)")
+	TRY_("unity<-1,  5> (approx)")
 	{
 		T_aphex const x{0.123, 0.456};
 		T_aphex const y = unity_t< 1>::template method_f< 5>(x);
@@ -322,35 +255,86 @@ TAG_("unity")
 		TRUE_(check_f<-19>(x, z));
 
 	}
-	EST_("unity inversion<-1> (native)")
+}
+TAG_("unity trials")
+{
+	using _fit = bond::fit<>;
+
+	using T_sigma = typename _fit::sigma_type;
+	using T_delta = typename _fit::delta_type;
+	using T_alpha = typename _fit::alpha_type;
+	using T_aphex = typename _fit::aphex_type;
+
+	using A_alpha = Eigen::ArrayXd ;// Eigen::Array<T_alpha,-1, 1>;
+	using A_aphex = Eigen::ArrayXcd;// Eigen::Array<T_aphex,-1, 1>;
+
+	static constexpr T_alpha two =  2;
+	static constexpr T_alpha ten = 10;
+
+	using U_phi = atom::math::phason_t<T_alpha[2]>;
+
+	static_assert(same_q<T_alpha, decltype(U_phi{} (0))>);
+
+	auto mt19937_o = typename _fit::mt19937_t{}; mt19937_o.seed(Catch::rngSeed());
+	auto mt19937_f = [&] XTAL_1FN_(to) (_fit::mantissa_f(mt19937_o));
+
+	EST_("unity<+1; -1>\n   I^(4#)&\n   (*native floating-point*)")
+	{
+		T_alpha t = 0.618, _t = 0.414;
+		T_aphex z {1, 0};
+
+		for (T_sigma i = 0x100; ~--i;) {
+			z *= unity_t<1>::template method_f<-1>(t);
+			t += _t;
+			t -= round(t);
+		}
+		return z;
+
+	};
+	EST_("unity<+1;  4>\n   I^(4#)&\n   (*approx floating-point*)")
+	{
+		T_alpha t = 0.618, _t = 0.414;
+		T_aphex z {1, 0};
+
+		for (T_sigma i = 0x100; ~--i;) {
+			t += _t;
+			t -= round(t);
+			z *= unity_t<1>::template method_f<4>(t);
+		}
+		return z;
+
+	};
+	EST_("unity<+1;  4>\n   I^(4#)&\n   (*approx fixed-point*)")
+	{
+		U_phi t {0.618, 0.414};
+		T_aphex z {1, 0};
+
+		for (T_sigma i = 0x100; ~--i; ++t) {
+			z *= unity_t<1>::template method_f<4>(t);
+		}
+		return z;
+
+	};
+	EST_("unity<-1, -1>\n   I^(4#)&\n   (*native floating-point*)")
 	{
 		T_aphex y{};
 		for (int i = 0x20; ~--i;) {
-			T_aphex const x{_fit::mantissa_f(mt19937_f), _fit::mantissa_f(mt19937_f)};
+			T_aphex const x{mt19937_f(), mt19937_f()};
 			y += unity_t<-1>::template method_f<-1>(y);
 		}
 		return y;
 
 	};
-	EST_("unity inversion< 3> (approximation)")
+	EST_("unity<-1,  3>\n   I^(4#)&\n   (*approx floating-point*)")
 	{
 		T_aphex y{};
 		for (int i = 0x20; ~--i;) {
-			T_aphex const x{_fit::mantissa_f(mt19937_f), _fit::mantissa_f(mt19937_f)};
+			T_aphex const x{mt19937_f(), mt19937_f()};
 			y += unity_t<-1>::template method_f< 3>(y);
 		}
 		return y;
 
 	};
-//	EST_("inversion (approximation)")
-//	{
-//		T_aphex const x{0.123, 0.456};
-//		T_aphex const y = unity_t< 1>::template method_f<5>(x);
-//		T_aphex const z = unity_t<-1>::template method_f<5>(y);
-//
-//		TRUE_(check_f<-16>(x, z));
-//
-//	};
 }
 /***/
 

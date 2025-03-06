@@ -304,10 +304,8 @@ TAG_("fraction")
 	using T_aphex = typename T_fit::aphex_type;
 	auto mt19937_f = typename T_fit::mt19937_t(Catch::rngSeed());
 
-
 	static constexpr T_alpha two =  2;
 	static constexpr T_alpha ten = 10;
-
 
 	TRY_("comparing implementations")
 	{
@@ -316,21 +314,35 @@ TAG_("fraction")
 			TRUE_(check_f<16>(bit_fraction_f<T_alpha>(u), u - _std::round(u)));
 		}
 	};
-	EST_("wrap via integral arithmetic")
+}
+TAG_("bit trials")
+{
+	using T_fit    = fit<>;
+	using T_sigma  = typename T_fit::sigma_type;
+	using T_delta  = typename T_fit::delta_type;
+	using T_alpha  = typename T_fit::alpha_type;
+	using T_aphex  = typename T_fit::aphex_type;
+	auto mt19937_o = typename T_fit::mt19937_t{}; mt19937_o.seed(Catch::rngSeed());
+	auto mt19937_f = [&] XTAL_1FN_(to) (T_fit::mantissa_f(mt19937_o));
+
+	static constexpr T_alpha two =  2;
+	static constexpr T_alpha ten = 10;
+
+	EST_("bond::bit_fraction_f\n   # - Round@#&\n   (*fixed-point*)")
 	{
 		T_delta w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto const u = ten*T_fit::mantissa_f(mt19937_f);
+			auto const u = ten*mt19937_f();
 			w ^= bit_fraction_f<T_delta>(u);
 		}
 		return w;
 	};
-	EST_("wrap via floating-point arithmetic")
+	EST_("bond::bit_fraction_f\n   # - Round@#&\n   (*floating-point*)")
 	{
-		T_alpha w{};
+		T_delta w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto const u = ten*T_fit::mantissa_f(mt19937_f);
-			w *= u - _std::round(u);
+			auto const u = ten*mt19937_f();
+			w ^= static_cast<T_delta>(T_fit::diplo_f(T_fit::full.depth)*(u - _std::round(u)));
 		}
 		return w;
 	};

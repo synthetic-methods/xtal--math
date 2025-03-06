@@ -10,10 +10,11 @@ XTAL_ENV_(push)
 namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Resolves the aspect indicated by the supplied type, \
-providing related utility w.r.t. e.g. `signed`/`unsigned` i.o.w. sign/magnitude. \
+/*!
+\brief   Resolves the aspect indicated by the supplied type.
 
+Providing related utility w.r.t. e.g. `signed`/`unsigned` i.o.w. sign/magnitude.
+*/
 template <typename ...As>
 struct aspect;
 

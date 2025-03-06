@@ -13,15 +13,15 @@ namespace xtal::atom::math::fourier
 
 template <class   ..._s>	struct  series;
 template <class   ..._s>	using   series_t = typename series<_s...>::type;
-template <class   ...Ts>	concept series_q = bond::tagged_with_p<series_t, Ts...>;
+template <class   ...Ts>	concept series_q = bond::tag_in_p<series_t, Ts...>;
 
 XTAL_DEF_(let) series_f = [] XTAL_1FN_(call) (_detail::fake_f<series_t>);
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///\
-Extends `serial` with multiplication via circular convolution. \
-
+/*!
+\brief   Extends `serial` with multiplication via circular convolution.
+*/
 template <scalar_q ..._s> requires common_q<_s...>
 struct series<_s ...>
 :	series<common_t<_s...>[sizeof...(_s)]>
@@ -30,6 +30,7 @@ struct series<_s ...>
 template <vector_q A>
 struct series<A>
 {
+private:
 	using U0 = _xtd::remove_extent_t<A>;
 	using U1 =  destruct_u<U0>;
 	using U2 =  destruct_u<U1>;
@@ -42,6 +43,7 @@ struct series<A>
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<series_t>>;
 
+public:
 	template <class T>
 	class homotype : public holotype<T>
 	{
@@ -58,9 +60,9 @@ struct series<A>
 	public:// CONSTRUCT
 		using S_::S_;
 
-		///\
-		Generates part of the complex sinusoid determined by `std::pow(2, o_shift{})`. \
-
+		/*!
+		\brief   Generates part of the complex sinusoid determined by `std::pow(2, o_shift{})`.
+		*/
 		XTAL_DEF_(inline)
 		XTAL_NEW_(explicit)
 		homotype(constant_q auto const o_shift)
@@ -68,9 +70,9 @@ struct series<A>
 		{
 			generate<o_shift>();
 		}
-		///\
-		Generates the power series with the given seed. \
-
+		/*!
+		\brief   Generates the power series with the given seed.
+		*/
 		XTAL_DEF_(inline)
 		XTAL_NEW_(explicit)
 		homotype(auto &&...oo)
@@ -102,9 +104,10 @@ struct series<A>
 			});
 			return self();
 		}
-		///\returns `this` with the elements `N_index, ..., N_index + N_count - 1` \
-			filled by the corresponding powers of `u`. \
-
+		/*!
+		\brief   Populates `this` with powers of `u` from `N_index` to `N_index + N_count - 1`.
+		\returns `this`.
+		*/
 		template <int N_count=size, int N_index=0, int N_step=1, int N_skip=0>
 		XTAL_DEF_(inline,let)
 		generate(value_type const &u)
@@ -144,12 +147,12 @@ struct series<A>
 			}
 			return self();
 		}
-
-		///\returns `this` as the complex sinusoid with length `2*PI*std::pow(2, N_shift)`,  `-3 <= N_shift`. \
-		
-		///\note\
-		To generate the FFT basis used by `transform` etc, use `N_shift == -1`. \
-
+		/*!
+		\brief   Generates the complex sinusoid with length `2*PI*std::pow(2, N_shift)`.
+		\note    To generate the FFT basis used by `transform` etc, use `N_shift == -1`.
+		\returns `this`.
+		\tparam  `N_shift >= -3`
+		*/
 		template <int N_shift=0> requires complex_field_q<value_type>
 		XTAL_DEF_(let)
 		generate()
@@ -177,13 +180,13 @@ struct series<A>
 			
 			return self();
 		}
+		/*!
+		\brief   Transforms `that` using the FFT, with `this` as the Fourier basis.
+		\returns `that`.
 		
-		///\returns `that` transformed by the FFT, using `this` as the Fourier basis. \
-		
-		///\note\
-		The size of both `this` and `that` must be expressible as an integral power of two, \
-		and `1 < that.size() <= this->size()`. \
-
+		\note    The size of both `this` and `that` must be expressible as an integral power-of-two,
+		         and `1 < that.size() <= this->size()`.
+		*/
 		template <int N_direction=1> requires in_n<N_direction, 1, -1> and complex_field_q<value_type>
 		XTAL_DEF_(let)
 		transform(isomorphic_q<T> auto &that) const
@@ -241,9 +244,10 @@ struct series<A>
 			(void) transform<N_direction>(that);
 			return reinterpret_cast<typename XTAL_ALL_(that)::transverse::type &&>(that);
 		}
-		///\returns a new `series` representing the FFT of `that`, \
-		using `this` as the Fourier basis. \
-
+		/*!
+		\returns a new `series` representing the FFT of `that`,
+		using `this` as the Fourier basis.
+		*/
 		template <int N_direction=1> requires in_n<N_direction, 1, -1>
 		XTAL_DEF_(return,inline,let)
 		transformation(isomorphic_q<T> auto that) const
@@ -252,9 +256,9 @@ struct series<A>
 			return transform<N_direction>(XTAL_MOV_(that));
 		}
 
-		///\returns `lhs` convolved with `rhs`, \
-		using `this` as the Fourier basis. \
-s
+		/*!
+		\returns `lhs` convolved with `rhs`, using `this` as the Fourier basis.
+		*/
 		XTAL_DEF_(let)
 		convolve(isomorphic_q<T> auto &&y0, auto y1) const
 		noexcept -> decltype(auto)
@@ -262,9 +266,10 @@ s
 			static_assert(same_q<decltype(y0), decltype(y1)>);
 			return transform<-1>(transform<1>(XTAL_REF_(y0)) *= transform<1>(y1));
 		}
-		///\returns a new `series` representing the convolution of `y0` with `y1`, \
-		using `this` as the Fourier basis. \
-
+		/*!
+		\returns A new `series` representing the convolution of `y0` with `y1`,
+		using `this` as the Fourier basis.
+		*/
 		XTAL_DEF_(return,inline,let)
 		convolution(isomorphic_q<T> auto y0, auto const &y1) const
 		noexcept -> auto
@@ -273,9 +278,9 @@ s
 			return convolve(XTAL_MOV_(y0), y1);
 		}
 
-		///\
-		Multiplication by circular convolution. \
-
+		/*!
+		\brief   Multiplication by circular convolution.
+		*/
 		using S_::operator*=;
 
 		XTAL_DEF_(return,inline,let)  operator * (auto const &                       w) const noexcept -> auto   {return twin() *=   w ;}
@@ -300,13 +305,13 @@ s
 			return s;
 		}
 
-		///\
-		The dual of `T`, defined by `hadamard::series`. \
-		
+		/*!
+		\brief   The dual of `T`, defined by `hadamard::series`.
+		*/		
 		struct transverse
 		{
 			template <class Y>
-			using holotype = typename multiplicative_group<A>::template homotype<Y>;
+			using holotype = typename group_multiplication<A>::template homotype<Y>;
 
 			template <class Y>
 			class homotype : public holotype<homotype<Y>>

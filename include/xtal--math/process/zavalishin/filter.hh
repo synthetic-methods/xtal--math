@@ -10,30 +10,26 @@ XTAL_ENV_(push)
 namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Integrating filter based on the Topology Preserving Transform (TPT), \
-described in _The Art of VA Synthesis_ by Vadim Zavalishin. \
+/*!
+\brief   Integrating filter using the Topology Preserving Transform (TPT).
 
-///\
-The non-linearity is supplied as a `process`-`template` using `provision::saturated`. \
-The process must conform to the signature `<M_ism, M_car>`, \
-defining a stateless `method_f<N_var, ...>` within the `subtype`. \
+Implementation outlined in _The Art of VA Synthesis_ by Vadim Zavalishin.
 
-///\
-The parameters `M_ism` and `M_car` determine the type and return-value of shape, respectively. \
-`M_ism` is expected to yield convex/concave shapes for positive/negative values, \
-and `M_car` is expected to return the slope when `== -1`. \
+The non-linearity is supplied as a `process`-`template` using `provision::saturated`.
+The process must conform to the signature `<M_ism, M_car>`,
+defining a stateless `method_f<N_var, ...>` within the `subtype`.
 
-///\note\
-Despite the parameterization defined by `any<filter<...>>`, \
-`filter<...>::method` is polymorphic and can accomodate anything up to the given cache-width \
-(determined by `U_pole[N_pole][2]`). \
-\
-For example, with base-types of `double` and `std::complex<double>` respectively, \
-the storage required is `16` and `32` bytes-per-pole. \
+The parameters `M_ism` and `M_car` determine the type and return-value of shape, respectively.
+`M_ism` is expected to yield convex/concave shapes for positive/negative values,
+and `M_car` is expected to return the slope when `== -1`.
 
+\note    Despite the parameterization defined by `any<filter<...>>`, `filter<...>::method` is
+polymorphic and can accomodate anything up to the given cache-width (determined by `U_pole[N_pole][2]`).
+For example, with base-types of `double` and `std::complex<double>` respectively,
+the storage required is `16` and `32` bytes-per-pole.
+*/
 template <class ..._s>	struct  filter;
-template <class ..._s>	concept filter_q = bond::tagged_with_p<filter, _s...>;
+template <class ..._s>	concept filter_q = bond::tag_in_p<filter, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -232,10 +228,12 @@ struct filter
 			/***/
 		}
 
-		///\
-		Produces the `gain` and `damp` parameters from the supplied `phason` \
-		and the `complex_field_q` `s`, where `1 <= Abs@s && Re@s <= 0 && 0 <= Im@s`. \
-
+		/*!
+		\brief   Produces the `gain` and `damp` parameters from
+		         the supplied `phason` and the `complex_field_q` `s`.
+		
+		Requires `1 <= Abs@s && Re@s <= 0 && 0 <= Im@s`.
+		*/
 		template <auto ...Ns>
 		XTAL_DEF_(return,let)
 		method(auto &&x
@@ -255,15 +253,17 @@ struct filter
 			}
 			return method<Ns...>(XTAL_REF_(x), s_gain, s_damp, XTAL_REF_(oo)...);
 		}
-		///\
-		Produces the `gain` and `damp` parameters from the supplied \
-		`phason` and `additive_quason_q` triple `{beta, zeta, omega}`. \
+		/*!
+		\brief   Produces the `gain` and `damp` parameters from
+		         the supplied `phason` and `quason_addition_q` triple `{beta, zeta, omega}`.
+		*/		
+		 \
 
 		template <auto ...Ns>
 		XTAL_DEF_(return,let)
 		method(auto &&x
 		,	atom::math::simplex_phason_q auto const &t_
-		,	atom::math::additive_quason_q<null_type[3]> auto const &o
+		,	atom::math::quason_addition_q<null_type[3]> auto const &o
 		,	auto &&...oo
 		)
 		noexcept -> auto
@@ -275,14 +275,14 @@ struct filter
 			}
 			return method<Ns...>(XTAL_REF_(x), s_gain, s_damp, s_bend, XTAL_REF_(oo)...);
 		}
-		///\
-		Produces the `gain` and `damp` parameters from the supplied \
-		`additive_quason_q` triple `{beta, zeta, omega, phi}`. \
-
+		/*!
+		\brief   Produces the `gain` and `damp` parameters from
+		         the supplied `quason_addition_q` triple `{beta, zeta, omega, phi}`.
+		*/
 		template <auto ...Ns>
 		XTAL_DEF_(return,let)
 		method(auto &&x
-		,	atom::math::additive_quason_q<null_type[4]> auto const &o
+		,	atom::math::quason_addition_q<null_type[4]> auto const &o
 		,	auto &&...oo
 		)
 		noexcept -> auto

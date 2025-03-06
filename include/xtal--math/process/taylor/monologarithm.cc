@@ -25,9 +25,6 @@ TAG_("monologarithm")
 
 	using U_phi = atom::math::phason_t<T_alpha[2]>;
 
-	auto mt19937_f = typename _fit::mt19937_t();
-	mt19937_f.seed(Catch::rngSeed());
-
 	TRY_("evaluation")
 	{
 		TRUE_(check_f<  7>(monologarithm_t< 2>::template method_f<-1>(egg), -log(1 - egg)));
@@ -80,30 +77,57 @@ TAG_("monologarithm")
 		TRUE_(check_f<16>(w, _std::complex{0.18009502457651236, 0.8570821020168073}));
 
 	};
-	EST_("real std::exp(...) - 1")
+};
+TAG_("monologarithm trials")
+{
+	using _fit = bond::fit<>;
+
+	using T_sigma = typename _fit::sigma_type;
+	using T_delta = typename _fit::delta_type;
+	using T_alpha = typename _fit::alpha_type;
+	using T_aphex = typename _fit::aphex_type;
+	static constexpr T_alpha egg = 0.123456789;
+
+	using U_phi = atom::math::phason_t<T_alpha[2]>;
+
+	auto mt19937_o = typename _fit::mt19937_t{}; mt19937_o.seed(Catch::rngSeed());
+	auto mt19937_f = [&] XTAL_1FN_(to) (_fit::mantissa_f(mt19937_o));
+
+	EST_("taylor::monologarithm_t<-1; -1>\n   Exp@# - 1&\n   (*native, floating-point*)")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _fit::mantissa_f(mt19937_f) - one;
+			auto x = two*mt19937_f();
+			//\
 			w *= exp(x) - one;
+			w *= monologarithm_t<-1>::template method_f<-1>(x);
 		}
 		return w;
 	};
-	EST_("real antimonologarithm... <M_iso=-2, M_lim=-1>")
+	EST_("taylor::monologarithm_t<-1;  2>\n   Exp@# - 1&\n   (*approx, floating-point*)")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _fit::mantissa_f(mt19937_f) - one;
-			w *= monologarithm_t<-2>::template method_f<~0>(x);
+			auto x = two*mt19937_f();
+			w *= monologarithm_t<-1>::template method_f< 2>(x);
 		}
 		return w;
 	};
-	EST_("real antimonologarithm... <M_iso=-2, M_lim= 0>")
+	EST_("taylor::monologarithm_t<-1;  1>\n   Exp@# - 1&\n   (*approx, floating-point*)")
 	{
 		T_alpha w{};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = _fit::mantissa_f(mt19937_f) - one;
-			w *= monologarithm_t<-2>::template method_f< 0>(x);
+			auto x = two*mt19937_f();
+			w *= monologarithm_t<-1>::template method_f< 1>(x);
+		}
+		return w;
+	};
+	EST_("taylor::monologarithm_t<-1;  0>\n   Exp@# - 1&\n   (*approx, floating-point*)")
+	{
+		T_alpha w{};
+		for (T_sigma i = 0x100; ~--i;) {
+			auto x = two*mt19937_f();
+			w *= monologarithm_t<-1>::template method_f< 0>(x);
 		}
 		return w;
 	};

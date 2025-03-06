@@ -44,16 +44,14 @@ noexcept -> auto
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///\
-Evaluates the factorial `(w + (x*xs...))` (using fused multiply-add, if supported by the compiler). \
+/*!
+\brief   Evaluates the factorial `(w + (x*xs...))` (using fused multiply-add, if supported by the compiler).
 
-///\
-Used to define geometric/exponential series recursively via `(a[0] + b[0]*x*(...))`, \
-starting from the kernel `a[M_limit]`. \
+Used to define geometric/exponential series recursively via `(a[0] + b[0]*x*(...))`,
+starting from the kernel `a[M_limit]`.
 
-///\note\
-Co/domain scaling can be effected by multiplying `a`/`b`, respectively. \
-
+Co/domain scaling can be effected by multiplying `a`/`b`, respectively.
+*/
 template <auto ...Ms>
 struct  factorial
 {

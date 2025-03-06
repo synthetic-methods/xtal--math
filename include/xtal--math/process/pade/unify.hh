@@ -10,10 +10,11 @@ XTAL_ENV_(push)
 namespace xtal::process::math::pade
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Provides result-expansion (w.r.t. argument-reduction) for `unity`, \
-i.e. squaring for both circular and hyperbolic results.
+/*!
+\brief   Provides result-expansion (w.r.t. argument-reduction) for `unity`.
 
+Implements squaring for both circular and hyperbolic results.
+*/
 template <int M_ism=1>
 struct unify;
 

@@ -10,20 +10,20 @@ XTAL_ENV_(push)
 namespace xtal::atom::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Extends `additive_group` with `operator*` defined by the scalar product. \
-Indended to act as a coefficient of a similar type where a scalar result is required. \
+/*!
+\brief   Extends `group_addition` with `operator*` defined by the scalar product.
 
-///\todo\
-Either define `std::complex` construction/operation, \
-or create a similar complex sentinel that applies multiplication/projection. \
+Indended to act as a coefficient of a similar type where a scalar result is required.
 
-///\todo\
-Specialize `plus_multiplies` or `fma`? \
+\todo    Either define `std::complex` construction/operation,
+or create a similar complex sentinel that applies multiplication/projection.
+
+\todo    Specialize `plus_multiplies` or `fma`?
+*/
 
 template <class ..._s>	struct  dot;
 template <class ..._s>	using   dot_t = typename dot<_s...>::type;
-template <class ..._s>	concept dot_q = bond::fixed_tagged_with_p<dot_t, _s...>;
+template <class ..._s>	concept dot_q = bond::tag_infixed_p<dot_t, _s...>;
 
 XTAL_DEF_(let) dot_f = [] XTAL_1FN_(call) (_detail::fake_f<dot_t>);
 
@@ -38,12 +38,14 @@ struct dot<_s ...>
 template <class ..._s>
 struct dot
 {
+private:
 	template <class T>
-	using endotype = typename additive_group<_s...>::template homotype<T>;
+	using endotype = typename group_addition<_s...>::template homotype<T>;
 
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<dot_t>>;
 
+public:
 	template <class T>
 	class homotype : public holotype<T>
 	{

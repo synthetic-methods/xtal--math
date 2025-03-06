@@ -10,12 +10,10 @@ XTAL_ENV_(push)
 namespace xtal::process::math::pade
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Defines the pair `1^{#,-#} &`. \
-
-///\note\
-Pronounced "double-unity". \
-
+/*!
+\brief   Defines the pair `1^{#,-#} &`.
+\note    Pronounced "double-unity".
+*/
 template <int M_ism=1, int M_car=0>
 struct wnity;
 

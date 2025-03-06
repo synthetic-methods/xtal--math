@@ -12,30 +12,32 @@ namespace xtal::atom::math
 /////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-///\
-Extends `multiplicative_group` as a distinct quantity for control-bundling. \
+/*!
+\brief   Extends `group_multiplication` as a distinct quantity for control-bundling.
+*/
+template <class ...Us>	struct  quason_multiplication;
+template <class ...Us>	using   quason_multiplication_t = typename quason_multiplication<Us...>::type;
+template <class ...Us>	concept quason_multiplication_q = bond::tag_infixed_p<quason_multiplication_t, Us...>;
 
-template <class ...Us>	struct  multiplicative_quason;
-template <class ...Us>	using   multiplicative_quason_t = typename multiplicative_quason<Us...>::type;
-template <class ...Us>	concept multiplicative_quason_q = bond::fixed_tagged_with_p<multiplicative_quason_t, Us...>;
-
-XTAL_DEF_(let) multiplicative_quason_f = [] XTAL_1FN_(call) (_detail::fake_f<multiplicative_quason_t>);
+XTAL_DEF_(let) quason_multiplication_f = [] XTAL_1FN_(call) (_detail::fake_f<quason_multiplication_t>);
 
 
 template <scalar_q ...Us> requires common_q<Us...>
-struct multiplicative_quason<Us ...>
-:	multiplicative_quason<common_t<Us...>[sizeof...(Us)]>
+struct quason_multiplication<Us ...>
+:	quason_multiplication<common_t<Us...>[sizeof...(Us)]>
 {
 };
 template <class ...Us>
-struct multiplicative_quason
+struct quason_multiplication
 {
+private:
 	template <class T>
-	using endotype = typename multiplicative_group<Us...>::template homotype<T>;
+	using endotype = typename group_multiplication<Us...>::template homotype<T>;
 
 	template <class T>
-	using holotype = bond::compose_s<endotype<T>, bond::tag<multiplicative_quason_t>>;
+	using holotype = bond::compose_s<endotype<T>, bond::tag<quason_multiplication_t>>;
 
+public:
 	template <class T>
 	class homotype : public holotype<T>
 	{
@@ -51,30 +53,32 @@ struct multiplicative_quason
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///\
-Extends `additive_group` as a distinct quantity for control-bundling. \
+/*!
+\brief   Extends `group_addition` as a distinct quantity for control-bundling.
+*/
+template <class ...Us>	struct  quason_addition;
+template <class ...Us>	using   quason_addition_t = typename quason_addition<Us...>::type;
+template <class ...Us>	concept quason_addition_q = bond::tag_infixed_p<quason_addition_t, Us...>;
 
-template <class ...Us>	struct  additive_quason;
-template <class ...Us>	using   additive_quason_t = typename additive_quason<Us...>::type;
-template <class ...Us>	concept additive_quason_q = bond::fixed_tagged_with_p<additive_quason_t, Us...>;
-
-XTAL_DEF_(let) additive_quason_f = [] XTAL_1FN_(call) (_detail::fake_f<additive_quason_t>);
+XTAL_DEF_(let) quason_addition_f = [] XTAL_1FN_(call) (_detail::fake_f<quason_addition_t>);
 
 
 template <scalar_q ...Us> requires common_q<Us...>
-struct additive_quason<Us ...>
-:	additive_quason<common_t<Us...>[sizeof...(Us)]>
+struct quason_addition<Us ...>
+:	quason_addition<common_t<Us...>[sizeof...(Us)]>
 {
 };
 template <class ...Us>
-struct additive_quason
+struct quason_addition
 {
+private:
 	template <class T>
-	using endotype = typename additive_group<Us...>::template homotype<T>;
+	using endotype = typename group_addition<Us...>::template homotype<T>;
 
 	template <class T>
-	using holotype = bond::compose_s<endotype<T>, bond::tag<additive_quason_t>>;
+	using holotype = bond::compose_s<endotype<T>, bond::tag<quason_addition_t>>;
 
+public:
 	template <class T>
 	class homotype : public holotype<T>
 	{
@@ -93,11 +97,11 @@ struct additive_quason
 
 template <class T        > struct quason;
 
-template <class U, auto N> struct quason<_std::plus       <U>   [N]> :       additive_quason<U   [N]> {};
-template <class U, auto N> struct quason<_std::plus       <U>(&)[N]> :       additive_quason<U(&)[N]> {};
+template <class U, auto N> struct quason<_std::plus       <U>   [N]> :       quason_addition<U   [N]> {};
+template <class U, auto N> struct quason<_std::plus       <U>(&)[N]> :       quason_addition<U(&)[N]> {};
 
-template <class U, auto N> struct quason<_std::multiplies <U>   [N]> : multiplicative_quason<U   [N]> {};
-template <class U, auto N> struct quason<_std::multiplies <U>(&)[N]> : multiplicative_quason<U(&)[N]> {};
+template <class U, auto N> struct quason<_std::multiplies <U>   [N]> : quason_multiplication<U   [N]> {};
+template <class U, auto N> struct quason<_std::multiplies <U>(&)[N]> : quason_multiplication<U(&)[N]> {};
 
 
 ///////////////////////////////////////////////////////////////////////////////

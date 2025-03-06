@@ -1,6 +1,10 @@
 #pragma once
 #include "./any.h"
+#ifndef XTAL_DOC
 #include <xtal/all.hh>
+#else
+#include <xtal/any.hh>
+#endif
 
 #if __has_include(<Eigen/Dense>)
 #include          <Eigen/Dense>

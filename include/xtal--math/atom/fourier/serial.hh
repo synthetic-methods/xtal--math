@@ -13,16 +13,16 @@ namespace xtal::atom::math::fourier
 
 template <class        ..._s>	struct  serial;
 template <class        ..._s>	using   serial_t = typename serial<_s...>::type;
-template <class        ...Ts>	concept serial_q = bond::tagged_with_p<serial_t, Ts...>;
+template <class        ...Ts>	concept serial_q = bond::tag_in_p<serial_t, Ts...>;
 template <int N, class ...Ts>	concept serial_p = serial_q<Ts...> and (...and (N == Ts::size()));
 
 XTAL_DEF_(let) serial_f = [] XTAL_1FN_(call) (_detail::fake_f<serial_t>);
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///\
-Extends `grade` with multiplication via linear convolution. \
-
+/*!
+\brief   Extends `grade` with multiplication via linear convolution.
+*/
 template <scalar_q ..._s> requires common_q<_s...>
 struct serial<_s ...>
 :	serial<common_t<_s...>[sizeof...(_s)]>
@@ -31,6 +31,7 @@ struct serial<_s ...>
 template <vector_q A>
 struct serial<A>
 {
+private:
 	using _fit = bond::fit<A>;
 	
 	template <class T>
@@ -39,6 +40,7 @@ struct serial<A>
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<serial_t>>;
 
+public:
 	template <class T>
 	class homotype : public holotype<T>
 	{
@@ -62,9 +64,9 @@ struct serial<A>
 		XTAL_DEF_(return,inline,let)  operator  * (auto const &                       t) const noexcept -> auto   {return twin() *=   t ;}
 		XTAL_DEF_(inline,let)         operator  *=(_std::initializer_list<value_type> t)       noexcept -> auto & {return self() *= T(t);}
 
-		///\
-		Multiplication by linear convolution, truncated by `size`. \
-
+		/*!
+		\brief   Multiplication by linear convolution, truncated by `size`.
+		*/
 		XTAL_DEF_(let)
 		operator *=(T const &t)
 		noexcept -> T &

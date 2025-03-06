@@ -24,7 +24,6 @@
 #include "./termial.cc"
 #include "./wrap.cc"
 
-#include "./bernoulli/all.cc"
 #include "./gudermannian/all.cc"
 #include "./pade/all.cc"
 #include "./taylor/all.cc"

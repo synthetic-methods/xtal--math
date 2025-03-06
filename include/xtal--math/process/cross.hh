@@ -13,7 +13,7 @@ namespace xtal::process::math
 
 template <class ..._s>	struct  cross;
 template <class ..._s>	using   cross_t = confined_t<cross<_s...>>;
-template <class ..._s>	concept cross_q = bond::tagged_with_p<cross, _s...>;
+template <class ..._s>	concept cross_q = bond::tag_in_p<cross, _s...>;
 
 template <class M, typename ...As>
 XTAL_DEF_(let) cross_f = []<class U> (U &&u)

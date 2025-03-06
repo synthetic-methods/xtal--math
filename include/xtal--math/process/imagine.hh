@@ -10,9 +10,9 @@ XTAL_ENV_(push)
 namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Applies complex quarter-rotation and conjugation. \
-
+/*!
+\brief   Applies complex quarter-rotation and conjugation.
+*/
 template <int M_rot=0, int M_con=0>	struct  imagine;
 template <int M_rot=0, int M_con=0>	using   imagine_t = process::confined_t<imagine<M_rot, M_con>>;
 template <int M_rot=0, int M_con=0>
