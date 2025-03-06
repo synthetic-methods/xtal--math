@@ -19,9 +19,11 @@ using   monologarithm_t = process::confined_t<monologarithm<Ms...>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///\
-Defines `function` as the monologarithm `-Log[1 - #]`, \
-approximated by `#/Sqrt[1 - #]`. \
+/*!
+\brief   Defines `function` as the monologarithm `-Log[1 - #]`.
+
+Approximated by `#/Sqrt[1 - #]`.
+*/
 
 template <int M_ism> requires in_n<M_ism, 1, 2>
 struct monologarithm<M_ism, -0>
@@ -56,9 +58,11 @@ struct monologarithm<M_ism, -0>
 
 	};
 };
-///\
-Defines `function` as the antimonologarithm `1 - Exp[-#]`, \
-approximated by `(Sqrt[1 + (#/2)^2] - (#/2))*(#)`. \
+/*!
+\brief   Defines `function` as the antimonologarithm `1 - Exp[-#]`,
+
+Approximated by `(Sqrt[1 + (#/2)^2] - (#/2))*(#)`.
+*/
 
 template <int M_ism> requires in_n<M_ism,-1,-2>
 struct monologarithm<M_ism, -0>
@@ -82,12 +86,16 @@ struct monologarithm<M_ism, -0>
 		method_f(auto &&o)
 		noexcept -> auto
 		{
-			using _fit = bond::fit<decltype(o)>;
-
+			using U = XTAL_ALL_(o);
 			XTAL_IF0
 			XTAL_0IF (0 <= N_lim) {return superprocess::template method_f<N_lim>(XTAL_REF_(o));}
+#if XTAL_SYS_(builtin)
+			XTAL_0IF (0 == I_ism and real_q<U>) {return -__builtin_expm1(-XTAL_REF_(o));}
+			XTAL_0IF (1 == I_ism and real_q<U>) {return  __builtin_expm1( XTAL_REF_(o));}
+#endif
 			XTAL_0IF (0 == I_ism) {return one - exp(-XTAL_REF_(o));}
 			XTAL_0IF (1 == I_ism) {return exp( XTAL_REF_(o)) - one;}
+			XTAL_0IF_(terminate)
 		}
 
 	};
@@ -95,10 +103,11 @@ struct monologarithm<M_ism, -0>
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///\
-Defines `function` as the cardinal monologarithm `-Log[1 - #]/#`, \
-approximated by `1/Sqrt[1 - #]`. \
+/*!
+\brief   Defines `function` as the cardinal monologarithm `-Log[1 - #]/#`,
 
+Approximated by `1/Sqrt[1 - #]`.
+*/
 template <int M_ism> requires in_n<M_ism, 1, 2>
 struct monologarithm<M_ism, -1>
 {
@@ -126,10 +135,11 @@ struct monologarithm<M_ism, -1>
 
 	};
 };
-///\
-Defines `function` as the cardinal antimonologarithm `(1 - Exp[-#])/#`, \
-approximated by `Sqrt[1 + (#/2)^2] + (#/2)`. \
+/*!
+\brief   Defines `function` as the cardinal antimonologarithm `(1 - Exp[-#])/#`,
 
+Approximated by `Sqrt[1 + (#/2)^2] + (#/2)`.
+*/
 template <int M_ism> requires in_n<M_ism,-1,-2>
 struct monologarithm<M_ism, -1>
 {

@@ -10,21 +10,16 @@ XTAL_ENV_(push)
 namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Evaluates polynomial in `x` with coefficients `ks...` \
-(using fused multiply-add, if supported by the compiler). \
+/*!
+\brief   Evaluates polynomial in `x` with coefficients `ks...`
 
-///\
-Used to define geometric/exponential series recursively via `(a[0] + b[0]*x*(...))`, \
+Defines geometric/exponential series recursively via `(a[0] + b[0]*x*(...))`,
 starting from the kernel `a[N_limit]`. \
 
-///\note\
-Co/domain scaling can be effected by multiplying `a`/`b`, respectively. \
-
-///\note\
-Not to be confused with the Dijkstra's function `Binomial[n + 1, 2]`. \
-
-
+\note    Uses fused multiply-add, if supported by the compiler).
+\note    Co/domain scaling can be effected by multiplying `a`/`b`, respectively.
+\note    Not to be confused with the Dijkstra's function `Binomial[n + 1, 2]`.
+*/
 template <int M_sgn=1, int M_pow=1>	struct  termial;
 template <int M_sgn=1, int M_pow=1>	using   termial_t = process::confined_t<termial<M_sgn, M_pow>>;
 template <int M_sgn=1, int M_pow=1>

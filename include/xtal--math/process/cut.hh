@@ -59,7 +59,7 @@ struct cut
 		//	TODO: Accommodate returning materialized `atom::block` from `span`s...
 			return [&]<auto ...I> (bond::seek_t<I...>)
 				XTAL_0FN_(to) (bond::pack_f(edit_f(get<I>(o))...))
-			(bond::antiseek_s<bond::pack_size<decltype(o)>{}()>{});
+			(bond::seek_reverse_s<bond::pack_size<decltype(o)>{}()>{});
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,set)

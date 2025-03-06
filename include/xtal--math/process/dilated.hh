@@ -10,13 +10,10 @@ XTAL_ENV_(push)
 namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Wraps the super-`function`, unscaling/scaling the domain/codomain by the given `M_val`. \
-
-///\note\
-Because it invokes the super-`function` directly, \
-it must be applied via `{compose,confined}` (etc) rather than `process::{lift,link}`.
-
+/*!
+\brief   Wraps the super-`function`, unscaling/scaling the domain/codomain by the given `M_val`.
+\note    Must be applied via `{compose,confined}` (etc) rather than `process::{lift,link}`.
+*/
 template <auto M_val>
 struct dilated;
 

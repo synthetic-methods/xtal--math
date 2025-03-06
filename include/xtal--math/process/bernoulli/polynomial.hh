@@ -10,15 +10,11 @@ XTAL_ENV_(push)
 namespace xtal::process::math::bernoulli
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Defines the Bernoulli polynomials `BernoulliB[n, u + 1/2]*(2 Pi)^(n - 1)/n!`, where: \
--	`M_ism` indexes the circular/hyperbolic counterparts via `1` and `2` respectively. \
+/*!
+\brief   Defines the Bernoulli polynomials `BernoulliB[n, u + 1/2]*(2 Pi)^(n - 1)/n!`, where:
+-	`M_ism` indexes the circular/hyperbolic counterparts via `1` and `2` respectively.
 -	`M_car` indexes the `discarded` level, with `1` being domain-wrapped. \
-
-///\note\
-The even polynomials are only defined for ``implemented separately, \
-so avoid invoking `method_f<N_ord>` when `in_n<M_car, 1, 0,-2>`. \
-
+*/
 template <int M_ism=1, int M_car=0>	struct  polynomial;
 template <int M_ism=1, int M_car=0>	using   polynomial_t = process::confined_t<polynomial<M_ism, M_car>>;
 template <int M_ism=1, int M_car=0, int M_ord=1>

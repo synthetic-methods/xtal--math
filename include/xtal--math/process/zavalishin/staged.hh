@@ -16,12 +16,10 @@ template <auto  ...Ms>	using   staged_t = process::confined_t<staged<Ms...>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///\
-Responds to `efflux(occur::stage_f(+0))` by resetting the filter state. \
-
-///\todo\
-Allow reset for any `dispatch`ed parameters. \
-
+/*!
+\brief   Responds to `efflux(occur::stage_f(+0))` by resetting the filter state.
+\todo    Allow reset for any `dispatch`ed parameters.
+*/
 template <>
 struct staged< 0>
 {
@@ -62,13 +60,10 @@ struct staged< 0>
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///\
-Responds to `influx(occur::stage_f(-1))` by returning `1` if the state is under threshold, \
-`0` otherwise. \
-
-///\todo\
-Allow configurable threshold. \
-
+/*!
+\brief   Responds to `influx(occur::stage_f(-1))` by returning `1` if the state is under threshold, `0` otherwise.
+\todo    Allow configurable threshold.
+*/
 template <>
 struct staged<-1>
 {

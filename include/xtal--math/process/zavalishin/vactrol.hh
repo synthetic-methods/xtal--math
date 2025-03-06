@@ -10,12 +10,10 @@ XTAL_ENV_(push)
 namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Scales the frequency using the input/state difference and the supplied `reshape`. \
-
-///\note\
-Input is restricted to `U_pole` because the filter-state is managed out-of-band. \
-
+/*!
+\brief   Scales the frequency using the input/state difference and the supplied `reshape`.
+\note    Input is restricted to `U_pole` because the filter-state is managed out-of-band.
+*/
 template <auto ...As>	struct  vactrol;
 template <auto ...As>	using   vactrol_t = process::confined_t<vactrol<As...>>;
 

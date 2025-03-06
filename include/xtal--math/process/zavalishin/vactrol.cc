@@ -43,8 +43,8 @@ TAG_("vactrol")
 		>;
 		using E_prx = processor::monomer_t<E_pro
 		//\
-		,	Z_slice::template inqueue<stage_type, typename E_env::reshape_type>
-		,	Z_slice::template inqueue<E_eve>
+		,	Z_slice::template accept<stage_type, typename E_env::reshape_type>
+		,	Z_slice::template accept<E_eve>
 		,	provision::stored  <null_type[0x100]>
 		,	provision::spooled <null_type[0x100]>
 		>;

@@ -10,13 +10,10 @@ XTAL_ENV_(push)
 namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Multiplies the leading argument with the result of \
-the parent-`method` applied to the trailing arguments. \
-
-///\todo\
-Implement positional parameter `M_pos`?
-
+/*!
+\brief   Multiplies the leading argument with the result of the parent-`method` applied to the trailing arguments.
+\todo    Implement positional parameter `M_pos`?
+*/
 template <auto ...Ms>
 struct coefficient;
 

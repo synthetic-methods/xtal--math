@@ -10,18 +10,16 @@ XTAL_ENV_(push)
 namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Differentiates the incoming signal. \
-If the modulator and/or phasor are supplied, \
-the result is renormalized w.r.t. the chain-rule of differentiation. \
+/*!
+\brief   Differentiates the incoming signal.
 
-///\note\
-The `method` uses local arena-like allocation to manage state. \
-Unless `As...` includes, `memorized` the maximum `sizeof(input) + sizeof(modulator) <= 64`. \
+If the modulator and/or phasor are supplied,
+the result is renormalized w.r.t. the chain-rule of differentiation.
 
-///\todo\
-Enable logarithmic differentiation by including the original signal with the normalization factor? \
-
+\note    The `method` uses local arena-like allocation to manage state.
+\note    he maximum `sizeof(input) + sizeof(modulator) <= 64`.
+\todo    Enable logarithmic differentiation by including the original signal with the normalization factor?
+*/
 template <typename ...As>	struct  differ;
 template <typename ...As>	using   differ_t = process::confined_t<differ<As...>>;
 

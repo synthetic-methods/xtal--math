@@ -57,14 +57,18 @@ noexcept -> auto
 }
 
 
-///\returns the number of bits set in `u`. \
-
+/*!
+\returns The number of bits set in `u`.
+*/
 XTAL_DEF_(return,inline,let)
 bit_count_f(cardinal_variable_q auto u)
 noexcept -> int
 {
 	return _std::popcount(u);
 }
+/*!
+\returns The number of bits set in `v`.
+*/
 XTAL_DEF_(return,inline,let)
 bit_count_f(ordinal_variable_q auto v)
 noexcept -> int
@@ -237,11 +241,11 @@ noexcept -> auto
 }
 
 
-///\returns the bitwise-reversal of `u`, \
-restricted to `N_subdepth` when `0 < N_subdepth < sizeof(u) << 3U`. \
-
-///\note Requires `log2(sizeof(u) << 3U)` iterations. \
-
+/*!
+\returns The bitwise-reversal of `u`,
+         restricted to `N_subdepth` when `0 < N_subdepth < sizeof(u) << 3U`.
+\note    Requires `log2(sizeof(u) << 3U)` iterations.
+*/
 XTAL_DEF_(return,let)
 bit_reverse_f(cardinal_variable_q auto u, int const &n_subdepth)
 noexcept -> auto
@@ -320,10 +324,9 @@ noexcept -> auto
 
 
 ////////////////////////////////////////////////////////////////////////////////
-
-
-///\returns the fractional component of `x` as a full-width `delta_type`.
-
+/*!
+\returns The fractional component of `x` as a full-width `delta_type`.
+*/
 template <class T_return=void>
 XTAL_DEF_(return,inline,let)
 bit_fraction_f()
@@ -454,9 +457,9 @@ noexcept -> auto
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
-///\returns the `target` to `N_zoom` bits of precision after the decimal. \
-
+/*!
+\returns The `target` to `N_zoom` bits of precision after the decimal.
+*/
 template <int N_zoom=0>
 XTAL_DEF_(return,verbatim,set)
 bit_trim_f(integral_variable_q auto x)

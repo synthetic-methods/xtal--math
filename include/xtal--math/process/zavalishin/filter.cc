@@ -150,7 +150,7 @@ TAG_("filter-ring")
 		,	R_def
 		>;
 		using R_prx = processor::monomer_t<R_pro
-		,	Z_slice::template inqueue<R_eve>
+		,	Z_slice::template accept<R_eve>
 		,	provision::stored  <null_type[0x100]>
 		,	provision::spooled <null_type[0x100]>
 		>;
@@ -212,7 +212,7 @@ TAG_("filter-ring")
 		,	R_def
 		>;
 		using R_prx = processor::polymer_t<R_pro
-		,	Z_slice::template inqueue<R_eve>
+		,	Z_slice::template accept<R_eve>
 		,	provision::stored <null_type[0x100]>
 		,	provision::spooled<null_type[0x100]>
 		>;

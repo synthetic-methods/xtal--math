@@ -30,9 +30,6 @@ TAG_("tangy")
 
 	using U_phi = atom::math::phason_t<T_alpha[2]>;
 
-	auto mt19937_f = typename _fit::mt19937_t();
-	mt19937_f.seed(Catch::rngSeed());
-
 	/**/
 	TRY_("scalar evaluation")
 	{
@@ -203,11 +200,32 @@ TAG_("tangy")
 	};
 	/***/
 
+}
+TAG_("tangy trials")
+{
+	using _fit = bond::fit<>;
+
+	using T_sigma = typename _fit::sigma_type;
+	using T_delta = typename _fit::delta_type;
+	using T_alpha = typename _fit::alpha_type;
+	using T_aphex = typename _fit::aphex_type;
+
+	using A_alpha = Eigen::Array<T_alpha,-1, 1>;
+	using A_aphex = Eigen::Array<T_aphex,-1, 1>;
+
+	static constexpr T_alpha two =  2;
+	static constexpr T_alpha ten = 10;
+
+	using U_phi = atom::math::phason_t<T_alpha[2]>;
+
+	auto mt19937_o = typename _fit::mt19937_t{}; mt19937_o.seed(Catch::rngSeed());
+	auto mt19937_f = [&] XTAL_1FN_(to) (_fit::mantissa_f(mt19937_o));
+
 	EST_("tangy inversion<-1> (native)")
 	{
 		T_aphex y{};
 		for (int i = 0x20; ~--i;) {
-			T_aphex const x{_fit::mantissa_f(mt19937_f), _fit::mantissa_f(mt19937_f)};
+			T_aphex const x{mt19937_f(), mt19937_f()};
 			y += tangy_t<-1, 1>::template method_f<-1>(x.imag(), x.real());
 		}
 		return y;
@@ -217,43 +235,22 @@ TAG_("tangy")
 	{
 		T_aphex y{};
 		for (int i = 0x20; ~--i;) {
-			T_aphex const x{_fit::mantissa_f(mt19937_f), _fit::mantissa_f(mt19937_f)};
+			T_aphex const x{mt19937_f(), mt19937_f()};
 			y += tangy_t<-1, 1>::template method_f< 4>(x.imag(), x.real());
 		}
 		return y;
 
 	};
-//	EST_("tangy inversion< 2> (approximation)")
-//	{
-//		T_aphex y{};
-//		for (int i = 0x20; ~--i;) {
-//			T_aphex const x{_fit::mantissa_f(mt19937_f), _fit::mantissa_f(mt19937_f)};
-//			y += tangy_t<-1, 1>::template method_f< 2>(x.imag(), x.real());
-//		}
-//		return y;
-//
-//	};
-//	EST_("tangy inversion< 1> (approximation)")
-//	{
-//		T_aphex y{};
-//		for (int i = 0x20; ~--i;) {
-//			T_aphex const x{_fit::mantissa_f(mt19937_f), _fit::mantissa_f(mt19937_f)};
-//			y += tangy_t<-1, 1>::template method_f< 1>(x.imag(), x.real());
-//		}
-//		return y;
-//
-//	};
-//	EST_("tangy inversion< 0> (approximation)")
-//	{
-//		T_aphex y{};
-//		for (int i = 0x20; ~--i;) {
-//			T_aphex const x{_fit::mantissa_f(mt19937_f), _fit::mantissa_f(mt19937_f)};
-//			y += tangy_t<-1, 1>::template method_f< 0>(x.imag(), x.real());
-//		}
-//		return y;
-//
-//	};
+	EST_("tangy inversion< 2> (approximation)")
+	{
+		T_aphex y{};
+		for (int i = 0x20; ~--i;) {
+			T_aphex const x{mt19937_f(), mt19937_f()};
+			y += tangy_t<-1, 1>::template method_f< 2>(x.imag(), x.real());
+		}
+		return y;
 
+	};
 }
 
 ///////////////////////////////////////////////////////////////////////////////

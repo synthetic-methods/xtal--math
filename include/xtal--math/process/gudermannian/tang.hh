@@ -10,20 +10,25 @@ XTAL_ENV_(push)
 namespace xtal::process::math::gudermannian
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Defines a class of Gudermannian-related function/approximations indexed by `M_ism`: \
-	 1 ->                 Tan[#*Pi]/Pi -> # * Sqrt[(1 - 2 #^2)]/(1 - 4 #^2)\
-	 2 ->        Gudermannian[#*Pi]/Pi -> # * Sqrt[(1 +   #^2)]/(1 + 2 #^2)\
-	-1 ->              ArcTan[#*Pi]/Pi -> # * Sqrt[2]/Sqrt[(1 + 8 #^2) + Sqrt[(1 + 8 #^2)]]\
-	-2 -> InverseGudermannian[#*Pi]/Pi -> # * Sqrt[2]/Sqrt[(1 - 4 #^2) + Sqrt[(1 - 4 #^2)]]\
+/*!
+\brief   Defines a class of Gudermannian-related function/approximations indexed by `M_ism`.
 
-///\note\
-The (co)domain is normalized around `+/- 1/2`, with derivative `1` at `0`. \
+The (co)domain is normalized around `+/- 1/2`, with derivative `1` at `0`.
 
-///\example\
-	using   Tanh = process::confined_t<dilated<2>, tang< 2>>;\
-	using ArTanh = process::confined_t<dilated<2>, tang<-2>>;\
+\code{m}
+(* 1*)                 Tan[#*Pi]/Pi& -> # * Sqrt[(1 - 2 #^2)]/(1 - 4 #^2)&
+(* 2*)        Gudermannian[#*Pi]/Pi& -> # * Sqrt[(1 +   #^2)]/(1 + 2 #^2)&
+(*-1*)              ArcTan[#*Pi]/Pi& -> # * Sqrt[2]/Sqrt[(1 + 8 #^2) + Sqrt[(1 + 8 #^2)]]&
+(*-2*) InverseGudermannian[#*Pi]/Pi& -> # * Sqrt[2]/Sqrt[(1 - 4 #^2) + Sqrt[(1 - 4 #^2)]]&
+using   Tanh = process::confined_t<dilated<2>, tang< 2>>;
+using ArTanh = process::confined_t<dilated<2>, tang<-2>>;
+\endcode
 
+\code{cpp}
+using   Tanh = process::confined_t<dilated<2>, tang< 2>>;
+using ArTanh = process::confined_t<dilated<2>, tang<-2>>;
+\endcode
+*/
 template <int M_ism=1, int M_car=0, typename ...As> requires in_n<M_ism, 1, 2, -1, -2> and in_n<M_car, -0, -1, -2>
 struct  tang
 :	process::lift<tang<M_ism, M_car>, bond::compose<As...>>

@@ -10,20 +10,15 @@ XTAL_ENV_(push)
 namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Produces the dot-product of the given arguments. \
-For single arguments, the dot-square or `norm` is produced. \
+/*!
+\brief   Produces the dot-product of the given arguments.
 
-///\note\
-The `M_alt` parameter determines the sign of the even terms. \
+For single arguments, the dot-square or `norm` is produced.
 
-///\note\
-For `M_alt=-1` and `complex` products, \
-the `real` component w.r.t. multiplication is returned. \
-
-///\todo\
-Integrate or redefine with `ìmagine`. \
-
+\note    The `M_alt` parameter determines the sign of the even terms.
+\note    For `M_alt=-1` and `complex` products, the `real` component w.r.t. multiplication is returned.
+\todo    Integrate or redefine with `ìmagine`.
+*/
 template <int M_alt=1> requires in_n<M_alt, 0, 1,-1>
 struct  dot;
 

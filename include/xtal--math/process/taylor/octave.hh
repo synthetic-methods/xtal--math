@@ -10,14 +10,10 @@ XTAL_ENV_(push)
 namespace xtal::process::math::taylor
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Produces the base-two logarithm and its inverse. \
-
-///\todo\
-Either define `subdivision` to apply `1/N_ind` prescaling, \
-or supply an `attach`ed parameter to do so...
-
-
+/*!
+\brief   Produces the base-two logarithm and its inverse.
+\todo    Either define `subdivision` to apply `1/N_ind` prescaling, or supply an `attach`ed parameter to do so...
+*/
 template <int M_ism=2, int M_car=0>
 struct  octave;
 

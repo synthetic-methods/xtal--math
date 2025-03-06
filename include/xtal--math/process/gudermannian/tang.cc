@@ -43,11 +43,22 @@ TAG_("whatever")
 		TRUE_(check_f<-47>(sinh(_fit::patio_1*0.33), tang_t<1>::template method_f<~0>(tang_t<2>::template method_f< 0>(0.33))*_fit::patio_1));
 
 	};
+}
+TAG_("tang trials")
+{
+	using _fit = bond::fit<>;
+	using T_sigma  = typename _fit::sigma_type;
+	using T_delta  = typename _fit::delta_type;
+	using T_alpha  = typename _fit::alpha_type;
+	using T_aphex  = typename _fit::aphex_type;
+	auto mt19937_o = typename _fit::mt19937_t{}; mt19937_o.seed(Catch::rngSeed());
+	auto mt19937_f = [&] XTAL_1FN_(to) (_fit::mantissa_f(mt19937_o));
+
 	EST_("Computing `ArcTan`.")
 	{
 		T_alpha w{0};
 		for (T_sigma i = 0x10; ~--i;) {
-			auto x = _fit::mantissa_f(mt19937_f);
+			auto x = mt19937_f();
 			w += tang_t<-1>::template method_f<-1>(x);
 		}
 		return w;
@@ -56,7 +67,7 @@ TAG_("whatever")
 	{
 		T_alpha w{0};
 		for (T_sigma i = 0x10; ~--i;) {
-			auto x = _fit::mantissa_f(mt19937_f);
+			auto x = mt19937_f();
 			w += tang_t<-1>::template method_f< 0>(x);
 		}
 		return w;
@@ -65,7 +76,7 @@ TAG_("whatever")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x10; ~--i;) {
-			auto x = _fit::mantissa_f(mt19937_f);
+			auto x = mt19937_f();
 			w *= sinh(x);
 		}
 		return w;
@@ -74,7 +85,7 @@ TAG_("whatever")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x10; ~--i;) {
-			auto x = _fit::mantissa_f(mt19937_f);
+			auto x = mt19937_f();
 			w *= pade::tangy_t<1>::template method_f< 1>(tang_t<2>::template method_f< 0>(x));
 		}
 		return w;
@@ -83,7 +94,7 @@ TAG_("whatever")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x10; ~--i;) {
-			auto x = _fit::mantissa_f(mt19937_f);
+			auto x = mt19937_f();
 			w *= tang_t<1>::template method_f<~0>(tang_t<2>::template method_f< 0>(x))*_fit::patio_1;
 		}
 		return w;

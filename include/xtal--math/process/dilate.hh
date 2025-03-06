@@ -10,9 +10,9 @@ XTAL_ENV_(push)
 namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Scales the argument by `M_val`. \
-
+/*!
+\brief   Scales the argument by `M_val`.
+*/
 template <auto M_val=1>	struct  dilate;
 template <auto M_val=1>	using   dilate_t = process::confined_t<dilate<M_val>>;
 template <auto M_val=1>

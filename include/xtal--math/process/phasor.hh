@@ -13,17 +13,15 @@ namespace xtal::process::math
 
 template <typename ..._s>	struct  phasor;
 template <typename ..._s>	using   phasor_t = confined_t<phasor<_s...>>;
-template <typename ..._s>	concept phasor_q = bond::tagged_with_p<phasor, _s...>;
+template <typename ..._s>	concept phasor_q = bond::tag_in_p<phasor, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///\
-Manages a truncated fixed-point unit differential like `phasor`, \
-providing evaluation/update via succession/replacement. \
+/*!
+\brief   Manages a truncated fixed-point unit differential like `phasor`.
 
-///\todo\
-Accommodate `std::complex` `value_type`s? \
-
+Provides evaluation/update via succession/replacement.
+*/
 template <vector_q A, typename ...As>
 struct phasor<A, As...>
 {
@@ -60,12 +58,7 @@ struct phasor<A, As...>
 		using S_::self;
 		using S_::head;
 
-		///\note\
-		This is defined in-case `refine_head` is bypassed...
-
-		///\todo\
-		...find a cleaner way to define the conversion, perhaps via `refer`?
-
+	//	NOTE: Defined in-case `refine_head` is bypassed...
 		XTAL_FX4_(to) (XTAL_DEF_(implicit operator) typename S_::head_type(), head())
 		
 		XTAL_DEF_(return,inline,set)
@@ -76,13 +69,11 @@ struct phasor<A, As...>
 		}
 
 	public:// OPERATE
-		///\todo\
-		Use `occur::resample` to manage downsampling \
-		e.g. by integer multiplication followed by normalization. \
+	//	TODO: Use `occur::resample` to manage downsampling via integer multiplication.
 
-		///\
-		Evaluation by (possibly indented) replacement then succession. \
-		
+		/*!
+		\brief   Evaluation by (possibly indented) replacement then succession.
+		*/		
 		template <auto ...Is> requires (0 == sizeof...(Is))
 		XTAL_DEF_(return,inline,let)
 		method(fixed_shaped_q auto &&a)
@@ -93,18 +84,16 @@ struct phasor<A, As...>
 			return method();
 		}
 
-		///\
-		Evaluation by uccession. \
-		
+		/*!
+		\brief   Evaluation by succession.
+		\todo    Override constructors to apply fractional `bias`.
+		*/		
 		template <auto ...Is> requires (0 == sizeof...(Is))
 		XTAL_DEF_(return,inline,let)
 		method()
 		noexcept -> decltype(auto)
 		{
 			using resample_type = occur::resample_t<>;
-			///\todo\
-			Override constructors to apply fractional `bias`. \
-			
 			if constexpr (S_::template head_q<resample_type>) {
 				auto const rate = S_::template head<resample_type>().rate();
 				auto &phi = ingress();
@@ -117,9 +106,9 @@ struct phasor<A, As...>
 		}
 
 	protected:
-		///\
-		Evaluation by succession. \
-		
+		/*!
+		\brief   Evaluation by succession.
+		*/		
 		XTAL_DEF_(return,inline,let)
 		ingress()
 		noexcept -> decltype(auto)
@@ -150,17 +139,13 @@ struct phasor<A, As...>
 		using S_::self;
 		using S_::head;
 
-		///\note\
-		This is defined in-case `refine_head` is bypassed...
-
+	//	NOTE:	Defined in-case `refine_head` is bypassed...
 		XTAL_FX4_(to) (XTAL_DEF_(implicit operator) typename S_::head_type(), head())
 		
-	public:// REEVALUATION
-		///\returns the current differential after scaling the incoming `phi` by `co`. \
-
-		///\todo\
-		Supply `precision` and/or `subdivision` `attach`ments? \
-
+	public:// OPERATE
+		/*!
+		\returns The current differential after scaling the incoming `phi` by `co`.
+		*/
 		template <int N_root=1>
 		XTAL_DEF_(return,let)
 		method(U_phason phi, coordinate_type co)

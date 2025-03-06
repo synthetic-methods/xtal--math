@@ -10,9 +10,9 @@ XTAL_ENV_(push)
 namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Provides the distance from the nearest power of two. \
-
+/*!
+\brief   Provides the distance from the nearest power of two.
+*/
 template <int ...Ms>
 struct nearing;
 

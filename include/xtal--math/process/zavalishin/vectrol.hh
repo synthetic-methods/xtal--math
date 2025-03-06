@@ -10,12 +10,10 @@ XTAL_ENV_(push)
 namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Scales `damp` by the dot-product of the internal state and supplied `reshape`. \
-
-///\note\
-Input is restricted to `U_pole` because the filter-state is managed out-of-band. \
-
+/*!
+\brief   Scales `damp` by the dot-product of the internal state and supplied `reshape`.
+\note    Input is restricted to `U_pole` because the filter-state is managed out-of-band.
+*/
 template <auto ...As>	struct  vectrol;
 template <auto ...As>	using   vectrol_t = process::confined_t<vectrol<As...>>;
 

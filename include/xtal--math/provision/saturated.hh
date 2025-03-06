@@ -39,13 +39,13 @@ struct saturator
 
 template <template <auto ...> class A_=_detail::saturator>	struct  saturated;
 template <template <auto ...> class A_=_detail::saturator>	using   saturated_t = confined_t<saturated<A_>>;
-template <                                   class ..._s>	concept saturated_q = bond::tabbed_with_p<saturated<>, _s...>;
+template <                                    class ..._s>	concept saturated_q = bond::tab_in_p<saturated<>, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///\
-Provides a specialization of `atom::store`. \
-
+/*!
+\brief   Provides the member-`saturate_t`.
+*/
 template <template <auto ...> class A_>
 struct saturated
 {

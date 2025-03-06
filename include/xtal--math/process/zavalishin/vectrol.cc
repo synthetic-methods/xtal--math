@@ -42,7 +42,7 @@ TAG_("vectrol")
 		,	E_def
 		>;
 		using E_prx = processor::monomer_t<E_pro
-		,	Z_slice::template inqueue<E_eve>
+		,	Z_slice::template accept<E_eve>
 		,	provision::stored  <null_type[0x100]>
 		,	provision::spooled <null_type[0x100]>
 		>;
@@ -106,7 +106,7 @@ TAG_("vectrol")
 		//\
 		using E_prx = processor::conferred_t<E_pro
 		using E_prx = processor::monomer_t<E_pro
-	//	,	Z_slice::template inqueue<E_eve>
+	//	,	Z_slice::template accept<E_eve>
 		,	provision::stored  <unit_type[0x100]>
 		,	provision::spooled <null_type[0x100]>
 		>;
@@ -134,7 +134,7 @@ TAG_("vectrol")
 		using Q_pro = cross_t<Q_mtx, O_pro>;
 	//	using Q_prx = cross_t<Q_mtx, O_prx>;
 		using Q_prx = processor::monomer_t<Q_pro
-		,	Z_slice::template inqueue<O_eve>
+		,	Z_slice::template accept<O_eve>
 		,	provision::stored  <null_type[0x100]>
 	//	,	provision::spooled <null_type[0x100]>
 		>;

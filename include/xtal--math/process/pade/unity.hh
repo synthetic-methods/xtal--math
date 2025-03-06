@@ -10,12 +10,13 @@ XTAL_ENV_(push)
 namespace xtal::process::math::pade
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Defines `function` by `(-1)^(2 #) &`; spiritually equivalent to `1^# &`. \
+/*!
+\brief   Defines `function` by `(-1)^(2 #) &`; spiritually equivalent to `1^# &`.
 
-///\param M_ism \f$\in {1, 2}\f$ specifies the underlying morphism, \
-generating either circular or hyperbolic `{cosine, sine}` pairs. \
-
+\tparam M_ism
+Specifies the underlying morphism \f$\in {1, 2}\f$,
+generating either circular or hyperbolic `{cosine, sine}` pairs.
+*/
 template <int M_ism=1, int M_car=0>
 struct unity;
 
