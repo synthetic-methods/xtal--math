@@ -164,6 +164,19 @@ TAG_("bit_floor_f")
 		TRUE_(bit_ceiling_f(8) == _std::bit_width(8U - 1));
 		TRUE_(bit_ceiling_f(9) == _std::bit_width(9U - 1));
 
+		TRUE_(-1 == bond::math::bit_floor_f<-2>(-0.50));
+		TRUE_(-1 == bond::math::bit_floor_f<-2>(+0.50));
+		TRUE_(-2 == bond::math::bit_floor_f<-2>(-0.25));
+		TRUE_(-2 == bond::math::bit_floor_f<-2>(+0.25));
+		TRUE_( 1 == bond::math::bit_ceiling_f(typename T_fit::aphex_type{0, 1}));
+		TRUE_( 1 == bond::math::bit_ceiling_f(typename T_fit::aphex_type{0, 2}));
+		TRUE_( 2 == bond::math::bit_ceiling_f(typename T_fit::aphex_type{0, 3}));
+		TRUE_( 2 == bond::math::bit_ceiling_f(typename T_fit::aphex_type{0, 4}));
+		TRUE_( 3 == bond::math::bit_ceiling_f(typename T_fit::aphex_type{0, 5}));
+		TRUE_( 3 == bond::math::bit_ceiling_f(typename T_fit::aphex_type{0, 6}));
+		TRUE_( 3 == bond::math::bit_ceiling_f(typename T_fit::aphex_type{0, 7}));
+		TRUE_( 3 == bond::math::bit_ceiling_f(typename T_fit::aphex_type{0, 8}));
+
 		TRUE_(bit_floor_f(0.1) == -4);
 		TRUE_(bit_floor_f(0.2) == -3);
 		TRUE_(bit_floor_f(0.3) == -2);

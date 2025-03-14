@@ -13,15 +13,8 @@ namespace xtal::process::math
 /*!
 \brief   Applies complex quarter-rotation and conjugation.
 */
-template <int M_rot=0, int M_con=0>	struct  imagine;
-template <int M_rot=0, int M_con=0>	using   imagine_t = process::confined_t<imagine<M_rot, M_con>>;
 template <int M_rot=0, int M_con=0>
-XTAL_DEF_(return,inline,let)
-imagine_f(auto &&o)
-noexcept -> decltype(auto)
-{
-	return imagine_t<M_rot, M_con>::method_f(XTAL_REF_(o));
-}
+struct  imagine;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -44,53 +37,60 @@ struct imagine
 
 		template <auto ...>
 		XTAL_DEF_(return,inline,set)
-		method_f(auto &&o)
+		method_f(complex_field_q auto &&z)
 		noexcept -> decltype(auto)
-			requires un_n<complex_field_q<decltype(o)>>
 		{
-			if constexpr (N_rot == 0 and N_con == 0) {
-				return XTAL_REF_(o);
+			if constexpr (complex_variable_q<decltype(z)>) {
+				auto o = XTAL_REF_(z);
+				auto &[x, y] = destruct_f(o);
+				if constexpr (N_rot == 0b01 or N_rot == 0b11) {_std::swap(x, y);}
+				if constexpr (N_rot == 0b01 or N_rot == 0b10) {x = -XTAL_MOV_(x);}
+				if constexpr (X_rot == 0b11 or X_rot == 0b10) {y = -XTAL_MOV_(y);}
+				return o;
 			}
 			else {
-				return method_f(complexion_f(o));
+				return method_f(z.real(), z.imag());
 			}
 		};
 		template <auto ...>
 		XTAL_DEF_(return,inline,set)
-		method_f(complex_field_q auto const &o)
+		method_f(simplex_field_q auto &&x)
 		noexcept -> decltype(auto)
-			requires un_n<complex_variable_q<decltype(o)>>
 		{
-			auto const x = o.real();
-			auto const y = o.imag();
-			XTAL_IF0
-
-			XTAL_0IF (N_rot == 0b00 and N_con == 0) {return                    o;}
-			XTAL_0IF (N_rot == 0b00 and N_con == 1) {return complexion_f( x, -y);}
-
-			XTAL_0IF (N_rot == 0b01 and N_con == 0) {return complexion_f(-y,  x);}
-			XTAL_0IF (N_rot == 0b01 and N_con == 1) {return complexion_f(-y, -x);}
-
-			XTAL_0IF (N_rot == 0b10 and N_con == 0) {return complexion_f(-x, -y);}
-			XTAL_0IF (N_rot == 0b10 and N_con == 1) {return complexion_f(-x,  y);}
-
-			XTAL_0IF (N_rot == 0b11 and N_con == 0) {return complexion_f( y, -x);}
-			XTAL_0IF (N_rot == 0b11 and N_con == 1) {return complexion_f( y,  x);}
+			return method_f(XTAL_REF_(x), XTAL_ALL_(x){});
 		};
 		template <auto ...>
 		XTAL_DEF_(return,inline,set)
-		method_f(complex_variable_q auto o)
+		method_f(simplex_field_q auto &&x, simplex_field_q auto &&y)
 		noexcept -> decltype(auto)
 		{
-			auto &[x, y] = destruct_f(o);
-			if constexpr (N_rot == 0b01 or N_rot == 0b11) {_std::swap(x, y);}
-			if constexpr (N_rot == 0b01 or N_rot == 0b10) {x = -XTAL_MOV_(x);}
-			if constexpr (X_rot == 0b11 or X_rot == 0b10) {y = -XTAL_MOV_(y);}
-			return o;
+			XTAL_IF0
+
+			XTAL_0IF (N_rot == 0b00 and N_con == 0) {return complexion_f( XTAL_REF_(x),  XTAL_REF_(y));}
+			XTAL_0IF (N_rot == 0b00 and N_con == 1) {return complexion_f( XTAL_REF_(x), -XTAL_REF_(y));}
+
+			XTAL_0IF (N_rot == 0b01 and N_con == 0) {return complexion_f(-XTAL_REF_(y),  XTAL_REF_(x));}
+			XTAL_0IF (N_rot == 0b01 and N_con == 1) {return complexion_f(-XTAL_REF_(y), -XTAL_REF_(x));}
+
+			XTAL_0IF (N_rot == 0b10 and N_con == 0) {return complexion_f(-XTAL_REF_(x), -XTAL_REF_(y));}
+			XTAL_0IF (N_rot == 0b10 and N_con == 1) {return complexion_f(-XTAL_REF_(x),  XTAL_REF_(y));}
+
+			XTAL_0IF (N_rot == 0b11 and N_con == 0) {return complexion_f( XTAL_REF_(y), -XTAL_REF_(x));}
+			XTAL_0IF (N_rot == 0b11 and N_con == 1) {return complexion_f( XTAL_REF_(y),  XTAL_REF_(x));}
 		};
 
 	};
 };
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <int M_rot=0, int M_con=0>
+using imagine_t = process::confined_t<imagine<M_rot, M_con>>;
+
+template <int M_rot=1, int M_con=0, auto ...Ns>
+XTAL_DEF_(let)
+imagine_f = [] XTAL_1FN_(call) (imagine_t<M_rot, M_con>::template method_f<Ns...>);
 
 
 ///////////////////////////////////////////////////////////////////////////////

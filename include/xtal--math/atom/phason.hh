@@ -67,6 +67,7 @@ private:
 	using V = bond::compose_s<U_delta, W_fit>;
 	using U = bond::compose_s<U_sigma, W_fit>;
 
+	using       pack_type = bond::repack_t<W[M_data]>;
 	using coordinate_type = W;
 	using inordinate_type = V;
 	using   ordinate_type = U;
@@ -95,7 +96,7 @@ public:
 		using S_::self;
 		using S_::twin;
 
-		static auto constexpr   ordinate = [] XTAL_1FN_(call) (bond::math::bit_fraction_f<  U>);
+		static auto constexpr   ordinate = [] XTAL_1FN_(call) (bond::math::bit_fraction_f<U>);
 		static auto constexpr coordinate = [] XTAL_1FN_(call) (bond::math::bit_fraction_f<W>);
 
 	public:// CONSTRUCT
@@ -119,7 +120,7 @@ public:
 		{
 			operator>>=(XTAL_MOV_(o));
 		}
-		
+
 	public:// RECONSTRUCT
 	//	using S_::operator >>=;
 	//	using S_::operator <<=;
@@ -172,6 +173,46 @@ public:
 		}
 
 	public:// OPERATE
+		using S_::operator++;
+		using S_::operator--;
+
+		template <int N> requires in_n<size, 2>
+		XTAL_DEF_(mutate,inline,let)
+		operator++(int)
+		noexcept -> auto &
+		{
+			auto t = twin(); operator++<N>(); return t;
+		}
+		template <int N> requires in_n<size, 2>
+		XTAL_DEF_(mutate,inline,let)
+		operator--(int)
+		noexcept -> auto &
+		{
+			auto t = twin(); operator--<N>(); return t;
+		}
+		template <int N> requires in_n<size, 2>
+		XTAL_DEF_(mutate,inline,let)
+		operator++()
+		noexcept -> auto &
+		{
+			auto &s = self();
+			XTAL_IF0
+			XTAL_0IF (0 <= N) {get<0>(s) += _xtd::bit_cast<inordinate_type>(get<1>(s)) << +N;}
+			XTAL_0IF (N <  0) {get<0>(s) += _xtd::bit_cast<inordinate_type>(get<1>(s)) >> -N;}
+			return s;
+		}
+		template <int N> requires in_n<size, 2>
+		XTAL_DEF_(mutate,inline,let)
+		operator--()
+		noexcept -> auto &
+		{
+			auto &s = self();
+			XTAL_IF0
+			XTAL_0IF (0 <= N) {get<0>(s) -= _xtd::bit_cast<inordinate_type>(get<1>(s)) << +N;}
+			XTAL_0IF (N <  0) {get<0>(s) -= _xtd::bit_cast<inordinate_type>(get<1>(s)) >> -N;}
+			return s;
+		}
+
 		/*!
 		\brief   Scales all elements.
 		*/

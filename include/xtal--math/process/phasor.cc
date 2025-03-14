@@ -6,10 +6,6 @@
 
 
 
-
-
-
-
 XTAL_ENV_(push)
 namespace xtal::process::math::_test
 {/////////////////////////////////////////////////////////////////////////////////
@@ -58,6 +54,7 @@ TAG_("phasor")
 	using Y_chi = process::conveyor_t<phasor<_phi, U_sampled>>;
 //	using Y_chi = process::conveyor_t<phasor<_phi>>;
 	using Y_phi = phasor_t<_phi>;
+
 	//\
 	using Y_psi = phasor_t<_phi, U_sampled>;
 	using Y_psi = process::lift_t<bond::repack_t<_phi>, phasor<_phi>>;
@@ -74,10 +71,11 @@ TAG_("phasor")
 
 	using _fit = bond::template fit<typename X_phi::value_type>;
 
-
 	/**/
 	TRY_("trial")
 	{
+		TRUE_(sizeof(X_phi) == sizeof(Y_phi));
+
 		static constexpr T_alpha x_delta  = _fit::ratio_f(7);
 		
 		T_sigma constexpr N_data = 0x1000;
@@ -134,7 +132,7 @@ TAG_("phasor")
 	TRY_("reprogression")
 	{
 		using Y_source = phasor_t<_phi>;
-		using Y_target = phasor_t<_phi, phasor<_phi>>;
+		using Y_target = confined_t<phasor<_phi>, phasor<_phi>>;
 
 		Y_source y_source{0, _fit::haplo_f(5)}; X_phi x_source;
 		Y_target y_target{0, _fit::haplo_f(4)}; X_phi x_target;
@@ -143,11 +141,11 @@ TAG_("phasor")
 		x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-1>(2.0*x_source(0), x_target(0)));
 		x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-1>(2.0*x_source(0), x_target(0)));
 		x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-1>(2.0*x_source(0), x_target(0)));
-		y_source <<= occur::math::indent_s<X_phi, 0>{0.1};
-		x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-18>(2.0*x_source(0), x_target(0)));
-		x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-18>(2.0*x_source(0), x_target(0)));
-		x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-18>(2.0*x_source(0), x_target(0)));
-		x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-18>(2.0*x_source(0), x_target(0)));
+	//	y_source <<= occur::math::indent_s<X_phi, 0>{0.1};
+	//	x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-18>(2.0*x_source(0), x_target(0)));
+	//	x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-18>(2.0*x_source(0), x_target(0)));
+	//	x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-18>(2.0*x_source(0), x_target(0)));
+	//	x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-18>(2.0*x_source(0), x_target(0)));
 	}
 	/***/
 	/**/

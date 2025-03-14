@@ -15,6 +15,7 @@
 #include "./modulo.hh"
 #include "./near.hh"
 #include "./nearing.hh"
+#include "./oppose.hh"
 #include "./phasor.hh"
 #include "./power.hh"
 #include "./root.hh"
@@ -24,7 +25,6 @@
 #include "./termial.hh"
 #include "./wrap.hh"
 
-#include "./gudermannian/all.hh"
 #include "./pade/all.hh"
 #include "./taylor/all.hh"
 #include "./zavalishin/all.hh"

@@ -40,7 +40,7 @@ struct impunity<M_ism,-2>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,set)
-		method_f(simplex_field_q auto const &o)
+		method_f(auto const &o)
 		noexcept -> decltype(auto)
 		{
 			using X = XTAL_ALL_(o); using _fit = bond::fit<X>;

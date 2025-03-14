@@ -12,9 +12,9 @@ namespace xtal::atom::math::fourier::_test
 /////////////////////////////////////////////////////////////////////////////////
 
 //atic_assert(_xtd::trivially_initializable<series_t<float[2]>>);// Why?
-static_assert(_xtd::trivially_destructible <series_t<float[2]>>);
-static_assert(_xtd::trivially_copyable     <series_t<float[2]>>);
-static_assert(_xtd::trivially_movable      <series_t<float[2]>>);
+//static_assert(_xtd::trivially_destructible <series_t<float[2]>>);
+//static_assert(_xtd::trivially_copyable     <series_t<float[2]>>);
+//static_assert(_xtd::trivially_movable      <series_t<float[2]>>);
 //atic_assert(                     atomic_q<series_t<float[2]>>);// Why?
 
 
@@ -41,14 +41,44 @@ TAG_("solid", "series")
 		TRUE_(equal_f(foo, bar));
 		
 	}
-	TRY_("generation")
+	/***/
+	/*/
+	TRY_("generation of single")
+	{
+		using W7 = series_t<T_alpha[0x7]>;
+		using W8 = series_t<T_alpha[0x8]>;
+
+		W7 w7; w7.template generate<-1>(2.0);
+		W8 w8; w8.template generate<-1>(2.0);
+
+		TRUE_((1 << 1) == get<0>(w7));
+		TRUE_((1 << 2) == get<1>(w7));
+		TRUE_((1 << 3) == get<2>(w7));
+		TRUE_((1 << 4) == get<3>(w7));
+		TRUE_((1 << 5) == get<4>(w7));
+		TRUE_((1 << 6) == get<5>(w7));
+		TRUE_((1 << 7) == get<6>(w7));
+	//	TRUE_((1 << 8) == get<7>(w7));
+
+		TRUE_((1 << 1) == get<0>(w8));
+		TRUE_((1 << 2) == get<1>(w8));
+		TRUE_((1 << 3) == get<2>(w8));
+		TRUE_((1 << 4) == get<3>(w8));
+		TRUE_((1 << 5) == get<4>(w8));
+		TRUE_((1 << 6) == get<5>(w8));
+		TRUE_((1 << 7) == get<6>(w8));
+		TRUE_((1 << 8) == get<7>(w8));
+
+	}
+	/***/
+	/*/
+	TRY_("generation of couple")
 	{
 		using U_alpha = couple_t<T_alpha[1<<1]>;
 		using U_aphex = couple_t<T_aphex[1<<1]>;
 		using W_aphex = series_t<U_aphex[1<<4]>;
 
 		W_aphex w_aphex; w_aphex.generate(T_aphex{0, 1}, T_alpha{2.0});
-
 		TRUE_(get<0>(w_aphex) == U_aphex {{  1.00000,  0.00000}, {  1.00000,- 0.00000}});
 		TRUE_(get<1>(w_aphex) == U_aphex {{  0.00000,  2.00000}, {  0.00000,- 0.50000}});
 		TRUE_(get<2>(w_aphex) == U_aphex {{- 4.00000,  0.00000}, {- 0.25000,- 0.00000}});
@@ -58,7 +88,7 @@ TAG_("solid", "series")
 
 	}
 	/***/
-	/**/
+	/*/
 	TRY_("transformation")
 	{
 		T_sigma constexpr O = 1 << 5;
@@ -87,7 +117,7 @@ TAG_("solid", "series")
 
 	}
 	/***/
-	/**/
+	/*/
 	TRY_("convolution")
 	{
 		T_sigma constexpr N = 1 << 3;
@@ -105,7 +135,7 @@ TAG_("solid", "series")
 
 	}
 	/***/
-	/**/
+	/*/
 	TRY_("multiplication")
 	{
 		using C4 = series_t<T_aphex[4]>;

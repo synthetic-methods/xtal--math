@@ -136,9 +136,10 @@ struct monologarithm<M_ism, -1>
 	};
 };
 /*!
-\brief   Defines `function` as the cardinal antimonologarithm `(1 - Exp[-#])/#`,
+\brief   Defines `function` as the cardinal antimonologarithm.
+\tparam  `M_ism` Selects between `(Exp@# - 1)/#&` and `(1 - Exp@-#)/#&` when `M_ism=-1` and `M_ism=-2` respectively.
 
-Approximated by `Sqrt[1 + (#/2)^2] + (#/2)`.
+When `M_ism=-1`, approximated by `Sqrt[1 + (#/2)^2] + (#/2)`.
 */
 template <int M_ism> requires in_n<M_ism,-1,-2>
 struct monologarithm<M_ism, -1>

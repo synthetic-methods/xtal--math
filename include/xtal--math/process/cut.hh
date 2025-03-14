@@ -27,12 +27,8 @@ template <auto M_stop_, int M_side=_detail::flank_n<M_stop_>> requires in_n<M_si
 using   cut_t = process::confined_t<cut<M_stop_, M_side>>;
 
 template <auto M_stop_, int M_side=_detail::flank_n<M_stop_>, auto ...Ns>
-XTAL_DEF_(return,inline,let)
-cut_f(auto &&o)
-noexcept -> decltype(auto)
-{
-	return cut_t<M_stop_, M_side>::template method_f<Ns...>(XTAL_REF_(o));
-}
+XTAL_DEF_(let)
+cut_f = [] XTAL_1FN_(call) (cut_t<M_stop_, M_side>::template method_f<Ns...>);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -55,6 +51,7 @@ struct cut
 		XTAL_DEF_(return,set)
 		edit_f(bond::pack_q auto &o)
 		noexcept -> auto
+		requires un_n<continuous_field_q<decltype(o)>>
 		{
 		//	TODO: Accommodate returning materialized `atom::block` from `span`s...
 			return [&]<auto ...I> (bond::seek_t<I...>)

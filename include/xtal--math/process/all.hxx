@@ -15,6 +15,7 @@
 #include "./modulo.hh"
 #include "./near.hh"
 #include "./nearing.hh"
+#include "./oppose.hh"
 #include "./phasor.hh"
 #include "./power.hh"
 #include "./root.hh"

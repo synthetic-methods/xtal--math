@@ -2,9 +2,9 @@
 #include "./any.hh"
 
 #include "./sine.hh"
+#include "./tangent.hh"
 #include "./monologarithm.hh"
 #include "../pade/tangy.hh"
-
 
 XTAL_ENV_(push)
 namespace xtal::process::math::taylor
@@ -24,7 +24,7 @@ logarithm_f = [] XTAL_1FN_(call) (logarithm_t<M_ism, M_car>::template method_f<N
 
 ////////////////////////////////////////////////////////////////////////////////
 /*!
-\brief   Defines `function` as the logarithm `Log[#]`, approximated by `(# - 1)/Sqrt[#]`.
+\brief   Defines the logarithm `Log`, approximated by `((# - 1)/Sqrt[#] &)`.
 */
 template <>
 struct logarithm< 1, 0>
@@ -65,9 +65,9 @@ struct logarithm< 1, 0>
 	};
 };
 /*!
-\brief   Defines `function` as the antilogarithm `Exp[#]`,
+\brief   Defines the antilogarithm `Exp[#]`,
 
-Approximated by `(Sqrt[(#/2)^2 + 1] + (#/2))*# + 1`.
+Approximated by `((Sqrt[(#/2)^2 + 1] + (#/2))*# + 1 &)`.
 */
 template <>
 struct logarithm<-1, 0>
@@ -102,20 +102,29 @@ struct logarithm<-1, 0>
 		approximate(auto &&o)
 		noexcept -> decltype(auto)
 		{
-			using _fit = bond::fit<decltype(o)>;
+			using U_fit = bond::fit<decltype(o)>;
+			/*/
+			auto constexpr zoom_up2 = U_fit::haplo_f(N_lim*2 + 1);
 
+			auto v = aspect_f<signed>(o), w = square_f(XTAL_REF_(o));
+			w = term_f(one, zoom_up2, XTAL_MOV_(w));
+
+			#pragma unroll
+			for (int i{}; i < N_lim; ++i) {
+				w = term_f(-one, two, square_f(XTAL_MOV_(w)));
+			}
+			return root_f<2>(term_f(-one, two, w, term_f(w, v, root_f<2>(term_f<1, 2>(-one, w)))));
+			/*/
 			if constexpr (0 == N_lim) {
-				auto u = o*_fit::haplo_1; u += root_f<2>(term_f(one, u, u));
+				auto u = o*U_fit::haplo_1; u += root_f<2>(term_f(one, u, u));
 				return term_f(one, XTAL_MOV_(u), XTAL_REF_(o));
 			}
 			else {
-				/**/
 				auto constexpr N = below_v<0x10, (unsigned) N_lim> << 2;
-				return square_f<N>(method_f<0>(XTAL_REF_(o)*_fit::haplo_f(N)));
-				/*/
-				return monologarithm_t<-1>::template method_f<N_lim>(XTAL_REF_(o)) + one;
-				/***/
+				return square_f<N>(method_f<0>(XTAL_REF_(o)*U_fit::haplo_f(N)));
+			//	return monologarithm_t<-1>::template method_f<N_lim>(XTAL_REF_(o)) + one;
 			}
+			/***/
 		}
 
 	};

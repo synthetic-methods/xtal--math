@@ -13,6 +13,13 @@ namespace xtal::process::math
 
 ////////////////////////////////////////////////////////////////////////////////
 
+template <int M_alt=1, int M_pow=1, class W>
+XTAL_DEF_(return,inline,let)
+term_f(W &&w)
+noexcept -> auto
+{
+	return XTAL_REF_(w);
+}
 template <int M_alt=1, int M_pow=1, class W, class X, class ...Xs>
 XTAL_DEF_(return,inline,let)
 term_f(W &&w, X &&x, Xs &&...xs)

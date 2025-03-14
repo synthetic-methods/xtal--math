@@ -2,3 +2,5 @@
 #include "./logarithm.cc"
 #include "./monologarithm.cc"
 #include "./sine.cc"
+#include "./tangent.cc"
+#include "./tangy.cc"

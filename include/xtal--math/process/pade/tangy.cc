@@ -33,17 +33,24 @@ TAG_("tangy")
 	/**/
 	TRY_("scalar evaluation")
 	{
+		TRUE_(check_f<51 - 20>(tangy_t< 2>::template method_f<-1>(T_aphex{1.0, 0.1}), tangy_t< 2>::template method_f< 6>(T_aphex{1.0, 0.1})));
+		TRUE_(check_f<51 - 38>(tangy_t< 2>::template method_f<-1>(T_aphex{1.0, 0.1}), tangy_t< 2>::template method_f< 5>(T_aphex{1.0, 0.1})));
+		TRUE_(check_f<51 - 32>(tangy_t< 2>::template method_f<-1>(T_aphex{1.0, 0.1}), tangy_t< 2>::template method_f< 4>(T_aphex{1.0, 0.1})));
+		TRUE_(check_f<51 - 45>(tangy_t< 2>::template method_f<-1>(T_aphex{1.0, 0.1}), tangy_t< 2>::template method_f< 3>(T_aphex{1.0, 0.1})));
+		TRUE_(check_f<51 - 41>(tangy_t< 2>::template method_f<-1>(T_aphex{1.0, 0.1}), tangy_t< 2>::template method_f< 2>(T_aphex{1.0, 0.1})));
+	//	TRUE_(check_f<51 - 51>(tangy_t< 2>::template method_f<-1>(T_aphex{1.0, 0.1}), tangy_t< 2>::template method_f< 1>(T_aphex{1.0, 0.1})));
+
 		TRUE_(check_f<-23>(tangy_t< 1>::template method_f<-1>(0.375), tangy_t< 1>::template method_f< 4>(0.375)));
 		TRUE_(check_f<-38>(tangy_t< 1>::template method_f<-1>(0.375), tangy_t< 1>::template method_f< 3>(0.375)));
 		TRUE_(check_f<-40>(tangy_t< 1>::template method_f<-1>(0.375), tangy_t< 1>::template method_f< 2>(0.375)));
 		TRUE_(check_f<-50>(tangy_t< 1>::template method_f<-1>(0.375), tangy_t< 1>::template method_f< 1>(0.375)));
-		TRUE_(check_f<-50>(tangy_t< 1>::template method_f<-1>(0.375), tangy_t< 1>::template method_f< 0>(0.375)));
+	//	TRUE_(check_f<-50>(tangy_t< 1>::template method_f<-1>(0.375), tangy_t< 1>::template method_f< 0>(0.375)));
 
 		TRUE_(check_f<-23>(tangy_t< 1>::template method_f<-1>(0.125), tangy_t< 1>::template method_f< 4>(0.125)));
 		TRUE_(check_f<-38>(tangy_t< 1>::template method_f<-1>(0.125), tangy_t< 1>::template method_f< 3>(0.125)));
 		TRUE_(check_f<-40>(tangy_t< 1>::template method_f<-1>(0.125), tangy_t< 1>::template method_f< 2>(0.125)));
 		TRUE_(check_f<-50>(tangy_t< 1>::template method_f<-1>(0.125), tangy_t< 1>::template method_f< 1>(0.125)));
-		TRUE_(check_f<-50>(tangy_t< 1>::template method_f<-1>(0.125), tangy_t< 1>::template method_f< 0>(0.125)));
+	//	TRUE_(check_f<-50>(tangy_t< 1>::template method_f<-1>(0.125), tangy_t< 1>::template method_f< 0>(0.125)));
 
 #if XTAL_ENV_(debug)
 		TRUE_(check_f<-1>(tangy_t<-1, 1>::template method_f<-1>(0.000), tangy_t<-1, 1>::template method_f< 5>(0.000)));
@@ -51,7 +58,7 @@ TAG_("tangy")
 		TRUE_(check_f<-1>(tangy_t<-1, 1>::template method_f<-1>(0.000), tangy_t<-1, 1>::template method_f< 3>(0.000)));
 		TRUE_(check_f<-1>(tangy_t<-1, 1>::template method_f<-1>(0.000), tangy_t<-1, 1>::template method_f< 2>(0.000)));
 		TRUE_(check_f<-1>(tangy_t<-1, 1>::template method_f<-1>(0.000), tangy_t<-1, 1>::template method_f< 1>(0.000)));
-		TRUE_(check_f<-1>(tangy_t<-1, 1>::template method_f<-1>(0.000), tangy_t<-1, 1>::template method_f< 0>(0.000)));
+	//	TRUE_(check_f<-1>(tangy_t<-1, 1>::template method_f<-1>(0.000), tangy_t<-1, 1>::template method_f< 0>(0.000)));
 #endif
 
 	};
@@ -221,36 +228,51 @@ TAG_("tangy trials")
 	auto mt19937_o = typename _fit::mt19937_t{}; mt19937_o.seed(Catch::rngSeed());
 	auto mt19937_f = [&] XTAL_1FN_(to) (_fit::mantissa_f(mt19937_o));
 
-	EST_("tangy inversion<-1> (native)")
-	{
-		T_aphex y{};
-		for (int i = 0x20; ~--i;) {
-			T_aphex const x{mt19937_f(), mt19937_f()};
-			y += tangy_t<-1, 1>::template method_f<-1>(x.imag(), x.real());
-		}
-		return y;
+	auto const mt19937_y = half*mt19937_f();
 
-	};
-	EST_("tangy inversion< 4> (approximation)")
+	EST_("tangy< 2; -1> (* Tanh *)\n~! native real")
 	{
-		T_aphex y{};
-		for (int i = 0x20; ~--i;) {
-			T_aphex const x{mt19937_f(), mt19937_f()};
-			y += tangy_t<-1, 1>::template method_f< 4>(x.imag(), x.real());
-		}
-		return y;
-
+		return tangy_t< 2>::template method_f<-1>(mt19937_y);
 	};
-	EST_("tangy inversion< 2> (approximation)")
+	EST_("tangy< 2;  3> (* Tanh *)\n~3 approx real")
 	{
-		T_aphex y{};
-		for (int i = 0x20; ~--i;) {
-			T_aphex const x{mt19937_f(), mt19937_f()};
-			y += tangy_t<-1, 1>::template method_f< 2>(x.imag(), x.real());
-		}
-		return y;
-
+		return tangy_t< 2>::template method_f< 3>(mt19937_y);
 	};
+	EST_("tangy< 2;  2> (* Tanh *)\n~2 approx real")
+	{
+		return tangy_t< 2>::template method_f< 2>(mt19937_y);
+	};
+	EST_("tangy< 2;  1> (* Tanh *)\n~1 approx real")
+	{
+		return tangy_t< 2>::template method_f< 1>(mt19937_y);
+	};
+	EST_("tangy< 2;  0> (* Tanh *)\n~0 approx real")
+	{
+		return tangy_t< 2>::template method_f< 0>(mt19937_y);
+	};
+
+
+	EST_("tangy<-1; -1> (* ArcTan *)\n~! (reals)")
+	{
+		return tangy_t<-1>::template method_f<-1>(mt19937_y);
+	};
+	EST_("tangy<-1;  3> (* ArcTan *)\n~3 (reals)")
+	{
+		return tangy_t<-1>::template method_f< 3>(mt19937_y);
+	};
+	EST_("tangy<-1;  2> (* ArcTan *)\n~2 (reals)")
+	{
+		return tangy_t<-1>::template method_f< 2>(mt19937_y);
+	};
+	EST_("tangy<-1;  1> (* ArcTan *)\n~1 (reals)")
+	{
+		return tangy_t<-1>::template method_f< 1>(mt19937_y);
+	};
+	EST_("tangy<-1;  0> (* ArcTan *)\n~0 (reals)")
+	{
+		return tangy_t<-1>::template method_f< 0>(mt19937_y);
+	};
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////

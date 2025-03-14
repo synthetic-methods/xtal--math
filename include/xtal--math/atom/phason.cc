@@ -22,29 +22,35 @@ static_assert(_xtd::trivially_movable      <phason_t<float[2]>>);
 
 TAG_("phason")
 {
-	using U_fit = bond::fit<int>;
-	using T_fit = bond::fit<double>;
-	using T_delta = typename T_fit::delta_type;
-	using T_sigma = typename T_fit::sigma_type;
-	using T_alpha = typename T_fit::alpha_type;
-	using T_aphex = typename T_fit::aphex_type;
-	static constexpr T_alpha two =  2;
-	static constexpr T_alpha six =  6;
-	static constexpr T_alpha ten = 10;
+	using V_fit = bond::fit<int>;
+	using W_fit = bond::fit<double>;
+	
+	using V_delta = typename V_fit::delta_type;
+	using W_delta = typename W_fit::delta_type;
+	using V_sigma = typename V_fit::sigma_type;
+	using W_sigma = typename W_fit::sigma_type;
+	using V_alpha = typename V_fit::alpha_type;
+	using W_alpha = typename W_fit::alpha_type;
+	using V_aphex = typename V_fit::aphex_type;
+	using W_aphex = typename W_fit::aphex_type;
 
-	auto mt19937_f = T_fit::mt19937_t(Catch::rngSeed());
+	static constexpr W_alpha two =  2;
+	static constexpr W_alpha six =  6;
+	static constexpr W_alpha ten = 10;
 
-	using V_phi = T_alpha;
+	auto mt19937_f = W_fit::mt19937_t(Catch::rngSeed());
+
+	using V_phi = W_alpha;
 	using U_phi = phason_t<V_phi[2]>;
-	using W_phi = _std::complex<phason_t<T_alpha[2]>>;
+	using W_phi = _std::complex<phason_t<W_alpha[2]>>;
 	using A_phi = _std::array<V_phi, 2>;
 
 	using _qp = bond::template fit<typename U_phi::value_type>;
 
-	using D1 = phason_t<T_alpha[1]>;
-	using D2 = phason_t<T_alpha[2]>;
-	using D3 = phason_t<T_alpha[3]>;
-	using D4 = phason_t<T_alpha[4]>;
+	using D1 = phason_t<W_alpha[1]>;
+	using D2 = phason_t<W_alpha[2]>;
+	using D3 = phason_t<W_alpha[3]>;
+	using D4 = phason_t<W_alpha[4]>;
 	
 	TRY_("phason scaling")
 	{
@@ -63,14 +69,14 @@ TAG_("phason")
 	/**/
 	TRY_("phason of complex")
 	{
-		using M_phi = phason_t<_std::complex<T_alpha>[2]>;
-		phason_t<_std::complex<T_alpha>[2]> a{{0.1, 0.2}, {0.3, 0.3}};
-		phason_t<_std::complex<T_alpha>[2]> b{{0.1, 0.2}, {0.3, 0.3}};
+		using M_phi = phason_t<_std::complex<W_alpha>[2]>;
+		phason_t<_std::complex<W_alpha>[2]> a{{0.1, 0.2}, {0.3, 0.3}};
+		phason_t<_std::complex<W_alpha>[2]> b{{0.1, 0.2}, {0.3, 0.3}};
 
 		++a;
 		++a;
 		++a;
-		TRUE_(check_f<12>(a(0), T_aphex{0.0, 0.1}));
+		TRUE_(check_f<12>(a(0), W_aphex{0.0, 0.1}));
 
 	//	W_phi z = a;
 	//	TRUE_(check_f<19>(z.real() (0), 0.0));
@@ -113,7 +119,7 @@ TAG_("phason")
 	}
 	TRY_("tuple with phason")
 	{
-		using U_psi = group_addition_t<T_alpha[2]>;
+		using U_psi = group_addition_t<W_alpha[2]>;
 		using W     = group_addition_t<U_phi, U_psi>;
 
 		TRUE_(sizeof(W) == sizeof(U_phi) + sizeof(U_psi));
@@ -146,8 +152,8 @@ TAG_("phason")
 		TRUE_(z_d2 == D2{0.125, 0.000});
 
 		TRUE_(y_d2 == D2{0.000, 0.125}); y_d2 <<= {0.250};
-		TRUE_(y_d2 == D2{0.000, 0.250}); y_d2 <<= _std::array<T_alpha, 1>{0.500};
-	//	TRUE_(y_d2 == D2{0.000, 0.500}); y_d2 >>= _std::array<T_alpha, 1>{0.333};
+		TRUE_(y_d2 == D2{0.000, 0.250}); y_d2 <<= _std::array<W_alpha, 1>{0.500};
+	//	TRUE_(y_d2 == D2{0.000, 0.500}); y_d2 >>= _std::array<W_alpha, 1>{0.333};
 	//	TRUE_(y_d2 == D2{0.333, 0.500});
 
 		y_d2 = D2{0.333, 0.500};
@@ -163,14 +169,14 @@ TAG_("phason")
 		TRUE_(a_d2 != b_d2); b_d2 = a_d2; ++a_d2[0];
 	//	TRUE_(a_d2 == D2{0x40000000, 0x40000000});
 
-		TRUE_(check_f<4>(0.1, phason_t<T_alpha[2]>{0.1, 0.1}(0)));
+		TRUE_(check_f<4>(0.1, phason_t<W_alpha[2]>{0.1, 0.1}(0)));
 
 	}
 	/***/
 	/**/
 	TRY_("iteration")
 	{
-		U_phi   phi{0, T_fit::haplo_f(4)};
+		U_phi   phi{0, W_fit::haplo_f(4)};
 		auto constexpr N_tip = _qp::sign.mask;
 		auto           n_tip = N_tip;
 
@@ -200,9 +206,9 @@ TAG_("phason")
 	/**/
 	TRY_("addition")
 	{
-		T_alpha x =  0.33, x_dt = T_fit::haplo_f(4);
-		T_alpha y =  5.55;
-		T_alpha z =  x+y; z -= _std::round(z);
+		W_alpha x =  0.33, x_dt = W_fit::haplo_f(4);
+		W_alpha y =  5.55;
+		W_alpha z =  x+y; z -= _std::round(z);
 
 		U_phi phi{x, x_dt};
 
@@ -215,13 +221,13 @@ TAG_("phason")
 	/**/
 	TRY_("multiplication")
 	{
-		T_alpha x = 1/3.L, x_dt = T_fit::haplo_f(4);
+		W_alpha x = 1/3.L, x_dt = W_fit::haplo_f(4);
 		U_phi phi{x, x_dt};
 		V_phi foo{x};
 
-		for (T_sigma i = 0; i < 0x4; ++i) {
-			auto const v = static_cast<T_alpha>(i + 1);
-			auto const u{exp(asinh(v*T_fit::haplo_1))};
+		for (W_sigma i = 0; i < 0x4; ++i) {
+			auto const v = static_cast<W_alpha>(i + 1);
+			auto const u{exp(asinh(v*W_fit::haplo_1))};
 			phi *= u;
 			foo *= u;
 			foo -= _std::round(foo);
@@ -233,53 +239,53 @@ TAG_("phason")
 }
 TAG_("phason trials")
 {
-	using U_fit = bond::fit<int>;
-	using T_fit = bond::fit<double>;
-	using T_delta = typename T_fit::delta_type;
-	using T_sigma = typename T_fit::sigma_type;
-	using T_alpha = typename T_fit::alpha_type;
-	using T_aphex = typename T_fit::aphex_type;
-	static constexpr T_alpha two =  2;
-	static constexpr T_alpha six =  6;
-	static constexpr T_alpha ten = 10;
+	using V_fit = bond::fit<int>;
+	using W_fit = bond::fit<double>;
+	using W_delta = typename W_fit::delta_type;
+	using W_sigma = typename W_fit::sigma_type;
+	using W_alpha = typename W_fit::alpha_type;
+	using W_aphex = typename W_fit::aphex_type;
+	static constexpr W_alpha two =  2;
+	static constexpr W_alpha six =  6;
+	static constexpr W_alpha ten = 10;
 
-	auto mt19937_o = typename T_fit::mt19937_t{}; mt19937_o.seed(Catch::rngSeed());
-	auto mt19937_f = [&] XTAL_1FN_(to) (T_fit::mantissa_f(mt19937_o));
+	auto mt19937_o = typename W_fit::mt19937_t{}; mt19937_o.seed(Catch::rngSeed());
+	auto mt19937_f = [&] XTAL_1FN_(to) (W_fit::mantissa_f(mt19937_o));
 
-	using V_phi = T_alpha;
+	using V_phi = W_alpha;
 	using U_phi = phason_t<V_phi[2]>;
-	using W_phi = _std::complex<phason_t<T_alpha[2]>>;
+	using W_phi = _std::complex<phason_t<W_alpha[2]>>;
 	using A_phi = _std::array<V_phi, 2>;
 
 	using _qp = bond::template fit<typename U_phi::value_type>;
 
-	using D1 = phason_t<T_alpha[1]>;
-	using D2 = phason_t<T_alpha[2]>;
-	using D3 = phason_t<T_alpha[3]>;
-	using D4 = phason_t<T_alpha[4]>;
+	using D1 = phason_t<W_alpha[1]>;
+	using D2 = phason_t<W_alpha[2]>;
+	using D3 = phason_t<W_alpha[3]>;
+	using D4 = phason_t<W_alpha[4]>;
 	
 	EST_("atom::phason_t\n   #1*#2&\n   (*fixed-point*)")
 	{
-		T_alpha x = 0.33, x_dt = T_fit::haplo_f(4);
+		W_alpha x = 0.33, x_dt = W_fit::haplo_f(4);
 
 		U_phi   phi{x, x_dt};
-	//	T_alpha foo{x};
+	//	W_alpha foo{x};
 
-		for (T_sigma i = 0x100; ~--i;) {
-			T_alpha const u = _std::pow(two, 1 + mt19937_f());
+		for (W_sigma i = 0x100; ~--i;) {
+			W_alpha const u = _std::pow(two, 1 + mt19937_f());
 			phi *= u;
 		}
 		return phi;
 	};
 	EST_("atom::phason_t\n   #1*#2&\n   (*floating-point*)")
 	{
-		T_alpha x = 0.33, x_dt = T_fit::haplo_f(4);
+		W_alpha x = 0.33, x_dt = W_fit::haplo_f(4);
 
 	//	U_phi   phi{x, x_dt};
-		T_alpha foo{x};
+		W_alpha foo{x};
 
-		for (T_sigma i = 0x100; ~--i;) {
-			T_alpha const u = _std::pow(two, 1 + mt19937_f());
+		for (W_sigma i = 0x100; ~--i;) {
+			W_alpha const u = _std::pow(two, 1 + mt19937_f());
 			foo *= u;
 			foo -= _std::round(foo);
 		}
