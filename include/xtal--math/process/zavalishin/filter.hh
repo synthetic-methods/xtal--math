@@ -256,9 +256,8 @@ struct filter
 		/*!
 		\brief   Produces the `gain` and `damp` parameters from
 		         the supplied `phason` and `quason_addition_q` triple `{beta, zeta, omega}`.
+		\todo    Use the `phason` to reset the filter on discontinuity?
 		*/		
-		 \
-
 		template <auto ...Ns>
 		XTAL_DEF_(return,let)
 		method(auto &&x
@@ -288,7 +287,7 @@ struct filter
 		noexcept -> auto
 		{
 			auto t_ = destruct_f<-1>(o);
-			return method(XTAL_REF_(x), XTAL_MOV_(t_), XTAL_REF_(o).self(constant_t<-1>{}));
+			return method(XTAL_REF_(x), XTAL_MOV_(t_), XTAL_REF_(o).self(constant_t<-1>{}), XTAL_REF_(oo)...);
 		}
 
 	};

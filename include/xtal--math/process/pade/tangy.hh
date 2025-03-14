@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-#include "../gudermannian/tang.hh"
+
 
 
 
@@ -11,7 +11,7 @@ namespace xtal::process::math::pade
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 /*!
-\brief   Defines `Tan[Pi #] &` and `Tanh[Pi #] &`.
+\brief   Defines `Tan[Pi #] &` and `Tanh[Pi #] &`, and their inverses.
 
 \tparam  M_ism
 Specifies the underlying morphism \f$\in {1, 2}\f$,
@@ -19,6 +19,9 @@ generating either the circular or hyperbolic tangent.
 */
 template <int M_ism=0, int M_car=0>
 struct tangy;
+
+template <int M_ism=1, int M_car=0>
+using tangy_t = process::confined_t<tangy<M_ism, M_car>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -38,7 +41,7 @@ struct tangy<M_ism,-0>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,set)
-		method_f(simplex_field_q auto &&o)
+		method_f(auto &&o)
 		noexcept -> auto
 		{
 			using _fit = bond::fit<decltype(o)>;
@@ -49,12 +52,9 @@ struct tangy<M_ism,-0>
 				XTAL_0IF (1 == M_ism) {return tan (XTAL_REF_(o)*_fit::patio_1);}
 				XTAL_0IF (2 == M_ism) {return tanh(XTAL_REF_(o)*_fit::patio_1);}
 			}
-			XTAL_0IF (N_lim == 0) {
-				return _fit::patio_1*gudermannian::tang_t<M_ism>::template method_f<N_lim>(XTAL_REF_(o));
-			}
 			XTAL_0IF (0 == (N_lim&1)) {
 				auto const [x1, y1] = destruct_f(_detail::impunity_t<M_ism,-0>::template method_f<N_lim>(o*_fit::haplo_1));
-				auto const x2 =  square_f(x1) + I_sgn*square_f(y1);
+				auto const x2 =  term_f(square_f(x1), square_f(y1), _fit::alpha_f(I_sgn));
 				auto const y2 = _fit::diplo_1*x1*y1;
 				return y2*root_f<-1, 1>(x2);
 			}
@@ -86,6 +86,13 @@ struct tangy<M_ism, 1>
 		{
 			return method_f<N_lim>(XTAL_REF_(t), unstruct_u<decltype(t)>{one});
 		}
+		template <int N_lim=-1> requires in_n<M_ism, -1, -2>
+		XTAL_DEF_(return,inline,set)
+		method_f(complex_field_q auto &&o)
+		noexcept -> decltype(auto)
+		{
+			return method_f<N_lim>(o.imag(), o.real());
+		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,set)
 		method_f(simplex_field_q auto &&v, simplex_field_q auto &&u)
@@ -113,8 +120,41 @@ struct tangy<M_ism, 1>
 };
 template <int M_ism>
 struct tangy<M_ism,-0>
-:	bond::compose<discarded<1>, tangy<M_ism,-1>>
 {
+		using superkind = bond::compose<discarded<1>, tangy<M_ism,-1>>;
+
+	template <class S>
+	class subtype : public bond::compose_s<S, superkind>
+	{
+		using S_ = bond::compose_s<S, superkind>;
+
+	public:
+		using S_::S_;
+
+		template <int N_lim=-1>
+		XTAL_DEF_(return,inline,set)
+		method_f(auto &&o)
+		noexcept -> decltype(auto)
+		{
+			return S_::template method_f<N_lim>(XTAL_REF_(o));
+		}
+		template <int N_lim=-1> requires in_n<M_ism, -1, -2>
+		XTAL_DEF_(return,inline,set)
+		method_f(complex_field_q auto &&o)
+		noexcept -> decltype(auto)
+		{
+			return method_f<N_lim>(o.imag(), o.real());
+		}
+		template <int N_lim=-1> requires in_n<M_ism, -1, -2>
+		XTAL_DEF_(return,inline,set)
+		method_f(simplex_field_q auto &&v, simplex_field_q auto &&u)
+		noexcept -> decltype(auto)
+		{
+			return method_f<N_lim>(XTAL_REF_(v)/XTAL_REF_(u));
+		}
+
+
+	};
 };
 template <int M_ism>
 struct tangy<M_ism,-1>
@@ -136,7 +176,7 @@ struct tangy<M_ism,-2>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,set)
-		method_f(simplex_field_q auto &&o)
+		method_f(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			auto const [t_re, t_im] = destruct_f(_detail::impunity_t<M_ism,-2>::template method_f<N_lim>(XTAL_REF_(o)));
@@ -147,9 +187,6 @@ struct tangy<M_ism,-2>
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-
-template <int M_ism=1, int M_car=0>
-using tangy_t = process::confined_t<tangy<M_ism, M_car>>;
 
 template <int M_ism=1, int M_car=0, int ...Ns>
 XTAL_DEF_(let)

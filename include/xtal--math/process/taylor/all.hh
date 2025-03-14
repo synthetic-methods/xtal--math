@@ -2,3 +2,5 @@
 #include "./logarithm.hh"
 #include "./monologarithm.hh"
 #include "./sine.hh"
+#include "./tangent.hh"
+#include "./tangy.hh"

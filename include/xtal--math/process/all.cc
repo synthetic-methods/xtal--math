@@ -15,6 +15,7 @@
 #include "./modulo.cc"
 #include "./near.cc"
 #include "./nearing.cc"
+#include "./oppose.cc"
 #include "./phasor.cc"
 #include "./power.cc"
 #include "./root.cc"
@@ -24,7 +25,6 @@
 #include "./termial.cc"
 #include "./wrap.cc"
 
-#include "./gudermannian/all.cc"
 #include "./pade/all.cc"
 #include "./taylor/all.cc"
 #include "./zavalishin/all.cc"
