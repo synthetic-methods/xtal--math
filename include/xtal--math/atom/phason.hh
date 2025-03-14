@@ -172,6 +172,46 @@ public:
 		}
 
 	public:// OPERATE
+		using S_::operator++;
+		using S_::operator--;
+
+		template <int N> requires in_n<size, 2>
+		XTAL_DEF_(mutate,inline,let)
+		operator++(int)
+		noexcept -> auto &
+		{
+			auto t = twin(); operator++<N>(); return t;
+		}
+		template <int N> requires in_n<size, 2>
+		XTAL_DEF_(mutate,inline,let)
+		operator--(int)
+		noexcept -> auto &
+		{
+			auto t = twin(); operator--<N>(); return t;
+		}
+		template <int N> requires in_n<size, 2>
+		XTAL_DEF_(mutate,inline,let)
+		operator++()
+		noexcept -> auto &
+		{
+			auto &s = self();
+			XTAL_IF0
+			XTAL_0IF (0 <= N) {get<0>(s) += _xtd::bit_cast<inordinate_type>(get<1>(s)) << +N;}
+			XTAL_0IF (N <  0) {get<0>(s) += _xtd::bit_cast<inordinate_type>(get<1>(s)) >> -N;}
+			return s;
+		}
+		template <int N> requires in_n<size, 2>
+		XTAL_DEF_(mutate,inline,let)
+		operator--()
+		noexcept -> auto &
+		{
+			auto &s = self();
+			XTAL_IF0
+			XTAL_0IF (0 <= N) {get<0>(s) -= _xtd::bit_cast<inordinate_type>(get<1>(s)) << +N;}
+			XTAL_0IF (N <  0) {get<0>(s) -= _xtd::bit_cast<inordinate_type>(get<1>(s)) >> -N;}
+			return s;
+		}
+
 		/*!
 		\brief   Scales all elements.
 		*/

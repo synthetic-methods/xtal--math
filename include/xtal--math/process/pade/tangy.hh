@@ -113,8 +113,41 @@ struct tangy<M_ism, 1>
 };
 template <int M_ism>
 struct tangy<M_ism,-0>
-:	bond::compose<discarded<1>, tangy<M_ism,-1>>
 {
+		using superkind = bond::compose<discarded<1>, tangy<M_ism,-1>>;
+
+	template <class S>
+	class subtype : public bond::compose_s<S, superkind>
+	{
+		using S_ = bond::compose_s<S, superkind>;
+
+	public:
+		using S_::S_;
+
+		template <int N_lim=-1>
+		XTAL_DEF_(return,inline,set)
+		method_f(auto &&o)
+		noexcept -> decltype(auto)
+		{
+			return S_::template method_f<N_lim>(XTAL_REF_(o));
+		}
+		template <int N_lim=-1> requires in_n<M_ism, -1>
+		XTAL_DEF_(return,inline,set)
+		method_f(complex_field_q auto &&o)
+		noexcept -> decltype(auto)
+		{
+			return method_f<N_lim>(o.imag(), o.real());
+		}
+		template <int N_lim=-1> requires in_n<M_ism, -1>
+		XTAL_DEF_(return,inline,set)
+		method_f(simplex_field_q auto &&v, simplex_field_q auto &&u)
+		noexcept -> decltype(auto)
+		{
+			return method_f<N_lim>(XTAL_REF_(v)/XTAL_REF_(u));
+		}
+
+
+	};
 };
 template <int M_ism>
 struct tangy<M_ism,-1>
