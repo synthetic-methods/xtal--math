@@ -1,11 +1,11 @@
 #pragma once
 #include "./any.cc"
+#include "./tangent.hh"
+
+
+
+
 #include "./logarithm.hh"// testing...
-
-
-
-
-
 XTAL_ENV_(push)
 namespace xtal::process::math::taylor::_test
 {/////////////////////////////////////////////////////////////////////////////////
@@ -26,6 +26,7 @@ TAG_("logarithm")
 
 	using U_phi = atom::math::phason_t<T_alpha[2]>;
 
+	/**/
 	TRY_("evaluation")
 	{
 		TRUE_(check_f<-31>(logarithm_t< 1, 1>::template method_f<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1>::template method_f< 2>(T_aphex{0.3, 0.8})));
@@ -46,8 +47,7 @@ TAG_("logarithm")
 		TRUE_(check_f<-43>(logarithm_t<-1   >::template method_f< 1>(egg), exp(egg)));
 	//	UNTRUE_(check_f(logarithm_t<-1>::template method_f< 0>(egg), exp(egg)));
 	}
-	/**/
-
+	/***/
 }
 TAG_("logarithm trials")
 {
@@ -151,7 +151,9 @@ TAG_("logarithm trials")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
+			//\
 			w *= logarithm_t<-1>::template method_f<~0>(mt19937_f());
+			w *= exp(mt19937_f());
 		}
 		return w;
 	
@@ -160,7 +162,7 @@ TAG_("logarithm trials")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = mt19937_f() - 1.0;
+			auto x = mt19937_f();
 			w *= logarithm_t<-1, 1>::template method_f<2>(x);
 		}
 		return w;
@@ -170,7 +172,7 @@ TAG_("logarithm trials")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = mt19937_f() - 1.0;
+			auto x = mt19937_f();
 			w *= logarithm_t<-1>::template method_f<2>(x);
 		}
 		return w;
@@ -180,7 +182,7 @@ TAG_("logarithm trials")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = mt19937_f() - 1.0;
+			auto x = mt19937_f();
 			w *= logarithm_t<-1>::template method_f<1>(x);
 		}
 		return w;
@@ -190,11 +192,29 @@ TAG_("logarithm trials")
 	{
 		T_alpha w{1};
 		for (T_sigma i = 0x100; ~--i;) {
-			auto x = mt19937_f() - 1.0;
+			auto x = mt19937_f();
 			w *= logarithm_t<-1>::template method_f<0>(x);
 		}
 		return w;
 	
+	};
+	EST_("via tangent< 2;  2>\n   Tanh[#]&\n   (*approx floating-point*)")
+	{
+		T_alpha w{0};
+		for (T_sigma i = 0x100; ~--i;) {
+			auto x = mt19937_f();
+			w *= [] (auto y) XTAL_0FN_(to) (root_f<2>((one + y)/(one - y))) (tangent_t< 2>::template method_f< 2>(x));
+		}
+		return w;
+	};
+	EST_("via tangent< 2;  0>\n   Tanh[#]&\n   (*approx floating-point*)")
+	{
+		T_alpha w{0};
+		for (T_sigma i = 0x100; ~--i;) {
+			auto x = mt19937_f();
+			w *= [] (auto y) XTAL_0FN_(to) (root_f<2>((one + y)/(one - y))) (tangent_t< 2>::template method_f< 0>(x));
+		}
+		return w;
 	};
 };
 

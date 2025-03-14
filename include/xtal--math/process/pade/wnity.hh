@@ -47,10 +47,10 @@ struct wnity<1, 0>
 			static_assert(real_variable_q<decltype(t_im)>);
 
 			auto constexpr exp = [] XTAL_1FN_(call) (taylor::logarithm_t<-1, 1>::template method_f<2>);
-			using _fit = bond::fit<decltype(t_re), decltype(t_im)>;
+			using U_fit = bond::fit<decltype(t_re), decltype(t_im)>;
 
 			return method_f<N_lim>(XTAL_REF_(t_re))*
-				roots_t<1>::method_f(exp(XTAL_REF_(t_im)*_fit::patio_f(-2)));
+				roots_t<1>::method_f(exp(XTAL_REF_(t_im)*U_fit::patio_f(-2)));
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,set)

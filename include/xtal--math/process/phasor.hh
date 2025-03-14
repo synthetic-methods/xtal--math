@@ -1,8 +1,8 @@
 #pragma once
 #include "./any.hh"
 
+#include "../occur/indent.hh"
 #include "../atom/phason.hh"
-
 
 
 
@@ -14,6 +14,36 @@ namespace xtal::process::math
 template <typename ..._s>	struct  phasor;
 template <typename ..._s>	using   phasor_t = confined_t<phasor<_s...>>;
 template <typename ..._s>	concept phasor_q = bond::tag_in_p<phasor, _s...>;
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <class ..._s>
+struct any<phasor<_s...>>
+{
+	using superkind = any<class_template<_s...>>;
+
+	template <class S>
+	class subtype : public bond::compose_s<S, superkind>
+	{
+		using S_ = bond::compose_s<S, superkind>;
+		using T_ = typename S_::self_type;
+	
+	public:
+		using S_::S_;
+
+		using scale_type = occur::inferred_t<union scale, float>;
+
+	};
+};
+template <scalar_q A>
+struct any<phasor<A>> : any<phasor<A[2]>>
+{
+};
+template <>
+struct any<phasor< >> : any<phasor<typename bond::fit<>::alpha_type>>
+{
+};
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -33,7 +63,6 @@ struct phasor<A, As...>
 	using   ordinate_type = typename U_phason::  ordinate_type;
 	using V_phason = atom::math::phason_t<inordinate_type[N]>;
 
-	
 	using semikind = bond::compose<void
 	//\
 	,	refer<U_phason>
@@ -72,19 +101,6 @@ struct phasor<A, As...>
 	//	TODO: Use `occur::resample` to manage downsampling via integer multiplication.
 
 		/*!
-		\brief   Evaluation by (possibly indented) replacement then succession.
-		*/		
-		template <auto ...Is> requires (0 == sizeof...(Is))
-		XTAL_DEF_(return,inline,let)
-		method(fixed_shaped_q auto &&a)
-		noexcept -> decltype(auto)
-		{
-			static_assert(fixed_shaped<decltype(a)>::extent() <= N);
-			(void) S_::template flux<+1>(XTAL_REF_(a));
-			return method();
-		}
-
-		/*!
 		\brief   Evaluation by succession.
 		\todo    Override constructors to apply fractional `bias`.
 		*/		
@@ -103,6 +119,30 @@ struct phasor<A, As...>
 			else {
 				return egress(ingress());
 			}
+		}
+	//	/*!
+	//	\brief   Evaluation by (possibly indented) replacement then succession.
+	//	*/		
+	//	template <auto ...Is> requires (0 == sizeof...(Is))
+	//	XTAL_DEF_(return,inline,let)
+	//	method(fixed_shaped_q auto &&a)
+	//	noexcept -> decltype(auto)
+	//	{
+	//		static_assert(fixed_shaped<decltype(a)>::extent() <= N);
+	//		(void) S_::template flux<+1>(XTAL_REF_(a));
+	//		return method();
+	//	}
+		/*!
+		\returns The current differential after scaling the incoming `phi` by `co`.
+		*/
+		template <int N_root=1>
+		XTAL_DEF_(return,let)
+		method(U_phason phi, coordinate_type co)
+		noexcept -> auto
+		//	requires same_q<U_phason, typename S_::template head_t<ordinal_constant_t<1>>>
+		{
+			auto &u_phi = S_::head();
+			phi *= co; u_phi[1] = phi[1]; return ++u_phi;
 		}
 
 	protected:
@@ -150,32 +190,21 @@ struct phasor<A, As...>
 		XTAL_DEF_(return,let)
 		method(U_phason phi, coordinate_type co)
 		noexcept -> auto
-			requires same_q<U_phason, typename S_::template head_t<ordinal_constant_t<1>>>
+		requires same_q<U_phason, typename S_::template head_t<ordinal_constant_t<1>>>
 		{
 			static_assert(2 == U_phason::size());
-
 			auto &u_phi = S_::template head<1>();
-			auto &u_psi = S_::template head<0>();
+			auto &v_phi = S_::template head<0>();
+		//	Calculates the deviation of `phi[0]` w.r.t. phi[1],
+		//	using the difference in `phi[1]` to determine the threshold for reset.
 
-		//	Calculates the deviation of `phi[0]` w.r.t. phi[1], \
-		//	using the difference in `phi[1]` to determine the threshold for reset. \
+			u_phi[1]  = phi[1]; ++u_phi; auto i_phi = condition_f<ordinate_type>(u_phi[0] != phi[0]);
+			u_phi[0]  = phi[0];     phi *= co;
+			v_phi[1]  = phi[1]; ++v_phi;
+			v_phi[0] &= ~i_phi;
+			v_phi[0] |=  i_phi&u_phi[0];
 
-			auto  u_delta = u_phi; u_delta[1] -= phi[1];
-			//\
-			auto &v_delta = u_delta.template self<inordinate_type>(constant_t<N>{});
-			auto &v_delta = reinterpret_cast<V_phason const &>(u_delta);
-			auto  n_delta = bond::math::bit_ceiling_f(aspect_f<unsigned>(v_delta[1]));
-			auto  i_delta = condition_f<ordinate_type>(v_delta[0] >> n_delta);
-			
-			u_phi = XTAL_MOV_(phi);
-
-			u_phi *= co;
-			u_psi[1]  = u_phi[1];
-			u_psi.operator++();
-			u_psi[0] &=        ~i_delta;
-			u_psi[0] |= u_phi[0]&i_delta;
-
-			return u_psi;
+			return v_phi;
 		}
 
 	};

@@ -37,6 +37,14 @@ private:
 
 	using _fit = bond::fit<A>;
 	
+	XTAL_DEF_(return,inline,set)
+	cut_inf(auto &&o)
+	noexcept -> auto
+	{
+		using _fit = bond::fit<decltype(o)>;
+		return process::math::cut_f<[] XTAL_1FN_(to) (-_fit::maxilon_f(1))>(XTAL_REF_(o));
+	}
+
 	template <class T>
 	using endotype = typename serial<A>::template homotype<T>;
 
@@ -95,8 +103,8 @@ public:
 			using U2_ = series_t<U2[size*2]>;
 			static_assert(sizeof(W1_) == sizeof(U2_));
 			
-			reinterpret_cast<W1_ &>(self()).template generate<size, 0, 2, 0>(u1);
-			reinterpret_cast<U2_ &>(self()).template generate<size, 0, 2, 1>({u2, one/u2});
+			reinterpret_cast<W1_ &>(self()).template generate<0, 0, 2, size>(u1);
+			reinterpret_cast<U2_ &>(self()).template generate<0, 1, 2, size>({u2, one/u2});
 			bond::seek_out_f<+size>([&, this] (auto I) XTAL_0FN {
 				auto &[o, e] = get<I>(s);
 				auto &[f, g] = destruct_f(e);
@@ -108,44 +116,53 @@ public:
 		\brief   Populates `this` with powers of `u` from `N_index` to `N_index + N_count - 1`.
 		\returns `this`.
 		*/
-		template <int N_count=size, int N_index=0, int N_step=1, int N_skip=0>
+		//\
+		template <int N_count=size, int N_index=0, int N_step=1, int N_inset=0>
+		template <int N_index=0, int N_inset=0, int N_step=1, int N_size=size>
 		XTAL_DEF_(inline,let)
 		generate(value_type const &u)
 		noexcept -> T &
 		{
-			auto &s = self();
-
 			using A_delta = typename S_::difference_type;
 
 		//	Compute the start- and end-points for the required segment:
-			A_delta constexpr N_limit = N_index + N_count;
+			A_delta constexpr N_limit = N_index + N_size;
 			A_delta constexpr _0 =  0*N_step;
 			A_delta constexpr _1 =  1*N_step;
 			A_delta constexpr _2 =  2*N_step;
-			A_delta constexpr I0 = _1*N_index + N_skip, J0 = _2*N_index + N_skip;
-			A_delta constexpr IZ = _1*N_limit + N_skip, JZ = _2*N_limit + N_skip;
+			A_delta constexpr I0 = _1*N_index + N_inset, J0 = _2*N_index + N_inset;
+			A_delta constexpr IZ = _1*N_limit + N_inset, JZ = _2*N_limit + N_inset;
 
-		//	Populate the 0th and 1st powers:
-			auto const o = process::math::power_f<N_index>(u);
-			get<I0 + _0>(s) = o;
-			get<I0 + _1>(s) = o*u;
-
-		//	Populate the remaining powers by squaring/multiplication:
-			bond::seek_out_f<(N_count >> 1U)>([&] (auto M)
-				XTAL_0FN {
-					auto constexpr UM = I0 + _1*M;
-					auto constexpr WM = J0 + _2*M;
-					
-					auto const w = process::math::power_f<2>(get<UM>(s));
-					get<WM + _0>(s) =   w;
-					get<WM + _1>(s) = u*w;
+			auto &s = self();
+			if constexpr (N_index == -1 and N_inset == 0 and N_step == 1 and N_size == size) {
+				generate<1, -1, 1, size - 1>(u);
+				if constexpr (un_n<N_size&1>) {
+					get<N_limit>(s) = process::math::power_f<2>(get<N_limit/2>(s));
 				}
-			);
-		//	Compute the final value if `N_count` is odd:
-			if constexpr ((N_count&1U) and (N_count^1U)) {
-				get<IZ - _1>(s) = get<IZ - _2>(s)*(u);
 			}
-			return self();
+			else {
+			//	Populate the 0th and 1st powers:
+				auto const o = process::math::power_f<N_index>(u);
+				get<I0 + _0>(s) = o;
+				get<I0 + _1>(s) = o*u;
+
+			//	Populate the remaining powers by squaring/multiplication:
+				bond::seek_out_f<(N_size >> 1U)>([&] (auto M)
+					XTAL_0FN {
+						auto constexpr UM = I0 + _1*M;
+						auto constexpr WM = J0 + _2*M;
+						
+						auto const w = process::math::power_f<2>(get<UM>(s));
+						get<WM + _0>(s) =   w;
+						get<WM + _1>(s) = u*w;
+					}
+				);
+			//	Compute the final value if `N_size` is odd:
+				if constexpr (in_n<N_size&1> and in_n<N_size^1>) {
+					get<IZ - _1>(s) = get<IZ - _2>(s)*(u);
+				}
+			}
+			return s;
 		}
 		/*!
 		\brief   Generates the complex sinusoid with length `2*PI*std::pow(2, N_shift)`.
@@ -172,7 +189,7 @@ public:
 		//	Compute the initial `1/8`th then mirror the remaining segments:
 			typename S_::difference_type constexpr M = size >> 2U;// `1/8`th
 			static_assert(-4 <  N_shift);
-			generate<M + (-3 <  N_shift)>(y);
+			generate<0, 0, 1, M + (-3 <  N_shift)>(y);
 			if constexpr (-2 <= N_shift) _detail::copy_to<[] (value_type const &v) XTAL_0FN_(to) (value_type{-v.imag(), -v.real()})>(prev(j, 2*M), span(i, next(i, 1*M)));
 			if constexpr (-1 <= N_shift) _detail::copy_to<[] (value_type const &v) XTAL_0FN_(to) (value_type{ v.imag(), -v.real()})>(next(i, 2*M), span(i, next(i, 2*M)));
 			if constexpr (-0 <= N_shift) _detail::copy_to<[] (value_type const &v) XTAL_0FN_(to) (value_type{-v.real(), -v.imag()})>(next(i, 4*M), span(i, next(i, 4*M)));

@@ -192,7 +192,7 @@ struct filter
 			XTAL_0IF (0 == N_pat) {
 				return method<N_ord, N_pat, Ns...>(XTAL_REF_(x), s_gain
 				,	[=] () XTAL_0FN -> atom::couple_t<U[N_ord + 1]> {
-						auto const  &u = cut_f<[] XTAL_1FN_(to) (bond::fit<X>::minilon_f(0))>(s_damp);
+						auto const  &u = cut_f<[] XTAL_1FN_(to) (bond::fit<X>::minilon_f(1))>(s_damp);
 						auto const u02 =             two*u , u04 = u02*two;
 						auto const u12 = term_f(one, two,u), w24 = u02*u12;
 						XTAL_IF0
@@ -256,9 +256,8 @@ struct filter
 		/*!
 		\brief   Produces the `gain` and `damp` parameters from
 		         the supplied `phason` and `quason_addition_q` triple `{beta, zeta, omega}`.
+		\todo    Use the `phason` to reset the filter on discontinuity?
 		*/		
-		 \
-
 		template <auto ...Ns>
 		XTAL_DEF_(return,let)
 		method(auto &&x
@@ -288,7 +287,7 @@ struct filter
 		noexcept -> auto
 		{
 			auto t_ = destruct_f<-1>(o);
-			return method(XTAL_REF_(x), XTAL_MOV_(t_), XTAL_REF_(o).self(constant_t<-1>{}));
+			return method(XTAL_REF_(x), XTAL_MOV_(t_), XTAL_REF_(o).self(constant_t<-1>{}), XTAL_REF_(oo)...);
 		}
 
 	};

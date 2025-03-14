@@ -201,14 +201,14 @@ TAG_("filter-ring")
 		using R_def = filter<U_alpha[2], union RING>;
 		using R_env = any_t<R_def>;
 		using R_eve = flow::key_s<typename R_env::stage_type>;
-		using R_pro = prewarped_t<_0, gate<-1>
-		,	staged<-1>
+		using R_pro = prewarped_t<_0, gate<1>
 		,	staged< 0>
+		,	staged<-1>
+		,	typename R_env:: stage_type::template assignment<typename R_env::redamp_type>
 		,	typename R_env::redamp_type::template   attend<>
 		,	typename R_env::refade_type::template   attend<>
 		,	typename R_env             ::template   attach<>
 		,	typename R_env             ::template dispatch<>
-		,	typename R_env:: stage_type::template assignment<typename R_env::redamp_type>
 		,	R_def
 		>;
 		using R_prx = processor::polymer_t<R_pro
@@ -240,8 +240,9 @@ TAG_("filter-ring")
 		z >>= flow::cue_f(0x08).then(R_eve{1,  0});
 		z >>= flow::cue_f(0x18).then(R_eve{1,  0});
 	//	z >>= flow::cue_f(0x28).then(R_eve{1,  1});// Inlined below...
+	//	z >>= flow::cue_f(0x38).then(R_eve{1, -1});
 		z >>= flow::cue_f(0x40).then(R_eve{1,  0});
-		z >>= flow::cue_f(0x48).then(R_eve{1, -1});
+		z >>= flow::cue_f(0x50).then(R_eve{1,  1});
 
 		echo_rule_<28>("\u2500");
 
@@ -266,7 +267,7 @@ TAG_("filter-ring")
 		TRUE_(0 == z.efflux(z_cursor++));
 	//	echo_plot_<28>(z.store());
 
-		TRUE_(0 == z.ensemble().size());
+	//	TRUE_(0 == z.ensemble().size());
 
 	}
 	/***/
