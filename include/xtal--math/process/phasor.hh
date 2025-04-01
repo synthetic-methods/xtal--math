@@ -97,6 +97,26 @@ struct phasor<A, As...>
 			return S_::template bias<coordinate_type>();
 		}
 
+	public:// FLOW
+
+		template <signed N_ion>
+		XTAL_DEF_(return,inline,let)
+		fuse(auto &&o)
+		noexcept -> signed
+		{
+			return S_::template fuse<N_ion>(XTAL_REF_(o));
+		}
+		template <signed N_ion> requires in_n<N_ion, -1>
+		XTAL_DEF_(return,inline,let)
+		fuse(occur::stage_q auto &&o)
+		noexcept -> signed
+		{
+			if (o.head() == 0) {
+				get<0>(head()) = zero;
+			}
+			return S_::template fuse<N_ion>(XTAL_REF_(o));
+		}
+
 	public:// OPERATE
 	//	TODO: Use `occur::resample` to manage downsampling via integer multiplication.
 
@@ -132,6 +152,21 @@ struct phasor<A, As...>
 	//		(void) S_::template flux<+1>(XTAL_REF_(a));
 	//		return method();
 	//	}
+		/*!
+		\returns The current differential after setting the frequency component to `omega`.
+		*/
+		template <int N_root=1>
+		XTAL_DEF_(return,let)
+		method(coordinate_type omega)
+		noexcept -> auto
+		{
+			using resample_type = occur::resample_t<>;
+			if constexpr (S_::template head_q<resample_type>) {
+				omega *= S_::template head<resample_type>().period();
+			}
+			auto &u_phi = S_::head();
+			u_phi[1] = U_phason::ordinate(omega); return ++u_phi;
+		}
 		/*!
 		\returns The current differential after scaling the incoming `phi` by `co`.
 		*/

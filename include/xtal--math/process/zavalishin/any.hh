@@ -51,10 +51,10 @@ struct any<class_template<A, _s...>>
 		using      regain_type = occur::inferred_t<_s..., union  REGAIN, scale_type>;
 		using      redamp_type = occur::inferred_t<_s..., union  REDAMP, scale_type>;
 		using      refade_type = occur::inferred_t<_s..., union  REFADE, scale_type>;
+		using      rezoom_type = occur::inferred_t<_s..., union  REZOOM, scale_type>;
 
 	public:// ATTACH
 		using     reshape_type = occur::inferred_t<_s..., union RESHAPE, shape_type>;
-		using      rezoom_type = occur::inferred_t<_s..., union  REZOOM, scale_type>;
 
 	public:// DISPATCH
 		using       order_type = occur::inferred_t<_s..., union   ORDER, bond::seek_s<1 + N_pole>>;

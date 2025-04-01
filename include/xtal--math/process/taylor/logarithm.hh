@@ -120,9 +120,7 @@ struct logarithm<-1, 0>
 				return term_f(one, XTAL_MOV_(u), XTAL_REF_(o));
 			}
 			else {
-				auto constexpr N = below_v<0x10, (unsigned) N_lim> << 2;
-				return square_f<N>(method_f<0>(XTAL_REF_(o)*U_fit::haplo_f(N)));
-			//	return monologarithm_t<-1>::template method_f<N_lim>(XTAL_REF_(o)) + one;
+				return method_f<0>(superprocess::template method_f<N_lim>(XTAL_REF_(o)));
 			}
 			/***/
 		}
@@ -149,7 +147,7 @@ struct logarithm< 1, 1>
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
 		method_f(auto &&o)
-		noexcept -> decltype(auto)
+		noexcept -> XTAL_ALL_(o)
 		{
 			XTAL_IF0
 			XTAL_0IF (0 <= N_lim) {return approximate<N_lim>(XTAL_REF_(o));}
@@ -229,7 +227,7 @@ struct logarithm<-1, 1>
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
 		method_f(auto &&o)
-		noexcept -> decltype(auto)
+		noexcept -> XTAL_ALL_(o)
 		{
 			XTAL_IF0
 			XTAL_0IF (0 <= N_lim) {return approximate<N_lim>(XTAL_REF_(o));}
@@ -241,22 +239,56 @@ struct logarithm<-1, 1>
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
 		approximate(real_variable_q auto o)
-		noexcept -> decltype(auto)
+		noexcept -> XTAL_ALL_(o)
 		{
-			using _fit = bond::fit<decltype(o)>;
-			using U_alpha = typename _fit::alpha_type;
+			using U_fit = bond::fit<decltype(o)>;
+			using U_alpha = typename U_fit::alpha_type;
+			using U_sigma = typename U_fit::sigma_type;
+			using U_delta = typename U_fit::delta_type;
 
-			U_alpha constexpr N_log2 = _std::numbers::ln2_v<U_alpha>;
-			o *= one/N_log2; auto const n = round(o); o -= n;
-			o *=     N_log2;
-			return ldexp(logarithm_t<-1>::template method_f<N_lim>(XTAL_MOV_(o)), XTAL_MOV_(n));
+			U_alpha constexpr  N_log2 = one*_std::numbers::ln2_v<U_alpha>;
+			U_alpha constexpr _N_log2 = one/_std::numbers::ln2_v<U_alpha>;
+			U_alpha n;
+			U_delta N;
+			o *= _N_log2;
+			XTAL_IF1_(consteval) {
+				N = static_cast<U_delta>(o + U_fit::dnsilon_f(1)*half*aspect_f<signed>(o));
+				n = static_cast<U_alpha>(N);
+			}
+			XTAL_0IF_(else) {
+				n = round(o);
+				N = static_cast<U_delta>(n);
+			}
+			o -= n;
+			o *= N_log2;
+			o  = logarithm_t<-1>::template method_f<N_lim>(XTAL_MOV_(o));
+			XTAL_IF1_(consteval) {
+				auto m = _xtd::bit_cast<U_sigma>(o);
+				N <<= U_fit::exponent.shift;
+				m += N;
+				return _xtd::bit_cast<U_alpha>(m);
+			}
+			XTAL_0IF_(else) {
+				return ldexp(XTAL_MOV_(o), XTAL_MOV_(N));
+			}
 		}
 
 	};
 };
 
 
-////////////////////////////////////////////////////////////////////////////////
+namespace _detail
+{///////////////////////////////////////////////////////////////////////////////
+
+template <int M_div=1>
+XTAL_DEF_(let)
+base_f = [] (auto &&o)
+	//\
+	XTAL_0FN_(to) (root_f<aspect_f<signed>(M_div)>(logarithm_t<1, 1>::template method_f<~0>(XTAL_REF_(o))/bond::fit<decltype(o)>::alpha_f(aspect_f<unsigned>(M_div))));
+	XTAL_0FN_(to) (logarithm_t<1, 1>::template method_f<~0>(XTAL_REF_(o))/bond::fit<decltype(o)>::alpha_f(M_div));
+
+
+}///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////
