@@ -91,8 +91,9 @@ struct filter
 	using metakind = any  <filter>;
 	using metatype = any_t<filter>;
 
-	using state_type = typename metatype::state_type;
-	using slope_type = typename metatype::slope_type;
+	using  state_type = typename metatype:: state_type;
+	using  slope_type = typename metatype:: slope_type;
+	using rezoom_type = typename metatype::rezoom_type;
 
 	using superkind = bond::compose<bond::tag<filter>
 	,	metakind
@@ -104,16 +105,35 @@ struct filter
 		using S_ = bond::compose_s<S, superkind>;
 		using T_ = typename S_::self_type;
 
+		template <int N_ism=0, int N_car=0, int N_lim=0, auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		saturate_f(auto &&x, auto &&...oo)
+		noexcept -> auto
+		{
+			XTAL_IF0
+			XTAL_0IF (provision::saturated_q<S_>) {
+				return S_::template saturate_t<N_ism, N_car>::
+					template method_f<N_lim, Ns...>(XTAL_REF_(x), XTAL_REF_(oo)...);
+			}
+			XTAL_0IF (N_car == -0) {
+				return XTAL_REF_(x);
+			}
+			XTAL_0IF (N_car == -1) {
+				return XTAL_ALL_(x) {one};
+			}
+		}
+
 	public:// CONSTRUCT
 		using S_::S_;
 
 	public:// OPERATE
 
-		template <int N_ord=0, int N_pat=0, int N_lim=0, auto ...Ns> requires (1 <= N_ord and N_pat == 0)
+		template <int N_ord=0, int N_lim=0, auto ...Ns> requires (1 <= N_ord)
 		XTAL_DEF_(inline,let)
 		method(auto const &x
 		,	unstruct_u<decltype(x)> s_gain
 		,	atom::couple_q<unit_type[N_ord + 1]> auto &&scalars
+		,	auto &&...oo
 		)
 		noexcept -> auto
 		{
@@ -121,6 +141,11 @@ struct filter
 			using U = unstruct_u<X>;
 			using X_state_ = atom::couple_t<X[N_ord]>;
 			using X_slope_ = atom::couple_t<X[N_ord]>;
+
+			//\
+			U const zoom_dn = S_::template head<rezoom_type>();
+			U const zoom_dn = one;
+			U const zoom_up = root_f<-1>(zoom_dn);
 
 			atom::math::dot_t<X[N_ord + 1]> outputs{};
 
@@ -137,31 +162,30 @@ struct filter
 			slopes_ *= scalars_;
 
 		//	Initialize `outputs*`:
-			get<0 >(outputs) = get<0>(slopes_);
+			get<0>(outputs) = get<0>(slopes_);
 			bond::seek_out_f<N_ord - 1>([&] (auto I) XTAL_0FN {
 				get<I + 1>(outputs_) = term_f(get<I + 1>(slopes_), get<I>(outputs_), s_gain);
 			});
 			get<N_ord>(outputs) = root_f<-1, (1)>(term_f(one, get<N_ord - 1>(outputs_), s_gain));
 
-			auto constexpr K_lim = provision::saturated_q<S_> and (0 < N_lim);
+			auto constexpr V_lim = term_f(one, provision::saturated_q<S_>, 0 < N_lim);
 
 		//	Integrate `states*` with `scalars*` and `outputs*`:
-			bond::seek_out_f<1 + 1*K_lim>([&] (auto K) XTAL_0FN {
+			bond::seek_out_f<V_lim>([&] (auto K) XTAL_0FN {
 				XTAL_IF0
-				XTAL_0IF (0 == K) {get<N_ord>(outputs) *= x - dot_f(outputs_, states_);}
-				XTAL_0IF (1 <= K) {get<N_ord>(outputs)  = x - dot_f(outputs_, slopes_);}
+				XTAL_0IF (0 == K) {get<N_ord>(outputs) *= saturate_f<-1, -0, N_lim, Ns...>((x - dot_f(outputs_, states_)), oo...);}
+				XTAL_0IF (1 <= K) {get<N_ord>(outputs)  = saturate_f<-1, -0, N_lim, Ns...>((x - dot_f(outputs_, slopes_)), oo...);}
 
 				bond::seek_out_f<-N_ord>([&] (auto I) XTAL_0FN {
 					XTAL_IF0
-					XTAL_0IF (0 == K_lim) {
+					XTAL_0IF (1 == V_lim) {
 						get<I>(outputs_) = term_f(get<I>(states_), get<I + 1>(outputs), s_gain);
 					}
-					XTAL_0IF (1 == K_lim) {
-						auto const exput = term_f(get<I>(states_), get<I + 1>(outputs), s_gain);
-						auto const slope = S_::template saturate_t<-1, -1>::
-							template method_f<N_lim, Ns...>(exput) + (get<I>(scalars_) - one);
-						get<I>(outputs_) = exput;
-						get<I>( slopes_) = slope;
+					XTAL_0IF (2 <= V_lim) {
+						auto const output = term_f(get<I>(states_), get<I + 1>(outputs), s_gain);
+						auto const  slope = saturate_f<-1, -1, N_lim, Ns...>(get<I>(scalars_)*output, oo...) + (get<I>(scalars_) - one);
+						get<I>(outputs_) = output;
+						get<I>( slopes_) =  slope;
 					}
 				});
 			});
@@ -175,11 +199,37 @@ struct filter
 
 			return outputs.twin(constant_t<2>{});
 		}
-		template <int N_ord=0, int N_pat=0, auto ...Ns>
+		template <int N_ord=0, int N_lim=0, auto ...Ns> requires (0 == N_ord)
+		XTAL_DEF_(inline,let)
+		method(auto const &x
+		,	unstruct_u<decltype(x)> s_gain
+		,	atom::couple_q<unit_type[N_ord + 1]> auto &&scalars
+		,	auto &&...oo
+		)
+		noexcept -> auto
+		{
+			using X =  XTAL_ALL_(x);
+			using U = unstruct_u<X>;
+			return atom::math::dot_t<X[2]>{XTAL_REF_(x)};
+		}
+		template <int N_ord=0, auto ...Ns>
+		XTAL_DEF_(inline,let)
+		method(auto const &x
+		,	unstruct_u<decltype(x)> s_gain
+		,	atom::couple_q<unit_type[N_ord + 1]> auto &&scalars
+		)
+		noexcept -> auto
+		{
+			using X =  XTAL_ALL_(x);
+			using U = unstruct_u<X>;
+			return method<N_ord, Ns...>(x, s_gain, XTAL_REF_(scalars), U{one});
+		}
+		template <int N_ord=0, auto ...Ns>
 		XTAL_DEF_(inline,let)
 		method(auto &&x
 		,	unstruct_u<decltype(x)> s_gain
 		,	unstruct_u<decltype(x)> s_damp
+		,	auto &&...oo
 		)
 		noexcept -> auto
 		{
@@ -189,8 +239,8 @@ struct filter
 			XTAL_0IF (0 == N_ord) {
 				return atom::math::dot_t<X[2]>{XTAL_REF_(x)};
 			}
-			XTAL_0IF (0 == N_pat) {
-				return method<N_ord, N_pat, Ns...>(XTAL_REF_(x), s_gain
+			XTAL_0IF (1 <= N_ord) {
+				return method<N_ord, Ns...>(XTAL_REF_(x), s_gain
 				,	[=] () XTAL_0FN -> atom::couple_t<U[N_ord + 1]> {
 						auto const  &u = cut_f<[] XTAL_1FN_(to) (bond::fit<X>::minilon_f(1))>(s_damp);
 						auto const u02 =             two*u , u04 = u02*two;
@@ -201,28 +251,27 @@ struct filter
 						XTAL_0IF (3 == N_ord) {return {one, u12, u12, one};}
 						XTAL_0IF (4 == N_ord) {return {one, u04, w24, u04, one};}
 					}()
+				,	XTAL_REF_(oo)...
 				);
 			}
-			XTAL_0IF (1 == N_pat) {
-				return atom::math::dot_t<X[2]>{XTAL_REF_(x)};
-			}
 		}
-		template <int N_ord=0, int N_pat=0, auto ...Ns>
+		template <int N_ord=0, auto ...Ns>
 		XTAL_DEF_(inline,let)
 		method(auto &&x
 		,	unstruct_u<decltype(x)> s_gain
 		,	unstruct_u<decltype(x)> s_damp
 		,	unstruct_u<decltype(x)> y_fade
+		,	auto &&...oo
 		)
 		noexcept -> auto
 		{
 			using X =  XTAL_ALL_(x);
 			using U = unstruct_u<X>;
 			/**/
-			return method<N_ord, N_pat, Ns...>(XTAL_REF_(x), s_gain, s_damp)*
+			return method<N_ord, Ns...>(XTAL_REF_(x), s_gain, s_damp, XTAL_REF_(oo)...)*
 				atom::math::dot_t<U[2]>{term_f<-1, 2>(one, y_fade), y_fade};
 			/*/
-			return dot_f(method<N_ord, N_pat, Ns...>(XTAL_REF_(x), s_gain, s_damp)
+			return dot_f(method<N_ord, Ns...>(XTAL_REF_(x), s_gain, s_damp)
 			,	W2{term_f<-1, 2>(one, y_fade), y_fade}
 			);//TODO: Replace with `fade`.
 			/***/
@@ -255,14 +304,14 @@ struct filter
 		}
 		/*!
 		\brief   Produces the `gain` and `damp` parameters from
-		         the supplied `phason` and `quason_addition_q` triple `{beta, zeta, omega}`.
+		         the supplied `phason` and `quason_q` triple `{beta, zeta, omega}`.
 		\todo    Use the `phason` to reset the filter on discontinuity?
 		*/		
 		template <auto ...Ns>
 		XTAL_DEF_(return,let)
 		method(auto &&x
 		,	atom::math::simplex_phason_q auto const &t_
-		,	atom::math::quason_addition_q<null_type[3]> auto const &o
+		,	atom::math::quason_q<null_type[3]> auto const &o
 		,	auto &&...oo
 		)
 		noexcept -> auto
@@ -276,12 +325,12 @@ struct filter
 		}
 		/*!
 		\brief   Produces the `gain` and `damp` parameters from
-		         the supplied `quason_addition_q` triple `{beta, zeta, omega, phi}`.
+		         the supplied `quason_q` triple `{beta, zeta, omega, phi}`.
 		*/
 		template <auto ...Ns>
 		XTAL_DEF_(return,let)
 		method(auto &&x
-		,	atom::math::quason_addition_q<null_type[4]> auto const &o
+		,	atom::math::quason_q<null_type[4]> auto const &o
 		,	auto &&...oo
 		)
 		noexcept -> auto

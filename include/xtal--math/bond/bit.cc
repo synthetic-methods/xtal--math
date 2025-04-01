@@ -199,9 +199,23 @@ TAG_("bit_floor_f")
 		TRUE_(bit_floor_f  (T_aphex{3.0, 3.0}) ==  2);
 		TRUE_(bit_floor_f  (T_aphex{0.3, 0.3}) == -2);
 	
+		TRUE_(bit_ceiling_f<0>(T_aphex{0.0, 0.0}) ==  0);
+		TRUE_(bit_ceiling_f<0>(T_aphex{0.0, 0.5}) ==  0);
+		TRUE_(bit_ceiling_f<0>(T_aphex{0.0, 1.0}) ==  0);
+		TRUE_(bit_ceiling_f<0>(T_aphex{0.0, 1.5}) ==  1);
+		TRUE_(bit_ceiling_f<0>(T_aphex{0.0, 2.0}) ==  1);
+		TRUE_(bit_ceiling_f<0>(T_aphex{0.0, 2.5}) ==  2);
+		TRUE_(bit_ceiling_f<0>(T_aphex{0.0, 3.0}) ==  2);
+		TRUE_(bit_ceiling_f<0>(T_aphex{0.0, 3.5}) ==  2);
+		TRUE_(bit_ceiling_f<0>(T_aphex{0.0, 4.0}) ==  2);
+
 		TRUE_(bit_ceiling_f(T_aphex{3.0, 3.0}) ==  3);
 	//	echo_(bit_ceiling_f(T_aphex{0.3, 0.3}), -1);//FIX:	Improper rounding?
 
+		TRUE_(check_f<-1>(bit_exponent_f(T_alpha{0.5}), bit_exponent_f(T_aphex{0, 0.5})));
+		TRUE_(check_f<-1>(bit_exponent_f(T_alpha{1.5}), bit_exponent_f(T_aphex{0, 1.5})));
+		TRUE_(check_f<-1>(bit_exponent_f(T_alpha{2.5}), bit_exponent_f(T_aphex{0, 2.5})));
+		TRUE_(check_f<-1>(bit_exponent_f(T_alpha{3.5}), bit_exponent_f(T_aphex{0, 3.5})));
 
 	};
 }

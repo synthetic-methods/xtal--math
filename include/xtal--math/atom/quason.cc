@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.cc"
 
-
+#include "./phason.hh"
 
 
 
@@ -21,43 +21,52 @@ TAG_("atom", "quason")
 	using T_alpha = typename _fit::alpha_type;
 	using T_aphex = typename _fit::aphex_type;
 
-	using A1 = quason_addition_t<int[1]>;
-	using A2 = quason_addition_t<int[2]>;
-	using A3 = quason_addition_t<int[3]>;
-	using A4 = quason_addition_t<int[4]>;
-	
-	using M1 = quason_multiplication_t<int[1]>;
-	using M2 = quason_multiplication_t<int[2]>;
-	using M3 = quason_multiplication_t<int[3]>;
-	using M4 = quason_multiplication_t<int[4]>;
+	using T_phi = phason_t<T_alpha[2]>;
+
+	using B1  = block_t<T_alpha[1]>;
+	using B2  = block_t<T_alpha[2]>;
+	using B3  = block_t<T_alpha[3]>;
+	using B4  = block_t<T_alpha[4]>;
+
+	using Q1  = quason_t<T_alpha[1]>;
+	using Q2  = quason_t<T_alpha[2]>;
+	using Q3  = quason_t<T_alpha[3]>;
+	using Q4  = quason_t<T_alpha[4]>;
+	using Q4_ = quason_t<T_phi, T_alpha, T_alpha, T_alpha>;
 	
 	TRY_("partial construction")
 	{
-		A4 d4{1000};
+		Q4  q4 {1000};
+		TRUE_(q4 == Q4{1000, 0, 0, 0});
 
-		TRUE_(d4 == A4{1000, 0, 0, 0});
+		Q4_ q4_{{0, _fit::dnsilon_f(45)}, 1, 2, 3};
+		//\
+		B4  b4 = q4_;
+		B4  b4(q4_);
+	//	echo_(b4[0], b4[1], b4[2], b4[3]);//NOTE: Unordered!
+
 
 	}
 	TRY_("quason addition")
 	{
-		A2 d2_0{2, 2};
-		A2 d2_1{5, 7};
+		Q2 d2_0{2, 2};
+		Q2 d2_1{5, 7};
 
-		TRUE_(d2_0+d2_1 == A2{ 7,  9});
+		TRUE_(d2_0+d2_1 == Q2{ 7,  9});
 		d2_0 += d2_1;
-		TRUE_(d2_0      == A2{ 7,  9});
+		TRUE_(d2_0      == Q2{ 7,  9});
 
 	}
 	TRY_("quason multiplication")
 	{
-		M2 d2_0{2, 2};
-		M2 d2_1{5, 7};
+		Q2 d2_0{2, 2};
+		Q2 d2_1{5, 7};
 
-		TRUE_(d2_0*d2_1 == M2{10, 14});
+		TRUE_(d2_0*d2_1 == Q2{10, 14});
 		d2_0 *= d2_1;
-		TRUE_(d2_0      == M2{10, 14});
+		TRUE_(d2_0      == Q2{10, 14});
 
-		using W =  quason_multiplication_t<T_aphex, T_alpha>;
+		using W =  quason_t<T_aphex, T_alpha>;
 		auto  x =  W{2, 3};
 		auto  y =  W{4, 9};
 		auto  z =  y*T_alpha{3};

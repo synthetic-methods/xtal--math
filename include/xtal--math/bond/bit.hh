@@ -295,6 +295,30 @@ noexcept -> auto
 ///////////////////////////////////////////////////////////////////////////////
 
 XTAL_DEF_(return,let)
+bit_exponent_f(real_variable_q auto const x)
+noexcept -> auto
+{
+	using X_fit = bond::fit<decltype(x)>;
+	using X_sigma = typename X_fit::sigma_type;
+	using X_delta = typename X_fit::delta_type;
+
+	X_delta constexpr X_u = X_fit::    unit. mask;
+	X_delta constexpr X_m = X_fit::exponent. mask;
+	X_delta constexpr X_n = X_fit::exponent.shift;
+
+	return static_cast<int>(((_xtd::bit_cast<X_delta>(x)&X_m) - X_u) >> X_n);
+}
+XTAL_DEF_(return,let)
+bit_exponent_f(complex_variable_q auto &&x)
+noexcept -> auto
+{
+	return bit_exponent_f(norm(XTAL_REF_(x))) >> one;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+XTAL_DEF_(return,let)
 bit_representation_f(real_variable_q auto x)
 noexcept -> auto
 {

@@ -5,3 +5,4 @@
 
 #include "./dirichlet/all.hh"
 #include "./fourier/all.hh"
+#include "./pade/all.hh"

@@ -24,6 +24,34 @@ struct filter_parameters
 };
 
 
+template <int M_ism=0, int M_car=0>
+struct identishape;
+
+template <int M_ism>
+struct identishape<M_ism, -0> : bond::compose<discarded<1>, identishape<M_ism, -1>>
+{
+};
+template <int M_ism>
+struct identishape<M_ism, -1>
+{
+	template <class S>
+	class subtype : public S
+	{
+	public:
+		using S::S;
+
+		template <auto ...>
+		XTAL_DEF_(return,inline,set)
+		method_f(auto &&x, auto &&...oo)
+		noexcept -> auto
+		{
+			return XTAL_ALL_(x) {one};
+		}
+
+	};
+};
+
+
 ////////////////////////////////////////////////////////////////////////////////
 TAG_("filter")
 {
@@ -39,14 +67,14 @@ TAG_("filter")
 	{
 		using R_def = filter<>;
 		using R_env = any_t<R_def>;
-		//\
-		using R_pro = confined_t<staged<0>, filter<>>;
 		using R_pro = prewarped_t<_1
 		,	staged< 0>
 		,	typename R_env::refade_type::template   attend<>
+	//	,	typename R_env::rezoom_type::template   attend<>
 		,	typename R_env::             template   attach<>
 		,	typename R_env::             template dispatch<>
 		,	R_def
+		,	provision::saturated<identishape>
 		>;
 		//\
 		using R_prx = processor::monomer_t<prewarped<_1>, R_pro>;

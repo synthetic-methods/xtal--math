@@ -64,7 +64,7 @@ TAG_("logarithm trials")
 	EST_("logarithm_t<+1,  1; -1>\n   Log@#&\n   (*complex, native*)")
 	{
 		T_aphex w{};
-		for (T_sigma i = 0x100; ~--i;) {
+		for (T_sigma i = 100; ~--i;) {
 			auto x = mt19937_f() + 1.0;
 			auto y = mt19937_f() + 1.0;
 			w += log(T_aphex{x, y});
@@ -75,7 +75,7 @@ TAG_("logarithm trials")
 	EST_("logarithm_t<+1,  1;  2>\n   Log@#&\n   (*complex, approx*)")
 	{
 		T_aphex w{};
-		for (T_sigma i = 0x100; ~--i;) {
+		for (T_sigma i = 100; ~--i;) {
 			auto x = mt19937_f() + 1.0;
 			auto y = mt19937_f() + 1.0;
 			w += logarithm_t< 1, 1>::template method_f< 2>(T_aphex{x, y});
@@ -85,7 +85,7 @@ TAG_("logarithm trials")
 	EST_("logarithm_t<+1,  0;  2>\n   Log@#&\n   (*complex, approx*)")
 	{
 		T_aphex w{};
-		for (T_sigma i = 0x100; ~--i;) {
+		for (T_sigma i = 100; ~--i;) {
 			auto x = mt19937_f() + 1.0;
 			auto y = mt19937_f() + 1.0;
 			w += logarithm_t< 1, 0>::template method_f< 2>(T_aphex{x, y});
@@ -96,7 +96,7 @@ TAG_("logarithm trials")
 	EST_("real std::log")
 	{
 		T_alpha w{};
-		for (T_sigma i = 0x100; ~--i;) {
+		for (T_sigma i = 100; ~--i;) {
 			auto x = mt19937_f() + 1.0;
 			w += log(x);
 		}
@@ -105,7 +105,7 @@ TAG_("logarithm trials")
 	EST_("real logarithm... <N_lim=2, M_car=1>")
 	{
 		T_alpha w{};
-		for (T_sigma i = 0x100; ~--i;) {
+		for (T_sigma i = 100; ~--i;) {
 			auto x = mt19937_f() + 1.0;
 			w += logarithm_t< 1, 1>::template method_f<2>(x);
 		}
@@ -114,7 +114,7 @@ TAG_("logarithm trials")
 	EST_("real logarithm... <N_lim=2>")
 	{
 		T_alpha w{};
-		for (T_sigma i = 0x100; ~--i;) {
+		for (T_sigma i = 100; ~--i;) {
 			auto x = mt19937_f() + 1.0;
 			w += logarithm_t< 1>::template method_f<2>(x);
 		}
@@ -123,7 +123,7 @@ TAG_("logarithm trials")
 	EST_("real logarithm... <N_lim=1>")
 	{
 		T_alpha w{};
-		for (T_sigma i = 0x100; ~--i;) {
+		for (T_sigma i = 100; ~--i;) {
 			auto x = mt19937_f() + 1.0;
 			w += logarithm_t< 1>::template method_f<1>(x);
 		}
@@ -132,7 +132,7 @@ TAG_("logarithm trials")
 	EST_("real logarithm... <N_lim=0>")
 	{
 		T_alpha w{};
-		for (T_sigma i = 0x100; ~--i;) {
+		for (T_sigma i = 100; ~--i;) {
 			auto x = mt19937_f() + 1.0;
 			w += logarithm_t< 1>::template method_f<0>(x);
 		}
@@ -141,7 +141,7 @@ TAG_("logarithm trials")
 	EST_("real std::exp")
 	{
 		T_alpha o{1};
-		for (T_sigma i = 0x100; ~--i;) {
+		for (T_sigma i = 100; ~--i;) {
 			o *= exp(mt19937_f());
 		}
 		return o;
@@ -150,7 +150,7 @@ TAG_("logarithm trials")
 	EST_("real antilogarithm... <N_lim=~0>")
 	{
 		T_alpha w{1};
-		for (T_sigma i = 0x100; ~--i;) {
+		for (T_sigma i = 100; ~--i;) {
 			//\
 			w *= logarithm_t<-1>::template method_f<~0>(mt19937_f());
 			w *= exp(mt19937_f());
@@ -161,7 +161,7 @@ TAG_("logarithm trials")
 	EST_("real antilogarithm... <N_lim=2, M_car=1>")
 	{
 		T_alpha w{1};
-		for (T_sigma i = 0x100; ~--i;) {
+		for (T_sigma i = 100; ~--i;) {
 			auto x = mt19937_f();
 			w *= logarithm_t<-1, 1>::template method_f<2>(x);
 		}
@@ -171,7 +171,7 @@ TAG_("logarithm trials")
 	EST_("real antilogarithm... <N_lim=2>")
 	{
 		T_alpha w{1};
-		for (T_sigma i = 0x100; ~--i;) {
+		for (T_sigma i = 100; ~--i;) {
 			auto x = mt19937_f();
 			w *= logarithm_t<-1>::template method_f<2>(x);
 		}
@@ -181,7 +181,7 @@ TAG_("logarithm trials")
 	EST_("real antilogarithm... <N_lim=1>")
 	{
 		T_alpha w{1};
-		for (T_sigma i = 0x100; ~--i;) {
+		for (T_sigma i = 100; ~--i;) {
 			auto x = mt19937_f();
 			w *= logarithm_t<-1>::template method_f<1>(x);
 		}
@@ -191,7 +191,7 @@ TAG_("logarithm trials")
 	EST_("real antilogarithm... <N_lim=0>")
 	{
 		T_alpha w{1};
-		for (T_sigma i = 0x100; ~--i;) {
+		for (T_sigma i = 100; ~--i;) {
 			auto x = mt19937_f();
 			w *= logarithm_t<-1>::template method_f<0>(x);
 		}
@@ -201,7 +201,7 @@ TAG_("logarithm trials")
 	EST_("via tangent< 2;  2>\n   Tanh[#]&\n   (*approx floating-point*)")
 	{
 		T_alpha w{0};
-		for (T_sigma i = 0x100; ~--i;) {
+		for (T_sigma i = 100; ~--i;) {
 			auto x = mt19937_f();
 			w *= [] (auto y) XTAL_0FN_(to) (root_f<2>((one + y)/(one - y))) (tangent_t< 2>::template method_f< 2>(x));
 		}
@@ -210,7 +210,7 @@ TAG_("logarithm trials")
 	EST_("via tangent< 2;  0>\n   Tanh[#]&\n   (*approx floating-point*)")
 	{
 		T_alpha w{0};
-		for (T_sigma i = 0x100; ~--i;) {
+		for (T_sigma i = 100; ~--i;) {
 			auto x = mt19937_f();
 			w *= [] (auto y) XTAL_0FN_(to) (root_f<2>((one + y)/(one - y))) (tangent_t< 2>::template method_f< 0>(x));
 		}

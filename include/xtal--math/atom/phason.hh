@@ -120,6 +120,14 @@ public:
 		{
 			operator>>=(XTAL_MOV_(o));
 		}
+		/*/
+		XTAL_DEF_(return,inline,explicit)
+		operator coordinate_type() const
+		requires in_n<sizeof(T), sizeof(coordinate_type)>
+		{
+			return reinterpret_cast<coordinate_type const &>(*this);
+		}
+		/***/
 
 	public:// RECONSTRUCT
 	//	using S_::operator >>=;

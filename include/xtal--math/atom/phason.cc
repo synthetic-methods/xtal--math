@@ -65,6 +65,9 @@ TAG_("phason")
 		u_phi += U_phi{0.1};
 		TRUE_(check_f<-20>(u_phi(0), 0.30));
 
+	//	u_phi = U_phi{ 0.5, 0.5*W_fit::dnsilon_f(44)}; TRUE_(u_phi == u_phi);
+	//	u_phi = U_phi{-0.5, 0.5*W_fit::dnsilon_f(44)}; TRUE_(u_phi == u_phi);
+
 	}
 	/**/
 	TRY_("phason of complex")
