@@ -24,34 +24,6 @@ struct filter_parameters
 };
 
 
-template <int M_ism=0, int M_car=0>
-struct identishape;
-
-template <int M_ism>
-struct identishape<M_ism, -0> : bond::compose<discarded<1>, identishape<M_ism, -1>>
-{
-};
-template <int M_ism>
-struct identishape<M_ism, -1>
-{
-	template <class S>
-	class subtype : public S
-	{
-	public:
-		using S::S;
-
-		template <auto ...>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&x, auto &&...oo)
-		noexcept -> auto
-		{
-			return XTAL_ALL_(x) {one};
-		}
-
-	};
-};
-
-
 ////////////////////////////////////////////////////////////////////////////////
 TAG_("filter")
 {
@@ -74,7 +46,7 @@ TAG_("filter")
 		,	typename R_env::             template   attach<>
 		,	typename R_env::             template dispatch<>
 		,	R_def
-		,	provision::saturated<identishape>
+		,	provision::saturated<identity>
 		>;
 		//\
 		using R_prx = processor::monomer_t<prewarped<_1>, R_pro>;
@@ -82,9 +54,7 @@ TAG_("filter")
 
 		R_pro svf{};
 		svf <<= occur::resample_f(44100);
-		svf <<= typename R_env::  limit_type{0};
 		svf <<= typename R_env::  order_type{2};
-		svf <<= typename R_env::  patch_type{0};
 		svf <<= typename R_env:: refade_type{0};
 	
 		U_alpha constexpr r_omega = 2*2*3*3*5*5*7;
@@ -189,9 +159,7 @@ TAG_("filter-ring")
 		auto z_sample = occur::resample_f(44100);
 
 		auto z = R_prx::bind_f(processor::let_f(r_omega));
-		z <<= typename R_env::  limit_type{0};
 		z <<= typename R_env::  order_type{2};
-		z <<= typename R_env::  patch_type{0};
 		z <<= typename R_env:: redamp_type{1};
 		z <<= typename R_env:: refade_type{1};
 
@@ -251,9 +219,7 @@ TAG_("filter-ring")
 		auto z_sample = occur::resample_f(44100);
 
 		auto z = R_prx::bind_f(processor::let_f(r_omega));
-		z <<= typename R_env::  limit_type{0};
 		z <<= typename R_env::  order_type{2};
-		z <<= typename R_env::  patch_type{0};
 		z <<= typename R_env:: redamp_type{1};
 		z <<= typename R_env:: refade_type{1};
 		z <<= flow::assign_f(typename R_env::stage_type{ 0}) << typename R_env::redamp_type{          (0.F)};

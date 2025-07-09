@@ -40,6 +40,7 @@ TAG_("vactrol")
 		,	typename E_env::             template dispatch<>
 		,	vactrol<>
 		,	E_def
+		,	provision::saturated<identity>
 		>;
 		using E_prx = processor::monomer_t<E_pro
 		//\
@@ -55,9 +56,7 @@ TAG_("vactrol")
 		auto z_sample = occur::resample_f(44100);
 
 		auto z = E_prx::bind_f(processor::let_f(e_omega));
-		z <<= typename E_env::  limit_type{0};
 		z <<= typename E_env::  order_type{2};
-		z <<= typename E_env::  patch_type{0};
 		z <<= typename E_env:: redamp_type{root_f<2>(2.F)};
 		z <<= typename E_env:: refade_type{0};
 	//	z <<= typename E_env::reshape_type({0.25, one - 0.25});

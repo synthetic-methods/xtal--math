@@ -53,9 +53,7 @@ TAG_("vectrol")
 		auto z_sample = occur::resample_f(44100);
 
 		auto z = E_prx::bind_f(processor::let_f(e_omega));
-		z <<= typename E_env::  limit_type{0};
 		z <<= typename E_env::  order_type{2};
-		z <<= typename E_env::  patch_type{0};
 		z <<= typename E_env:: redamp_type{1};
 		z <<= typename E_env:: refade_type{0.5};
 		z <<= typename E_env::reshape_type{typename E_env::shape_type{0.125, one - 0.125}};
@@ -159,16 +157,12 @@ TAG_("vectrol")
 		_y <<= occur::math::indent_s<Q_mtx, 1>({r_omega, W_alpha{1111, 1111}});
 		_y <<= occur::math::indent_s<Q_mtx, 0>({0.0    , W_alpha{0.707, 0.707}});
 
-		_y <<= typename E_env::  limit_type{0};
 		_y <<= typename E_env::  order_type{2};
-		_y <<= typename E_env::  patch_type{0};
 		_y <<= typename E_env:: redamp_type{1};
 		_y <<= typename E_env:: refade_type{0.5};
 		_y <<= typename E_env::reshape_type{typename E_env::shape_type{0.125, one - 0.825}};
 
-		_y <<= typename O_env::  limit_type{0};
 		_y <<= typename O_env::  order_type{2};
-		_y <<= typename O_env::  patch_type{0};
 		_y <<= typename O_env:: redamp_type{1};
 		_y <<= typename O_env:: refade_type{1};
 

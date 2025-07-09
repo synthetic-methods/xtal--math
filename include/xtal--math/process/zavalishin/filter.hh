@@ -54,7 +54,6 @@ struct any<filter<_s...>>
 			template <class R>
 			using subtype = bond::compose_s<R
 			,	typename T_::    stage_type::template  inspect<N_mask>
-			,	typename T_::   rezoom_type::template   attach<N_mask>
 			,	typename T_:: resample_type::template   attach<N_mask>
 			>;
 
@@ -65,8 +64,6 @@ struct any<filter<_s...>>
 			template <class R>
 			using subtype = bond::compose_s<R, provision::voiced<void
 			,	typename T_::    order_type::template dispatch<N_mask>
-			,	typename T_::    patch_type::template dispatch<N_mask>
-			,	typename T_::    limit_type::template dispatch<N_mask>// TODO: Replace with `shape`'s parameters?
 			>>;
 
 		};
@@ -91,9 +88,8 @@ struct filter
 	using metakind = any  <filter>;
 	using metatype = any_t<filter>;
 
-	using  state_type = typename metatype:: state_type;
-	using  slope_type = typename metatype:: slope_type;
-	using rezoom_type = typename metatype::rezoom_type;
+	using state_type = typename metatype:: state_type;
+	using slope_type = typename metatype:: slope_type;
 
 	using superkind = bond::compose<bond::tag<filter>
 	,	metakind
@@ -105,7 +101,7 @@ struct filter
 		using S_ = bond::compose_s<S, superkind>;
 		using T_ = typename S_::self_type;
 
-		template <int N_ism=0, int N_car=0, int N_lim=0, auto ...Ns>
+		template <int N_ism=0, int N_car=0, auto ...Ns>
 		XTAL_DEF_(return,inline,set)
 		saturate_f(auto &&x, auto &&...oo)
 		noexcept -> auto
@@ -113,7 +109,7 @@ struct filter
 			XTAL_IF0
 			XTAL_0IF (provision::saturated_q<S_>) {
 				return S_::template saturate_t<N_ism, N_car>::
-					template method_f<N_lim, Ns...>(XTAL_REF_(x), XTAL_REF_(oo)...);
+					template method_f<Ns...>(XTAL_REF_(x), XTAL_REF_(oo)...);
 			}
 			XTAL_0IF (N_car == -0) {
 				return XTAL_REF_(x);
@@ -128,7 +124,7 @@ struct filter
 
 	public:// OPERATE
 
-		template <int N_ord=0, int N_lim=0, auto ...Ns> requires (1 <= N_ord)
+		template <int N_ord=0, auto ...Ns> requires (1 <= N_ord)
 		XTAL_DEF_(inline,let)
 		method(auto const &x
 		,	unstruct_u<decltype(x)> s_gain
@@ -139,20 +135,17 @@ struct filter
 		{
 			using X =  XTAL_ALL_(x);
 			using U = unstruct_u<X>;
+			using X_fit    = bond::fit<X>;
 			using X_state_ = atom::couple_t<X[N_ord]>;
 			using X_slope_ = atom::couple_t<X[N_ord]>;
 
-			//\
-			U const zoom_dn = S_::template head<rezoom_type>();
-			U const zoom_dn = one;
-			U const zoom_up = root_f<-1>(zoom_dn);
-
 			atom::math::dot_t<X[N_ord + 1]> outputs{};
 
-			auto outputs_ = outputs.self(cardinal_constant_t<N_ord>{});
-			auto scalars_ = scalars.self(cardinal_constant_t<N_ord>{});
+			auto         outputs_ = outputs.self(cardinal_constant_t<N_ord>{});
+			auto const   scalars_ = scalars.self(cardinal_constant_t<N_ord>{});
+			auto const descalars_ = scalars_ - one;
 
-			auto     mem  = S_::template memory<X_state_, X_slope_>();
+			auto mem = S_::template memory<X_state_, X_slope_>();
 		//	(void) cut_t<[] XTAL_1FN_(to) (-bond::fit<X>::diplo_f(7))>::edit_f(mem);
 			auto &states_ = get<0>(mem);
 			auto &slopes_ = get<1>(mem);
@@ -168,24 +161,18 @@ struct filter
 			});
 			get<N_ord>(outputs) = root_f<-1, (1)>(term_f(one, get<N_ord - 1>(outputs_), s_gain));
 
-			auto constexpr V_lim = term_f(one, provision::saturated_q<S_>, 0 < N_lim);
+			int constexpr K_lim = provision::saturated_q<S_>;
 
 		//	Integrate `states*` with `scalars*` and `outputs*`:
-			bond::seek_out_f<V_lim>([&] (auto K) XTAL_0FN {
+			bond::seek_out_f<K_lim + 1>([&] (auto K) XTAL_0FN {
 				XTAL_IF0
-				XTAL_0IF (0 == K) {get<N_ord>(outputs) *= saturate_f<-1, -0, N_lim, Ns...>((x - dot_f(outputs_, states_)), oo...);}
-				XTAL_0IF (1 <= K) {get<N_ord>(outputs)  = saturate_f<-1, -0, N_lim, Ns...>((x - dot_f(outputs_, slopes_)), oo...);}
+				XTAL_0IF (0 == K) {get<N_ord>(outputs) *= x - dot_f(outputs_, states_);}
+				XTAL_0IF (1 <= K) {get<N_ord>(outputs)  = x - dot_f(outputs_, slopes_);}
 
 				bond::seek_out_f<-N_ord>([&] (auto I) XTAL_0FN {
-					XTAL_IF0
-					XTAL_0IF (1 == V_lim) {
-						get<I>(outputs_) = term_f(get<I>(states_), get<I + 1>(outputs), s_gain);
-					}
-					XTAL_0IF (2 <= V_lim) {
-						auto const output = term_f(get<I>(states_), get<I + 1>(outputs), s_gain);
-						auto const  slope = saturate_f<-1, -1, N_lim, Ns...>(get<I>(scalars_)*output, oo...) + (get<I>(scalars_) - one);
-						get<I>(outputs_) = output;
-						get<I>( slopes_) =  slope;
+					auto const o = get<I>(outputs_) = term_f(get<I>(states_), get<I + 1>(outputs), s_gain);
+					if constexpr (K < K_lim) {
+						get<I>(slopes_) = get<I>(descalars_) + saturate_f<-1, -1, Ns...>(o, oo...);
 					}
 				});
 			});
@@ -194,12 +181,13 @@ struct filter
 			bond::seek_out_f<N_ord>([&] (auto I) XTAL_0FN {
 				get<I>(states_) = term_f(-get<I>(states_), two, get<I>(outputs_));
 			});
+			static_assert(XTAL_ALL_(slopes_)::size() == XTAL_ALL_(outputs_)::size());
 			slopes_ /= scalars_;
-		//	outputs_ *= slopes_;// TODO: Make this line optional?
+			reinterpret_cast<X_slope_ &>(outputs_) *= slopes_;//TODO: Make optional?
 
 			return outputs.twin(constant_t<2>{});
 		}
-		template <int N_ord=0, int N_lim=0, auto ...Ns> requires (0 == N_ord)
+		template <int N_ord=0, auto ...Ns> requires (0 == N_ord)
 		XTAL_DEF_(inline,let)
 		method(auto const &x
 		,	unstruct_u<decltype(x)> s_gain

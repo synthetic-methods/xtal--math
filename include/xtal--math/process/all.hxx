@@ -11,6 +11,7 @@
 #include "./dot.hh"
 #include "./dots.hh"
 #include "./factorial.hh"
+#include "./identity.hh"
 #include "./imagine.hh"
 #include "./modulo.hh"
 #include "./near.hh"
