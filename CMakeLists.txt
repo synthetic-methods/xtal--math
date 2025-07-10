@@ -7,7 +7,7 @@ target_include_directories(${PROJECT_NAME} INTERFACE include)
 
 
 find_package(xtal CONFIG REQUIRED)
-target_link_libraries(${PROJECT_NAME} xtal::xtal)
+target_link_libraries(${PROJECT_NAME} INTERFACE xtal::xtal)
 
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
