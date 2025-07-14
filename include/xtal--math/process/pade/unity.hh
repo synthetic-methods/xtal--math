@@ -4,7 +4,7 @@
 #include "./unify.hh"
 #include "./tangy.hh"
 #include "../taylor/logarithm.hh"
-
+#include "../taylor/octarithm.hh"
 
 XTAL_ENV_(push)
 namespace xtal::process::math::pade
@@ -60,9 +60,8 @@ struct unity<M_ism, 0>
 		method_f(auto &&t_re, simplex_field_q auto &&t_im)
 		noexcept -> decltype(auto)
 		{
-			auto constexpr exp = [] XTAL_1FN_(call) (taylor::logarithm_t<-1, 1>::template method_f<2>);
-			using U_fit = bond::fit<decltype(t_re), decltype(t_im)>;
-			return method_f<N_lim>(XTAL_REF_(t_re))*exp(XTAL_REF_(t_im)*U_fit::patio_f(-2));
+			auto constexpr _exp_2pi = [] XTAL_1FN_(call) (taylor::octarithm_t<-1>::template method_f<2>);
+			return method_f<N_lim>(XTAL_REF_(t_re))*_exp_2pi(XTAL_REF_(t_im));
 		}
 
 		template <int N_lim=-1>

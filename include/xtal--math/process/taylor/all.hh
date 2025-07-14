@@ -1,6 +1,7 @@
 #include "./any.hh"
 #include "./logarithm.hh"
 #include "./monologarithm.hh"
+#include "./octarithm.hh"
 #include "./sine.hh"
 #include "./tangent.hh"
 #include "./tangy.hh"

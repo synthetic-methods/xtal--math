@@ -3,7 +3,7 @@
 
 #include "./unity.hh"
 #include "../taylor/logarithm.hh"
-
+#include "../taylor/octarithm.hh"
 
 
 XTAL_ENV_(push)
@@ -43,14 +43,12 @@ struct wnity<1, 0>
 		method_f(auto &&t_re, simplex_field_q auto &&t_im)
 		noexcept -> decltype(auto)
 		{
-			static_assert(real_variable_q<decltype(t_re)>);
-			static_assert(real_variable_q<decltype(t_im)>);
+			using T_re  = XTAL_ALL_(t_re); static_assert(real_variable_q<T_re>);
+			using T_im  = XTAL_ALL_(t_im); static_assert(real_variable_q<T_im>);
+			using U_fit = bond::fit<T_re, T_im>;
 
-			auto constexpr exp = [] XTAL_1FN_(call) (taylor::logarithm_t<-1, 1>::template method_f<2>);
-			using U_fit = bond::fit<decltype(t_re), decltype(t_im)>;
-
-			return method_f<N_lim>(XTAL_REF_(t_re))*
-				roots_t<1>::method_f(exp(XTAL_REF_(t_im)*U_fit::patio_f(-2)));
+			auto constexpr _exp_2pi = [] XTAL_1FN_(call) (taylor::octarithm_t<-1>::template method_f<2>);
+			return method_f<N_lim>(XTAL_REF_(t_re))*roots_t<1>::method_f(_exp_2pi(XTAL_REF_(t_im)));
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,set)

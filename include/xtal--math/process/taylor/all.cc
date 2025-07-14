@@ -1,6 +1,7 @@
 #include "./any.cc"
 #include "./logarithm.cc"
 #include "./monologarithm.cc"
+#include "./octarithm.cc"
 #include "./sine.cc"
 #include "./tangent.cc"
 #include "./tangy.cc"

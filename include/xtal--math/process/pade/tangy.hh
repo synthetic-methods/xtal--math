@@ -121,7 +121,7 @@ struct tangy<M_ism, 1>
 template <int M_ism>
 struct tangy<M_ism,-0>
 {
-		using superkind = bond::compose<discarded<1>, tangy<M_ism,-1>>;
+	using superkind = bond::compose<discarded<1>, tangy<M_ism,-1>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>

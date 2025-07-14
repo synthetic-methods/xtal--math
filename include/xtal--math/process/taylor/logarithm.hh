@@ -45,8 +45,8 @@ struct logarithm< 1, 0>
 		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim)                   {return approximate<N_lim>(XTAL_REF_(o));}
-			XTAL_0IF_(consteval)                    {return approximate<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim)                   {return methodology_f<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)                    {return methodology_f<   ~0>(XTAL_REF_(o));}
 #if XTAL_SYS_(builtin)
 			XTAL_0IF (real_variable_q<decltype(o)>) {return      __builtin_log(XTAL_REF_(o));}
 #endif
@@ -56,7 +56,7 @@ struct logarithm< 1, 0>
 	protected:
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
-		approximate(auto o)
+		methodology_f(auto o)
 		noexcept -> decltype(auto)
 		{
 			return superprocess::template method_f<N_lim>(roots_f<2>(XTAL_MOV_(o)).template sum<-1>());
@@ -88,8 +88,8 @@ struct logarithm<-1, 0>
 		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim)          {return approximate<N_lim>(XTAL_REF_(o));}
-			XTAL_0IF_(consteval)           {return approximate<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim)          {return methodology_f<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)           {return methodology_f<   ~0>(XTAL_REF_(o));}
 #if XTAL_SYS_(builtin)
 			XTAL_0IF (real_q<decltype(o)>) {return      __builtin_exp(XTAL_REF_(o));}
 #endif
@@ -99,7 +99,7 @@ struct logarithm<-1, 0>
 	protected:
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
-		approximate(auto &&o)
+		methodology_f(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			using U_fit = bond::fit<decltype(o)>;
@@ -150,15 +150,15 @@ struct logarithm< 1, 1>
 		noexcept -> XTAL_ALL_(o)
 		{
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim) {return approximate<N_lim>(XTAL_REF_(o));}
-			XTAL_0IF_(consteval)  {return approximate<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim) {return methodology_f<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)  {return methodology_f<   ~0>(XTAL_REF_(o));}
 			XTAL_0IF_(else)       {return                log(XTAL_REF_(o));}
 		}
 
 	protected:
 		template <int N_lim=0>
 		XTAL_DEF_(return,set)
-		approximate(real_variable_q auto o)
+		methodology_f(real_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _fit = bond::fit<decltype(o)>;
@@ -189,7 +189,7 @@ struct logarithm< 1, 1>
 		}
 		template <int N_lim=0>
 		XTAL_DEF_(return,set)
-		approximate(complex_variable_q auto o)
+		methodology_f(complex_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _fit = bond::fit<decltype(o)>;
@@ -201,7 +201,7 @@ struct logarithm< 1, 1>
 			auto const w_re = square_f(u_re);
 			auto const w_im = square_f(u_im);
 
-			auto const y_re = _fit::haplo_1*approximate<N_lim>(w_re + w_im);
+			auto const y_re = _fit::haplo_1*methodology_f<N_lim>(w_re + w_im);
 			auto const y_im = pade::tangy_t<-1, 1>::template method_f<N_lim>(u_im, u_re)*_fit::patio_1;
 			return {y_re, y_im};
 		}
@@ -230,15 +230,18 @@ struct logarithm<-1, 1>
 		noexcept -> XTAL_ALL_(o)
 		{
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim) {return approximate<N_lim>(XTAL_REF_(o));}
-			XTAL_0IF_(consteval)  {return approximate<   ~0>(XTAL_REF_(o));}
-			XTAL_0IF_(else)       {return                exp(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim)          {return methodology_f<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)           {return methodology_f<   ~0>(XTAL_REF_(o));}
+#if XTAL_SYS_(builtin)
+			XTAL_0IF (real_q<decltype(o)>) {return        __builtin_exp(XTAL_REF_(o));}
+#endif
+			XTAL_0IF_(else)                {return                  exp(XTAL_REF_(o));}
 		}
 
 	protected:
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
-		approximate(real_variable_q auto o)
+		methodology_f(real_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using U_fit = bond::fit<decltype(o)>;
@@ -277,18 +280,7 @@ struct logarithm<-1, 1>
 };
 
 
-namespace _detail
-{///////////////////////////////////////////////////////////////////////////////
-
-template <int M_div=1>
-XTAL_DEF_(let)
-base_f = [] (auto &&o)
-	//\
-	XTAL_0FN_(to) (root_f<aspect_f<signed>(M_div)>(logarithm_t<1, 1>::template method_f<~0>(XTAL_REF_(o))/bond::fit<decltype(o)>::alpha_f(aspect_f<unsigned>(M_div))));
-	XTAL_0FN_(to) (logarithm_t<1, 1>::template method_f<~0>(XTAL_REF_(o))/bond::fit<decltype(o)>::alpha_f(M_div));
-
-
-}///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////
