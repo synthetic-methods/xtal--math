@@ -15,7 +15,7 @@ template <class   ..._s>	struct  uniplex;
 template <class   ..._s>	using   uniplex_t = typename uniplex<_s...>::type;
 template <class   ...Ts>	concept uniplex_q = bond::tag_in_p<uniplex_t, Ts...>;
 
-XTAL_DEF_(let) uniplex_f = [] XTAL_1FN_(call) (_detail::fake_f<uniplex_t>);
+XTAL_DEF_(let) uniplex_f = [] XTAL_1FN_(call) (_detail::factory<uniplex_t>::make);
 
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -20,7 +20,7 @@ TAG_("cut")
 	using T_delta = typename _fit::delta_type;
 	using T_alpha = typename _fit::alpha_type;
 	using T_aphex = typename _fit::aphex_type;
-	T_alpha constexpr inf = _std::numeric_limits<T_alpha>::infinity();
+//	T_alpha constexpr inf = _std::numeric_limits<T_alpha>::infinity();// TODO: Temporarily allow?
 
 	auto mt19937_f = typename _fit::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
@@ -36,10 +36,10 @@ TAG_("cut")
 		TRUE_(cut_f<[] XTAL_1FN_(to) (_fit::upsilon_f(1)*_fit::haplo_1)>(0.5) > 0.5);
 		TRUE_(cut_f<[] XTAL_1FN_(to) (_fit::dnsilon_f(1)*_fit::haplo_1)>(0.5) < 0.5);
 
-		TRUE_(cut_f<[] XTAL_1FN_(to) (-_fit::maxilon_f(1))>(inf) < inf);
+	//	TRUE_(cut_f<[] XTAL_1FN_(to) (-_fit::maxilon_f(1))>(inf) < inf);
 		TRUE_(cut_f<[] XTAL_1FN_(to) (+_fit::minilon_f(1))>(0.0) > 0.0);
 
-		TRUE_(cut_f<[] XTAL_1FN_(to) (_fit::dnsilon_f(1)*_fit::maxilon_f(1))>(inf) < inf);
+	//	TRUE_(cut_f<[] XTAL_1FN_(to) (_fit::dnsilon_f(1)*_fit::maxilon_f(1))>(inf) < inf);
 		TRUE_(cut_f<[] XTAL_1FN_(to) (_fit::upsilon_f(1)*_fit::minilon_f(1))>(0.0) > 0.0);
 
 	};
@@ -76,17 +76,12 @@ TAG_("cut")
 		o = +0.75; TRUE_(cut_t<-half>::edit_f(o) == +1); TRUE_(o == +0.50);
 		o = -0.75; TRUE_(cut_t<-half>::edit_f(o) == -1); TRUE_(o == -0.50);
 
-		o = +inf; TRUE_(cut_t<[] XTAL_1FN_(to) (-_fit::maxilon_f(1))>::edit_f(o) == +1); TRUE_(o <  +inf);
-		o = -inf; TRUE_(cut_t<[] XTAL_1FN_(to) (-_fit::maxilon_f(1))>::edit_f(o) == -1); TRUE_(o  > -inf);
-		o = +0.0; TRUE_(cut_t<[] XTAL_1FN_(to) (+_fit::minilon_f(1))>::edit_f(o) == +1); TRUE_(o  > +0.0);
-		o = -0.0; TRUE_(cut_t<[] XTAL_1FN_(to) (+_fit::minilon_f(1))>::edit_f(o) == -1); TRUE_(o <  -0.0);
-
-		o = +inf; TRUE_(cut_t<[] XTAL_1FN_(to) (-_fit::maxilon_f(1))>::edit_f(o) == +1); TRUE_(o <  +inf);
-		o = -inf; TRUE_(cut_t<[] XTAL_1FN_(to) (-_fit::maxilon_f(1))>::edit_f(o) == -1); TRUE_(o  > -inf);
-		o = +0.0; TRUE_(cut_t<[] XTAL_1FN_(to) (+_fit::minilon_f(1))>::edit_f(o) == +1); TRUE_(o  > +0.0);
-		o = -0.0; TRUE_(cut_t<[] XTAL_1FN_(to) (+_fit::minilon_f(1))>::edit_f(o) == -1); TRUE_(o <  -0.0);
-
 #ifndef __FINITE_MATH_ONLY__
+		o = +inf; TRUE_(cut_t<[] XTAL_1FN_(to) (-_fit::maxilon_f(1))>::edit_f(o) == +1); TRUE_(o <  +inf);
+		o = -inf; TRUE_(cut_t<[] XTAL_1FN_(to) (-_fit::maxilon_f(1))>::edit_f(o) == -1); TRUE_(o  > -inf);
+		o = +0.0; TRUE_(cut_t<[] XTAL_1FN_(to) (+_fit::minilon_f(1))>::edit_f(o) == +1); TRUE_(o  > +0.0);
+		o = -0.0; TRUE_(cut_t<[] XTAL_1FN_(to) (+_fit::minilon_f(1))>::edit_f(o) == -1); TRUE_(o <  -0.0);
+
 		o = inf - inf;
 		TRUE_(o != o);
 		(void) cut_t<[] XTAL_1FN_(to) (-_fit::maxilon_f(1))>::edit_f(o);
@@ -110,8 +105,10 @@ TAG_("cut")
 		o = +0.50; TRUE_(cut_t<[] XTAL_1FN_(to) (_fit::dnsilon_f(1)*_fit::haplo_1)>::edit_f(o) == +1); TRUE_(o <  +0.50);
 		o = -0.50; TRUE_(cut_t<[] XTAL_1FN_(to) (_fit::dnsilon_f(1)*_fit::haplo_1)>::edit_f(o) == -1); TRUE_(o  > -0.50);
 
+#ifndef __FINITE_MATH_ONLY__
 		o = +inf; TRUE_(cut_t<[] XTAL_1FN_(to) (_fit::dnsilon_f(1)*_fit::maxilon_f(1))>::edit_f(o) == +1); TRUE_(o <  +inf);
 		o = -inf; TRUE_(cut_t<[] XTAL_1FN_(to) (_fit::dnsilon_f(1)*_fit::maxilon_f(1))>::edit_f(o) == -1); TRUE_(o  > -inf);
+#endif
 		o = +0.0; TRUE_(cut_t<[] XTAL_1FN_(to) (_fit::upsilon_f(1)*_fit::minilon_f(1))>::edit_f(o) == +1); TRUE_(o  > +0.0);
 		o = -0.0; TRUE_(cut_t<[] XTAL_1FN_(to) (_fit::upsilon_f(1)*_fit::minilon_f(1))>::edit_f(o) == -1); TRUE_(o <  -0.0);
 

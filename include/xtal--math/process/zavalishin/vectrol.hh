@@ -29,7 +29,7 @@ struct any<vectrol<As...>>
 	public:// CONSTRUCT
 		using S::S;
 
-		template <extent_type N_mask=-1>
+		template <size_type N_mask=1>
 		struct attach
 		{
 			template <class R>

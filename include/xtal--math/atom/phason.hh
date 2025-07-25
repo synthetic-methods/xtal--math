@@ -28,7 +28,7 @@ template <class   ...Ts>	concept    real_phason_q = bond::tag_infixed_p<phason_t
 template <class   ...Ts>	concept simplex_phason_q = bond::tag_infixed_p<phason_t, Ts...> and simplex_field_q<initializer_t<Ts>...>;
 template <class   ...Ts>	concept complex_phason_q = bond::tag_infixed_p<phason_t, Ts...> and complex_field_q<initializer_t<Ts>...>;
 
-XTAL_DEF_(let) phason_f = [] XTAL_1FN_(call) (_detail::fake_f<phason_t>);
+XTAL_DEF_(let) phason_f = [] XTAL_1FN_(call) (_detail::factory<phason_t>::make);
 
 
 ////////////////////////////////////////////////////////////////////////////////

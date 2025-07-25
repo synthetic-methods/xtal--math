@@ -40,7 +40,7 @@ struct any<differ<_s...>>
 	public:
 		using S_::S_;
 
-		template <extent_type N_mask=-1>
+		template <size_type N_mask=1>
 		struct dispatch
 		{
 			template <class R>
