@@ -70,7 +70,7 @@ struct indent<Ns...>
 		:	S_{u_}
 		{}
 
-		template <extent_type N_mask=-1>
+		template <size_type N_mask=1>
 		struct incept
 		{
 			using superkind = bond::compose<flow::mask<N_mask>, defer<component_t<S>>>;

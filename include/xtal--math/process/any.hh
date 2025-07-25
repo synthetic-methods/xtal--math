@@ -32,18 +32,18 @@ struct any<T>
 
 	public:// ...
 
-		template <extent_type N_mask=-1>
+		template <size_type N_mask=1>
 		struct   attach {template <class R> using subtype = R;};
 		
-		template <extent_type N_mask>
+		template <size_type N_mask>
 		requires requires {typename S_::template   attach<N_mask>;}
 		struct   attach<N_mask> :   S_::template   attach<N_mask>{};
 
 
-		template <extent_type N_mask=-1>
+		template <size_type N_mask=1>
 		struct dispatch {template <class R> using subtype = R;};
 		
-		template <extent_type N_mask>
+		template <size_type N_mask>
 		requires requires {typename S_::template dispatch<N_mask>;}
 		struct dispatch<N_mask> :   S_::template dispatch<N_mask>{};
 

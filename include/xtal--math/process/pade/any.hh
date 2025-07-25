@@ -40,7 +40,7 @@ struct any<T>
 	public:// DISPATCH
 		using limit_type = occur::inferred_t<union LIMIT, bond::seek_s<(1<<3)>>;
 
-		template <extent_type N_mask=-1>
+		template <size_type N_mask=1>
 		struct dispatch
 		{
 			template <class R>

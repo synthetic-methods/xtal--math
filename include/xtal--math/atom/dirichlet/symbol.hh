@@ -15,7 +15,7 @@ template <class   ..._s>	struct  symbol;
 template <class   ..._s>	using   symbol_t = typename symbol<_s...>::type;
 template <class   ...Ts>	concept symbol_q = bond::tag_in_p<symbol_t, Ts...>;
 
-XTAL_DEF_(let) symbol_f = [] XTAL_1FN_(call) (_detail::fake_f<symbol_t>);
+XTAL_DEF_(let) symbol_f = [] XTAL_1FN_(call) (_detail::factory<symbol_t>::make);
 
 
 ////////////////////////////////////////////////////////////////////////////////
