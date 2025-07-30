@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-#include "./root.hh"
+
 
 
 
@@ -55,7 +55,7 @@ struct near
 			using U_sigma = typename U_fit::sigma_type;
 			using U_alpha = typename U_fit::alpha_type;
 
-			U_alpha constexpr N_half_sqrt = root_f<2>(2.);
+			U_alpha constexpr N_half_sqrt = 1.414213562373095048801688724209698L;// root_f<2>(2.);
 			U_sigma constexpr N_mask      = U_fit::sign.mask|U_fit::exponent.mask;
 			return _xtd::bit_cast<U_alpha>(_xtd::bit_cast<U_sigma>(u*N_half_sqrt)&N_mask);
 		}

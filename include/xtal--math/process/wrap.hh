@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-
+#include "./nearest.hh"
 
 
 
@@ -15,10 +15,10 @@ template <typename ...As>	struct  wrap;
 template <typename ...As>	using   wrap_t = process::confined_t<wrap<As...>>;
 template <typename ...As>
 XTAL_DEF_(return,inline,let)
-wrap_f(auto &&o)
+wrap_f(auto &&z)
 noexcept -> decltype(auto)
 {
-	return wrap_t<As...>::method_f(XTAL_REF_(o));
+	return wrap_t<As...>::method_f(XTAL_REF_(z));
 };
 
 
@@ -39,32 +39,23 @@ struct wrap<As...>
 	public:
 		using S_::S_;
 
-		template <auto ...>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		method_f(auto &&o)
+		method_f(auto &&z)
 		noexcept -> auto
 		{
-			return bond::math::bit_fraction_f(o);
+			using Z = XTAL_ALL_(z);
+
+			XTAL_IF1_(to) (bond::math::bit_fraction_f(XTAL_REF_(z)))
+			XTAL_0IF_(to) (z - nearest_f(z))
+			XTAL_0IF_(terminate)
 		}
-		template <auto ...>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		method_f(atom::math::phason_q auto &&t_)
+		method_f(atom::math::phason_q auto &&z_)
 		noexcept -> decltype(auto)
 		{
-			return XTAL_REF_(t_);
-		}
-		template <auto ...>
-		XTAL_DEF_(return,inline,set)
-		method_f(complex_field_q auto &&o)
-		noexcept -> decltype(auto)
-		{
-			if constexpr (complex_variable_q<decltype(o)>) {
-				auto &xy = destruct_f(o);
-				return complexion_f(method_f(xy[0]), method_f(xy[1]));
-			}
-			else {
-				return complexion_f(method_f(o.real()), method_f(o.imag()));
-			}
+			return XTAL_REF_(z_);
 		}
 
 	};

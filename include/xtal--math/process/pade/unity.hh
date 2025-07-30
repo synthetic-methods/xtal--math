@@ -80,10 +80,11 @@ struct unity<M_ism, 0>
 				XTAL_0IF (2 == M_ism) {return complexion_f(cosh(w), sinh(w));}
 			}
 			else {
-				auto const  w = wrap_f(o);
-				auto const  m = objective_f(U_fit::haplo_1*wrap_f(U_fit::diplo_1*w));
-				auto const _1 = U_fit::alpha_1*(((m == w) << 1) - 1);
-				return superprocess::template method_f<N_lim>(m)*_1;
+				auto const o_1 = wrap_f(o);
+				auto const o_2 = objective_f(U_fit::haplo_1*wrap_f(U_fit::diplo_1*o_1));
+				auto const o_v = one - two*nearest_f<+1>(aspect_f<unsigned>(o_1 - o_2));
+			//	auto const o_v = U_fit::alpha_1*(((o_2 == o_1) << 1) - 1);
+				return superprocess::template method_f<N_lim>(o_2)*o_v;
 			}
 		}
 		template <int N_lim=-1>
@@ -135,8 +136,8 @@ struct unity<M_ism, 0>
 		method_f(complex_field_q auto &&o)
 		noexcept -> decltype(auto)
 		{
-			using U       = XTAL_ALL_(o);
-			using U_fit    = bond::fit<U>;
+			using U     = XTAL_ALL_(o);
+			using U_fit = bond::fit<U>;
 
 			auto constexpr N_lim_tan = N_lim;
 			auto constexpr N_lim_log = 2;

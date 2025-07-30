@@ -46,7 +46,8 @@ struct wnity<1, 0>
 			using T_re  = XTAL_ALL_(t_re); static_assert(real_variable_q<T_re>);
 			using T_im  = XTAL_ALL_(t_im); static_assert(real_variable_q<T_im>);
 			using U_fit = bond::fit<T_re, T_im>;
-
+			//\
+			auto constexpr _exp_2pi = [] (auto &&x) XTAL_0FN_(to) (exp(U_fit::patio_f(-2)*XTAL_REF_(x)));
 			auto constexpr _exp_2pi = [] XTAL_1FN_(call) (taylor::octarithm_t<-1>::template method_f<2>);
 			return method_f<N_lim>(XTAL_REF_(t_re))*roots_t<1>::method_f(_exp_2pi(XTAL_REF_(t_im)));
 		}

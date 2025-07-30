@@ -37,6 +37,7 @@ TAG_("root")
 	}
 	TRY_("evaluation")
 	{
+		TRUE_(check_f<- 2>(root_f<-1, 1>(T_aphex{1<<24, 1<<24}), one/T_aphex{1<<24, 1<<24}));
 		TRUE_(check_f<- 1>(root_f<-2>(T_aphex{1, 1}), one/root_f< 2>(T_aphex{1, 1})));
 
 		TRUE_(check_f<-30>(pow(0.5, _fit::ratio_f(1,  3)), root_f< 3>(0.5)));
@@ -61,7 +62,7 @@ TAG_("root")
 		TRUE_(check_f<- 1>(root_f<-2>(pow(T_aphex {2, 3}, -2.0)), T_aphex {2, 3}));
 		TRUE_(check_f<- 1>(pow(T_aphex {2, 3}, 0.5), root_f< 2>(T_aphex {2, 3})));
 
-		TRUE_(check_f<- 1>(1.0/sqrt(2.2345268795805384), root_f<-2>(_std::complex{2.2345268795805384,0.0}).real()));
+		TRUE_(check_f<- 1>(1.0/sqrt(2.2345268795805384), root_f<-2>(_std::complex{2.2345268795805384, 0.0}).real()));
 	}
 	TRY_("punctured evaluation")
 	{

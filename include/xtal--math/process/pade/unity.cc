@@ -57,7 +57,6 @@ TAG_("unity")
 		using W_foo = any_t<T_foo>;
 		using Z_foo = typename W_foo::template dispatch<>;
 
-
 		auto const w = unity_t<1>::template method_f<4>(pitch);
 		auto const x = unity_t<1>::template method_f<4>(roll);
 		auto const y = unity_t<1>::template method_f<4>(-yaw);
@@ -76,6 +75,18 @@ TAG_("unity")
 		TRUE_(check_f<-2>(o[3], 0.10520194523965509));
 	}
 	/**/
+	TRY_("couple evaluation")
+	{
+		atom::couple_t<T_alpha[2]> x{0.123, 0.456};
+		//\
+		auto const v =        one/x;
+		auto const v = T_alpha{1}/x;
+		auto const y = unity_t<1>::template method_f<4>(x);
+
+		TRUE_(check_f<8>(y.real(), atom::couple_t<T_alpha[2]>{ 0.715936483022, -0.962027671586}));
+		TRUE_(check_f<8>(y.imag(), atom::couple_t<T_alpha[2]>{ 0.698165418993,  0.272951935517}));
+
+	}
 	TRY_("scalar evaluation")
 	{
 		T_alpha x0{-0.4444444444444444};

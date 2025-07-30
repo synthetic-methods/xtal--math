@@ -2,8 +2,8 @@
 #include "./any.hh"
 
 #include "./dot.hh"
-#include "./dots.hh"
-
+#include "./root.hh"
+#include "./roots.hh"
 
 
 XTAL_ENV_(push)
@@ -98,6 +98,14 @@ struct aspect<signed>
 			using _fit = bond::fit<decltype(o)>;
 			return o*root_f<-2>(dot_f(o));
 		}
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		method_f(atom::couple_q auto &&o)
+		noexcept -> decltype(auto)
+		{
+			using  U = XTAL_ALL_(o);
+			return U::template zip_from<[] XTAL_1FN_(call) (method_f<Ns...>)>(o);
+		}
 
 		template <int N_side=0> requires in_n<N_side, 1, 0, -1>
 		XTAL_DEF_(return,inline,set)
@@ -141,7 +149,7 @@ struct aspect<signed>
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _fit = bond::fit<decltype(o)>;
-			auto [u, v] = dots_f<2>(o);
+			auto [u, v] = roots_f<2>(dot_f(o));
 			auto const o_sgn = o*v;
 			auto const o_mgn = XTAL_ALL_(o){u};
 			o =    o_mgn;
@@ -197,6 +205,14 @@ struct aspect<unsigned>
 			using _fit = bond::fit<decltype(o)>;
 			return root_f<2>(dot_f(o));
 		}
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		method_f(atom::couple_q auto &&o)
+		noexcept -> decltype(auto)
+		{
+			using  U = XTAL_ALL_(o);
+			return U::template zip_from<[] XTAL_1FN_(call) (method_f<Ns...>)>(o);
+		}
 
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
@@ -215,7 +231,7 @@ struct aspect<unsigned>
 		noexcept -> auto
 		{
 			using _fit = bond::fit<decltype(o)>;
-			auto [u, v] = dots_f<2>(o); o *= v; return u;
+			auto [u, v] = roots_f<2>(dot_f(o)); o *= v; return u;
 		}
 
 	};

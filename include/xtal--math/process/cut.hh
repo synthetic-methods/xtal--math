@@ -2,7 +2,7 @@
 #include "./any.hh"
 #include "./nearing.hh"
 #include "./aspect.hh"
-#include "./dots.hh"
+
 
 
 XTAL_ENV_(push)
@@ -51,7 +51,7 @@ struct cut
 		XTAL_DEF_(return,set)
 		edit_f(bond::pack_q auto &o)
 		noexcept -> auto
-		requires un_n<continuous_field_q<decltype(o)>>
+		requires un_n<complex_variable_q<decltype(o)>>
 		{
 		//	TODO: Accommodate returning materialized `atom::block` from `span`s...
 			return [&]<auto ...I> (bond::seek_t<I...>)
@@ -119,7 +119,7 @@ struct cut
 			using _fit = bond::fit<decltype(o)>;
 
 			auto &[x, y] = destruct_f(o);
-			auto  [w, m] = dots_f<2>(o);
+			auto  [w, m] = roots_f<2>(dot_f(o));
 			auto r = edit_f<Ns...>(w);
 			w *= m;
 			x *= w;

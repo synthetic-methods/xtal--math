@@ -218,8 +218,21 @@ XTAL_DEF_(return,let)
 check_f(auto const &u, auto const &v)
 noexcept -> bool
 {
-	return bond::math::bit_trim_f<N_index>(u) == bond::math::bit_trim_f<N_index>(v)
-	or     bond::math::bit_trim_f<N_index>(u - v) == zero;
+	using U = XTAL_ALL_(u);
+	using V = XTAL_ALL_(v);
+	XTAL_IF0
+	XTAL_0IF (not  atom::block_q<U, V>) {
+		return bond::math::bit_trim_f<N_index>(u) == bond::math::bit_trim_f<N_index>(v)
+		or     bond::math::bit_trim_f<N_index>(u - v) == zero;
+	}
+	XTAL_0IF (not fixed_shaped_q<U, V>) {
+		return false;
+	}
+	XTAL_0IF_(else) {
+		return [&]<auto ...I>(bond::seek_t<I...>)
+			XTAL_0FN_(to) (...and (check_f<N_index>(get<I>(u), get<I>(v))))
+		(bond::seek_s<U::size()&V::size()>{});
+	}
 }
 template <int N_index, int N_limit>
 XTAL_DEF_(return,let)
