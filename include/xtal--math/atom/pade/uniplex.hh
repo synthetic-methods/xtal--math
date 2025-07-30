@@ -3,7 +3,7 @@
 
 #include "../../process/pade/unity.hh"
 #include "../../process/taylor/logarithm.hh"
-
+#include "../../process/taylor/octarithm.hh"
 
 
 XTAL_ENV_(push)
@@ -37,8 +37,16 @@ private:
 	using couplex_type = couple_t<complex_type[2]>;
 	using duplex_type  = couple_t<  value_type[2]>;
 
-	XTAL_DEF_(return,inline,set)  cis_2pi (auto &&o) {return process::math::  pade::    unity_t< 1   >::template method_f< 4>(XTAL_REF_(o));};
-	XTAL_DEF_(return,inline,set) _exp_2pi (auto &&o) {return process::math::taylor::logarithm_t<-1, 1>::template method_f< 2>(XTAL_REF_(o) *bond::fit<decltype(o)>::template patio_f<+1>(-2));};
+	XTAL_DEF_(return,inline,set)  cis_2pi (auto &&o) noexcept -> auto
+	{
+		return process::math::  pade::    unity_t< 1>::template method_f<4>(XTAL_REF_(o));
+	};
+	XTAL_DEF_(return,inline,set) _exp_2pi (auto &&o) noexcept -> auto
+	{
+		//\
+		return exp(bond::fit<decltype(o)>::patio_f(-2)*XTAL_REF_(o));
+		return process::math::taylor::octarithm_t<-1>::template method_f<2>(XTAL_REF_(o));
+	};
 
 	template <class T>
 	using endotype = typename couple<complex_type, duplex_type>::template homotype<T>;
@@ -77,7 +85,7 @@ public:
 
 		template <int N=0>
 		XTAL_DEF_(return,inline,let)
-		resolved()
+		resolved() const
 		noexcept -> _std::conditional_t<N == 0, couplex_type, complex_type>
 		{
 			auto const &[o, q_] = self();
@@ -96,26 +104,32 @@ public:
 		}
 		template <int N=0>
 		XTAL_DEF_(return,inline,let)
-		desolved()
+		desolved(complex_type const x={}) const
 		noexcept -> _std::conditional_t<N == 0, couplex_type, complex_type>
 		{
+			using _xtd::plus_multiplies;
 			auto const &[o, q_] = self();
-			auto const   o_re = o.real(), q_up = q_.template sum<+1>();
-			auto const   o_im = o.imag(), q_dn = q_.template sum<-1>();
+			auto const   q_up = q_.template sum<+1>();
+			auto const   q_dn = q_.template sum<-1>();
+			auto const &[o_re, o_im] = destruct_f(o);
+			auto const &[x_re, x_im] = destruct_f(x);
 			XTAL_IF0
 			XTAL_0IF (N ==  0) {
-				return {{o_re*q_up, o_im*q_dn}, {o_re*q_dn, o_im*q_up}};
+				return {
+					{plus_multiplies(x_re, o_re, q_up),  plus_multiplies(x_im, o_im, q_dn)},
+					{plus_multiplies(x_re, o_re, q_dn),  plus_multiplies(x_im, o_im, q_up)}
+				};
 			}
 			XTAL_0IF (N ==  1) {
-				return {o_re*q_up,  o_im*q_dn};
+				return {plus_multiplies(x_re, o_re, q_up),  plus_multiplies(x_im, o_im, q_dn)};
 			}
 			XTAL_0IF (N == -1) {
-				return {o_re*q_dn,  o_im*q_up};
+				return {plus_multiplies(x_re, o_re, q_dn),  plus_multiplies(x_im, o_im, q_up)};
 			}
 		}
 		template <int N_side=1>
 		XTAL_DEF_(return,inline,let)
-		sum(auto &&w=value_type{})
+		sum(auto &&w=value_type{}) const
 		noexcept -> auto
 		{
 			return XTAL_REF_(w) + desolved<N_side>();

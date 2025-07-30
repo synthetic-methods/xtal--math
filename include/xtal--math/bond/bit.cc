@@ -13,6 +13,65 @@ namespace xtal::bond::math::_test
 
 ////////////////////////////////////////////////////////////////////////////////
 
+TAG_("bit", "bit_swap_f")
+{
+	using T_fit = fit<>;
+	using T_sigma = typename T_fit::sigma_type;
+	using T_delta = typename T_fit::delta_type;
+	using T_alpha = typename T_fit::alpha_type;
+	using T_aphex = typename T_fit::aphex_type;
+	auto mt19937_f = typename T_fit::mt19937_t(Catch::rngSeed());
+
+	TRY_("bit_swap_f<+1>( ordinal_q)")
+	{
+		T_delta x, y;
+
+		x =  1; y =  2; TRUE_(bit_swap_f<+1>(x, y) ==  0); TRUE_(x ==  1); TRUE_(y ==  2);
+		x =  2; y =  1; TRUE_(bit_swap_f<+1>(x, y) == -1); TRUE_(x ==  1); TRUE_(y ==  2);
+		x = -1; y =  1; TRUE_(bit_swap_f<+1>(x, y) ==  0); TRUE_(x == -1); TRUE_(y ==  1);
+		x =  1; y = -1; TRUE_(bit_swap_f<+1>(x, y) == -1); TRUE_(x == -1); TRUE_(y ==  1);
+
+	}
+	TRY_("bit_swap_f<+1>(cardinal_q)")
+	{
+		T_sigma x, y;
+
+		x =  1; y =  2; TRUE_(bit_swap_f<+1>(x, y) ==  0); TRUE_(x ==  1); TRUE_(y ==  2);
+		x =  2; y =  1; TRUE_(bit_swap_f<+1>(x, y) == -1); TRUE_(x ==  1); TRUE_(y ==  2);
+	//	x = -1; y =  1; TRUE_(bit_swap_f<+1>(x, y) == -1); TRUE_(x == -1); TRUE_(y ==  1);
+	//	x =  1; y = -1; TRUE_(bit_swap_f<+1>(x, y) ==  1); TRUE_(x ==  1); TRUE_(y == -1);
+
+	}
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+TAG_("bit", "bit_extrema_f")
+{
+	using T_fit = fit<>;
+	using T_sigma = typename T_fit::sigma_type;
+	using T_delta = typename T_fit::delta_type;
+	using T_alpha = typename T_fit::alpha_type;
+	using T_aphex = typename T_fit::aphex_type;
+	auto mt19937_f = typename T_fit::mt19937_t(Catch::rngSeed());
+
+	TRY_("bit_extrema_f(cardinal_q)")
+	{
+		T_sigma x, y;
+
+		x = 15; y = 24; TRUE_(bit_extrema_f<-1>(x, y) ==   3);
+		x = 42; y = 56; TRUE_(bit_extrema_f<-1>(x, y) ==  14);
+
+		x = 15; y = 24; TRUE_(bit_extrema_f<+1>(x, y) == 120);
+		x = 42; y = 56; TRUE_(bit_extrema_f<+1>(x, y) == 168);
+
+	}
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+
 TAG_("bit", "bit_trim_f")
 {
 	using T_fit = fit<>;

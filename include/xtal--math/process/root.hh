@@ -2,8 +2,8 @@
 #include "./any.hh"
 
 #include "./power.hh"
-
-
+#include "./square.hh"
+#include "./imagine.hh"
 
 
 XTAL_ENV_(push)
@@ -51,6 +51,7 @@ struct root
 		XTAL_DEF_(return,inline,set)
 		method_f(auto &&z)
 		noexcept -> auto
+		requires un_n<atom::couple_q<XTAL_ALL_(z)>>
 		{
 			using Z     = XTAL_ALL_(z);
 			using Z_fit = bond::fit<Z>;
@@ -69,47 +70,93 @@ struct root
 			XTAL_0IF_(to) (evaluate<I_lim>(XTAL_REF_(z), constant_t<7>{}))
 			XTAL_0IF_(else) {return pow(XTAL_REF_(z), Z_fit::alpha_1/M_exp);}
 		}
-
-	protected:
-		template <int I_lim>
+		template <int N_lim=0b11>
 		XTAL_DEF_(return,inline,set)
-		evaluate(auto &&z, constant_q auto i_exp)
-		noexcept -> XTAL_ALL_(z)
-		requires (M_exp%i_exp == 0 and 1 != M_exp/i_exp)
+		method_f(auto &&z)
+		noexcept -> auto
+		requires in_n<atom::couple_q<XTAL_ALL_(z)>>
 		{
-			return root_t<M_exp/-i_exp>::template method_f<I_lim>(root_t<-i_exp>::template method_f<I_lim>(XTAL_REF_(z)));
-		}
-		template <int I_lim> requires in_n<M_exp_mag, 1>
-		XTAL_DEF_(return,inline,set)
-		evaluate(auto &&z)
-		noexcept -> XTAL_ALL_(z)
-		{
-			using _fit = bond::fit<decltype(z)>;
+			using Z = XTAL_ALL_(z);
+			using Z_fit = bond::fit<Z>;
 
 			XTAL_IF0
 			XTAL_0IF (M_exp ==  1) {
 				return XTAL_REF_(z);
 			}
-			XTAL_0IF (M_cut <= 0) {
-				return one/(XTAL_REF_(z));
+			XTAL_0IF (M_exp == -1) {
+				return Z_fit::alpha_1/XTAL_REF_(z);
 			}
-			XTAL_0IF (0 <  M_cut) {
-				return one/(XTAL_REF_(z) + _fit::minilon_f(M_cut));
+			XTAL_0IF_(else) {
+			//	TODO: Approximate collectively?
+				return Z::template zip_from<[] XTAL_1FN_(call) (method_f<N_lim>)>(XTAL_REF_(z));
 			}
 		}
+
+	protected:
+		template <int I_lim>
+		XTAL_DEF_(return,inline,set)
+		evaluate(auto &&z, constant_q auto i_exp)
+		noexcept -> objective_t<XTAL_ALL_(z)>
+		requires (M_exp%i_exp == 0 and 1 != M_exp/i_exp)
+		{
+			return root_t<M_exp/-i_exp>::template
+				method_f<I_lim>(root_t<-i_exp>::template method_f<I_lim>(XTAL_REF_(z)));
+		}
+		template <int I_lim> requires in_n<M_exp_mag, 1>
+		XTAL_DEF_(return,inline,set)
+		evaluate(auto &&z)
+		noexcept -> objective_t<XTAL_ALL_(z)>
+		{
+			using Z     = XTAL_ALL_(z);
+			using Z_fit = bond::fit<Z>;
+			
+			using Z_alpha = typename Z_fit::alpha_type;
+			using Z_delta = typename Z_fit::delta_type;
+			using Z_sigma = typename Z_fit::sigma_type;
+			auto constexpr _1      = Z_fit::alpha_1;
+			auto constexpr  Z_exp  = Z_fit::exponent.mask;
+			auto constexpr  Z_pos  = Z_fit::positive.mask;
+			auto constexpr  Z_cut  = M_cut == 0? Z_alpha{0}: Z_fit::minilon_f(M_cut);
+
+			XTAL_IF0
+			XTAL_0IF (1 == M_exp) {
+				return XTAL_REF_(z);
+			}
+			XTAL_0IF (1 <= M_cut and real_variable_q<Z>) {
+				auto const z_cut = _xtd::copysign(Z_cut, z);
+				return _1/(XTAL_REF_(z) + z_cut);
+			}
+			XTAL_0IF (M_cut <= 0 and real_variable_q<Z>) {
+				return _1/XTAL_REF_(z);
+			}
+			XTAL_0IF (complex_variable_q<Z> and real_variable_q<typename Z::value_type>) {
+			// Emulating `-fcx-fortran-rules`...
+				auto const z_re =  z.real(); auto i_dn = Z_pos&_xtd::bit_cast<Z_sigma>(z_re);
+				auto const z_im = -z.imag(); auto i_up = Z_pos&_xtd::bit_cast<Z_sigma>(z_im);
+				(void) bond::math::bit_swap_f<+1>(i_dn, i_up);
+				auto const z_i  = _xtd::bit_cast<Z_alpha>(Z_pos - i_up);
+				auto const z_2  =  square_f(z_i)/square_f(Z_cut, z_re*z_i, z_im*z_i);
+				return complexion_f(XTAL_MOV_(z_re)*z_2, XTAL_MOV_(z_im)*z_2);
+			}
+			XTAL_0IF_(else) {
+				return _1/XTAL_REF_(z);// TODO: Handle generic `0 < M_cut`!
+			}
+		}
+
 		template <int I_lim> requires in_n<M_exp_mag, 2>
 		XTAL_DEF_(return,inline,set)
 		evaluate(complex_variable_q auto z)
-		noexcept -> XTAL_ALL_(z)
+		noexcept -> objective_t<XTAL_ALL_(z)>
 		{
-			using _fit = bond::fit<decltype(z)>;
+			using Z     = XTAL_ALL_(z);
+			using Z_fit = bond::fit<Z>;
 
 			XTAL_IF0
 			XTAL_0IF_(consteval) {
-				z *= _fit::haplo_f(M_exp >> 1);
+				z *= Z_fit::haplo_f(M_exp >> 1);
 				auto const x_re = z.real();
 				auto const x_im = z.imag();
-				auto const x_a2 = _xtd::plus_multiplies(x_re*x_re, x_im, x_im);
+				auto const x_a2 = square_f(x_re, x_im);
 				auto const x_a1 = root_t<2>::template method_f<I_lim>(x_a2);
 
 				auto y_re = x_a1 + x_re, v_re = y_re;
@@ -121,19 +168,22 @@ struct root
 				y_re *= root_t<-M_exp_mag, 1>::template method_f<I_lim>(v_re);
 				y_im *= root_t<-M_exp_mag, 1>::template method_f<I_lim>(v_im);
 
-				auto const y_im_sgn = M_exp_sgn*_xtd::copysign(_fit::alpha_1, x_im);
+				auto const y_im_sgn = M_exp_sgn*_xtd::copysign(Z_fit::alpha_1, x_im);
 				return {y_re, y_im*y_im_sgn};
 			}
 			XTAL_0IF_(else) {
 				return root_f<M_exp_sgn, M_cut>(sqrt(z));
 			}
 		}
-		template <int I_lim> requires in_n<M_exp_mag, 2, 3, 5, 7, 9>
+		template <int I_lim> requires in_n<M_exp_mag, 2, 3, 5, 7>
 		XTAL_DEF_(return,inline,set)
 		evaluate(real_variable_q auto z)
-		noexcept -> XTAL_ALL_(z)
+		noexcept -> objective_t<XTAL_ALL_(z)>
 		{
-			auto constexpr z_one = XTAL_ALL_(z){1};
+			using Z = XTAL_ALL_(z);
+			using Z_fit = bond::fit<Z>;
+
+			auto constexpr z_one = Z{1};
 			auto const     z_sig = _xtd::copysign(z_one, z); z *= z_sig;
 			XTAL_IF0
 			XTAL_0IF_(consteval) {

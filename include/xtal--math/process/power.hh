@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-
+#include "./square.hh"
 
 
 
@@ -99,10 +99,10 @@ struct  power<M_exp, Ms...>
 			if constexpr (M_exp == 3) {
 				if constexpr (complex_variable_q<decltype(o)>) {
 					auto const &[x, y] = destruct_f(o);
-					auto const      xx =  x*x;
-					auto const     _yy = -y*y;
-					auto const      u  =  x*_xtd::plus_multiplies( xx, _yy, _fit::alpha_f(3));
-					auto const      v  =  y*_xtd::plus_multiplies(_yy,  xx, _fit::alpha_f(3));
+					auto const xx =  x*x;
+					auto const yy = -y*y;
+					auto const u  =  x*_xtd::plus_multiplies(xx, yy, _fit::alpha_f(3));
+					auto const v  =  y*_xtd::plus_multiplies(yy, xx, _fit::alpha_f(3));
 					return {u, v};
 				}
 				else {
@@ -112,7 +112,7 @@ struct  power<M_exp, Ms...>
 			else {
 				auto oo = objective_f(o);
 				#pragma unroll
-				for (int i{M_exp}; i  /= 3; oo *= power_f<2>(XTAL_MOV_(oo))); return oo;
+				for (int i{M_exp}; i /= 3; oo *= power_f<2>(XTAL_MOV_(oo))); return oo;
 			}
 		}
 		template <int ...Ns>
@@ -124,9 +124,6 @@ struct  power<M_exp, Ms...>
 		{
 			using U = XTAL_ALL_(o);
 			XTAL_IF0
-			XTAL_0IF (atom::couple_q<U>) {
-				return U::template zip_from<[] XTAL_1FN_(call) (method_f<Ns...>)>(o);
-			}
 			XTAL_0IF (M_exp   == 0) {return                             U{1};}
 			XTAL_0IF (M_exp   == 1) {return                             o   ;}
 			XTAL_0IF (M_exp%3 == 0) {return power_f<M_exp/3>(power_f<3>(o)) ;}
@@ -156,7 +153,9 @@ struct  power<M_exp, Ms...>
 		method_f(auto &&o)
 		noexcept -> auto
 		{
-			return S_::template method_f<Ns...>(one/XTAL_REF_(o));
+			using U = XTAL_ALL_(o);
+			using U_fit = bond::fit<U>;
+			return S_::template method_f<Ns...>(U_fit::alpha_1/XTAL_REF_(o));
 		}
 
 	};
