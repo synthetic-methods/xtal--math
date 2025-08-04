@@ -106,7 +106,7 @@ struct logarithm<-1, 0>
 			/*/
 			auto constexpr zoom_up2 = U_fit::haplo_f(N_lim*2 + 1);
 
-			auto v = aspect_f<signed>(o), w = square_f(XTAL_REF_(o));
+			auto v = decompose_f<signed>(o), w = square_f(XTAL_REF_(o));
 			w = term_f(one, zoom_up2, XTAL_MOV_(w));
 
 			#pragma unroll
@@ -255,7 +255,7 @@ struct logarithm<-1, 1>
 			U_delta N;
 			o *= _N_log2;
 			XTAL_IF1_(consteval) {
-				N = static_cast<U_delta>(o + U_fit::dnsilon_f(1)*half*aspect_f<signed>(o));
+				N = static_cast<U_delta>(o + U_fit::dnsilon_f(1)*half*decompose_f<signed>(o));
 				n = static_cast<U_alpha>(N);
 			}
 			XTAL_0IF_(else) {

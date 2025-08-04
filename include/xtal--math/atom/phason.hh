@@ -11,7 +11,7 @@ namespace xtal::atom::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 /*!
-\brief   Extends `grade` as a fixed-point fractional/cyclic value with a bisected representation.
+\brief   Extends `differential` as a fixed-point fractional/cyclic value with a bisected representation.
 
 Allows floating-point construction via `std::initializer_list`,
 and access to the floating-point value via `operator()`/`operator(int)`.
@@ -24,9 +24,9 @@ and addition (affecting only the initial element).
 template <class   ..._s>	struct          phason;
 template <class   ..._s>	using           phason_t = typename phason<_s...>::type;
 template <class   ...Ts>	concept         phason_q = bond::tag_infixed_p<phason_t, Ts...>;
-template <class   ...Ts>	concept    real_phason_q = bond::tag_infixed_p<phason_t, Ts...> and real_variable_q<initializer_t<Ts>...>;
-template <class   ...Ts>	concept simplex_phason_q = bond::tag_infixed_p<phason_t, Ts...> and simplex_field_q<initializer_t<Ts>...>;
-template <class   ...Ts>	concept complex_phason_q = bond::tag_infixed_p<phason_t, Ts...> and complex_field_q<initializer_t<Ts>...>;
+template <class   ...Ts>	concept    real_phason_q = phason_q<Ts...> and real_variable_q<initializer_t<Ts>...>;
+template <class   ...Ts>	concept simplex_phason_q = phason_q<Ts...> and simplex_field_q<initializer_t<Ts>...>;
+template <class   ...Ts>	concept complex_phason_q = phason_q<Ts...> and complex_field_q<initializer_t<Ts>...>;
 
 XTAL_DEF_(let) phason_f = [] XTAL_1FN_(call) (_detail::factory<phason_t>::make);
 
@@ -40,7 +40,7 @@ struct phason<_s ...>
 };
 template <vector_q A> requires integral_variable_q<unstruct_u<A>>
 struct phason<A>
-:	grade<A>
+:	differential<A>
 {
 };
 template <vector_q A, scalar_q ..._s>
@@ -58,7 +58,7 @@ private:
 	static_assert(continuous_field_q<W>);
 
 	using W_fit   = bond::fit<W>;
-	using U_fit   = typename W_fit::template widen<-1>;
+	using U_fit   = typename W_fit::template adjust<-1>;
 	using W_sigma = typename W_fit::sigma_type;
 	using U_sigma = typename U_fit::sigma_type;
 	using W_delta = typename W_fit::delta_type;
@@ -67,15 +67,15 @@ private:
 	using V = bond::compose_s<U_delta, W_fit>;
 	using U = bond::compose_s<U_sigma, W_fit>;
 
-	using       pack_type = bond::repack_t<W[M_data]>;
-	using coordinate_type = W;
-	using inordinate_type = V;
-	using   ordinate_type = U;
+	using    pack_type = bond::repack_t<W[M_data]>;
+	using revalue_type = W;
+	using invalue_type = V;
+	using devalue_type = U;
 
 	static_assert(_std::numeric_limits<unstruct_u<U>>::is_modulo);// D'oh!
 
 	template <class T>
-	using holotype = bond::compose_s<typename grade<U[M_data]>::template homotype<T>, bond::tag<phason_t>>;
+	using holotype = bond::compose_s<typename differential<U[M_data]>::template homotype<T>, bond::tag<phason_t>>;
 
 public:
 	template <class T>
@@ -83,161 +83,122 @@ public:
 	{
 		using S_ = holotype<T>;
 
+
 	public:// TYPE
 		using typename S_::value_type;
 		using typename S_:: size_type;
 
-		using coordinate_type = W;
-		using inordinate_type = V;
-		using   ordinate_type = U;
+		using revalue_type = W;
+		using invalue_type = V;
+		using devalue_type = U;
+
 
 	public:// ACCESS
 		using S_::size;
 		using S_::self;
 		using S_::twin;
 
-		static auto constexpr   ordinate = [] XTAL_1FN_(call) (bond::math::bit_fraction_f<U>);
-		static auto constexpr coordinate = [] XTAL_1FN_(call) (bond::math::bit_fraction_f<W>);
+		static auto constexpr devalue_f = [] XTAL_1FN_(call) (bond::math::bit_fraction_f<U>);
+		static auto constexpr revalue_f = [] XTAL_1FN_(call) (bond::math::bit_fraction_f<W>);
+
 
 	public:// CONSTRUCT
 	//	using S_::S_;
-	~	homotype()                 noexcept=default;
-		homotype()                 noexcept=default;
-		XTAL_NEW_(copy) (homotype, noexcept=default)
-		XTAL_NEW_(move) (homotype, noexcept=default)
+		XTAL_NEW_(else) (homotype, noexcept:S_)
 
-		XTAL_NEW_(explicit)
-		homotype(iterable_q auto &&o)
-		noexcept
-		:	S_(count_f(o))
-		{
-			operator>>=(XTAL_REF_(o));
-		}
 		XTAL_NEW_(implicit)
 		homotype(_std::initializer_list<W> o)
 		noexcept
-		:	S_(count_f(o))
+		:	S_(variable{count_f(o)})
 		{
 			operator>>=(XTAL_MOV_(o));
 		}
+		XTAL_NEW_(explicit)
+		homotype(iterable_q auto &&o)
+		noexcept
+		:	S_(variable{count_f(o)})
+		{
+			operator>>=(XTAL_REF_(o));
+		}
 		/*/
 		XTAL_DEF_(return,inline,explicit)
-		operator coordinate_type() const
-		requires in_n<sizeof(T), sizeof(coordinate_type)>
+		operator revalue_type() const
+		requires in_n<sizeof(T), sizeof(revalue_type)>
 		{
-			return reinterpret_cast<coordinate_type const &>(*this);
+			return reinterpret_cast<revalue_type const &>(*this);
 		}
 		/***/
 
+
+	protected:// RECONSTRUCT
+
+		template <int N_pos=0>
+		XTAL_DEF_(mutate,inline,let)
+		place(iterable_q auto &&o)
+		noexcept -> auto &
+		{
+			auto i = S_::data();
+			if constexpr (N_pos != 0) {i += S_::size() - o.size();}
+			_detail::copy_to<T::devalue_f>(i, XTAL_REF_(o));
+			return self();
+		}
+
 	public:// RECONSTRUCT
+		XTAL_DEF_(mutate,inline,let) operator >>=(iterable_q         auto &&o) noexcept -> auto & {return place<0>(XTAL_REF_(o));}
+		XTAL_DEF_(mutate,inline,let) operator <<=(iterable_q         auto &&o) noexcept -> auto & {return place<1>(XTAL_REF_(o));}
+		XTAL_DEF_(mutate,inline,let) operator >>=(_std::initializer_list<W> o) noexcept -> auto & {return place<0>(XTAL_MOV_(o));}
+		XTAL_DEF_(mutate,inline,let) operator <<=(_std::initializer_list<W> o) noexcept -> auto & {return place<1>(XTAL_MOV_(o));}
+
+
+	public:// OPERATE
 	//	using S_::operator >>=;
 	//	using S_::operator <<=;
 
 		XTAL_DEF_(mutate,inline,let)
-		operator >>=(_std::initializer_list<W> o)
-		noexcept -> auto &
+		operator <<=(integral_q auto const i)
+		noexcept ->  auto &
 		{
-			_detail::move_to<T::ordinate>(S_::data(), XTAL_REF_(o));
+			auto &head = get<0>(self());
+			head <<= i;
 			return self();
 		}
 		XTAL_DEF_(mutate,inline,let)
-		operator >>=(iterable_q auto       &&o)
-		noexcept -> auto &
+		operator >>=(integral_q auto const i)
+		noexcept ->  auto &
 		{
-			_detail::move_to<T::ordinate>(S_::data(), XTAL_REF_(o));
-			return self();
-		}
-		XTAL_DEF_(mutate,inline,let)
-		operator >>=(iterable_q auto const  &o)
-		noexcept -> auto &
-		{
-			_detail::copy_to<T::ordinate>(S_::data(), XTAL_REF_(o));
-			return self();
-		}
-		
-		XTAL_DEF_(mutate,inline,let)
-		operator <<=(_std::initializer_list<W> o)
-		noexcept -> auto &
-		{
-			auto i0 = S_::data(), iN = _std::next(i0, S_::size() - o.size());
-			_detail::move_to<T::ordinate>(iN, XTAL_REF_(o));
-			return self();
-		}
-		XTAL_DEF_(mutate,inline,let)
-		operator <<=(iterable_q auto &&o)
-		noexcept -> auto &
-		{
-			auto i0 = S_::data(), iN = _std::next(i0, S_::size() - o.size());
-			_detail::move_to<T::ordinate>(iN, XTAL_REF_(o));
-			return self();
-		}
-		XTAL_DEF_(mutate,inline,let)
-		operator <<=(iterable_q auto const &o)
-		noexcept -> auto &
-		{
-			auto i0 = S_::data(), iN = _std::next(i0, S_::size() - o.size());
-			_detail::copy_to<T::ordinate>(iN, XTAL_REF_(o));
+			auto &head = reinterpret_cast<invalue_type &>(get<0>(self()));
+			head >>= i;
 			return self();
 		}
 
-	public:// OPERATE
-		using S_::operator++;
-		using S_::operator--;
-
-		template <int N> requires in_n<size, 2>
-		XTAL_DEF_(mutate,inline,let)
-		operator++(int)
-		noexcept -> auto &
-		{
-			auto t = twin(); operator++<N>(); return t;
+		XTAL_DEF_(return,inline,met)
+		operator >> (T const &t, integral_q auto const i)
+		noexcept -> auto {
+			return t.twin() >>= i;
 		}
-		template <int N> requires in_n<size, 2>
-		XTAL_DEF_(mutate,inline,let)
-		operator--(int)
-		noexcept -> auto &
-		{
-			auto t = twin(); operator--<N>(); return t;
-		}
-		template <int N> requires in_n<size, 2>
-		XTAL_DEF_(mutate,inline,let)
-		operator++()
-		noexcept -> auto &
-		{
-			auto &s = self();
-			XTAL_IF0
-			XTAL_0IF (0 <= N) {get<0>(s) += _xtd::bit_cast<inordinate_type>(get<1>(s)) << +N;}
-			XTAL_0IF (N <  0) {get<0>(s) += _xtd::bit_cast<inordinate_type>(get<1>(s)) >> -N;}
-			return s;
-		}
-		template <int N> requires in_n<size, 2>
-		XTAL_DEF_(mutate,inline,let)
-		operator--()
-		noexcept -> auto &
-		{
-			auto &s = self();
-			XTAL_IF0
-			XTAL_0IF (0 <= N) {get<0>(s) -= _xtd::bit_cast<inordinate_type>(get<1>(s)) << +N;}
-			XTAL_0IF (N <  0) {get<0>(s) -= _xtd::bit_cast<inordinate_type>(get<1>(s)) >> -N;}
-			return s;
+		XTAL_DEF_(return,inline,met)
+		operator << (T const &t, integral_q auto const i)
+		noexcept -> auto {
+			return t.twin() <<= i;
 		}
 
 		/*!
 		\brief   Scales all elements.
 		*/
 		XTAL_DEF_(mutate,inline,let)
-		operator /= (auto &&x)
+		operator /=(auto &&x)
 		noexcept -> auto &
 		requires un_n<requires (W u) {u /= x;}>
 		and      XTAL_TRY_(to) (S_::operator/=(XTAL_REF_(x)))
 
 		XTAL_DEF_(mutate,inline,let)
-		operator *= (auto &&x)
+		operator *=(auto &&x)
 		noexcept -> auto &
 		requires un_n<requires (W u) {u *= x;}>
 		and      XTAL_TRY_(to) (S_::operator*=(XTAL_REF_(x)))
 
 		XTAL_DEF_(mutate,inline,let)
-		operator /= (auto &&x)
+		operator /=(auto &&x)
 		noexcept -> auto &
 		requires in_n<requires (W u) {u *= x;}>
 		{
@@ -246,7 +207,7 @@ public:
 			return operator*=(X_fit::alpha_1/XTAL_REF_(x));
 		}
 		XTAL_DEF_(mutate,inline,let)
-		operator *= (auto &&x)
+		operator *=(auto &&x)
 		noexcept -> auto &
 		requires in_n<requires (W u) {u *= x;}>
 		{
@@ -321,12 +282,54 @@ public:
 			return self();
 		}
 
+	public:
+		using S_::operator++;
+		using S_::operator--;
+
+		template <int N> requires in_n<size, 2>
+		XTAL_DEF_(mutate,inline,let)
+		operator++(int)
+		noexcept -> auto &
+		{
+			auto t = twin(); operator++<N>(); return t;
+		}
+		template <int N> requires in_n<size, 2>
+		XTAL_DEF_(mutate,inline,let)
+		operator--(int)
+		noexcept -> auto &
+		{
+			auto t = twin(); operator--<N>(); return t;
+		}
+		template <int N> requires in_n<size, 2>
+		XTAL_DEF_(mutate,inline,let)
+		operator++()
+		noexcept -> auto &
+		{
+			auto &s = self();
+			XTAL_IF0
+			XTAL_0IF (0 <= N) {get<0>(s) += _xtd::bit_cast<invalue_type>(get<1>(s)) << +N;}
+			XTAL_0IF (N <  0) {get<0>(s) += _xtd::bit_cast<invalue_type>(get<1>(s)) >> -N;}
+			return s;
+		}
+		template <int N> requires in_n<size, 2>
+		XTAL_DEF_(mutate,inline,let)
+		operator--()
+		noexcept -> auto &
+		{
+			auto &s = self();
+			XTAL_IF0
+			XTAL_0IF (0 <= N) {get<0>(s) -= _xtd::bit_cast<invalue_type>(get<1>(s)) << +N;}
+			XTAL_0IF (N <  0) {get<0>(s) -= _xtd::bit_cast<invalue_type>(get<1>(s)) >> -N;}
+			return s;
+		}
+
+	public:
 		XTAL_DEF_(inline,let)
 		scale(W u, W w=one)
 		noexcept -> auto &
 		{
-			bond::seek_out_f<size - 1, 1>([&, this]<constant_q I> (I)
-				XTAL_0FN_(do) (get<I{}>(self()) = T::ordinate(got<I{}>(self())*(w *= u))));
+			bond::seek_until_f<size - 1, 1>([&, this]<constant_q I> (I)
+				XTAL_0FN_(do) (get<I{}>(self()) = T::devalue_f(got<I{}>(self())*(w *= u))));
 			return self();
 		}
 		XTAL_DEF_(inline,let)

@@ -37,14 +37,6 @@ private:
 
 	using _fit = bond::fit<A>;
 	
-	XTAL_DEF_(return,inline,set)
-	cut_inf(auto &&o)
-	noexcept -> auto
-	{
-		using _fit = bond::fit<decltype(o)>;
-		return process::math::cut_f<[] XTAL_1FN_(to) (-_fit::maxilon_f(1))>(XTAL_REF_(o));
-	}
-
 	template <class T>
 	using endotype = typename serial<A>::template homotype<T>;
 
@@ -69,7 +61,7 @@ public:
 		using S_::S_;
 
 		/*!
-		\brief   Generates part of the complex sinusoid determined by `std::pow(2, o_shift{})`.
+		\brief   Generates a section of the complex sinusoid determined by `std::pow(2, o_shift{})`.
 		*/
 		XTAL_DEF_(inline)
 		XTAL_NEW_(explicit)
@@ -89,6 +81,13 @@ public:
 			generate(XTAL_REF_(oo)...);
 		}
 
+		template <constant_q I>
+		XTAL_DEF_(inline,let)
+		generate(I, auto &&...oo)
+		noexcept -> T &
+		{
+			return generate<I::value>(XTAL_REF_(oo)...);
+		}
 		template <int N_count=size>
 		XTAL_DEF_(inline,let)
 		generate(U1 const &u1, U2 const &u2)
@@ -105,7 +104,7 @@ public:
 			
 			reinterpret_cast<W1_ &>(self()).template generate<0, 0, 2, size>(u1);
 			reinterpret_cast<U2_ &>(self()).template generate<0, 1, 2, size>({u2, one/u2});
-			bond::seek_out_f<+size>([&, this] (auto I) XTAL_0FN {
+			bond::seek_until_f<+size>([&, this] (auto I) XTAL_0FN {
 				auto &[o, e] = get<I>(s);
 				auto &[f, g] = destruct_f(e);
 				get<I>(s) = {o*f, _std::conj(o)*g};
@@ -123,6 +122,8 @@ public:
 		generate(value_type const &u)
 		noexcept -> T &
 		{
+			using process::math::limit_f;
+			using process::math::power_f;
 			using A_delta = typename S_::difference_type;
 
 		//	Compute the start- and end-points for the required segment:
@@ -137,22 +138,22 @@ public:
 			if constexpr (N_index == -1 and N_inset == 0 and N_step == 1 and N_size == size) {
 				generate<1, -1, 1, size - 1>(u);
 				if constexpr (un_n<N_size&1>) {
-					get<N_limit>(s) = process::math::power_f<2>(get<N_limit/2>(s));
+					get<N_limit>(s) = power_f<2>(get<N_limit/2>(s));
 				}
 			}
 			else {
 			//	Populate the 0th and 1st powers:
-				auto const o = process::math::power_f<N_index>(u);
+				auto const o = power_f<N_index>(u);
 				get<I0 + _0>(s) = o;
 				get<I0 + _1>(s) = o*u;
 
 			//	Populate the remaining powers by squaring/multiplication:
-				bond::seek_out_f<(N_size >> 1U)>([&] (auto M)
+				bond::seek_until_f<(N_size >> 1U)>([&] (auto M)
 					XTAL_0FN {
 						auto constexpr UM = I0 + _1*M;
 						auto constexpr WM = J0 + _2*M;
 						
-						auto const w = process::math::power_f<2>(get<UM>(s));
+						auto const w = power_f<2>(limit_f<-3>(get<UM>(s)));
 						get<WM + _0>(s) =   w;
 						get<WM + _1>(s) = u*w;
 					}
@@ -184,7 +185,7 @@ public:
 			auto const j = S_::rend() - 1;
 			
 		//	Compute the fractional sinusoid for this `size`:
-			auto constexpr y = process::math::pade::unity_t<1>::template method_f<6>(_fit::ratio_f(-1, size << 1));
+			auto constexpr y = process::math::pade::unity_f<(+1)>(_fit::ratio_f(-1, size << 1));
 
 		//	Compute the initial `1/8`th then mirror the remaining segments:
 			typename S_::difference_type constexpr M = size >> 2U;// `1/8`th
@@ -328,7 +329,9 @@ public:
 		struct transverse
 		{
 			template <class Y>
-			using holotype = typename group_multiplication<A>::template homotype<Y>;
+			//\
+			using holotype = typename group_multiplication<A>::template homotype<T>;
+			using holotype = typename group<wrap_s<A, _std::multiplies>>::template homotype<Y>;
 
 			template <class Y>
 			class homotype : public holotype<homotype<Y>>

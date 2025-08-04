@@ -11,18 +11,24 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 /*!
-\brief   Resolves the aspect indicated by the supplied type.
+\brief   Resolves the value indicated by the supplied type,
+         e.g. `signed`/`unsigned` resolves the sign/magnitude, respectively.
 
-Providing related utility w.r.t. e.g. `signed`/`unsigned` i.o.w. sign/magnitude.
+\note    When applied to floating-point values,
+         the `decompose<signed>` excludes zero.
+
+\todo    Provide for smoothing via `(Sqrt[#1^2 + #2^2]&)`.
+\todo    Include projections e.g. `real` and `imag`.
+
 */
 template <typename ...As>
-struct aspect;
+struct decompose;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <>
-struct aspect<signed>
+struct decompose<signed>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -104,7 +110,15 @@ struct aspect<signed>
 		noexcept -> decltype(auto)
 		{
 			using  U = XTAL_ALL_(o);
-			return U::template zip_from<[] XTAL_1FN_(call) (method_f<Ns...>)>(o);
+			return U::template zip_from<[] XTAL_1FN_(call) (method_f<Ns...>)>(XTAL_REF_(o));
+		}
+
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		method_f(_std::in_place_t, auto &&...oo)
+		noexcept -> decltype(auto)
+		{
+			return edit_f(XTAL_REF_(oo)...);
 		}
 
 		template <int N_side=0> requires in_n<N_side, 1, 0, -1>
@@ -158,12 +172,8 @@ struct aspect<signed>
 
 	};
 };
-
-
-////////////////////////////////////////////////////////////////////////////////
-
 template <>
-struct aspect<unsigned>
+struct decompose<unsigned>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -175,14 +185,14 @@ struct aspect<unsigned>
 
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		method_f(_std::unsigned_integral auto const &o)
+		method_f(cardinal_variable_q auto const &o)
 		noexcept -> auto
 		{
 			return o;
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		method_f(_std::  signed_integral auto const &o)
+		method_f( ordinal_variable_q auto const &o)
 		noexcept -> auto
 		{
 			using _fit = bond::fit<decltype(o)>;
@@ -211,7 +221,7 @@ struct aspect<unsigned>
 		noexcept -> decltype(auto)
 		{
 			using  U = XTAL_ALL_(o);
-			return U::template zip_from<[] XTAL_1FN_(call) (method_f<Ns...>)>(o);
+			return U::template zip_from<[] XTAL_1FN_(call) (method_f<Ns...>)>(XTAL_REF_(o));
 		}
 
 		template <auto ...Ns>
@@ -241,11 +251,11 @@ struct aspect<unsigned>
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename ...As>
-using aspect_t = process::confined_t<aspect<As...>>;
+using decompose_t = process::confined_t<decompose<As...>>;
 
 template <typename ...As>
 XTAL_DEF_(let)
-aspect_f = [] XTAL_1FN_(call) (aspect_t<As...>::method_f);
+decompose_f = [] XTAL_1FN_(call) (decompose_t<As...>::method_f);
 
 
 ///////////////////////////////////////////////////////////////////////////////
