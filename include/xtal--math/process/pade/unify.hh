@@ -45,8 +45,6 @@ struct unify<M_ism>
 template <int M_ism> requires in_n<M_ism, 1, 2>
 struct unify<M_ism>
 {
-	static constexpr int I_sgn = cosign_v<M_ism>;
-
 	template <class S>
 	class subtype : public bond::compose_s<S>
 	{
@@ -63,15 +61,15 @@ struct unify<M_ism>
 			using U    = XTAL_ALL_(o);
 			using U_fit = bond::fit<U>;
 
-			auto constexpr i_sgn = U_fit::alpha_f(I_sgn);
+			auto constexpr N_sgn = U_fit::alpha_f(cosign_v<M_ism>);
 
 			auto y = o.imag();
 			auto x = o.real();
 			auto const xx = x*x;
 			auto const yy = y*y;
 			auto const y_ = two*x*y;
-			auto const x_ = term_f(xx, yy, +i_sgn);
-			auto const w_ = term_f(xx, yy, -i_sgn);
+			auto const x_ = term_f(xx, yy, +N_sgn);
+			auto const w_ = term_f(xx, yy, -N_sgn);
 			auto const m_ = root_f<-1>(w_);
 			return complexion_f(x_, y_)*(m_);
 		}

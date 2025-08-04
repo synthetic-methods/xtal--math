@@ -23,17 +23,24 @@ struct unity;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism> requires in_n<M_ism, 0, 1, 2>
-struct unity<M_ism, 0>
+template <int M_ism, int M_car> requires in_n<M_ism, 0>
+struct unity<M_ism, M_car>
+:	identity<M_ism, M_car>
+{
+};
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <int M_ism, int M_car> requires in_n<M_ism, 1, 2> and in_n<M_car, 0, 1>
+struct unity<M_ism, M_car>
 {
 	using superprocess = process::lift_t<unify<M_ism>, _detail::impunity<M_ism>>;
 
-	using superkind = any<unity>;
-
 	template <class S>
-	class subtype : public bond::compose_s<S, superkind>
+	class subtype : public bond::compose_s<S>
 	{
-		using S_ = bond::compose_s<S, superkind>;
+		using S_ = bond::compose_s<S>;
 
 	public:
 		using S_::S_;
@@ -50,10 +57,10 @@ struct unity<M_ism, 0>
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,set)
-		method_f(complex_field_q auto const &t)
+		method_f(complex_field_q auto const &u)
 		noexcept -> decltype(auto)
 		{
-			return method_f<N_lim>(t.real(), t.imag());
+			return method_f<N_lim>(u.real(), u.imag());
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,set)
@@ -66,91 +73,94 @@ struct unity<M_ism, 0>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,set)
-		method_f(simplex_field_q auto o)
+		method_f(simplex_field_q auto const &u)
 		noexcept -> decltype(auto)
 		{
-			using U       = XTAL_ALL_(o);
+			using U       = XTAL_ALL_(u);
 			using U_fit   = bond::fit<U>;
 			using U_alpha = typename U_fit::alpha_type;
 
-			if constexpr (N_lim < 0) {
-				auto w = o*U_fit::patio_2;
-				XTAL_IF0
-				XTAL_0IF (1 == M_ism) {return complexion_f(cos (w), sin (w));}
-				XTAL_0IF (2 == M_ism) {return complexion_f(cosh(w), sinh(w));}
+			XTAL_IF0
+			XTAL_0IF (M_car == 1) {
+				return confined_t<unity<M_ism, 0>>::
+					template method_f<N_lim>(modulo_f<-0>(u));
 			}
-			else {
-				auto const o_1 = wrap_f(o);
-				auto const o_2 = objective_f(U_fit::haplo_1*wrap_f(U_fit::diplo_1*o_1));
-				auto const o_v = one - two*nearest_f<+1>(aspect_f<unsigned>(o_1 - o_2));
-			//	auto const o_v = U_fit::alpha_1*(((o_2 == o_1) << 1) - 1);
-				return superprocess::template method_f<N_lim>(o_2)*o_v;
+			XTAL_0IF (0 <= N_lim) {
+				auto const o_1 = objective_f(u);
+				auto const o_2 = objective_f(modulo_f<-1>(o_1));
+				return superprocess::template method_f<N_lim>(o_2)*
+					term_f(one, -U_fit::diplo_f(2), decompose_f<unsigned>(o_1 - o_2));
+			}
+			XTAL_0IF (N_lim <  0) {
+				XTAL_IF1_(consteval) {
+					return method_f<below_v<(1<<2), (unsigned) N_lim>>(u);
+				}
+				XTAL_0IF_(else) {
+					auto const w = objective_f(u*U_fit::patio_2);
+					XTAL_IF0
+					XTAL_0IF (1 == M_ism) {return complexion_f(cos (w), sin (w));}
+					XTAL_0IF (2 == M_ism) {return complexion_f(cosh(w), sinh(w));}
+				}
 			}
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return,set)
-		method_f(atom::math::phason_q auto t_)
+		method_f(atom::math::phason_q auto const &t_)
 		noexcept -> decltype(auto)
 		{
-			using T_ = XTAL_ALL_(t_);
-			using T_fit = bond::fit<decltype(t_[0])>;// Underlying...
-			using U_fit = bond::fit<decltype(t_(0))>;
-			using T_sigma = typename T_fit::sigma_type;
+			using T_      = XTAL_ALL_(t_);
+			using T_fit   = bond::fit<decltype(t_[0])>;// Underlying...
+			using U_fit   = bond::fit<decltype(t_(0))>;
 			using U_sigma = typename U_fit::sigma_type;
 			using U_alpha = typename U_fit::alpha_type;
 
-			if constexpr (N_lim < 0) {
+			XTAL_IF0
+			XTAL_0IF (N_lim <  0) {
 				return method_f<N_lim>(t_(0));
 			}
-			else {
-				T_sigma &u0 = t_[0];
-				T_sigma  un = u0;
-				un ^= un << 1;
-				un &= T_fit::sign.mask;
-				u0 ^= un;
-				U_sigma vn{un};
-				vn <<= U_fit::full.depth - T_fit::full.depth;
-				vn  |= U_fit::unit.mask;
-				return superprocess::template method_f<N_lim>(t_(0))*
-					operative_f<[] XTAL_1FN_(call) (_xtd::bit_cast<U_alpha>)>(vn);
+			XTAL_0IF_(else) {
+				auto f_  = modulo_f<-1>(t_);
+				auto n1  = operative_f<[] XTAL_1FN_(call) (U_sigma)>(f_[0]^t_[0]);
+				n1     <<= U_fit::full.depth - T_fit::full.depth;
+				n1      &= U_fit::sign.mask;
+				n1      |= U_fit::unit.mask;
+				auto const u1 = operative_f<[] XTAL_1FN_(call) (_xtd::bit_cast<U_alpha>)>(n1);
+				return superprocess::template method_f<N_lim>(f_(0))*u1;
 			}
 		}
 
 	};
 };
-template <int M_ism> requires in_n<M_ism, -1, -2>
-struct unity<M_ism, 0>
+template <int M_ism, int M_car> requires in_n<M_ism,-1,-2> and in_n<M_car, 0, 1>
+struct unity<M_ism, M_car>
 {
-	using superkind = any<unity>;
-
 	template <class S>
-	class subtype : public bond::compose_s<S, superkind>
+	class subtype : public bond::compose_s<S>
 	{
-		using S_ = bond::compose_s<S, superkind>;
+		using S_ = bond::compose_s<S>;
 
 	public:
 		using S_::S_;
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,set)
-		method_f(complex_field_q auto &&o)
+		method_f(complex_field_q auto &&u)
 		noexcept -> decltype(auto)
 		{
-			using U     = XTAL_ALL_(o);
-			using U_fit = bond::fit<U>;
+		//	TODO: Handle `M_car == 1`!
 
-			auto constexpr N_lim_tan = N_lim;
-			auto constexpr N_lim_log = 2;
+			using U     = XTAL_ALL_(u);
+			using U_fit = bond::fit<U>;
 
 			auto constexpr _1 = U_fit::haplo_0, _2pi = _1/U_fit::patio_2;
 			auto constexpr _2 = U_fit::haplo_1, _4pi = _2/U_fit::patio_2;
 
-			auto const &[x_re, x_im] = destruct_f(o);
-			auto const   y_re = tangy_t<-1, 1>::template method_f<N_lim_tan>(x_im, x_re);
+			auto const &[x_re, x_im] = destruct_f(XTAL_REF_(u));
+			auto const   y_re = tangy_t<-1, 1>::template method_f<N_lim>(x_im, x_re);
 			auto const   w_im = square_f(x_re, x_im);
 			//\
 			auto const   y_im = log(w_im);
-			auto const   y_im = taylor::logarithm_t< 1, 1>::template method_f<N_lim_log>(w_im);
+			auto const   y_im = taylor::logarithm_t< 1, 1>::template method_f<N_lim>(w_im);
 			return complexion_f(y_re*_2, y_im*-_4pi);
 		}
 
@@ -160,14 +170,15 @@ struct unity<M_ism, 0>
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism=1, int M_car=0>
-using unity_t = process::confined_t<unity<M_ism, M_car>>;
+template <int M_ism=1, int M_car=1>
+XTAL_TYP_(let) unity_t = process::confined_t<unity<M_ism, M_car>>;
 
-template <int M_ism=1, int M_car=0, int ...Ns>
-XTAL_DEF_(let)
-unity_f = [] XTAL_1FN_(call) (unity_t<M_ism, M_car>::template method_f<Ns...>);
+template <int M_ism=1, int M_car=1, int N_lim=2>
+XTAL_DEF_(let) unity_f = [] XTAL_1FN_(call) (unity_t<M_ism, M_car>::template method_f<N_lim>);
 
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////
 XTAL_ENV_(pop)
+
+#include "./unity.hh_"

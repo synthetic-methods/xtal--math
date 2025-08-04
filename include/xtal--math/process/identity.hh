@@ -43,7 +43,7 @@ struct identity
 		noexcept -> auto
 		{
 			XTAL_IF0
-			XTAL_0IF (M_car == -0) {return XTAL_REF_(x);}
+			XTAL_0IF (M_car >= -0) {return XTAL_REF_(x);}
 			XTAL_0IF (M_car == -1) {return XTAL_ALL_(x) {one};}
 			XTAL_0IF (M_car == -2) {return XTAL_ALL_(x) {zero};}
 		}

@@ -30,8 +30,8 @@ struct dilated
 	{
 		using _fit = bond::fit<decltype(o)>;
 		auto constexpr n_val = _fit::alpha_f(bond::operate_v<M_val>);
-		auto constexpr u     =       aspect_f<unsigned>(n_val);
-		auto constexpr v     = (int) aspect_f<  signed>(n_val);
+		auto constexpr u     =       decompose_f<unsigned>(n_val);
+		auto constexpr v     = (int) decompose_f<  signed>(n_val);
 		return f(XTAL_REF_(o)*root_f<-v>(u))*root_f<+v>(u);
 	};
 

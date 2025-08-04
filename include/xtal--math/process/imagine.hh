@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-
+//#import "../atom/pade/wniplex.hh"
 
 
 
@@ -35,6 +35,16 @@ struct imagine
 	public:
 		using S_::S_;
 
+		template <auto ...>
+		XTAL_DEF_(return,inline,set)
+		//\
+		method_f(atom::math::pade::wniplex_q auto &&z)
+		method_f(atom::couple_q auto &&z)
+		noexcept -> decltype(auto)
+		requires complex_variable_q<decltype(get<0>(z))> and atom::couple_q<decltype(get<1>(z))>
+		{
+			return z.form(method_f(z.signum()), z.magnum());
+		};
 		template <auto ...>
 		XTAL_DEF_(return,inline,set)
 		method_f(complex_field_q auto &&z)
@@ -86,11 +96,10 @@ struct imagine
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int M_rot=0, int M_con=0>
-using imagine_t = process::confined_t<imagine<M_rot, M_con>>;
+XTAL_TYP_(let) imagine_t = process::confined_t<imagine<M_rot, M_con>>;
 
 template <int M_rot=1, int M_con=0, auto ...Ns>
-XTAL_DEF_(let)
-imagine_f = [] XTAL_1FN_(call) (imagine_t<M_rot, M_con>::template method_f<Ns...>);
+XTAL_DEF_(let) imagine_f = [] XTAL_1FN_(call) (imagine_t<M_rot, M_con>::template method_f<Ns...>);
 
 
 ///////////////////////////////////////////////////////////////////////////////
