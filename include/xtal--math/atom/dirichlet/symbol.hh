@@ -44,10 +44,10 @@ public:
 	class homotype : public holotype<T>
 	{
 		using S_ = holotype<T>;
-		using I_ = typename S_::difference_type;
 
 	public:// TYPE
 		using typename S_::value_type;
+		using typename S_::index_type;
 
 	public:// ACCESS
 		using S_::element;
@@ -55,11 +55,11 @@ public:
 		using S_::self;
 		using S_::twin;
 
-		XTAL_DEF_(return,inline,let) element(I_ i) const &&noexcept -> decltype(auto) {return XTAL_MOV_(S_::operator[](process::math::modulo_f<size>(i)));}
-		XTAL_DEF_(return,inline,let) element(I_ i) const  &noexcept -> decltype(auto) {return           S_::operator[](process::math::modulo_f<size>(i)) ;}
+		XTAL_DEF_(return,inline,let) element(index_type i) const &&noexcept -> decltype(auto) {return XTAL_MOV_(S_::operator[](process::math::modulo_f<size>(i)));}
+		XTAL_DEF_(return,inline,let) element(index_type i) const  &noexcept -> decltype(auto) {return           S_::operator[](process::math::modulo_f<size>(i)) ;}
 
-		XTAL_DEF_(return,inline,let) element(I_ i)       &&noexcept -> decltype(auto) {return XTAL_MOV_(S_::operator[](process::math::modulo_f<size>(i)));}
-		XTAL_DEF_(return,inline,let) element(I_ i)        &noexcept -> decltype(auto) {return           S_::operator[](process::math::modulo_f<size>(i)) ;}
+		XTAL_DEF_(return,inline,let) element(index_type i)       &&noexcept -> decltype(auto) {return XTAL_MOV_(S_::operator[](process::math::modulo_f<size>(i)));}
+		XTAL_DEF_(return,inline,let) element(index_type i)        &noexcept -> decltype(auto) {return           S_::operator[](process::math::modulo_f<size>(i)) ;}
 
 
 	public:// CONSTRUCT
@@ -81,11 +81,11 @@ public:
 			element(0) = {};
 
 			if constexpr (integral_variable_q<value_type>) {
-				bond::seek_out_f<K>([&, this] (auto i) XTAL_0FN {
+				bond::seek_until_f<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
 					element(    o) =  i;
 					element(N - o) =  i - K;
-					k *= K;
+					k *= bond::math::prime_root_f<size>();
 				});
 				element(1) = 0;
 			}
@@ -93,14 +93,14 @@ public:
 				value_type w =  1;
 				value_type u = -1;
 				if constexpr (complex_field_q<value_type>) {
-					u = pade::unity_t<1>::template method_f<6>(_fit::ratio_f(1, 2*K));
+					u = pade::unity_f<1>(_fit::ratio_f(1, 2*K));
 				}
-				bond::seek_out_f<K>([&, this] (auto i) XTAL_0FN {
+				bond::seek_until_f<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
 					element(    o) =  w;
 					element(N - o) = -w;
 					w *= u;
-					k *= K;
+					k *= bond::math::prime_root_f<size>();
 				});
 			}
 			return self();
@@ -117,7 +117,7 @@ public:
 			extent_type           k = size;
 
 			if constexpr (integral_variable_q<value_type>) {
-				bond::seek_out_f<K>([&, this] (auto i) XTAL_0FN {
+				bond::seek_until_f<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
 					if (K < o) {
 						element(M - o) = (1 + i) - K;
@@ -132,13 +132,13 @@ public:
 			else {
 				value_type w, u;
 				if constexpr (complex_field_q<value_type>) {
-					u = pade::unity_t<1>::template method_f<6>(_fit::ratio_f(1, 2*K));
+					u = pade::unity_f<1>(_fit::ratio_f(1, 2*K));
 				}
 				else {
 					u = 1;
 				}
 				w = u;
-				bond::seek_out_f<K>([&, this] (auto i) XTAL_0FN {
+				bond::seek_until_f<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
 					if (K < o) {
 						element(M - o) = -w;

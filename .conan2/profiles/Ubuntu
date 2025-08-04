@@ -7,5 +7,5 @@ compiler.version=12
 compiler.libcxx=libstdc++
 
 [buildenv]
-CXXFLAGS=-Wno-psabi -ftemplate-backtrace-limit=3 -fmax-errors=1
+CXXFLAGS=-Wno-psabi
 CXX=g++-12

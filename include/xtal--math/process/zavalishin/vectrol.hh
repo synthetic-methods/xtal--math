@@ -15,31 +15,7 @@ namespace xtal::process::math::zavalishin
 \note    Input is restricted to `U_pole` because the filter-state is managed out-of-band.
 */
 template <auto ...As>	struct  vectrol;
-template <auto ...As>	using   vectrol_t = process::confined_t<vectrol<As...>>;
-
-
-////////////////////////////////////////////////////////////////////////////////
-
-template <auto ...As>
-struct any<vectrol<As...>>
-{
-	template <class S>
-	class subtype : public S
-	{
-	public:// CONSTRUCT
-		using S::S;
-
-		template <size_type N_mask=1>
-		struct attach
-		{
-			template <class R>
-			using subtype = bond::compose_s<R,
-				typename R::reshape_type::template attach<N_mask>>;
-
-		};
-
-	};
-};
+template <auto ...As>	using   vectrol_t = confined_t<vectrol<As...>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -47,7 +23,8 @@ struct any<vectrol<As...>>
 template <auto ...As>
 struct vectrol
 {
-	using superkind = typename any_t<vectrol>::template attach<>;
+	using archetype = traits_t<vectrol>;
+	using superkind = typename archetype::template attach<>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -88,3 +65,5 @@ struct vectrol
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////
 XTAL_ENV_(pop)
+
+#include "./vectrol.hh_"

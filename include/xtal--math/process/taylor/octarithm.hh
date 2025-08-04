@@ -104,7 +104,7 @@ struct octarithm<M_ism, M_div>
 			using V_delta = int;
 
 			XTAL_IF1_(consteval) {
-				auto const d = U_fit::dnsilon_f(1)*half*aspect_f<signed>(o);
+				auto const d = U_fit::dnsilon_f(1)*half*decompose_f<signed>(o);
 				auto const N = static_cast<U_delta>(o + d);
 				auto const n = static_cast<U_alpha>(N);
 				approximate_f<N_lim>(o, n);
@@ -145,11 +145,10 @@ struct octarithm<M_ism, M_div>
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int M_ism=2, int M_div=1>
-using octarithm_t = process::confined_t<octarithm<M_ism, M_div>>;
+XTAL_TYP_(let) octarithm_t = process::confined_t<octarithm<M_ism, M_div>>;
 
-template <int M_ism=2, int M_div=1, int ...Ns>
-XTAL_DEF_(let)
-octarithm_f = [] XTAL_1FN_(call) (octarithm_t<M_ism, M_div>::template method_f<Ns...>);
+template <int M_ism=2, int M_div=1, int N_lim=2>
+XTAL_DEF_(let) octarithm_f = [] XTAL_1FN_(call) (octarithm_t<M_ism, M_div>::template method_f<N_lim>);
 
 
 ///////////////////////////////////////////////////////////////////////////////

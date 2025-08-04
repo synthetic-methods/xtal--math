@@ -48,9 +48,9 @@ struct logarithm< 1, 0>
 			XTAL_0IF (0 <= N_lim)                   {return methodology_f<N_lim>(XTAL_REF_(o));}
 			XTAL_0IF_(consteval)                    {return methodology_f<   ~0>(XTAL_REF_(o));}
 #if XTAL_SYS_(builtin)
-			XTAL_0IF (real_variable_q<decltype(o)>) {return      __builtin_log(XTAL_REF_(o));}
+			XTAL_0IF (real_variable_q<decltype(o)>) {return        __builtin_log(XTAL_REF_(o));}
 #endif
-			XTAL_0IF_(else)                         {return                log(XTAL_REF_(o));}
+			XTAL_0IF_(else)                         {return                  log(XTAL_REF_(o));}
 		}
 
 	protected:
@@ -67,7 +67,7 @@ struct logarithm< 1, 0>
 /*!
 \brief   Defines the antilogarithm `Exp[#]`,
 
-Approximated by `((Sqrt[(#/2)^2 + 1] + (#/2))*# + 1 &)`.
+Approximated by `((Sqrt[(#/2)^2 + 1] + (#/2))^2 &)`.
 */
 template <>
 struct logarithm<-1, 0>
@@ -106,7 +106,7 @@ struct logarithm<-1, 0>
 			/*/
 			auto constexpr zoom_up2 = U_fit::haplo_f(N_lim*2 + 1);
 
-			auto v = aspect_f<signed>(o), w = square_f(XTAL_REF_(o));
+			auto v = decompose_f<signed>(o), w = square_f(XTAL_REF_(o));
 			w = term_f(one, zoom_up2, XTAL_MOV_(w));
 
 			#pragma unroll
@@ -116,8 +116,8 @@ struct logarithm<-1, 0>
 			return root_f<2>(term_f(-one, two, w, term_f(w, v, root_f<2>(term_f<1, 2>(-one, w)))));
 			/*/
 			if constexpr (0 == N_lim) {
-				auto u = o*U_fit::haplo_1; u += root_f<2>(term_f(one, u, u));
-				return term_f(one, XTAL_MOV_(u), XTAL_REF_(o));
+				auto u = o*U_fit::haplo_1;
+				return square_f(u + root_f<2>(term_f<1, 2>(one, u)));
 			}
 			else {
 				return method_f<0>(superprocess::template method_f<N_lim>(XTAL_REF_(o)));
@@ -255,7 +255,7 @@ struct logarithm<-1, 1>
 			U_delta N;
 			o *= _N_log2;
 			XTAL_IF1_(consteval) {
-				N = static_cast<U_delta>(o + U_fit::dnsilon_f(1)*half*aspect_f<signed>(o));
+				N = static_cast<U_delta>(o + U_fit::dnsilon_f(1)*half*decompose_f<signed>(o));
 				n = static_cast<U_alpha>(N);
 			}
 			XTAL_0IF_(else) {

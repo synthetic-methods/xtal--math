@@ -29,20 +29,6 @@ TAG_("solid", "series")
 	using T_aphex = typename _fit::aphex_type;
 
 	/**/
-	TRY_("initialization")
-	{
-		T_sigma constexpr N = 1 << 3;
-		using V_series = series_t<T_alpha[N]>;
-		using U_series = series_t<T_alpha[N]>;
-
-		U_series baz(2.0);
-		V_series bar = reinterpret_cast<V_series &>(baz);
-		V_series foo = {1<<0, 1<<1, 1<<2, 1<<3, 1<<4, 1<<5, 1<<6, 1<<7};
-		TRUE_(equal_f(foo, bar));
-		
-	}
-	/***/
-	/*/
 	TRY_("generation of single")
 	{
 		using W7 = series_t<T_alpha[0x7]>;
@@ -71,7 +57,7 @@ TAG_("solid", "series")
 
 	}
 	/***/
-	/*/
+	/**/
 	TRY_("generation of couple")
 	{
 		using U_alpha = couple_t<T_alpha[1<<1]>;
@@ -88,7 +74,7 @@ TAG_("solid", "series")
 
 	}
 	/***/
-	/*/
+	/**/
 	TRY_("transformation")
 	{
 		T_sigma constexpr O = 1 << 5;
@@ -117,7 +103,7 @@ TAG_("solid", "series")
 
 	}
 	/***/
-	/*/
+	/**/
 	TRY_("convolution")
 	{
 		T_sigma constexpr N = 1 << 3;
@@ -135,7 +121,7 @@ TAG_("solid", "series")
 
 	}
 	/***/
-	/*/
+	/**/
 	TRY_("multiplication")
 	{
 		using C4 = series_t<T_aphex[4]>;

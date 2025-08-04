@@ -67,7 +67,7 @@ TAG_("monologarithm")
 
 		//\
 		T_aphex w = pade::unity_t<1, dilate<2>>::template method_f<4>(s_arg);
-		T_aphex w = lift_t<pade::unity<1>, dilate<2>>::template method_f<4>(s_arg);
+		T_aphex w = lift_t<pade::unity<1>, dilate<2>>::template method_f<1>(s_arg);
 		T_alpha u = one/s_abs;
 		
 		w *=      taylor::monologarithm_t<-1, 0>::template method_f<0>(u*zoom);

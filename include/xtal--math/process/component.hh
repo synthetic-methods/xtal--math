@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-#include "./aspect.hh"
+#include "./imagine.hh"
 
 
 
@@ -11,17 +11,16 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 /*!
-\brief   Provides the opposing value w.r.t. unit-addition when `N_sel&1`.
-\todo    Define via `crossfade` or something?
+\brief   Resolves the element indicated by the supplied value.
 */
-template <auto ...Ms>
-struct oppose;
+template <auto ...>
+struct component;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <auto ...Ms>
-struct oppose
+template <int M_sel>
+struct component<M_sel>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -31,29 +30,33 @@ struct oppose
 	public:
 		using S_::S_;
 
-		template <int N_sel=1>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		method_f(auto const &o)
-		noexcept -> XTAL_ALL_(o)
+		method_f(auto &&o)
+		noexcept -> auto
 		{
-			auto constexpr I_sel = N_sel&1;
 			XTAL_IF0
-			XTAL_0IF (I_sel == 0) {return       aspect_t<unsigned>::method_f(XTAL_REF_(o));}
-			XTAL_0IF (I_sel == 1) {return one - aspect_t<unsigned>::method_f(XTAL_REF_(o));}
+			XTAL_0IF (M_sel == -1) {return                   XTAL_REF_(o)  ;}
+			XTAL_0IF (M_sel ==  0) {return              real(XTAL_REF_(o)) ;}
+			XTAL_0IF (M_sel ==  1) {return imagine_f<1>(imag(XTAL_REF_(o)));}
 		}
 
 	};
+};
+template <>
+struct component<> : component<-1>
+{
 };
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <auto ...Ms>
-using oppose_t = process::confined_t<oppose<Ms...>>;
+using component_t = process::confined_t<component<Ms...>>;
 
-template <int N_sel=1>
+template <auto ...Ms>
 XTAL_DEF_(let)
-oppose_f = [] XTAL_1FN_(call) (oppose_t<>::template method_f<N_sel>);
+component_f = [] XTAL_1FN_(call) (component_t<Ms...>::method_f);
 
 
 ///////////////////////////////////////////////////////////////////////////////

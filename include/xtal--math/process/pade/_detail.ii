@@ -50,34 +50,29 @@ struct impunity<M_ism,-2>
 			auto const w = objective_f(o);
 
 			XTAL_IF0
-			XTAL_0IF (M_ism ==   1) {
-				return impunity_t< 2,-2>::template method_f<N_lim>(-o);
+			XTAL_0IF (M_ism == (+1)) {
+				return impunity_t<(+2),-2>::template method_f<N_lim>(-o);
 			}
-			XTAL_0IF (N_lim == 0x0) {// 0:1 D[...0]@0 && D[...0]@¼
-				U_alpha constexpr x0 = _fit::alpha_1;
-				U_alpha constexpr y0 = _fit::patio_1;
-				auto const x = termial_f(w, x0);
-				auto const y = termial_f(w, y0);
-				return complexion_f(x, y);
-			}
-			XTAL_0IF (N_lim == 0x1) {// 2:1 D[...1]@0 && D[...0]@¼
+			/*/
+			XTAL_0IF (N_lim == 0x00) {// 2:1 D[...1]@0 && D[...0]@¼
 				U_alpha constexpr x0 = _fit::alpha_1;
 				U_alpha constexpr x1 = 3.433629385640827046149426466881988463L;
 				U_alpha constexpr y0 = _fit::patio_1;
 				auto const x = termial_f(w, x0, x1);
 				auto const y = termial_f(w, y0);
-				return complexion_f(x, y);
+				return complexion_f(XTAL_MOV_(x), XTAL_MOV_(y));
 			}
-			XTAL_0IF (N_lim == 0x2) {// 2:3 D[...1]@0 && D[...1]@¼
+			XTAL_0IF (N_lim == 0x00) {// 2:3 D[...1]@0 && D[...1]@¼
 				U_alpha constexpr x0 = _fit::alpha_1;
 				U_alpha constexpr x1 = 3.968985697854261420737444775816737932L;
 				U_alpha constexpr y0 = _fit::patio_1;
 				U_alpha constexpr y1 = 2.141425248853737498352073235738997875L;
 				auto const x = termial_f(w, x0, x1);
 				auto const y = termial_f(w, y0, y1);
-				return complexion_f(x, y);
+				return complexion_f(XTAL_MOV_(x), XTAL_MOV_(y));
 			}
-			XTAL_0IF (N_lim == 0x3) {// 4:3 D[...2]@0 && D[...2]@¼
+			/***/
+			XTAL_0IF (N_lim == 0x00) {// 4:3 D[...2]@0 && D[...2]@¼
 				U_alpha constexpr x0 = _fit::alpha_1;
 				U_alpha constexpr x1 = 4.237909660449236428693854535224051104L;
 				U_alpha constexpr x2 = 0.955351046282004540229507364731116905L;
@@ -85,9 +80,9 @@ struct impunity<M_ism,-2>
 				U_alpha constexpr y1 = 2.978283337663136395120335432185471337L;
 				auto const x = termial_f(w, x0, x1, x2);
 				auto const y = termial_f(w, y0, y1);
-				return complexion_f(x, y);
+				return complexion_f(XTAL_MOV_(x), XTAL_MOV_(y));
 			}
-			XTAL_0IF (N_lim == 0x4) {// 4:5 D[...2]@0 && D[...3]@¼
+			XTAL_0IF (N_lim == 0x01) {// 4:5 D[...2]@0 && D[...3]@¼
 				U_alpha constexpr x0 = _fit::alpha_1;
 				U_alpha constexpr x1 = 4.390338960642080575102860479411085957L;
 				U_alpha constexpr x2 = 1.561426046129173147274250250239938996L;
@@ -96,9 +91,9 @@ struct impunity<M_ism,-2>
 				U_alpha constexpr y2 = 0.331996058066891068754049734988584509L;
 				auto const x = termial_f(w, x0, x1, x2);
 				auto const y = termial_f(w, y0, y1, y2);
-				return complexion_f(x, y);
+				return complexion_f(XTAL_MOV_(x), XTAL_MOV_(y));
 			}
-			XTAL_0IF (N_lim == 0x5) {// 6:5 D[...3]@0 && D[...3]@¼
+			XTAL_0IF (N_lim == 0x02) {// 6:5 D[...3]@0 && D[...3]@¼
 				U_alpha constexpr x0 = _fit::alpha_1;
 				U_alpha constexpr x1 = 4.487894813803155707106642350629568074L;
 				U_alpha constexpr x2 = 1.975104599215236121543726210642557678L;
@@ -108,9 +103,9 @@ struct impunity<M_ism,-2>
 				U_alpha constexpr y2 = 0.623295934882939155479821936321002832L;
 				auto const x = termial_f(w, x0, x1, x2, x3);
 				auto const y = termial_f(w, y0, y1, y2);
-				return complexion_f(x, y);
+				return complexion_f(XTAL_MOV_(x), XTAL_MOV_(y));
 			}
-			XTAL_0IF (N_lim == 0x6) {// 6:7 D[...3]@0 && D[...4]@¼
+			XTAL_0IF (N_lim == 0x3) {// 6:7 D[...3]@0 && D[...4]@¼
 				U_alpha constexpr x0 = _fit::alpha_1;
 				U_alpha constexpr x1 = 4.556288946308768410678019439942678932L;
 				U_alpha constexpr x2 = 2.275378023833944536636939235400154936L;
@@ -121,9 +116,9 @@ struct impunity<M_ism,-2>
 				U_alpha constexpr y3 = 0.022706582386768037080226242510354953L;
 				auto const x = termial_f(w, x0, x1, x2, x3);
 				auto const y = termial_f(w, y0, y1, y2, y3);
-				return complexion_f(x, y);
+				return complexion_f(XTAL_MOV_(x), XTAL_MOV_(y));
 			}
-			XTAL_0IF (N_lim == 0x7) {// 8:7 D[...4]@0 && D[...5]@¼
+			XTAL_0IF_(consteval)    {// 8:7 D[...4]@0 && D[...5]@¼
 				U_alpha constexpr x0 = _fit::alpha_1;
 				U_alpha constexpr x1 = 4.606547402370024772724248519073301565L;
 				U_alpha constexpr x2 = 2.500953736670776238483254500604284293L;
@@ -135,13 +130,13 @@ struct impunity<M_ism,-2>
 				U_alpha constexpr y3 = 0.054095324243024101847331195900039153L;
 				auto const x = termial_f(w, x0, x1, x2, x3, x4);
 				auto const y = termial_f(w, y0, y1, y2, y3);
-				return complexion_f(x, y);
+				return complexion_f(XTAL_MOV_(x), XTAL_MOV_(y));
 			}
 			XTAL_0IF_(else) {
 				auto const [u, _u] = roots_f<2>(w);
 				auto const x = cos(u*_fit::patio_1);
 				auto const y = sin(u*_fit::patio_1)*_u;
-				return complexion_f(x, y);
+				return complexion_f(XTAL_MOV_(x), XTAL_MOV_(y));
 			}
 		}
 
@@ -160,7 +155,9 @@ struct impunity<M_ism,-2>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,set)
+		//\
 		method_f(simplex_field_q auto o)
+		method_f(auto o)
 		noexcept -> auto
 		{
 			using          _fit = bond::fit<decltype(o)>;
@@ -172,18 +169,8 @@ struct impunity<M_ism,-2>
 			auto const w = objective_f(o);
 
 			XTAL_IF0
-			XTAL_0IF (0 == N_lim) {
-				U_alpha constexpr x0 =     1.00000000000000000e-0;
-				U_alpha constexpr x1 =     0.50387678776821820e-0;
-
-				U_alpha constexpr y0 = _pi*1.00000000000000000e-0;
-				U_alpha constexpr y1 = _pi*0.18114206708921260e-0;
-
-				auto const x = termial_f(w, x0, x1);
-				auto const y = termial_f(w, y0, y1);
-				return complexion_f(x, y);
-			}
-			XTAL_0IF (1 == N_lim) {
+			XTAL_0IF (N_lim == 0x00) {
+				/**/
 				U_alpha constexpr x0 =     1.00000000000000000e-0;
 				U_alpha constexpr x1 =     0.74755993126133540e-0;
 				U_alpha constexpr x2 =     0.05410519758331759e-0;
@@ -193,9 +180,8 @@ struct impunity<M_ism,-2>
 
 				auto const x = termial_f(w, x0, x1, x2);
 				auto const y = termial_f(w, y0, y1);
-				return complexion_f(x, y);
-			}
-			XTAL_0IF (2 == N_lim) {
+				return complexion_f(XTAL_MOV_(x), XTAL_MOV_(y));
+				/*/
 				U_alpha constexpr x0 =     1.00000000000000000e-0;
 				U_alpha constexpr x1 =     0.98379496428721650e-0;
 				U_alpha constexpr x2 =     0.16793026979785060e-0;
@@ -206,9 +192,11 @@ struct impunity<M_ism,-2>
 
 				auto const x = termial_f(w, x0, x1, x2);
 				auto const y = termial_f(w, y0, y1, y2);
-				return complexion_f(x, y);
+				return complexion_f(XTAL_MOV_(x), XTAL_MOV_(y));
+				/***/
 			}
-			XTAL_0IF (3 == N_lim) {
+			XTAL_0IF (N_lim == 0x01) {
+				/**/
 				U_alpha constexpr x0 =     1.00000000000000000e-0;
 				U_alpha constexpr x1 =     1.21708869440556770e-0;
 				U_alpha constexpr x2 =     0.33731712522645585e-0;
@@ -220,9 +208,8 @@ struct impunity<M_ism,-2>
 
 				auto const x = termial_f(w, x0, x1, x2, x3);
 				auto const y = termial_f(w, y0, y1, y2);
-				return complexion_f(x, y);
-			}
-			XTAL_0IF (4 == N_lim) {
+				return complexion_f(XTAL_MOV_(x), XTAL_MOV_(y));
+				/*/
 				U_alpha constexpr x0 =     1.00000000000000000e-0;
 				U_alpha constexpr x1 =     1.43419816238477750e-0;
 				U_alpha constexpr x2 =     0.54620442139995930e-0;
@@ -235,9 +222,11 @@ struct impunity<M_ism,-2>
 
 				auto const x = termial_f(w, x0, x1, x2, x3);
 				auto const y = termial_f(w, y0, y1, y2, y3);
-				return complexion_f(x, y);
+				return complexion_f(XTAL_MOV_(x), XTAL_MOV_(y));
+				/***/
 			}
-			XTAL_0IF (5 == N_lim) {
+			XTAL_0IF (N_lim == 0x02) {
+				/**/
 				U_alpha constexpr x0 =     1.00000000000000000e-0;
 				U_alpha constexpr x1 =     1.66691144301400500e-0;
 				U_alpha constexpr x2 =     0.82102801941969360e-0;
@@ -251,9 +240,8 @@ struct impunity<M_ism,-2>
 
 				auto const x = termial_f(w, x0, x1, x2, x3, x4);
 				auto const y = termial_f(w, y0, y1, y2, y3);
-				return complexion_f(x, y);
-			}
-			XTAL_0IF (6 == N_lim) {
+				return complexion_f(XTAL_MOV_(x), XTAL_MOV_(y));
+				/*/
 				U_alpha constexpr x0 =     1.00000000000000000e-0;
 				U_alpha constexpr x1 =     1.88257114554573410e-0;
 				U_alpha constexpr x2 =     1.12600868501140260e-0;
@@ -268,9 +256,10 @@ struct impunity<M_ism,-2>
 
 				auto const x = termial_f(w, x0, x1, x2, x3, x4);
 				auto const y = termial_f(w, y0, y1, y2, y3, y4);
-				return complexion_f(x, y);
+				return complexion_f(XTAL_MOV_(x), XTAL_MOV_(y));
+				/***/
 			}
-			XTAL_0IF (7 == N_lim) {
+			XTAL_0IF (N_lim == 0x03) {
 				U_alpha constexpr x0 =     1.00000000000000000e-0;
 				U_alpha constexpr x1 =     2.11522414674357060e-0;
 				U_alpha constexpr x2 =     1.50538949216831600e-0;
@@ -286,12 +275,12 @@ struct impunity<M_ism,-2>
 
 				auto const x = termial_f(w, x0, x1, x2, x3, x4, x5);
 				auto const y = termial_f(w, y0, y1, y2, y3, y4);
-				return complexion_f(x, y);
+				return complexion_f(XTAL_MOV_(x), XTAL_MOV_(y));
 			}
 			XTAL_0IF_(else) {
 				auto [d, q] = roots_f<2, 1>(o);
-				(void) cut_t<[] XTAL_1FN_(to) (-_fit::maxilon_f(1))>::edit_f(d);
-				(void) cut_t<[] XTAL_1FN_(to) (-_fit::maxilon_f(1))>::edit_f(q);
+				(void) limit_t<-1>::edit_f(d);
+				(void) limit_t<-1>::edit_f(q);
 				XTAL_IF0
 				XTAL_0IF (M_ism == -1) {return complexion_f(_fit::alpha_1, _pi*q*atan (d));}
 				XTAL_0IF (M_ism == -2) {return complexion_f(_fit::alpha_1, _pi*q*atanh(d));}

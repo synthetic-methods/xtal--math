@@ -11,14 +11,14 @@ namespace xtal::atom::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 /*!
-\brief   Extends `group_addition` with `operator*` defined by the scalar product.
+\brief   Extends `group`-addition with `operator*` defined by the scalar product.
 
 Indended to act as a coefficient of a similar type where a scalar result is required.
 
 \todo    Either define `std::complex` construction/operation,
 or create a similar complex sentinel that applies multiplication/projection.
 
-\todo    Specialize `plus_multiplies` or `fma`?
+\todo    Specialize `accumulator` or `fma`?
 */
 
 template <class ..._s>	struct  dot;
@@ -40,7 +40,9 @@ struct dot
 {
 private:
 	template <class T>
+	//\
 	using endotype = typename group_addition<_s...>::template homotype<T>;
+	using endotype = typename group<wrap_s<_s, _std::plus>...>::template homotype<T>;
 
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<dot_t>>;
@@ -67,10 +69,10 @@ public:
 		{
 			if constexpr (bond::pack_q<decltype(t)>) {
 				auto &s = self();
-				typename T::coordinate_type u{0};
+				typename T::revalue_type u{0};
 				
-				bond::seek_out_f<size>([&]<constant_q I> (I)
-					XTAL_0FN_(do) (u = _xtd::plus_multiplies(XTAL_MOV_(u), got<I{}>(s), got<I{}>(t))));
+				bond::seek_until_f<size>([&]<constant_q I> (I)
+					XTAL_0FN_(do) (u = _xtd::accumulator(XTAL_MOV_(u), got<I{}>(s), got<I{}>(t))));
 				
 				return u;
 			}

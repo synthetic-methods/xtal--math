@@ -95,7 +95,7 @@ struct monologarithm<M_ism, -0>
 #endif
 			XTAL_0IF (0 == I_ism) {return one - exp(-XTAL_REF_(o));}
 			XTAL_0IF (1 == I_ism) {return exp( XTAL_REF_(o)) - one;}
-			XTAL_0IF_(terminate)
+			XTAL_0IF_(void)
 		}
 
 	};

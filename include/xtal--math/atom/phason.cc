@@ -122,8 +122,8 @@ TAG_("phason")
 	}
 	TRY_("tuple with phason")
 	{
-		using U_psi = group_addition_t<W_alpha[2]>;
-		using W     = group_addition_t<U_phi, U_psi>;
+		using U_psi = group_t<_std::plus<W_alpha>[2]>;
+		using W     = group_t<_std::plus<U_phi>, _std::plus<U_psi>>;
 
 		TRUE_(sizeof(W) == sizeof(U_phi) + sizeof(U_psi));
 
