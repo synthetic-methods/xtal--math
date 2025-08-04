@@ -16,7 +16,7 @@ namespace xtal::process::math::taylor
 \tparam  M_ism Indexes circular/hyperbolic functions when `M_ism={1,2}`,
          and their respective inverses when `M_ism={-1,-2}`.
 
-\note    Derives the tangent from `sine` using `(#/Sqrt[1 + #^2] &)` to ensure accuracy at the limit.
+\note    Derives the tangent from `sine` using `(#/Sqrt[1 + #^2] &)`.
 */
 template <int M_ism=0, int M_car=0>
 struct tangent;

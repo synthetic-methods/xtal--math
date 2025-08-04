@@ -53,10 +53,6 @@ TAG_("unity")
 		T_alpha roll  = 0.1;
 		T_alpha yaw   = 0.1;
 
-		using T_foo = unity<1>;
-		using W_foo = any_t<T_foo>;
-		using Z_foo = typename W_foo::template dispatch<>;
-
 		auto const w = unity_t<1>::template method_f<4>(pitch);
 		auto const x = unity_t<1>::template method_f<4>(roll);
 		auto const y = unity_t<1>::template method_f<4>(-yaw);

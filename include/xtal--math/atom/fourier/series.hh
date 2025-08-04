@@ -37,14 +37,6 @@ private:
 
 	using _fit = bond::fit<A>;
 	
-	XTAL_DEF_(return,inline,set)
-	cut_inf(auto &&o)
-	noexcept -> auto
-	{
-		using _fit = bond::fit<decltype(o)>;
-		return process::math::cut_f<[] XTAL_1FN_(to) (-_fit::maxilon_f(1))>(XTAL_REF_(o));
-	}
-
 	template <class T>
 	using endotype = typename serial<A>::template homotype<T>;
 

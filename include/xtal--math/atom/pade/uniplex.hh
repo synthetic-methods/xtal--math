@@ -4,7 +4,7 @@
 #include "../../process/pade/unity.hh"
 #include "../../process/taylor/logarithm.hh"
 #include "../../process/taylor/octarithm.hh"
-
+#include "../../process/term.hh"
 
 XTAL_ENV_(push)
 namespace xtal::atom::math::pade
@@ -104,10 +104,38 @@ public:
 		}
 		template <int N=0>
 		XTAL_DEF_(return,inline,let)
-		desolved(complex_type const x={}) const
+		desolved() const
 		noexcept -> _std::conditional_t<N == 0, couplex_type, complex_type>
 		{
+			//\
 			using _xtd::plus_multiplies;
+			using process::math::term_f;
+			auto const &[o, q_] = self();
+			auto const   q_up = q_.template sum<+1>();
+			auto const   q_dn = q_.template sum<-1>();
+			auto const &[o_re, o_im] = destruct_f(o);
+			XTAL_IF0
+			XTAL_0IF (N ==  0) {
+				return {
+					{o_re*q_up, o_im*q_dn},
+					{o_re*q_dn, o_im*q_up}
+				};
+			}
+			XTAL_0IF (N ==  1) {
+				return {o_re*q_up, o_im*q_dn};
+			}
+			XTAL_0IF (N == -1) {
+				return {o_re*q_dn, o_im*q_up};
+			}
+		}
+		template <int N=0>
+		XTAL_DEF_(return,inline,let)
+		desolved(complex_type const x) const
+		noexcept -> _std::conditional_t<N == 0, couplex_type, complex_type>
+		{
+			//\
+			using _xtd::plus_multiplies;
+			using process::math::term_f;
 			auto const &[o, q_] = self();
 			auto const   q_up = q_.template sum<+1>();
 			auto const   q_dn = q_.template sum<-1>();
@@ -116,15 +144,15 @@ public:
 			XTAL_IF0
 			XTAL_0IF (N ==  0) {
 				return {
-					{plus_multiplies(x_re, o_re, q_up),  plus_multiplies(x_im, o_im, q_dn)},
-					{plus_multiplies(x_re, o_re, q_dn),  plus_multiplies(x_im, o_im, q_up)}
+					{term_f(x_re, o_re, q_up), term_f(x_im, o_im, q_dn)},
+					{term_f(x_re, o_re, q_dn), term_f(x_im, o_im, q_up)}
 				};
 			}
 			XTAL_0IF (N ==  1) {
-				return {plus_multiplies(x_re, o_re, q_up),  plus_multiplies(x_im, o_im, q_dn)};
+				return {term_f(x_re, o_re, q_up), term_f(x_im, o_im, q_dn)};
 			}
 			XTAL_0IF (N == -1) {
-				return {plus_multiplies(x_re, o_re, q_dn),  plus_multiplies(x_im, o_im, q_up)};
+				return {term_f(x_re, o_re, q_dn), term_f(x_im, o_im, q_up)};
 			}
 		}
 		template <int N_side=1>

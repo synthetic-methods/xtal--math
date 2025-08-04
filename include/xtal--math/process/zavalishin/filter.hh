@@ -1,9 +1,9 @@
 #pragma once
 #include "./any.hh"
+
+#include "./scaffold.hh"
 #include "./prewarped.hh"
 #include "../../provision/saturated.hh"
-
-
 
 
 XTAL_ENV_(push)
@@ -23,8 +23,8 @@ The parameters `M_ism` and `M_car` determine the type and return-value of shape,
 `M_ism` is expected to yield convex/concave shapes for positive/negative values,
 and `M_car` is expected to return the slope when `== -1`.
 
-\note    Despite the parameterization defined by `any<filter<...>>`, `filter<...>::method` is
-polymorphic and can accomodate anything up to the given cache-width (determined by `U_pole[N_pole][2]`).
+\note    Despite the parameterization defined by `traits<filter<...>>`, `filter<...>::method` is
+polymorphic and can accomodate scaffold up to the given cache-width (determined by `U_pole[N_pole][2]`).
 For example, with base-types of `double` and `std::complex<double>` respectively,
 the storage required is `16` and `32` bytes-per-pole.
 */
@@ -34,66 +34,17 @@ template <class ..._s>	concept filter_q = bond::tag_in_p<filter, _s...>;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <class ..._s>
-struct any<filter<_s...>>
-{
-	using superkind = any<class_template<_s...>>;
-
-	template <class S>
-	class subtype : public bond::compose_s<S, superkind>
-	{
-		using S_ = bond::compose_s<S, superkind>;
-		using T_ = typename S_::self_type;
-	
-	public:
-		using S_::S_;
-
-		template <size_type N_mask=1>
-		struct   attach
-		{
-			template <class R>
-			using subtype = bond::compose_s<R
-			,	typename T_::    stage_type::template  inspect<N_mask>
-			,	typename T_:: resample_type::template   attach<N_mask>
-			>;
-
-		};
-		template <size_type N_mask=1>
-		struct dispatch
-		{
-			template <class R>
-			using subtype = bond::compose_s<R, provision::voiced<void
-			,	typename T_::    order_type::template dispatch<N_mask>
-			>>;
-
-		};
-
-	};
-};
-template <scalar_q A>
-struct any<filter<A>> : any<filter<A[2]>>
-{
-};
-template <>
-struct any<filter< >> : any<filter<typename bond::fit<>::alpha_type>>
-{
-};
-
-
-////////////////////////////////////////////////////////////////////////////////
-
 template <class ...As>
 struct filter
 {
-	using metakind = any  <filter>;
-	using metatype = any_t<filter>;
+	using metatype = traits_t<filter>;
 
-	using state_type = typename metatype:: state_type;
-	using slope_type = typename metatype:: slope_type;
+	using state_type = typename metatype::state_type;
+	using slope_type = typename metatype::slope_type;
 
 	using superkind = bond::compose<bond::tag<filter>
-	,	metakind
 	,	provision::memorized<state_type, slope_type>
+	,	scaffold<As...>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -122,6 +73,12 @@ struct filter
 	public:// CONSTRUCT
 		using S_::S_;
 
+	public:// TYPE
+
+		using reshape_type = typename metatype::reshape_type;
+		using   state_type = typename metatype::  state_type;
+		using   order_type = typename metatype::  order_type;
+
 	public:// OPERATE
 
 		template <int N_ord=0, auto ...Ns> requires (1 <= N_ord)
@@ -146,7 +103,7 @@ struct filter
 			auto const descalars_ = scalars_ - one;
 
 			auto mem = S_::template memory<X_state_, X_slope_>();
-		//	(void) cut_t<[] XTAL_1FN_(to) (-bond::fit<X>::diplo_f(7))>::edit_f(mem);
+		//	(void) limit_t<[] XTAL_1FN_(to) (-bond::fit<X>::diplo_f(7))>::edit_f(mem);
 			auto &states_ = get<0>(mem);
 			auto &slopes_ = get<1>(mem);
 
@@ -230,7 +187,7 @@ struct filter
 			XTAL_0IF (1 <= N_ord) {
 				return method<N_ord, Ns...>(XTAL_REF_(x), s_gain
 				,	[=] () XTAL_0FN -> atom::couple_t<U[N_ord + 1]> {
-						auto const  &u = cut_f<[] XTAL_1FN_(to) (bond::fit<X>::minilon_f(1))>(s_damp);
+						auto const  &u = limit_f<[] XTAL_1FN_(to) (bond::fit<X>::minilon_f(1))>(s_damp);
 						auto const u02 =             two*u , u04 = u02*two;
 						auto const u12 = term_f(one, two,u), w24 = u02*u12;
 						XTAL_IF0
@@ -336,3 +293,5 @@ struct filter
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////
 XTAL_ENV_(pop)
+
+#include "./filter.hh_"

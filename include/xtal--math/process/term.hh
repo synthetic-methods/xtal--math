@@ -78,7 +78,7 @@ noexcept -> auto
 			auto const y = (XTAL_REF_(xs) *...* XTAL_REF_(x));
 			return plus_multiplies(XTAL_REF_(w), y, y, Y{M_alt});
 		}
-		XTAL_0IF_(terminate)
+		XTAL_0IF_(void)
 	}
 };
 

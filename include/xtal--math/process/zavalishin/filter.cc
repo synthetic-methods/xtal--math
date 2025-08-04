@@ -38,24 +38,24 @@ TAG_("filter")
 	TRY_("instantiation")
 	{
 		using R_def = filter<>;
-		using R_env = any_t<R_def>;
-		using R_pro = prewarped_t<_1
+		using R_etc = process::traits_t<R_def>;
+		using R_prx = prewarped_t<_1
 		,	staged< 0>
-		,	typename R_env::refade_type::template   attend<>
-	//	,	typename R_env::rezoom_type::template   attend<>
-		,	typename R_env::             template   attach<>
-		,	typename R_env::             template dispatch<>
+		,	typename R_etc::refade_type::template   attend<>
+	//	,	typename R_etc::rezoom_type::template   attend<>
+		,	typename R_etc::             template   attach<>
+		,	typename R_etc::             template dispatch<>
 		,	R_def
 		,	provision::saturated<identity>
 		>;
 		//\
-		using R_prx = processor::monomer_t<prewarped<_1>, R_pro>;
-		using R_prx = processor::monomer_t<R_pro>;
+		using R_pxr = processor::monomer_t<prewarped<_1>, R_prx>;
+		using R_pxr = processor::monomer_t<R_prx>;
 
-		R_pro svf{};
+		R_prx svf{};
 		svf <<= occur::resample_f(44100);
-		svf <<= typename R_env::  order_type{2};
-		svf <<= typename R_env:: refade_type{0};
+		svf <<= typename R_etc::  order_type{2};
+		svf <<= typename R_etc:: refade_type{0};
 	
 		U_alpha constexpr r_omega = 2*2*3*3*5*5*7;
 		U_alpha constexpr   rho = 1;
@@ -136,18 +136,18 @@ TAG_("filter-ring")
 	TRY_("filter-ring monophony")
 	{
 		using R_def = filter<U_alpha[2], union RING>;
-		using R_env = any_t<R_def>;
-		using R_eve = flow::packet_t<typename R_env::stage_type, typename R_env::redamp_type>;
-		using R_pro = prewarped_t<_0, gate<-1>
+		using R_etc = process::traits_t<R_def>;
+		using R_eve = flow::packet_t<typename R_etc::stage_type, typename R_etc::redamp_type>;
+		using R_prx = prewarped_t<_0, gate<-1>
 		,	staged<-1>
 		,	staged< 0>
-		,	typename R_env::redamp_type::template   attend<>
-		,	typename R_env::refade_type::template   attend<>
-		,	typename R_env::             template   attach<>
-		,	typename R_env::             template dispatch<>
+		,	typename R_etc::redamp_type::template   attend<>
+		,	typename R_etc::refade_type::template   attend<>
+		,	typename R_etc::             template   attach<>
+		,	typename R_etc::             template dispatch<>
 		,	R_def
 		>;
-		using R_prx = processor::monomer_t<R_pro
+		using R_pxr = processor::monomer_t<R_prx
 		,	Z_slice::template accept<R_eve>
 		,	provision::stored  <null_type[0x100]>
 		,	provision::spooled <null_type[0x100]>
@@ -158,10 +158,10 @@ TAG_("filter-ring")
 		auto z_cursor = occur::cursor_t<>(0x020);
 		auto z_sample = occur::resample_f(44100);
 
-		auto z = R_prx::bind_f(processor::let_f(r_omega));
-		z <<= typename R_env::  order_type{2};
-		z <<= typename R_env:: redamp_type{1};
-		z <<= typename R_env:: refade_type{1};
+		auto z = R_pxr::bind_f(processor::let_f(r_omega));
+		z <<= typename R_etc::  order_type{2};
+		z <<= typename R_etc:: redamp_type{1};
+		z <<= typename R_etc:: refade_type{1};
 
 		z <<= z_sample;
 		z <<= z_resize;
@@ -195,19 +195,19 @@ TAG_("filter-ring")
 	TRY_("filter-ring polyphony")
 	{
 		using R_def = filter<U_alpha[2], union RING>;
-		using R_env = any_t<R_def>;
-		using R_eve = flow::key_s<typename R_env::stage_type>;
-		using R_pro = prewarped_t<_0, gate<1>
+		using R_etc = process::traits_t<R_def>;
+		using R_eve = flow::key_s<typename R_etc::stage_type>;
+		using R_prx = prewarped_t<_0, gate<1>
 		,	staged< 0>
 		,	staged<-1>
-		,	typename R_env:: stage_type::template assignment<typename R_env::redamp_type>
-		,	typename R_env::redamp_type::template   attend<>
-		,	typename R_env::refade_type::template   attend<>
-		,	typename R_env             ::template   attach<>
-		,	typename R_env             ::template dispatch<>
+		,	typename R_etc:: stage_type::template assignment<typename R_etc::redamp_type>
+		,	typename R_etc::redamp_type::template   attend<>
+		,	typename R_etc::refade_type::template   attend<>
+		,	typename R_etc             ::template   attach<>
+		,	typename R_etc             ::template dispatch<>
 		,	R_def
 		>;
-		using R_prx = processor::polymer_t<R_pro
+		using R_pxr = processor::polymer_t<R_prx
 		,	Z_slice::template accept<R_eve>
 		,	provision::stored <null_type[0x100]>
 		,	provision::spooled<null_type[0x100]>
@@ -218,18 +218,18 @@ TAG_("filter-ring")
 		auto z_cursor = occur::cursor_t<>(0x020);
 		auto z_sample = occur::resample_f(44100);
 
-		auto z = R_prx::bind_f(processor::let_f(r_omega));
-		z <<= typename R_env::  order_type{2};
-		z <<= typename R_env:: redamp_type{1};
-		z <<= typename R_env:: refade_type{1};
-		z <<= flow::assign_f(typename R_env::stage_type{ 0}) << typename R_env::redamp_type{          (0.F)};
-		z <<= flow::assign_f(typename R_env::stage_type{ 1}) << typename R_env::redamp_type{root_f<-1>(2.F)};
-		z <<= flow::assign_f(typename R_env::stage_type{-1}) << typename R_env::redamp_type{root_f<-2>(2.F)};
+		auto z = R_pxr::bind_f(processor::let_f(r_omega));
+		z <<= typename R_etc::  order_type{2};
+		z <<= typename R_etc:: redamp_type{1};
+		z <<= typename R_etc:: refade_type{1};
+		z <<= flow::assign_f(typename R_etc::stage_type{ 0}) << typename R_etc::redamp_type{          (0.F)};
+		z <<= flow::assign_f(typename R_etc::stage_type{ 1}) << typename R_etc::redamp_type{root_f<-1>(2.F)};
+		z <<= flow::assign_f(typename R_etc::stage_type{-1}) << typename R_etc::redamp_type{root_f<-2>(2.F)};
 
 		z <<= z_sample;
 		z <<= z_resize;
 
-		z.lead() >>= typename R_env::stage_type{-1};
+		z.lead() >>= typename R_etc::stage_type{-1};
 
 		z >>= flow::cue_f(0x08).then(R_eve{1,  0});
 		z >>= flow::cue_f(0x18).then(R_eve{1,  0});

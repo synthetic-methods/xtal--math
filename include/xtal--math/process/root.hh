@@ -62,6 +62,8 @@ struct root
 			XTAL_0IF (integral_variable_q<Z>) {
 				return method_f<I_lim>(Z_fit::alpha_f(XTAL_REF_(z)));
 			}
+			XTAL_0IF (M_exp ==  bond::math::bit_reverse_f(1)) {return Z{one};}
+			XTAL_0IF (M_exp == ~bond::math::bit_reverse_f(1)) {return Z{one};}
 			XTAL_0IF_(to) (evaluate<I_lim>(XTAL_REF_(z)))
 			XTAL_0IF_(to) (evaluate<I_lim>(XTAL_REF_(z)))
 			XTAL_0IF_(to) (evaluate<I_lim>(XTAL_REF_(z), constant_t<2>{}))
