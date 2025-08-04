@@ -47,6 +47,50 @@ TAG_("bit", "bit_swap_f")
 
 ////////////////////////////////////////////////////////////////////////////////
 
+TAG_("bit", "bit_shift_f")
+{
+	using T_fit = fit<>;
+	using T_sigma = typename T_fit::sigma_type;
+	using T_delta = typename T_fit::delta_type;
+	using T_alpha = typename T_fit::alpha_type;
+	using T_aphex = typename T_fit::aphex_type;
+	auto mt19937_f = typename T_fit::mt19937_t(Catch::rngSeed());
+
+	TRY_("bit_shift_f evaluation")
+	{
+		TRUE_(444 == bit_shift_f(222,  1));
+		TRUE_(111 == bit_shift_f(222, -1));
+
+	}
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+TAG_("bit", "bit_clasp_f")
+{
+	using T_fit = fit<>;
+	using T_sigma = typename T_fit::sigma_type;
+	using T_delta = typename T_fit::delta_type;
+	using T_alpha = typename T_fit::alpha_type;
+	using T_aphex = typename T_fit::aphex_type;
+	auto mt19937_f = typename T_fit::mt19937_t(Catch::rngSeed());
+
+	TRY_("bit_clasp_f evaluation")
+	{
+		TRUE_(bit_clasp_f<0b11>(5) == 3);
+		TRUE_(bit_clasp_f<0b11>(4) == 3);
+		TRUE_(bit_clasp_f<0b11>(3) == 3);
+		TRUE_(bit_clasp_f<0b11>(2) == 2);
+		TRUE_(bit_clasp_f<0b11>(1) == 1);
+		TRUE_(bit_clasp_f<0b11>(0) == 0);
+
+	}
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+
 TAG_("bit", "bit_extrema_f")
 {
 	using T_fit = fit<>;

@@ -86,7 +86,6 @@ TAG_("tangy trials")
 
 	auto const mt19937_y = half*mt19937_f();
 
-
 	EST_("tangy< 2; -1> (* Tanh *)\n~! (reals)")
 	{
 		return tangy_t< 2>::template method_f<-1>(mt19937_y);
@@ -107,7 +106,6 @@ TAG_("tangy trials")
 	{
 		return tangy_t< 2>::template method_f< 0>(mt19937_y);
 	};
-
 
 	EST_("tangy<-1; -1> (* ArcTan *)\n~! (reals)")
 	{

@@ -11,19 +11,6 @@ namespace xtal::process::math::pade::_test
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int N_lim=0, int N_trim=0>
-XTAL_DEF_(return,let)
-wnity_check_f(auto const &t)
-noexcept -> bool
-{
-	int constexpr N_inf = -1;
-	auto const u = wnity_t<1>::template method_f<N_lim>(t);
-	auto const v = wnity_t<1>::template method_f<N_inf>(t);
-	return check_f<N_trim>(get<0>(u), get<0>(v))
-		and check_f<N_trim>(get<1>(u), get<1>(v));
-}
-
-
 ////////////////////////////////////////////////////////////////////////////////
 /**/
 TAG_("wnity")
@@ -140,23 +127,14 @@ TAG_("wnity")
 	/***/
 	TRY_("`wnity` evaluation")
 	{
-		TRUE_(wnity_check_f<0,  2>(T_alpha{1.125}));
-		TRUE_(wnity_check_f<1,  6>(T_alpha{1.125}));
-		TRUE_(wnity_check_f<2, 14>(T_alpha{1.125}));
-		TRUE_(wnity_check_f<3, 20>(T_alpha{1.125}));
-		TRUE_(wnity_check_f<4, 28>(T_alpha{1.125}));
-		TRUE_(wnity_check_f<5, 37>(T_alpha{1.125}));
-		TRUE_(wnity_check_f<6, 47>(T_alpha{1.125}));
-		TRUE_(wnity_check_f<7, 49>(T_alpha{1.125}));
-
-		TRUE_(wnity_check_f<0,  1>(T_aphex{0.1, 0.2}));
-		TRUE_(wnity_check_f<1,  6>(T_aphex{0.1, 0.2}));
-		TRUE_(wnity_check_f<2, 13>(T_aphex{0.1, 0.2}));
-		TRUE_(wnity_check_f<3, 20>(T_aphex{0.1, 0.2}));
-		TRUE_(wnity_check_f<4, 28>(T_aphex{0.1, 0.2}));
-		TRUE_(wnity_check_f<5, 37>(T_aphex{0.1, 0.2}));
-		TRUE_(wnity_check_f<6, 47>(T_aphex{0.1, 0.2}));
-		TRUE_(wnity_check_f<7, 49>(T_aphex{0.1, 0.2}));
+		TRUE_(check_f<-29>(wnity_t<(+1), 1>::template method_f<-1>(T_alpha{1.125000}), wnity_t<(+1), 1>::template method_f<0>(T_alpha{1.125000})));
+		TRUE_(check_f<-21>(wnity_t<(+1), 1>::template method_f<-1>(T_alpha{1.125000}), wnity_t<(+1), 1>::template method_f<1>(T_alpha{1.125000})));
+		TRUE_(check_f<-11>(wnity_t<(+1), 1>::template method_f<-1>(T_alpha{1.125000}), wnity_t<(+1), 1>::template method_f<2>(T_alpha{1.125000})));
+		TRUE_(check_f<- 3>(wnity_t<(+1), 1>::template method_f<-1>(T_alpha{1.125000}), wnity_t<(+1), 1>::template method_f<3>(T_alpha{1.125000})));
+		TRUE_(check_f<-31>(wnity_t<(+1)   >::template method_f<-1>(T_aphex{0.1, 0.2}), wnity_t<(+1)   >::template method_f<0>(T_aphex{0.1, 0.2})));
+		TRUE_(check_f<-23>(wnity_t<(+1)   >::template method_f<-1>(T_aphex{0.1, 0.2}), wnity_t<(+1)   >::template method_f<1>(T_aphex{0.1, 0.2})));
+		TRUE_(check_f<-13>(wnity_t<(+1)   >::template method_f<-1>(T_aphex{0.1, 0.2}), wnity_t<(+1)   >::template method_f<2>(T_aphex{0.1, 0.2})));
+		TRUE_(check_f<- 4>(wnity_t<(+1)   >::template method_f<-1>(T_aphex{0.1, 0.2}), wnity_t<(+1)   >::template method_f<3>(T_aphex{0.1, 0.2})));
 
 	}
 }

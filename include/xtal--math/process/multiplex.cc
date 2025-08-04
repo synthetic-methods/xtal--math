@@ -5,13 +5,13 @@
 
 
 
-#include "./cross.hh"// testing...
+#include "./multiplex.hh"// testing...
 XTAL_ENV_(push)
 namespace xtal::process::math::_test
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-struct mix
+struct sum
 {
 	class type : public process::confine_t<type>
 	{
@@ -26,21 +26,21 @@ struct mix
 
 	};
 };
-using Px_mix = typename mix::type;
+using Y_process = typename sum::type;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-TAG_("cross", "process")
+TAG_("route", "process")
 {
 	TRY_("shape with matrix")
 	{
 		using namespace _xtd::ranges::views;
 
-		using U_matrix = atom::quanta_t<int[3][2]>;
-		using U_remix = cross_t<U_matrix, Px_mix>;
+		using U_matrix = atom::brace_t<int[3][2]>;
+		using Y_router = multiplex_t<Y_process>::template matrix_t<U_matrix>;
 
-		auto io = U_remix();
+		auto io = Y_router();
 		io <<= U_matrix {{1, 2}, {3, 4}, {5, 6}};
 		TRUE_(io(10, 100) == 1290);
 	//	(1*10 + 2*100) + (3*10 + 4*100) + (5*10 + 6*100)
@@ -51,23 +51,22 @@ TAG_("cross", "process")
 
 ////////////////////////////////////////////////////////////////////////////////
 
-TAG_("cross", "processor")
+TAG_("route", "processor")
 {
 	/**/
 	TRY_("shape with matrix")
 	{
 		using namespace _xtd::ranges::views;
-
-		using U_matrix = atom::quanta_t<int[3][2]>;// 3-outputs, 2-inputs
-		using U_remix = cross_t<U_matrix, Px_mix>;
-		using U_mixer = processor::monomer_t<U_remix, provision::stored<>>;
+		using U_matrix = atom::brace_t<int[3][2]>;// 3-outputs, 2-inputs
+		using Y_router = multiplex_t<Y_process>::template matrix_t<U_matrix>;
+		using Z_router = processor::monomer_t<Y_router, provision::stored<>>;
 
 		//\
 		auto _1 = processor::let_f(1);
 		auto _1 = processor::let_f(_xtd::ranges::views::repeat(1));
 		auto _n = processor::let_f(iota(0, 10));
 	//
-		auto io = U_mixer::bind_f(_1, _n);
+		auto io = Z_router::bind_f(_1, _n);
 		io <<= U_matrix {{1, 2}, {3, 4}, {5, 6}};
 		io <<= occur::resize_t<>(3);
 		io >>= occur::cursor_t<>(3);
@@ -88,17 +87,16 @@ TAG_("cross", "processor")
 	{
 		using namespace _xtd::ranges::views;
 		//\
-		using U_vector = atom::quanta_t<int[2]>;
+		using U_vector = atom::brace_t<int[2]>;
 		using U_vector = bond::pack_t<int, int>;
-		using U_matrix = atom::quanta_t<U_vector[3]>;
-
-		using U_remix = cross_t<U_matrix, Px_mix>;
-		using U_mixer = processor::monomer_t<U_remix, provision::stored<>>;
+		using U_matrix = atom::brace_t<U_vector[3]>;
+		using Y_router = multiplex_t<Y_process>::template matrix_t<U_matrix>;
+		using Z_router = processor::monomer_t<Y_router, provision::stored<>>;
 
 		auto _1 = processor::let_f(1);
 		auto _n = processor::let_f(iota(0, 10));
 	//
-		auto io = U_mixer::bind_f(_1, _n);
+		auto io = Z_router::bind_f(_1, _n);
 		io <<= occur::math::indent_s<U_matrix>({{1, 2}, {3, 4}, {5, 6}});
 		io <<= occur::resize_t<>(3);
 		io >>= occur::cursor_t<>(3);
@@ -112,17 +110,16 @@ TAG_("cross", "processor")
 	{
 		using namespace _xtd::ranges::views;
 		//\
-		using U_matrix = atom::quanta_t<int[3][2]>;
-		using U_matrix = atom::quanta_t<bond::pack_t<int, int>[3]>;
-
-		using U_remix = cross_t<U_matrix, Px_mix>;
-		using U_mixer = processor::monomer_t<U_remix, provision::stored<>>;
+		using U_matrix = atom::brace_t<int[3][2]>;
+		using U_matrix = atom::brace_t<bond::pack_t<int, int>[3]>;
+		using Y_router = multiplex_t<Y_process>::template matrix_t<U_matrix>;
+		using Z_router = processor::monomer_t<Y_router, provision::stored<>>;
 
 
 		auto _1 = processor::let_f(1);
 		auto _n = processor::let_f(iota(0, 10));
 	//
-		auto io = U_mixer::bind_f(_1, _n);
+		auto io = Z_router::bind_f(_1, _n);
 		io <<= occur::math::indent_s<U_matrix, 0>({1, 2});
 		io <<= occur::math::indent_s<U_matrix, 1>({3, 4});
 		io <<= occur::math::indent_s<U_matrix, 2>({5, 6});
@@ -138,16 +135,15 @@ TAG_("cross", "processor")
 	{
 		using namespace _xtd::ranges::views;
 		//\
-		using U_matrix = atom::quanta_t<int[3][2]>;
-		using U_matrix = atom::quanta_t<bond::pack_t<int, int>[3]>;
-
-		using U_remix = cross_t<U_matrix, Px_mix>;
-		using U_mixer = processor::monomer_t<U_remix, provision::stored<>>;
+		using U_matrix = atom::brace_t<int[3][2]>;
+		using U_matrix = atom::brace_t<bond::pack_t<int, int>[3]>;
+		using Y_router = multiplex_t<Y_process>::template matrix_t<U_matrix>;
+		using Z_router = processor::monomer_t<Y_router, provision::stored<>>;
 
 		auto _1 = processor::let_f(1);
 		auto _n = processor::let_f(iota(0, 10));
 	//
-		auto io = U_mixer::bind_f(_1, _n);
+		auto io = Z_router::bind_f(_1, _n);
 		io <<= occur::math::indent_s<U_matrix, 0, 0>(1);
 		io <<= occur::math::indent_s<U_matrix, 0, 1>(2);
 		io <<= occur::math::indent_s<U_matrix, 1, 0>(3);

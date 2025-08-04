@@ -15,31 +15,7 @@ namespace xtal::process::math::zavalishin
 \note    Input is restricted to `U_pole` because the filter-state is managed out-of-band.
 */
 template <auto ...As>	struct  vactrol;
-template <auto ...As>	using   vactrol_t = process::confined_t<vactrol<As...>>;
-
-
-////////////////////////////////////////////////////////////////////////////////
-
-template <auto ...As>
-struct any<vactrol<As...>>
-{
-	template <class S>
-	class subtype : public S
-	{
-	public:// CONSTRUCT
-		using S::S;
-
-		template <size_type N_mask=1>
-		struct attach
-		{
-			template <class R>
-			using subtype = bond::compose_s<R,
-				typename R::reshape_type::template attach<N_mask>>;
-
-		};
-
-	};
-};
+template <auto ...As>	using   vactrol_t = confined_t<vactrol<As...>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -47,7 +23,8 @@ struct any<vactrol<As...>>
 template <auto ...As>
 struct vactrol
 {
-	using superkind = typename any_t<vactrol>::template attach<>;
+	using archetype = traits_t<vactrol>;
+	using superkind = typename archetype::template attach<>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -73,7 +50,7 @@ struct vactrol
 			auto const &[d0, d1] = S_::template head<reshape_type>().head();
 			auto const  [s_]     = S_::template memory<state_type>();
 
-			auto const v = pade::tangy_t<1>::template method_f< 1>(half*d1);
+			auto const v = pade::tangy_f<1>(half*d1);
 			auto const w = abs(x - s_.sum());
 			s_gain /= d0*term_f(v, one - v, w);
 
@@ -89,3 +66,5 @@ struct vactrol
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////
 XTAL_ENV_(pop)
+
+#include "./vactrol.hh_"

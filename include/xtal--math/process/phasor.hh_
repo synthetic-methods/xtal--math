@@ -1,0 +1,61 @@
+#pragma once
+
+
+
+
+
+
+#include "./phasor.hh"
+XTAL_ENV_(push)
+namespace xtal::process
+{/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <class ..._s>
+struct traits<math::phasor<_s...>>
+{
+	using superkind = traits<>;
+
+	template <class S>
+	class subtype : public bond::compose_s<S, superkind>
+	{
+		using S_ = bond::compose_s<S, superkind>;
+		using T_ = typename S_::self_type;
+	
+	public:
+		using S_::S_;
+
+		using scale_type = occur::inferred_t<union scale, float>;
+
+		template <extent_type N_mask=1>
+		struct dispatch
+		{
+			using superkind = provision::voiced<void
+			,	typename T_::index_type::template dispatch<N_mask>
+			>;
+			template <class R>
+			using subtype = bond::compose_s<R
+			,	typename S_::template dispatch<N_mask>
+			,	superkind
+			>;
+
+		};
+
+	};
+};
+template <scalar_q A>
+struct traits<math::phasor<A>> : traits<math::phasor<A[2]>>
+{
+};
+template <>
+struct traits<math::phasor< >> : traits<math::phasor<typename bond::fit<>::alpha_type>>
+{
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+}/////////////////////////////////////////////////////////////////////////////
+XTAL_ENV_(pop)

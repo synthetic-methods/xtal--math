@@ -24,56 +24,67 @@ template <class S, int ...Ns> using    indent_s = bond::compose_s<S, indent<ordi
 template <constant_q ...Ns>
 struct indent<Ns...>
 {
-	template <class S> using component_t = bond::pack_item_t<S, Ns{}...>;
-	template <class S> using component_s = bond::pack_item_s<S, Ns{}...>;
+	template <class S> using indicated_t = bond::pack_item_t<S, Ns{}...>;
+	template <class S> using indicated_s = bond::pack_item_s<S, Ns{}...>;
 	
 	using superkind = bond::compose<void
 	,	confined<bond::tag<indent>, confer<Ns>...>
 	,	bond::compose_t<conferred_t>
-	,	bond::compose_t<component_t>
+	,	bond::compose_t<indicated_t>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
 	{
 		static_assert(bond::pack_q<S>);
 		using S_ = bond::compose_s<S, superkind>;
-		using W_ =     component_s<S >;
+		using W_ =     indicated_s<S >;
 		using U_ =   initializer_t<W_>;
+
+	protected:
+		/*!
+		\brief   Converts the argument to an element Constructs a scalar fragment for `u`,
+		         handling element conversion if supported by the container.
+
+		\todo    Use strong-`value_type`s to map between fractional and floating-point values?
+		*/
+		XTAL_DEF_(return,inline,let)
+		inject_f(auto &&u)
+		noexcept -> auto
+		{
+			if constexpr      (requires{W_::devalue_f(XTAL_REF_(u));}
+				and different_q<decltype(W_::devalue_f), _std::identity>
+			)	{
+				return W_::devalue_f(XTAL_REF_(u));
+			}
+			else {
+				return XTAL_REF_(u);
+			}
+		}
 
 	public:
 		using S_::S_;//NOTE: Inherited and respecialized!
 
 		/*!
-		Constructs a scalar fragment for `u`.
-		*/
-		XTAL_NEW_(explicit)
-		subtype(U_ u)
-		noexcept
-		requires un_n<fungible_q<S_, U_>> and un_n<requires {W_::ordinate(u);}>
-		:	S_{             XTAL_MOV_(u) }
-		{}
-		/*!
-		Constructs a scalar fragment for `u` mapped via `ordinate`, if detected.
+		\brief   Constructs a scalar fragment for `u`,
+		         handling element conversion if supported by the container.
 
 		\todo    Use strong-`value_type`s to map between fractional and floating-point values?
 		*/
 		XTAL_NEW_(explicit)
 		subtype(U_ u)
-		noexcept
-		requires un_n<fungible_q<S_, U_>> and in_n<requires {W_::ordinate(u);}>
-		:	S_{W_::ordinate(XTAL_MOV_(u))}
+		noexcept requires infungible_q<S_, U_>
+		:	S_{inject_f(XTAL_MOV_(u))}
 		{}
-
 		XTAL_NEW_(implicit)
 		subtype(_std::initializer_list<U_> u_)
 		noexcept requires make_p<S_, _std::initializer_list<U_>>
 		:	S_{u_}
 		{}
 
-		template <size_type N_mask=1>
+		template <extent_type N_mask=1>
 		struct incept
 		{
-			using superkind = bond::compose<flow::mask<N_mask>, defer<component_t<S>>>;
+			using superkind = bond::compose<flow::mask<N_mask>, defer<indicated_t<S>>>;
 
 			template <class R> requires un_n<sizeof...(Ns)>
 			class subtype : public bond::compose_s<R, superkind>
