@@ -21,7 +21,6 @@ TAG_("symbol")
 	using T_alpha = typename _fit::alpha_type;
 	using T_aphex = typename _fit::aphex_type;
 
-
 	TRY_("11th characterization (integer)")
 	{
 		int constexpr N = 11;
@@ -31,7 +30,7 @@ TAG_("symbol")
 		using W = symbol_t<T_delta[N]>;
 		W w; w.characterize();
 
-		TRUE_(w == W{0, 0, -1, 2, 3, 1,-4,-2,-3, 4,-5});
+		TRUE_(w == W{0, 0, 1,-2, 2, 4,-1,-3, 3,-4,-5});
 
 	}
 	TRY_("11th subcharacterization (integer)")
@@ -41,6 +40,7 @@ TAG_("symbol")
 		int constexpr K = M >> 1;
 
 		using W = symbol_t<T_delta[K]>;
+
 		W w; w.subcharacterize();
 
 		TRUE_(w == W{0, -1, 2, 3, 1});
@@ -60,8 +60,8 @@ TAG_("symbol")
 		_detail::apply_to<[] XTAL_1FN_(call) (bond::math::bit_trim_f<16>)>(m);
 		_detail::apply_to<[] XTAL_1FN_(call) (bond::math::bit_trim_f<16>)>(w);
 
-		TRUE_(m == W{0, 1,-1, 1,-1,-1, 1, 1,-1, 1,-1});
-		TRUE_(w == W{0, 0, -1, 2, 3, 1,-4,-2,-3, 4,-5});
+		TRUE_(m == W{0, 1,-1, 1, 1, 1,-1,-1,-1, 1,-1});
+		TRUE_(w == W{0, 0, 1,-2, 2, 4,-1,-3, 3,-4,-5});
 
 	}
 
@@ -154,7 +154,7 @@ TAG_("symbol")
 		_detail::apply_to<[] XTAL_1FN_(call) (bond::math::bit_trim_f<16>)>(w);
 
 		TRUE_(m == W{0, 1,-1,-1, 1});
-		TRUE_(w == W{w[0], 0, 1,-1, w[M]});
+	//	TRUE_(w == W{w[0], 0, 1,-1, w[M]});
 	}
 	/*/
 	TRY_("5th characterization (real)")

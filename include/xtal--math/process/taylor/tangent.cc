@@ -1,11 +1,11 @@
 #pragma once
 #include "./any.cc"
+
+
+
+
+
 #include "./tangent.hh"// testing...
-
-#include "../pade/tangy.hh"
-
-
-
 XTAL_ENV_(push)
 namespace xtal::process::math::taylor::_test
 {/////////////////////////////////////////////////////////////////////////////////
@@ -32,6 +32,16 @@ TAG_("whatever")
 
 	TRY_("stuff")
 	{
+		TRUE_(check_f<-15>(tangent_t< 2>::template method_f< 3>(-2.0),  tanh(-2.0)));
+		TRUE_(check_f<-27>(tangent_t< 2>::template method_f< 2>(-2.0),  tanh(-2.0)));
+		TRUE_(check_f<-37>(tangent_t< 2>::template method_f< 1>(-2.0),  tanh(-2.0)));
+		TRUE_(check_f<-49>(tangent_t< 2>::template method_f< 0>(-2.0),  tanh(-2.0)));
+
+		TRUE_(check_f<- 1>(tangent_t< 2>::template method_f< 3>(-1.0),  tanh(-1.0)));
+		TRUE_(check_f<-18>(tangent_t< 2>::template method_f< 2>(-1.0),  tanh(-1.0)));
+		TRUE_(check_f<-31>(tangent_t< 2>::template method_f< 1>(-1.0),  tanh(-1.0)));
+		TRUE_(check_f<-48>(tangent_t< 2>::template method_f< 0>(-1.0),  tanh(-1.0)));
+
 		TRUE_(check_f<- 1>(tangent_t< 2>::template method_f< 3>(-0.5),  tanh(-0.5)));
 		TRUE_(check_f<- 6>(tangent_t< 2>::template method_f< 2>(-0.5),  tanh(-0.5)));
 		TRUE_(check_f<-25>(tangent_t< 2>::template method_f< 1>(-0.5),  tanh(-0.5)));

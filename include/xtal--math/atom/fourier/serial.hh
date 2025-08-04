@@ -21,7 +21,7 @@ XTAL_DEF_(let) serial_f = [] XTAL_1FN_(call) (_detail::factory<serial_t>::make);
 
 ////////////////////////////////////////////////////////////////////////////////
 /*!
-\brief   Extends `grade` with multiplication via linear convolution.
+\brief   Extends `differential` with multiplication via linear convolution.
 */
 template <scalar_q ..._s> requires common_q<_s...>
 struct serial<_s ...>
@@ -35,7 +35,7 @@ private:
 	using _fit = bond::fit<A>;
 	
 	template <class T>
-	using endotype = typename grade<A>::template homotype<T>;
+	using endotype = typename differential<A>::template homotype<T>;
 
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<serial_t>>;
@@ -79,8 +79,8 @@ public:
 			}
 			else {
 				int constexpr N{size};
-				bond::seek_out_f<-N, 0>([&, this] (auto I) XTAL_0FN {get<I>(s) *= get<0>(t);
-				bond::seek_out_f<-I, 1>([&, this] (auto J) XTAL_0FN {get<I>(s) += get<J>(t)*get<I - J>(s);});});
+				bond::seek_until_f<-N, 0>([&, this] (auto I) XTAL_0FN {get<I>(s) *= get<0>(t);
+				bond::seek_until_f<-I, 1>([&, this] (auto J) XTAL_0FN {get<I>(s) += get<J>(t)*get<I - J>(s);});});
 			}
 			return s;
 		}

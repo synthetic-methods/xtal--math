@@ -10,24 +10,25 @@ XTAL_ENV_(push)
 namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
+/*!
+\brief   Defines `method_f` by `(#^(1/M_exp)&)`.
+\note    When `M_exp == 0`, `1` is returned to preserve positive/negative continuity.
+*/
+template <int M_exp=1, int M_cut=0>
+XTAL_TYP_(new) root;
 
 template <int M_exp=1, int M_cut=0>
-struct  root;
-
-template <int M_exp=1, int M_cut=0>
-using   root_t = process::confined_t<root<M_exp, M_cut>>;
+XTAL_TYP_(let) root_t = process::confined_t<root<M_exp, M_cut>>;
 
 template <int M_exp=1, int M_cut=0, auto N_lim=0b11>
-XTAL_DEF_(return,inline,let)
-root_f(auto &&z)
-noexcept -> decltype(auto)
+XTAL_DEF_(let) root_f = [] (auto &&z)
+XTAL_0FN
 {
-	static_assert(M_exp != 0);
 	XTAL_IF0
 //	XTAL_0IF_(consteval) {return root_t<M_exp, 0    >::template method_f<   ~0>(XTAL_REF_(z));}
 	XTAL_0IF (M_cut <=0) {return root_t<M_exp, 0    >::template method_f<N_lim>(XTAL_REF_(z));}
 	XTAL_0IF (0 < M_cut) {return root_t<M_exp, M_cut>::template method_f<N_lim>(XTAL_REF_(z));}
-}
+};
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -53,7 +54,7 @@ struct root
 		noexcept -> auto
 		requires un_n<atom::couple_q<XTAL_ALL_(z)>>
 		{
-			using Z     = XTAL_ALL_(z);
+			using Z     = objective_t<XTAL_ALL_(z)>;
 			using Z_fit = bond::fit<Z>;
 
 			auto constexpr I_lim = below_v<(1<<4), (unsigned) N_lim>;
@@ -62,6 +63,9 @@ struct root
 			XTAL_0IF (integral_variable_q<Z>) {
 				return method_f<I_lim>(Z_fit::alpha_f(XTAL_REF_(z)));
 			}
+			XTAL_0IF (M_exp ==  zero                        ) {return Z{one};}
+			XTAL_0IF (M_exp ==  bond::math::bit_reverse_f(1)) {return Z{one};}
+			XTAL_0IF (M_exp == ~bond::math::bit_reverse_f(1)) {return Z{one};}
 			XTAL_0IF_(to) (evaluate<I_lim>(XTAL_REF_(z)))
 			XTAL_0IF_(to) (evaluate<I_lim>(XTAL_REF_(z)))
 			XTAL_0IF_(to) (evaluate<I_lim>(XTAL_REF_(z), constant_t<2>{}))
@@ -107,16 +111,14 @@ struct root
 		evaluate(auto &&z)
 		noexcept -> objective_t<XTAL_ALL_(z)>
 		{
+			using bond::math::bit_zoom_f;
+			using bond::math::bit_exchange_f;
 			using Z     = XTAL_ALL_(z);
 			using Z_fit = bond::fit<Z>;
 			
-			using Z_alpha = typename Z_fit::alpha_type;
-			using Z_delta = typename Z_fit::delta_type;
-			using Z_sigma = typename Z_fit::sigma_type;
 			auto constexpr _1      = Z_fit::alpha_1;
 			auto constexpr  Z_exp  = Z_fit::exponent.mask;
-			auto constexpr  Z_pos  = Z_fit::positive.mask;
-			auto constexpr  Z_cut  = M_cut == 0? Z_alpha{0}: Z_fit::minilon_f(M_cut);
+			auto constexpr  Z_cut  = M_cut == 0? Z_fit::alpha_f(0): Z_fit::minilon_f(M_cut);
 
 			XTAL_IF0
 			XTAL_0IF (1 == M_exp) {
@@ -131,10 +133,9 @@ struct root
 			}
 			XTAL_0IF (complex_variable_q<Z> and real_variable_q<typename Z::value_type>) {
 			// Emulating `-fcx-fortran-rules`...
-				auto const z_re =  z.real(); auto i_dn = Z_pos&_xtd::bit_cast<Z_sigma>(z_re);
-				auto const z_im = -z.imag(); auto i_up = Z_pos&_xtd::bit_cast<Z_sigma>(z_im);
-				(void) bond::math::bit_swap_f<+1>(i_dn, i_up);
-				auto const z_i  = _xtd::bit_cast<Z_alpha>(Z_pos - i_up);
+				auto const z_re =  z.real();
+				auto const z_im = -z.imag();
+				auto const z_i  =  bit_zoom_f(z_re, z_im);
 				auto const z_2  =  square_f(z_i)/square_f(Z_cut, z_re*z_i, z_im*z_i);
 				return complexion_f(XTAL_MOV_(z_re)*z_2, XTAL_MOV_(z_im)*z_2);
 			}
@@ -247,16 +248,16 @@ struct root
 			XTAL_0IF_(consteval) {
 				auto v = z;
 				for (int i{}; i < 0x10 and v != y; ++i) {
-					y *= _xtd::plus_multiplies(k_, z_, power_f<M_exp_mag>(v = y));
+					y *= _xtd::accumulator(k_, z_, power_f<M_exp_mag>(v = y));
 				}
 				{
-					y /= _xtd::plus_multiplies(h, h, z*power_f<M_exp_mag>(v = y));
+					y /= _xtd::accumulator(h, h, z*power_f<M_exp_mag>(v = y));
 				}
 			}
 			XTAL_0IF_(else) {
 				#pragma unroll
 				for (int i{}; i < I_lim; ++i) {
-					y *= _xtd::plus_multiplies(k_, z_, power_f<M_exp_mag>(y));
+					y *= _xtd::accumulator(k_, z_, power_f<M_exp_mag>(y));
 				}
 			}
 			return y;

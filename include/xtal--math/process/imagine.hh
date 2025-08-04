@@ -86,11 +86,10 @@ struct imagine
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int M_rot=0, int M_con=0>
-using imagine_t = process::confined_t<imagine<M_rot, M_con>>;
+XTAL_TYP_(let) imagine_t = process::confined_t<imagine<M_rot, M_con>>;
 
 template <int M_rot=1, int M_con=0, auto ...Ns>
-XTAL_DEF_(let)
-imagine_f = [] XTAL_1FN_(call) (imagine_t<M_rot, M_con>::template method_f<Ns...>);
+XTAL_DEF_(let) imagine_f = [] XTAL_1FN_(call) (imagine_t<M_rot, M_con>::template method_f<Ns...>);
 
 
 ///////////////////////////////////////////////////////////////////////////////
