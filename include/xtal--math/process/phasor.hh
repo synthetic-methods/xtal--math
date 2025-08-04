@@ -17,36 +17,6 @@ template <typename ..._s>	concept phasor_q = bond::tag_in_p<phasor, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-
-template <class ..._s>
-struct any<phasor<_s...>>
-{
-	using superkind = any<class_template<_s...>>;
-
-	template <class S>
-	class subtype : public bond::compose_s<S, superkind>
-	{
-		using S_ = bond::compose_s<S, superkind>;
-		using T_ = typename S_::self_type;
-	
-	public:
-		using S_::S_;
-
-		using scale_type = occur::inferred_t<union scale, float>;
-
-	};
-};
-template <scalar_q A>
-struct any<phasor<A>> : any<phasor<A[2]>>
-{
-};
-template <>
-struct any<phasor< >> : any<phasor<typename bond::fit<>::alpha_type>>
-{
-};
-
-
-////////////////////////////////////////////////////////////////////////////////
 /*!
 \brief   Manages a truncated fixed-point unit differential like `phasor`.
 
@@ -153,7 +123,7 @@ struct phasor<A, As...>
 	//		return method();
 	//	}
 		/*!
-		\returns The current differential after setting the frequency component to `omega`.
+		\returns The current differential after setting the stored frequency to `omega`.
 		*/
 		template <int N_root=1>
 		XTAL_DEF_(return,let)
@@ -249,3 +219,5 @@ struct phasor<A, As...>
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////
 XTAL_ENV_(pop)
+
+#include "./phasor.hh_"

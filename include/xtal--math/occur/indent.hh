@@ -24,20 +24,20 @@ template <class S, int ...Ns> using    indent_s = bond::compose_s<S, indent<ordi
 template <constant_q ...Ns>
 struct indent<Ns...>
 {
-	template <class S> using component_t = bond::pack_item_t<S, Ns{}...>;
-	template <class S> using component_s = bond::pack_item_s<S, Ns{}...>;
+	template <class S> using indicated_t = bond::pack_item_t<S, Ns{}...>;
+	template <class S> using indicated_s = bond::pack_item_s<S, Ns{}...>;
 	
 	using superkind = bond::compose<void
 	,	confined<bond::tag<indent>, confer<Ns>...>
 	,	bond::compose_t<conferred_t>
-	,	bond::compose_t<component_t>
+	,	bond::compose_t<indicated_t>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
 	{
 		static_assert(bond::pack_q<S>);
 		using S_ = bond::compose_s<S, superkind>;
-		using W_ =     component_s<S >;
+		using W_ =     indicated_s<S >;
 		using U_ =   initializer_t<W_>;
 
 	public:
@@ -73,7 +73,7 @@ struct indent<Ns...>
 		template <size_type N_mask=1>
 		struct incept
 		{
-			using superkind = bond::compose<flow::mask<N_mask>, defer<component_t<S>>>;
+			using superkind = bond::compose<flow::mask<N_mask>, defer<indicated_t<S>>>;
 
 			template <class R> requires un_n<sizeof...(Ns)>
 			class subtype : public bond::compose_s<R, superkind>

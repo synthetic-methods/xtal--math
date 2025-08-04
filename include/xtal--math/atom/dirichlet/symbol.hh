@@ -93,7 +93,7 @@ public:
 				value_type w =  1;
 				value_type u = -1;
 				if constexpr (complex_field_q<value_type>) {
-					u = pade::unity_t<1>::template method_f<6>(_fit::ratio_f(1, 2*K));
+					u = pade::unity_f<1>(_fit::ratio_f(1, 2*K));
 				}
 				bond::seek_out_f<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
@@ -132,7 +132,7 @@ public:
 			else {
 				value_type w, u;
 				if constexpr (complex_field_q<value_type>) {
-					u = pade::unity_t<1>::template method_f<6>(_fit::ratio_f(1, 2*K));
+					u = pade::unity_f<1>(_fit::ratio_f(1, 2*K));
 				}
 				else {
 					u = 1;

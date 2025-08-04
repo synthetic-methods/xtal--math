@@ -13,7 +13,7 @@ namespace xtal::process::math::taylor
 /*!
 \brief   Defines `Tan[Pi #] &` and `Tanh[Pi #] &`, and their inverses.
 
-Provides a counterpart to `pade::tangy` that is accurate in the limit for `Tanh`.
+Provides a counterpart to `pade::tangy` that approaches `Tanh`.
 
 \tparam  M_ism
 Specifies the underlying morphism \f$\in {1, 2}\f$,
@@ -51,11 +51,10 @@ struct tangy<M_iso, M_car>
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int M_ism=0, int M_car=0>
-using tangy_t = process::confined_t<tangy<M_ism, M_car>>;
+XTAL_TYP_(let) tangy_t = process::confined_t<tangy<M_ism, M_car>>;
 
-template <int M_ism=0, int M_car=0, int ...Ns>
-XTAL_DEF_(let)
-tangy_f = [] XTAL_1FN_(call) (tangy_t<M_ism, M_car>::template method_f<Ns...>);
+template <int M_ism=0, int M_car=0, int N_lim=4>
+XTAL_DEF_(let) tangy_f = [] XTAL_1FN_(call) (tangy_t<M_ism, M_car>::template method_f<N_lim>);
 
 
 ///////////////////////////////////////////////////////////////////////////////

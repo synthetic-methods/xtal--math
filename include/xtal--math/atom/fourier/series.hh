@@ -37,14 +37,6 @@ private:
 
 	using _fit = bond::fit<A>;
 	
-	XTAL_DEF_(return,inline,set)
-	cut_inf(auto &&o)
-	noexcept -> auto
-	{
-		using _fit = bond::fit<decltype(o)>;
-		return process::math::cut_f<[] XTAL_1FN_(to) (-_fit::maxilon_f(1))>(XTAL_REF_(o));
-	}
-
 	template <class T>
 	using endotype = typename serial<A>::template homotype<T>;
 
@@ -184,7 +176,7 @@ public:
 			auto const j = S_::rend() - 1;
 			
 		//	Compute the fractional sinusoid for this `size`:
-			auto constexpr y = process::math::pade::unity_t<1>::template method_f<6>(_fit::ratio_f(-1, size << 1));
+			auto constexpr y = process::math::pade::unity_f<(+1)>(_fit::ratio_f(-1, size << 1));
 
 		//	Compute the initial `1/8`th then mirror the remaining segments:
 			typename S_::difference_type constexpr M = size >> 2U;// `1/8`th
@@ -328,7 +320,7 @@ public:
 		struct transverse
 		{
 			template <class Y>
-			using holotype = typename group_multiplication<A>::template homotype<Y>;
+			using holotype = typename group<wrap_s<A, _std::multiplies>>::template homotype<Y>;
 
 			template <class Y>
 			class homotype : public holotype<homotype<Y>>

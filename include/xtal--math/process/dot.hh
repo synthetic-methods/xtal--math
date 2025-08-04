@@ -16,7 +16,7 @@ namespace xtal::process::math
 For single arguments, the dot-square or `norm` is produced.
 
 \note    The `M_alt` parameter determines the sign of the even terms.
-\note    For `M_alt=-1` and `complex` products, the `real` component w.r.t. multiplication is returned.
+\note    For `M_alt=-1` and `complex` products, the `real` value w.r.t. multiplication is returned.
 \todo    Integrate or redefine with `ìmagine`.
 */
 template <int M_alt=1> requires in_n<M_alt, 0, 1,-1>

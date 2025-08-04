@@ -103,8 +103,8 @@ struct tangy<M_ism, 1>
 			using U_alpha = typename _fit::alpha_type;
 			using W_alpha = atom::couple_t<U_alpha[2]>;
 
-			auto u_abs = u, u_sgn = aspect_t<signed>::edit_f(u_abs);
-			auto v_abs = v, v_sgn = aspect_t<signed>::edit_f(v_abs);// v_sgn *= *_fit::haplo_1;
+			auto u_abs = u, u_sgn = component_t<signed>::edit_f(u_abs);
+			auto v_abs = v, v_sgn = component_t<signed>::edit_f(v_abs);// v_sgn *= *_fit::haplo_1;
 
 			W_alpha co(v_abs < u_abs);
 			W_alpha up{v, u_abs}; up *= co;
@@ -188,9 +188,8 @@ struct tangy<M_ism,-2>
 
 ///////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism=1, int M_car=0, int ...Ns>
-XTAL_DEF_(let)
-tangy_f = [] XTAL_1FN_(call) (tangy_t<M_ism, M_car>::template method_f<Ns...>);
+template <int M_ism=1, int M_car=0, int N_lim=2>
+XTAL_DEF_(let) tangy_f = [] XTAL_1FN_(call) (tangy_t<M_ism, M_car>::template method_f<N_lim>);
 
 
 ///////////////////////////////////////////////////////////////////////////////

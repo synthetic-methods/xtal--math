@@ -34,31 +34,29 @@ struct reparameterized
 /**/
 TAG_("differ")
 {
-	using A_pole = typename bond::fit<>::alpha_type[1];
-	auto constexpr N_pole = fixed_n<A_pole>;
-
-	using R_order = occur::inferred_t<union ORDER, bond::seek_s<1 + N_pole>>;
+	using          U_pole = typename bond::fit<>::alpha_type;
+	auto constexpr N_pole = fixed_n<U_pole[1]>;
 
 	//\
-	using A_differ = differ<A_pole>;
-	using A_differ = differ<_differ::reparameterized, A_pole>;
-	using W_differ = any_t<A_differ>;
-
-	using Y_differ = process::confined_t<void
-	,	typename W_differ::template dispatch<>
-	,	A_differ
+	using D_def = differ<_differ::reparameterized, U_pole[1]>;
+	using D_def = differ<U_pole[1]>;
+	using D_etc = process::traits_t<D_def>;
+	using D_prx = process::confined_t<void
+	,	typename D_etc::template dispatch<>
+	,	D_def
 	>;
 
-	using U_order = typename W_differ::order_type;
-	static_assert(same_q<U_order, typename Y_differ::order_type>);
-	static_assert(same_q<R_order, typename Y_differ::order_type>);
+	using V_order = occur::inferred_t<union ORDER, bond::seek_s<1 + N_pole>>;
+	using U_order = typename D_etc::order_type;
+//	static_assert(same_q<U_order, typename D_prx::order_type>);
+//	static_assert(same_q<V_order, typename D_prx::order_type>);
 
 	TRY_("instantiation")
 	{
-		Y_differ diff{};
+		D_prx diff{};
 		//\
-		diff <<= typename Y_differ::order_type{1};
-		diff <<= typename W_differ::order_type{1};
+		diff <<= typename D_prx::order_type{1};
+		diff <<= typename D_etc::order_type{1};
 
 		TRUE_(check_f<19>(diff(1), 1));
 		TRUE_(check_f<19>(diff(2), 1));
@@ -68,8 +66,8 @@ TAG_("differ")
 	}
 //	TRY_("scaling")
 //	{
-//		confined_t<dilate<[] XTAL_1FN_(to) (bond::fit<>::patio_2)>, Y_differ> diff{};
-//		diff <<= typename Y_differ::order_type{1};
+//		confined_t<dilate<[] XTAL_1FN_(to) (bond::fit<>::patio_2)>, D_prx> diff{};
+//		diff <<= typename D_prx::order_type{1};
 //
 //		TRUE_(check_f<19>(0.15915493667125702, diff(1)));
 //		TRUE_(check_f<19>(0.15915493667125702, diff(2)));

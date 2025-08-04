@@ -20,8 +20,8 @@ struct wnity;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <>
-struct wnity<1, 0>
+template <int M_ism, int M_car> requires in_n<M_ism, 1> and in_n<M_car, 0, 1>
+struct wnity<M_ism, M_car>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -43,20 +43,15 @@ struct wnity<1, 0>
 		method_f(auto &&t_re, simplex_field_q auto &&t_im)
 		noexcept -> decltype(auto)
 		{
-			using T_re  = XTAL_ALL_(t_re); static_assert(real_variable_q<T_re>);
-			using T_im  = XTAL_ALL_(t_im); static_assert(real_variable_q<T_im>);
-			using U_fit = bond::fit<T_re, T_im>;
-			//\
-			auto constexpr _exp_2pi = [] (auto &&x) XTAL_0FN_(to) (exp(U_fit::patio_f(-2)*XTAL_REF_(x)));
-			auto constexpr _exp_2pi = [] XTAL_1FN_(call) (taylor::octarithm_t<-1>::template method_f<2>);
-			return method_f<N_lim>(XTAL_REF_(t_re))*roots_t<1>::method_f(_exp_2pi(XTAL_REF_(t_im)));
+			return method_f<N_lim>(XTAL_REF_(t_re))*
+				roots_t<1>::method_f(taylor::octarithm_f<-1>(XTAL_REF_(t_im)));
 		}
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,set)
 		method_f(simplex_field_q auto &&t_re)
 		noexcept -> decltype(auto)
 		{
-			auto const p = objective_f(unity_t<1>::template method_f<N_lim>(XTAL_REF_(t_re)));
+			auto const p = objective_f(unity_t<M_ism, M_car>::template method_f<N_lim>(XTAL_REF_(t_re)));
 			auto const q = objective_f(conj(p));
 			return atom::couple_f(p, q);
 		}
@@ -67,12 +62,12 @@ struct wnity<1, 0>
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism=1, int M_car=0>
+template <int M_ism=1, int M_car=1>
 using wnity_t = process::confined_t<wnity<M_ism, M_car>>;
 
-template <int M_ism=1, int M_car=0, int ...Ns>
+template <int M_ism=1, int M_car=1, int N_lim=2>
 XTAL_DEF_(let)
-wnity_f = [] XTAL_1FN_(call) (wnity_t<M_ism, M_car>::template method_f<Ns...>);
+wnity_f = [] XTAL_1FN_(call) (wnity_t<M_ism, M_car>::template method_f<N_lim>);
 
 
 ///////////////////////////////////////////////////////////////////////////////

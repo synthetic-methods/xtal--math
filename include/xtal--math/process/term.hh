@@ -25,7 +25,7 @@ XTAL_DEF_(return,inline,let)
 term_f(W &&w, X &&x, Xs &&...xs)
 noexcept -> auto
 {
-	using _xtd::plus_multiplies;
+	using _xtd::accumulator;
 	XTAL_IF0
 	XTAL_0IF (none_q<Xs...>) {
 		XTAL_IF0
@@ -65,20 +65,20 @@ noexcept -> auto
 			return XTAL_REF_(w);
 		}
 		XTAL_0IF (M_pow == 1 and M_alt ==  1) {
-			return plus_multiplies(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
+			return accumulator(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
 		}
 		XTAL_0IF (M_pow == 1 and M_alt == -1) {
-			return plus_multiplies(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)..., Y{M_alt});
+			return accumulator(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)..., Y{M_alt});
 		}
 		XTAL_0IF (M_pow == 2 and M_alt ==  1) {
 			auto const y = (XTAL_REF_(xs) *...* XTAL_REF_(x));
-			return plus_multiplies(XTAL_REF_(w), y, y);
+			return accumulator(XTAL_REF_(w), y, y);
 		}
 		XTAL_0IF (M_pow == 2 and M_alt == -1) {
 			auto const y = (XTAL_REF_(xs) *...* XTAL_REF_(x));
-			return plus_multiplies(XTAL_REF_(w), y, y, Y{M_alt});
+			return accumulator(XTAL_REF_(w), y, y, Y{M_alt});
 		}
-		XTAL_0IF_(terminate)
+		XTAL_0IF_(void)
 	}
 };
 
