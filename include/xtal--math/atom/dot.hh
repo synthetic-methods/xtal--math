@@ -67,9 +67,9 @@ public:
 		{
 			if constexpr (bond::pack_q<decltype(t)>) {
 				auto &s = self();
-				typename T::coordinate_type u{0};
+				typename T::revalue_type u{0};
 				
-				bond::seek_out_f<size>([&]<constant_q I> (I)
+				bond::seek_until_f<size>([&]<constant_q I> (I)
 					XTAL_0FN_(do) (u = _xtd::accumulator(XTAL_MOV_(u), got<I{}>(s), got<I{}>(t))));
 				
 				return u;

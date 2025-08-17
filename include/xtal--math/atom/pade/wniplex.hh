@@ -66,15 +66,26 @@ public:
 		magnitudes(), S_::template element<1>())
 
 	public:// CONSTRUCT
-		using S_::S_;
+	//	using S_::S_;
+		XTAL_NEW_(else) (homotype, noexcept:S_)
 
 		XTAL_DEF_(inline)
 		XTAL_NEW_(explicit)
 		homotype(complex_variable_q auto &&x)
 		noexcept
 		:	S_{
-				process::math::  pade::    unity_f<(+1)>(x.real())
-			,	process::math::taylor::octarithm_f<(-1)>(x.imag())
+				complex_type{process::math::  pade::    unity_f<(+1)>(x.real())}
+			,	 duplex_type{process::math::taylor::octarithm_f<(-1)>(x.imag()), _std::in_place}
+			}
+		{
+		}
+		XTAL_DEF_(inline)
+		XTAL_NEW_(explicit)
+		homotype(decltype(one))
+		noexcept
+		:	S_{
+				complex_type{one, zero}
+			,	 duplex_type{one, one }
 			}
 		{
 		}

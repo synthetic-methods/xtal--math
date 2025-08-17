@@ -113,7 +113,7 @@ struct filter
 
 		//	Initialize `outputs*`:
 			get<0>(outputs) = get<0>(slopes_);
-			bond::seek_out_f<N_ord - 1>([&] (auto I) XTAL_0FN {
+			bond::seek_until_f<N_ord - 1>([&] (auto I) XTAL_0FN {
 				get<I + 1>(outputs_) = term_f(get<I + 1>(slopes_), get<I>(outputs_), s_gain);
 			});
 			get<N_ord>(outputs) = root_f<-1, (1)>(term_f(one, get<N_ord - 1>(outputs_), s_gain));
@@ -121,12 +121,12 @@ struct filter
 			int constexpr K_lim = provision::saturated_q<S_>;
 
 		//	Integrate `states*` with `scalars*` and `outputs*`:
-			bond::seek_out_f<K_lim + 1>([&] (auto K) XTAL_0FN {
+			bond::seek_until_f<K_lim + 1>([&] (auto K) XTAL_0FN {
 				XTAL_IF0
 				XTAL_0IF (0 == K) {get<N_ord>(outputs) *= x - dot_f(outputs_, states_);}
 				XTAL_0IF (1 <= K) {get<N_ord>(outputs)  = x - dot_f(outputs_, slopes_);}
 
-				bond::seek_out_f<-N_ord>([&] (auto I) XTAL_0FN {
+				bond::seek_until_f<-N_ord>([&] (auto I) XTAL_0FN {
 					auto const o = get<I>(outputs_) = term_f(get<I>(states_), get<I + 1>(outputs), s_gain);
 					if constexpr (K < K_lim) {
 						get<I>(slopes_) = get<I>(descalars_) + saturate_f<-1, -1, Ns...>(o, oo...);
@@ -135,7 +135,7 @@ struct filter
 			});
 
 		//	Finalize states and `outputs*`/`scalars*`:
-			bond::seek_out_f<N_ord>([&] (auto I) XTAL_0FN {
+			bond::seek_until_f<N_ord>([&] (auto I) XTAL_0FN {
 				get<I>(states_) = term_f(-get<I>(states_), two, get<I>(outputs_));
 			});
 			static_assert(XTAL_ALL_(slopes_)::size() == XTAL_ALL_(outputs_)::size());

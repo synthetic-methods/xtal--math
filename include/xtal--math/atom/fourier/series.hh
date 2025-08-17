@@ -81,6 +81,13 @@ public:
 			generate(XTAL_REF_(oo)...);
 		}
 
+		template <constant_q I>
+		XTAL_DEF_(inline,let)
+		generate(I, auto &&...oo)
+		noexcept -> T &
+		{
+			return generate<I::value>(XTAL_REF_(oo)...);
+		}
 		template <int N_count=size>
 		XTAL_DEF_(inline,let)
 		generate(U1 const &u1, U2 const &u2)
@@ -97,7 +104,7 @@ public:
 			
 			reinterpret_cast<W1_ &>(self()).template generate<0, 0, 2, size>(u1);
 			reinterpret_cast<U2_ &>(self()).template generate<0, 1, 2, size>({u2, one/u2});
-			bond::seek_out_f<+size>([&, this] (auto I) XTAL_0FN {
+			bond::seek_until_f<+size>([&, this] (auto I) XTAL_0FN {
 				auto &[o, e] = get<I>(s);
 				auto &[f, g] = destruct_f(e);
 				get<I>(s) = {o*f, _std::conj(o)*g};
@@ -139,7 +146,7 @@ public:
 				get<I0 + _1>(s) = o*u;
 
 			//	Populate the remaining powers by squaring/multiplication:
-				bond::seek_out_f<(N_size >> 1U)>([&] (auto M)
+				bond::seek_until_f<(N_size >> 1U)>([&] (auto M)
 					XTAL_0FN {
 						auto constexpr UM = I0 + _1*M;
 						auto constexpr WM = J0 + _2*M;

@@ -18,9 +18,12 @@ template <typename ..._s>	concept phasor_q = bond::tag_in_p<phasor, _s...>;
 
 ////////////////////////////////////////////////////////////////////////////////
 /*!
-\brief   Manages a truncated fixed-point unit differential like `phasor`.
+\brief   Manages a truncated fixed-point unit differential.
 
+May be updated via the `indent` mechanism.
 Provides evaluation/update via succession/replacement.
+
+\todo    Attach a parameter to govern suboctave scaling?
 */
 template <vector_q A, typename ...As>
 struct phasor<A, As...>
@@ -28,10 +31,10 @@ struct phasor<A, As...>
 	static auto constexpr N = _xtd::extent_v<A>;
 
 	using U_phason = atom::math::phason_t<A>;
-	using coordinate_type = typename U_phason::coordinate_type;
-	using inordinate_type = typename U_phason::inordinate_type;
-	using   ordinate_type = typename U_phason::  ordinate_type;
-	using V_phason = atom::math::phason_t<inordinate_type[N]>;
+	using revalue_type = typename U_phason::revalue_type;
+	using invalue_type = typename U_phason::invalue_type;
+	using devalue_type = typename U_phason::devalue_type;
+	using V_phason = atom::math::phason_t<invalue_type[N]>;
 
 	using semikind = bond::compose<void
 	//\
@@ -64,7 +67,7 @@ struct phasor<A, As...>
 		bias()
 		noexcept -> auto
 		{
-			return S_::template bias<coordinate_type>();
+			return S_::template bias<revalue_type>();
 		}
 
 	public:// FLOW
@@ -127,7 +130,7 @@ struct phasor<A, As...>
 		*/
 		template <int N_root=1>
 		XTAL_DEF_(return,let)
-		method(coordinate_type omega)
+		method(revalue_type omega)
 		noexcept -> auto
 		{
 			using resample_type = occur::resample_t<>;
@@ -135,14 +138,14 @@ struct phasor<A, As...>
 				omega *= S_::template head<resample_type>().period();
 			}
 			auto &u_phi = S_::head();
-			u_phi[1] = U_phason::ordinate(omega); return ++u_phi;
+			u_phi[1] = U_phason::devalue_f(omega); return ++u_phi;
 		}
 		/*!
 		\returns The current differential after scaling the incoming `phi` by `co`.
 		*/
 		template <int N_root=1>
 		XTAL_DEF_(return,let)
-		method(U_phason phi, coordinate_type co)
+		method(U_phason phi, revalue_type co)
 		noexcept -> auto
 		//	requires same_q<U_phason, typename S_::template head_t<ordinal_constant_t<1>>>
 		{
@@ -193,7 +196,7 @@ struct phasor<A, As...>
 		*/
 		template <int N_root=1>
 		XTAL_DEF_(return,let)
-		method(U_phason phi, coordinate_type co)
+		method(U_phason phi, revalue_type co)
 		noexcept -> auto
 		requires same_q<U_phason, typename S_::template head_t<ordinal_constant_t<1>>>
 		{
@@ -203,7 +206,7 @@ struct phasor<A, As...>
 		//	Calculates the deviation of `phi[0]` w.r.t. phi[1],
 		//	using the difference in `phi[1]` to determine the threshold for reset.
 
-			u_phi[1]  = phi[1]; ++u_phi; auto i_phi = condition_f<ordinate_type>(u_phi[0] != phi[0]);
+			u_phi[1]  = phi[1]; ++u_phi; auto i_phi = condition_f<devalue_type>(u_phi[0] != phi[0]);
 			u_phi[0]  = phi[0];     phi *= co;
 			v_phi[1]  = phi[1]; ++v_phi;
 			v_phi[0] &= ~i_phi;

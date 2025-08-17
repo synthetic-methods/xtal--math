@@ -52,14 +52,6 @@ noexcept -> auto
 		XTAL_0IF_(void)
 	}
 }
-XTAL_DEF_(return,inline,let)
-bit_overflow_f(ordinal_variable_q auto &x)
-noexcept -> auto &
-{
-	using X     = XTAL_ALL_(x);
-	using X_fit = bond::fit<X>;
-	return reinterpret_cast<typename X_fit::sigma_type &>(x);
-}
 template <int N_val=0>
 XTAL_DEF_(return,inline,let)
 bit_flag_f(numeric_variable_q auto const x)
@@ -708,12 +700,12 @@ noexcept -> auto
 
 			X_delta o = _xtd::bit_cast<X_delta>(x);
 			X_delta v = o &  M_sgn; o ^= v; v >>= X_fit::sign.shift;
-			X_delta x = o >> N_exp; bit_overflow_f(x) -= M_exp;
+			X_sigma x = o >> N_exp; x -= M_exp;
 			X_delta u = bit_flag_f<~0>(x);
 
 			o &=      X_fit::fraction. mask;
 			o |= u << X_fit::fraction.depth;
-			o  = bit_shift_f(XTAL_MOV_(o), XTAL_MOV_(x));
+			o  = bit_shift_f(XTAL_MOV_(o), _xtd::bit_cast<X_delta>(XTAL_MOV_(x)));
 		//	o |= 1;
 			o ^= v;
 			o -= v;

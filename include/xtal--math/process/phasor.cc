@@ -33,7 +33,7 @@ TAG_("phasor trials")
 {
 	using namespace Eigen;
 	
-	using U_stored  = provision::stored<unit_type[0x1000]>;
+	using U_stored  = provision::stored<unit_type[0x100]>;
 	using U_sampled = occur::resample_t<>::template attach<>;
 
 	using _Op = bond::fit<>;
@@ -74,7 +74,7 @@ TAG_("phasor trials")
 	/**/
 	static constexpr T_alpha x_delta  = _fit::ratio_f(7);
 	
-	T_sigma constexpr N_data = 0x1000;
+	T_sigma constexpr N_data = 0x100;
 	T_alpha   z_data[2][N_data]{};
 	T_alpha  *y_data   [N_data]{z_data[0], z_data[1]};
 	T_alpha **x_data = y_data;
@@ -127,7 +127,7 @@ TAG_("phasor")
 {
 	using namespace Eigen;
 	
-	using U_stored  = provision::stored<unit_type[0x1000]>;
+	using U_stored  = provision::stored<unit_type[0x100]>;
 	using U_sampled = occur::resample_t<>::template attach<>;
 
 	using _Op = bond::fit<>;
@@ -172,7 +172,7 @@ TAG_("phasor")
 
 		static constexpr T_alpha x_delta  = _fit::ratio_f(7);
 		
-		T_sigma constexpr N_data = 0x1000;
+		T_sigma constexpr N_data = 0x100;
 		T_alpha   z_data[2][N_data]{};
 		T_alpha  *y_data   [N_data]{z_data[0], z_data[1]};
 		T_alpha **x_data = y_data;

@@ -67,10 +67,10 @@ private:
 	using V = bond::compose_s<U_delta, W_fit>;
 	using U = bond::compose_s<U_sigma, W_fit>;
 
-	using       pack_type = bond::repack_t<W[M_data]>;
-	using coordinate_type = W;
-	using inordinate_type = V;
-	using   ordinate_type = U;
+	using    pack_type = bond::repack_t<W[M_data]>;
+	using revalue_type = W;
+	using invalue_type = V;
+	using devalue_type = U;
 
 	static_assert(_std::numeric_limits<unstruct_u<U>>::is_modulo);// D'oh!
 
@@ -88,9 +88,9 @@ public:
 		using typename S_::value_type;
 		using typename S_:: size_type;
 
-		using coordinate_type = W;
-		using inordinate_type = V;
-		using   ordinate_type = U;
+		using revalue_type = W;
+		using invalue_type = V;
+		using devalue_type = U;
 
 
 	public:// ACCESS
@@ -98,37 +98,34 @@ public:
 		using S_::self;
 		using S_::twin;
 
-		static auto constexpr   ordinate = [] XTAL_1FN_(call) (bond::math::bit_fraction_f<U>);
-		static auto constexpr coordinate = [] XTAL_1FN_(call) (bond::math::bit_fraction_f<W>);
+		static auto constexpr devalue_f = [] XTAL_1FN_(call) (bond::math::bit_fraction_f<U>);
+		static auto constexpr revalue_f = [] XTAL_1FN_(call) (bond::math::bit_fraction_f<W>);
 
 
 	public:// CONSTRUCT
 	//	using S_::S_;
-	~	homotype()                 noexcept=default;
-		homotype()                 noexcept=default;
-		XTAL_NEW_(copy) (homotype, noexcept=default)
-		XTAL_NEW_(move) (homotype, noexcept=default)
+		XTAL_NEW_(else) (homotype, noexcept:S_)
 
-		XTAL_NEW_(explicit)
-		homotype(iterable_q auto &&o)
-		noexcept
-		:	S_(count_f(o))
-		{
-			operator>>=(XTAL_REF_(o));
-		}
 		XTAL_NEW_(implicit)
 		homotype(_std::initializer_list<W> o)
 		noexcept
-		:	S_(count_f(o))
+		:	S_(variable{count_f(o)})
 		{
 			operator>>=(XTAL_MOV_(o));
 		}
+		XTAL_NEW_(explicit)
+		homotype(iterable_q auto &&o)
+		noexcept
+		:	S_(variable{count_f(o)})
+		{
+			operator>>=(XTAL_REF_(o));
+		}
 		/*/
 		XTAL_DEF_(return,inline,explicit)
-		operator coordinate_type() const
-		requires in_n<sizeof(T), sizeof(coordinate_type)>
+		operator revalue_type() const
+		requires in_n<sizeof(T), sizeof(revalue_type)>
 		{
-			return reinterpret_cast<coordinate_type const &>(*this);
+			return reinterpret_cast<revalue_type const &>(*this);
 		}
 		/***/
 
@@ -142,7 +139,7 @@ public:
 		{
 			auto i = S_::data();
 			if constexpr (N_pos != 0) {i += S_::size() - o.size();}
-			_detail::copy_to<T::ordinate>(i, XTAL_REF_(o));
+			_detail::copy_to<T::devalue_f>(i, XTAL_REF_(o));
 			return self();
 		}
 
@@ -169,7 +166,7 @@ public:
 		operator >>=(integral_q auto const i)
 		noexcept ->  auto &
 		{
-			auto &head = reinterpret_cast<inordinate_type &>(get<0>(self()));
+			auto &head = reinterpret_cast<invalue_type &>(get<0>(self()));
 			head >>= i;
 			return self();
 		}
@@ -310,8 +307,8 @@ public:
 		{
 			auto &s = self();
 			XTAL_IF0
-			XTAL_0IF (0 <= N) {get<0>(s) += _xtd::bit_cast<inordinate_type>(get<1>(s)) << +N;}
-			XTAL_0IF (N <  0) {get<0>(s) += _xtd::bit_cast<inordinate_type>(get<1>(s)) >> -N;}
+			XTAL_0IF (0 <= N) {get<0>(s) += _xtd::bit_cast<invalue_type>(get<1>(s)) << +N;}
+			XTAL_0IF (N <  0) {get<0>(s) += _xtd::bit_cast<invalue_type>(get<1>(s)) >> -N;}
 			return s;
 		}
 		template <int N> requires in_n<size, 2>
@@ -321,8 +318,8 @@ public:
 		{
 			auto &s = self();
 			XTAL_IF0
-			XTAL_0IF (0 <= N) {get<0>(s) -= _xtd::bit_cast<inordinate_type>(get<1>(s)) << +N;}
-			XTAL_0IF (N <  0) {get<0>(s) -= _xtd::bit_cast<inordinate_type>(get<1>(s)) >> -N;}
+			XTAL_0IF (0 <= N) {get<0>(s) -= _xtd::bit_cast<invalue_type>(get<1>(s)) << +N;}
+			XTAL_0IF (N <  0) {get<0>(s) -= _xtd::bit_cast<invalue_type>(get<1>(s)) >> -N;}
 			return s;
 		}
 
@@ -331,8 +328,8 @@ public:
 		scale(W u, W w=one)
 		noexcept -> auto &
 		{
-			bond::seek_out_f<size - 1, 1>([&, this]<constant_q I> (I)
-				XTAL_0FN_(do) (get<I{}>(self()) = T::ordinate(got<I{}>(self())*(w *= u))));
+			bond::seek_until_f<size - 1, 1>([&, this]<constant_q I> (I)
+				XTAL_0FN_(do) (get<I{}>(self()) = T::devalue_f(got<I{}>(self())*(w *= u))));
 			return self();
 		}
 		XTAL_DEF_(inline,let)

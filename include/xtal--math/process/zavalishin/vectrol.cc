@@ -126,9 +126,9 @@ TAG_("vectrol")
 		,	O_def
 		>;
 		//\
-		using Q_vtx = atom::quanta_t<U_alpha, U_alpha>;
+		using Q_vtx = atom::brace_t<U_alpha, U_alpha>;
 		using Q_vtx = bond::pack_t<U_alpha, W_alpha>;
-		using Q_mtx = atom::quanta_t<Q_vtx[2]>;
+		using Q_mtx = atom::brace_t<Q_vtx[2]>;
 		using Q_prx = multiplex_t<O_prx>::template matrix_t<Q_mtx>;
 		using Q_pxr = processor::monomer_t<Q_prx
 		,	Z_slice::template accept<O_pkt>

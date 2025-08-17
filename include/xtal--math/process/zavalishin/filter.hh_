@@ -27,7 +27,7 @@ struct traits<math::zavalishin::filter<_s...>>
 	public:
 		using S_::S_;
 
-		template <size_type N_mask=1>
+		template <extent_type N_mask=1>
 		struct dispatch : bond::compose<void
 		,	provision::voiced<void
 			,	typename T_::   order_type::template dispatch<N_mask>
@@ -35,7 +35,7 @@ struct traits<math::zavalishin::filter<_s...>>
 		,	typename S_::template dispatch<N_mask>
 		>
 		{};
-		template <size_type N_mask=1>
+		template <extent_type N_mask=1>
 		struct   attach : bond::compose<void
 		,	provision::voiced<void
 			,	typename T_::   stage_type::template  inspect<N_mask>

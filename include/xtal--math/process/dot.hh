@@ -91,7 +91,7 @@ struct dot
 			}
 			XTAL_0IF (3 <= N) {
 				_detail::multiplied_u<X> w{0};
-				bond::seek_out_f<N>([&]<constant_q I> (I) XTAL_0FN {
+				bond::seek_until_f<N>([&]<constant_q I> (I) XTAL_0FN {
 					XTAL_IF0
 					XTAL_0IF (0 < M_alt) {w = term_f<               2>(XTAL_MOV_(w), get<I{}>(x));}
 					XTAL_0IF (M_alt < 0) {w = term_f<cosign_v<I{}>, 2>(XTAL_MOV_(w), get<I{}>(x));}
@@ -122,7 +122,7 @@ struct dot
 			}
 			XTAL_0IF (3 <= N) {
 				_detail::multiplied_u<X, Y> w{0};
-				bond::seek_out_f<N>([&]<constant_q I> (I) XTAL_0FN {
+				bond::seek_until_f<N>([&]<constant_q I> (I) XTAL_0FN {
 					XTAL_IF0
 					XTAL_0IF (0 < M_alt) {w = term_f<               1>(XTAL_MOV_(w), get<I{}>(x), get<I{}>(y));}
 					XTAL_0IF (M_alt < 0) {w = term_f<cosign_v<I{}>, 1>(XTAL_MOV_(w), get<I{}>(x), get<I{}>(y));}

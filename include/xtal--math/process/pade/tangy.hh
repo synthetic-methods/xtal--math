@@ -106,7 +106,7 @@ struct tangy<M_ism, 1>
 			auto u_abs = u, u_sgn = component_t<signed>::edit_f(u_abs);
 			auto v_abs = v, v_sgn = component_t<signed>::edit_f(v_abs);// v_sgn *= *_fit::haplo_1;
 
-			W_alpha co(v_abs < u_abs);
+			W_alpha co{v_abs < u_abs, _std::in_place};
 			W_alpha up{v, u_abs}; up *= co;
 			W_alpha dn{u_abs,-v}; dn *= co;
 

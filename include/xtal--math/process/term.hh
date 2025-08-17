@@ -43,13 +43,13 @@ noexcept -> auto
 		auto constexpr _f = [] XTAL_1FN_(call) (term_f<M_alt, M_pow>);
 		using Y = unstruct_u<Xs...>;// NOTE: Constants interpreted as scalar quantities...
 		XTAL_IF0
-		XTAL_0IF (atom::point_q<W> and not atom::math::dot_q<W>) {
+		XTAL_0IF (atom::groupoid_q<W> and not atom::math::dot_q<W>) {
 			return based_t<W>::template zip_from<_f>(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
 		}
-		XTAL_0IF (atom::point_q<X> and not atom::math::dot_q<X>) {
+		XTAL_0IF (atom::groupoid_q<X> and not atom::math::dot_q<X>) {
 			return based_t<X>::template zip_from<_f>(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
 		}
-		XTAL_0IF (atom::point_q<Y> and not atom::math::dot_q<Y>) {
+		XTAL_0IF (atom::groupoid_q<Y> and not atom::math::dot_q<Y>) {
 			return based_t<Y>::template zip_from<_f>(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
 		}
 		XTAL_0IF (constant_q<W, X> or integral_variable_q<W, X> and real_variable_q<Y>) {

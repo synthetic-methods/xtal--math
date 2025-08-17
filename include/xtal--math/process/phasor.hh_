@@ -29,7 +29,7 @@ struct traits<math::phasor<_s...>>
 
 		using scale_type = occur::inferred_t<union scale, float>;
 
-		template <size_type N_mask=1>
+		template <extent_type N_mask=1>
 		struct dispatch
 		{
 			using superkind = provision::voiced<void
