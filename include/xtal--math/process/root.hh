@@ -124,23 +124,23 @@ struct root
 			XTAL_0IF (1 == M_exp) {
 				return XTAL_REF_(z);
 			}
-			XTAL_0IF (1 <= M_cut and real_variable_q<Z>) {
+			XTAL_0IF (   real_variable_q<Z> and 1 <= M_cut) {
 				auto const z_cut = _xtd::copysign(Z_cut, z);
 				return _1/(XTAL_REF_(z) + z_cut);
 			}
-			XTAL_0IF (M_cut <= 0 and real_variable_q<Z>) {
-				return _1/XTAL_REF_(z);
+			XTAL_0IF (   complex_field_q<Z> and 1 <= M_cut) {
+				auto constexpr u = Z_fit::haplo_f(M_cut*Z_fit::full.width);
+				auto constexpr w = square_f(u);
+				return imagine_f<0, 1>(z)*(XTAL_MOV_(w)/dot_f(XTAL_MOV_(u)*z));
 			}
-			XTAL_0IF (complex_variable_q<Z> and real_variable_q<typename Z::value_type>) {
+			XTAL_0IF (complex_variable_q<Z> and M_cut <  0) {
 			// Emulating `-fcx-fortran-rules`...
-				auto const z_re =  z.real();
-				auto const z_im = -z.imag();
-				auto const z_i  =  bit_zoom_f(z_re, z_im);
-				auto const z_2  =  square_f(z_i)/square_f(Z_cut, z_re*z_i, z_im*z_i);
-				return complexion_f(XTAL_MOV_(z_re)*z_2, XTAL_MOV_(z_im)*z_2);
+				auto const     u = bit_zoom_f(z);// if (same_q<U_value, U_alpha> and M_cut == -1)?
+				auto const     w = square_f(u);
+				return imagine_f<0, 1>(z)*(XTAL_MOV_(w)/dot_f(XTAL_MOV_(u)*z));
 			}
 			XTAL_0IF_(else) {
-				return _1/XTAL_REF_(z);// TODO: Handle generic `0 < M_cut`!
+				return _1/XTAL_REF_(z);
 			}
 		}
 

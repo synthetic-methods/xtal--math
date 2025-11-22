@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 #include "../atom/dot.hh"
-
+#include "./square.hh"
 
 
 
@@ -29,17 +29,25 @@ noexcept -> auto
 	XTAL_IF0
 	XTAL_0IF (none_q<Xs...>) {
 		XTAL_IF0
-		XTAL_0IF (M_pow == 0) {
+		XTAL_0IF (M_pow == 0  or M_alt ==  0) {
 			return XTAL_REF_(w);
 		}
-		XTAL_0IF (M_pow == 1) {
+		XTAL_0IF (M_pow == 1 and M_alt ==  1) {
 			return XTAL_REF_(w) + XTAL_REF_(x);
 		}
-		XTAL_0IF (M_pow == 2) {
-			return term_f<M_alt>(XTAL_REF_(w), x, x);
+		XTAL_0IF (M_pow == 1 and M_alt == -1) {
+			return XTAL_REF_(w) - XTAL_REF_(x);
+		}
+		XTAL_0IF (M_pow == 2 and M_alt ==  1) {
+			return XTAL_REF_(w) + square_f(XTAL_REF_(x));
+		}
+		XTAL_0IF (M_pow == 2 and M_alt == -1) {
+			return XTAL_REF_(w) - square_f(XTAL_REF_(x));
 		}
 	}
+	//\
 	XTAL_0IF (some_q<Xs...>) {
+	XTAL_0IF_(else) {
 		auto constexpr _f = [] XTAL_1FN_(call) (term_f<M_alt, M_pow>);
 		using Y = unstruct_u<Xs...>;// NOTE: Constants interpreted as scalar quantities...
 		XTAL_IF0

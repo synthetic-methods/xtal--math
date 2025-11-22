@@ -61,56 +61,26 @@ public:
 		using S_::S_;
 
 		/*!
-		\brief   Generates a section of the complex sinusoid determined by `std::pow(2, o_shift{})`.
+		\brief   Generates a section of the complex sinusoid determined by `std::pow(2, n_shift{})`.
 		*/
 		XTAL_DEF_(inline)
 		XTAL_NEW_(explicit)
-		homotype(constant_q auto const o_shift)
+		homotype(constant_q auto const n_index, auto &&...oo)
 		noexcept
 		{
-			generate<o_shift>();
+			generate<n_index>(XTAL_REF_(oo)...);
 		}
 		/*!
-		\brief   Generates the power series with the given seed.
+		\brief   Generates a section of the complex sinusoid determined by `std::pow(2, o_shift{})`.
 		*/
-		XTAL_DEF_(inline)
-		XTAL_NEW_(explicit)
-		homotype(auto &&...oo)
-		noexcept
-		{
-			generate(XTAL_REF_(oo)...);
-		}
-
-		template <constant_q I>
-		XTAL_DEF_(inline,let)
-		generate(I, auto &&...oo)
+		template <auto ...Ns>
+		XTAL_DEF_(let)
+		generate(constant_q auto const n, auto &&...oo)
 		noexcept -> T &
 		{
-			return generate<I::value>(XTAL_REF_(oo)...);
+			generate<n, Ns...>(XTAL_REF_(oo)...);
 		}
-		template <int N_count=size>
-		XTAL_DEF_(inline,let)
-		generate(U1 const &u1, U2 const &u2)
-		noexcept -> T &
-		requires continuous_field_q<U1, U2>
-		{
-			auto &s = self();
 
-			using W1  = U1;
-			using U2  = couple_t<U2     [2]>;
-			using W1_ = series_t<W1[size*2]>;
-			using U2_ = series_t<U2[size*2]>;
-			static_assert(sizeof(W1_) == sizeof(U2_));
-			
-			reinterpret_cast<W1_ &>(self()).template generate<0, 0, 2, size>(u1);
-			reinterpret_cast<U2_ &>(self()).template generate<0, 1, 2, size>({u2, one/u2});
-			bond::seek_until_f<+size>([&, this] (auto I) XTAL_0FN {
-				auto &[o, e] = get<I>(s);
-				auto &[f, g] = destruct_f(e);
-				get<I>(s) = {o*f, _std::conj(o)*g};
-			});
-			return self();
-		}
 		/*!
 		\brief   Populates `this` with powers of `u` from `N_index` to `N_index + N_count - 1`.
 		\returns `this`.
@@ -165,6 +135,7 @@ public:
 			}
 			return s;
 		}
+
 		/*!
 		\brief   Generates the complex sinusoid with length `2*PI*std::pow(2, N_shift)`.
 		\note    To generate the FFT basis used by `transform` etc, use `N_shift == -1`.

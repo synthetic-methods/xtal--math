@@ -395,12 +395,17 @@ XTAL_DEF_(return,inline,let)
 bit_zoom_f(U &&x, U &&y)
 noexcept -> auto
 {
-	using          U_fit = bond::fit<U>;
-	auto constexpr U_exp = U_fit::exponent.mask;
-	auto i_dn = U_exp&bit_exchange_f(XTAL_REF_(x));
-	auto i_up = U_exp&bit_exchange_f(XTAL_REF_(y));
-	(void) bit_swap_f<+1>(i_dn, i_up);
-	return bit_exchange_f(U_exp - i_up);
+	auto constexpr I_ex = bond::fit<U>::exponent.mask;
+	auto           i_dn = I_ex&bit_exchange_f(XTAL_REF_(x));
+	auto           i_up = I_ex&bit_exchange_f(XTAL_REF_(y));
+//	(void) bit_swap_f<+1>(i_dn,  i_up);
+	return bit_exchange_f(I_ex - ((bit_sign_f<+1>(i_dn,i_up)&(i_dn^i_up))^i_up));
+}
+XTAL_DEF_(return,inline,let)
+bit_zoom_f(complex_variable_q auto const &z)
+noexcept -> auto
+{
+	return bit_zoom_f(z.real(), z.imag());
 }
 
 

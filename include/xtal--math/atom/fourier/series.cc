@@ -11,13 +11,6 @@ namespace xtal::atom::math::fourier::_test
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-//atic_assert(_xtd::trivially_initializable<series_t<float[2]>>);// Why?
-//static_assert(_xtd::trivially_destructible <series_t<float[2]>>);
-//static_assert(_xtd::trivially_copyable     <series_t<float[2]>>);
-//static_assert(_xtd::trivially_movable      <series_t<float[2]>>);
-//atic_assert(                     atomic_q<series_t<float[2]>>);// Why?
-
-
 ////////////////////////////////////////////////////////////////////////////////
 
 TAG_("solid", "series")
@@ -54,23 +47,6 @@ TAG_("solid", "series")
 		TRUE_((1 << 6) == get<5>(w8));
 		TRUE_((1 << 7) == get<6>(w8));
 		TRUE_((1 << 8) == get<7>(w8));
-
-	}
-	/***/
-	/**/
-	TRY_("generation of couple")
-	{
-		using U_alpha = couple_t<T_alpha[1<<1]>;
-		using U_aphex = couple_t<T_aphex[1<<1]>;
-		using W_aphex = series_t<U_aphex[1<<4]>;
-
-		W_aphex w_aphex; w_aphex.generate(T_aphex{0, 1}, T_alpha{2.0});
-		TRUE_(get<0>(w_aphex) == U_aphex {{  1.00000,  0.00000}, {  1.00000,- 0.00000}});
-		TRUE_(get<1>(w_aphex) == U_aphex {{  0.00000,  2.00000}, {  0.00000,- 0.50000}});
-		TRUE_(get<2>(w_aphex) == U_aphex {{- 4.00000,  0.00000}, {- 0.25000,- 0.00000}});
-		TRUE_(get<3>(w_aphex) == U_aphex {{- 0.00000,- 8.00000}, {- 0.00000,  0.12500}});
-		TRUE_(get<4>(w_aphex) == U_aphex {{ 16.00000,- 0.00000}, {  0.06250,  0.00000}});
-		TRUE_(get<5>(w_aphex) == U_aphex {{  0.00000, 32.00000}, {  0.00000,- 0.03125}});
 
 	}
 	/***/

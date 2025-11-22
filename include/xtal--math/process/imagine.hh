@@ -48,15 +48,23 @@ struct imagine
 		template <auto ...>
 		XTAL_DEF_(return,inline,set)
 		method_f(complex_field_q auto &&z)
-		noexcept -> decltype(auto)
+		noexcept -> auto
 		{
 			if constexpr (complex_variable_q<decltype(z)>) {
-				auto o = XTAL_REF_(z);
-				auto &[x, y] = destruct_f(o);
-				if constexpr (N_rot == 0b01 or N_rot == 0b11) {_std::swap(x, y);}
-				if constexpr (N_rot == 0b01 or N_rot == 0b10) {x = -XTAL_MOV_(x);}
-				if constexpr (X_rot == 0b11 or X_rot == 0b10) {y = -XTAL_MOV_(y);}
-				return o;
+				if constexpr (N_rot&1) {
+					auto o = XTAL_REF_(z); auto &[x, y] = destruct_f(o);
+					if constexpr (N_rot == 0b01 or N_rot == 0b11) {_std::swap(x, y);}
+					if constexpr (N_rot == 0b01 or N_rot == 0b10) {x = -XTAL_MOV_(x);}
+					if constexpr (X_rot == 0b11 or X_rot == 0b10) {y = -XTAL_MOV_(y);}
+					return o;
+				}
+				else {
+					int constexpr N_ron = N_rot|N_con;
+					if constexpr (N_ron == 0b0'0) {return      (XTAL_REF_(z));}
+					if constexpr (N_ron == 0b1'0) {return -    (XTAL_REF_(z));}
+					if constexpr (N_ron == 0b0'1) {return  conj(XTAL_REF_(z));}
+					if constexpr (N_ron == 0b1'1) {return -conj(XTAL_REF_(z));}
+				}
 			}
 			else {
 				return method_f(z.real(), z.imag());
@@ -98,7 +106,7 @@ struct imagine
 template <int M_rot=0, int M_con=0>
 XTAL_TYP_(let) imagine_t = process::confined_t<imagine<M_rot, M_con>>;
 
-template <int M_rot=1, int M_con=0, auto ...Ns>
+template <int M_rot=0, int M_con=0, auto ...Ns>
 XTAL_DEF_(let) imagine_f = [] XTAL_1FN_(call) (imagine_t<M_rot, M_con>::template method_f<Ns...>);
 
 
