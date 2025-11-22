@@ -45,6 +45,9 @@ TAG_("wniplex")
 		auto const [u_re, u_im] = destruct_f(u.signum());
 		auto const [u_dn, u_up] =           (u.magnum());
 
+		TRUE_(U_aphex{1} == u.template signum<0>());
+		TRUE_(U_alpha{1} == u.template magnum<0>());
+
 		TRUE_(check_f<-2>(u_im, U_alpha{0}));
 		TRUE_(check_f<-2>(u_re, U_alpha{1}));
 		TRUE_(check_f<-2>(u_up, U_alpha{1}));
