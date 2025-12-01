@@ -223,8 +223,8 @@ TAG_("filter-ring")
 		z <<= typename R_etc:: redamp_type{1};
 		z <<= typename R_etc:: refade_type{1};
 		z <<= flow::assign_f(typename R_etc::stage_type{ 0}) << typename R_etc::redamp_type{0.000F};
-		z <<= flow::assign_f(typename R_etc::stage_type{ 1}) << typename R_etc::redamp_type{0.707F};
-		z <<= flow::assign_f(typename R_etc::stage_type{-1}) << typename R_etc::redamp_type{0.303F};
+		z <<= flow::assign_f(typename R_etc::stage_type{ 1}) << typename R_etc::redamp_type{0.060F};
+		z <<= flow::assign_f(typename R_etc::stage_type{-1}) << typename R_etc::redamp_type{0.707F};
 
 		z <<= z_sample;
 		z <<= z_resize;
@@ -233,10 +233,10 @@ TAG_("filter-ring")
 
 		z >>= flow::cue_f(0x08).then(R_eve{69, 0});
 		z >>= flow::cue_f(0x18).then(R_eve{69, 0});
-	//	z >>= flow::cue_f(0x28).then(R_eve{69, 1});// Inlined below...
+		z >>= flow::cue_f(0x28).then(R_eve{69, 1});
 	//	z >>= flow::cue_f(0x38).then(R_eve{69,-1});
-		z >>= flow::cue_f(0x40).then(R_eve{69, 0});
-		z >>= flow::cue_f(0x50).then(R_eve{69, 1});
+	//	z >>= flow::cue_f(0x40).then(R_eve{69, 0});
+	//	z >>= flow::cue_f(0x50).then(R_eve{69, 1});
 
 		echo_rule_<28>("\u2500");
 
@@ -244,8 +244,8 @@ TAG_("filter-ring")
 		TRUE_(0 == z.efflux(z_cursor++));
 		echo_plot_<28>(z.store(), 0x08, 0x18);
 
-		z >>= flow::cue_f(0x08).then(R_eve{69, 1});// Inlined below...
-		z >>= flow::cue_f(0x10).then(R_eve{69,-1});// Inlined from above...
+	//	z >>= flow::cue_f(0x08).then(R_eve{69, 1});// Inlined below...
+		z >>= flow::cue_f(0x20).then(R_eve{69,-1});// Inlined from above...
 
 		TRUE_(2 >= z.ensemble().size());// Still decaying...
 		TRUE_(0 == z.efflux(z_cursor++));
@@ -256,7 +256,7 @@ TAG_("filter-ring")
 
 		TRUE_(2 >= z.ensemble().size());// Still decaying...
 		TRUE_(0 == z.efflux(z_cursor++));
-		echo_plot_<28>(z.store(), 0x08);
+		echo_plot_<28>(z.store(), 0x00);
 
 		TRUE_(1 >= z.ensemble().size());// Still decaying...
 		TRUE_(0 == z.efflux(z_cursor++));
