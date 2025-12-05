@@ -129,9 +129,10 @@ XTAL_DEF_(return,inline,let)
 bit_shift_f(integral_variable_q auto u, ordinal_q auto n)
 noexcept -> auto
 {
+	XTAL_ALL_(n) constexpr ex = sizeof(n)*(8) - (1);
 	auto const [up, dn] = bit_axes_f<+1>(n);
-	u <<= up;
-	u >>= dn;
+	u <<= up;//bit_extremum_f<-1>(up, ex);
+	u >>= dn;//bit_extremum_f<-1>(dn, ex);
 	return u;
 }
 
@@ -348,11 +349,11 @@ XTAL_DEF_(inline,let)
 bit_swap_f(U &x, U &y)
 noexcept -> auto
 {
-	auto const w = bit_sign_f<N_dir>(x, y);
-	x ^=   y;
-	y ^= w&x;
-	x ^=   y;
-	return w;
+	auto const v = bit_sign_f<N_dir>(x, y);
+	x ^= y;
+	y ^= x&v;
+	x ^= y;
+	return v;
 }
 template <int N_dir=0,  ordinal_variable_q V>
 XTAL_DEF_(inline,let)
@@ -366,9 +367,34 @@ noexcept -> auto
 
 ////////////////////////////////////////////////////////////////////////////////
 
+template <int N_sel=0, integral_variable_q U>
+XTAL_DEF_(inline,let)
+bit_extremum_f(U x, U y)
+noexcept -> auto
+{
+	auto v = bit_sign_f<N_sel>(x, y);
+	x ^= y; v &= x;
+	XTAL_IF0
+//	XTAL_0IF (0 != N_sel) {
+//		return y^v;
+//	}
+	XTAL_0IF (0 <  N_sel) {
+		return   y^v;
+	//	return x^y^v;
+	}
+	XTAL_0IF (N_sel <  0) {
+		return   y^v;
+	}
+	XTAL_0IF (0 == N_sel) {
+		y ^= v;
+		x ^= y;
+		return bond::pack_f(x, y);
+	}
+}
+
 template <int N_sel=0, cardinal_variable_q U>
 XTAL_DEF_(inline,let)
-bit_extrema_f(U x, U y)
+bit_extremal_f(U x, U y)
 noexcept -> auto
 {
 	auto const yx = y*x;
@@ -735,22 +761,24 @@ noexcept -> auto
 			return static_cast<Y>(bit_fraction_f<Y_delta>(x))*bit_fraction_f<Y_alpha>();
 		}
 		XTAL_0IF (  ordinal_q<Y>) {
-			auto constexpr N_exp = X_fit::exponent.shift;
-			auto constexpr M_exp = X_fit::unit.mark + X_fit::unit.shift - Y_fit::full.depth;
-			auto constexpr M_sgn = X_fit::sign.mask;
+			X_delta constexpr I_one = X_fit::unit.mark + X_fit::unit.shift - Y_fit::full.depth;
+			X_delta constexpr M_one = X_fit::fraction.mask;
+			X_delta constexpr N_one = X_fit::fraction.mask + one;
+			X_delta constexpr L     = X_fit::full.   depth - one;
+			X_delta constexpr K     = X_fit::sign.mask;
 
-			X_delta o = _xtd::bit_cast<X_delta>(x);
-			X_delta v = o &  M_sgn; o ^= v; v >>= X_fit::sign.shift;
-			X_sigma x = o >> N_exp; x -= M_exp;
-			X_delta u = bit_flag_f<~0>(x);
-
-			o &=      X_fit::fraction. mask;
-			o |= u << X_fit::fraction.depth;
-			o  = bit_shift_f(XTAL_MOV_(o), _xtd::bit_cast<X_delta>(XTAL_MOV_(x)));
-		//	o |= 1;
-			o ^= v;
-			o -= v;
-			return static_cast<Y>(XTAL_MOV_(o));
+			auto o = _xtd::bit_cast<X_delta>(x);
+			auto k = (o& K) >> X_fit::    sign.shift;
+			auto n = (o&~K) >> X_fit::exponent.shift;
+			o  &=    M_one;
+			o  |= -n&N_one;
+			auto  [n_up, n_dn] = bit_axes_f<+1>(n - I_one);
+			o <<=  n_up        - bit_axis_f<+1>(n_up -  L);
+			o >>=  n_dn        - bit_axis_f<+1>(n_dn -  L);
+		//	o   =  bit_shift_f(XTAL_MOV_(o), XTAL_MOV_(n) - I_one);
+			o  ^=  k;
+			o  -=  k;
+			return static_cast<Y>(o);
 		}
 		XTAL_0IF ( cardinal_q<Y>) {
 			return _xtd::bit_cast<Y>(bit_fraction_f<Y_delta>(x));
@@ -788,6 +816,7 @@ requires requires {bit_fraction_f(x.real()); bit_fraction_f(x.imag());}
 
 	return Y{bit_fraction_f<V>(x.real()), bit_fraction_f<V>(x.imag())};
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////
 /*!

@@ -3,8 +3,8 @@
 
 #include "./sine.hh"
 #include "./tangent.hh"
-#include "./monologarithm.hh"
 #include "../pade/tangy.hh"
+#include "../pade/arc.hh"
 
 XTAL_ENV_(push)
 namespace xtal::process::math::taylor
@@ -47,9 +47,9 @@ struct logarithm< 1, 0>
 			XTAL_IF0
 			XTAL_0IF (0 <= N_lim)                   {return methodology_f<N_lim>(XTAL_REF_(o));}
 			XTAL_0IF_(consteval)                    {return methodology_f<   ~0>(XTAL_REF_(o));}
-#if XTAL_SYS_(builtin)
+	#if   XTAL_SYS_(builtin)
 			XTAL_0IF (real_variable_q<decltype(o)>) {return        __builtin_log(XTAL_REF_(o));}
-#endif
+	#endif
 			XTAL_0IF_(else)                         {return                  log(XTAL_REF_(o));}
 		}
 
@@ -90,10 +90,10 @@ struct logarithm<-1, 0>
 			XTAL_IF0
 			XTAL_0IF (0 <= N_lim)          {return methodology_f<N_lim>(XTAL_REF_(o));}
 			XTAL_0IF_(consteval)           {return methodology_f<   ~0>(XTAL_REF_(o));}
-#if XTAL_SYS_(builtin)
-			XTAL_0IF (real_q<decltype(o)>) {return      __builtin_exp(XTAL_REF_(o));}
-#endif
-			XTAL_0IF_(else)                {return                exp(XTAL_REF_(o));}
+	#if XTAL_SYS_(builtin)
+			XTAL_0IF (real_q<decltype(o)>) {return        __builtin_exp(XTAL_REF_(o));}
+	#endif
+			XTAL_0IF_(else)                {return                  exp(XTAL_REF_(o));}
 		}
 
 	protected:
@@ -152,57 +152,29 @@ struct logarithm< 1, 1>
 			XTAL_IF0
 			XTAL_0IF (0 <= N_lim) {return methodology_f<N_lim>(XTAL_REF_(o));}
 			XTAL_0IF_(consteval)  {return methodology_f<   ~0>(XTAL_REF_(o));}
-			XTAL_0IF_(else)       {return                log(XTAL_REF_(o));}
+			XTAL_0IF_(else)       {return                  log(XTAL_REF_(o));}
 		}
 
 	protected:
 		template <int N_lim=0>
-		XTAL_DEF_(return,set)
+		XTAL_DEF_(return,inline,set)
 		methodology_f(real_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
-			using _fit = bond::fit<decltype(o)>;
-			using U_alpha = typename _fit::alpha_type;
-			using U_sigma = typename _fit::sigma_type;
-			using U_delta = typename _fit::delta_type;
-
-		//	Log[m 2^x]
-		//	Log[m] + Log[2^x]
-		//	Log[m] + Log[2]*x
-		//	Log[m/2^(1/2)] + Log[2]*x + Log[2^(1/2)]
-		//	Log[m/2^(1/2)] + (x + 1/2)*Log[2]
-		//	Log[m/2^(1/2)] + (x*2 + 1)*Log[2]/2
-
-			U_sigma m = _xtd::bit_cast<U_sigma>(o);
-			U_delta n = m - _fit::unit.mask;
-			m  &= _fit::fraction.mask;
-			m  |= _fit::unit.mask;
-			n >>= _fit::unit.shift - one;
-			n  |= one;
-
-			U_alpha constexpr w1 =                       root_f<-2>(2.) ;
-			U_alpha constexpr u1 =        logarithm_f<1>(root_f< 2>(2.));
-			auto const w    = w1 *  _xtd::bit_cast<U_alpha>(XTAL_MOV_(m));
-			auto const u    = u1 *     static_cast<U_alpha>(XTAL_MOV_(n));
-
-			return logarithm_t<1>::template method_f<N_lim>(XTAL_MOV_(w)) + XTAL_MOV_(u);
+			using   L = bond::fit<decltype(o)>;
+			return -L::patio_2*pade::arc_t<-1, 1>::template method_f<N_lim>(XTAL_MOV_(o));
 		}
 		template <int N_lim=0>
 		XTAL_DEF_(return,set)
 		methodology_f(complex_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
-			using _fit = bond::fit<decltype(o)>;
-
-			auto constexpr up = one/_fit::patio_1;
-			auto constexpr dn =     _fit::patio_1;
-
-			auto const [u_re, u_im] = destruct_f(XTAL_REF_(o));
-			auto const w_re = square_f(u_re);
-			auto const w_im = square_f(u_im);
-
-			auto const y_re = _fit::haplo_1*methodology_f<N_lim>(w_re + w_im);
-			auto const y_im = pade::tangy_t<-1, 1>::template method_f<N_lim>(u_im, u_re)*_fit::patio_1;
+			using K = bond::fit<decltype(o)>;
+			auto const [u_re,
+			            u_im] = destruct_f(XTAL_REF_(o));
+			auto const  y_re = -K::patio_1*pade::arc_t<~0, 1>::template method_f<N_lim>(u_im, u_re);
+			auto const  y_im =  K::patio_1*pade::arc_t< 0, 1>::template method_f<N_lim>(u_im, u_re);
+		//	auto const  y_im = K::patio_1*pade::tangy_t<-1, 1>::template method_f<N_lim>(u_im, u_re);
 			return {y_re, y_im};
 		}
 
@@ -232,9 +204,9 @@ struct logarithm<-1, 1>
 			XTAL_IF0
 			XTAL_0IF (0 <= N_lim)          {return methodology_f<N_lim>(XTAL_REF_(o));}
 			XTAL_0IF_(consteval)           {return methodology_f<   ~0>(XTAL_REF_(o));}
-#if XTAL_SYS_(builtin)
+	#if XTAL_SYS_(builtin)
 			XTAL_0IF (real_q<decltype(o)>) {return        __builtin_exp(XTAL_REF_(o));}
-#endif
+	#endif
 			XTAL_0IF_(else)                {return                  exp(XTAL_REF_(o));}
 		}
 

@@ -91,7 +91,7 @@ TAG_("bit", "bit_clasp_f")
 
 ////////////////////////////////////////////////////////////////////////////////
 
-TAG_("bit", "bit_extrema_f")
+TAG_("bit", "bit_extremal_f")
 {
 	using T_fit = fit<>;
 	using T_sigma = typename T_fit::sigma_type;
@@ -100,15 +100,15 @@ TAG_("bit", "bit_extrema_f")
 	using T_aphex = typename T_fit::aphex_type;
 	auto mt19937_f = typename T_fit::mt19937_t(Catch::rngSeed());
 
-	TRY_("bit_extrema_f(cardinal_q)")
+	TRY_("bit_extremal_f(cardinal_q)")
 	{
 		T_sigma x, y;
 
-		x = 15; y = 24; TRUE_(bit_extrema_f<-1>(x, y) ==   3);
-		x = 42; y = 56; TRUE_(bit_extrema_f<-1>(x, y) ==  14);
+		x = 15; y = 24; TRUE_(bit_extremal_f<-1>(x, y) ==   3);
+		x = 42; y = 56; TRUE_(bit_extremal_f<-1>(x, y) ==  14);
 
-		x = 15; y = 24; TRUE_(bit_extrema_f<+1>(x, y) == 120);
-		x = 42; y = 56; TRUE_(bit_extrema_f<+1>(x, y) == 168);
+		x = 15; y = 24; TRUE_(bit_extremal_f<+1>(x, y) == 120);
+		x = 42; y = 56; TRUE_(bit_extremal_f<+1>(x, y) == 168);
 
 	}
 }
