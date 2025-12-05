@@ -1,4 +1,5 @@
 #include "./any.hh"
+#include "./arc.hh"
 #include "./unify.hh"
 #include "./tangy.hh"
 #include "./unity.hh"

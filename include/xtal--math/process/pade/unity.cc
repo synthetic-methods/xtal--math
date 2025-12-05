@@ -230,7 +230,7 @@ TAG_("unity")
 		U_aphex const y = unity_t< 1>::template method_f< 3>(x);
 		U_aphex const z = unity_t<-1>::template method_f< 3>(y);
 
-		TRUE_(check_f<-21>(x, z));
+		TRUE_(check_f<-22>(x, z));
 
 	}
 	TRY_("unity<-1> corners")
@@ -239,14 +239,14 @@ TAG_("unity")
 		U_aphex const y = unity_t< 1>::template method_f< 3>(x);
 		U_aphex const z = unity_t<-1>::template method_f< 3>(y);
 
-		TRUE_(check_f<-24>(unity_t<-1>::template method_f< 3>(U_aphex{-2, 1}), U_aphex{ 0.42620819117478337, -0.12807499968169406}));
-		TRUE_(check_f<-24>(unity_t<-1>::template method_f< 3>(U_aphex{-1, 2}), U_aphex{ 0.32379180882521663, -0.12807499968169406}));
-		TRUE_(check_f<-24>(unity_t<-1>::template method_f< 3>(U_aphex{ 1, 2}), U_aphex{ 0.17620819117478337, -0.12807499968169406}));
-		TRUE_(check_f<-24>(unity_t<-1>::template method_f< 3>(U_aphex{ 2, 1}), U_aphex{ 0.07379180882521663, -0.12807499968169406}));
-		TRUE_(check_f<-24>(unity_t<-1>::template method_f< 3>(U_aphex{ 2,-1}), U_aphex{-0.07379180882521663, -0.12807499968169406}));
-		TRUE_(check_f<-24>(unity_t<-1>::template method_f< 3>(U_aphex{ 1,-2}), U_aphex{-0.17620819117478337, -0.12807499968169406}));
-		TRUE_(check_f<-24>(unity_t<-1>::template method_f< 3>(U_aphex{-1,-2}), U_aphex{-0.32379180882521663, -0.12807499968169406}));
-		TRUE_(check_f<-24>(unity_t<-1>::template method_f< 3>(U_aphex{-2,-1}), U_aphex{-0.42620819117478337, -0.12807499968169406}));
+		TRUE_(check_f<-25>(unity_t<-1>::template method_f< 3>(U_aphex{-2, 1}), U_aphex{ 0.42620819117478337, -0.12807499968169406}));
+		TRUE_(check_f<-25>(unity_t<-1>::template method_f< 3>(U_aphex{-1, 2}), U_aphex{ 0.32379180882521663, -0.12807499968169406}));
+		TRUE_(check_f<-25>(unity_t<-1>::template method_f< 3>(U_aphex{ 1, 2}), U_aphex{ 0.17620819117478337, -0.12807499968169406}));
+		TRUE_(check_f<-25>(unity_t<-1>::template method_f< 3>(U_aphex{ 2, 1}), U_aphex{ 0.07379180882521663, -0.12807499968169406}));
+		TRUE_(check_f<-25>(unity_t<-1>::template method_f< 3>(U_aphex{ 2,-1}), U_aphex{-0.07379180882521663, -0.12807499968169406}));
+		TRUE_(check_f<-25>(unity_t<-1>::template method_f< 3>(U_aphex{ 1,-2}), U_aphex{-0.17620819117478337, -0.12807499968169406}));
+		TRUE_(check_f<-25>(unity_t<-1>::template method_f< 3>(U_aphex{-1,-2}), U_aphex{-0.32379180882521663, -0.12807499968169406}));
+		TRUE_(check_f<-25>(unity_t<-1>::template method_f< 3>(U_aphex{-2,-1}), U_aphex{-0.42620819117478337, -0.12807499968169406}));
 
 	}
 }
@@ -320,12 +320,42 @@ TAG_("unity trials")
 		return y;
 
 	};
+	EST_("unity<-1; 3>\n   I^(4#)&\n   (*approx floating-point*)")
+	{
+		U_aphex y{};
+		for (int i = 0x20; ~--i;) {
+			U_aphex const x{mt19937_f(), mt19937_f()};
+			y += unity_t<-1>::template method_f< 3>(x);
+		}
+		return y;
+
+	};
+	EST_("unity<-1; 2>\n   I^(4#)&\n   (*approx floating-point*)")
+	{
+		U_aphex y{};
+		for (int i = 0x20; ~--i;) {
+			U_aphex const x{mt19937_f(), mt19937_f()};
+			y += unity_t<-1>::template method_f< 2>(x);
+		}
+		return y;
+
+	};
 	EST_("unity<-1; 1>\n   I^(4#)&\n   (*approx floating-point*)")
 	{
 		U_aphex y{};
 		for (int i = 0x20; ~--i;) {
 			U_aphex const x{mt19937_f(), mt19937_f()};
 			y += unity_t<-1>::template method_f< 1>(x);
+		}
+		return y;
+
+	};
+	EST_("unity<-1; 0>\n   I^(4#)&\n   (*approx floating-point*)")
+	{
+		U_aphex y{};
+		for (int i = 0x20; ~--i;) {
+			U_aphex const x{mt19937_f(), mt19937_f()};
+			y += unity_t<-1>::template method_f< 0>(x);
 		}
 		return y;
 

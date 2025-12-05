@@ -29,23 +29,24 @@ TAG_("logarithm")
 	/**/
 	TRY_("evaluation")
 	{
-		TRUE_(check_f<-31>(logarithm_t< 1, 1>::template method_f<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1>::template method_f< 2>(T_aphex{0.3, 0.8})));
-		TRUE_(check_f<-46>(logarithm_t< 1, 1>::template method_f<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1>::template method_f< 0>(T_aphex{0.3, 0.8})));
-
-		TRUE_(check_f<-13>(logarithm_t< 1, 1>::template method_f< 2>(egg), log(egg)));
-		TRUE_(check_f<-26>(logarithm_t<-1, 1>::template method_f< 2>(egg), exp(egg)));
+		TRUE_(check_f<- 8>(logarithm_t< 1, 1>::template method_f< 3>(egg), log(egg)));
+		TRUE_(check_f<- 2>(logarithm_t<-1, 1>::template method_f< 3>(egg), exp(egg)));
 
 		TRUE_(check_f<- 1>(logarithm_t< 1   >::template method_f<-1>(egg), log(egg)));
-		TRUE_(check_f<- 5>(logarithm_t< 1   >::template method_f< 3>(egg), log(egg)));
-		TRUE_(check_f<-19>(logarithm_t< 1   >::template method_f< 2>(egg), log(egg)));
-		TRUE_(check_f<-33>(logarithm_t< 1   >::template method_f< 1>(egg), log(egg)));
-		TRUE_(check_f<-41>(logarithm_t< 1   >::template method_f< 0>(egg), log(egg)));
+		TRUE_(check_f<- 1>(logarithm_t< 1   >::template method_f< 3>(egg), log(egg)));
+		TRUE_(check_f<- 5>(logarithm_t< 1   >::template method_f< 2>(egg), log(egg)));
+		TRUE_(check_f<-19>(logarithm_t< 1   >::template method_f< 1>(egg), log(egg)));
+		TRUE_(check_f<-40>(logarithm_t< 1   >::template method_f< 0>(egg), log(egg)));
 
 		TRUE_(check_f<- 1>(logarithm_t<-1   >::template method_f<-1>(egg), exp(egg)));
-		TRUE_(check_f<-27>(logarithm_t<-1   >::template method_f< 3>(egg), exp(egg)));
-		TRUE_(check_f<-35>(logarithm_t<-1   >::template method_f< 2>(egg), exp(egg)));
-		TRUE_(check_f<-43>(logarithm_t<-1   >::template method_f< 1>(egg), exp(egg)));
+		TRUE_(check_f<- 1>(logarithm_t<-1   >::template method_f< 3>(egg), exp(egg)));
+		TRUE_(check_f<-13>(logarithm_t<-1   >::template method_f< 2>(egg), exp(egg)));
+		TRUE_(check_f<-29>(logarithm_t<-1   >::template method_f< 1>(egg), exp(egg)));
 	//	UNTRUE_(check_f(logarithm_t<-1>::template method_f< 0>(egg), exp(egg)));
+
+		TRUE_(check_f<-48>(logarithm_t< 1, 1>::template method_f<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1>::template method_f< 3>(T_aphex{0.3, 0.8})));
+		TRUE_(check_f<-48>(logarithm_t< 1, 1>::template method_f<~0>(T_aphex{0.3, 0.8}), logarithm_t< 1, 1>::template method_f< 0>(T_aphex{0.3, 0.8})));
+
 	}
 	/***/
 }
@@ -197,24 +198,6 @@ TAG_("logarithm trials")
 		}
 		return w;
 	
-	};
-	EST_("via tangent< 2;  2>\n   Tanh[#]&\n   (*approx floating-point*)")
-	{
-		T_alpha w{0};
-		for (T_sigma i = 100; ~--i;) {
-			auto x = mt19937_f();
-			w *= [] (auto y) XTAL_0FN_(to) (root_f<2>((one + y)/(one - y))) (tangent_t< 2>::template method_f< 2>(x));
-		}
-		return w;
-	};
-	EST_("via tangent< 2;  0>\n   Tanh[#]&\n   (*approx floating-point*)")
-	{
-		T_alpha w{0};
-		for (T_sigma i = 100; ~--i;) {
-			auto x = mt19937_f();
-			w *= [] (auto y) XTAL_0FN_(to) (root_f<2>((one + y)/(one - y))) (tangent_t< 2>::template method_f< 0>(x));
-		}
-		return w;
 	};
 };
 

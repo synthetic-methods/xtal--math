@@ -1,6 +1,6 @@
 #pragma once
 #include "./any.hh"
-
+#include "./arc.hh"
 #include "./unify.hh"
 #include "./tangy.hh"
 #include "../taylor/logarithm.hh"
@@ -147,21 +147,12 @@ struct unity<M_ism, M_car>
 		method_f(complex_field_q auto &&u)
 		noexcept -> decltype(auto)
 		{
-		//	TODO: Handle `M_car == 1`!
-
-			using U     = XTAL_ALL_(u);
-			using U_fit = bond::fit<U>;
-
-			auto constexpr _1 = U_fit::haplo_0, _2pi = _1/U_fit::patio_2;
-			auto constexpr _2 = U_fit::haplo_1, _4pi = _2/U_fit::patio_2;
-
-			auto const &[x_re, x_im] = destruct_f(XTAL_REF_(u));
-			auto const   y_re = tangy_t<-1, 1>::template method_f<N_lim>(x_im, x_re);
-			auto const   w_im = square_f(x_re, x_im);
-			//\
-			auto const   y_im = log(w_im);
-			auto const   y_im = taylor::logarithm_t< 1, 1>::template method_f<N_lim>(w_im);
-			return complexion_f(y_re*_2, y_im*-_4pi);
+		//	TODO: Handle `M_car == 1`?
+			auto const   x_re = u.real();
+			auto const   x_im = u.imag();
+			auto const   y_re = half*arc_t<-0, M_car>::template method_f<N_lim>(x_im, x_re);
+			auto const   y_im = half*arc_t<-1, M_car>::template method_f<N_lim>(square_f(x_re, x_im));
+			return complexion_f(y_re, y_im);
 		}
 
 	};
