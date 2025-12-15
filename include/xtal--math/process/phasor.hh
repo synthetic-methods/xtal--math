@@ -206,7 +206,7 @@ struct phasor<A, As...>
 		//	Calculates the deviation of `phi[0]` w.r.t. phi[1],
 		//	using the difference in `phi[1]` to determine the threshold for reset.
 
-			u_phi[1]  = phi[1]; ++u_phi; auto i_phi = condition_f<devalue_type>(u_phi[0] != phi[0]);
+			u_phi[1]  = phi[1]; ++u_phi; auto i_phi = bond::math::bit_sign_f<devalue_type>(u_phi[0] == phi[0]);
 			u_phi[0]  = phi[0];     phi *= co;
 			v_phi[1]  = phi[1]; ++v_phi;
 			v_phi[0] &= ~i_phi;

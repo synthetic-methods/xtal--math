@@ -1,8 +1,8 @@
 #pragma once
 #include "./any.cc"
-#include "./gate.hh"
-#include "./staged.hh"
-#include "./prewarped.hh"
+#include "./intake.hh"
+#include "./retake.hh"
+#include "../../provision/prewarping.hh"
 
 
 #include "./vactrol.hh"// testing...
@@ -31,16 +31,17 @@ TAG_("vactrol")
 		using E_etc = process::traits_t<E_def>;
 		using E_pkt = flow::packet_t<typename E_etc::stage_type, typename E_etc::reshape_type>;
 		using E_prx = confined_t<void
-		,	prewarped<_0>, gate<1>
-		,	staged<-1>
-		,	staged< 0>
+		,	provision::math::prewarping< 0>
+		,	intake< 1>
+		,	retake< 0>
+		,	retake<-1>
 		,	typename E_etc::redamp_type::template   attend<>
 		,	typename E_etc::refade_type::template   attend<>
 		,	typename E_etc::             template   attach<>
 		,	typename E_etc::             template dispatch<>
 		,	vactrol<>
 		,	E_def
-		,	provision::saturated<identity>
+		,	provision::math::saturation<identity>
 		>;
 		using E_pxr = processor::monomer_t<E_prx
 		//\
@@ -68,7 +69,8 @@ TAG_("vactrol")
 		z >>= flow::cue_f(0x08).then(E_pkt{ 0, typename E_etc::shape_type{0.125, 0.25}});
 		z >>= flow::cue_f(0x18).then(E_pkt{-1, typename E_etc::shape_type{0.500, 0.25}});
 
-		echo_rule_<28>("\u2500");
+		echo_("\nvactrol: monophony");
+	//	echo_rule_<28>("\u2500");
 
 		TRUE_(0 == z.efflux(z_cursor++));
 	//	TRUE_(0 == z.influx(occur::stage_f(-1)));

@@ -7,7 +7,7 @@
 
 
 XTAL_ENV_(push)
-namespace xtal::provision
+namespace xtal::provision::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -37,9 +37,9 @@ struct saturator
 
 }///////////////////////////////////////////////////////////////////////////////
 
-template <template <auto ...> class A_=_detail::saturator>	struct  saturated;
-template <template <auto ...> class A_=_detail::saturator>	using   saturated_t = confined_t<saturated<A_>>;
-template <                                    class ..._s>	concept saturated_q = bond::tab_in_p<saturated<>, _s...>;
+template <template <auto ...> class A_=_detail::saturator>	struct  saturation;
+template <template <auto ...> class A_=_detail::saturator>	using   saturation_t = confined_t<saturation<A_>>;
+template <                                    class ..._s>	concept saturation_q = bond::tab_in_p<saturation<>, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -47,9 +47,9 @@ template <                                    class ..._s>	concept saturated_q =
 \brief   Provides the member-`saturate_t`.
 */
 template <template <auto ...> class A_>
-struct saturated
+struct saturation
 {
-	using superkind = bond::tab<saturated<>>;
+	using superkind = bond::tab<saturation<>>;
 	
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>

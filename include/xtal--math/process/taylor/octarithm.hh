@@ -69,9 +69,65 @@ struct octarithm<M_ism, M_div>
 
 	//	TODO: Define `complex` variant!
 
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		method_f(atom::groupoid_q auto &&o)
+		noexcept -> XTAL_ALL_(o)
+		{
+			using  U = XTAL_ALL_(o);
+			return U::template zip_from<[] XTAL_1FN_(call) (method_f<Ns...>)>(XTAL_REF_(o));
+		}
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
-		method_f(auto o)
+		method_f(integral_q auto &&x)
+		noexcept -> auto
+		{
+			using X = _xtd::make_signed_t<unstruct_u<decltype(x)>>;
+			using U_fit = bond::fit<X>;
+
+			static_assert(M_ism == -2);// For now...
+
+			XTAL_IF1_(consteval) {
+				return U_fit::diplo_f(U_fit::ratio_f(1, M_div)*XTAL_REF_(x));
+			}
+			XTAL_0IF (1 == M_div) {
+				return _std::ldexp(U_fit::alpha_f(2), XTAL_REF_(x));
+			}
+			XTAL_0IF (2 <= M_div) {
+				auto constexpr N     = root_f<M_div>(U_fit::diplo_1);
+				auto           n     = U_fit::alpha_1;
+				auto const     o     = _std::div((X) XTAL_REF_(x), (X) M_div);
+				auto const     r     =        o.rem;
+				auto const    _r     = 0x10 - o.rem;
+				if constexpr (M_div <= 0x10) {
+					switch (_r) {
+					case 0x0: n *= N;
+					case 0x1: n *= N;
+					case 0x2: n *= N;
+					case 0x3: n *= N;
+					case 0x4: n *= N;
+					case 0x5: n *= N;
+					case 0x6: n *= N;
+					case 0x7: n *= N;
+					case 0x8: n *= N;
+					case 0x9: n *= N;
+					case 0xA: n *= N;
+					case 0xB: n *= N;
+					case 0xC: n *= N;
+					case 0xD: n *= N;
+					case 0xE: n *= N;
+					case 0xF: n *= N;
+					}
+				}
+				else {
+					for (X i{}; i < r; ++i) {n *= N;}
+				}
+				return _std::ldexp(XTAL_MOV_(n), XTAL_MOV_(o).quot);
+			}
+		}
+		template <int N_lim=0>
+		XTAL_DEF_(return,inline,set)
+		method_f(real_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using U_alpha = typename bond::fit<decltype(o)>::alpha_type;

@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-#include "./filter.hh"
+
 
 
 
@@ -11,8 +11,8 @@ namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <auto  ...Ms>	struct  staged;
-template <auto  ...Ms>	using   staged_t = process::confined_t<staged<Ms...>>;
+template <auto  ...Ms>	struct  retake;
+template <auto  ...Ms>	using   retake_t = process::confined_t<retake<Ms...>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -21,12 +21,11 @@ template <auto  ...Ms>	using   staged_t = process::confined_t<staged<Ms...>>;
 \todo    Allow reset for any `dispatch`ed parameters.
 */
 template <>
-struct staged< 0>
+struct retake< 0>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
 	{
-		static_assert(filter_q<S>);
 		using S_ = bond::compose_s<S>;
 
 	public:// CONSTRUCT
@@ -62,22 +61,22 @@ struct staged< 0>
 ////////////////////////////////////////////////////////////////////////////////
 /*!
 \brief   Responds to `influx(occur::stage_f(-1))` by returning `1` if the state is under threshold, `0` otherwise.
+\node    Threshold is currently fixed at `2^-16`, or around `-48dBFS`.
 \todo    Allow configurable threshold.
+\todo    Accommodate gain when calculating the `dot` with state?
 */
 template <>
-struct staged<-1>
+struct retake<-1>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
 	{
-		static_assert(filter_q<S>);
 		using S_ = bond::compose_s<S>;
 
 	public:// CONSTRUCT
 		using S_::S_;
 		using typename S_::order_type;
 		using typename S_::state_type;
-		using typename S_::pole_type;
 
 	public:// ACCESS
 		using S_::self;
@@ -103,19 +102,44 @@ struct staged<-1>
 		fuse(occur::stage_q auto &&o)
 		noexcept -> signed
 		{
+			auto constexpr dot_e = bond::fit<unstruct_u<state_type>>::haplo_f(0x11);// Epsilon (~-48dBFS) squared...
 			auto const [states_] = S_::template memory<state_type>();
+			static_assert(state_type::size() <= 4);
+
 			signed x = S_::template fuse<N_ion>(XTAL_REF_(o));
 
-			if (o.head() == -1) {
-			//	TODO: Accommodate gain when calculating the product?
-			//	TODO: Address clumsy dynamic-sized dot-product.
-
-				auto const order = order_type{self()};
-				pole_type y{};
-				for (unsigned int i{}; i < order; ++i) {
-					y = term_f<1, 2>(y, states_[i]);
+			auto const order = order_type{self()};
+			if (0 < order and o.head() == -1) {
+				auto const disorder = order - one;
+				XTAL_IF0
+				XTAL_0IF (1 == state_type::size()) {
+					x &= dot_e > dot_f(states_);
 				}
-				x &= dot_f(y) < bond::fit<pole_type>::haplo_f(7 + 1);//NOTE: Squared...
+				XTAL_0IF (2 == state_type::size()) {
+					XTAL_IF1_(assume) (disorder == (disorder&0b01));
+					switch                         (disorder&0b01) {
+					case 0: x &= dot_e > dot_f(states_.self(constant_t<1>{})); break;
+					case 1: x &= dot_e > dot_f(states_.self(constant_t<2>{})); break;
+					}
+				}
+				XTAL_0IF (3 == state_type::size()) {
+					XTAL_IF1_(assume) (disorder == (disorder&0b11));
+					switch                         (disorder&0b11) {
+					case 0: x &= dot_e > dot_f(states_.self(constant_t<1>{})); break;
+					case 1: x &= dot_e > dot_f(states_.self(constant_t<2>{})); break;
+					case 2: x &= dot_e > dot_f(states_.self(constant_t<3>{})); break;
+					case 3:                                                    break;
+					}
+				}
+				XTAL_0IF (4 == state_type::size()) {
+					XTAL_IF1_(assume) (disorder == (disorder&0b11));
+					switch                         (disorder&0b11) {
+					case 0: x &= dot_e > dot_f(states_.self(constant_t<1>{})); break;
+					case 1: x &= dot_e > dot_f(states_.self(constant_t<2>{})); break;
+					case 2: x &= dot_e > dot_f(states_.self(constant_t<3>{})); break;
+					case 3: x &= dot_e > dot_f(states_.self(constant_t<4>{})); break;
+					}
+				}
 			}
 			return x;
 		}

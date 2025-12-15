@@ -37,7 +37,6 @@ Within each `math` subspace, components may be further organized by an associate
 |[`process/zavalishin/curve.hh`     ](include/xtal--math/process/zavalishin/curve.hh?ts=3)     | (Anti)saturation curves.                                                       |
 |[`process/zavalishin/differ.hh`    ](include/xtal--math/process/zavalishin/differ.hh?ts=3)    | First-order differences with frequency/amplitude normalization.                |
 |[`process/zavalishin/filter.hh`    ](include/xtal--math/process/zavalishin/filter.hh?ts=3)    | Arbitrary-order State Variable Filter (SVF).                                   |
-|[`process/zavalishin/gate.hh`      ](include/xtal--math/process/zavalishin/gate.hh?ts=3)      | Gate control for `filter`.                                                     |
 |[`process/zavalishin/vactrol.hh`   ](include/xtal--math/process/zavalishin/vactrol.hh?ts=3)   | Envelope generation using `filter`.                                            |
 
 
@@ -124,11 +123,12 @@ using U_event   = flow::key_s<U_stage>;                // Key-Trigger pair.
 
 // Process composition...
 
-using T_process = process:prewarped_t<constant_t<0>    // Wrap the process, with frequency-prewarping applied to the first argument.
-,    gate< 1>                                          // Prepend argument as gate-signal triggered by `stage_type`.
-,  staged< 0>                                          // Resets the filter-state when note is initialized.
-,  staged<-1>                                          // Allows release detection via inspection.
-,  typename U_stage   ::template   assignment<V_redamp>// Creates a table associating `stage_type` with damping.
+using T_process = process::confined_t<void             // Wrap the process.
+,  provision::math::prewarping< 0>                     // Apply s-plane frequency-prewarping to the first argument.
+,  intake< 1>                                          // Fulfil first argument with gate-signal controlled by `stage`.
+,  retake< 0>                                          // Resets the filter-state when note is initialized.
+,  retake<-1>                                          // Provides release detection.
+,  typename U_stage   ::template   assignment<V_redamp>// Creates a table associating `stage` with damping.
 ,  typename V_redamp  ::template   attend<>            // Attach/append damping to the arguments-list.
 ,  typename V_refade  ::template   attend<>            // Attach/append  fading to the arguments-list.
 ,  typename T_context ::template   attach<>            // Attach the remaining   object properties.

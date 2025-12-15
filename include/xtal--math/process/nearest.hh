@@ -85,7 +85,7 @@ struct nearest
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		method_f(atom::couple_q auto &&z)
+		method_f(atom::groupoid_q auto &&z)
 		noexcept -> decltype(auto)
 		{
 			return XTAL_ALL_(z)::template zip_from<[] XTAL_1FN_(call) (method_f<Ns...>)>(z);

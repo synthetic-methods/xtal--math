@@ -106,7 +106,7 @@ struct decompose<signed>
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		method_f(atom::couple_q auto &&o)
+		method_f(atom::groupoid_q auto &&o)
 		noexcept -> decltype(auto)
 		{
 			using  U = XTAL_ALL_(o);
@@ -217,7 +217,7 @@ struct decompose<unsigned>
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		method_f(atom::couple_q auto &&o)
+		method_f(atom::groupoid_q auto &&o)
 		noexcept -> decltype(auto)
 		{
 			using  U = XTAL_ALL_(o);

@@ -52,7 +52,7 @@ struct root
 		XTAL_DEF_(return,inline,set)
 		method_f(auto &&z)
 		noexcept -> auto
-		requires un_n<atom::couple_q<XTAL_ALL_(z)>>
+		requires un_n<atom::groupoid_q<XTAL_ALL_(z)>>
 		{
 			using Z     = objective_t<XTAL_ALL_(z)>;
 			using Z_fit = bond::fit<Z>;
@@ -78,7 +78,7 @@ struct root
 		XTAL_DEF_(return,inline,set)
 		method_f(auto &&z)
 		noexcept -> auto
-		requires in_n<atom::couple_q<XTAL_ALL_(z)>>
+		requires in_n<atom::groupoid_q<XTAL_ALL_(z)>>
 		{
 			using Z = XTAL_ALL_(z);
 			using Z_fit = bond::fit<Z>;

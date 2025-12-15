@@ -307,8 +307,8 @@ public:
 		{
 			auto &s = self();
 			XTAL_IF0
-			XTAL_0IF (0 <= N) {get<0>(s) += _xtd::bit_cast<invalue_type>(get<1>(s)) << +N;}
-			XTAL_0IF (N <  0) {get<0>(s) += _xtd::bit_cast<invalue_type>(get<1>(s)) >> -N;}
+			XTAL_0IF (0 < N) {get<0>(s) += _xtd::bit_cast<invalue_type>(get<1>(s)) << +N;}
+			XTAL_0IF (N < 0) {get<0>(s) += _xtd::bit_cast<invalue_type>(get<1>(s)) >> -N;}
 			return s;
 		}
 		template <int N> requires in_n<size, 2>
@@ -318,8 +318,8 @@ public:
 		{
 			auto &s = self();
 			XTAL_IF0
-			XTAL_0IF (0 <= N) {get<0>(s) -= _xtd::bit_cast<invalue_type>(get<1>(s)) << +N;}
-			XTAL_0IF (N <  0) {get<0>(s) -= _xtd::bit_cast<invalue_type>(get<1>(s)) >> -N;}
+			XTAL_0IF (0 < N) {get<0>(s) -= _xtd::bit_cast<invalue_type>(get<1>(s)) << +N;}
+			XTAL_0IF (N < 0) {get<0>(s) -= _xtd::bit_cast<invalue_type>(get<1>(s)) >> -N;}
 			return s;
 		}
 
@@ -343,29 +343,19 @@ public:
 		}
 
 		/*!
-		\returns `condition_f<Y>` indicating whether the current state is continuous.
+		\returns `0` if the current position is continuous, `~0` otherwise.
 		*/
-		template <class Y=W>
+		template <class Y=devalue_type>
 		XTAL_DEF_(return,inline,let)
 		continuity()
 		noexcept -> Y
 		{
-			return condition_f<Y>(not discontinuity<bool>());
-		}
-		/*!
-		\returns `condition_f<Y>` indicating whether the current state is discontinuous.
-		*/
-		template <class Y=W>
-		XTAL_DEF_(return,inline,let)
-		discontinuity()
-		noexcept -> Y
-		{
-		//	TODO: Accommodate `discontinuity` for `complex_variable_q<V>`...
+		//	TODO: Accommodate `continuity` for `complex_variable_q<V>`...
 			auto constexpr N1 = U_fit::positive.depth;
 			auto [u0, u1] =  self();
 			auto const v0 = _xtd::bit_cast<V>(u0) >> N1; u0 ^= v0; u0 -= v0;
 			auto const v1 = _xtd::bit_cast<V>(u1) >> N1; u1 ^= v1; u1 -= v1;
-			return condition_f<Y>(v0 == v1 and u0 < u1);
+			return bond::math::bit_sign_f<Y>(v0 == v1 and u0 < u1);
 		}
 
 	};

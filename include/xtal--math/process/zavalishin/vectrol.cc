@@ -1,8 +1,8 @@
 #pragma once
 #include "./any.cc"
-#include "./gate.hh"
-#include "./staged.hh"
-#include "./prewarped.hh"
+#include "./intake.hh"
+#include "./retake.hh"
+#include "../../provision/prewarping.hh"
 
 
 #include "./vectrol.hh"// testing...
@@ -26,14 +26,15 @@ TAG_("vectrol")
 	TRY_("vectrol: monophony")
 	{
 		//\
-		using E_def = filter<U_alpha[2], union ENV>;
 		using E_def = filter<>;
+		using E_def = filter<U_alpha[2], union ENV>;
 		using E_etc = process::traits_t<E_def>;
 		using E_pkt = typename E_etc::stage_type;
 		using E_prx = confined_t<void
-		,	prewarped<_0>, gate<0>
-		,	staged<-1>
-		,	staged< 0>
+		,	provision::math::prewarping< 0>
+		,	intake< 0>
+		,	retake< 0>
+		,	retake<-1>
 		,	typename E_etc::redamp_type::template   attend<>
 		,	typename E_etc::refade_type::template   attend<>
 		,	typename E_etc::             template   attach<>
@@ -67,7 +68,8 @@ TAG_("vectrol")
 		z >>= flow::cue_f(0x28).then(E_pkt{-1});
 	//	z >>= flow::cue_f(0x38).then(E_pkt{ 0});
 
-		echo_rule_<28>("\u2500");
+		echo_("\nvectrol: monophony");
+	//	echo_rule_<28>("\u2500");
 
 		TRUE_(0 == z.efflux(z_cursor++));
 		TRUE_(0 == z.influx(occur::stage_f(-1)));
@@ -91,9 +93,10 @@ TAG_("vectrol")
 		using E_pkt = typename E_etc::stage_type;
 		using E_prx = confined_t<void
 	//	,	process::lift<W_alpha>
-		,	prewarped<_0>, gate<0>
-		,	staged<-1>
-		,	staged< 0>
+		,	provision::math::prewarping< 0>
+		,	intake< 0>
+		,	retake< 0>
+		,	retake<-1>
 		,	typename E_etc::redamp_type::template   attend<>
 	//	,	typename E_etc::refade_type::template   attend<>
 		,	typename E_etc::             template   attach<>
@@ -112,13 +115,12 @@ TAG_("vectrol")
 		using O_def = filter<U_alpha[2], union RING>;
 		using O_etc = process::traits_t<O_def>;
 		using O_pkt = flow::packet_t<typename O_etc::stage_type, typename O_etc::redamp_type>;
-		//\
-		using O_prx = prewarped_t<_0, gate<-1>
 		using O_prx = process::confined_t<void
 		,	multiplied<>
-		,	prewarped<_0, gate<-1>>
-	//	,	staged<-1>
-		,	staged< 0>
+		,	provision::math::prewarping< 0>
+		,	intake<-1>
+		,	retake< 0>
+	//	,	retake<-1>
 		,	typename O_etc::redamp_type::template   attend<>
 		,	typename O_etc::refade_type::template   attend<>
 		,	typename O_etc::             template   attach<>
@@ -186,7 +188,8 @@ TAG_("vectrol")
 	//	_y >>= flow::cue_f(0x38).then(E_pkt{ 0});
 	//	_y >>= flow::cue_f(0x38).then(O_pkt{ 0});
 
-		echo_rule_<28>("\u2500");
+		echo_("\nvectrol: multiplex");
+	//	echo_rule_<28>("\u2500");
 
 		TRUE_(0 == _y.efflux(z_cursor++));
 	//	TRUE_(0 == _y.influx(occur::stage_f(-1)));

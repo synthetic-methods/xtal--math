@@ -223,7 +223,17 @@ noexcept -> int
 ////////////////////////////////////////////////////////////////////////////////
 
 /*!
-\returns `-1` if the argument `< 0`, `0` otherwise.
+\returns `~0` if the argument `== false`, `0` otherwise.
+*/
+template <class T=int>
+XTAL_DEF_(return,inline,let)
+bit_sign_f(bool o)
+noexcept -> auto
+{
+	return static_cast<T>(-!XTAL_MOV_(o));
+}
+/*!
+\returns `~0` if the argument `< 0`, `0` otherwise.
 */
 template <class T=void>
 XTAL_DEF_(return,inline,let)
@@ -257,7 +267,7 @@ noexcept -> auto
 	}
 }
 /*!
-\returns `-1` if the argument `< 0`, `0` otherwise.
+\returns `~0` if the argument `< 0`, `0` otherwise.
 */
 template <class T=void>
 XTAL_DEF_(return,inline,let)
@@ -268,7 +278,7 @@ noexcept -> auto
 	return bit_sign_f<T>(_xtd::bit_cast<typename _fit::delta_type>(o));
 }
 /*!
-\returns `-1` if the argument `< 0`, `0` otherwise.
+\returns `~0` if the argument `< 0`, `0` otherwise.
 */
 template <class T=void>
 XTAL_DEF_(return,inline,let)
@@ -293,7 +303,7 @@ XTAL_DEF_(return,inline,let)
 bit_sign_f(V const &x, V const &y)
 noexcept -> auto
 {
-	using U = cardinal_t<V>;
+	using U = _xtd::make_unsigned_t<V>;
 	return bit_sign_f<N_dir>(reinterpret_cast<U const &>(x), reinterpret_cast<U const &>(y));
 }
 
@@ -360,7 +370,7 @@ XTAL_DEF_(inline,let)
 bit_swap_f(V &x, V &y)
 noexcept -> auto
 {
-	using U = cardinal_t<V>;
+	using U = _xtd::make_unsigned_t<V>;
 	return bit_swap_f<N_dir>(reinterpret_cast<U &>(x), reinterpret_cast<U &>(y));
 }
 

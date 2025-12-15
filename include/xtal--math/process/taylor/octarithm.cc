@@ -39,7 +39,7 @@ TAG_("octarithm")
 		T_alpha constexpr oct_12 = A4_Hz*octarithm_f<-2, 12,~0>(-A4_st);
 		TRUE_(check_f<-23>(oct_12*octarithm_f<-2, 12, 3>(C4_st), C4_Hz));
 	}
-	TRY_("octarithm base-2 evaluation")
+	TRY_("octarithm base-2 evaluation (real)")
 	{
 		T_alpha o{};
 
@@ -62,6 +62,12 @@ TAG_("octarithm")
 		o = half;
 		TRUE_(check_f<-38>(root_f< 2>(2.0), o = octarithm_t<-2>::template method_f< 0>(o)));
 		TRUE_(check_f<-38>(root_f<-1>(2.0), o = octarithm_t< 2>::template method_f< 0>(o)));
+
+	};
+	TRY_("octarithm base-2 evaluation (integral)")
+	{
+		TRUE_(check_f<-32>(octarithm_t<-2, 12>::template method_f<0>( 5), 1.3348398541700344));
+		TRUE_(check_f<-32>(octarithm_t<-2, 12>::template method_f<0>(17), 2.6696797083400687));
 
 	};
 

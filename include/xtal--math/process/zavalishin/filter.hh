@@ -2,8 +2,8 @@
 #include "./any.hh"
 
 #include "./scaffold.hh"
-#include "./prewarped.hh"
-#include "../../provision/saturated.hh"
+#include "../../provision/prewarping.hh"
+#include "../../provision/saturation.hh"
 
 
 XTAL_ENV_(push)
@@ -15,7 +15,7 @@ namespace xtal::process::math::zavalishin
 
 Implementation outlined in _The Art of VA Synthesis_ by Vadim Zavalishin.
 
-The non-linearity is supplied as a `process`-`template` using `provision::saturated`.
+The non-linearity is supplied as a `process`-`template` using `provision::math::saturation`.
 The process must conform to the signature `<M_ism, M_car>`,
 defining a stateless `method_f<N_var, ...>` within the `subtype`.
 
@@ -58,7 +58,7 @@ struct filter
 		noexcept -> auto
 		{
 			XTAL_IF0
-			XTAL_0IF (provision::saturated_q<S_>) {
+			XTAL_0IF (provision::math::saturation_q<S_>) {
 				return S_::template saturate_t<N_ism, N_car>::
 					template method_f<Ns...>(XTAL_REF_(x), XTAL_REF_(oo)...);
 			}
@@ -118,7 +118,7 @@ struct filter
 			});
 			get<N_ord>(outputs) = root_f<-1, (1)>(term_f(one, get<N_ord - 1>(outputs_), s_gain));
 
-			int constexpr K_lim = provision::saturated_q<S_>;
+			int constexpr K_lim = provision::math::saturation_q<S_>;
 
 		//	Integrate `states*` with `scalars*` and `outputs*`:
 			bond::seek_until_f<K_lim + 1>([&] (auto K) XTAL_0FN {
@@ -242,7 +242,7 @@ struct filter
 
 			auto const s_damp = s_im*_s_a1;
 			auto       s_gain = t_(1)*s_a1;
-			if constexpr (prewarped_q<T_>) {
+			if constexpr (provision::math::prewarping_q<T_>) {
 				s_gain *= pade::tangy_f<1, -1>(s_gain);
 			}
 			return method<Ns...>(XTAL_REF_(x), s_gain, s_damp, XTAL_REF_(oo)...);
@@ -263,7 +263,7 @@ struct filter
 		{
 			auto const &[s_bend, s_damp, tau_abs] = o;
 			auto s_gain = t_(1)/tau_abs;
-			if constexpr (prewarped_q<T_>) {
+			if constexpr (provision::math::prewarping_q<T_>) {
 				s_gain *= pade::tangy_f<1, -1>(s_gain);
 			}
 			return method<Ns...>(XTAL_REF_(x), s_gain, s_damp, s_bend, XTAL_REF_(oo)...);

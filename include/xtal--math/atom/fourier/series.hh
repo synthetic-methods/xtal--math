@@ -105,13 +105,18 @@ public:
 			A_delta constexpr IZ = _1*N_limit + N_inset, JZ = _2*N_limit + N_inset;
 
 			auto &s = self();
-			if constexpr (N_index == -1 and N_inset == 0 and N_step == 1 and N_size == size) {
+			XTAL_IF0
+			XTAL_0IF (N_index == -1 and N_inset == 0 and N_step == 1 and N_size == size) {
 				generate<1, -1, 1, size - 1>(u);
 				if constexpr (un_n<N_size&1>) {
 					get<N_limit>(s) = power_f<2>(get<N_limit/2>(s));
 				}
 			}
-			else {
+			XTAL_0IF (N_size < I0 + _1) {
+			//	Populate the 0th power only:
+				get<I0>(s) = power_f<N_index>(u);
+			}
+			XTAL_0IF_(else) {
 			//	Populate the 0th and 1st powers:
 				auto const o = power_f<N_index>(u);
 				get<I0 + _0>(s) = o;

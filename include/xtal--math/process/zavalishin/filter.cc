@@ -1,8 +1,8 @@
 #pragma once
 #include "./any.cc"
-#include "./gate.hh"
-#include "./staged.hh"
-#include "./prewarped.hh"
+#include "./intake.hh"
+#include "./retake.hh"
+#include "../../provision/prewarping.hh"
 
 
 #include "./filter.hh"// testing...
@@ -39,17 +39,16 @@ TAG_("filter")
 	{
 		using R_def = filter<>;
 		using R_etc = process::traits_t<R_def>;
-		using R_prx = prewarped_t<_1
-		,	staged< 0>
+		using R_prx = confined_t<void
+		,	provision::math::prewarping< 1>
+		,	retake< 0>
 		,	typename R_etc::refade_type::template   attend<>
 	//	,	typename R_etc::rezoom_type::template   attend<>
 		,	typename R_etc::             template   attach<>
 		,	typename R_etc::             template dispatch<>
 		,	R_def
-		,	provision::saturated<identity>
+		,	provision::math::saturation<identity>
 		>;
-		//\
-		using R_pxr = processor::monomer_t<prewarped<_1>, R_prx>;
 		using R_pxr = processor::monomer_t<R_prx>;
 
 		R_prx svf{};
@@ -105,12 +104,14 @@ TAG_("filter")
 	}
 	TRY_("filter parameterization")
 	{
-		using Y_ramp = prewarped_t<_1
+		using Y_ramp = confined_t<void
+		,	provision::math::prewarping< 1>
 		//\
 		,	filter<union RAMP>
 		,	filter<U_alpha[2], union RAMP>
 		>;
-		using Y_ring = prewarped_t<_1
+		using Y_ring = confined_t<void
+		,	provision::math::prewarping< 1>
 		//\
 		,	filter<union RING>
 		,	filter<U_alpha[2], union RING>
@@ -138,9 +139,11 @@ TAG_("filter-ring")
 		using R_def = filter<U_alpha[2], union RING>;
 		using R_etc = process::traits_t<R_def>;
 		using R_eve = flow::packet_t<typename R_etc::stage_type, typename R_etc::redamp_type>;
-		using R_prx = prewarped_t<_0, gate<-1>
-		,	staged<-1>
-		,	staged< 0>
+		using R_prx = confined_t<void
+		,	provision::math::prewarping< 0>
+		,	intake<-1>
+		,	retake< 0>
+		,	retake<-1>
 		,	typename R_etc::redamp_type::template   attend<>
 		,	typename R_etc::refade_type::template   attend<>
 		,	typename R_etc::             template   attach<>
@@ -173,7 +176,8 @@ TAG_("filter-ring")
 		z >>= flow::cue_f(0x20).then(R_eve{ 1, 0.5F});
 		z >>= flow::cue_f(0x21).then(R_eve{ 1, 0.5F});
 
-		echo_rule_<28>("\u2500");
+		echo_("\nfilter-ring: monophony");
+	//	echo_rule_<28>("\u2500");
 
 		TRUE_(0 == z.efflux(z_cursor++));
 		TRUE_(1 == z.influx(flow::assess_f(occur::stage_f( 0))));// Would be unchanged...
@@ -197,9 +201,11 @@ TAG_("filter-ring")
 		using R_def = filter<U_alpha[2], union RING>;
 		using R_etc = process::traits_t<R_def>;
 		using R_eve = flow::key_s<typename R_etc::stage_type>;
-		using R_prx = prewarped_t<_0, gate<1>
-		,	staged< 0>
-		,	staged<-1>
+		using R_prx = confined_t<void
+		,	provision::math::prewarping< 0>
+		,	intake< 1>
+		,	retake< 0>
+		,	retake<-1>
 		,	typename R_etc:: stage_type::template assignment<typename R_etc::redamp_type>
 		,	typename R_etc::redamp_type::template   attend<>
 		,	typename R_etc::refade_type::template   attend<>
@@ -238,31 +244,31 @@ TAG_("filter-ring")
 	//	z >>= flow::cue_f(0x40).then(R_eve{69, 0});
 	//	z >>= flow::cue_f(0x50).then(R_eve{69, 1});
 
-		echo_rule_<28>("\u2500");
-
 		TRUE_(0 == z.ensemble().size());
+		echo_("\nfilter-ring: polyphony");
+	//	echo_rule_<28>("\u2500");
+
 		TRUE_(0 == z.efflux(z_cursor++));
+		TRUE_(2 == z.ensemble().size());// Still decaying!
 		echo_plot_<28>(z.store(), 0x08, 0x18);
 
 	//	z >>= flow::cue_f(0x08).then(R_eve{69, 1});// Inlined below...
 		z >>= flow::cue_f(0x20).then(R_eve{69,-1});// Inlined from above...
 
-		TRUE_(2 >= z.ensemble().size());// Still decaying...
 		TRUE_(0 == z.efflux(z_cursor++));
+		TRUE_(2 >= z.ensemble().size());// Still decaying?
 		echo_plot_<28>(z.store(), 0x08);
 
 	//	z >>= flow::cue_f(0x00).then(R_eve{69, 0});// Outlined above...
 	//	z >>= flow::cue_f(0x08).then(R_eve{69,-1});// Outlined above...
 
-		TRUE_(2 >= z.ensemble().size());// Still decaying...
 		TRUE_(0 == z.efflux(z_cursor++));
+		TRUE_(1 == z.ensemble().size());// Still decaying...
 		echo_plot_<28>(z.store(), 0x00);
 
-		TRUE_(1 >= z.ensemble().size());// Still decaying...
 		TRUE_(0 == z.efflux(z_cursor++));
+		TRUE_(0 == z.ensemble().size());
 	//	echo_plot_<28>(z.store());
-
-	//	TRUE_(0 == z.ensemble().size());
 
 	}
 	/***/
