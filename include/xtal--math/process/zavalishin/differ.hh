@@ -29,7 +29,7 @@ template <typename ...As>	using   differ_t = process::confined_t<differ<As...>>;
 template <class ..._s>
 struct differ
 {
-	using metatype = traits_t<differ>;
+	using metatype = occur::context_t<differ>;
 
 	using state_type = typename metatype::state_type;
 //	using slope_type = typename metatype::slope_type;
@@ -88,6 +88,39 @@ struct differ
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////
-XTAL_ENV_(pop)
 
-#include "./differ.hh_"
+
+namespace xtal::occur
+{////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+template <class ..._s>
+struct context<process::math::zavalishin::differ<_s...>>
+{
+	using superkind = context<process::math::zavalishin::scaffold<_s...>>;
+
+	template <class S>
+	class subtype : public bond::compose_s<S, superkind>
+	{
+		using S_ = bond::compose_s<S, superkind>;
+		using T_ = typename S_::self_type;
+	
+	public:
+		using S_::S_;
+
+		template <extent_type N_mask=1>
+		struct dispatch : bond::compose<void
+		,	provision::voiced<void
+			,	typename T_::   order_type::template dispatch<N_mask>
+			>
+		,	typename S_::template dispatch<N_mask>
+		>
+		{};
+
+	};
+};
+
+
+///////////////////////////////////////////////////////////////////////////
+}/////////////////////////////////////////////////////////////////////////
+XTAL_ENV_(pop)

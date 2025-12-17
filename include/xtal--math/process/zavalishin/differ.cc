@@ -40,7 +40,7 @@ TAG_("differ")
 	//\
 	using D_def = differ<_differ::reparameterized, U_pole[1]>;
 	using D_def = differ<U_pole[1]>;
-	using D_etc = process::traits_t<D_def>;
+	using D_etc = occur::context_t<D_def>;
 	using D_prx = process::confined_t<void
 	,	typename D_etc::template dispatch<>
 	,	D_def

@@ -23,7 +23,7 @@ template <auto ...As>	using   vactrol_t = confined_t<vactrol<As...>>;
 template <auto ...As>
 struct vactrol
 {
-	using archetype = traits_t<vactrol>;
+	using archetype = occur::context_t<vactrol>;
 	using superkind = typename archetype::template attach<>;
 
 	template <class S>
@@ -65,6 +65,44 @@ struct vactrol
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////
-XTAL_ENV_(pop)
 
-#include "./vactrol.hh_"
+
+namespace xtal::occur
+{////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+template <auto ..._s>
+struct context<process::math::zavalishin::vactrol<_s...>>
+{
+	using superkind = context<>;
+
+	template <class S>
+	class subtype : public bond::compose_s<S, superkind>
+	{
+		using S_ = bond::compose_s<S, superkind>;
+		using T_ = typename S_::self_type;
+	
+	public:
+		using S_::S_;
+
+		template <extent_type N_mask=1>
+		struct   attach
+		{
+			template <class R>
+			using subtype = bond::compose_s<R, typename S_::template   attach<N_mask>
+			,	provision::voiced<void
+				//\
+				,	typename T_::reshape_type::template   attach<N_mask>
+				,	typename R ::reshape_type::template   attach<N_mask>
+				>
+			>;
+
+		};
+
+	};
+};
+
+
+///////////////////////////////////////////////////////////////////////////
+}/////////////////////////////////////////////////////////////////////////
+XTAL_ENV_(pop)

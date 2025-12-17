@@ -23,7 +23,7 @@ The parameters `M_ism` and `M_car` determine the type and return-value of shape,
 `M_ism` is expected to yield convex/concave shapes for positive/negative values,
 and `M_car` is expected to return the slope when `== -1`.
 
-\note    Despite the parameterization defined by `traits<filter<...>>`, `filter<...>::method` is
+\note    Despite the parameterization defined by `occur::context<filter<...>>`, `filter<...>::method` is
 polymorphic and can accomodate scaffold up to the given cache-width (determined by `U_pole[N_pole][2]`).
 For example, with base-types of `double` and `std::complex<double>` respectively,
 the storage required is `16` and `32` bytes-per-pole.
@@ -37,7 +37,7 @@ template <class ..._s>	concept filter_q = bond::tag_in_p<filter, _s...>;
 template <class ...As>
 struct filter
 {
-	using metatype = traits_t<filter>;
+	using metatype = occur::context_t<filter>;
 
 	using state_type = typename metatype::state_type;
 	using slope_type = typename metatype::slope_type;
@@ -292,6 +292,48 @@ struct filter
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////
-XTAL_ENV_(pop)
 
-#include "./filter.hh_"
+
+namespace xtal::occur
+{////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+template <class ..._s>
+struct context<process::math::zavalishin::filter<_s...>>
+{
+	using superkind = context<process::math::zavalishin::scaffold<_s...>>;
+
+	template <class S>
+	class subtype : public bond::compose_s<S, superkind>
+	{
+		using S_ = bond::compose_s<S, superkind>;
+		using T_ = typename S_::self_type;
+	
+	public:
+		using S_::S_;
+
+		template <extent_type N_mask=1>
+		struct dispatch : bond::compose<void
+		,	provision::voiced<void
+			,	typename T_::   order_type::template dispatch<N_mask>
+			>
+		,	typename S_::template dispatch<N_mask>
+		>
+		{};
+		template <extent_type N_mask=1>
+		struct   attach : bond::compose<void
+		,	provision::voiced<void
+			,	typename T_::   stage_type::template  inspect<N_mask>
+			,	typename T_::resample_type::template   attach<N_mask>
+			>
+		,	typename S_::template   attach<N_mask>
+		>
+		{};
+
+	};
+};
+
+
+///////////////////////////////////////////////////////////////////////////
+}/////////////////////////////////////////////////////////////////////////
+XTAL_ENV_(pop)

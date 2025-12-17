@@ -38,7 +38,7 @@ TAG_("filter")
 	TRY_("instantiation")
 	{
 		using R_def = filter<>;
-		using R_etc = process::traits_t<R_def>;
+		using R_etc = occur::context_t<R_def>;
 		using R_prx = confined_t<void
 		,	provision::math::prewarping< 1>
 		,	retake< 0>
@@ -137,7 +137,7 @@ TAG_("filter-ring")
 	TRY_("filter-ring monophony")
 	{
 		using R_def = filter<U_alpha[2], union RING>;
-		using R_etc = process::traits_t<R_def>;
+		using R_etc = occur::context_t<R_def>;
 		using R_eve = flow::packet_t<typename R_etc::stage_type, typename R_etc::redamp_type>;
 		using R_prx = confined_t<void
 		,	provision::math::prewarping< 0>
@@ -199,7 +199,7 @@ TAG_("filter-ring")
 	TRY_("filter-ring polyphony")
 	{
 		using R_def = filter<U_alpha[2], union RING>;
-		using R_etc = process::traits_t<R_def>;
+		using R_etc = occur::context_t<R_def>;
 		using R_eve = flow::key_s<typename R_etc::stage_type>;
 		using R_prx = confined_t<void
 		,	provision::math::prewarping< 0>

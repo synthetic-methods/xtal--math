@@ -7,16 +7,16 @@
 
 #include "./phasor.hh"
 XTAL_ENV_(push)
-namespace xtal::process
+namespace xtal::occur
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <class ..._s>
-struct traits<math::phasor<_s...>>
+struct context<process::math::phasor<_s...>>
 {
-	using superkind = traits<>;
+	using superkind = context<>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -46,11 +46,11 @@ struct traits<math::phasor<_s...>>
 	};
 };
 template <scalar_q A>
-struct traits<math::phasor<A>> : traits<math::phasor<A[2]>>
+struct context<process::math::phasor<A>> : context<process::math::phasor<A[2]>>
 {
 };
 template <>
-struct traits<math::phasor< >> : traits<math::phasor<typename bond::fit<>::alpha_type>>
+struct context<process::math::phasor< >> : context<process::math::phasor<typename bond::fit<>::alpha_type>>
 {
 };
 

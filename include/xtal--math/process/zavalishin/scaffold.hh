@@ -15,7 +15,7 @@ namespace xtal::process::math::zavalishin
 
 template <class ...As>
 struct scaffold
-:	traits<scaffold<As...>>
+:	occur::context<scaffold<As...>>
 {
 };
 
@@ -24,6 +24,89 @@ struct scaffold
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////
-XTAL_ENV_(pop)
 
-#include "./scaffold.hh_"
+
+namespace xtal::occur
+{////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+template <vector_q A, class ..._s>
+struct context<process::math::zavalishin::scaffold<A, _s...>>
+{
+	using superkind = context<>;
+
+	template <class S>
+	class subtype : public bond::compose_s<S, superkind>
+	{
+		using S_ = bond::compose_s<S, superkind>;
+
+		static_assert(incomplete_q<_s...>);
+		XTAL_DEF_(set) N_pole = vector_n<A>;
+		using          U_pole = vector_u<A>;
+
+	public:// CONSTRUCT
+		using S_::S_;
+
+	public:// EXTERNAL
+		using    resample_type = occur::resample_t<>;
+		using       stage_type = occur::   stage_t<>;
+
+	public:// INTERNAL
+		using        pole_size = constant_t<N_pole>;
+		using        pole_type =            U_pole ;
+		using       scale_type = unstruct_u<U_pole>;
+
+		using       state_type = atom::couple_t< pole_type[N_pole]>;
+		using       slope_type = atom::couple_t< pole_type[N_pole]>;
+		using       shape_type = atom::couple_t<scale_type[N_pole]>;
+
+	public:// ATTEND
+		using      regain_type = occur::inferred_t<_s..., union  REGAIN, scale_type>;
+		using      redamp_type = occur::inferred_t<_s..., union  REDAMP, scale_type>;
+		using      refade_type = occur::inferred_t<_s..., union  REFADE, scale_type>;
+		using      rezoom_type = occur::inferred_t<_s..., union  REZOOM, scale_type>;
+
+	public:// ATTACH
+		using     reshape_type = occur::inferred_t<_s..., union RESHAPE, shape_type>;
+
+	public:// DISPATCH
+		using       order_type = occur::inferred_t<_s..., union   ORDER, bond::seek_s<1 + N_pole>>;
+		using       patch_type = occur::inferred_t<_s..., union   PATCH, bond::seek_s<2>>;
+
+	};
+};
+
+template <scalar_q A>
+struct context<process::math::zavalishin::scaffold<A>>
+:	context<process::math::zavalishin::scaffold<A[2]>>
+{
+};
+template <>
+struct context<process::math::zavalishin::scaffold< >>
+:	context<process::math::zavalishin::scaffold<typename bond::fit<>::alpha_type>>
+{
+};
+
+template <bond::compose_q A, class ..._s>
+struct context<process::math::zavalishin::scaffold<A, _s...>>
+:	bond::compose<A
+	,	context<process::math::zavalishin::scaffold<_s...>>
+	>
+{
+};
+template <incomplete_q A, class ..._s>
+struct context<process::math::zavalishin::scaffold<A, _s...>>
+:	bond::compose<context<A>
+	,	context<process::math::zavalishin::scaffold<_s...>>
+	>
+{
+};
+//template <template <class ...> class T_, class ..._s>
+//struct context<T_<_s...>> : context<process::math::zavalishin::scaffold<_s...>>
+//{
+//};
+
+
+///////////////////////////////////////////////////////////////////////////
+}/////////////////////////////////////////////////////////////////////////
+XTAL_ENV_(pop)

@@ -28,7 +28,7 @@ TAG_("vectrol")
 		//\
 		using E_def = filter<>;
 		using E_def = filter<U_alpha[2], union ENV>;
-		using E_etc = process::traits_t<E_def>;
+		using E_etc = occur::context_t<E_def>;
 		using E_pkt = typename E_etc::stage_type;
 		using E_prx = confined_t<void
 		,	provision::math::prewarping< 0>
@@ -89,7 +89,7 @@ TAG_("vectrol")
 		//\
 		using E_def = filter<>;
 		using E_def = filter<U_alpha[2], union ENV>;
-		using E_etc = process::traits_t<E_def>;
+		using E_etc = occur::context_t<E_def>;
 		using E_pkt = typename E_etc::stage_type;
 		using E_prx = confined_t<void
 	//	,	process::lift<W_alpha>
@@ -113,7 +113,7 @@ TAG_("vectrol")
 		>;
 
 		using O_def = filter<U_alpha[2], union RING>;
-		using O_etc = process::traits_t<O_def>;
+		using O_etc = occur::context_t<O_def>;
 		using O_pkt = flow::packet_t<typename O_etc::stage_type, typename O_etc::redamp_type>;
 		using O_prx = process::confined_t<void
 		,	multiplied<>

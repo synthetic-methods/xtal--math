@@ -170,6 +170,44 @@ XTAL_DEF_(let) unity_f = [] XTAL_1FN_(call) (unity_t<M_ism, M_car>::template met
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////
-XTAL_ENV_(pop)
 
-#include "./unity.hh_"
+
+namespace xtal::occur
+{////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+template <auto ..._s>
+struct context<process::math::pade::unity<_s...>>
+{
+	using superkind = context<>;
+
+	template <class S>
+	class subtype : public bond::compose_s<S, superkind>
+	{
+		using S_ = bond::compose_s<S, superkind>;
+		using T_ = typename S_::self_type;
+	
+	public:
+		using S_::S_;
+
+		using order_type = occur::inferred_t<union ORDER, bond::seek_s<(1<<3)>>;
+
+		template <extent_type N_mask=1>
+		struct dispatch
+		{
+			template <class R>
+			using subtype = bond::compose_s<R, typename S_::template dispatch<N_mask>
+			,	provision::voiced<void
+				,	typename T_::order_type::template dispatch<N_mask>
+				>
+			>;
+
+		};
+
+	};
+};
+
+
+///////////////////////////////////////////////////////////////////////////
+}/////////////////////////////////////////////////////////////////////////
+XTAL_ENV_(pop)

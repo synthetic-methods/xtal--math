@@ -113,7 +113,7 @@ configured as a polyphonic instrument.
 // Process definition...
 
 using T_content = process::filter<U_alpha[2]>;         // 2nd-order filter.
-using T_context = process::traits_t<T_content>;        // 2nd-order filter parameters.
+using T_context = occur::context_t<T_content>;        // 2nd-order filter parameters.
 
 using V_redamp  = typename T_context::redamp_parameter;
 using V_refade  = typename T_context::refade_parameter;

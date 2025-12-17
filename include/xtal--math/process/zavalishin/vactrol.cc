@@ -28,7 +28,7 @@ TAG_("vactrol")
 		//\
 		using E_def = filter<U_alpha[2], union ENV>;
 		using E_def = filter<>;
-		using E_etc = process::traits_t<E_def>;
+		using E_etc = occur::context_t<E_def>;
 		using E_pkt = flow::packet_t<typename E_etc::stage_type, typename E_etc::reshape_type>;
 		using E_prx = confined_t<void
 		,	provision::math::prewarping< 0>
