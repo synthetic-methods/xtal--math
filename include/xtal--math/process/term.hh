@@ -25,69 +25,68 @@ XTAL_DEF_(return,inline,let)
 term_f(W &&w, X &&x, Xs &&...xs)
 noexcept -> auto
 {
-	using _xtd::accumulator;
+	using _xtd::plus_multiplies_f;
+	auto constexpr then = [] XTAL_1FN_(call) (term_f<M_alt, M_pow>);
+	using Y = unstruct_u<X, Xs...>;// NOTE: Constants interpreted as scalar quantities...
 	XTAL_IF0
-	XTAL_0IF (none_q<Xs...>) {
-		XTAL_IF0
-		XTAL_0IF (M_pow == 0  or M_alt ==  0) {
-			return XTAL_REF_(w);
-		}
-		XTAL_0IF (M_pow == 1 and M_alt ==  1) {
-			return XTAL_REF_(w) + XTAL_REF_(x);
-		}
-		XTAL_0IF (M_pow == 1 and M_alt == -1) {
-			return XTAL_REF_(w) - XTAL_REF_(x);
-		}
-		XTAL_0IF (M_pow == 2 and M_alt ==  1) {
-			return XTAL_REF_(w) + square_f(XTAL_REF_(x));
-		}
-		XTAL_0IF (M_pow == 2 and M_alt == -1) {
-			return XTAL_REF_(w) - square_f(XTAL_REF_(x));
-		}
+
+//	Decay integral/constants...
+	XTAL_0IF (instant_q<W, X> and real_variable_q<Y>) {
+		return then(static_cast<Y>(XTAL_REF_(w)), static_cast<Y>(XTAL_REF_(x)), XTAL_REF_(xs)...);
 	}
-	//\
-	XTAL_0IF (some_q<Xs...>) {
-	XTAL_0IF_(else) {
-		auto constexpr _f = [] XTAL_1FN_(call) (term_f<M_alt, M_pow>);
-		using Y = unstruct_u<Xs...>;// NOTE: Constants interpreted as scalar quantities...
-		XTAL_IF0
-		XTAL_0IF (atom::groupoid_q<W> and not atom::math::dot_q<W>) {
-			return based_t<W>::template zip_from<_f>(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
-		}
-		XTAL_0IF (atom::groupoid_q<X> and not atom::math::dot_q<X>) {
-			return based_t<X>::template zip_from<_f>(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
-		}
-		XTAL_0IF (atom::groupoid_q<Y> and not atom::math::dot_q<Y>) {
-			return based_t<Y>::template zip_from<_f>(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
-		}
-		XTAL_0IF (constant_q<W, X> or integral_variable_q<W, X> and real_variable_q<Y>) {
-			return _f(static_cast<Y>(XTAL_REF_(w)), static_cast<Y>(XTAL_REF_(x)), XTAL_REF_(xs)...);
-		}
-		XTAL_0IF (constant_q<W   > or integral_variable_q<W   > and real_variable_q<Y>) {
-			return _f(static_cast<Y>(XTAL_REF_(w)), XTAL_REF_(x), XTAL_REF_(xs)...);
-		}
-		XTAL_0IF (constant_q<   X> or integral_variable_q<   X> and real_variable_q<Y>) {
-			return _f(XTAL_REF_(w), static_cast<Y>(XTAL_REF_(x)), XTAL_REF_(xs)...);
-		}
-		XTAL_0IF (M_pow == 0  or M_alt ==  0) {
-			return XTAL_REF_(w);
-		}
-		XTAL_0IF (M_pow == 1 and M_alt ==  1) {
-			return accumulator(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
-		}
-		XTAL_0IF (M_pow == 1 and M_alt == -1) {
-			return accumulator(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)..., Y{M_alt});
-		}
-		XTAL_0IF (M_pow == 2 and M_alt ==  1) {
-			auto const y = (XTAL_REF_(xs) *...* XTAL_REF_(x));
-			return accumulator(XTAL_REF_(w), y, y);
-		}
-		XTAL_0IF (M_pow == 2 and M_alt == -1) {
-			auto const y = (XTAL_REF_(xs) *...* XTAL_REF_(x));
-			return accumulator(XTAL_REF_(w), y, y, Y{M_alt});
-		}
-		XTAL_0IF_(void)
+	XTAL_0IF (instant_q<W   > and real_variable_q<Y>) {
+		return then(static_cast<Y>(XTAL_REF_(w)),               (XTAL_REF_(x)), XTAL_REF_(xs)...);
 	}
+	XTAL_0IF (instant_q<   X> and real_variable_q<Y>) {
+		return then(              (XTAL_REF_(w)), static_cast<Y>(XTAL_REF_(x)), XTAL_REF_(xs)...);
+	}
+
+//	Map groupoids...
+	XTAL_0IF (atom::groupoid_q<W> and not atom::math::dot_q<W>) {
+		return based_t<W>::template zip_from<then>(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
+	}
+	XTAL_0IF (atom::groupoid_q<X> and not atom::math::dot_q<X>) {
+		return based_t<X>::template zip_from<then>(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
+	}
+
+//	Resolve parameters...
+	XTAL_0IF (M_alt == 0) {
+		return XTAL_REF_(w);
+	}
+
+	XTAL_0IF (M_alt ==  1 and M_pow == 1 and 0 == sizeof...(xs)) {
+		return XTAL_REF_(w) + XTAL_REF_(x);
+	}
+	XTAL_0IF (M_alt == -1 and M_pow == 1 and 0 == sizeof...(xs)) {
+		return XTAL_REF_(w) - XTAL_REF_(x);
+	}
+	XTAL_0IF (M_alt ==  1 and M_pow == 2 and 0 == sizeof...(xs)) {
+		return  plus_multiplies_f( XTAL_REF_(w), x, x);
+	}
+	XTAL_0IF (M_alt == -1 and M_pow == 2 and 0 == sizeof...(xs)) {
+		return -plus_multiplies_f(-XTAL_REF_(w), x, x);
+	}
+	/**/
+	XTAL_0IF (M_pow == 2) {
+		return then(XTAL_REF_(w), (XTAL_REF_(x) *...* XTAL_REF_(xs)));
+	}
+	/*/
+	XTAL_0IF (M_alt ==  1 and M_pow == 2) {
+		return XTAL_REF_(w) + square_f((XTAL_REF_(x) *...* XTAL_REF_(xs)));
+	}
+	XTAL_0IF (M_alt == -1 and M_pow == 2) {
+		return XTAL_REF_(w) - square_f((XTAL_REF_(x) *...* XTAL_REF_(xs)));
+	}
+	/***/
+
+	XTAL_0IF (M_alt ==  1 and M_pow == 1) {
+		return  plus_multiplies_f( XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
+	}
+	XTAL_0IF (M_alt == -1 and M_pow == 1) {
+		return -plus_multiplies_f(-XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
+	}
+
+	XTAL_0IF_(void)
 };
 
 

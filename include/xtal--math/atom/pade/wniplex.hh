@@ -1,10 +1,10 @@
 #pragma once
 #include "./any.hh"
 
-#include "../../process/term.hh"
+
+
 #include "../../process/pade/unity.hh"
 #include "../../process/taylor/octarithm.hh"
-
 
 XTAL_ENV_(push)
 namespace xtal::atom::math::pade
@@ -15,7 +15,43 @@ template <class   ..._s>	struct  wniplex;
 template <class   ..._s>	using   wniplex_t = typename wniplex<_s...>::type;
 template <class   ...Ts>	concept wniplex_q = bond::tag_in_p<wniplex_t, Ts...>;
 
-XTAL_DEF_(let) wniplex_f = [] XTAL_1FN_(call) (_detail::factory<wniplex_t>::make);
+namespace _detail
+{///////////////////////////////////////////////////////////////////////////////
+
+XTAL_DEF_(return,inline,let)
+wniplex_f(auto &&...oo)
+noexcept -> decltype(auto)
+{
+	return atom::_detail::factory<wniplex_t>::make(XTAL_REF_(oo)...);
+}
+XTAL_DEF_(return,inline,let)
+wniplex_f(decltype(_std::in_place), simplex_variable_q auto &&o)
+noexcept -> decltype(auto)
+{
+	using  W = wniplex_t<XTAL_ALL_(o)>;
+	return W{{one, zero}, process::math::roots_f<1>(XTAL_REF_(o))};
+}
+XTAL_DEF_(return,inline,let)
+wniplex_f(decltype(_std::in_place), complex_variable_q auto &&o)
+noexcept -> decltype(auto)
+{
+	using  W = wniplex_t<XTAL_ALL_(o)>;
+	auto   const vs = process::math::roots_f<2>(process::math::dot_f(o));
+	auto   const dn = get<1>(vs);
+	return W{XTAL_REF_(o)*XTAL_MOV_(dn), XTAL_MOV_(vs)};
+}
+XTAL_DEF_(return,inline,let)
+wniplex_f(complex_variable_q auto &&o, decltype(_std::in_place))
+noexcept -> decltype(auto)
+{
+	using  W = wniplex_t<XTAL_ALL_(o)>;
+	return W{XTAL_REF_(o), {one, one}};
+}
+
+
+}///////////////////////////////////////////////////////////////////////////////
+
+XTAL_DEF_(let) wniplex_f = [] XTAL_1FN_(call) (_detail::wniplex_f);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -182,7 +218,7 @@ public:
 		noexcept -> complex_type
 		{
 			//\
-			using _xtd::accumulator;
+			using _xtd::plus_multiplies_f;
 			using process::math::term_f;
 			auto const &[o, q_] = self();
 			auto const q_up = q_.template sum<+1>();
@@ -215,7 +251,7 @@ public:
 		noexcept -> couplex_type
 		{
 			//\
-			using _xtd::accumulator;
+			using _xtd::plus_multiplies_f;
 			using process::math::term_f;
 			auto const &[o, q_] = self();
 			auto const q_up = q_.template sum<+1>();

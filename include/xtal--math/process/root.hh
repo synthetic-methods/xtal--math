@@ -248,16 +248,16 @@ struct root
 			XTAL_0IF_(consteval) {
 				auto v = z;
 				for (int i{}; i < 0x10 and v != y; ++i) {
-					y *= _xtd::accumulator(k_, z_, power_f<M_exp_mag>(v = y));
+					y *= _xtd::plus_multiplies_f(k_, z_, power_f<M_exp_mag>(v = y));
 				}
 				{
-					y /= _xtd::accumulator(h, h, z*power_f<M_exp_mag>(v = y));
+					y /= _xtd::plus_multiplies_f(h, h, z*power_f<M_exp_mag>(v = y));
 				}
 			}
 			XTAL_0IF_(else) {
 				#pragma unroll
 				for (int i{}; i < I_lim; ++i) {
-					y *= _xtd::accumulator(k_, z_, power_f<M_exp_mag>(y));
+					y *= _xtd::plus_multiplies_f(k_, z_, power_f<M_exp_mag>(y));
 				}
 			}
 			return y;

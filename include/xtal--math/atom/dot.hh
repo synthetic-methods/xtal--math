@@ -18,7 +18,7 @@ Indended to act as a coefficient of a similar type where a scalar result is requ
 \todo    Either define `std::complex` construction/operation,
 or create a similar complex sentinel that applies multiplication/projection.
 
-\todo    Specialize `accumulator` or `fma`?
+\todo    Specialize `plus_multiplies_f` or `fma`?
 */
 
 template <class ..._s>	struct  dot;
@@ -72,7 +72,7 @@ public:
 				typename T::revalue_type u{0};
 				
 				bond::seek_until_f<size>([&]<constant_q I> (I)
-					XTAL_0FN_(do) (u = _xtd::accumulator(XTAL_MOV_(u), got<I{}>(s), got<I{}>(t))));
+					XTAL_0FN_(do) (u = _xtd::plus_multiplies_f(XTAL_MOV_(u), got<I{}>(s), got<I{}>(t))));
 				
 				return u;
 			}

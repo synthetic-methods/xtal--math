@@ -33,7 +33,7 @@ noexcept -> auto
 
 		XTAL_IF0
 		XTAL_0IF (1 <= sizeof...(xs)) {
-			return _xtd::accumulator(X_fit::alpha_f(K_sgn)*square_f<N_alt, K_sgn>(XTAL_REF_(xs)...), x, x);
+			return _xtd::plus_multiplies_f(X_fit::alpha_f(K_sgn)*square_f<N_alt, K_sgn>(XTAL_REF_(xs)...), x, x);
 		}
 		XTAL_0IF (complex_field_q<X>) {
 		//	auto const &[x_re, x_im] = destruct_f(x);

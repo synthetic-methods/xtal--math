@@ -35,6 +35,8 @@ struct component<M_sel>
 		method_f(auto &&o)
 		noexcept -> auto
 		{
+			using _std::real;
+			using _std::imag;
 			XTAL_IF0
 			XTAL_0IF (M_sel == -1) {return                   XTAL_REF_(o)  ;}
 			XTAL_0IF (M_sel ==  0) {return              real(XTAL_REF_(o)) ;}
