@@ -19,11 +19,13 @@ struct reparameterized
 	template <class S>
 	class subtype : public S
 	{
-	public:
-		using S::S;
+		using S_ = S;
 
-		using typename S::pole_size;
-		using order_type = occur::inferred_t<union ORDER, bond::seek_s<1 + pole_size{}()>>;
+	public:
+		using S_::S_;
+
+		using order_attribute = occur::inferred_t<union ORDER,
+			bond::seek_s<1 + S_::state_type::size()>>;
 
 	};
 };
@@ -47,16 +49,16 @@ TAG_("differ")
 	>;
 
 	using V_order = occur::inferred_t<union ORDER, bond::seek_s<1 + N_pole>>;
-	using U_order = typename D_etc::order_type;
-//	static_assert(same_q<U_order, typename D_prx::order_type>);
-//	static_assert(same_q<V_order, typename D_prx::order_type>);
+	using U_order = typename D_etc::order_attribute;
+//	static_assert(same_q<U_order, typename D_prx::order_attribute>);
+//	static_assert(same_q<V_order, typename D_prx::order_attribute>);
 
 	TRY_("instantiation")
 	{
 		D_prx diff{};
 		//\
-		diff <<= typename D_prx::order_type{1};
-		diff <<= typename D_etc::order_type{1};
+		diff <<= typename D_prx::order_attribute{1};
+		diff <<= typename D_etc::order_attribute{1};
 
 		TRUE_(check_f<19>(diff(1), 1));
 		TRUE_(check_f<19>(diff(2), 1));
@@ -67,7 +69,7 @@ TAG_("differ")
 //	TRY_("scaling")
 //	{
 //		confined_t<dilate<[] XTAL_1FN_(to) (bond::fit<>::patio_2)>, D_prx> diff{};
-//		diff <<= typename D_prx::order_type{1};
+//		diff <<= typename D_prx::order_attribute{1};
 //
 //		TRUE_(check_f<19>(0.15915493667125702, diff(1)));
 //		TRUE_(check_f<19>(0.15915493667125702, diff(2)));

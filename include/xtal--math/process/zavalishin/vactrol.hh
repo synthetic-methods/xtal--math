@@ -35,7 +35,7 @@ struct vactrol
 
 	public:// CONSTRUCT
 		using S_::S_;
-		using typename S_::reshape_type;
+		using typename S_::shape_parameter;
 		using typename S_::  state_type;
 
 	public:// OPERATE
@@ -47,7 +47,7 @@ struct vactrol
 		{
 			auto constexpr abs = [] XTAL_1FN_(call) (taylor::logarithm_t<-1>::template method_f<0>);
 
-			auto const &[d0, d1] = S_::template head<reshape_type>().head();
+			auto const &[d0, d1] = S_::template head<shape_parameter>().head();
 			auto const  [s_]     = S_::template memory<state_type>();
 
 			auto const v = pade::tangy_f<1>(half*d1);
@@ -92,8 +92,8 @@ struct context<process::math::zavalishin::vactrol<_s...>>
 			using subtype = bond::compose_s<R, typename S_::template   attach<N_mask>
 			,	provision::voiced<void
 				//\
-				,	typename T_::reshape_type::template   attach<N_mask>
-				,	typename R ::reshape_type::template   attach<N_mask>
+				,	typename T_::shape_parameter::template   attach<N_mask>
+				,	typename R ::shape_parameter::template   attach<N_mask>
 				>
 			>;
 

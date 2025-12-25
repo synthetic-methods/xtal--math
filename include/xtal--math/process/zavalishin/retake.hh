@@ -75,7 +75,7 @@ struct retake<-1>
 
 	public:// CONSTRUCT
 		using S_::S_;
-		using typename S_::order_type;
+		using typename S_::order_attribute;
 		using typename S_::state_type;
 
 	public:// ACCESS
@@ -108,7 +108,7 @@ struct retake<-1>
 
 			signed x = S_::template fuse<N_ion>(XTAL_REF_(o));
 
-			auto const order = order_type{self()};
+			auto const order = order_attribute{self()};
 			if (0 < order and o.head() == -1) {
 				auto const disorder = order - one;
 				XTAL_IF0

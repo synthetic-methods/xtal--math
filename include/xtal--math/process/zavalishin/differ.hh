@@ -111,7 +111,7 @@ struct context<process::math::zavalishin::differ<_s...>>
 		template <extent_type N_mask=1>
 		struct dispatch : bond::compose<void
 		,	provision::voiced<void
-			,	typename T_::   order_type::template dispatch<N_mask>
+			,	typename T_::   order_attribute::template dispatch<N_mask>
 			>
 		,	typename S_::template dispatch<N_mask>
 		>

@@ -33,16 +33,19 @@ namespace xtal::occur
 template <vector_q A, class ..._s>
 struct context<process::math::zavalishin::scaffold<A, _s...>>
 {
+private:
+	static_assert(incomplete_q<_s...>);
+	XTAL_DEF_(set) N_pole =   vector_n<A>;
+	using          U_pole =   vector_u<A>;
+	using          V_pole = unstruct_u<A>;
+
+public:
 	using superkind = context<>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
 	{
 		using S_ = bond::compose_s<S, superkind>;
-
-		static_assert(incomplete_q<_s...>);
-		XTAL_DEF_(set) N_pole = vector_n<A>;
-		using          U_pole = vector_u<A>;
 
 	public:// CONSTRUCT
 		using S_::S_;
@@ -52,26 +55,21 @@ struct context<process::math::zavalishin::scaffold<A, _s...>>
 		using       stage_type = occur::   stage_t<>;
 
 	public:// INTERNAL
-		using        pole_size = constant_t<N_pole>;
-		using        pole_type =            U_pole ;
-		using       scale_type = unstruct_u<U_pole>;
-
-		using       state_type = atom::couple_t< pole_type[N_pole]>;
-		using       slope_type = atom::couple_t< pole_type[N_pole]>;
-		using       shape_type = atom::couple_t<scale_type[N_pole]>;
+		using       state_type = atom::couple_t<U_pole[N_pole]>;
+		using       slope_type = atom::couple_t<U_pole[N_pole]>;
+		using       shape_type = atom::couple_t<V_pole[N_pole]>;
 
 	public:// ATTEND
-		using      regain_type = occur::inferred_t<_s..., union  REGAIN, scale_type>;
-		using      redamp_type = occur::inferred_t<_s..., union  REDAMP, scale_type>;
-		using      refade_type = occur::inferred_t<_s..., union  REFADE, scale_type>;
-		using      rezoom_type = occur::inferred_t<_s..., union  REZOOM, scale_type>;
+		using  gain_parameter  = occur::inferred_t<_s..., union GAIN, V_pole>;
+		using  damp_parameter  = occur::inferred_t<_s..., union DAMP, V_pole>;
+		using  fade_parameter  = occur::inferred_t<_s..., union FADE, V_pole>;
+		using  zoom_parameter  = occur::inferred_t<_s..., union ZOOM, V_pole>;
 
 	public:// ATTACH
-		using     reshape_type = occur::inferred_t<_s..., union RESHAPE, shape_type>;
+		using shape_parameter  = occur::inferred_t<_s..., union SHAPE, shape_type>;
 
 	public:// DISPATCH
-		using       order_type = occur::inferred_t<_s..., union   ORDER, bond::seek_s<1 + N_pole>>;
-		using       patch_type = occur::inferred_t<_s..., union   PATCH, bond::seek_s<2>>;
+		using order_attribute  = occur::inferred_t<_s..., union ORDER, bond::seek_s<1 + N_pole>>;
 
 	};
 };

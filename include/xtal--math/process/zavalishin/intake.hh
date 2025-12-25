@@ -35,7 +35,7 @@ struct intake
 	public:// CONSTRUCT
 		using S_::S_;
 		using typename S_::stage_type;
-		using typename S_::pole_type;
+		using typename S_::state_type;
 
 	public:// ACCESS
 		using S_::self;
@@ -49,7 +49,7 @@ struct intake
 			auto const    &u_stage = S_::template head<stage_type>();
 			auto const     i_stage = _xtd::make_unsigned_f(u_stage.head());
 			auto constexpr I_stage = _xtd::make_unsigned_f(M_end);
-			auto const     x_input = static_cast<pole_type>(i_stage < I_stage);
+			auto const     x_input = static_cast<typename state_type::value_type>(i_stage < I_stage);
 			return S_::template method<Ns...>(x_input, XTAL_REF_(oo)...);
 		}
 
@@ -67,7 +67,7 @@ struct intake<0>
 
 	public:// CONSTRUCT
 		using S_::S_;
-		using typename S_:: pole_type;
+		using typename S_::state_type;
 		using typename S_::stage_type;
 
 	public:// OPERATE
@@ -79,7 +79,7 @@ struct intake<0>
 		{
 			auto &u_stage = S_::template head<stage_type>();
 			auto  x_stage = 0 == u_stage;
-			auto  x_input = static_cast<pole_type>(x_stage);
+			auto  x_input = static_cast<typename state_type::value_type>(x_stage);
 			if constexpr (provision::math::prewarping_q<T_>) {
 				x_input *= root_f<-1>(s_gain);
 			}

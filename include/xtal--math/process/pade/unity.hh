@@ -190,7 +190,7 @@ struct context<process::math::pade::unity<_s...>>
 	public:
 		using S_::S_;
 
-		using order_type = occur::inferred_t<union ORDER, bond::seek_s<(1<<3)>>;
+		using order_attribute = occur::inferred_t<union ORDER, bond::seek_s<(1<<3)>>;
 
 		template <extent_type N_mask=1>
 		struct dispatch
@@ -198,7 +198,7 @@ struct context<process::math::pade::unity<_s...>>
 			template <class R>
 			using subtype = bond::compose_s<R, typename S_::template dispatch<N_mask>
 			,	provision::voiced<void
-				,	typename T_::order_type::template dispatch<N_mask>
+				,	typename T_::order_attribute::template dispatch<N_mask>
 				>
 			>;
 

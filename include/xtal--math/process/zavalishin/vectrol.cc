@@ -35,8 +35,8 @@ TAG_("vectrol")
 		,	intake< 0>
 		,	retake< 0>
 		,	retake<-1>
-		,	typename E_etc::redamp_type::template   attend<>
-		,	typename E_etc::refade_type::template   attend<>
+		,	typename E_etc::damp_parameter::template   attend<>
+		,	typename E_etc::fade_parameter::template   attend<>
 		,	typename E_etc::             template   attach<>
 		,	typename E_etc::             template dispatch<>
 		,	vectrol<>
@@ -54,10 +54,10 @@ TAG_("vectrol")
 		auto z_sample = occur::resample_f(44100);
 
 		auto z = E_pxr::bind_f(processor::let_f(e_omega));
-		z <<= typename E_etc::  order_type{2};
-		z <<= typename E_etc:: redamp_type{1};
-		z <<= typename E_etc:: refade_type{0.5};
-		z <<= typename E_etc::reshape_type{typename E_etc::shape_type{0.125, one - 0.125}};
+		z <<= typename E_etc::  order_attribute{2};
+		z <<= typename E_etc:: damp_parameter{1};
+		z <<= typename E_etc:: fade_parameter{0.5};
+		z <<= typename E_etc::shape_parameter{typename E_etc::shape_type{0.125, one - 0.125}};
 
 		z <<= z_sample;
 		z <<= z_resize;
@@ -97,8 +97,8 @@ TAG_("vectrol")
 		,	intake< 0>
 		,	retake< 0>
 		,	retake<-1>
-		,	typename E_etc::redamp_type::template   attend<>
-	//	,	typename E_etc::refade_type::template   attend<>
+		,	typename E_etc::damp_parameter::template   attend<>
+	//	,	typename E_etc::fade_parameter::template   attend<>
 		,	typename E_etc::             template   attach<>
 		,	typename E_etc::             template dispatch<>
 		,	vectrol<>
@@ -114,15 +114,15 @@ TAG_("vectrol")
 
 		using O_def = filter<U_alpha[2], union RING>;
 		using O_etc = occur::context_t<O_def>;
-		using O_pkt = flow::packet_t<typename O_etc::stage_type, typename O_etc::redamp_type>;
+		using O_pkt = flow::packet_t<typename O_etc::stage_type, typename O_etc::damp_parameter>;
 		using O_prx = process::confined_t<void
 		,	multiplied<>
 		,	provision::math::prewarping< 0>
 		,	intake<-1>
 		,	retake< 0>
 	//	,	retake<-1>
-		,	typename O_etc::redamp_type::template   attend<>
-		,	typename O_etc::refade_type::template   attend<>
+		,	typename O_etc::damp_parameter::template   attend<>
+		,	typename O_etc::fade_parameter::template   attend<>
 		,	typename O_etc::             template   attach<>
 		,	typename O_etc::             template dispatch<>
 		,	O_def
@@ -158,14 +158,14 @@ TAG_("vectrol")
 		_y <<= occur::math::indent_s<Q_mtx, 1>({r_omega, W_alpha{1111, 1111}});
 		_y <<= occur::math::indent_s<Q_mtx, 0>({0.0    , W_alpha{0.707, 0.707}});
 
-		_y <<= typename E_etc::  order_type{2};
-		_y <<= typename E_etc:: redamp_type{1};
-		_y <<= typename E_etc:: refade_type{0.5};
-		_y <<= typename E_etc::reshape_type{typename E_etc::shape_type{0.125, one - 0.825}};
+		_y <<= typename E_etc::  order_attribute{2};
+		_y <<= typename E_etc:: damp_parameter{1};
+		_y <<= typename E_etc:: fade_parameter{0.5};
+		_y <<= typename E_etc::shape_parameter{typename E_etc::shape_type{0.125, one - 0.825}};
 
-		_y <<= typename O_etc::  order_type{2};
-		_y <<= typename O_etc:: redamp_type{1};
-		_y <<= typename O_etc:: refade_type{1};
+		_y <<= typename O_etc::  order_attribute{2};
+		_y <<= typename O_etc:: damp_parameter{1};
+		_y <<= typename O_etc:: fade_parameter{1};
 
 		_y <<= z_sample;
 		_y <<= z_resize;

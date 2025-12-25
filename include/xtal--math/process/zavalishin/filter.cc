@@ -42,8 +42,8 @@ TAG_("filter")
 		using R_prx = confined_t<void
 		,	provision::math::prewarping< 1>
 		,	retake< 0>
-		,	typename R_etc::refade_type::template   attend<>
-	//	,	typename R_etc::rezoom_type::template   attend<>
+		,	typename R_etc::fade_parameter::template   attend<>
+	//	,	typename R_etc::zoom_parameter::template   attend<>
 		,	typename R_etc::             template   attach<>
 		,	typename R_etc::             template dispatch<>
 		,	R_def
@@ -53,8 +53,8 @@ TAG_("filter")
 
 		R_prx svf{};
 		svf <<= occur::resample_f(44100);
-		svf <<= typename R_etc::  order_type{2};
-		svf <<= typename R_etc:: refade_type{0};
+		svf <<= typename R_etc::  order_attribute{2};
+		svf <<= typename R_etc:: fade_parameter{0};
 	
 		U_alpha constexpr r_omega = 2*2*3*3*5*5*7;
 		U_alpha constexpr   rho = 1;
@@ -116,7 +116,7 @@ TAG_("filter")
 		,	filter<union RING>
 		,	filter<U_alpha[2], union RING>
 		>;
-		static_assert(different_q<typename Y_ramp::order_type, typename Y_ring::order_type>);
+		static_assert(different_q<typename Y_ramp::order_attribute, typename Y_ring::order_attribute>);
 
 	};
 	/***/
@@ -138,14 +138,14 @@ TAG_("filter-ring")
 	{
 		using R_def = filter<U_alpha[2], union RING>;
 		using R_etc = occur::context_t<R_def>;
-		using R_eve = flow::packet_t<typename R_etc::stage_type, typename R_etc::redamp_type>;
+		using R_eve = flow::packet_t<typename R_etc::stage_type, typename R_etc::damp_parameter>;
 		using R_prx = confined_t<void
 		,	provision::math::prewarping< 0>
 		,	intake<-1>
 		,	retake< 0>
 		,	retake<-1>
-		,	typename R_etc::redamp_type::template   attend<>
-		,	typename R_etc::refade_type::template   attend<>
+		,	typename R_etc::damp_parameter::template   attend<>
+		,	typename R_etc::fade_parameter::template   attend<>
 		,	typename R_etc::             template   attach<>
 		,	typename R_etc::             template dispatch<>
 		,	R_def
@@ -162,9 +162,9 @@ TAG_("filter-ring")
 		auto z_sample = occur::resample_f(44100);
 
 		auto z = R_pxr::bind_f(processor::let_f(r_omega));
-		z <<= typename R_etc::  order_type{2};
-		z <<= typename R_etc:: redamp_type{1};
-		z <<= typename R_etc:: refade_type{1};
+		z <<= typename R_etc::  order_attribute{2};
+		z <<= typename R_etc:: damp_parameter{1};
+		z <<= typename R_etc:: fade_parameter{1};
 
 		z <<= z_sample;
 		z <<= z_resize;
@@ -206,9 +206,9 @@ TAG_("filter-ring")
 		,	intake< 1>
 		,	retake< 0>
 		,	retake<-1>
-		,	typename R_etc:: stage_type::template assignment<typename R_etc::redamp_type>
-		,	typename R_etc::redamp_type::template   attend<>
-		,	typename R_etc::refade_type::template   attend<>
+		,	typename R_etc:: stage_type::template assignment<typename R_etc::damp_parameter>
+		,	typename R_etc::damp_parameter::template   attend<>
+		,	typename R_etc::fade_parameter::template   attend<>
 		,	typename R_etc             ::template   attach<>
 		,	typename R_etc             ::template dispatch<>
 		,	R_def
@@ -225,12 +225,12 @@ TAG_("filter-ring")
 		auto z_sample = occur::resample_f(44100);
 
 		auto z = R_pxr::bind_f(processor::let_f(r_omega));
-		z <<= typename R_etc::  order_type{2};
-		z <<= typename R_etc:: redamp_type{1};
-		z <<= typename R_etc:: refade_type{1};
-		z <<= flow::assign_f(typename R_etc::stage_type{ 0}) << typename R_etc::redamp_type{0.000F};
-		z <<= flow::assign_f(typename R_etc::stage_type{ 1}) << typename R_etc::redamp_type{0.060F};
-		z <<= flow::assign_f(typename R_etc::stage_type{-1}) << typename R_etc::redamp_type{0.707F};
+		z <<= typename R_etc::  order_attribute{2};
+		z <<= typename R_etc:: damp_parameter{1};
+		z <<= typename R_etc:: fade_parameter{1};
+		z <<= flow::assign_f(typename R_etc::stage_type{ 0}) << typename R_etc::damp_parameter{0.000F};
+		z <<= flow::assign_f(typename R_etc::stage_type{ 1}) << typename R_etc::damp_parameter{0.060F};
+		z <<= flow::assign_f(typename R_etc::stage_type{-1}) << typename R_etc::damp_parameter{0.707F};
 
 		z <<= z_sample;
 		z <<= z_resize;

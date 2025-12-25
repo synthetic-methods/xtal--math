@@ -75,9 +75,9 @@ struct filter
 
 	public:// TYPE
 
-		using reshape_type = typename metatype::reshape_type;
+		using shape_parameter = typename metatype::shape_parameter;
 		using   state_type = typename metatype::  state_type;
-		using   order_type = typename metatype::  order_type;
+		using   order_attribute = typename metatype::  order_attribute;
 
 	public:// OPERATE
 
@@ -315,7 +315,7 @@ struct context<process::math::zavalishin::filter<_s...>>
 		template <extent_type N_mask=1>
 		struct dispatch : bond::compose<void
 		,	provision::voiced<void
-			,	typename T_::   order_type::template dispatch<N_mask>
+			,	typename T_::   order_attribute::template dispatch<N_mask>
 			>
 		,	typename S_::template dispatch<N_mask>
 		>
