@@ -11,7 +11,7 @@ namespace xtal::process::math::taylor
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism=1, int M_car=0> requires in_n<M_ism, 1, 2, -1, -2> and in_n<M_car, -0, -1>
+template <int M_ism=1, int M_car=0> requires in_v<M_ism, 1, 2, -1, -2> and in_v<M_car, -0, -1>
 struct  monologarithm;
 
 template <auto ...Ms>
@@ -25,7 +25,7 @@ using   monologarithm_t = process::confined_t<monologarithm<Ms...>>;
 Approximated by `#/Sqrt[1 - #]`.
 */
 
-template <int M_ism> requires in_n<M_ism, 1, 2>
+template <int M_ism> requires in_v<M_ism, 1, 2>
 struct monologarithm<M_ism, -0>
 {
 	static int constexpr I_ism = M_ism&1;
@@ -64,7 +64,7 @@ struct monologarithm<M_ism, -0>
 Approximated by `(Sqrt[1 + (#/2)^2] - (#/2))*(#)`.
 */
 
-template <int M_ism> requires in_n<M_ism,-1,-2>
+template <int M_ism> requires in_v<M_ism,-1,-2>
 struct monologarithm<M_ism, -0>
 {
 	static int constexpr I_ism = M_ism&1;
@@ -108,7 +108,7 @@ struct monologarithm<M_ism, -0>
 
 Approximated by `1/Sqrt[1 - #]`.
 */
-template <int M_ism> requires in_n<M_ism, 1, 2>
+template <int M_ism> requires in_v<M_ism, 1, 2>
 struct monologarithm<M_ism, -1>
 {
 	static int constexpr I_ism = M_ism&1;
@@ -141,7 +141,7 @@ struct monologarithm<M_ism, -1>
 
 When `M_ism=-1`, approximated by `Sqrt[1 + (#/2)^2] + (#/2)`.
 */
-template <int M_ism> requires in_n<M_ism,-1,-2>
+template <int M_ism> requires in_v<M_ism,-1,-2>
 struct monologarithm<M_ism, -1>
 {
 	static int constexpr I_ism = M_ism&1;

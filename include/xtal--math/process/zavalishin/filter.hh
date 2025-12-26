@@ -84,14 +84,14 @@ struct filter
 		template <int N_ord=0, auto ...Ns> requires (1 <= N_ord)
 		XTAL_DEF_(inline,let)
 		method(auto const &x
-		,	unstruct_u<decltype(x)> s_gain
+		,	unstruct_t<decltype(x)> s_gain
 		,	atom::couple_q<unit_type[N_ord + 1]> auto &&scalars
 		,	auto &&...oo
 		)	const
 		noexcept -> auto
 		{
 			using X =  XTAL_ALL_(x);
-			using U = unstruct_u<X>;
+			using U = unstruct_t<X>;
 			using X_fit    = bond::fit<X>;
 			using X_state_ = atom::couple_t<X[N_ord]>;
 			using X_slope_ = atom::couple_t<X[N_ord]>;
@@ -103,7 +103,7 @@ struct filter
 			auto const descalars_ = scalars_ - one;
 
 			auto mem = S_::template memory<X_state_, X_slope_>();
-		//	(void) limit_t<[] XTAL_1FN_(to) (-bond::fit<X>::diplo_f(7))>::edit_f(mem);
+		//	(void) limit_t<[] XTAL_1FN_(to) (-bond::fit<X>::diplo_f(7))>::method_e(mem);
 			auto &states_ = get<0>(mem);
 			auto &slopes_ = get<1>(mem);
 
@@ -147,39 +147,39 @@ struct filter
 		template <int N_ord=0, auto ...Ns> requires (0 == N_ord)
 		XTAL_DEF_(inline,let)
 		method(auto const &x
-		,	unstruct_u<decltype(x)> s_gain
+		,	unstruct_t<decltype(x)> s_gain
 		,	atom::couple_q<unit_type[N_ord + 1]> auto &&scalars
 		,	auto &&...oo
 		)
 		noexcept -> auto
 		{
 			using X =  XTAL_ALL_(x);
-			using U = unstruct_u<X>;
+			using U = unstruct_t<X>;
 			return atom::math::dot_t<X[2]>{XTAL_REF_(x)};
 		}
 		template <int N_ord=0, auto ...Ns>
 		XTAL_DEF_(inline,let)
 		method(auto const &x
-		,	unstruct_u<decltype(x)> s_gain
+		,	unstruct_t<decltype(x)> s_gain
 		,	atom::couple_q<unit_type[N_ord + 1]> auto &&scalars
 		)
 		noexcept -> auto
 		{
 			using X =  XTAL_ALL_(x);
-			using U = unstruct_u<X>;
+			using U = unstruct_t<X>;
 			return method<N_ord, Ns...>(x, s_gain, XTAL_REF_(scalars), U{one});
 		}
 		template <int N_ord=0, auto ...Ns>
 		XTAL_DEF_(inline,let)
 		method(auto &&x
-		,	unstruct_u<decltype(x)> s_gain
-		,	unstruct_u<decltype(x)> s_damp
+		,	unstruct_t<decltype(x)> s_gain
+		,	unstruct_t<decltype(x)> s_damp
 		,	auto &&...oo
 		)
 		noexcept -> auto
 		{
 			using X =  XTAL_ALL_(x);
-			using U = unstruct_u<X>;
+			using U = unstruct_t<X>;
 			XTAL_IF0
 			XTAL_0IF (0 == N_ord) {
 				return atom::math::dot_t<X[2]>{XTAL_REF_(x)};
@@ -203,15 +203,15 @@ struct filter
 		template <int N_ord=0, auto ...Ns>
 		XTAL_DEF_(inline,let)
 		method(auto &&x
-		,	unstruct_u<decltype(x)> s_gain
-		,	unstruct_u<decltype(x)> s_damp
-		,	unstruct_u<decltype(x)> y_fade
+		,	unstruct_t<decltype(x)> s_gain
+		,	unstruct_t<decltype(x)> s_damp
+		,	unstruct_t<decltype(x)> y_fade
 		,	auto &&...oo
 		)
 		noexcept -> auto
 		{
 			using X =  XTAL_ALL_(x);
-			using U = unstruct_u<X>;
+			using U = unstruct_t<X>;
 			/**/
 			return method<N_ord, Ns...>(XTAL_REF_(x), s_gain, s_damp, XTAL_REF_(oo)...)*
 				atom::math::dot_t<U[2]>{term_f<-1, 2>(one, y_fade), y_fade};
@@ -231,7 +231,7 @@ struct filter
 		template <auto ...Ns>
 		XTAL_DEF_(return,let)
 		method(auto &&x
-		,	atom::math::simplex_phason_q auto const &t_
+		,	atom::math::phason_simplex_q auto const &t_
 		,	complex_field_q auto const &s
 		,	auto &&...oo
 		)
@@ -255,7 +255,7 @@ struct filter
 		template <auto ...Ns>
 		XTAL_DEF_(return,let)
 		method(auto &&x
-		,	atom::math::simplex_phason_q auto const &t_
+		,	atom::math::phason_simplex_q auto const &t_
 		,	atom::math::quason_q<null_type[3]> auto const &o
 		,	auto &&...oo
 		)

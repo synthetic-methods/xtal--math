@@ -42,7 +42,7 @@ struct decompose<signed>
 		XTAL_DEF_(return,inline,set)
 		method_f(auto const &o)
 		noexcept -> auto
-		requires un_n<numeric_variable_q<decltype(o)>>
+		requires un_v<numeric_variable_q<decltype(o)>>
 		{
 			return (0 < o) - (o < 0) + (o == 0);
 		}
@@ -118,12 +118,12 @@ struct decompose<signed>
 		method_f(_std::in_place_t, auto &&...oo)
 		noexcept -> decltype(auto)
 		{
-			return edit_f(XTAL_REF_(oo)...);
+			return method_e(XTAL_REF_(oo)...);
 		}
 
-		template <int N_side=0> requires in_n<N_side, 1, 0, -1>
+		template <int N_side=0> requires in_v<N_side, 1, 0, -1>
 		XTAL_DEF_(return,inline,set)
-		edit_f(ordinal_variable_q auto &u)
+		method_e(ordinal_variable_q auto &u)
 		noexcept -> auto
 		{
 			auto const v = bond::math::bit_sign_f(u);
@@ -142,24 +142,24 @@ struct decompose<signed>
 			}
 			return method_f(v);
 		}
-		template <int N_side=0> requires in_n<N_side, 1, 0, -1>
+		template <int N_side=0> requires in_v<N_side, 1, 0, -1>
 		XTAL_DEF_(return,inline,set)
-		edit_f(cardinal_variable_q auto &u)
+		method_e(cardinal_variable_q auto &u)
 		noexcept -> auto
 		{
 			using _fit = bond::fit<decltype(u)>;
-			return edit_f<N_side>(reinterpret_cast<typename _fit::delta_type &>(u));
+			return method_e<N_side>(reinterpret_cast<typename _fit::delta_type &>(u));
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		edit_f(real_variable_q auto &o)
+		method_e(real_variable_q auto &o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			auto const o_sgn = method_f<Ns...>(o); o *= o_sgn; return o_sgn;
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		edit_f(complex_variable_q auto &o)
+		method_e(complex_variable_q auto &o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _fit = bond::fit<decltype(o)>;
@@ -226,7 +226,7 @@ struct decompose<unsigned>
 
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		edit_f(real_variable_q auto &o)
+		method_e(real_variable_q auto &o)
 		noexcept -> auto
 		{
 			using _fit = bond::fit<decltype(o)>;
@@ -237,7 +237,7 @@ struct decompose<unsigned>
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		edit_f(complex_variable_q auto &o)
+		method_e(complex_variable_q auto &o)
 		noexcept -> auto
 		{
 			using _fit = bond::fit<decltype(o)>;

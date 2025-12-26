@@ -35,8 +35,8 @@ TAG_("decompose")
 		T_aphex const aphex_sgn{-0.2604290310426322085923800386808580e0L, 0.9654929931336608817105116031598300e0L};
 		T_aphex const aphex_mgn{ 0.4722975756871932162539451383054256e0L, 0.0000000000000000000000000000000000e0L};
 
-		TRUE_(check_f<-1>(decompose_t<unsigned>::edit_f(alpha), alpha_mgn));
-		TRUE_(check_f<-1>(decompose_t<unsigned>::edit_f(aphex), aphex_mgn));
+		TRUE_(check_f<-1>(decompose_t<unsigned>::method_e(alpha), alpha_mgn));
+		TRUE_(check_f<-1>(decompose_t<unsigned>::method_e(aphex), aphex_mgn));
 
 		TRUE_(check_f<-1>(alpha, alpha_sgn));
 		TRUE_(check_f<-1>(aphex, aphex_sgn));
@@ -68,8 +68,8 @@ TAG_("decompose")
 		T_aphex const aphex_sgn{-0.2604290310426322085923800386808580e0L, 0.9654929931336608817105116031598300e0L};
 		T_aphex const aphex_mgn{ 0.4722975756871932162539451383054256e0L, 0.0000000000000000000000000000000000e0L};
 
-		TRUE_(check_f<-1>(decompose_t<signed>::edit_f(alpha), alpha_sgn));
-		TRUE_(check_f<-1>(decompose_t<signed>::edit_f(aphex), aphex_sgn));
+		TRUE_(check_f<-1>(decompose_t<signed>::method_e(alpha), alpha_sgn));
+		TRUE_(check_f<-1>(decompose_t<signed>::method_e(aphex), aphex_sgn));
 
 		TRUE_(check_f<-1>(alpha, alpha_mgn));
 		TRUE_(check_f<-1>(aphex, aphex_mgn));

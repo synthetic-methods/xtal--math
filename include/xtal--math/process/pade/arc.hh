@@ -35,7 +35,7 @@ struct arc<-0, 0>
 		method_f(auto &&o)
 		noexcept -> decltype(auto)
 		{
-			return method_f<N_lim, N_par>(XTAL_REF_(o), unstruct_u<XTAL_ALL_(o)>{one});
+			return method_f<N_lim, N_par>(XTAL_REF_(o), unstruct_t<XTAL_ALL_(o)>{one});
 		}
 		template <int N_lim=-1, int N_par=1>
 		XTAL_DEF_(return,inline,set)
@@ -67,7 +67,7 @@ struct arc<-0, 0>
 			auto     const xx =   square_f(x);
 			using           X =  XTAL_ALL_(x);
 			using           Y =  XTAL_ALL_(y);
-			using           K = unstruct_u<Y>;
+			using           K = unstruct_t<Y>;
 			K constexpr   _pi = 0.318309886183790671537767526745029L;// 1/Pi
 			auto const   y_pi = XTAL_REF_(y)*_pi;
 			XTAL_IF0
@@ -177,7 +177,7 @@ struct arc<-0, 1>
 		method_f(auto &&o)
 		noexcept -> decltype(auto)
 		{
-			return method_f<N_lim, N_par>(XTAL_REF_(o), unstruct_u<XTAL_ALL_(o)>{one});
+			return method_f<N_lim, N_par>(XTAL_REF_(o), unstruct_t<XTAL_ALL_(o)>{one});
 		}
 		template <int N_lim=-1, int N_par=1>
 		XTAL_DEF_(return,inline,set)
@@ -210,8 +210,8 @@ struct arc<-0, 1>
 			using U_alpha = typename L::alpha_type;
 			using W_alpha = atom::couple_t<U_alpha[2]>;
 
-			auto u_abs = u, u_sgn = decompose_t<signed>::edit_f(u_abs);
-			auto v_abs = v, v_sgn = decompose_t<signed>::edit_f(v_abs);// v_sgn *= *L::haplo_1;
+			auto u_abs = u, u_sgn = decompose_t<signed>::method_e(u_abs);
+			auto v_abs = v, v_sgn = decompose_t<signed>::method_e(v_abs);// v_sgn *= *L::haplo_1;
 
 			W_alpha co{v_abs < u_abs, _std::in_place};
 			W_alpha up{v, u_abs}; up *= co;
@@ -275,7 +275,7 @@ struct arc<-1, 0>
 		{
 			auto constexpr I_par = 1 + (~N_par&1);
 			auto constexpr I_lim = below_v<4, (unsigned) N_lim>;
-			using K = unstruct_u<XTAL_ALL_(u)>;
+			using K = unstruct_t<XTAL_ALL_(u)>;
 			using L = bond::fit<K>;
 			auto constexpr  _1pi = one/L::patio_f(-1);
 			auto constexpr  _2pi = one/L::patio_f(-2);

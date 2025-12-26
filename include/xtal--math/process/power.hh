@@ -30,7 +30,7 @@ noexcept -> decltype(auto)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_exp, auto ...Ms> requires un_n<M_exp>
+template <int M_exp, auto ...Ms> requires un_v<M_exp>
 struct  power<M_exp, Ms...>
 {
 	template <class S>
@@ -66,7 +66,7 @@ struct  power<M_exp, Ms...>
 
 	public:
 
-		template <int ...Ns> requires in_n<0, bond::fit<>::template expound_f<2>(M_exp)>
+		template <int ...Ns> requires in_v<0, bond::fit<>::template expound_f<2>(M_exp)>
 		XTAL_DEF_(return,inline,set)
 		method_f(auto const &o)
 		noexcept -> XTAL_ALL_(o)
@@ -90,7 +90,7 @@ struct  power<M_exp, Ms...>
 			}
 		}
 
-		template <int ...Ns> requires in_n<0, bond::fit<>::template expound_f<3>(M_exp)>
+		template <int ...Ns> requires in_v<0, bond::fit<>::template expound_f<3>(M_exp)>
 		XTAL_DEF_(return,inline,set)
 		method_f(auto const &o)
 		noexcept -> XTAL_ALL_(o)
@@ -119,8 +119,8 @@ struct  power<M_exp, Ms...>
 		XTAL_DEF_(return,inline,set)
 		method_f(auto const &o)
 		noexcept -> auto
-		requires un_n<0, bond::fit<int>::template expound_f<2>(M_exp)>
-		and      un_n<0, bond::fit<int>::template expound_f<3>(M_exp)>
+		requires un_v<0, bond::fit<int>::template expound_f<2>(M_exp)>
+		and      un_v<0, bond::fit<int>::template expound_f<3>(M_exp)>
 		{
 			using U = XTAL_ALL_(o);
 			XTAL_IF0

@@ -542,7 +542,7 @@ noexcept -> int
 XTAL_DEF_(return,inline,let)
 bit_floor_f(auto &&x)
 noexcept -> int
-requires real_variable_q<unstruct_u<decltype(x)>>
+requires real_variable_q<unstruct_t<decltype(x)>>
 {
 	auto constexpr N = -static_cast<int>(bond::fit<decltype(x)>::unit.mark);
 	return bit_floor_f<N>(XTAL_REF_(x));

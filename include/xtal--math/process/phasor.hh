@@ -79,7 +79,7 @@ struct phasor<A, As...>
 		{
 			return S_::template fuse<N_ion>(XTAL_REF_(o));
 		}
-		template <signed N_ion> requires in_n<N_ion, -1>
+		template <signed N_ion> requires in_v<N_ion, -1>
 		XTAL_DEF_(return,inline,let)
 		fuse(occur::stage_q auto &&o)
 		noexcept -> signed

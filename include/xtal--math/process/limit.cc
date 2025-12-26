@@ -93,26 +93,26 @@ TAG_("limit")
 		U_alpha o;
 
 	//	Inside:
-		o = +0.75; TRUE_(limit_t<+half>::edit_f(o) ==  0); TRUE_(o == +0.75);
-		o = -0.75; TRUE_(limit_t<+half>::edit_f(o) ==  0); TRUE_(o == -0.75);
-		o = +0.25; TRUE_(limit_t<-half>::edit_f(o) ==  0); TRUE_(o == +0.25);
-		o = -0.25; TRUE_(limit_t<-half>::edit_f(o) ==  0); TRUE_(o == -0.25);
+		o = +0.75; TRUE_(limit_t<+half>::method_e(o) ==  0); TRUE_(o == +0.75);
+		o = -0.75; TRUE_(limit_t<+half>::method_e(o) ==  0); TRUE_(o == -0.75);
+		o = +0.25; TRUE_(limit_t<-half>::method_e(o) ==  0); TRUE_(o == +0.25);
+		o = -0.25; TRUE_(limit_t<-half>::method_e(o) ==  0); TRUE_(o == -0.25);
 
 	//	Outside:
-		o = +0.25; TRUE_(limit_t<+half>::edit_f(o) == +1); TRUE_(o == +0.50);
-		o = -0.25; TRUE_(limit_t<+half>::edit_f(o) == -1); TRUE_(o == -0.50);
-		o = +0.75; TRUE_(limit_t<-half>::edit_f(o) == +1); TRUE_(o == +0.50);
-		o = -0.75; TRUE_(limit_t<-half>::edit_f(o) == -1); TRUE_(o == -0.50);
+		o = +0.25; TRUE_(limit_t<+half>::method_e(o) == +1); TRUE_(o == +0.50);
+		o = -0.25; TRUE_(limit_t<+half>::method_e(o) == -1); TRUE_(o == -0.50);
+		o = +0.75; TRUE_(limit_t<-half>::method_e(o) == +1); TRUE_(o == +0.50);
+		o = -0.75; TRUE_(limit_t<-half>::method_e(o) == -1); TRUE_(o == -0.50);
 
 #ifndef __FINITE_MATH_ONLY__
-		o = +inf; TRUE_(limit_t<[] XTAL_1FN_(to) (-U_fit::maxilon_f(1))>::edit_f(o) == +1); TRUE_(o <  +inf);
-		o = -inf; TRUE_(limit_t<[] XTAL_1FN_(to) (-U_fit::maxilon_f(1))>::edit_f(o) == -1); TRUE_(o  > -inf);
-		o = +0.0; TRUE_(limit_t<[] XTAL_1FN_(to) (+U_fit::minilon_f(1))>::edit_f(o) == +1); TRUE_(o  > +0.0);
-		o = -0.0; TRUE_(limit_t<[] XTAL_1FN_(to) (+U_fit::minilon_f(1))>::edit_f(o) == -1); TRUE_(o <  -0.0);
+		o = +inf; TRUE_(limit_t<[] XTAL_1FN_(to) (-U_fit::maxilon_f(1))>::method_e(o) == +1); TRUE_(o <  +inf);
+		o = -inf; TRUE_(limit_t<[] XTAL_1FN_(to) (-U_fit::maxilon_f(1))>::method_e(o) == -1); TRUE_(o  > -inf);
+		o = +0.0; TRUE_(limit_t<[] XTAL_1FN_(to) (+U_fit::minilon_f(1))>::method_e(o) == +1); TRUE_(o  > +0.0);
+		o = -0.0; TRUE_(limit_t<[] XTAL_1FN_(to) (+U_fit::minilon_f(1))>::method_e(o) == -1); TRUE_(o <  -0.0);
 
 		o = inf - inf;
 		TRUE_(o != o);
-		(void) limit_t<[] XTAL_1FN_(to) (-U_fit::maxilon_f(1))>::edit_f(o);
+		(void) limit_t<[] XTAL_1FN_(to) (-U_fit::maxilon_f(1))>::method_e(o);
 		TRUE_(o == o);
 #endif
 
@@ -122,23 +122,23 @@ TAG_("limit")
 		U_alpha o;
 
 	//	Inside:
-		o = +0.75; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::haplo_1)>::edit_f(o) ==  0); TRUE_(o == +0.75);
-		o = -0.75; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::haplo_1)>::edit_f(o) ==  0); TRUE_(o == -0.75);
-		o = +0.25; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::haplo_1)>::edit_f(o) ==  0); TRUE_(o == +0.25);
-		o = -0.25; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::haplo_1)>::edit_f(o) ==  0); TRUE_(o == -0.25);
+		o = +0.75; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::haplo_1)>::method_e(o) ==  0); TRUE_(o == +0.75);
+		o = -0.75; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::haplo_1)>::method_e(o) ==  0); TRUE_(o == -0.75);
+		o = +0.25; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::haplo_1)>::method_e(o) ==  0); TRUE_(o == +0.25);
+		o = -0.25; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::haplo_1)>::method_e(o) ==  0); TRUE_(o == -0.25);
 
 	//	Outside:
-		o = +0.50; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::haplo_1)>::edit_f(o) == +1); TRUE_(o  > +0.50);
-		o = -0.50; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::haplo_1)>::edit_f(o) == -1); TRUE_(o <  -0.50);
-		o = +0.50; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::haplo_1)>::edit_f(o) == +1); TRUE_(o <  +0.50);
-		o = -0.50; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::haplo_1)>::edit_f(o) == -1); TRUE_(o  > -0.50);
+		o = +0.50; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::haplo_1)>::method_e(o) == +1); TRUE_(o  > +0.50);
+		o = -0.50; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::haplo_1)>::method_e(o) == -1); TRUE_(o <  -0.50);
+		o = +0.50; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::haplo_1)>::method_e(o) == +1); TRUE_(o <  +0.50);
+		o = -0.50; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::haplo_1)>::method_e(o) == -1); TRUE_(o  > -0.50);
 
 #ifndef __FINITE_MATH_ONLY__
-		o = +inf; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::maxilon_f(1))>::edit_f(o) == +1); TRUE_(o <  +inf);
-		o = -inf; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::maxilon_f(1))>::edit_f(o) == -1); TRUE_(o  > -inf);
+		o = +inf; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::maxilon_f(1))>::method_e(o) == +1); TRUE_(o <  +inf);
+		o = -inf; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::maxilon_f(1))>::method_e(o) == -1); TRUE_(o  > -inf);
 #endif
-		o = +0.0; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::minilon_f(1))>::edit_f(o) == +1); TRUE_(o  > +0.0);
-		o = -0.0; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::minilon_f(1))>::edit_f(o) == -1); TRUE_(o <  -0.0);
+		o = +0.0; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::minilon_f(1))>::method_e(o) == +1); TRUE_(o  > +0.0);
+		o = -0.0; TRUE_(limit_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::minilon_f(1))>::method_e(o) == -1); TRUE_(o <  -0.0);
 
 	};
 }

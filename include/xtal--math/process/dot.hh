@@ -19,10 +19,10 @@ For single arguments, the dot-square or `norm` is produced.
 \note    For `M_alt=-1` and `complex` products, the `real` value w.r.t. multiplication is returned.
 \todo    Integrate or redefine with `ìmagine`.
 */
-template <int M_alt=1> requires in_n<M_alt, 0, 1,-1>
+template <int M_alt=1> requires in_v<M_alt, 0, 1,-1>
 struct  dot;
 
-template <int M_alt=1> requires in_n<M_alt, 0, 1,-1>
+template <int M_alt=1> requires in_v<M_alt, 0, 1,-1>
 using   dot_t = process::confined_t<dot<M_alt>>;
 
 template <int M_alt=1>
@@ -37,15 +37,13 @@ namespace _detail
 {///////////////////////////////////////////////////////////////////////////////
 
 template <class ...Ts>
-using multiplied_t = common_t<return_t<_std::multiplies<void>, Ts, Ts>...>;
-
-template <class ...Ts>
-using multiplied_u = multiplied_t<fluid_u<Ts>...>;
+using multiplied_t = common_t<return_t<_std::multiplies<void>,
+	decltype(one), typename fluid<Ts>::value_type>...>;
 
 
 }///////////////////////////////////////////////////////////////////////////////
 
-template <int M_alt> requires in_n<M_alt, 0, 1,-1>
+template <int M_alt> requires in_v<M_alt, 0, 1,-1>
 struct dot
 {
 	template <class S>
@@ -60,7 +58,7 @@ struct dot
 		XTAL_DEF_(return,inline,set)
 		method_f(auto &&x)
 		noexcept -> auto
-		requires un_n<fixed_shaped_q<decltype(x)>>
+		requires un_v<fixed_shaped_q<decltype(x)>>
 		{
 			using _std::norm;// In case...
 		//	static_assert(M_alt == 1);
@@ -71,7 +69,7 @@ struct dot
 		XTAL_DEF_(return,inline,set)
 		method_f(auto &&x)
 		noexcept -> auto
-		requires in_n<fixed_shaped_q<decltype(x)>>
+		requires in_v<fixed_shaped_q<decltype(x)>>
 		{
 			using _std::norm;// In case...
 			using X = XTAL_ALL_(x);
@@ -90,7 +88,7 @@ struct dot
 				return term_f<M_alt, 2>(square_f(x0), x1);
 			}
 			XTAL_0IF (3 <= N) {
-				_detail::multiplied_u<X> w{0};
+				_detail::multiplied_t<X> w{0};
 				bond::seek_until_f<N>([&]<constant_q I> (I) XTAL_0FN {
 					XTAL_IF0
 					XTAL_0IF (0 < M_alt) {w = term_f<               2>(XTAL_MOV_(w), get<I{}>(x));}
@@ -103,7 +101,7 @@ struct dot
 		XTAL_DEF_(return,inline,set)
 		method_f(auto &&x, auto &&y)
 		noexcept -> auto
-		requires in_n<fixed_shaped_q<decltype(x), decltype(y)>>
+		requires in_v<fixed_shaped_q<decltype(x), decltype(y)>>
 		{
 			using X = XTAL_ALL_(x);
 			using Y = XTAL_ALL_(y);
@@ -121,7 +119,7 @@ struct dot
 				return term_f<M_alt>(x0*y0, x1,y1);
 			}
 			XTAL_0IF (3 <= N) {
-				_detail::multiplied_u<X, Y> w{0};
+				_detail::multiplied_t<X, Y> w{0};
 				bond::seek_until_f<N>([&]<constant_q I> (I) XTAL_0FN {
 					XTAL_IF0
 					XTAL_0IF (0 < M_alt) {w = term_f<               1>(XTAL_MOV_(w), get<I{}>(x), get<I{}>(y));}

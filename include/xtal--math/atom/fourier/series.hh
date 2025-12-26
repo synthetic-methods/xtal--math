@@ -32,8 +32,8 @@ struct series<A>
 {
 private:
 	using U0 = _xtd::remove_extent_t<A>;
-	using U1 =  destruct_u<U0>;
-	using U2 =  destruct_u<U1>;
+	using U1 =  typename destruct<U0>::value_type;
+	using U2 =  typename destruct<U1>::value_type;
 
 	using _fit = bond::fit<A>;
 	
@@ -108,7 +108,7 @@ public:
 			XTAL_IF0
 			XTAL_0IF (N_index == -1 and N_inset == 0 and N_step == 1 and N_size == size) {
 				generate<1, -1, 1, size - 1>(u);
-				if constexpr (un_n<N_size&1>) {
+				if constexpr (un_v<N_size&1>) {
 					get<N_limit>(s) = power_f<2>(get<N_limit/2>(s));
 				}
 			}
@@ -134,7 +134,7 @@ public:
 					}
 				);
 			//	Compute the final value if `N_size` is odd:
-				if constexpr (in_n<N_size&1> and in_n<N_size^1>) {
+				if constexpr (in_v<N_size&1> and in_v<N_size^1>) {
 					get<IZ - _1>(s) = get<IZ - _2>(s)*(u);
 				}
 			}
@@ -181,7 +181,7 @@ public:
 		\note    The size of both `this` and `that` must be expressible as an integral power-of-two,
 		         and `1 < that.size() <= this->size()`.
 		*/
-		template <int N_direction=1> requires in_n<N_direction, 1, -1> and complex_field_q<value_type>
+		template <int N_direction=1> requires in_v<N_direction, 1, -1> and complex_field_q<value_type>
 		XTAL_DEF_(let)
 		transform(isomorphic_q<T> auto &that) const
 		noexcept -> decltype(auto)
@@ -230,7 +230,7 @@ public:
 		//	Cast the output to the transformed domain:
 			return reinterpret_cast<Ys &>(that);
 		}
-		template <int N_direction=1> requires in_n<N_direction, 1, -1> and complex_field_q<value_type>
+		template <int N_direction=1> requires in_v<N_direction, 1, -1> and complex_field_q<value_type>
 		XTAL_DEF_(let)
 		transform(isomorphic_q<T> auto &&that) const
 		noexcept -> decltype(auto)
@@ -242,7 +242,7 @@ public:
 		\returns a new `series` representing the FFT of `that`,
 		using `this` as the Fourier basis.
 		*/
-		template <int N_direction=1> requires in_n<N_direction, 1, -1>
+		template <int N_direction=1> requires in_v<N_direction, 1, -1>
 		XTAL_DEF_(return,inline,let)
 		transformation(isomorphic_q<T> auto that) const
 		noexcept -> auto

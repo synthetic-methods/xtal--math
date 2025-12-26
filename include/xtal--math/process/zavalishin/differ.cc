@@ -37,7 +37,7 @@ struct reparameterized
 TAG_("differ")
 {
 	using          U_pole = typename bond::fit<>::alpha_type;
-	auto constexpr N_pole = fixed_n<U_pole[1]>;
+	auto constexpr N_pole = fixed<U_pole[1]>::extent();
 
 	//\
 	using D_def = differ<_differ::reparameterized, U_pole[1]>;

@@ -47,7 +47,7 @@ struct dilated
 		XTAL_DEF_(return,inline,set)
 		method_f(auto &&o)
 		noexcept -> decltype(auto)
-		requires      in_n<requires {S ::template method_f<Is...>  (XTAL_REF_(o));}>
+		requires      in_v<requires {S ::template method_f<Is...>  (XTAL_REF_(o));}>
 		{
 			return around_f<[] XTAL_1FN_(call) (S_::template method_f<Is...>)>(XTAL_REF_(o));
 		};
@@ -56,7 +56,7 @@ struct dilated
 		XTAL_DEF_(return,inline,let)
 		method(auto &&o) const
 		noexcept -> decltype(auto)
-		requires      un_n<requires {S ::template method_f<Is...>  (XTAL_REF_(o));}>
+		requires      un_v<requires {S ::template method_f<Is...>  (XTAL_REF_(o));}>
 		and requires (S_ const &s_) {s_ .template        method<Is...>  (XTAL_REF_(o));}
 		{
 			return around_f<[] XTAL_1FN_(call) (S_::template        method<Is...>)>(XTAL_REF_(o));
@@ -65,7 +65,7 @@ struct dilated
 		XTAL_DEF_(return,inline,let)
 		method(auto &&o)
 		noexcept -> decltype(auto)
-		requires      un_n<requires {S ::template method_f<Is...>  (XTAL_REF_(o));}>
+		requires      un_v<requires {S ::template method_f<Is...>  (XTAL_REF_(o));}>
 		and requires (S_       &s_) {s_ .template        method<Is...>  (XTAL_REF_(o));}
 		{
 			return around_f<[] XTAL_1FN_(call) (S_::template        method<Is...>)>(XTAL_REF_(o));

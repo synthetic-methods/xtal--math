@@ -27,7 +27,7 @@ noexcept -> auto
 {
 	using _xtd::plus_multiplies_f;
 	auto constexpr then = [] XTAL_1FN_(call) (term_f<M_alt, M_pow>);
-	using Y = unstruct_u<X, Xs...>;// NOTE: Constants interpreted as scalar quantities...
+	using Y = unstruct_t<X, Xs...>;// NOTE: Constants interpreted as scalar quantities...
 	XTAL_IF0
 
 //	Decay integral/constants...
@@ -102,7 +102,7 @@ starting from the kernel `a[M_limit]`.
 template <auto ...Ms>
 struct  term
 {
-//	static_assert(in_n<M_alt, 1,-1>);
+//	static_assert(in_v<M_alt, 1,-1>);
 
 	template <class S>
 	class subtype : public bond::compose_s<S>

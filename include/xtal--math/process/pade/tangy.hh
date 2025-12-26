@@ -26,7 +26,7 @@ using tangy_t = process::confined_t<tangy<M_ism, M_car>>;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism> requires in_n<M_ism, 1, 2>
+template <int M_ism> requires in_v<M_ism, 1, 2>
 struct tangy<M_ism,-0>
 {
 	template <class S>
@@ -70,7 +70,7 @@ struct tangy<M_ism,-0>
 		{
 			using _fit = bond::fit<decltype(o)>;
 			XTAL_IF0
-			XTAL_0IF (1 == M_ism or un_n<real_q<decltype(o)>>) {
+			XTAL_0IF (1 == M_ism or un_v<real_q<decltype(o)>>) {
 				return XTAL_REF_(o)*_fit::haplo_f(1);
 			}
 			XTAL_0IF (2 == M_ism) {
@@ -89,7 +89,7 @@ struct tangy<M_ism,-0>
 
 	};
 };
-template <int M_ism> requires in_n<M_ism, 1, 2>
+template <int M_ism> requires in_v<M_ism, 1, 2>
 struct tangy<M_ism, 1>
 {
 	using superprocess = tangy_t<M_ism, 0>;
@@ -125,7 +125,7 @@ struct tangy<M_ism, 1>
 	};
 };
 
-template <int M_ism> requires in_n<M_ism,-1,-2>
+template <int M_ism> requires in_v<M_ism,-1,-2>
 struct tangy<M_ism, 1>
 {
 	using superkind = tangy<M_ism,-0>;
@@ -143,9 +143,9 @@ struct tangy<M_ism, 1>
 		method_f(simplex_field_q auto &&t)
 		noexcept -> decltype(auto)
 		{
-			return method_f<N_lim>(XTAL_REF_(t), unstruct_u<decltype(t)>{one});
+			return method_f<N_lim>(XTAL_REF_(t), unstruct_t<decltype(t)>{one});
 		}
-		template <int N_lim=-1> requires in_n<M_ism, -1, -2>
+		template <int N_lim=-1> requires in_v<M_ism, -1, -2>
 		XTAL_DEF_(return,inline,set)
 		method_f(complex_field_q auto &&o)
 		noexcept -> decltype(auto)
@@ -162,8 +162,8 @@ struct tangy<M_ism, 1>
 			using U_alpha = typename _fit::alpha_type;
 			using W_alpha = atom::couple_t<U_alpha[2]>;
 
-			auto u_abs = u, u_sgn = decompose_t<signed>::edit_f(u_abs);
-			auto v_abs = v, v_sgn = decompose_t<signed>::edit_f(v_abs);// v_sgn *= *_fit::haplo_1;
+			auto u_abs = u, u_sgn = decompose_t<signed>::method_e(u_abs);
+			auto v_abs = v, v_sgn = decompose_t<signed>::method_e(v_abs);// v_sgn *= *_fit::haplo_1;
 
 			W_alpha co{v_abs < u_abs, _std::in_place};
 			W_alpha up{v, u_abs}; up *= co;
@@ -197,14 +197,14 @@ struct tangy<M_ism,-0>
 		{
 			return S_::template method_f<N_lim>(XTAL_REF_(o));
 		}
-		template <int N_lim=-1> requires in_n<M_ism, -1, -2>
+		template <int N_lim=-1> requires in_v<M_ism, -1, -2>
 		XTAL_DEF_(return,inline,set)
 		method_f(complex_field_q auto &&o)
 		noexcept -> decltype(auto)
 		{
 			return method_f<N_lim>(o.imag(), o.real());
 		}
-		template <int N_lim=-1> requires in_n<M_ism, -1, -2>
+		template <int N_lim=-1> requires in_v<M_ism, -1, -2>
 		XTAL_DEF_(return,inline,set)
 		method_f(simplex_field_q auto &&v, simplex_field_q auto &&u)
 		noexcept -> decltype(auto)
@@ -220,7 +220,7 @@ struct tangy<M_ism,-1>
 :	bond::compose<discarded<2>, tangy<M_ism,-2>>
 {
 };
-template <int M_ism>// requires in_n<M_ism,-1>
+template <int M_ism>// requires in_v<M_ism,-1>
 struct tangy<M_ism,-2>
 {
 	static constexpr int I_sgn = cosign_v<M_ism>;

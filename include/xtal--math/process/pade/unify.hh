@@ -21,7 +21,7 @@ struct unify;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism> requires in_n<M_ism, 0>
+template <int M_ism> requires in_v<M_ism, 0>
 struct unify<M_ism>
 {
 	template <class S>
@@ -42,7 +42,7 @@ struct unify<M_ism>
 
 	};
 };
-template <int M_ism> requires in_n<M_ism, 1, 2>
+template <int M_ism> requires in_v<M_ism, 1, 2>
 struct unify<M_ism>
 {
 	template <class S>

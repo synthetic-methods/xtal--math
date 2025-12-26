@@ -86,7 +86,7 @@ struct indent<Ns...>
 		{
 			using superkind = bond::compose<flow::mask<N_mask>, defer<indicated_t<S>>>;
 
-			template <class R> requires un_n<sizeof...(Ns)>
+			template <class R> requires un_v<sizeof...(Ns)>
 			class subtype : public bond::compose_s<R, superkind>
 			{
 				static_assert(flow::any_q<R>);
@@ -110,7 +110,7 @@ struct indent<Ns...>
 				/*!
 				\brief   Updates the internal state at the given path.
 				*/
-				template <signed N_ion> requires in_n<N_ion, +1>
+				template <signed N_ion> requires in_v<N_ion, +1>
 				XTAL_DEF_(return,let)
 				fuse(indent_q auto &&o)
 				noexcept -> signed

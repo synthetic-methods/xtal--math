@@ -44,7 +44,7 @@ struct limit<M_app>
 
 		template <auto ...Ns>
 		XTAL_DEF_(return,set)
-		edit_f(real_variable_q auto &o)
+		method_e(real_variable_q auto &o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using _xtd::bit_cast;
@@ -59,7 +59,7 @@ struct limit<M_app>
 			//\
 			if (_std::is_constant_evaluated() or not _fit::IEC) {
 			if (_std::is_constant_evaluated() or not _fit::IEC or XTAL_ENV_(GNUC)) {
-				U_alpha const s = decompose_t<signed>::edit_f(o);
+				U_alpha const s = decompose_t<signed>::method_e(o);
 				XTAL_IF0
 				XTAL_0IF (M_dir <= 0) {o = _fit::minimum_f(XTAL_MOV_(o), o_stop);}
 				XTAL_0IF (M_dir == 1) {o = _fit::maximum_f(XTAL_MOV_(o), o_stop);}
@@ -88,23 +88,23 @@ struct limit<M_app>
 		/**/
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		edit_f(complex_variable_q auto &o)
+		method_e(complex_variable_q auto &o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			auto &[x, y] = destruct_f(o);
-			return {edit_f<Ns...>(x), edit_f<Ns...>(y)};
+			return {method_e<Ns...>(x), method_e<Ns...>(y)};
 		}
 		/*/
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		edit_f(complex_variable_q auto &o)
+		method_e(complex_variable_q auto &o)
 		noexcept -> XTAL_ALL_(abs(o))
 		{
 			using _fit = bond::fit<decltype(o)>;
 
 			auto &[x, y] = destruct_f(o);
 			auto  [w, m] = roots_f<2>(dot_f(o));
-			auto r = edit_f<Ns...>(w);
+			auto r = method_e<Ns...>(w);
 			w *= m;
 			x *= w;
 			y *= w;
@@ -113,18 +113,18 @@ struct limit<M_app>
 		/***/
 		template <auto ...Ns>
 		XTAL_DEF_(return,set)
-		edit_f(bond::pack_q auto &w_)
+		method_e(bond::pack_q auto &w_)
 		noexcept -> auto
-		requires un_n<complex_variable_q<decltype(w_)>>
+		requires un_v<complex_variable_q<decltype(w_)>>
 		{
 			XTAL_TYP_(let) W_ = XTAL_ALL_(w_);
-			auto constexpr N_ = bond::pack_size_n<W_>;
+			auto constexpr N_ = bond::pack_size_v<W_>;
 			XTAL_IF0
 			XTAL_0IF (0 == N_) {
 				return W_{};
 			}
 			XTAL_0IF (1 == N_) {
-				return W_{edit_f<Ns...>(get<0>(w_))};
+				return W_{method_e<Ns...>(get<0>(w_))};
 			}
 			XTAL_0IF (2 == N_ and atom::couple_q<W_>) {
 			//	auto &[w0, w1] = w_;
@@ -134,25 +134,25 @@ struct limit<M_app>
 				//\
 				XTAL_0IF (wniplex_q<W_>) {
 				XTAL_0IF (complex_variable_q<W0> and atom::couple_q<W1>) {
-					auto const u0 =                          edit_f<Ns...>(get<0>(w1));
-					auto const u1 = limit_t<M_opp>::template edit_f<Ns...>(get<1>(w1));
+					auto const u0 =                          method_e<Ns...>(get<0>(w1));
+					auto const u1 = limit_t<M_opp>::template method_e<Ns...>(get<1>(w1));
 					return W_{W0{one, zero}, W1{XTAL_MOV_(u0), XTAL_MOV_(u1)}};
 				}
 				XTAL_0IF (atom::couple_q<W0> and complex_variable_q<W1>) {
-					auto const u0 =                          edit_f<Ns...>(get<0>(w0));
-					auto const u1 = limit_t<M_opp>::template edit_f<Ns...>(get<1>(w0));
+					auto const u0 =                          method_e<Ns...>(get<0>(w0));
+					auto const u1 = limit_t<M_opp>::template method_e<Ns...>(get<1>(w0));
 					return W_{W0{XTAL_MOV_(u0), XTAL_MOV_(u1)}, W1{one, zero}};
 				}
 				//\
 				XTAL_0IF (same_q<W0, W1>) {
 				XTAL_0IF_(else) {
-					return W_{edit_f<Ns...>(w0), edit_f<Ns...>(w1)};
+					return W_{method_e<Ns...>(w0), method_e<Ns...>(w1)};
 				}
 			}
 			XTAL_0IF_(else) {
 			//	TODO: Accommodate returning materialized `atom::block` from `span`s...
 				return [&]<auto ...I> (bond::seek_t<I...>)
-					XTAL_0FN_(to) (W_(edit_f<Ns...>(get<I>(w_))...))
+					XTAL_0FN_(to) (W_(method_e<Ns...>(get<I>(w_))...))
 				(bond::seek_reverse_s<N_>{});
 			}
 		}
@@ -162,7 +162,7 @@ struct limit<M_app>
 		method_f(auto o)
 		noexcept -> auto
 		{
-			(void) edit_f(o); return o;
+			(void) method_e(o); return o;
 		}
 
 	};
@@ -195,7 +195,7 @@ struct limit<M_dir>
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		edit_f(auto &u)
+		method_e(auto &u)
 		noexcept -> auto
 		{
 			using U     = XTAL_ALL_(u);
@@ -203,8 +203,8 @@ struct limit<M_dir>
 			auto constexpr N_min = [] XTAL_1FN_(to) (+U_fit::minilon_f(N_dir));
 			auto constexpr N_max = [] XTAL_1FN_(to) (-U_fit::maxilon_f(N_dir));
 			XTAL_IF0
-			XTAL_0IF (0 < M_dir) {return limit_t<N_min>::template   edit_f<Ns...>(XTAL_REF_(u));}
-			XTAL_0IF (M_dir < 0) {return limit_t<N_max>::template   edit_f<Ns...>(XTAL_REF_(u));}
+			XTAL_0IF (0 < M_dir) {return limit_t<N_min>::template   method_e<Ns...>(XTAL_REF_(u));}
+			XTAL_0IF (M_dir < 0) {return limit_t<N_max>::template   method_e<Ns...>(XTAL_REF_(u));}
 		}
 
 	};

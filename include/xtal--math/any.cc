@@ -49,11 +49,11 @@ struct complexion
 	XTAL_DEF_(return,inline) auto imag(auto &&...oo) const noexcept -> value_type const & {return im = value_type{XTAL_REF_(oo)...};}
 
 	
-	template <class T> requires un_n<isotropic_q<T, source_type>> and un_n<isotropic_q<T, target_type>>
+	template <class T> requires un_v<isotropic_q<T, source_type>> and un_v<isotropic_q<T, target_type>>
 	XTAL_DEF_(return,inline,friend,let)
 	operator/ (T const &t, source_type const &s)
 	noexcept -> target_type
-	requires un_n<requires {t.real(); t.imag();}>
+	requires un_v<requires {t.real(); t.imag();}>
 	{
 		auto const [s_re, s_im] = dinormalize_f(s);
 		auto const s_abs = t/(s_re*s_re + s_im*s_im);
@@ -68,7 +68,7 @@ struct complexion
 	XTAL_DEF_(return,inline,friend,let)
 	operator/ (source_type const &s, target_type const &t)
 	noexcept -> target_type
-	requires un_n<isotropic_q<source_type, target_type>>
+	requires un_v<isotropic_q<source_type, target_type>>
 	{
 		return s*(one/t);
 	}
@@ -91,33 +91,33 @@ struct complexion
 	XTAL_DEF_(return,inline,friend,let)
 	operator* (source_type const &s, target_type const &t)
 	noexcept -> target_type
-	requires un_n<isotropic_q<source_type, target_type>>
+	requires un_v<isotropic_q<source_type, target_type>>
 	{
 		auto const [s_re, s_im] = dinormalize_f(s);
 		auto const [t_re, t_im] = dinormalize_f(t);
 		return {s_re*t_re - s_im*t_im, s_im*t_re + s_re*t_im};
 	}
-	template <class T> requires un_n<isotropic_q<T, source_type>> and un_n<isotropic_q<T, target_type>>
+	template <class T> requires un_v<isotropic_q<T, source_type>> and un_v<isotropic_q<T, target_type>>
 	XTAL_DEF_(return,inline,friend,let)
 	operator* (source_type const &s, T const &t)
 	noexcept -> target_type
-	requires in_n<requires {t.real()*t.imag();}>
+	requires in_v<requires {t.real()*t.imag();}>
 	{
 		auto const [s_re, s_im] = dinormalize_f(s);
 		auto const [t_re, t_im] = dinormalize_f(t);
 		return {s_re*t_re - s_im*t_im, s_im*t_re + s_re*t_im};
 	}
 //	Scalar multiplication:
-	template <class T> requires un_n<isotropic_q<T, source_type>> and un_n<isotropic_q<T, target_type>>
+	template <class T> requires un_v<isotropic_q<T, source_type>> and un_v<isotropic_q<T, target_type>>
 	XTAL_DEF_(return,inline,friend,let)
 	operator* (source_type const &s, T const &t)
 	noexcept -> target_type
-	requires un_n<requires {t.real()*t.imag();}>
+	requires un_v<requires {t.real()*t.imag();}>
 	{
 		return {s.re*t, s.im*t};
 	}
 //	Associative multiplication:
-	template <class T> requires un_n<isotropic_q<T, source_type>>
+	template <class T> requires un_v<isotropic_q<T, source_type>>
 	XTAL_DEF_(return,inline,friend,let)
 	operator* (T const &t, source_type const &s)
 	noexcept -> auto
@@ -137,33 +137,33 @@ struct complexion
 	XTAL_DEF_(return,inline,friend,let)
 	operator+ (source_type const &s, target_type const &t)
 	noexcept -> target_type
-	requires un_n<isotropic_q<source_type, target_type>>
+	requires un_v<isotropic_q<source_type, target_type>>
 	{
 		auto const [s_re, s_im] = reinterpret_cast<value_type const(&)[2]>(s);
 		auto const [t_re, t_im] = reinterpret_cast<valve_type const(&)[2]>(t);
 		return {s_re + t_re, s_re + t_im};
 	}
-	template <class T> requires un_n<isotropic_q<T, source_type>> and un_n<isotropic_q<T, target_type>>
+	template <class T> requires un_v<isotropic_q<T, source_type>> and un_v<isotropic_q<T, target_type>>
 	XTAL_DEF_(return,inline,friend,let)
 	operator+ (source_type const &s, T const &t)
 	noexcept -> target_type
-	requires in_n<requires {t.real() + t.imag();}>
+	requires in_v<requires {t.real() + t.imag();}>
 	{
 		auto const [s_re, s_im] = reinterpret_cast<value_type const(&)[2]>(s);
 		auto const [t_re, t_im] = dinormalize_f(t);
 		return {s_re + t_re, s_re + t_im};
 	}
 //	Scalar addition:
-	template <class T> requires un_n<isotropic_q<T, source_type>> and un_n<isotropic_q<T, target_type>>
+	template <class T> requires un_v<isotropic_q<T, source_type>> and un_v<isotropic_q<T, target_type>>
 	XTAL_DEF_(return,inline,friend,let)
 	operator+ (source_type const &s, T const &t)
 	noexcept -> target_type
-	requires un_n<requires {t.real() + t.imag();}>
+	requires un_v<requires {t.real() + t.imag();}>
 	{
 		return {s.re+t, s.im};
 	}
 //	Associative addition:
-	template <class T> requires un_n<isotropic_q<T, source_type>>
+	template <class T> requires un_v<isotropic_q<T, source_type>>
 	XTAL_DEF_(return,inline,friend,let)
 	operator+ (T const &t, source_type const &s)
 	noexcept -> auto

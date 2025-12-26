@@ -123,8 +123,8 @@ TAG_("vectrol")
 	//	,	retake<-1>
 		,	typename O_etc::damp_parameter::template   attend<>
 		,	typename O_etc::fade_parameter::template   attend<>
-		,	typename O_etc::             template   attach<>
-		,	typename O_etc::             template dispatch<>
+		,	typename O_etc::                template   attach<>
+		,	typename O_etc::                template dispatch<>
 		,	O_def
 		>;
 		//\
@@ -138,7 +138,7 @@ TAG_("vectrol")
 	//	,	provision::spooled <null_type[0x100]>
 		>;
 
-		U_alpha constexpr r_omega =   2*3*3*5*5*7;
+		U_alpha constexpr r_omega = 2*3*3*5*5*7;
 		U_alpha constexpr e_omega = 2*2*3*3*5*5;
 		auto z_resize = occur::resize_t<>(0x020);
 		auto z_cursor = occur::cursor_t<>(0x020);
@@ -158,12 +158,12 @@ TAG_("vectrol")
 		_y <<= occur::math::indent_s<Q_mtx, 1>({r_omega, W_alpha{1111, 1111}});
 		_y <<= occur::math::indent_s<Q_mtx, 0>({0.0    , W_alpha{0.707, 0.707}});
 
-		_y <<= typename E_etc::  order_attribute{2};
+		_y <<= typename E_etc::order_attribute{2};
 		_y <<= typename E_etc:: damp_parameter{1};
 		_y <<= typename E_etc:: fade_parameter{0.5};
 		_y <<= typename E_etc::shape_parameter{typename E_etc::shape_type{0.125, one - 0.825}};
 
-		_y <<= typename O_etc::  order_attribute{2};
+		_y <<= typename O_etc::order_attribute{2};
 		_y <<= typename O_etc:: damp_parameter{1};
 		_y <<= typename O_etc:: fade_parameter{1};
 

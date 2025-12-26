@@ -66,7 +66,7 @@ public:
 template <phason_q U, class ...Us> requires common_q<Us...>
 struct quason<U, Us...>
 {
-	static_assert(in_n<sizeof(U), sizeof(Us)...>);
+	static_assert(in_v<sizeof(U), sizeof(Us)...>);
 
 private:
 	using ectotype = block_t<common_t<Us...>[one + sizeof...(Us)]>;

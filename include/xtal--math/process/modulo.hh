@@ -40,7 +40,7 @@ struct modulo<M_mod>
 		XTAL_DEF_(return,inline,set)
 		method_f(auto &&z)
 		noexcept -> auto
-		requires un_n<atom::math::phason_q<decltype(z)>>
+		requires un_v<atom::math::phason_q<decltype(z)>>
 		{
 			using bond::math::bit_count_f;
 			using Z     = XTAL_ALL_(z);
@@ -73,7 +73,7 @@ struct modulo<M_mod>
 		XTAL_DEF_(return,inline,set)
 		method_f(auto &&z)
 		noexcept -> auto
-		requires in_n<atom::math::phason_q<decltype(z)>>
+		requires in_v<atom::math::phason_q<decltype(z)>>
 		{
 			using Z     = XTAL_ALL_(z);
 			using Z_fit = bond::fit<Z>;
@@ -104,7 +104,7 @@ struct modulo<M_mod>
 		XTAL_DEF_(return,inline,set)
 		method_f(auto &&z)
 		noexcept -> auto
-		requires un_n<atom::math::phason_q<decltype(z)>>
+		requires un_v<atom::math::phason_q<decltype(z)>>
 		{
 			using bond::math::bit_count_f;
 			using Z     = XTAL_ALL_(z);

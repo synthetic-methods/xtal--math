@@ -23,7 +23,7 @@ struct unity;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism, int M_car> requires in_n<M_ism, 0>
+template <int M_ism, int M_car> requires in_v<M_ism, 0>
 struct unity<M_ism, M_car>
 :	identity<M_ism, M_car>
 {
@@ -32,7 +32,7 @@ struct unity<M_ism, M_car>
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism, int M_car> requires in_n<M_ism, 1, 2> and in_n<M_car, 0, 1>
+template <int M_ism, int M_car> requires in_v<M_ism, 1, 2> and in_v<M_car, 0, 1>
 struct unity<M_ism, M_car>
 {
 	using superprocess = process::lift_t<unify<M_ism>, _detail::impunity<M_ism>>;
@@ -131,7 +131,7 @@ struct unity<M_ism, M_car>
 
 	};
 };
-template <int M_ism, int M_car> requires in_n<M_ism,-1,-2> and in_n<M_car, 0, 1>
+template <int M_ism, int M_car> requires in_v<M_ism,-1,-2> and in_v<M_car, 0, 1>
 struct unity<M_ism, M_car>
 {
 	template <class S>

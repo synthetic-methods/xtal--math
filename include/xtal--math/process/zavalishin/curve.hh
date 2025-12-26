@@ -77,7 +77,7 @@ struct curve
 		method_f(auto const &u)
 		noexcept -> auto
 		{
-			using V = unstruct_u<decltype(u)>;
+			using V = unstruct_t<decltype(u)>;
 			V constexpr I = root_f<-2>(2.);
 			XTAL_IF0
 			XTAL_0IF (N_adj ==  0) {return method_f<N_lim>(u, _std::complex<V>{1,  0});}
@@ -127,7 +127,7 @@ struct curve
 			using      _fit  = bond::fit<decltype(u)>;
 			auto       z_re  = z.real();
 			auto       z_im  = z.imag();
-			auto const z_io  = decompose_t<signed>::edit_f(z_im);
+			auto const z_io  = decompose_t<signed>::method_e(z_im);
 			auto const z_co  = z_im*root_f<-1>(z_re);
 			auto      [z_up, z_dn] = roots_f<2>(square_f(z_re, z_im));
 
@@ -161,7 +161,7 @@ struct curve
 			return _u*u;
 		}
 		/**/
-		template <int N_lim=0> requires in_n<M_ism, -3> and (0 < N_lim)
+		template <int N_lim=0> requires in_v<M_ism, -3> and (0 < N_lim)
 		XTAL_DEF_(return,inline,set)
 		fiction(auto u, complex_field_q auto const &z)
 		noexcept -> auto
@@ -200,7 +200,7 @@ struct curve
 				auto constexpr N0 = power_f<N_lim + 0>(U3), T0 = U4/square_f<-1>(N0, U1);
 				auto constexpr N1 = power_f<N_lim + 2>(U2), T1 = U1/square_f<-1>(N1, U2);
 
-				u *= decompose_t<signed>::edit_f(z_co);
+				u *= decompose_t<signed>::method_e(z_co);
 
 				U t0{term_f(U0, T0, w)}, s0{U1};
 				U t1{term_f(U1, T1, w)}, s1{U1_02*u*z_co*t1};

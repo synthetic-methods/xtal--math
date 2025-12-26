@@ -35,9 +35,9 @@ struct context<process::math::zavalishin::scaffold<A, _s...>>
 {
 private:
 	static_assert(incomplete_q<_s...>);
-	XTAL_DEF_(set) N_pole =   vector_n<A>;
-	using          U_pole =   vector_u<A>;
-	using          V_pole = unstruct_u<A>;
+	XTAL_DEF_(set) N_pole =           fixed<A>::extent();
+	XTAL_TYP_(set) U_pole = typename  fixed<A>::value_type;
+	XTAL_TYP_(set) V_pole = unstruct_t<A>;
 
 public:
 	using superkind = context<>;
