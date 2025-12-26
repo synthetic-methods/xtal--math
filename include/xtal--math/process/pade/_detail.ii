@@ -23,7 +23,7 @@ template <int M_ism=1, int M_car=0>	using   impunity_t = process::confined_t<imp
 
 template <int M_ism> struct impunity<M_ism,-0>: bond::compose<discarded<1       >, impunity<M_ism,-1>> {};
 template <int M_ism> struct impunity<M_ism,-1>: bond::compose<discarded<2, M_ism>, impunity<2    ,-2>> {};
-template <int M_ism> requires in_n<M_ism, 1, 2>
+template <int M_ism> requires in_v<M_ism, 1, 2>
 struct impunity<M_ism,-2>
 {
 	//\
@@ -142,7 +142,7 @@ struct impunity<M_ism,-2>
 
 	};
 };
-template <int M_ism> requires in_n<M_ism,-1,-2>
+template <int M_ism> requires in_v<M_ism,-1,-2>
 struct impunity<M_ism,-2>
 {
 	template <class S>

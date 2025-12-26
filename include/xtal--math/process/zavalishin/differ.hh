@@ -48,14 +48,14 @@ struct differ
 		
 	public:// FUNC*
 
-		template <int N_ord=1> requires un_n<N_ord, 1>
+		template <int N_ord=1> requires un_v<N_ord, 1>
 		XTAL_DEF_(return,inline,let)
 		method(auto const &u, auto &&...oo) const
 		noexcept -> auto
 		{
 			return u;
 		}
-		template <int N_ord=1> requires in_n<N_ord, 1>
+		template <int N_ord=1> requires in_v<N_ord, 1>
 		XTAL_DEF_(return,inline,let)
 		method(auto const &u) const
 		noexcept -> auto
@@ -63,7 +63,7 @@ struct differ
 			auto [u_] = S_::memory(u);
 			return (u - u_);
 		}
-		template <int N_ord=1> requires in_n<N_ord, 1>
+		template <int N_ord=1> requires in_v<N_ord, 1>
 		XTAL_DEF_(return,inline,let)
 		method(auto const &u, atom::math::phason_q auto const &t_) const
 		noexcept -> auto
@@ -71,7 +71,7 @@ struct differ
 			auto [u_] = S_::memory(u);
 			return (u - u_)*root_f<-1>(t_(1));
 		}
-		template <int N_ord=1> requires in_n<N_ord, 1>
+		template <int N_ord=1> requires in_v<N_ord, 1>
 		XTAL_DEF_(return,inline,let)
 		method(auto const &u, auto const &v, atom::math::phason_q auto const &t_) const
 		noexcept -> auto

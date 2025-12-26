@@ -61,21 +61,18 @@ optimized for multiplication and scalar reflection.
 */
 template <class A>
 struct wniplex<A>
-:	wniplex<fixed_valued_u<A>>
+:	wniplex<typename fixed<A>::value_type>
 {
 };
 template <scalar_q A> requires simplex_field_q<A>
 struct wniplex<A>
 {
-private:
-	using   value_type =                        A;
-	using simplex_type =               value_type;
-	using complex_type = _std::complex<value_type>;
-	using couplex_type =    couple_t<complex_type[2]>;
-	using  duplex_type =    couple_t<simplex_type[2]>;
-	using  signum_type =             complex_type;
-	using  magnum_type =              duplex_type;
+	using simplex_type =  A;
+	using complex_type = _std::complex<simplex_type>;
+	using couplex_type =      couple_t<complex_type[2]>;
+	using  duplex_type =      couple_t<simplex_type[2]>;
 
+private:
 	XTAL_DEF_(set) sig_f = process::math::  pade::    unity_f<+1>;
 	XTAL_DEF_(set) mag_f = process::math::taylor::octarithm_f<-1>;
 
@@ -95,7 +92,8 @@ public:
 		using I_ = typename S_::difference_type;
 
 	public:// TYPE
-	//	using typename S_::value_type;
+		using signum_type = complex_type;
+		using magnum_type =  duplex_type;
 
 	public:// ACCESS
 		using S_::element;
@@ -129,7 +127,7 @@ public:
 		magnum(),
 		{
 			XTAL_IF0
-			XTAL_0IF (N_pow ==  0) {return   value_type{one};}
+			XTAL_0IF (N_pow ==  0) {return   simplex_type{one};}
 			XTAL_0IF (N_pow ==  1) {return  get<0>(magnum());}
 			XTAL_0IF (N_pow == -1) {return  get<1>(magnum());}
 		})
@@ -221,11 +219,10 @@ public:
 			using _xtd::plus_multiplies_f;
 			using process::math::term_f;
 			auto const &[o, q_] = self();
-			auto const q_up = q_.template sum<+1>();
-			auto const q_dn = q_.template sum<-1>();
-			XTAL_IF0
-			XTAL_0IF (N_dir ==  1) {return {term_f(x.real(), o.real(), q_up), term_f(x.imag(), o.imag(), q_dn)};}
-			XTAL_0IF (N_dir == -1) {return {term_f(x.real(), o.real(), q_dn), term_f(x.imag(), o.imag(), q_up)};}
+			return {
+				term_f(x.real(), o.real(), q_.template sum<+N_dir>())
+			,	term_f(x.imag(), o.imag(), q_.template sum<-N_dir>())
+			};
 		}
 		template <int N_dir>
 		XTAL_DEF_(return,inline,let)
@@ -233,11 +230,10 @@ public:
 		noexcept -> complex_type
 		{
 			auto const &[o, q_] = self();
-			auto const q_up = q_.template sum<+1>();
-			auto const q_dn = q_.template sum<-1>();
-			XTAL_IF0
-			XTAL_0IF (N_dir ==  1) {return {q_up*o.real(), q_dn*o.imag()};}
-			XTAL_0IF (N_dir == -1) {return {q_dn*o.real(), q_up*o.imag()};}
+			return {
+				o.real()*q_.template sum<+N_dir>()
+			,	o.imag()*q_.template sum<-N_dir>()
+			};
 		}
 		XTAL_DEF_(return,inline,let)
 		reflection(constant_q auto const n) const
@@ -279,14 +275,14 @@ public:
 
 		template <int N_side=1>
 		XTAL_DEF_(return,inline,let)
-		sum(auto &&w=value_type{}) const
+		sum(auto &&w=simplex_type{}) const
 		noexcept -> auto
 		{
 			return XTAL_REF_(w) + reflection<N_side>();
 		}
 
 		XTAL_DEF_(return,inline,let)
-		flipped(value_type const w) const
+		flipped(simplex_type const w) const
 		noexcept -> auto
 		{
 			auto const &o  = signum();

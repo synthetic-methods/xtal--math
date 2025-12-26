@@ -22,7 +22,7 @@ struct  octarithm;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism, int M_div> requires in_n<M_ism,  1,  2>
+template <int M_ism, int M_div> requires in_v<M_ism,  1,  2>
 struct octarithm<M_ism, M_div>
 {
 	using superkind = logarithm<1, 1>;
@@ -56,7 +56,7 @@ struct octarithm<M_ism, M_div>
 
 	};
 };
-template <int M_ism, int M_div> requires in_n<M_ism, -1, -2>
+template <int M_ism, int M_div> requires in_v<M_ism, -1, -2>
 struct octarithm<M_ism, M_div>
 {
 	template <class S>
@@ -82,7 +82,7 @@ struct octarithm<M_ism, M_div>
 		method_f(integral_q auto &&x)
 		noexcept -> auto
 		{
-			using X = _xtd::make_signed_t<unstruct_u<decltype(x)>>;
+			using X = _xtd::make_signed_t<unstruct_t<decltype(x)>>;
 			using U_fit = bond::fit<X>;
 
 			static_assert(M_ism == -2);// For now...

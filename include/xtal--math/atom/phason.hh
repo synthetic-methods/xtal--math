@@ -24,9 +24,9 @@ and addition (affecting only the initial element).
 template <class   ..._s>	struct          phason;
 template <class   ..._s>	using           phason_t = typename phason<_s...>::type;
 template <class   ...Ts>	concept         phason_q = bond::tag_infixed_p<phason_t, Ts...>;
-template <class   ...Ts>	concept    real_phason_q = phason_q<Ts...> and real_variable_q<initializer_t<Ts>...>;
-template <class   ...Ts>	concept simplex_phason_q = phason_q<Ts...> and simplex_field_q<initializer_t<Ts>...>;
-template <class   ...Ts>	concept complex_phason_q = phason_q<Ts...> and complex_field_q<initializer_t<Ts>...>;
+template <class   ...Ts>	concept phason_simplex_q = phason_q<Ts...> and simplex_field_q<initializer_t<Ts>...>;
+template <class   ...Ts>	concept phason_complex_q = phason_q<Ts...> and complex_field_q<initializer_t<Ts>...>;
+template <class   ...Ts>	concept complex_phason_q = complex_variable_q<Ts...> and phason_simplex_q<typename destruct<Ts>::value_type...>;
 
 XTAL_DEF_(let) phason_f = [] XTAL_1FN_(call) (_detail::factory<phason_t>::make);
 
@@ -38,7 +38,7 @@ struct phason<_s ...>
 :	phason<common_t<_s...>[sizeof...(_s)]>
 {
 };
-template <vector_q A> requires integral_variable_q<unstruct_u<A>>
+template <vector_q A> requires integral_variable_q<unstruct_t<A>>
 struct phason<A>
 :	differential<A>
 {
@@ -48,13 +48,13 @@ struct phason<A, _s...>
 :	couple_t<phason_t<A>, _s...>
 {
 };
-template <vector_q A> requires     real_variable_q<unstruct_u<A>>
+template <vector_q A> requires     real_variable_q<unstruct_t<A>>
 struct phason<A>
 {
 private:
 	static auto constexpr M_data = _xtd::extent_v<based_t<A>>;
 
-	using W = array_valued_u<A>;
+	using W = typename fixed<A>::value_type;
 	static_assert(continuous_field_q<W>);
 
 	using W_fit   = bond::fit<W>;
@@ -72,7 +72,7 @@ private:
 	using invalue_type = V;
 	using devalue_type = U;
 
-	static_assert(_std::numeric_limits<unstruct_u<U>>::is_modulo);// D'oh!
+	static_assert(_std::numeric_limits<unstruct_t<U>>::is_modulo);// D'oh!
 
 	template <class T>
 	using holotype = bond::compose_s<typename differential<U[M_data]>::template homotype<T>, bond::tag<phason_t>>;
@@ -123,7 +123,7 @@ public:
 		/*/
 		XTAL_DEF_(return,inline,explicit)
 		operator revalue_type() const
-		requires in_n<sizeof(T), sizeof(revalue_type)>
+		requires in_v<sizeof(T), sizeof(revalue_type)>
 		{
 			return reinterpret_cast<revalue_type const &>(*this);
 		}
@@ -188,19 +188,19 @@ public:
 		XTAL_DEF_(mutate,inline,let)
 		operator /=(auto &&x)
 		noexcept -> auto &
-		requires un_n<requires (W u) {u /= x;}>
+		requires un_v<requires (W u) {u /= x;}>
 		and      XTAL_TRY_(to) (S_::operator/=(XTAL_REF_(x)))
 
 		XTAL_DEF_(mutate,inline,let)
 		operator *=(auto &&x)
 		noexcept -> auto &
-		requires un_n<requires (W u) {u *= x;}>
+		requires un_v<requires (W u) {u *= x;}>
 		and      XTAL_TRY_(to) (S_::operator*=(XTAL_REF_(x)))
 
 		XTAL_DEF_(mutate,inline,let)
 		operator /=(auto &&x)
 		noexcept -> auto &
-		requires in_n<requires (W u) {u *= x;}>
+		requires in_v<requires (W u) {u *= x;}>
 		{
 			using X     = XTAL_ALL_(x);
 			using X_fit = bond::fit<X>;
@@ -209,7 +209,7 @@ public:
 		XTAL_DEF_(mutate,inline,let)
 		operator *=(auto &&x)
 		noexcept -> auto &
-		requires in_n<requires (W u) {u *= x;}>
+		requires in_v<requires (W u) {u *= x;}>
 		{
 			using X     = XTAL_ALL_(x);
 			using X_fit = bond::fit<X>;
@@ -261,22 +261,22 @@ public:
 		XTAL_DEF_(mutate,inline,get) operator -= (auto &&x) noexcept {return S_::operator-=(XTAL_REF_(x));}
 		XTAL_DEF_(mutate,inline,get) operator += (auto &&x) noexcept {return S_::operator+=(XTAL_REF_(x));}
 
+		template <class X> requires additive_group_p<1, W, X>
 		XTAL_DEF_(mutate,inline,let)
-		operator -= (auto &&x)
+		operator -= (X &&x)
 		noexcept -> auto &
-		requires additive_group_p<1, W, decltype(x)>
 		{
-			if constexpr (un_n<integral_q<unstruct_u<decltype(x)>>>) {
+			if constexpr (un_v<integral_q<unstruct_t<X>>>) {
 				get<0>(self()) -= bond::math::bit_fraction_f<V>(x);
 			}
 			return self();
 		}
+		template <class X> requires additive_group_p<1, W, X>
 		XTAL_DEF_(mutate,inline,let)
-		operator += (auto &&x)
+		operator += (X &&x)
 		noexcept -> auto &
-		requires additive_group_p<1, W, decltype(x)>
 		{
-			if constexpr (un_n<integral_q<unstruct_u<decltype(x)>>>) {
+			if constexpr (un_v<integral_q<unstruct_t<X>>>) {
 				get<0>(self()) += bond::math::bit_fraction_f<V>(x);
 			}
 			return self();
@@ -286,21 +286,21 @@ public:
 		using S_::operator++;
 		using S_::operator--;
 
-		template <int N> requires in_n<size, 2>
+		template <int N> requires in_v<size, 2>
 		XTAL_DEF_(mutate,inline,let)
 		operator++(int)
 		noexcept -> auto &
 		{
 			auto t = twin(); operator++<N>(); return t;
 		}
-		template <int N> requires in_n<size, 2>
+		template <int N> requires in_v<size, 2>
 		XTAL_DEF_(mutate,inline,let)
 		operator--(int)
 		noexcept -> auto &
 		{
 			auto t = twin(); operator--<N>(); return t;
 		}
-		template <int N> requires in_n<size, 2>
+		template <int N> requires in_v<size, 2>
 		XTAL_DEF_(mutate,inline,let)
 		operator++()
 		noexcept -> auto &
@@ -311,7 +311,7 @@ public:
 			XTAL_0IF (N < 0) {get<0>(s) += _xtd::bit_cast<invalue_type>(get<1>(s)) >> -N;}
 			return s;
 		}
-		template <int N> requires in_n<size, 2>
+		template <int N> requires in_v<size, 2>
 		XTAL_DEF_(mutate,inline,let)
 		operator--()
 		noexcept -> auto &

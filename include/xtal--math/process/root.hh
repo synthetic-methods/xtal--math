@@ -52,7 +52,7 @@ struct root
 		XTAL_DEF_(return,inline,set)
 		method_f(auto &&z)
 		noexcept -> auto
-		requires un_n<atom::groupoid_q<XTAL_ALL_(z)>>
+		requires un_v<atom::groupoid_q<XTAL_ALL_(z)>>
 		{
 			using Z     = objective_t<XTAL_ALL_(z)>;
 			using Z_fit = bond::fit<Z>;
@@ -78,7 +78,7 @@ struct root
 		XTAL_DEF_(return,inline,set)
 		method_f(auto &&z)
 		noexcept -> auto
-		requires in_n<atom::groupoid_q<XTAL_ALL_(z)>>
+		requires in_v<atom::groupoid_q<XTAL_ALL_(z)>>
 		{
 			using Z = XTAL_ALL_(z);
 			using Z_fit = bond::fit<Z>;
@@ -106,7 +106,7 @@ struct root
 			return root_t<M_exp/-i_exp>::template
 				method_f<I_lim>(root_t<-i_exp>::template method_f<I_lim>(XTAL_REF_(z)));
 		}
-		template <int I_lim> requires in_n<M_exp_mag, 1>
+		template <int I_lim> requires in_v<M_exp_mag, 1>
 		XTAL_DEF_(return,inline,set)
 		evaluate(auto &&z)
 		noexcept -> objective_t<XTAL_ALL_(z)>
@@ -144,7 +144,7 @@ struct root
 			}
 		}
 
-		template <int I_lim> requires in_n<M_exp_mag, 2>
+		template <int I_lim> requires in_v<M_exp_mag, 2>
 		XTAL_DEF_(return,inline,set)
 		evaluate(complex_variable_q auto z)
 		noexcept -> objective_t<XTAL_ALL_(z)>
@@ -176,7 +176,7 @@ struct root
 				return root_f<M_exp_sgn, M_cut>(sqrt(z));
 			}
 		}
-		template <int I_lim> requires in_n<M_exp_mag, 2, 3, 5, 7>
+		template <int I_lim> requires in_v<M_exp_mag, 2, 3, 5, 7>
 		XTAL_DEF_(return,inline,set)
 		evaluate(real_variable_q auto z)
 		noexcept -> objective_t<XTAL_ALL_(z)>

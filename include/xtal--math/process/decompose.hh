@@ -42,7 +42,7 @@ struct decompose<signed>
 		XTAL_DEF_(return,inline,set)
 		method_f(auto const &o)
 		noexcept -> auto
-		requires un_n<numeric_variable_q<decltype(o)>>
+		requires un_v<numeric_variable_q<decltype(o)>>
 		{
 			return (0 < o) - (o < 0) + (o == 0);
 		}
@@ -121,7 +121,7 @@ struct decompose<signed>
 			return edit_f(XTAL_REF_(oo)...);
 		}
 
-		template <int N_side=0> requires in_n<N_side, 1, 0, -1>
+		template <int N_side=0> requires in_v<N_side, 1, 0, -1>
 		XTAL_DEF_(return,inline,set)
 		edit_f(ordinal_variable_q auto &u)
 		noexcept -> auto
@@ -142,7 +142,7 @@ struct decompose<signed>
 			}
 			return method_f(v);
 		}
-		template <int N_side=0> requires in_n<N_side, 1, 0, -1>
+		template <int N_side=0> requires in_v<N_side, 1, 0, -1>
 		XTAL_DEF_(return,inline,set)
 		edit_f(cardinal_variable_q auto &u)
 		noexcept -> auto

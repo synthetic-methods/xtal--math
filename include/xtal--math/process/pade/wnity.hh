@@ -20,7 +20,7 @@ struct wnity;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism, int M_car> requires in_n<M_ism, 1> and in_n<M_car, 0, 1>
+template <int M_ism, int M_car> requires in_v<M_ism, 1> and in_v<M_car, 0, 1>
 struct wnity<M_ism, M_car>
 {
 	template <class S>

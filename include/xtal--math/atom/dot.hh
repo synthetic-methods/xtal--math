@@ -84,7 +84,7 @@ public:
 		XTAL_DEF_(return,inline,met)
 		operator * (U const &u, homotype const &s)
 		noexcept
-		requires un_n<_std::derived_from<U, homotype>>
+		requires un_v<_std::derived_from<U, homotype>>
 		{
 			return s.operator*(u);
 		}

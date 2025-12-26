@@ -79,7 +79,7 @@ struct multiplex<O, _s...>
 
 					return [&, this]<auto ...I>(bond::seek_t<I...>)
 						XTAL_0FN_(to) (R_::template method<Ns...>(dot_f(get<I>(m_), x_)...))
-					(bond::seek_s<fixed_shaped_n<decltype(m_)>> {});
+					(bond::seek_s<fixed_shaped<decltype(m_)>::extent()> {});
 				})
 
 			};

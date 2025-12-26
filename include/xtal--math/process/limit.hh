@@ -115,10 +115,10 @@ struct limit<M_app>
 		XTAL_DEF_(return,set)
 		edit_f(bond::pack_q auto &w_)
 		noexcept -> auto
-		requires un_n<complex_variable_q<decltype(w_)>>
+		requires un_v<complex_variable_q<decltype(w_)>>
 		{
 			XTAL_TYP_(let) W_ = XTAL_ALL_(w_);
-			auto constexpr N_ = bond::pack_size_n<W_>;
+			auto constexpr N_ = bond::pack_size_v<W_>;
 			XTAL_IF0
 			XTAL_0IF (0 == N_) {
 				return W_{};

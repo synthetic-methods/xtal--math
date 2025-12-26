@@ -77,7 +77,7 @@ struct curve
 		method_f(auto const &u)
 		noexcept -> auto
 		{
-			using V = unstruct_u<decltype(u)>;
+			using V = unstruct_t<decltype(u)>;
 			V constexpr I = root_f<-2>(2.);
 			XTAL_IF0
 			XTAL_0IF (N_adj ==  0) {return method_f<N_lim>(u, _std::complex<V>{1,  0});}
@@ -161,7 +161,7 @@ struct curve
 			return _u*u;
 		}
 		/**/
-		template <int N_lim=0> requires in_n<M_ism, -3> and (0 < N_lim)
+		template <int N_lim=0> requires in_v<M_ism, -3> and (0 < N_lim)
 		XTAL_DEF_(return,inline,set)
 		fiction(auto u, complex_field_q auto const &z)
 		noexcept -> auto
