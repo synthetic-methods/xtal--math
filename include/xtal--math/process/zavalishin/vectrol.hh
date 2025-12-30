@@ -36,7 +36,8 @@ struct vectrol
 	public:// CONSTRUCT
 		using S_::S_;
 		using typename S_::shape_parameter;
-		using typename S_::  state_type;
+		using typename S_::shape_type;
+		using typename S_::state_type;
 
 	public:// OPERATE
 
@@ -45,14 +46,9 @@ struct vectrol
 		method(auto x, auto s_gain, auto s_damp, auto &&...oo)
 		noexcept -> decltype(auto)
 		{
-			auto constexpr abs = [] XTAL_1FN_(call) (taylor::logarithm_t<-1>::template method_f<0>);
-
-			auto const [s_]       = S_::template memory<  state_type>();
-			auto const &s_reshape = S_::template   head<shape_parameter>().head();
-			auto const  s_product = dot_f(s_, s_reshape);
-			
-			s_damp *= abs(s_product*half);
-
+			auto const  [s_]     = S_::template memory<state_type     >();
+			auto const & s_shape = S_::template   head<shape_parameter>();
+			s_damp *= taylor::logarithm_t<-1>::template method_f<0>(dot_f(s_, s_shape.head()));
 			return S_::template method<Ns...>(x, s_gain, s_damp, XTAL_REF_(oo)...);
 		}
 

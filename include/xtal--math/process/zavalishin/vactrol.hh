@@ -36,7 +36,7 @@ struct vactrol
 	public:// CONSTRUCT
 		using S_::S_;
 		using typename S_::shape_parameter;
-		using typename S_::  state_type;
+		using typename S_::state_type;
 
 	public:// OPERATE
 
@@ -45,13 +45,14 @@ struct vactrol
 		method(auto x, auto s_gain, auto &&...oo)
 		noexcept -> decltype(auto)
 		{
-			auto constexpr abs = [] XTAL_1FN_(call) (taylor::logarithm_t<-1>::template method_f<0>);
+			auto constexpr exp_f = [] XTAL_1FN_(call) (taylor::logarithm_t<-1>::template method_f<0>);
 
-			auto const &[d0, d1] = S_::template head<shape_parameter>().head();
-			auto const  [s_]     = S_::template memory<state_type>();
+			auto const  [s_]     = S_::template memory<state_type     >();
+			auto const & s_shape = S_::template   head<shape_parameter>();
+			auto const &[d0, d1] = s_shape.head();
 
 			auto const v = pade::tangy_f<1>(half*d1);
-			auto const w = abs(x - s_.sum());
+			auto const w = exp_f(x - s_.sum());
 			s_gain /= d0*term_f(v, one - v, w);
 
 			return S_::template method<Ns...>(x, s_gain, XTAL_REF_(oo)...);

@@ -103,7 +103,6 @@ struct filter
 			auto const descalars_ = scalars_ - one;
 
 			auto mem = S_::template memory<X_state_, X_slope_>();
-		//	(void) limit_t<[] XTAL_1FN_(to) (-bond::fit<X>::diplo_f(7))>::method_e(mem);
 			auto &states_ = get<0>(mem);
 			auto &slopes_ = get<1>(mem);
 

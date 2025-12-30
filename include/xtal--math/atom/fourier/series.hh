@@ -22,7 +22,7 @@ XTAL_DEF_(let) series_f = [] XTAL_1FN_(call) (_detail::factory<series_t>::make);
 /*!
 \brief   Extends `serial` with multiplication via circular convolution.
 */
-template <scalar_q ..._s> requires common_q<_s...>
+template <scalar_q ..._s> requires same_q<_s...>
 struct series<_s ...>
 :	series<common_t<_s...>[sizeof...(_s)]>
 {
@@ -175,38 +175,38 @@ public:
 			return self();
 		}
 		/*!
-		\brief   Transforms `that` using the FFT, with `this` as the Fourier basis.
-		\returns `that`.
+		\brief   Transforms `source` using the FFT, with `this` as the Fourier basis.
+		\returns `source`.
 		
-		\note    The size of both `this` and `that` must be expressible as an integral power-of-two,
-		         and `1 < that.size() <= this->size()`.
+		\note    The size of both `this` and `source` must be expressible as an integral power-of-two,
+		         and `1 < source.size() <= this->size()`.
 		*/
 		template <int N_direction=1> requires in_v<N_direction, 1, -1> and complex_field_q<value_type>
 		XTAL_DEF_(let)
-		transform(isomorphic_q<T> auto &that) const
+		transform(isomorphic_q<T> auto &source) const
 		noexcept -> decltype(auto)
 		{
-			using Xs = XTAL_ALL_(that);
+			using Xs = XTAL_ALL_(source);
 			using Ys = typename Xs::transverse::type;
 			using I  = typename Xs:: difference_type;
 		
 		//	Ensure the size of both domain and codomain are powers of two:
-			I constexpr N_width =      size();
-			I const     n_width = that.size();
+			I constexpr N_width =        size();
+			I const     n_width = source.size();
 			I const     h_width = n_width >> 1U; assert(1 <= h_width);
 			I const     n_depth = bond::math::bit_ceiling_f(n_width); assert(n_width == I{1} << n_depth);
 			I constexpr N_depth = bond::math::bit_ceiling_f(N_width); assert(n_depth         <= N_depth);
 
 		//	Move all entries to their bit-reversed locations:
 			for (I h{}; h < h_width; ++h) {
-				_std::swap(that[h], that[bond::math::bit_reverse_f(h, n_depth)]);
+				_std::swap(source[h], source[bond::math::bit_reverse_f(h, n_depth)]);
 			}
 		
 		//	Conjugate the input if computing the inverse transform of the codomain:
 			if constexpr (N_direction == -1) {
-				_detail::apply_to<[] XTAL_1FN_(call) (_std::conj)>(that);
+				_detail::apply_to<[] XTAL_1FN_(call) (_std::conj)>(source);
 			}
-		//	Compute the transform of `that` using the precomputed half-period sinusoid in `this`:
+		//	Compute the transform of `source` using the precomputed half-period sinusoid in `this`:
 			for (I n{}; n < n_depth; ++n) {
 				I const  u_width = I{1} << n;
 				I const  w_width = u_width << 1U;
@@ -214,8 +214,8 @@ public:
 				for (I u{ }; u < u_width; u +=     one) {auto const &o = S_::element(u << un_depth);
 				for (I w{u}; w < n_width; w += w_width) {
 					auto const m = w + u_width;
-					value_type &y = that[m];
-					value_type &x = that[w];
+					value_type &y = source[m];
+					value_type &x = source[w];
 					value_type const yo = y*o;
 					y  = x - yo;
 					x +=     yo;
@@ -223,31 +223,31 @@ public:
 			}
 		//	Conjugate and scale the output if computing the inverse transform of the codomain:
 			if constexpr (N_direction == -1) {
-				_detail::apply_to<[] XTAL_1FN_(call) (_std::conj)>(that);
-				that /= _fit::alpha_f(n_width);
+				_detail::apply_to<[] XTAL_1FN_(call) (_std::conj)>(source);
+				source /= _fit::alpha_f(n_width);
 			}
 
 		//	Cast the output to the transformed domain:
-			return reinterpret_cast<Ys &>(that);
+			return reinterpret_cast<Ys &>(source);
 		}
 		template <int N_direction=1> requires in_v<N_direction, 1, -1> and complex_field_q<value_type>
 		XTAL_DEF_(let)
-		transform(isomorphic_q<T> auto &&that) const
+		transform(isomorphic_q<T> auto &&source) const
 		noexcept -> decltype(auto)
 		{
-			(void) transform<N_direction>(that);
-			return reinterpret_cast<typename XTAL_ALL_(that)::transverse::type &&>(that);
+			(void) transform<N_direction>(source);
+			return reinterpret_cast<typename XTAL_ALL_(source)::transverse::type &&>(source);
 		}
 		/*!
-		\returns a new `series` representing the FFT of `that`,
+		\returns a new `series` representing the FFT of `source`,
 		using `this` as the Fourier basis.
 		*/
 		template <int N_direction=1> requires in_v<N_direction, 1, -1>
 		XTAL_DEF_(return,inline,let)
-		transformation(isomorphic_q<T> auto that) const
+		transformation(isomorphic_q<T> auto source) const
 		noexcept -> auto
 		{
-			return transform<N_direction>(XTAL_MOV_(that));
+			return transform<N_direction>(XTAL_MOV_(source));
 		}
 
 		/*!

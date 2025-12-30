@@ -16,7 +16,7 @@ namespace xtal::atom::math
 Indended to act as a coefficient of a similar type where a scalar result is required.
 
 \todo    Either define `std::complex` construction/operation,
-or create a similar complex sentinel that applies multiplication/projection.
+or create a similar complex sentinel with multiplication/projection.
 
 \todo    Specialize `plus_multiplies_f` or `fma`?
 */
@@ -33,6 +33,11 @@ XTAL_DEF_(let) dot_f = [] XTAL_1FN_(call) (_detail::factory<dot_t>::make);
 template <scalar_q ..._s> requires same_q<_s...>
 struct dot<_s ...>
 :	dot<common_t<_s...>[sizeof...(_s)]>
+{
+};
+template <matrix_q A>
+struct dot<A>
+:	dot<dot_t<typename fixed<A>::value_type>[fixed<A>::extent()]>
 {
 };
 template <class ..._s>
@@ -56,12 +61,27 @@ public:
 	public:// CONSTRUCT
 		using S_::S_;
 
+		using typename S_::value_type;
+		using typename S_::scale_type;
+
 	public:// ACCESS
 		using S_::size;
 		using S_::self;
 		using S_::twin;
 
 	public:// OPERATE
+
+		XTAL_DEF_(return,inline,let)
+		product() const
+		noexcept -> auto
+		{
+			static_assert(dot_q<value_type> and size == 2);
+			auto &s = self();
+			return get<0>(s) * get<1>(s);
+		}
+
+		XTAL_DEF_(return,inline,let)
+		operator() () const noexcept {product();}
 
 		XTAL_DEF_(return,inline,let)
 		operator * (auto const &t) const

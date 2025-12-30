@@ -52,6 +52,7 @@ struct phasor<A, As...>
 	{
 		static_assert(any_q<S>);
 		using S_ = bond::compose_s<S, superkind>;
+		using U_ = typename S_::head_type;
 
 	public:// CONSTRUCT
 		using S_::S_;
@@ -61,8 +62,9 @@ struct phasor<A, As...>
 		using S_::head;
 
 	//	NOTE: Defined in-case `refine_head` is bypassed...
-		XTAL_FX4_(to) (XTAL_DEF_(implicit operator) typename S_::head_type(), head())
-		
+		XTAL_FN0_(go) (XTAL_DEF_(return,inline,explicit) operator U_,
+			[] (auto &&that) XTAL_0FN_(to) (XTAL_REF_(that).head()))
+
 		XTAL_DEF_(return,inline,set)
 		bias()
 		noexcept -> auto
@@ -103,7 +105,7 @@ struct phasor<A, As...>
 		noexcept -> decltype(auto)
 		{
 			using resample_type = occur::resample_t<>;
-			if constexpr (S_::template head_q<resample_type>) {
+			if constexpr (complete_q<typename S_::template head_t<resample_type>>) {
 				auto const rate = S_::template head<resample_type>().rate();
 				auto &phi = ingress();
 				auto  psi = phi.scaled(rate);
@@ -134,7 +136,7 @@ struct phasor<A, As...>
 		noexcept -> auto
 		{
 			using resample_type = occur::resample_t<>;
-			if constexpr (S_::template head_q<resample_type>) {
+			if constexpr (complete_q<typename S_::template head_t<resample_type>>) {
 				omega *= S_::template head<resample_type>().period();
 			}
 			auto &u_phi = S_::head();
@@ -181,6 +183,7 @@ struct phasor<A, As...>
 	{
 		static_assert(any_q<S>);
 		using S_ = bond::compose_s<S, semikind>;
+		using U_ = typename S_::head_type;
 
 	public:// ACCESS
 		using S_::S_;
@@ -188,8 +191,9 @@ struct phasor<A, As...>
 		using S_::head;
 
 	//	NOTE:	Defined in-case `refine_head` is bypassed...
-		XTAL_FX4_(to) (XTAL_DEF_(implicit operator) typename S_::head_type(), head())
-		
+		XTAL_FN0_(go) (XTAL_DEF_(return,inline,implicit) operator U_,
+			[] (auto &&o) XTAL_0FN_(to) (XTAL_REF_(o).head()))
+
 	public:// OPERATE
 		/*!
 		\returns The current differential after scaling the incoming `phi` by `co`.
@@ -201,8 +205,8 @@ struct phasor<A, As...>
 		requires same_q<U_phason, typename S_::template head_t<ordinal_constant_t<1>>>
 		{
 			static_assert(2 == U_phason::size());
-			auto &u_phi = S_::template head<1>();
-			auto &v_phi = S_::template head<0>();
+			auto &u_phi = S_::template head<constant_t<1>>();
+			auto &v_phi = S_::template head<constant_t<0>>();
 		//	Calculates the deviation of `phi[0]` w.r.t. phi[1],
 		//	using the difference in `phi[1]` to determine the threshold for reset.
 

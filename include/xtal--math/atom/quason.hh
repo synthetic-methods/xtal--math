@@ -25,7 +25,7 @@ XTAL_DEF_(let) quason_f = [] XTAL_1FN_(call) (_detail::factory<quason_t>::make);
 /*!
 \brief   Defines the `quason` as an array of `common_t<Us...>`.
 */
-template <scalar_q ...Us> requires common_q<Us...>
+template <scalar_q ...Us> requires same_q<Us...>
 struct quason<Us ...>
 :	quason<common_t<Us...>[sizeof...(Us)]>
 {
@@ -63,7 +63,7 @@ public:
 \note    Provides implicit conversion to/from the homogeneous `block_t` representation.
 */
 /**/
-template <phason_q U, class ...Us> requires common_q<Us...>
+template <phason_q U, class ...Us> requires same_q<Us...>
 struct quason<U, Us...>
 {
 	static_assert(in_v<sizeof(U), sizeof(Us)...>);
@@ -93,8 +93,8 @@ public:
 		{
 		}
 
-		XTAL_FX4_(to) (XTAL_DEF_(return,inline,explicit)
-		operator ectotype(), S_::template self<ectotype>())
+		XTAL_FN0_(go) (XTAL_DEF_(return,inline,explicit) operator ectotype,
+			[] (auto &&o) XTAL_0FN_(to) (qualify_f<ectotype>(XTAL_REF_(o))))
 
 	};
 	using type = bond::derive_t<homotype>;

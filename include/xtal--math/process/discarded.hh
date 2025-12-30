@@ -44,7 +44,7 @@ struct discarded<1, M_aux>
 		using S_::S_;
 
 	//	TODO: Account for `const &` and `&`, or find a cleaner way to express...
-		XTAL_FX2_(do) (template <auto ...Is>
+		XTAL_FN2_(do) (template <auto ...Is>
 		XTAL_DEF_(return,inline,let)
 		method(auto &&u, auto &&...oo),
 		noexcept -> auto
@@ -82,7 +82,7 @@ struct discarded<1>
 	public:
 		using S_::S_;
 
-		XTAL_FX2_(do) (template <auto ...Is>
+		XTAL_FN2_(do) (template <auto ...Is>
 		XTAL_DEF_(return,inline,let)
 		method(auto &&u, auto &&...oo),
 		noexcept -> auto
@@ -146,7 +146,7 @@ struct discarded<2, M_aux>
 	public:
 		using S_::S_;
 
-		XTAL_FX2_(do) (template <auto ...Is>
+		XTAL_FN2_(do) (template <auto ...Is>
 		XTAL_DEF_(return,inline,let)
 		method(auto &&u, auto &&...oo),
 		noexcept -> decltype(auto)

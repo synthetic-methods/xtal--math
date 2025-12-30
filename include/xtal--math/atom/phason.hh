@@ -33,7 +33,7 @@ XTAL_DEF_(let) phason_f = [] XTAL_1FN_(call) (_detail::factory<phason_t>::make);
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <scalar_q ..._s> requires common_q<_s...>
+template <scalar_q ..._s> requires same_q<_s...>
 struct phason<_s ...>
 :	phason<common_t<_s...>[sizeof...(_s)]>
 {
@@ -75,7 +75,7 @@ private:
 	static_assert(_std::numeric_limits<unstruct_t<U>>::is_modulo);// D'oh!
 
 	template <class T>
-	using holotype = bond::compose_s<typename differential<U[M_data]>::template homotype<T>, bond::tag<phason_t>>;
+	using holotype = bond::compose_s<typename differential<_std::plus<U>[M_data]>::template homotype<T>, bond::tag<phason_t>>;
 
 public:
 	template <class T>

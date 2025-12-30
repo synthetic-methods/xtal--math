@@ -28,8 +28,12 @@ template <auto f> XTAL_DEF_(return,inline,let) operative_f(eigenvalue_q auto &&x
 template <auto f> XTAL_DEF_(return,inline,let) operative_f(eigenvalue_q auto &&x, auto &&...xs) noexcept requires (1 == sizeof...(xs)) {return XTAL_REF_(x). binaryExpr(XTAL_REF_(xs)..., f);}
 template <auto f> XTAL_DEF_(return,inline,let) operative_f(eigenvalue_q auto &&x, auto &&...xs) noexcept requires (2 == sizeof...(xs)) {return XTAL_REF_(x).ternaryExpr(XTAL_REF_(xs)..., f);}
 
-XTAL_FX0_(to) (XTAL_DEF_(return,inline,let)
-objective_f(eigenvalue_q auto &&o), XTAL_REF_(o).eval())
+XTAL_DEF_(return,inline,let)
+objective_f(eigenvalue_q auto &&o)
+noexcept -> decltype(auto)
+{
+	return XTAL_REF_(o).eval();
+}
 
 template <template <class> class Y, eigenvalue_q ...Xs>
 XTAL_DEF_(return,inline,let)
