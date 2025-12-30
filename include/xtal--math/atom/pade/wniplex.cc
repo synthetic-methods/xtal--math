@@ -53,6 +53,9 @@ TAG_("wniplex")
 		TRUE_(check_f<-2>(u_up, U_alpha{1}));
 		TRUE_(check_f<-2>(u_dn, U_alpha{1}));
 
+		static_assert(complex_variable_q<XTAL_ALL_(get<0>(u))>);
+		static_assert(atom::couple_q<XTAL_ALL_(get<1>(u))>);
+
 	}
 	/***/
 	/**/

@@ -33,7 +33,7 @@ XTAL_DEF_(let) phason_f = [] XTAL_1FN_(call) (_detail::factory<phason_t>::make);
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <scalar_q ..._s> requires common_q<_s...>
+template <scalar_q ..._s> requires same_q<_s...>
 struct phason<_s ...>
 :	phason<common_t<_s...>[sizeof...(_s)]>
 {

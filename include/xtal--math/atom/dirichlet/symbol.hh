@@ -22,7 +22,7 @@ XTAL_DEF_(let) symbol_f = [] XTAL_1FN_(call) (_detail::factory<symbol_t>::make);
 /*!
 \brief   Extends `couple` with Dirichlet characterization and modulo access.
 */
-template <scalar_q ..._s> requires common_q<_s...>
+template <scalar_q ..._s> requires same_q<_s...>
 struct symbol<_s ...>
 :	symbol<common_t<_s...>[sizeof...(_s)]>
 {

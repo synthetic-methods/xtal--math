@@ -126,10 +126,10 @@ struct limit<M_app>
 			XTAL_0IF (1 == N_) {
 				return W_{method_e<Ns...>(get<0>(w_))};
 			}
-			XTAL_0IF (2 == N_ and atom::couple_q<W_>) {
+			XTAL_0IF (2 == N_ and atom::group_multiplication_q<W_>) {
 			//	auto &[w0, w1] = w_;
-				auto &w0 = get<0>(w_); using W0 = objective_t<decltype(w0)>;
-				auto &w1 = get<1>(w_); using W1 = objective_t<decltype(w1)>;
+				auto &w0 = get<0>(w_); using W0 = XTAL_ALL_(w0);
+				auto &w1 = get<1>(w_); using W1 = XTAL_ALL_(w1);
 				XTAL_IF0
 				//\
 				XTAL_0IF (wniplex_q<W_>) {
@@ -146,6 +146,9 @@ struct limit<M_app>
 				//\
 				XTAL_0IF (same_q<W0, W1>) {
 				XTAL_0IF_(else) {
+					if constexpr (different_q<W0, W1>) {
+						static_assert(complex_variable_q<W0>);
+					}
 					return W_{method_e<Ns...>(w0), method_e<Ns...>(w1)};
 				}
 			}

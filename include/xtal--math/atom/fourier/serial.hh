@@ -23,7 +23,7 @@ XTAL_DEF_(let) serial_f = [] XTAL_1FN_(call) (_detail::factory<serial_t>::make);
 /*!
 \brief   Extends `differential` with multiplication via linear convolution.
 */
-template <scalar_q ..._s> requires common_q<_s...>
+template <scalar_q ..._s> requires same_q<_s...>
 struct serial<_s ...>
 :	serial<common_t<_s...>[sizeof...(_s)]>
 {
