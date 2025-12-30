@@ -13,7 +13,7 @@ namespace xtal::process::math::taylor
 /*!
 \brief   Defines `Tan[Pi #] &` and `Tanh[Pi #] &`, and their inverses.
 
-Provides a counterpart to `pade::tangy` that approaches `Tanh`.
+Provides a counterpart to `pade::tangy` approaching `Tanh`.
 
 \tparam  M_ism
 Specifies the underlying morphism \f$\in {1, 2}\f$,

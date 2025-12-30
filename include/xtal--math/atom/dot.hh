@@ -16,7 +16,7 @@ namespace xtal::atom::math
 Indended to act as a coefficient of a similar type where a scalar result is required.
 
 \todo    Either define `std::complex` construction/operation,
-or create a similar complex sentinel that applies multiplication/projection.
+or create a similar complex sentinel with multiplication/projection.
 
 \todo    Specialize `plus_multiplies_f` or `fma`?
 */

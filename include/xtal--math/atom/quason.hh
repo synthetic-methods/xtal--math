@@ -93,8 +93,8 @@ public:
 		{
 		}
 
-		XTAL_FX4_(to) (XTAL_DEF_(return,inline,explicit)
-		operator ectotype(), S_::template self<ectotype>())
+		XTAL_FX4_(get) (XTAL_DEF_(return,inline,explicit) operator ectotype,
+			[] (auto &&o) XTAL_0FN_(to) (qualify_f<ectotype>(XTAL_REF_(o))))
 
 	};
 	using type = bond::derive_t<homotype>;

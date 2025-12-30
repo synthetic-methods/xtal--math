@@ -56,9 +56,8 @@ struct multiplex<O, _s...>
 				using R_::self;
 				using R_::head;
 
-				XTAL_FX4_(to) (XTAL_DEF_(return,inline,get)
-				coefficients(auto &&...oo),
-					R_::template head<0>(XTAL_REF_(oo)...))
+				XTAL_FX4_(dot) (XTAL_DEF_(return,inline,get) coefficients, [] (auto &&o, auto &&...oo)
+				XTAL_0FN_(to) (XTAL_REF_(o).template head<constant_t<0>>(XTAL_REF_(oo)...)))
 
 			public:// OPERATE
 			
