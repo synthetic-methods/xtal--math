@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.cc"
-#include "./intake.hh"
-#include "./retake.hh"
+#include "./pulse.hh"
+#include "./reuse.hh"
 #include "../../provision/prewarping.hh"
 
 
@@ -32,9 +32,9 @@ TAG_("vectrol")
 		using E_pkt = typename E_etc::stage_type;
 		using E_prx = confined_t<void
 		,	provision::math::prewarping< 0>
-		,	intake< 0>
-		,	retake< 0>
-		,	retake<-1>
+		,	pulse< 0>
+		,	reuse< 0>
+		,	reuse<-1>
 		,	typename E_etc::damp_parameter::template   attend<>
 		,	typename E_etc::fade_parameter::template   attend<>
 		,	typename E_etc::             template   attach<>
@@ -94,9 +94,9 @@ TAG_("vectrol")
 		using E_prx = confined_t<void
 	//	,	process::lift<W_alpha>
 		,	provision::math::prewarping< 0>
-		,	intake< 0>
-		,	retake< 0>
-		,	retake<-1>
+		,	pulse< 0>
+		,	reuse< 0>
+		,	reuse<-1>
 		,	typename E_etc::damp_parameter::template   attend<>
 	//	,	typename E_etc::fade_parameter::template   attend<>
 		,	typename E_etc::             template   attach<>
@@ -118,9 +118,9 @@ TAG_("vectrol")
 		using O_prx = process::confined_t<void
 		,	multiplied<>
 		,	provision::math::prewarping< 0>
-		,	intake<-1>
-		,	retake< 0>
-	//	,	retake<-1>
+		,	pulse<-1>
+		,	reuse< 0>
+	//	,	reuse<-1>
 		,	typename O_etc::damp_parameter::template   attend<>
 		,	typename O_etc::fade_parameter::template   attend<>
 		,	typename O_etc::                template   attach<>

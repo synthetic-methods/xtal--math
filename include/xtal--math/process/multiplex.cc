@@ -157,6 +157,18 @@ TAG_("route", "processor")
 
 	}
 	/***/
+	TRY_("shape with column indent")
+	{
+		using M   = atom::brace_t<bond::pack_t<int, int, int>[3]>;
+		using W   = occur::math::indent_s<M>;
+		using W1  = occur::math::indent_s<M, 1>;
+		using W12 = occur::math::indent_s<M, 1, 2>;
+
+		TRUE_(same_q<M, typename W  ::data_type>);
+		TRUE_(same_q<M, typename W1 ::data_type>);
+		TRUE_(same_q<M, typename W12::data_type>);
+
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////

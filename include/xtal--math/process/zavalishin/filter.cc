@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.cc"
-#include "./intake.hh"
-#include "./retake.hh"
+#include "./pulse.hh"
+#include "./reuse.hh"
 #include "../../provision/prewarping.hh"
 
 
@@ -41,7 +41,7 @@ TAG_("filter")
 		using R_etc = occur::context_t<R_def>;
 		using R_prx = confined_t<void
 		,	provision::math::prewarping< 1>
-		,	retake< 0>
+		,	reuse< 0>
 		,	typename R_etc::fade_parameter::template   attend<>
 	//	,	typename R_etc::zoom_parameter::template   attend<>
 		,	typename R_etc::             template   attach<>
@@ -141,9 +141,9 @@ TAG_("filter-ring")
 		using R_eve = flow::packet_t<typename R_etc::stage_type, typename R_etc::damp_parameter>;
 		using R_prx = confined_t<void
 		,	provision::math::prewarping< 0>
-		,	intake<-1>
-		,	retake< 0>
-		,	retake<-1>
+		,	pulse<-1>
+		,	reuse< 0>
+		,	reuse<-1>
 		,	typename R_etc::damp_parameter::template   attend<>
 		,	typename R_etc::fade_parameter::template   attend<>
 		,	typename R_etc::             template   attach<>
@@ -203,9 +203,9 @@ TAG_("filter-ring")
 		using R_eve = flow::key_s<typename R_etc::stage_type>;
 		using R_prx = confined_t<void
 		,	provision::math::prewarping< 0>
-		,	intake< 1>
-		,	retake< 0>
-		,	retake<-1>
+		,	pulse< 1>
+		,	reuse< 0>
+		,	reuse<-1>
 		,	typename R_etc:: stage_type::template assignment<typename R_etc::damp_parameter>
 		,	typename R_etc::damp_parameter::template   attend<>
 		,	typename R_etc::fade_parameter::template   attend<>

@@ -64,6 +64,8 @@ struct indent<Ns...>
 	public:
 		using S_::S_;//NOTE: Inherited and respecialized!
 
+		using data_type = S;
+
 		/*!
 		\brief   Constructs a scalar fragment for `u`,
 		         handling element conversion if supported by the container.

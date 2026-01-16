@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-#include "./scaffold.hh"
+#include "./meta.hh"
 
 
 
@@ -29,14 +29,14 @@ template <typename ...As>	using   differ_t = process::confined_t<differ<As...>>;
 template <class ..._s>
 struct differ
 {
-	using metatype = occur::context_t<differ>;
+	using cotype = occur::context_t<differ>;
 
-	using state_type = typename metatype::state_type;
-//	using slope_type = typename metatype::slope_type;
+	using state_type = typename cotype::state_type;
+//	using slope_type = typename cotype::slope_type;
 
 	using superkind = bond::compose<bond::tag<differ_t>
 	,	provision::memorized<state_type>
-	,	scaffold<_s...>
+	,	meta<_s...>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -97,7 +97,7 @@ namespace xtal::occur
 template <class ..._s>
 struct context<process::math::zavalishin::differ<_s...>>
 {
-	using superkind = context<process::math::zavalishin::scaffold<_s...>>;
+	using superkind = context<process::math::zavalishin::meta<_s...>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>

@@ -16,15 +16,15 @@ namespace xtal::process::math::zavalishin
 \tparam   M_end
 Specifies the final `stage`.
 
-When `M_end == 0`, an impulse/trigger is generated,
+When `M_end == 0`, an impulse is generated,
 which is scaled by the sample-rate if `prewarping_q`.
 This mode simulates a finite `DiracDelta[x]`.
 
-When `M_end != 0`, a gate/hold is generated.
+When `M_end != 0`, a sustained pulse/gate is generated.
 This mode simulates `HeavisidePi[# - 1/2]`.
 */
 template <int M_end=1>
-struct intake
+struct pulse
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -56,7 +56,7 @@ struct intake
 	};
 };
 template <>
-struct intake<0>
+struct pulse<0>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>

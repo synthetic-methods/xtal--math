@@ -5,7 +5,7 @@
 
 
 
-#include "./retake.hh"// testing...
+#include "./reuse.hh"// testing...
 XTAL_ENV_(push)
 namespace xtal::process::math::zavalishin::_test
 {/////////////////////////////////////////////////////////////////////////////////
@@ -13,7 +13,7 @@ namespace xtal::process::math::zavalishin::_test
 
 ////////////////////////////////////////////////////////////////////////////////
 
-TAG_("retake")
+TAG_("reuse")
 {
 	using U_alpha = typename bond::fit<>::alpha_type;
 	using U_stage = occur::stage_t<>;
@@ -28,7 +28,7 @@ TAG_("retake")
 	U_alpha constexpr    dn = 0;
 
 	/*/
-	TRY_("retake: ?")
+	TRY_("reuse: ?")
 	{
 		TRUE_(true);
 

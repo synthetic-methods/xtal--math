@@ -4,23 +4,17 @@
 
 
 
-#include "./nearest.hh"// testing...
+#include "./meta.hh"// testing...
 
 XTAL_ENV_(push)
-namespace xtal::process::math::_test
+namespace xtal::process::math::zavalishin::_test
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
 /*/
-TAG_("nearest")
+TAG_("component")
 {
-	using U_fit = bond::fit<>;
-	using U_sigma = typename _fit::sigma_type;
-	using U_delta = typename _fit::delta_type;
-	using U_alpha = typename _fit::alpha_type;
-	using U_aphex = typename _fit::aphex_type;
-
 	TRY_("task")
 	{
 		TRUE_(true);

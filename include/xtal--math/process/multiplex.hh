@@ -11,7 +11,7 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 /*!
-\brief   Rewires the interface to `O` via the routing/coefficient matrix `M`.
+\brief   Rewires the interface to `U_prx` via the routing/coefficient matrix `U_mtx`.
 */
 template <class ..._s>	struct  multiplex;
 template <class ..._s>	using   multiplex_t = confined_t<multiplex<_s...>>;
@@ -20,10 +20,10 @@ template <class ..._s>	concept multiplex_q = bond::tag_in_p<multiplex, _s...>;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <class O, typename ..._s>
-struct multiplex<O, _s...>
+template <class U_prx, typename ..._s>
+struct multiplex<U_prx, _s...>
 {
-	using innerkind = bond::compose<infer<O>, _s...>;
+	using innerkind = bond::compose<infer<U_prx>, _s...>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -35,11 +35,11 @@ struct multiplex<O, _s...>
 	public:// CONSTRUCT
 		using S_::S_;
 	
-		template <class M, typename ..._r>
+		template <class U_mtx, typename ..._r>
 		struct matrix
 		{
 			using superkind = bond::compose<bond::tag<multiplex>
-			,	typename occur::math::indent_s<M>::template incept<>
+			,	typename occur::math::indent_s<U_mtx>::template incept<>
 			,	innerkind
 			,	_r...
 			>;
@@ -75,11 +75,11 @@ struct multiplex<O, _s...>
 				})
 
 			};
-			using type = confined_t<typename T_::template matrix<M, _r...>>;
+			using type = confined_t<typename T_::template matrix<U_mtx, _r...>>;
 
 		};
-		template <class M, typename ..._r>
-		using matrix_t = typename matrix<M, _r...>::type;
+		template <class U_mtx, typename ..._r>
+		using matrix_t = typename matrix<U_mtx, _r...>::type;
 
 	};
 };

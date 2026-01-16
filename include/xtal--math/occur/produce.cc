@@ -4,25 +4,23 @@
 
 
 
-#include "./nearest.hh"// testing...
 
+#include "./produce.hh"// testing...
 XTAL_ENV_(push)
-namespace xtal::process::math::_test
+namespace xtal::occur::math::_test
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-/*/
-TAG_("nearest")
+/**/
+TAG_("produce")
 {
-	using U_fit = bond::fit<>;
-	using U_sigma = typename _fit::sigma_type;
-	using U_delta = typename _fit::delta_type;
-	using U_alpha = typename _fit::alpha_type;
-	using U_aphex = typename _fit::aphex_type;
+	using U_alpha = typename bond::fit<>::alpha_type;
 
 	TRY_("task")
 	{
+		using M2 = produce_s<atom::math::dot_t<U_alpha[2][2]>>;
+		using W2 = indent_s<M2>;
 		TRUE_(true);
 
 	}

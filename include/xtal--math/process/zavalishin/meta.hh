@@ -10,12 +10,12 @@ XTAL_ENV_(push)
 namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////
-
+/*!
+\brief   Defines common types and context-resolution procedures.
+*/
 template <class ...As>
-struct scaffold
-:	occur::context<scaffold<As...>>
+struct meta
+:	occur::context<meta<As...>>
 {
 };
 
@@ -31,7 +31,7 @@ namespace xtal::occur
 ////////////////////////////////////////////////////////////////////////////
 
 template <vector_q A, class ..._s>
-struct context<process::math::zavalishin::scaffold<A, _s...>>
+struct context<process::math::zavalishin::meta<A, _s...>>
 {
 private:
 	static_assert(incomplete_q<_s...>);
@@ -75,32 +75,32 @@ public:
 };
 
 template <scalar_q A>
-struct context<process::math::zavalishin::scaffold<A>>
-:	context<process::math::zavalishin::scaffold<A[2]>>
+struct context<process::math::zavalishin::meta<A>>
+:	context<process::math::zavalishin::meta<A[2]>>
 {
 };
 template <>
-struct context<process::math::zavalishin::scaffold< >>
-:	context<process::math::zavalishin::scaffold<typename bond::fit<>::alpha_type>>
+struct context<process::math::zavalishin::meta< >>
+:	context<process::math::zavalishin::meta<typename bond::fit<>::alpha_type>>
 {
 };
 
 template <bond::compose_q A, class ..._s>
-struct context<process::math::zavalishin::scaffold<A, _s...>>
+struct context<process::math::zavalishin::meta<A, _s...>>
 :	bond::compose<A
-	,	context<process::math::zavalishin::scaffold<_s...>>
+	,	context<process::math::zavalishin::meta<_s...>>
 	>
 {
 };
 template <incomplete_q A, class ..._s>
-struct context<process::math::zavalishin::scaffold<A, _s...>>
+struct context<process::math::zavalishin::meta<A, _s...>>
 :	bond::compose<context<A>
-	,	context<process::math::zavalishin::scaffold<_s...>>
+	,	context<process::math::zavalishin::meta<_s...>>
 	>
 {
 };
 //template <template <class ...> class T_, class ..._s>
-//struct context<T_<_s...>> : context<process::math::zavalishin::scaffold<_s...>>
+//struct context<T_<_s...>> : context<process::math::zavalishin::meta<_s...>>
 //{
 //};
 

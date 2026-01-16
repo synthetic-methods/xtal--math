@@ -10,18 +10,22 @@ XTAL_ENV_(push)
 namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-
-template <auto  ...Ms>	struct  retake;
-template <auto  ...Ms>	using   retake_t = process::confined_t<retake<Ms...>>;
+/*!
+\brief   Manages the lifecycle of the current voice.
+\todo    Incorporate toggle to select between monophonic/polyphonic.
+\todo    Consider making reset/reuse a passive `provision`,
+         and move this into `meta` (or something).
+*/
+template <auto  ...Ms>	struct  reuse;
+template <auto  ...Ms>	using   reuse_t = process::confined_t<reuse<Ms...>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 /*!
-\brief   Responds to `efflux(occur::stage_f(+0))` by resetting the filter state.
-\todo    Allow reset for any `dispatch`ed parameters.
+\brief   Responds to `efflux(occur::stage_f(+0))` by reuseting the filter state.
 */
 template <>
-struct retake< 0>
+struct reuse< 0>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -66,7 +70,7 @@ struct retake< 0>
 \todo    Accommodate gain when calculating the `dot` with state?
 */
 template <>
-struct retake<-1>
+struct reuse<-1>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -102,44 +106,17 @@ struct retake<-1>
 		fuse(occur::stage_q auto &&o)
 		noexcept -> signed
 		{
-			auto constexpr dot_e = bond::fit<unstruct_t<state_type>>::haplo_f(0x11);// Epsilon (~-48dBFS) squared...
 			auto const [states_] = S_::template memory<state_type>();
-			static_assert(state_type::size() <= 4);
-
+			using  Y = XTAL_ALL_(dot_f(states_));
 			signed x = S_::template fuse<N_ion>(XTAL_REF_(o));
 
-			auto const order = order_attribute{self()};
-			if (0 < order and o.head() == -1) {
-				auto const disorder = order - one;
-				XTAL_IF0
-				XTAL_0IF (1 == state_type::size()) {
-					x &= dot_e > dot_f(states_);
+			auto const ord = order_attribute{self()};
+			if (o.head() == -1 and 1 <= ord) {
+				Y dot{};
+				for (int i{}; i < ord; ++i) {
+					dot = term_f(XTAL_MOV_(dot), dot_f(states_[i]));
 				}
-				XTAL_0IF (2 == state_type::size()) {
-					XTAL_IF1_(assume) (disorder == (disorder&0b01));
-					switch                         (disorder&0b01) {
-					case 0: x &= dot_e > dot_f(states_.self(constant_t<1>{})); break;
-					case 1: x &= dot_e > dot_f(states_.self(constant_t<2>{})); break;
-					}
-				}
-				XTAL_0IF (3 == state_type::size()) {
-					XTAL_IF1_(assume) (disorder == (disorder&0b11));
-					switch                         (disorder&0b11) {
-					case 0: x &= dot_e > dot_f(states_.self(constant_t<1>{})); break;
-					case 1: x &= dot_e > dot_f(states_.self(constant_t<2>{})); break;
-					case 2: x &= dot_e > dot_f(states_.self(constant_t<3>{})); break;
-					case 3:                                                    break;
-					}
-				}
-				XTAL_0IF (4 == state_type::size()) {
-					XTAL_IF1_(assume) (disorder == (disorder&0b11));
-					switch                         (disorder&0b11) {
-					case 0: x &= dot_e > dot_f(states_.self(constant_t<1>{})); break;
-					case 1: x &= dot_e > dot_f(states_.self(constant_t<2>{})); break;
-					case 2: x &= dot_e > dot_f(states_.self(constant_t<3>{})); break;
-					case 3: x &= dot_e > dot_f(states_.self(constant_t<4>{})); break;
-					}
-				}
+				x &= dot < bond::fit<Y>::haplo_f(0x11);// Epsilon (~-48dBFS) squared...
 			}
 			return x;
 		}

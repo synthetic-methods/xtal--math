@@ -61,8 +61,9 @@ public:
 	public:// CONSTRUCT
 		using S_::S_;
 
-		using typename S_::value_type;
-		using typename S_::scale_type;
+		using typename S_::revalue_type;
+		using typename S_::  value_type;
+		using typename S_::  scale_type;
 
 	public:// ACCESS
 		using S_::size;
@@ -86,19 +87,34 @@ public:
 		XTAL_DEF_(return,inline,let)
 		operator * (auto const &t) const
 		noexcept -> auto
+		requires XTAL_TRY_(to_unless) (t.size())
 		{
-			if constexpr (bond::pack_q<decltype(t)>) {
-				auto &s = self();
-				typename T::revalue_type u{0};
-				
-				bond::seek_until_f<size>([&]<constant_q I> (I)
-					XTAL_0FN_(do) (u = _xtd::plus_multiplies_f(XTAL_MOV_(u), got<I{}>(s), got<I{}>(t))));
-				
-				return u;
+			return S_::operator*(t);
+		}
+		XTAL_DEF_(return,inline,let)
+		operator * (auto const &t) const
+		noexcept -> auto
+		requires XTAL_TRY_(to_if) (t.size()) and XTAL_TRY_(to_if)     (t.capacity())
+		{
+			auto &s = self();
+			auto  u = revalue_type{};
+			auto  n = bond::math::bit_extremum_f<-1>(t.size(), size());
+			for (int i{}; i < n; ++i) {
+				u = _xtd::plus_multiplies_f(XTAL_MOV_(u), s[i], t[i]);
 			}
-			else {
-				return S_::operator*(t);
-			}
+			return u;
+		}
+		XTAL_DEF_(return,inline,let)
+		operator * (auto const &t) const
+		noexcept -> auto
+		requires XTAL_TRY_(to_if) (t.size()) and XTAL_TRY_(to_unless) (t.capacity())
+		{
+			auto &s = self();
+			revalue_type u{};
+			bond::seek_until_f<size>([&]<constant_q I> (I) XTAL_0FN {
+				u = _xtd::plus_multiplies_f(XTAL_MOV_(u), got<I{}>(s), got<I{}>(t));
+			});
+			return u;
 		}
 		template <class U>
 		XTAL_DEF_(return,inline,met)

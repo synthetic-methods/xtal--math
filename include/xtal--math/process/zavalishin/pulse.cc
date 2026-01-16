@@ -5,7 +5,7 @@
 
 
 
-#include "./intake.hh"// testing...
+#include "./pulse.hh"// testing...
 XTAL_ENV_(push)
 namespace xtal::process::math::zavalishin::_test
 {/////////////////////////////////////////////////////////////////////////////////
@@ -13,7 +13,7 @@ namespace xtal::process::math::zavalishin::_test
 
 ////////////////////////////////////////////////////////////////////////////////
 /*/
-TAG_("intake")
+TAG_("pulse")
 {
 	using U_alpha = typename bond::fit<>::alpha_type;
 	using U_stage = occur::stage_t<>;
@@ -26,7 +26,7 @@ TAG_("intake")
 	U_alpha constexpr    up = 1;
 	U_alpha constexpr    dn = 0;
 
-	TRY_("intake: generation")
+	TRY_("pulse: generation")
 	{
 		TRUE_(true);
 

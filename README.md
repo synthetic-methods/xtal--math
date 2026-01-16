@@ -124,10 +124,10 @@ using U_event   = flow::key_s<U_stage>;                // Key-Trigger pair.
 // Process composition...
 
 using T_process = process::confined_t<void             // Wrap the process.
-,  provision::math::prewarping< 0>                     // Apply s-plane frequency-prewarping to the first argument.
-,  intake< 1>                                          // Fulfil first argument with gate-signal controlled by `stage`.
-,  retake< 0>                                          // Resets the filter-state when note is initialized.
-,  retake<-1>                                          // Provides release detection.
+,  provision::math::prewarping<0>                      // Apply s-plane frequency-prewarping to the first argument.
+,  pulse< 1>                                           // Fulfil first argument with gate-signal controlled by `stage`.
+,  reuse< 0>                                           // Resets the filter-state when note is initialized.
+,  reuse<-1>                                           // Provides release detection.
 ,  typename U_stage   ::template   assignment<P_damp>  // Creates a table associating `stage` with damping.
 ,  typename P_damp    ::template   attend<>            // Attach/append damping to the arguments-list.
 ,  typename P_fade    ::template   attend<>            // Attach/append  fading to the arguments-list.
@@ -146,18 +146,18 @@ using T_processor = processor::polymer_t<T_process     // Map the process while 
 ,  provision::spooled<null_type[0x100]>                // Use `std::vector`-based event-spooliing.
 >;
 
-auto z_resize =  occur::resize_t<>(0x020);             // Let buffer-length equal `16`.
-auto z_cursor =  occur::cursor_t<>(0x020);             // Let window-length equal `16`.
-auto z_sample =  occur::resample_f(2*2*3*3*5*5*7*7);   // Let sampling-rate    equal `44100 Hz`.
+auto z_resize =   occur::resize_t<>(0x020);            // Let buffer-length equal `16`.
+auto z_cursor =   occur::cursor_t<>(0x020);            // Let window-length equal `16`.
+auto z_sample =   occur::resample_f(2*2*3*3*5*5*7*7);  // Let sampling-rate    equal `44100 Hz`.
 auto z_omega  =   processor::let_f(59*61);             // Let filter-frequency equal `3599  Hz`.
 auto z        = T_processor::bind_f(z_omega);
 
 z <<= Q_order {2};                                     // Use the second-order filter (template).
-z <<= P_damp{1};                                     // Initialize with maximum-damping.
-z <<= P_fade{1};                                     // Initialize with maximum-volume.
-z <<= flow::assign_f(U_stage{ 0}) << P_damp{0.000F}; // Associate note-on  with maximum-resonance.
-z <<= flow::assign_f(U_stage{ 1}) << P_damp{0.060F}; // Associate note-off with  medium-resonance.
-z <<= flow::assign_f(U_stage{-1}) << P_damp{0.707F}; // Associate note-cut with minimal-resonance.
+z <<= P_damp{1};                                       // Initialize with maximum-damping.
+z <<= P_fade{1};                                       // Initialize with maximum-volume.
+z <<= flow::assign_f(U_stage{ 0}) << P_damp{0.000F};   // Associate note-on  with maximum-resonance.
+z <<= flow::assign_f(U_stage{ 1}) << P_damp{0.060F};   // Associate note-off with  medium-resonance.
+z <<= flow::assign_f(U_stage{-1}) << P_damp{0.707F};   // Associate note-cut with minimal-resonance.
 
 z <<= z_sample;                                        // Influx the current sample-rate.
 z <<= z_resize;                                        // Influx the current buffer-size.
