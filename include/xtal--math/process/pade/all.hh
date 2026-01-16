@@ -3,4 +3,3 @@
 #include "./unify.hh"
 #include "./tangy.hh"
 #include "./unity.hh"
-#include "./wnity.hh"

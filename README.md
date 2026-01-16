@@ -29,7 +29,7 @@ Within each `math` subspace, components may be further organized by an associate
 |[`atom/dirichlet/symbol.hh`        ](include/xtal--math/atom/dirichlet/symbol.hh?ts=3)        | Dirichlet/Kronecker characters/symbols.                                        |
 |[`atom/fourier/serial.hh`          ](include/xtal--math/atom/fourier/serial.hh?ts=3)          | Linear convolution.                                                            |
 |[`atom/fourier/series.hh`          ](include/xtal--math/atom/fourier/series.hh?ts=3)          | Circular convolution and transformation.                                       |
-|[`atom/fourier/wniplex.hh`         ](include/xtal--math/atom/pade/wniplex.hh?ts=3)            | Compact multiplicative complex sign and mutually reciprocal magnitude.         |
+|[`atom/fourier/uniplex.hh`         ](include/xtal--math/atom/pade/uniplex.hh?ts=3)            | Compact multiplicative complex sign and mutually reciprocal magnitude.         |
 |[`process/multiplex.hh`            ](include/xtal--math/process/multiplex.hh?ts=3)            | Modulation matrix.                                                             |
 |[`process/pade/unity.hh`           ](include/xtal--math/process/pade/unity.hh?ts=3)           | Complex sinusoid with period `2π`, figuratively equivalent to `1^# &`.         |
 |[`process/taylor/logarithm.hh`     ](include/xtal--math/process/taylor/logarithm.hh?ts=3)     | Approximations of the     logarithm  `Log`.                                    |

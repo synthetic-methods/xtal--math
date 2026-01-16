@@ -10,62 +10,61 @@ XTAL_ENV_(push)
 namespace xtal::atom::math::pade
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-
-template <class   ..._s>	struct  wniplex;
-template <class   ..._s>	using   wniplex_t = typename wniplex<_s...>::type;
-template <class   ...Ts>	concept wniplex_q = bond::tag_in_p<wniplex_t, Ts...>;
+/*!
+\brief   Represents a complex reciprocal-pair via the sign and reciprocal magnitudes.
+*/
+template <class   ..._s>	struct  uniplex;
+template <class   ..._s>	using   uniplex_t = typename uniplex<_s...>::type;
+template <class   ...Ts>	concept uniplex_q = bond::tag_in_p<uniplex_t, Ts...>;
 
 namespace _detail
 {///////////////////////////////////////////////////////////////////////////////
 
 XTAL_DEF_(return,inline,let)
-wniplex_f(auto &&...oo)
+uniplex_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
-	return atom::_detail::factory<wniplex_t>::make(XTAL_REF_(oo)...);
+	return atom::_detail::factory<uniplex_t>::make(XTAL_REF_(oo)...);
 }
 XTAL_DEF_(return,inline,let)
-wniplex_f(decltype(_std::in_place), simplex_variable_q auto &&o)
+uniplex_f(decltype(_std::in_place), simplex_variable_q auto &&o)
 noexcept -> decltype(auto)
 {
-	using  W = wniplex_t<XTAL_ALL_(o)>;
+	using  W = uniplex_t<XTAL_ALL_(o)>;
 	return W{{one, zero}, process::math::roots_f<1>(XTAL_REF_(o))};
 }
 XTAL_DEF_(return,inline,let)
-wniplex_f(decltype(_std::in_place), complex_variable_q auto &&o)
+uniplex_f(decltype(_std::in_place), complex_variable_q auto &&o)
 noexcept -> decltype(auto)
 {
-	using  W = wniplex_t<XTAL_ALL_(o)>;
+	using  W = uniplex_t<XTAL_ALL_(o)>;
 	auto   const vs = process::math::roots_f<2>(process::math::dot_f(o));
 	auto   const dn = get<1>(vs);
 	return W{XTAL_REF_(o)*XTAL_MOV_(dn), XTAL_MOV_(vs)};
 }
 XTAL_DEF_(return,inline,let)
-wniplex_f(complex_variable_q auto &&o, decltype(_std::in_place))
+uniplex_f(complex_variable_q auto &&o, decltype(_std::in_place))
 noexcept -> decltype(auto)
 {
-	using  W = wniplex_t<XTAL_ALL_(o)>;
+	using  W = uniplex_t<XTAL_ALL_(o)>;
 	return W{XTAL_REF_(o), {one, one}};
 }
 
 
 }///////////////////////////////////////////////////////////////////////////////
 
-XTAL_DEF_(let) wniplex_f = [] XTAL_1FN_(call) (_detail::wniplex_f);
+XTAL_DEF_(let) uniplex_f = [] XTAL_1FN_(call) (_detail::uniplex_f);
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/*!
-\brief   Provides a reciprocal complex coupling,
-optimized for multiplication and scalar reflection.
-*/
+
 template <class A>
-struct wniplex<A>
-:	wniplex<typename fixed<A>::value_type>
+struct uniplex<A>
+:	uniplex<typename fixed<A>::value_type>
 {
 };
 template <scalar_q A> requires simplex_field_q<A>
-struct wniplex<A>
+struct uniplex<A>
 {
 	using simplex_type =  A;
 	using complex_type = _std::complex<simplex_type>;
@@ -82,7 +81,7 @@ private:
 	using endotype = typename group_multiplication<complex_type, duplex_type>::template homotype<T>;
 
 	template <class T>
-	using holotype = bond::compose_s<endotype<T>, bond::tag<wniplex_t>>;
+	using holotype = bond::compose_s<endotype<T>, bond::tag<uniplex_t>>;
 
 public:
 	template <class T>

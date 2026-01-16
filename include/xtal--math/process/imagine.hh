@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-//#import "../atom/pade/wniplex.hh"
+//#import "../atom/pade/uniplex.hh"
 
 
 
@@ -38,7 +38,7 @@ struct imagine
 		template <auto ...>
 		XTAL_DEF_(return,inline,set)
 		//\
-		method_f(atom::math::pade::wniplex_q auto &&z)
+		method_f(atom::math::pade::uniplex_q auto &&z)
 		method_f(atom::couple_q auto &&z)
 		noexcept -> decltype(auto)
 		requires complex_variable_q<decltype(get<0>(z))> and atom::couple_q<decltype(get<1>(z))>

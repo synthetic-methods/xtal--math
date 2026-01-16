@@ -1,6 +1,6 @@
 #pragma once
 #include "./any.cc"
-#include "./wniplex.hh"// testing...
+#include "./uniplex.hh"// testing...
 
 #include "../../process/all.hh"
 
@@ -13,7 +13,7 @@ namespace xtal::atom::math::pade::_test
 
 ////////////////////////////////////////////////////////////////////////////////
 
-TAG_("wniplex")
+TAG_("uniplex")
 {
 	using U_fit = bond::fit<>;
 	using U_delta = typename U_fit::delta_type;
@@ -33,8 +33,8 @@ TAG_("wniplex")
 	{
 		U_aphex const x{-0.125, -0.125};
 		//\
-		wniplex_t<U_alpha> u(x);
-		auto u = wniplex_f(x);
+		uniplex_t<U_alpha> u(x);
+		auto u = uniplex_f(x);
 		auto const [v_re, v_im] = u.reflection();
 		auto const [w_re, w_im] = u.resolution();
 		TRUE_(check_f<-30>(v_re, process::math::imagine_f<0>(two*cos(two*pi*x))));
@@ -59,16 +59,16 @@ TAG_("wniplex")
 	}
 	/***/
 	/**/
-	TRY_("`wniplex_t<couple_t<...>>` operation")
+	TRY_("`uniplex_t<couple_t<...>>` operation")
 	{
 		U_aphex const x0{ 0.11, 0.33};
 		U_aphex const x1{ 0.22, 0.44};
 		W_aphex const xA{{ 0.11, 0.22}, { 0.33, 0.44}};
 		//\
-		wniplex_t<U_alpha> u(xA);
-		auto u0 = wniplex_f(x0);
-		auto u1 = wniplex_f(x1);
-		auto uA = wniplex_f(xA);
+		uniplex_t<U_alpha> u(xA);
+		auto u0 = uniplex_f(x0);
+		auto u1 = uniplex_f(x1);
+		auto uA = uniplex_f(xA);
 		auto const [v0_up, v0_dn] = u0.reflection();
 		auto const [v1_up, v1_dn] = u1.reflection();
 		auto const [vA_up, vA_dn] = uA.reflection();

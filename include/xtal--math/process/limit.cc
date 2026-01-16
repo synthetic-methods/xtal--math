@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.cc"
 
-#include "../atom/pade/wniplex.hh"
+#include "../atom/pade/uniplex.hh"
 
 
 
@@ -32,9 +32,9 @@ TAG_("limit")
 	auto constexpr N_inf = _std::numeric_limits<U_alpha>::inf();
 #endif
 
-	TRY_("wniplex evaluation")
+	TRY_("uniplex evaluation")
 	{
-		auto const foo = atom::math::pade::wniplex_f(U_aphex{0.125, 64.00});
+		auto const foo = atom::math::pade::uniplex_f(U_aphex{0.125, 64.00});
 		auto const bar = limit_f<3>(foo);
 		TRUE_(bond::pack_item_f<1, 0>(foo) <             (bond::pack_item_f<1, 0>(bar)));
 		TRUE_(bond::pack_item_f<1, 1>(bar) <             (bond::pack_item_f<1, 1>(foo)));

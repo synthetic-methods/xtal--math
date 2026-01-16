@@ -132,7 +132,7 @@ struct limit<M_app>
 				auto &w1 = get<1>(w_); using W1 = XTAL_ALL_(w1);
 				XTAL_IF0
 				//\
-				XTAL_0IF (wniplex_q<W_>) {
+				XTAL_0IF (uniplex_q<W_>) {
 				XTAL_0IF (complex_variable_q<W0> and atom::couple_q<W1>) {
 					auto const u0 =                          method_e<Ns...>(get<0>(w1));
 					auto const u1 = limit_t<M_opp>::template method_e<Ns...>(get<1>(w1));
