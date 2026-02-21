@@ -146,8 +146,8 @@ TAG_("filter-ring")
 		,	reuse<-1>
 		,	typename R_etc::damp_parameter::template   attend<>
 		,	typename R_etc::fade_parameter::template   attend<>
-		,	typename R_etc::             template   attach<>
-		,	typename R_etc::             template dispatch<>
+		,	typename R_etc::                template   attach<>
+		,	typename R_etc::                template dispatch<>
 		,	R_def
 		>;
 		using R_pxr = processor::monomer_t<R_prx
@@ -162,7 +162,7 @@ TAG_("filter-ring")
 		auto z_sample = occur::resample_f(44100);
 
 		auto z = R_pxr::bind_f(processor::let_f(r_omega));
-		z <<= typename R_etc::  order_attribute{2};
+		z <<= typename R_etc::order_attribute{2};
 		z <<= typename R_etc:: damp_parameter{1};
 		z <<= typename R_etc:: fade_parameter{1};
 

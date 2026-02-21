@@ -13,15 +13,15 @@ namespace xtal::process::math
 /*!
 \brief   Rewires the interface to `U_prx` via the routing/coefficient matrix `U_mtx`.
 */
-template <class ..._s>	struct  multiplex;
-template <class ..._s>	using   multiplex_t = confined_t<multiplex<_s...>>;
-template <class ..._s>	concept multiplex_q = bond::tag_in_p<multiplex, _s...>;
+template <class ..._s>	struct  patch;
+template <class ..._s>	using   patch_t = confined_t<patch<_s...>>;
+template <class ..._s>	concept patch_q = bond::tag_in_p<patch, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <class U_prx, typename ..._s>
-struct multiplex<U_prx, _s...>
+struct patch<U_prx, _s...>
 {
 	using innerkind = bond::compose<infer<U_prx>, _s...>;
 
@@ -38,8 +38,8 @@ struct multiplex<U_prx, _s...>
 		template <class U_mtx, typename ..._r>
 		struct matrix
 		{
-			using superkind = bond::compose<bond::tag<multiplex>
-			,	typename occur::math::indent_s<U_mtx>::template incept<>
+			using superkind = bond::compose<bond::tag<patch>
+			,	typename occur::math::indent_s<U_mtx>::template attach<>
 			,	innerkind
 			,	_r...
 			>;

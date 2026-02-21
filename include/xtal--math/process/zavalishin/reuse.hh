@@ -22,7 +22,7 @@ template <auto  ...Ms>	using   reuse_t = process::confined_t<reuse<Ms...>>;
 
 ////////////////////////////////////////////////////////////////////////////////
 /*!
-\brief   Responds to `efflux(occur::stage_f(+0))` by reuseting the filter state.
+\brief   Responds to `efflux(occur::stage_f(+0))` by clearing the filter state.
 */
 template <>
 struct reuse< 0>

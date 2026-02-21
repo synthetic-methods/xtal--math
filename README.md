@@ -30,7 +30,7 @@ Within each `math` subspace, components may be further organized by an associate
 |[`atom/fourier/serial.hh`          ](include/xtal--math/atom/fourier/serial.hh?ts=3)          | Linear convolution.                                                            |
 |[`atom/fourier/series.hh`          ](include/xtal--math/atom/fourier/series.hh?ts=3)          | Circular convolution and transformation.                                       |
 |[`atom/fourier/uniplex.hh`         ](include/xtal--math/atom/pade/uniplex.hh?ts=3)            | Compact multiplicative complex sign and mutually reciprocal magnitude.         |
-|[`process/multiplex.hh`            ](include/xtal--math/process/multiplex.hh?ts=3)            | Modulation matrix.                                                             |
+|[`process/patch.hh`                ](include/xtal--math/process/patch.hh?ts=3)                | Modulation matrix.                                                             |
 |[`process/pade/unity.hh`           ](include/xtal--math/process/pade/unity.hh?ts=3)           | Complex sinusoid with period `2π`, figuratively equivalent to `1^# &`.         |
 |[`process/taylor/logarithm.hh`     ](include/xtal--math/process/taylor/logarithm.hh?ts=3)     | Approximations of the     logarithm  `Log`.                                    |
 |[`process/taylor/monologarithm.hh` ](include/xtal--math/process/taylor/monologarithm.hh?ts=3) | Approximations of the monologarithm `-Log[1 - #] &`.                           |

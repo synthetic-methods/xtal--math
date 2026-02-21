@@ -50,7 +50,7 @@ struct pulse
 			auto const     i_stage = _xtd::make_unsigned_f(u_stage.head());
 			auto constexpr I_stage = _xtd::make_unsigned_f(M_end);
 			auto const     x_input = static_cast<typename state_type::value_type>(i_stage < I_stage);
-			return S_::template method<Ns...>(x_input, XTAL_REF_(oo)...);
+			return S_::template method<Ns...>(x_input*half, XTAL_REF_(oo)...)*two;
 		}
 
 	};
@@ -74,17 +74,15 @@ struct pulse<0>
 
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,let)
-		method(auto s_gain, auto &&...oo)
+		method(auto u_warp, auto &&...oo)
 		noexcept -> decltype(auto)
 		{
 			auto &u_stage = S_::template head<stage_type>();
 			auto  x_stage = 0 == u_stage;
-			auto  x_input = static_cast<typename state_type::value_type>(x_stage);
-			if constexpr (provision::math::prewarping_q<T_>) {
-				x_input *= root_f<-1>(s_gain);
-			}
+			auto  x_input = static_cast<typename state_type::value_type>(x_stage)*root_f<-1>(u_warp);
+			static_assert(provision::math::prewarping_q<T_>);
 			u_stage |= x_stage;
-			return S_::template method<Ns...>(x_input, s_gain, XTAL_REF_(oo)...);
+			return S_::template method<Ns...>(x_input*half, u_warp, XTAL_REF_(oo)...)*two;
 		}
 
 	};

@@ -40,51 +40,50 @@ struct decompose<signed>
 
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		method_f(auto const &o)
+		method_f(integral_constant_q auto const &o)
 		noexcept -> auto
-		requires un_v<numeric_variable_q<decltype(o)>>
 		{
-			return (0 < o) - (o < 0) + (o == 0);
+		//	return (0 < o) - (o < 0) + (o == 0);
+			return constant_t<method_f(XTAL_ALL_(o)::value)>{};
 		}
 		/**/
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		method_f(ordinal_variable_q auto o)
+		method_f(integral_variable_q auto o)
 		noexcept -> auto
 		{
-			using _fit    = bond::fit<decltype(o)>;
-			using _alpha = typename _fit::alpha_type;
-			o  -= 1;
-			o >>= _fit::positive.depth;
-			//\
-			if constexpr (_fit::IEC&559) {
-			if constexpr (false) {
-				o &= _fit::sign.mask;
-				o |= _fit::unit.mask;
-				return _xtd::bit_cast<_alpha>(o);
+			using U       = XTAL_ALL_(o);
+			using U_fit   = bond::fit<U>;
+			using U_alpha = typename U_fit::alpha_type;
+			using U_delta = typename U_fit::delta_type;
+			using U_sigma = typename U_fit::sigma_type;
+			XTAL_IF0
+			XTAL_0IF ( ordinal_variable_q<U>) {
+				o  -= 1;
+				o >>= U_fit::positive.depth;
+				//\
+				if constexpr (U_fit::IEC&559) {
+				if constexpr (false) {
+					o &= U_fit::sign.mask;
+					o |= U_fit::unit.mask;
+					return _xtd::bit_cast<U_alpha>(o);
+				}
+				else {
+					o |= 1;
+					return    static_cast<U_alpha>(o);
+				}
 			}
-			else {
-				o |= 1;
-				return    static_cast<_alpha>(o);
-			}
-		}
-		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
-		method_f(cardinal_variable_q auto o)
-		noexcept -> auto
-		{
-			using _fit    = bond::fit<decltype(o)>;
-			using _alpha = typename _fit::alpha_type;
-			using _delta = typename _fit::delta_type;
-			//\
-			if constexpr (_fit::IEC&559) {
-			if constexpr (false) {
-				o <<= _fit::positive.depth;
-				o  ^= _fit::sign.mask|_fit::unit.mask;
-				return _xtd::bit_cast<_alpha>(o);
-			}
-			else {
-				return method_f(_xtd::bit_cast<_delta>(o&one));
+			XTAL_0IF (cardinal_variable_q<U>) {
+				//\
+				if constexpr (U_fit::IEC&559) {
+				if constexpr (false) {
+					o <<= U_fit::positive.depth;
+					o  ^= U_fit::sign.mask|U_fit::unit.mask;
+					return _xtd::bit_cast<U_alpha>(o);
+				}
+				else {
+					return method_f(_xtd::bit_cast<U_delta>(o&one));
+				}
 			}
 		}
 		/***/
@@ -93,15 +92,15 @@ struct decompose<signed>
 		method_f(real_variable_q auto const &o)
 		noexcept -> XTAL_ALL_(o)
 		{
-			using _fit = bond::fit<decltype(o)>;
-			return _xtd::copysign(_fit::alpha_1, o);
+			using U_fit = bond::fit<decltype(o)>;
+			return _xtd::copysign(U_fit::alpha_1, o);
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
 		method_f(complex_variable_q auto const &o)
 		noexcept -> XTAL_ALL_(o)
 		{
-			using _fit = bond::fit<decltype(o)>;
+			using U_fit = bond::fit<decltype(o)>;
 			return o*root_f<-2>(dot_f(o));
 		}
 		template <auto ...Ns>
@@ -147,8 +146,8 @@ struct decompose<signed>
 		method_e(cardinal_variable_q auto &u)
 		noexcept -> auto
 		{
-			using _fit = bond::fit<decltype(u)>;
-			return method_e<N_side>(reinterpret_cast<typename _fit::delta_type &>(u));
+			using U_fit = bond::fit<decltype(u)>;
+			return method_e<N_side>(reinterpret_cast<typename U_fit::delta_type &>(u));
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
@@ -162,7 +161,7 @@ struct decompose<signed>
 		method_e(complex_variable_q auto &o)
 		noexcept -> XTAL_ALL_(o)
 		{
-			using _fit = bond::fit<decltype(o)>;
+			using U_fit = bond::fit<decltype(o)>;
 			auto [u, v] = roots_f<2>(dot_f(o));
 			auto const o_sgn = o*v;
 			auto const o_mgn = XTAL_ALL_(o){u};
@@ -195,8 +194,8 @@ struct decompose<unsigned>
 		method_f( ordinal_variable_q auto const &o)
 		noexcept -> auto
 		{
-			using _fit = bond::fit<decltype(o)>;
-			auto const v = o >> _fit::sign.shift;
+			using U_fit = bond::fit<decltype(o)>;
+			auto const v = o >> U_fit::sign.shift;
 			return (o^v) - v;
 		}
 		template <auto ...Ns>
@@ -204,15 +203,15 @@ struct decompose<unsigned>
 		method_f(real_variable_q auto const &o)
 		noexcept -> auto
 		{
-			using _fit = bond::fit<decltype(o)>;
-			return _xtd::copysign(o, _fit::alpha_1);
+			using U_fit = bond::fit<decltype(o)>;
+			return _xtd::copysign(o, U_fit::alpha_1);
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
 		method_f(complex_variable_q auto const &o)
 		noexcept -> auto
 		{
-			using _fit = bond::fit<decltype(o)>;
+			using U_fit = bond::fit<decltype(o)>;
 			return root_f<2>(dot_f(o));
 		}
 		template <auto ...Ns>
@@ -229,8 +228,8 @@ struct decompose<unsigned>
 		method_e(real_variable_q auto &o)
 		noexcept -> auto
 		{
-			using _fit = bond::fit<decltype(o)>;
-			auto const o_sgn = _xtd::copysign(_fit::alpha_1, o);
+			using U_fit = bond::fit<decltype(o)>;
+			auto const o_sgn = _xtd::copysign(U_fit::alpha_1, o);
 			auto const o_mgn = o*o_sgn;
 			o =    o_sgn;
 			return o_mgn;
@@ -240,7 +239,7 @@ struct decompose<unsigned>
 		method_e(complex_variable_q auto &o)
 		noexcept -> auto
 		{
-			using _fit = bond::fit<decltype(o)>;
+			using U_fit = bond::fit<decltype(o)>;
 			auto [u, v] = roots_f<2>(dot_f(o)); o *= v; return u;
 		}
 
