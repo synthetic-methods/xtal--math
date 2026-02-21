@@ -60,10 +60,9 @@ struct modulo<M_mod>
 				return Z{};
 			}
 			XTAL_0IF (M_mod != 0) {
-				auto constexpr  Z_up  = Z_fit::haplo_f(M_mod);
-				auto constexpr  Z_dn  = Z_fit::diplo_f(M_mod);
-				auto constexpr  Z_mod = 0;
-				return modulo_t<Z_mod>::template method_f<Ns...>(XTAL_REF_(z)*Z_up)*Z_dn;
+				auto constexpr Z_up = Z_fit::haplo_f(M_mod);
+				auto constexpr Z_dn = Z_fit::diplo_f(M_mod);
+				return modulo_t<-0>::template method_f<Ns...>(XTAL_REF_(z)*Z_up)*Z_dn;
 			}
 			XTAL_0IF_(to) (bond::math::bit_fraction_f(XTAL_REF_(z)))
 			XTAL_0IF_(to) (z - nearest_f(z))

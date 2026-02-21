@@ -13,6 +13,21 @@ namespace xtal::process::math
 
 ////////////////////////////////////////////////////////////////////////////////
 
+template <integral_variable_q U>
+XTAL_DEF_(return,inline,let)
+factorial_f(U upper, U lower)
+noexcept -> auto
+{
+	U n{one};
+	for (U u{upper}; lower < u; --u) n *= u; return n;
+}
+template <integral_variable_q U>
+XTAL_DEF_(return,inline,let)
+factorial_f(U upper)
+noexcept -> auto
+{
+	return factorial_f(upper, U{});
+}
 template <auto N>
 XTAL_DEF_(return,inline,let)
 factorial_f()
@@ -33,13 +48,6 @@ factorial_f(U o)
 noexcept -> auto
 {
 	return constant_t<factorial_f<U{}()>()>{};
-}
-template <integral_variable_q U>
-XTAL_DEF_(return,inline,let)
-factorial_f(U o)
-noexcept -> auto
-{
-	auto n{o}; while (--o) n *= o; return n;
 }
 
 

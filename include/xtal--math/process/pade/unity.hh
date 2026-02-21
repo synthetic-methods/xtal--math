@@ -73,33 +73,33 @@ struct unity<M_ism, M_car>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,set)
-		method_f(simplex_field_q auto const &u)
+		method_f(simplex_field_q auto const &t)
 		noexcept -> decltype(auto)
 		{
-			using U       = XTAL_ALL_(u);
+			using U       = XTAL_ALL_(t);
 			using U_fit   = bond::fit<U>;
 			using U_alpha = typename U_fit::alpha_type;
 
 			XTAL_IF0
 			XTAL_0IF (M_car == 1) {
 				return confined_t<unity<M_ism, 0>>::
-					template method_f<N_lim>(modulo_f<-0>(u));
+					template method_f<N_lim>(modulo_f<-0>(t));
 			}
 			XTAL_0IF (0 <= N_lim) {
-				auto const o_1 = objective_f(u);
-				auto const o_2 = objective_f(modulo_f<-1>(o_1));
-				return superprocess::template method_f<N_lim>(o_2)*
-					term_f(one, -U_fit::diplo_f(2), decompose_f<unsigned>(o_1 - o_2));
+				auto const w = modulo_f<-0>(t)*U_fit::dnsilon_f(1);
+				auto const u = modulo_f<-1>(w)*U_fit::upsilon_f(1);
+				auto const v = decompose_f<signed>(u)*decompose_f<signed>(w);
+				return superprocess::template method_f<N_lim>(u)*(v);
 			}
 			XTAL_0IF (N_lim <  0) {
 				XTAL_IF1_(consteval) {
-					return method_f<below_v<(1<<2), (unsigned) N_lim>>(u);
+					return method_f<below_v<(1<<2), (unsigned) N_lim>>(t);
 				}
 				XTAL_0IF_(else) {
-					auto const w = objective_f(u*U_fit::patio_2);
+					auto const x = objective_f(t*U_fit::patio_2);
 					XTAL_IF0
-					XTAL_0IF (1 == M_ism) {return complexion_f(cos (w), sin (w));}
-					XTAL_0IF (2 == M_ism) {return complexion_f(cosh(w), sinh(w));}
+					XTAL_0IF (1 == M_ism) {return complexion_f(cos (x), sin (x));}
+					XTAL_0IF (2 == M_ism) {return complexion_f(cosh(x), sinh(x));}
 				}
 			}
 		}

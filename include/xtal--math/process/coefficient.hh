@@ -15,13 +15,13 @@ namespace xtal::process::math
 \todo    Implement positional parameter `M_pos`?
 */
 template <auto ...Ms>
-struct multiplied;
+struct coefficient;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <auto ...Ms>
-struct multiplied
+struct coefficient
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>

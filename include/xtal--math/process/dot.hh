@@ -37,7 +37,7 @@ namespace _detail
 {///////////////////////////////////////////////////////////////////////////////
 
 template <class ...Ts>
-using multiplied_t = common_t<return_t<_std::multiplies<void>,
+using coefficient_t = common_t<return_t<_std::multiplies<void>,
 	decltype(one), typename fluid<Ts>::value_type>...>;
 
 
@@ -88,7 +88,7 @@ struct dot
 				return term_f<M_alt, 2>(square_f(x0), x1);
 			}
 			XTAL_0IF (3 <= N) {
-				_detail::multiplied_t<X> w{0};
+				_detail::coefficient_t<X> w{0};
 				bond::seek_until_f<N>([&]<constant_q I> (I) XTAL_0FN {
 					XTAL_IF0
 					XTAL_0IF (0 < M_alt) {w = term_f<               2>(XTAL_MOV_(w), get<I{}>(x));}
@@ -119,7 +119,7 @@ struct dot
 				return term_f<M_alt>(x0*y0, x1,y1);
 			}
 			XTAL_0IF (3 <= N) {
-				_detail::multiplied_t<X, Y> w{0};
+				_detail::coefficient_t<X, Y> w{0};
 				bond::seek_until_f<N>([&]<constant_q I> (I) XTAL_0FN {
 					XTAL_IF0
 					XTAL_0IF (0 < M_alt) {w = term_f<               1>(XTAL_MOV_(w), get<I{}>(x), get<I{}>(y));}

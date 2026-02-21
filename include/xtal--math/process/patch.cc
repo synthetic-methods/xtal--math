@@ -5,11 +5,12 @@
 
 
 
-#include "./multiplex.hh"// testing...
+#include "./patch.hh"// testing...
 XTAL_ENV_(push)
-namespace xtal::process::math::_test
+namespace xtal::process::math::_test::XTAL_NUM
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
+using namespace xtal::process::math::_test;
 
 struct sum
 {
@@ -38,7 +39,7 @@ TAG_("route", "process")
 		using namespace _xtd::ranges::views;
 
 		using U_matrix = atom::brace_t<int[3][2]>;
-		using Y_router = multiplex_t<Y_process>::template matrix_t<U_matrix>;
+		using Y_router = patch_t<Y_process>::template matrix_t<U_matrix>;
 
 		auto io = Y_router();
 		io <<= U_matrix {{1, 2}, {3, 4}, {5, 6}};
@@ -58,7 +59,7 @@ TAG_("route", "processor")
 	{
 		using namespace _xtd::ranges::views;
 		using U_matrix = atom::brace_t<int[3][2]>;// 3-outputs, 2-inputs
-		using Y_router = multiplex_t<Y_process>::template matrix_t<U_matrix>;
+		using Y_router = patch_t<Y_process>::template matrix_t<U_matrix>;
 		using Z_router = processor::monomer_t<Y_router, provision::stored<>>;
 
 		//\
@@ -90,7 +91,7 @@ TAG_("route", "processor")
 		using U_vector = atom::brace_t<int[2]>;
 		using U_vector = bond::pack_t<int, int>;
 		using U_matrix = atom::brace_t<U_vector[3]>;
-		using Y_router = multiplex_t<Y_process>::template matrix_t<U_matrix>;
+		using Y_router = patch_t<Y_process>::template matrix_t<U_matrix>;
 		using Z_router = processor::monomer_t<Y_router, provision::stored<>>;
 
 		auto _1 = processor::let_f(1);
@@ -112,7 +113,7 @@ TAG_("route", "processor")
 		//\
 		using U_matrix = atom::brace_t<int[3][2]>;
 		using U_matrix = atom::brace_t<bond::pack_t<int, int>[3]>;
-		using Y_router = multiplex_t<Y_process>::template matrix_t<U_matrix>;
+		using Y_router = patch_t<Y_process>::template matrix_t<U_matrix>;
 		using Z_router = processor::monomer_t<Y_router, provision::stored<>>;
 
 
@@ -137,7 +138,7 @@ TAG_("route", "processor")
 		//\
 		using U_matrix = atom::brace_t<int[3][2]>;
 		using U_matrix = atom::brace_t<bond::pack_t<int, int>[3]>;
-		using Y_router = multiplex_t<Y_process>::template matrix_t<U_matrix>;
+		using Y_router = patch_t<Y_process>::template matrix_t<U_matrix>;
 		using Z_router = processor::monomer_t<Y_router, provision::stored<>>;
 
 		auto _1 = processor::let_f(1);

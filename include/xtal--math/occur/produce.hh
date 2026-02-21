@@ -24,6 +24,7 @@ template <         typename ..._s>	concept produce_q = bond::tag_in_p<produce, _
 template <typename ..._s>
 struct produce
 {
+
 public:
 	template <class S         > using innertype = XTAL_ALL_(XTAL_ANY_(S).product());
 	template <class S, class T> using innerkind = _detail::navigate<T, innertype<S>>;
@@ -32,9 +33,17 @@ public:
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind, innerkind<S, subtype<S>>>
 	{
+		//\
 		static_assert(atom::math::dot_q<S> and S::rank() == 2);
+		static_assert(atom::math::dot_q<S>);
 		using S_ = bond::compose_s<S, superkind, innerkind<S, subtype<S>>>;
 		using T_ = typename S_::self_type;
+		using U_ = typename S_::tail_type;
+	//	using V_ = typename U_::value_type;
+	//	using W_ = produce_s<U_, _s...>;
+
+		XTAL_DEF_(set) valve = [] (auto &&o)
+			XTAL_0FN_(to) (XTAL_REF_(o).product());
 
 	public:// CONSTRUCT
 		using S_::S_;
@@ -47,11 +56,9 @@ public:
 		XTAL_FN0_(go) (XTAL_DEF_(return,inline,get) point, [] (auto &&o)
 		XTAL_0FN_(to) (static_cast<S_&&>(XTAL_REF_(o)).tail().template element<1>()))
 
-		XTAL_FN0_(go) (XTAL_DEF_(return,inline,let) value, [] (auto &&o)
-		XTAL_0FN_(to) (static_cast<S_&&>(XTAL_REF_(o)).tail().product()))
-
-		XTAL_FN0_(go) (XTAL_DEF_(return,inline,let)               head, value)
-		XTAL_FN0_(go) (XTAL_DEF_(return,inline,implicit) operator auto, value)
+		XTAL_FN0_(go) (XTAL_DEF_(return,inline,let)              value, valve)
+		XTAL_FN0_(go) (XTAL_DEF_(return,inline,let)               head, valve)
+		XTAL_FN0_(go) (XTAL_DEF_(return,inline,implicit) operator auto, valve)
 
 	};
 };
