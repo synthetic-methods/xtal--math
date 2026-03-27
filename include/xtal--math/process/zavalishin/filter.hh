@@ -2,9 +2,9 @@
 #include "./any.hh"
 
 #include "./meta.hh"
-#include "../../provision/prewarping.hh"
-#include "../../provision/saturation.hh"
 #include "../../atom/fourier/series.hh"
+#include "../../provision/zavalishin/shaped.hh"
+
 
 XTAL_ENV_(push)
 namespace xtal::process::math::zavalishin
@@ -15,7 +15,7 @@ namespace xtal::process::math::zavalishin
 
 Implementation outlined in _The Art of VA Synthesis_ by Vadim Zavalishin.
 
-The non-linearity is supplied as a `process`-`template` using `provision::math::saturation`.
+The non-linearity is supplied as a `process`-`template` using `provision::math::zavalishin::shaped`.
 The process must conform to the signature `<M_ism, M_car>`,
 defining a stateless `method_f<N_var, ...>` within the `subtype`.
 
@@ -23,13 +23,13 @@ The parameters `M_ism` and `M_car` determine the type and return-value of shape,
 `M_ism` is expected to yield convex/concave shapes for positive/negative values,
 and `M_car` is expected to return the slope when `== -1`.
 
-\note    Despite the parameterization defined by `occur::context<filter<...>>`, `filter<...>::method` is
+\note    Despite the parameterization defined by `occur::codex<filter<...>>`, `filter<...>::method` is
 polymorphic and can accomodate up to the given cache-width (determined by `U_pole[N_pole][2]`).
 For example, with base-types of `double` and `std::complex<double>` respectively,
 the storage required is `16` and `32` bytes-per-pole.
 */
 template <class ..._s>	struct  filter;
-template <class ..._s>	concept filter_q = bond::tag_in_p<filter, _s...>;
+template <class ..._s>	concept filter_q = bond::tag_inner_p<filter, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -37,13 +37,12 @@ template <class ..._s>	concept filter_q = bond::tag_in_p<filter, _s...>;
 template <class ...As>
 struct filter
 {
-	using cotype = occur::context_t<filter>;
+	using cotype = occur::codex_t<filter>;
 
-	using state_type = typename cotype::state_type;
-	using slope_type = typename cotype::slope_type;
+	using data_type = typename cotype::data_type;
 
 	using superkind = bond::compose<bond::tag<filter>
-	,	provision::memorized<state_type, slope_type>
+	,	provision::memorized<data_type, data_type>
 	,	meta<As...>
 	>;
 	template <class S>
@@ -54,12 +53,12 @@ struct filter
 
 		template <int N_ism=0, int N_car=0, auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		saturate_f(auto &&x, auto &&...oo)
+		shaper_f(auto &&x, auto &&...oo)
 		noexcept -> auto
 		{
 			XTAL_IF0
-			XTAL_0IF (provision::math::saturation_q<S_>) {
-				return S_::template saturate_t<N_ism, N_car>::
+			XTAL_0IF (provision::math::zavalishin::shaped_q<S_>) {
+				return S_::template shaper_t<N_ism, N_car>::
 					template method_f<Ns...>(XTAL_REF_(x), XTAL_REF_(oo)...);
 			}
 			XTAL_0IF (N_car == -0) {return XTAL_REF_(x)       ;}// f[x]
@@ -117,19 +116,19 @@ struct filter
 
 	public:// TYPE
 
-		using state_type      = typename S_::state_type;
-		using shape_parameter = typename S_::shape_parameter;
+		using data_type = typename S_::data_type;
 		using order_attribute = typename S_::order_attribute;
 
 	private:
-		XTAL_DEF_(set) M_ord = 0 + state_type::size();
-		XTAL_DEF_(set) M_lim = 1 + state_type::size();
+		XTAL_DEF_(set) M_ord = 0 + data_type::size();
+		XTAL_DEF_(set) M_lim = 1 + data_type::size();
 
 	protected:// OPERATE
+		using S_::self;
 
 		template <int N_ord=0, auto ...Ns> requires (0 == N_ord)
 		XTAL_DEF_(inline,let)
-		methodology(auto const &x
+		method_impl(auto const &x
 		,	auto &&...
 		)
 		noexcept -> atom::couple_t<XTAL_ALL_(x)[M_lim]>
@@ -138,7 +137,7 @@ struct filter
 		}
 		template <int N_ord=0, auto ...Ns> requires (1 <= N_ord)
 		XTAL_DEF_(inline,let)
-		methodology(auto const &x
+		method_impl(auto const &x
 		,	unstruct_t<decltype(x)> u_warp
 		,	atom::couple_q auto const &coeffs_
 	//	,	atom::couple_q<null_type[N_ord]> auto &&coeffs_
@@ -159,6 +158,8 @@ struct filter
 			auto    &states_ = get<0>(mem);
 			auto    &slopes_ = get<1>(mem);
 
+			u_warp *= process::math::pade::tangy_f<1, -1>(u_warp);
+
 		//	Denormalize `slopes` and initialize `values`:
 			bond::seek_until_f<N_ord>([&] (auto const I) XTAL_0FN {
 				auto const &coeff = get<I>(coeffs_);
@@ -173,7 +174,7 @@ struct filter
 			get<N_ord>(values) = root_f<-1>(term_f(one, u_warp, get<N_ord - 1>(values)));
 
 		//	Update `values` by iterating `slopes`:
-			auto constexpr K_sat = provision::math::saturation_q<S_>;
+			auto constexpr K_sat = provision::math::zavalishin::shaped_q<S_>;
 			auto constexpr K_max = term_f(0, 2, K_sat);
 			auto constexpr K_lim = term_f(1, 1, K_max);
 			bond::seek_until_f<K_lim>([&] (auto const K) XTAL_0FN {
@@ -183,8 +184,8 @@ struct filter
 					auto const &value = get<I>(values_) = term_f(get<I>(states_), get<I + 1>(values), u_warp);
 					auto const &coeff = get<I>(coeffs_);
 					auto       &slope = get<I>(slopes_);
-					if constexpr (0 <= I) {slope  = zero;}
-					if constexpr (1 <= I) {slope  = saturate_f<-1,-2, Ns...>(value, oo...);}
+					if constexpr (0 == I) {slope  = zero;}
+					if constexpr (1 <= I) {slope  = shaper_f<-1,-2, Ns...>(value, oo...);}
 					if constexpr (K < K_max) {
 						//\
 						slope *= fact_v<N_ord, I, 1>;
@@ -194,7 +195,7 @@ struct filter
 				});
 			});
 
-		//	Accumulate `states` and carry saturated `slopes`:
+		//	Accumulate `states` and carry distortiond `slopes`:
 			bond::seek_until_f<-N_ord>([&, w_warp=u_warp*two] (auto const I) XTAL_0FN {
 				auto const &coeff  = get<I + 0>(coeffs_);
 				auto const &slope  = get<I + 0>(slopes_);
@@ -225,7 +226,8 @@ struct filter
 		noexcept -> atom::couple_t<XTAL_ALL_(x)[M_lim]>
 		requires in_v<N_ord + 0, XTAL_ALL_(coeffs_)::size()>
 		{
-			return methodology<N_ord, Ns...>(XTAL_REF_(x), u_warp, XTAL_REF_(coeffs_), XTAL_REF_(oo)...);
+			return method_impl<N_ord, Ns...>(XTAL_REF_(x),
+				u_warp, XTAL_REF_(coeffs_), XTAL_REF_(oo)...);
 		}
 
 
@@ -273,8 +275,8 @@ struct filter
 		{
 			using X  = XTAL_ALL_(x);
 			using U  = unstruct_t<X>;
-			return methodology<N_ord, Ns...>(XTAL_REF_(x), u_warp
-			,	[a=limit_f<+1>(u_damp)]<auto ...I> (bond::seek_t<I...>)
+			return method_impl<N_ord, Ns...>(XTAL_REF_(x), u_warp
+			,	[a=truncate_f<+1>(u_damp)]<auto ...I> (bond::seek_t<I...>)
 					XTAL_0FN -> atom::couple_t<U[N_ord]> {
 						return {term_f(fact_v<N_ord, I, 0>, fact_v<N_ord, I, 1>, a)...};
 					}
@@ -283,36 +285,6 @@ struct filter
 			);
 		}
 
-		template <int N_ord=0, auto ...Ns>
-		XTAL_DEF_(inline,let)
-		method(auto &&x
-		,	unstruct_t<decltype(x)> u_warp
-		,	unstruct_t<decltype(x)> u_damp
-		,	atom::math::dot_q auto &&y_dot
-		,	auto &&...oo
-		)
-		noexcept -> objective_t<XTAL_ALL_(x)>
-		{
-			return XTAL_REF_(y_dot)*
-				method<N_ord, Ns...>(XTAL_REF_(x), u_warp, u_damp, XTAL_REF_(oo)...);
-		}
-		template <int N_ord=0, auto ...Ns>
-		XTAL_DEF_(inline,let)
-		method(auto &&x
-		,	unstruct_t<decltype(x)> u_warp
-		,	unstruct_t<decltype(x)> u_damp
-		,	unstruct_t<decltype(x)> y_fade
-		,	auto &&...oo
-		)
-		noexcept -> objective_t<XTAL_ALL_(x)>
-		{
-			using X =  XTAL_ALL_(x);
-			using U = unstruct_t<X>;
-			auto const y_up =       y_fade, v_up = root_f<2>(y_up);
-			auto const y_dn = one - y_fade, v_dn = root_f<2>(y_dn);
-			return method<N_ord, Ns...>(XTAL_REF_(x), u_warp, u_damp,
-				atom::math::dot_t<U[2]>{y_dn, y_up}, XTAL_REF_(oo)...);
-		}
 		/*!
 		\brief   Produces the `gain` and `damp` parameters from
 		         the supplied `phason` and the `complex_field_q` `s`.
@@ -333,10 +305,31 @@ struct filter
 
 			auto const u_damp = s_im*_s_a1;
 			auto       u_warp = t_(1)*s_a1;
-			if constexpr (provision::math::prewarping_q<T_>) {
-				u_warp *= pade::tangy_f<1, -1>(u_warp);
-			}
 			return method<Ns...>(XTAL_REF_(x), u_warp, u_damp, XTAL_REF_(oo)...);
+		}
+
+	//	FUSE
+
+		template <signed N_ion>
+		XTAL_DEF_(return,inline,let)
+		fuse(auto &&o)
+		noexcept -> signed
+		{
+			return S_::template fuse<N_ion>(XTAL_REF_(o));
+		}
+		template <signed N_ion> requires in_v<N_ion, -1>
+		XTAL_DEF_(return,inline,let)
+		fuse(occur::stage_q auto &&o)
+		noexcept -> signed
+		{
+			using resync_type = occur::resync_t<>;
+			if constexpr (requires {self().template head<resync_type>();}) {
+				auto const    sync = self().template head<resync_type>();
+				if (1 != sync and sync == o.head()) {
+					S_::memory(constant_t<>{});
+				}
+			}
+			return S_::template fuse<N_ion>(XTAL_REF_(o));
 		}
 
 	};
@@ -354,36 +347,39 @@ namespace xtal::occur
 ////////////////////////////////////////////////////////////////////////////
 
 template <class ..._s>
-struct context<process::math::zavalishin::filter<_s...>>
+struct codex<process::math::zavalishin::filter<_s...>>
 {
-	using superkind = context<process::math::zavalishin::meta<_s...>>;
+	using superkind = codex<process::math::zavalishin::meta<_s...>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
 	{
 		using S_ = bond::compose_s<S, superkind>;
 		using T_ = typename S_::self_type;
+		using U_ = typename S_::data_type;
+		using V_ = unstruct_t<U_>;
 	
 	public:
 		using S_::S_;
 
+		using  gain_parameter  = occur::inferred_t<_s..., union GAIN, V_>;
+		using  damp_parameter  = occur::inferred_t<_s..., union DAMP, V_>;
+
 		template <extent_type N_mask=1>
 		struct dispatch : bond::compose<void
 		,	provision::voiced<void
-			,	typename T_::   order_attribute::template dispatch<N_mask>
+			,	typename T_::order_attribute::template dispatch<N_mask>
 			>
 		,	typename S_::template dispatch<N_mask>
 		>
 		{};
-		template <extent_type N_mask=1>
-		struct   attach : bond::compose<void
-		,	provision::voiced<void
-			,	typename T_::   stage_type::template  inspect<N_mask>
-			,	typename T_::resample_type::template   attach<N_mask>
-			>
-		,	typename S_::template   attach<N_mask>
-		>
-		{};
+	//	template <extent_type N_mask=1>
+	//	struct   attach : bond::compose<void
+	//	,	provision::voiced<void
+	//		>
+	//	,	typename S_::template   attach<N_mask>
+	//	>
+	//	{};
 
 	};
 };

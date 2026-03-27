@@ -1,10 +1,10 @@
 #pragma once
 #include "./any.hh"
 
-#include "./power.hh"
+#include "./dot.hh"
 #include "./square.hh"
+#include "./monomial.hh"
 #include "./imagine.hh"
-
 
 XTAL_ENV_(push)
 namespace xtal::process::math
@@ -213,7 +213,7 @@ struct root
 		exfunction(real_variable_q auto z)
 		noexcept -> XTAL_ALL_(z)
 		{
-			return z*power_f<M_exp_mag - 1>(infunction<I_lim>(z));
+			return z*monomial_f<M_exp_mag - 1>(infunction<I_lim>(z));
 		}
 		template <int I_lim>
 		XTAL_DEF_(return,inline,set)
@@ -248,16 +248,16 @@ struct root
 			XTAL_0IF_(consteval) {
 				auto v = z;
 				for (int i{}; i < 0x10 and v != y; ++i) {
-					y *= _xtd::plus_multiplies_f(k_, z_, power_f<M_exp_mag>(v = y));
+					y *= _xtd::plus_multiplies_f(k_, z_, monomial_f<M_exp_mag>(v = y));
 				}
 				{
-					y /= _xtd::plus_multiplies_f(h, h, z*power_f<M_exp_mag>(v = y));
+					y /= _xtd::plus_multiplies_f(h, h, z*monomial_f<M_exp_mag>(v = y));
 				}
 			}
 			XTAL_0IF_(else) {
 				#pragma unroll
 				for (int i{}; i < I_lim; ++i) {
-					y *= _xtd::plus_multiplies_f(k_, z_, power_f<M_exp_mag>(y));
+					y *= _xtd::plus_multiplies_f(k_, z_, monomial_f<M_exp_mag>(y));
 				}
 			}
 			return y;

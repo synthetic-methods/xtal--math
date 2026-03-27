@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 #include "./nearing.hh"
-#include "./decompose.hh"
+#include "./part.hh"
 
 
 
@@ -13,25 +13,25 @@ namespace xtal::process::math
 ////////////////////////////////////////////////////////////////////////////////
 
 template <auto M_lim>
-XTAL_TYP_(new) limit;
+XTAL_TYP_(new) truncate;
 
 template <auto M_lim>
-XTAL_TYP_(let) limit_t = process::confined_t<limit<M_lim>>;
+XTAL_TYP_(let) truncate_t = process::confined_t<truncate<M_lim>>;
 
 template <auto M_lim, auto ...Ns>
-XTAL_DEF_(let) limit_f = [] XTAL_1FN_(call) (limit_t<M_lim>::template method_f<Ns...>);
+XTAL_DEF_(let) truncate_f = [] XTAL_1FN_(call) (truncate_t<M_lim>::template method_f<Ns...>);
 
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
 template <applicable_q auto M_app>
-struct limit<M_app>
+struct truncate<M_app>
 {
 	static auto constexpr M_val = M_app();
-	static auto constexpr M_abs = decompose_f<unsigned>(M_val);
-	static auto constexpr M_sgn = decompose_f<  signed>(M_val);
-	static auto constexpr M_dir = (int) decompose_f<signed>(nearing_f(M_abs)*(M_sgn));
+	static auto constexpr M_abs = part_f<unsigned>(M_val);
+	static auto constexpr M_sgn = part_f<  signed>(M_val);
+	static auto constexpr M_dir = (int) part_f<signed>(nearing_f(M_abs)*(M_sgn));
 	static auto constexpr M_opp = [] XTAL_1FN_(to) (-one/M_val);
 
 	template <class S>
@@ -59,7 +59,7 @@ struct limit<M_app>
 			//\
 			if (_std::is_constant_evaluated() or not _fit::IEC) {
 			if (_std::is_constant_evaluated() or not _fit::IEC or XTAL_ENV_(GNUC)) {
-				U_alpha const s = decompose_t<signed>::method_e(o);
+				U_alpha const s = part_t<signed>::method_e(o);
 				XTAL_IF0
 				XTAL_0IF (M_dir <= 0) {o = _fit::minimum_f(XTAL_MOV_(o), o_stop);}
 				XTAL_0IF (M_dir == 1) {o = _fit::maximum_f(XTAL_MOV_(o), o_stop);}
@@ -135,12 +135,12 @@ struct limit<M_app>
 				XTAL_0IF (uniplex_q<W_>) {
 				XTAL_0IF (complex_variable_q<W0> and atom::couple_q<W1>) {
 					auto const u0 =                          method_e<Ns...>(get<0>(w1));
-					auto const u1 = limit_t<M_opp>::template method_e<Ns...>(get<1>(w1));
+					auto const u1 = truncate_t<M_opp>::template method_e<Ns...>(get<1>(w1));
 					return W_{W0{one, zero}, W1{XTAL_MOV_(u0), XTAL_MOV_(u1)}};
 				}
 				XTAL_0IF (atom::couple_q<W0> and complex_variable_q<W1>) {
 					auto const u0 =                          method_e<Ns...>(get<0>(w0));
-					auto const u1 = limit_t<M_opp>::template method_e<Ns...>(get<1>(w0));
+					auto const u1 = truncate_t<M_opp>::template method_e<Ns...>(get<1>(w0));
 					return W_{W0{XTAL_MOV_(u0), XTAL_MOV_(u1)}, W1{one, zero}};
 				}
 				//\
@@ -171,9 +171,9 @@ struct limit<M_app>
 	};
 };
 template <int M_dir>
-struct limit<M_dir>
+struct truncate<M_dir>
 {
-	static constexpr auto N_dir = decompose_f<unsigned>(M_dir);
+	static constexpr auto N_dir = part_f<unsigned>(M_dir);
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -193,8 +193,8 @@ struct limit<M_dir>
 			auto constexpr N_min = [] XTAL_1FN_(to) (+U_fit::minilon_f(N_dir));
 			auto constexpr N_max = [] XTAL_1FN_(to) (-U_fit::maxilon_f(N_dir));
 			XTAL_IF0
-			XTAL_0IF (0 < M_dir) {return limit_t<N_min>::template method_f<Ns...>(XTAL_REF_(u));}
-			XTAL_0IF (M_dir < 0) {return limit_t<N_max>::template method_f<Ns...>(XTAL_REF_(u));}
+			XTAL_0IF (0 < M_dir) {return truncate_t<N_min>::template method_f<Ns...>(XTAL_REF_(u));}
+			XTAL_0IF (M_dir < 0) {return truncate_t<N_max>::template method_f<Ns...>(XTAL_REF_(u));}
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
@@ -206,14 +206,14 @@ struct limit<M_dir>
 			auto constexpr N_min = [] XTAL_1FN_(to) (+U_fit::minilon_f(N_dir));
 			auto constexpr N_max = [] XTAL_1FN_(to) (-U_fit::maxilon_f(N_dir));
 			XTAL_IF0
-			XTAL_0IF (0 < M_dir) {return limit_t<N_min>::template   method_e<Ns...>(XTAL_REF_(u));}
-			XTAL_0IF (M_dir < 0) {return limit_t<N_max>::template   method_e<Ns...>(XTAL_REF_(u));}
+			XTAL_0IF (0 < M_dir) {return truncate_t<N_min>::template   method_e<Ns...>(XTAL_REF_(u));}
+			XTAL_0IF (M_dir < 0) {return truncate_t<N_max>::template   method_e<Ns...>(XTAL_REF_(u));}
 		}
 
 	};
 };
 template <fixed_shaped_q<null_type[2]> auto M_range>
-struct limit<M_range>
+struct truncate<M_range>
 {
 	static auto constexpr M_dn = get<0>(M_range);
 	static auto constexpr M_up = get<1>(M_range);
@@ -227,7 +227,7 @@ struct limit<M_range>
 		using S_::S_;
 
 	//	TODO: Implement `edit`?
-	//	TODO: Implement smooth version (together with smooth `decompose<unsigned>`) (via `Ns...`)?
+	//	TODO: Implement smooth version (together with smooth `part<unsigned>`) (via `Ns...`)?
 
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
@@ -240,7 +240,7 @@ struct limit<M_range>
 			U constexpr m_up(M_up);
 			U constexpr m_dn(M_dn);
 			U constexpr m_vs(M_dn + M_up);
-			U const   w{m_vs + decompose_f<unsigned>(u - m_dn) - decompose_f<unsigned>(u - m_up)};
+			U const   w{m_vs + part_f<unsigned>(u - m_dn) - part_f<unsigned>(u - m_up)};
 			if constexpr (integral_variable_q<U>) {
 				return XTAL_MOV_(w) >> 1;
 			}

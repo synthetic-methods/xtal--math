@@ -1,21 +1,27 @@
 #pragma once
 #include "./any.cc"
+#include "./shaped.hh"// testing...
 
 
 
 
 
-#include "./prewarping.hh"// testing...
 XTAL_ENV_(push)
-namespace xtal::provision::math::_test
+namespace xtal::provision::math::zavalishin::_test
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
 /*/
-TAG_("prewarping")
+TAG_("shaped")
 {
-	TRY_("instantiation")
+	using _fit = bond::fit<>;
+	using T_sigma = typename _fit::sigma_type;
+	using T_delta = typename _fit::delta_type;
+	using T_alpha = typename _fit::alpha_type;
+	using T_aphex = typename _fit::aphex_type;
+
+	TRY_("task")
 	{
 		TRUE_(true);
 

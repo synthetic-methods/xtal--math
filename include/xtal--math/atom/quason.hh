@@ -17,7 +17,7 @@ namespace xtal::atom::math
 */
 template <class ...Us>	struct  quason;
 template <class ...Us>	using   quason_t = typename quason<Us...>::type;
-template <class ...Us>	concept quason_q = bond::tag_infixed_p<quason_t, Us...>;
+template <class ...Us>	concept quason_q = bond::tag_inner_fixed_p<quason_t, Us...>;
 
 XTAL_DEF_(let) quason_f = [] XTAL_1FN_(call) (_detail::factory<quason_t>::make);
 

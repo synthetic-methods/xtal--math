@@ -25,6 +25,11 @@ XTAL_DEF_(return,inline,let)
 term_f(W &&w, X &&x, Xs &&...xs)
 noexcept -> auto
 {
+	bool constexpr W_zero = same_q<W, decltype(zero)>;
+	bool constexpr X_zero = same_q<X, decltype(zero)>;
+	bool constexpr X_some = 1 <= sizeof...(Xs);
+	bool constexpr X_none = 0 == sizeof...(Xs);
+
 	using _xtd::plus_multiplies_f;
 	auto constexpr then = [] XTAL_1FN_(call) (term_f<M_alt, M_pow>);
 	using Y = unstruct_t<X, Xs...>;// NOTE: Constants interpreted as scalar quantities...
@@ -50,22 +55,14 @@ noexcept -> auto
 	}
 
 //	Resolve parameters...
-	XTAL_0IF (M_alt == 0) {
-		return XTAL_REF_(w);
-	}
+	XTAL_0IF (X_zero or  M_alt ==  0) {return   XTAL_REF_(w);}
+	XTAL_0IF (W_zero and M_alt ==  1) {return  (XTAL_REF_(x) *...* XTAL_REF_(xs));}
+	XTAL_0IF (W_zero and M_alt == -1) {return -(XTAL_REF_(x) *...* XTAL_REF_(xs));}
 
-	XTAL_0IF (M_alt ==  1 and M_pow == 1 and 0 == sizeof...(xs)) {
-		return XTAL_REF_(w) + XTAL_REF_(x);
-	}
-	XTAL_0IF (M_alt == -1 and M_pow == 1 and 0 == sizeof...(xs)) {
-		return XTAL_REF_(w) - XTAL_REF_(x);
-	}
-	XTAL_0IF (M_alt ==  1 and M_pow == 2 and 0 == sizeof...(xs)) {
-		return  plus_multiplies_f( XTAL_REF_(w), x, x);
-	}
-	XTAL_0IF (M_alt == -1 and M_pow == 2 and 0 == sizeof...(xs)) {
-		return -plus_multiplies_f(-XTAL_REF_(w), x, x);
-	}
+	XTAL_0IF (X_none and M_alt ==  1 and M_pow == 1) {return  XTAL_REF_(w) + XTAL_REF_(x);}
+	XTAL_0IF (X_none and M_alt == -1 and M_pow == 1) {return  XTAL_REF_(w) - XTAL_REF_(x);}
+	XTAL_0IF (X_none and M_alt ==  1 and M_pow == 2) {return  plus_multiplies_f( XTAL_REF_(w), x, x);}
+	XTAL_0IF (X_none and M_alt == -1 and M_pow == 2) {return -plus_multiplies_f(-XTAL_REF_(w), x, x);}
 	/**/
 	XTAL_0IF (M_pow == 2) {
 		return then(XTAL_REF_(w), (XTAL_REF_(x) *...* XTAL_REF_(xs)));

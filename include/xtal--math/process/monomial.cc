@@ -1,6 +1,6 @@
 #pragma once
 #include "./any.cc"
-#include "./power.hh"// testing...
+#include "./monomial.hh"// testing...
 
 
 
@@ -13,7 +13,7 @@ namespace xtal::process::math::_test
 
 ////////////////////////////////////////////////////////////////////////////////
 /**/
-TAG_("power")
+TAG_("monomial")
 {
 	using _fit = bond::fit<>;
 	using T_sigma = typename _fit::sigma_type;
@@ -24,10 +24,10 @@ TAG_("power")
 	auto mt19937_f = typename _fit::mt19937_t();
 	mt19937_f.seed(Catch::rngSeed());
 
-	TRY_("power evaluation")
+	TRY_("monomial evaluation")
 	{
-		TRUE_(power_t< 7>::method_f(3.) == 2187.);
-		TRUE_(power_f< 7>          (3.) == 2187.);
+		TRUE_(monomial_t< 7>::method_f(3.) == 2187.);
+		TRUE_(monomial_f< 7>          (3.) == 2187.);
 
 	};
 }

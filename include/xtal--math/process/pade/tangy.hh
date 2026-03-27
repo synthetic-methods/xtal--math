@@ -52,7 +52,7 @@ struct tangy<M_ism,-0>
 			}
 			XTAL_0IF (0 <= N_lim) {
 				auto const w1 = _detail::impunity_t<M_ism,-0>::
-					template method_f<N_lim>(mythology_f<N_lim>(XTAL_REF_(o)));
+					template method_f<N_lim>(method_domain_f<N_lim>(XTAL_REF_(o)));
 
 				auto const x1 =  w1.real();
 				auto const y1 =  w1.imag();
@@ -65,7 +65,7 @@ struct tangy<M_ism,-0>
 	protected:
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,set)
-		mythology_f(auto &&o)
+		method_domain_f(auto &&o)
 		noexcept -> auto
 		{
 			using _fit = bond::fit<decltype(o)>;
@@ -81,8 +81,8 @@ struct tangy<M_ism,-0>
 				,	3.1387851416614511306136906830100105e0L
 				,	3.6053838067119662385261702333857201e0L
 				};
-				auto const o_up = decompose_f<unsigned>(o + bounds_[N_lim]);
-				auto const o_dn = decompose_f<unsigned>(o - bounds_[N_lim]);
+				auto const o_up = part_f<unsigned>(o + bounds_[N_lim]);
+				auto const o_dn = part_f<unsigned>(o - bounds_[N_lim]);
 				return (o_up - o_dn)*_fit::haplo_f(2);
 			}
 		}
@@ -162,8 +162,8 @@ struct tangy<M_ism, 1>
 			using U_alpha = typename _fit::alpha_type;
 			using W_alpha = atom::couple_t<U_alpha[2]>;
 
-			auto u_abs = u, u_sgn = decompose_t<signed>::method_e(u_abs);
-			auto v_abs = v, v_sgn = decompose_t<signed>::method_e(v_abs);// v_sgn *= *_fit::haplo_1;
+			auto u_abs = u, u_sgn = part_t<signed>::method_e(u_abs);
+			auto v_abs = v, v_sgn = part_t<signed>::method_e(v_abs);// v_sgn *= *_fit::haplo_1;
 
 			W_alpha co{v_abs < u_abs, _std::in_place};
 			W_alpha up{v, u_abs}; up *= co;
@@ -180,7 +180,7 @@ struct tangy<M_ism, 1>
 template <int M_ism>
 struct tangy<M_ism,-0>
 {
-	using superkind = bond::compose<discarded<1>, tangy<M_ism,-1>>;
+	using superkind = bond::compose<typename discard_t<1>::template infix<>, tangy<M_ism,-1>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -217,7 +217,7 @@ struct tangy<M_ism,-0>
 };
 template <int M_ism>
 struct tangy<M_ism,-1>
-:	bond::compose<discarded<2>, tangy<M_ism,-2>>
+:	bond::compose<typename discard_t<2>::template infix<>, tangy<M_ism,-2>>
 {
 };
 template <int M_ism>// requires in_v<M_ism,-1>

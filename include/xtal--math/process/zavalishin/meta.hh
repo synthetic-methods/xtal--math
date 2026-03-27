@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 #include "../../atom/dot.hh"
-#include "../../provision/saturation.hh"
+#include "../../provision/zavalishin/shaped.hh"
 
 
 
@@ -11,11 +11,11 @@ namespace xtal::process::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 /*!
-\brief   Defines common types and context-resolution procedures.
+\brief   Defines associated types.
 */
 template <class ...As>
 struct meta
-:	occur::context<meta<As...>>
+:	occur::codex<meta<As...>>
 {
 };
 
@@ -31,7 +31,7 @@ namespace xtal::occur
 ////////////////////////////////////////////////////////////////////////////
 
 template <vector_q A, class ..._s>
-struct context<process::math::zavalishin::meta<A, _s...>>
+struct codex<process::math::zavalishin::meta<A, _s...>>
 {
 private:
 	static_assert(incomplete_q<_s...>);
@@ -40,7 +40,7 @@ private:
 	XTAL_TYP_(set) V_pole = unstruct_t<A>;
 
 public:
-	using superkind = context<>;
+	using superkind = codex<>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -50,57 +50,43 @@ public:
 	public:// CONSTRUCT
 		using S_::S_;
 
-	public:// EXTERNAL
-		using    resample_type = occur::resample_t<>;
-		using       stage_type = occur::   stage_t<>;
-
 	public:// INTERNAL
-		using       state_type = atom::couple_t<U_pole[N_pole]>;
-		using       slope_type = atom::couple_t<U_pole[N_pole]>;
-		using       shape_type = atom::couple_t<V_pole[N_pole]>;
-
-	public:// ATTEND
-		using  gain_parameter  = occur::inferred_t<_s..., union GAIN, V_pole>;
-		using  damp_parameter  = occur::inferred_t<_s..., union DAMP, V_pole>;
-		using  fade_parameter  = occur::inferred_t<_s..., union FADE, V_pole>;
-		using  zoom_parameter  = occur::inferred_t<_s..., union ZOOM, V_pole>;
-
-	public:// ATTACH
-		using shape_parameter  = occur::inferred_t<_s..., union SHAPE, shape_type>;
+		using   data_type      = atom::math::dot_t<U_pole[N_pole]>;
+		using codata_type      = atom::math::dot_t<V_pole[N_pole]>;
 
 	public:// DISPATCH
-		using order_attribute  = occur::inferred_t<_s..., union ORDER, bond::seek_s<1 + N_pole>>;
+		using  order_attribute = occur::inferred_t<_s..., union ORDER, bond::seek_s<1 + N_pole>>;
 
 	};
 };
 
 template <scalar_q A>
-struct context<process::math::zavalishin::meta<A>>
-:	context<process::math::zavalishin::meta<A[2]>>
+struct codex<process::math::zavalishin::meta<A>>
+:	codex<process::math::zavalishin::meta<A[2]>>
 {
 };
 template <>
-struct context<process::math::zavalishin::meta< >>
-:	context<process::math::zavalishin::meta<typename bond::fit<>::alpha_type>>
+struct codex<process::math::zavalishin::meta< >>
+:	codex<process::math::zavalishin::meta<typename bond::fit<>::alpha_type>>
 {
 };
 
 template <bond::compose_q A, class ..._s>
-struct context<process::math::zavalishin::meta<A, _s...>>
+struct codex<process::math::zavalishin::meta<A, _s...>>
 :	bond::compose<A
-	,	context<process::math::zavalishin::meta<_s...>>
+	,	codex<process::math::zavalishin::meta<_s...>>
 	>
 {
 };
 template <incomplete_q A, class ..._s>
-struct context<process::math::zavalishin::meta<A, _s...>>
-:	bond::compose<context<A>
-	,	context<process::math::zavalishin::meta<_s...>>
+struct codex<process::math::zavalishin::meta<A, _s...>>
+:	bond::compose<codex<A>
+	,	codex<process::math::zavalishin::meta<_s...>>
 	>
 {
 };
 //template <template <class ...> class T_, class ..._s>
-//struct context<T_<_s...>> : context<process::math::zavalishin::meta<_s...>>
+//struct codex<T_<_s...>> : codex<process::math::zavalishin::meta<_s...>>
 //{
 //};
 

@@ -25,7 +25,7 @@ struct reparameterized
 		using S_::S_;
 
 		using order_attribute = occur::inferred_t<union ORDER,
-			bond::seek_s<1 + S_::state_type::size()>>;
+			bond::seek_s<1 + S_::data_type::size()>>;
 
 	};
 };
@@ -42,7 +42,7 @@ TAG_("differ")
 	//\
 	using D_def = differ<_differ::reparameterized, U_pole[1]>;
 	using D_def = differ<U_pole[1]>;
-	using D_etc = occur::context_t<D_def>;
+	using D_etc = occur::codex_t<D_def>;
 	using D_prx = process::confined_t<void
 	,	typename D_etc::template dispatch<>
 	,	D_def
@@ -68,7 +68,7 @@ TAG_("differ")
 	}
 //	TRY_("scaling")
 //	{
-//		confined_t<dilate<[] XTAL_1FN_(to) (bond::fit<>::patio_2)>, D_prx> diff{};
+//		confined_t<dilate<[] XTAL_1FN_(to) (one/bond::fit<>::patio_2)>, D_prx> diff{};
 //		diff <<= typename D_prx::order_attribute{1};
 //
 //		TRUE_(check_f<19>(0.15915493667125702, diff(1)));

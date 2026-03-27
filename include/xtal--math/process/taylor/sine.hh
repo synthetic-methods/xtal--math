@@ -16,13 +16,13 @@ template <int M_ism=1, int N_car=0>	using   sine_t = process::confined_t<sine<M_
 
 template <int M_ism>
 struct sine<M_ism, +1>
-:	bond::compose<dilated<[] XTAL_1FN_(to) (-bond::fit<>::patio_2)>, sine<M_ism, -0>>
+:	bond::compose<typename dilate_t<[] XTAL_1FN_(to) (-bond::fit<>::patio_2)>::template infix<>, sine<M_ism, -0>>
 {
 };
 template <int M_ism>
 struct sine<M_ism, -0>
 {
-	using superkind = bond::compose<discarded<1>, sine<M_ism, -1>>;
+	using superkind = bond::compose<typename discard_t<1>::template infix<>, sine<M_ism, -1>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -51,7 +51,7 @@ struct sine<M_ism, -0>
 template <int M_ism>
 struct sine<M_ism, -1>
 {
-	using superkind = bond::compose<discarded<2, M_ism>, sine<M_ism, -2>>;
+	using superkind = bond::compose<typename discard_t<2, M_ism>::template infix<>, sine<M_ism, -2>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>

@@ -113,26 +113,29 @@ configured as a polyphonic instrument.
 // Process definition...
 
 using T_content = process::filter<U_alpha[2]>;         // 2nd-order filter.
-using T_context = occur::context_t<T_content>;         // 2nd-order filter parameters.
+using T_codex    = occur::codex_t<T_content>;           // 2nd-order filter parameters.
 
-using P_damp    = typename T_context::damp_parameter;
-using P_fade    = typename T_context::fade_parameter;
-using Q_order   = typename T_context::order_attribute;
-using U_stage   = typename T_context::stage_type;      // Note stage: `0` on, `1` off, `-1` cut/rest.
+using P_damp    = typename T_codex::damp_parameter;
+using P_fade    = typename T_codex::fade_parameter;
+using Q_order   = typename T_codex::order_attribute;
+using U_resample   = occur::resample_t<>;        // Note stage: `0` on, `1` off, `-1` cut/rest.
+using U_stage   = occur:stage_t<>;        // Note stage: `0` on, `1` off, `-1` cut/rest.
 using U_event   = flow::key_s<U_stage>;                // Key-Trigger pair.
 
-// Process composition...
+using A_reuse = occur::math::zavalishin::reuse_t<0, -1>::template affect<>;
+//< The ` 0` resets the filter-state when note is initialized.
+//< The `-1` provides release detection.
 
+// Process composition...
 using T_process = process::confined_t<void             // Wrap the process.
-,  provision::math::prewarping<0>                      // Apply s-plane frequency-prewarping to the first argument.
-,  pulse< 1>                                           // Fulfil first argument with gate-signal controlled by `stage`.
-,  reuse< 0>                                           // Resets the filter-state when note is initialized.
-,  reuse<-1>                                           // Provides release detection.
-,  typename U_stage   ::template   assignment<P_damp>  // Creates a table associating `stage` with damping.
-,  typename P_damp    ::template   attend<>            // Attach/append damping to the arguments-list.
-,  typename P_fade    ::template   attend<>            // Attach/append  fading to the arguments-list.
-,  typename T_context ::template   attach<>            // Attach the remaining   object properties.
-,  typename T_context ::template dispatch<>            // Attach the remaining template parameters.
+,	typename per_t<U_resample>::template refix< 0>      // Apply s-plane frequency-prewarping to the first argument.
+,  typename pulse_t< 1>::template infix< 0>            // Fulfil first argument with gate-signal controlled by `stage`.
+,  typename U_stage   ::template   assignment<P_damp> // Creates a table associating `stage` with damping.
+,  typename P_damp    ::template   affix <>            // Attach/append damping to the arguments-list.
+,  typename P_fade    ::template   affix <>            // Attach/append  fading to the arguments-list.
+,  typename A_reuse                                    // Behaves as a polyphonic voice.
+,  typename T_codex ::template   attach<>              // Attach the remaining   object properties.
+,  typename T_codex ::template dispatch<>              // Attach the remaining template parameters.
 ,  T_content
 >;
 
@@ -141,7 +144,7 @@ using T_process = process::confined_t<void             // Wrap the process.
 using T_scheduler = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
 
 using T_processor = processor::polymer_t<T_process     // Map the process while applying with polyphony.
-,  T_scheduler::template accept<U_event>               // Moderate control via buffer-slicing scheduler.
+,  T_scheduler::template suspend<U_event>              // Moderate control via buffer-slicing scheduler.
 ,  provision::stored <null_type[0x100]>                // Use `std::vector`-based buffering.
 ,  provision::spooled<null_type[0x100]>                // Use `std::vector`-based event-spooliing.
 >;
@@ -162,7 +165,7 @@ z <<= flow::assign_f(U_stage{-1}) << P_damp{0.707F};   // Associate note-cut wit
 z <<= z_sample;                                        // Influx the current sample-rate.
 z <<= z_resize;                                        // Influx the current buffer-size.
 
-z.lead() >>= typename T_context::stage_type{-1};       // Efflux all voices to note-cut.
+z.lead() >>=U_stage{-1};        // Efflux all voices to note-cut.
 
 z >>= flow::cue_f(0x08).then(U_event{69, 0});          // Cue note-on  for `A4` at sample `0x08`.
 z >>= flow::cue_f(0x18).then(U_event{69, 0});          // Cue note-on  for `A4` at sample `0x18`, cutting the previous note.

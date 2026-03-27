@@ -40,7 +40,7 @@ struct nearest
 
 		template <auto ...>
 		XTAL_DEF_(return,inline,set)
-		methodology_f(auto &&z)
+		method_base_f(auto &&z)
 		noexcept -> auto
 		{
 			XTAL_IF0
@@ -61,7 +61,7 @@ struct nearest
 			using Z_fit = bond::fit<Z>;
 
 			XTAL_IF1_(eval) {
-				return methodology_f(XTAL_REF_(z));
+				return method_base_f(XTAL_REF_(z));
 			}
 			XTAL_0IF (real_variable_q<Z>) {
 				using Z_alpha = typename Z_fit::alpha_type;
@@ -73,7 +73,7 @@ struct nearest
 				return Z_alpha(Z_delta(XTAL_REF_(z)));
 			}
 			XTAL_0IF_(else) {
-				return methodology_f(XTAL_REF_(z));
+				return method_base_f(XTAL_REF_(z));
 			}
 		}
 		template <auto ...Ns>

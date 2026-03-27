@@ -46,8 +46,8 @@ struct arc<-0, 0>
 			auto constexpr  _1pi = one/U_fit::patio_1;
 			auto constexpr  _2pi = one/U_fit::patio_2;
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim)   {return mythos_f<N_lim, N_par>(XTAL_REF_(y), XTAL_REF_(x));}
-			XTAL_0IF_(consteval)    {return mythos_f<   ~0, N_par>(XTAL_REF_(y), XTAL_REF_(x));}
+			XTAL_0IF (0 <= N_lim)   {return method_approx_f<N_lim, N_par>(XTAL_REF_(y), XTAL_REF_(x));}
+			XTAL_0IF_(consteval)    {return method_approx_f<   ~0, N_par>(XTAL_REF_(y), XTAL_REF_(x));}
 	#if   XTAL_SYS_(builtin)
 			XTAL_0IF (real_variable_q<decltype(y)> and real_variable_q<decltype(x)>)
 			                        {return  __builtin_atan(XTAL_REF_(y)/XTAL_REF_(x))*_1pi;}
@@ -58,7 +58,7 @@ struct arc<-0, 0>
 	protected:
 		template <int N_lim=-1, int N_par=1>
 		XTAL_DEF_(return,inline,set)
-		mythos_f(auto &&y, auto &&x)
+		method_approx_f(auto &&y, auto &&x)
 		noexcept -> decltype(auto)
 		{
 			auto constexpr I_par = 1 + (~N_par&1);
@@ -68,7 +68,7 @@ struct arc<-0, 0>
 			using           X =  XTAL_ALL_(x);
 			using           Y =  XTAL_ALL_(y);
 			using           K = unstruct_t<Y>;
-			K constexpr   _pi = 0.318309886183790671537767526745029L;// 1/Pi
+			K constexpr   _pi = _std::numbers::inv_pi_v<K>;// 1/Pi
 			auto const   y_pi = XTAL_REF_(y)*_pi;
 			XTAL_IF0
 		//	N_par == 1
@@ -188,8 +188,8 @@ struct arc<-0, 1>
 			auto constexpr _1pi = one/U_fit::patio_1;
 			auto constexpr _2pi = one/U_fit::patio_2;
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim)   {return mythos_f<N_lim, N_par>(XTAL_REF_(y), XTAL_REF_(x));}
-			XTAL_0IF_(consteval)    {return mythos_f<   ~0, N_par>(XTAL_REF_(y), XTAL_REF_(x));}
+			XTAL_0IF (0 <= N_lim)   {return method_approx_f<N_lim, N_par>(XTAL_REF_(y), XTAL_REF_(x));}
+			XTAL_0IF_(consteval)    {return method_approx_f<   ~0, N_par>(XTAL_REF_(y), XTAL_REF_(x));}
 	#if   XTAL_SYS_(builtin)
 			XTAL_0IF (real_variable_q<decltype(y)> and real_variable_q<decltype(x)>)
 			                        {return  __builtin_atan(XTAL_REF_(y)/XTAL_REF_(x))*_1pi;}
@@ -200,7 +200,7 @@ struct arc<-0, 1>
 	protected:
 		template <int N_lim=-1, int N_par=1>
 		XTAL_DEF_(return,set)
-		mythos_f(auto &&v, auto &&u)
+		method_approx_f(auto &&v, auto &&u)
 		noexcept -> auto
 		{
 			static_assert(real_variable_q<decltype(v)>);
@@ -210,8 +210,8 @@ struct arc<-0, 1>
 			using U_alpha = typename L::alpha_type;
 			using W_alpha = atom::couple_t<U_alpha[2]>;
 
-			auto u_abs = u, u_sgn = decompose_t<signed>::method_e(u_abs);
-			auto v_abs = v, v_sgn = decompose_t<signed>::method_e(v_abs);// v_sgn *= *L::haplo_1;
+			auto u_abs = u, u_sgn = part_t<signed>::method_e(u_abs);
+			auto v_abs = v, v_sgn = part_t<signed>::method_e(v_abs);// v_sgn *= *L::haplo_1;
 
 			W_alpha co{v_abs < u_abs, _std::in_place};
 			W_alpha up{v, u_abs}; up *= co;
@@ -252,8 +252,8 @@ struct arc<-1, 0>
 			auto constexpr  _2pi = one/L::patio_f(-2);
 			auto constexpr  _4pi = one/L::patio_f(-4);
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim)                   {return mythos_f<N_lim, N_par>(XTAL_REF_(o));}
-			XTAL_0IF_(consteval)                    {return mythos_f<   ~0, N_par>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim)                   {return method_approx_f<N_lim, N_par>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)                    {return method_approx_f<   ~0, N_par>(XTAL_REF_(o));}
 	#if   XTAL_SYS_(builtin)
 			XTAL_0IF (real_variable_q<decltype(o)>) {return     _2pi*__builtin_log(XTAL_REF_(o));}
 	#endif
@@ -270,7 +270,7 @@ struct arc<-1, 0>
 	protected:
 		template <int N_lim=-1, int N_par=1>
 		XTAL_DEF_(return,inline,set)
-		mythos_f(auto &&u)
+		method_approx_f(auto &&u)
 		noexcept -> decltype(auto)
 		{
 			auto constexpr I_par = 1 + (~N_par&1);
@@ -467,8 +467,8 @@ struct arc<-1, 1>
 			auto constexpr  _2pi = one/L::patio_f(-2);
 			auto constexpr  _4pi = one/L::patio_f(-4);
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim) {return methodology_f<N_lim, N_par>(XTAL_REF_(o));}
-			XTAL_0IF_(consteval)  {return methodology_f<   ~0, N_par>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim) {return method_approx_f<N_lim, N_par>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)  {return method_approx_f<   ~0, N_par>(XTAL_REF_(o));}
 			XTAL_0IF_(else)       {return                    _2pi*log(XTAL_REF_(o));}
 		}
 		template <int N_lim=-1, int N_par=1>
@@ -482,7 +482,7 @@ struct arc<-1, 1>
 	protected:
 		template <int N_lim=-1, int N_par=1>
 		XTAL_DEF_(return,set)
-		methodology_f(real_variable_q auto o)
+		method_approx_f(real_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using L = bond::fit<decltype(o)>;
@@ -509,7 +509,7 @@ struct arc<-1, 1>
 		}
 		template <int N_lim=-1, int N_par=1>
 		XTAL_DEF_(return,set)
-		methodology_f(complex_variable_q auto o)
+		method_approx_f(complex_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			auto const o_re = o.real();

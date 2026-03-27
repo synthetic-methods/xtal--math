@@ -23,7 +23,7 @@ or create a similar complex sentinel with multiplication/projection.
 
 template <class ..._s>	struct  dot;
 template <class ..._s>	using   dot_t = typename dot<_s...>::type;
-template <class ..._s>	concept dot_q = bond::tag_infixed_p<dot_t, _s...>;
+template <class ..._s>	concept dot_q = bond::tag_inner_fixed_p<dot_t, _s...>;
 
 XTAL_DEF_(let) dot_f = [] XTAL_1FN_(call) (_detail::factory<dot_t>::make);
 

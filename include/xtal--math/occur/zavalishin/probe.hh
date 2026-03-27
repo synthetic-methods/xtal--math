@@ -10,16 +10,21 @@ XTAL_ENV_(push)
 namespace xtal::occur::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-
-template <class ..._s> struct   dash;
-template <class ..._s> using    dash_t = confined_t<dash<_s...>, bond::tag<dash>>;
-template <class ..._s> concept  dash_q = bond::tag_in_p<dash, _s...>;
+/*!
+\brief   Appends the exponentiated-dot-product of the stored value with the internal `state`.
+\todo    Consider working with warp and damp in the logarithmic/additive domain.
+\todo    Combine with existing argument if possible,
+         or include a constant parameter (or the highpass component `1 - s[0] - s[1] - ...`).
+*/
+template <class ..._s> XTAL_TYP_(new) probe;
+template <class ..._s> XTAL_TYP_(set) probe_t = confined_t<probe<_s...>, bond::tag<probe>>;
+template <class ..._s> XTAL_TYP_(ask) probe_q = bond::tag_inner_p<probe, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <class U>
-struct dash<U>
+struct probe<U>
 {
 	using superkind = confer<U>;
 
@@ -29,6 +34,7 @@ struct dash<U>
 		static_assert(any_q<S>);
 		using S_ = bond::compose_s<S, superkind>;
 		using T_ = typename S_::self_type;
+		using U_ = U;
 		
 		XTAL_DEF_(set) dot_f = [] XTAL_1FN_(call) (process::math::dot_f);
 		XTAL_DEF_(set) exp_f = [] XTAL_1FN_(call) (process::math::taylor::logarithm_t<-1>::template method_f<3>);
@@ -36,19 +42,15 @@ struct dash<U>
 	public:
 		using S_::S_;
 		
-		/*!
-		\brief  	Attaches `T_`, and appends to the arguments of `method` and `method_f`.
-		*/
 		template <extent_type N_mask=1>
-		struct attend
+		struct affix
 		{
-			using superkind = typename T_::template attach<N_mask>;
+			using superkind = typename S_::template attach<N_mask>;
 
 			template <class R>
 			class subtype : public bond::compose_s<R, superkind>
 			{
 				using R_ = bond::compose_s<R, superkind>;
-				using Q_ = typename R_::state_type;
 
 			public:// CONSTRUCT
 				using R_::R_;
@@ -60,8 +62,8 @@ struct dash<U>
 				method(auto &&...oo)// NOTE: Non-`const` only, for now...
 				noexcept -> decltype(auto)
 				{
-					auto const &[s_state_] = R_::template memory<Q_>();
-					auto const & s_shape_  = R_::template head<T_>().head();
+					auto const &[s_state_] = R_::template memory<typename R_::data_type>();
+					auto const & s_shape_  = R_::template head<T_>().template head<U_>();
 					return R_::template method<Ns...>(XTAL_REF_(oo)..., exp_f(dot_f(s_state_, s_shape_)));
 				}
 

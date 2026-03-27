@@ -37,10 +37,20 @@ struct octarithm<M_ism, M_div>
 
 	//	TODO: Define `complex` variant!
 
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		method_f(auto &&...oo)
+		noexcept -> auto
+		requires (2 <= sizeof...(oo))
+		{
+			return method_f<Ns...>((XTAL_REF_(oo) *...* one));
+		}
+
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
 		method_f(auto o)
 		noexcept -> XTAL_ALL_(o)
+		requires un_v<atom::groupoid_q<decltype(o)>>
 		{
 			using U_alpha = typename bond::fit<decltype(o)>::alpha_type;
 			U_alpha constexpr N_ =  one*U_alpha{M_div};
@@ -52,6 +62,15 @@ struct octarithm<M_ism, M_div>
 			if constexpr (M_ism ==  1) {o *= one/N1;}
 			if constexpr (M_ism ==  2) {o *= one/N2;}
 			return o;
+		}
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		method_f(auto &&o)
+		noexcept -> decltype(auto)
+		requires in_v<atom::groupoid_q<decltype(o)>>
+		{
+			return XTAL_ALL_(o)::template zip_from<[]
+				XTAL_1FN_(call) (method_f<Ns...>)>(XTAL_REF_(o));
 		}
 
 	};
@@ -71,12 +90,13 @@ struct octarithm<M_ism, M_div>
 
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		method_f(atom::groupoid_q auto &&o)
-		noexcept -> XTAL_ALL_(o)
+		method_f(auto &&...oo)
+		noexcept -> auto
+		requires (2 <= sizeof...(oo))
 		{
-			using  U = XTAL_ALL_(o);
-			return U::template zip_from<[] XTAL_1FN_(call) (method_f<Ns...>)>(XTAL_REF_(o));
+			return method_f<Ns...>((XTAL_REF_(oo) *...* one));
 		}
+
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
 		method_f(integral_q auto &&x)
@@ -146,6 +166,16 @@ struct octarithm<M_ism, M_div>
 #endif
 			XTAL_0IF_(else)                {return               exp(N2*XTAL_MOV_(o));}
 		}
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		method_f(auto &&o)
+		noexcept -> decltype(auto)
+		requires in_v<atom::groupoid_q<decltype(o)>>
+		{
+			return XTAL_ALL_(o)::template zip_from<[]
+				XTAL_1FN_(call) (method_f<Ns...>)>(XTAL_REF_(o));
+		}
+
 
 	protected:
 		template <int N_lim=0>
@@ -160,7 +190,7 @@ struct octarithm<M_ism, M_div>
 			using V_delta = int;
 
 			XTAL_IF1_(consteval) {
-				auto const d = U_fit::dnsilon_f(1)*half*decompose_f<signed>(o);
+				auto const d = U_fit::dnsilon_f(1)*half*part_f<signed>(o);
 				auto const N = static_cast<U_delta>(o + d);
 				auto const n = static_cast<U_alpha>(N);
 				approximate_f<N_lim>(o, n);

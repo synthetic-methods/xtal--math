@@ -45,6 +45,23 @@ TAG_("math")
 		TRUE_(square_f(1.0, 2.0, 3.0) == 1.0*1.0 + 2.0*2.0 + 3.0*3.0);
 
 	}
+	TRY_("square (onion)")
+	{
+	//	using T = U_alpha;
+	//	using U = _std::complex<T>;
+	//	using V = _std::complex<U>;
+	//	using W = _std::complex<V>;
+	//	U const u0{ 1,  2};
+	//	U const u1{ 3,  4};
+	//	U const u2{ 5,  6};
+	//	U const u3{ 7,  8};
+	//	V const v0{u0, u1};
+	//	V const v1{u2, u3};
+	//	W const w0{v0, v1};
+	//	TRUE_(square_f(v0) == (v0*v0));
+	//	TRUE_(square_f(w0) == (w0*w0));
+
+	}
 }
 /***/
 

@@ -4,7 +4,7 @@
 #include "./dot.hh"
 #include "./root.hh"
 #include "./roots.hh"
-
+#include "../atom/phason.hh"
 
 XTAL_ENV_(push)
 namespace xtal::process::math
@@ -15,20 +15,20 @@ namespace xtal::process::math
          e.g. `signed`/`unsigned` resolves the sign/magnitude, respectively.
 
 \note    When applied to floating-point values,
-         the `decompose<signed>` excludes zero.
+         the `part<signed>` excludes zero.
 
 \todo    Provide for smoothing via `(Sqrt[#1^2 + #2^2]&)`.
 \todo    Include projections e.g. `real` and `imag`.
 
 */
 template <typename ...As>
-struct decompose;
+struct part;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <>
-struct decompose<signed>
+struct part<signed>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -172,7 +172,7 @@ struct decompose<signed>
 	};
 };
 template <>
-struct decompose<unsigned>
+struct part<unsigned>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -245,16 +245,44 @@ struct decompose<unsigned>
 
 	};
 };
+template <>
+struct part<float>
+{
+	template <class S>
+	class subtype : public bond::compose_s<S>
+	{
+		using S_ = bond::compose_s<S>;
+
+	public:
+		using S_::S_;
+
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		method_f(auto &&o)
+		noexcept -> auto
+		{
+			return _std::real(XTAL_REF_(o));
+		}
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		method_f(atom::math::phason_q auto &&t_)
+		noexcept -> auto
+		{
+			return method_f<Ns...>(t_(0));
+		}
+
+	};
+};
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename ...As>
-using decompose_t = process::confined_t<decompose<As...>>;
+using part_t = process::confined_t<part<As...>>;
 
 template <typename ...As>
 XTAL_DEF_(let)
-decompose_f = [] XTAL_1FN_(call) (decompose_t<As...>::method_f);
+part_f = [] XTAL_1FN_(call) (part_t<As...>::method_f);
 
 
 ///////////////////////////////////////////////////////////////////////////////

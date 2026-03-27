@@ -88,7 +88,7 @@ struct unity<M_ism, M_car>
 			XTAL_0IF (0 <= N_lim) {
 				auto const w = modulo_f<-0>(t)*U_fit::dnsilon_f(1);
 				auto const u = modulo_f<-1>(w)*U_fit::upsilon_f(1);
-				auto const v = decompose_f<signed>(u)*decompose_f<signed>(w);
+				auto const v = part_f<signed>(u)*part_f<signed>(w);
 				return superprocess::template method_f<N_lim>(u)*(v);
 			}
 			XTAL_0IF (N_lim <  0) {
@@ -177,9 +177,9 @@ namespace xtal::occur
 ////////////////////////////////////////////////////////////////////////////
 
 template <auto ..._s>
-struct context<process::math::pade::unity<_s...>>
+struct codex<process::math::pade::unity<_s...>>
 {
-	using superkind = context<>;
+	using superkind = codex<>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>

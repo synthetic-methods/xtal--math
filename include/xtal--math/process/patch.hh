@@ -15,7 +15,7 @@ namespace xtal::process::math
 */
 template <class ..._s>	struct  patch;
 template <class ..._s>	using   patch_t = confined_t<patch<_s...>>;
-template <class ..._s>	concept patch_q = bond::tag_in_p<patch, _s...>;
+template <class ..._s>	concept patch_q = bond::tag_inner_p<patch, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////

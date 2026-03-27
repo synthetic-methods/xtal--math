@@ -641,7 +641,7 @@ XTAL_DEF_(return,inline,let)
 bit_reverse_f(ordinal_variable_q auto v, int const &n_subdepth)
 noexcept -> auto
 {
-	decltype(v) x = bit_sign_f(v);
+	decltype(v) const x = bit_sign_f(v);
 	v ^= x;
 	v -= x;
 	v  = ordinal_f(bit_reverse_f(cardinal_f(v), n_subdepth));
@@ -825,6 +825,32 @@ requires requires {bit_fraction_f(x.real()); bit_fraction_f(x.imag());}
 	using V = typename Y::value_type;
 
 	return Y{bit_fraction_f<V>(x.real()), bit_fraction_f<V>(x.imag())};
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/*!
+\returns The `target` to `N_zoom` bits of precision after the decimal.
+*/
+template <int N_zoom=0>
+XTAL_DEF_(return,inline,set)
+bit_fuzz_f(real_variable_q auto x)
+noexcept -> XTAL_ALL_(x)
+{
+	using X       = XTAL_ALL_(x);
+	using X_fit   = bond::fit<X>;
+	using X_alpha = typename X_fit::alpha_type;
+	using X_sigma = typename X_fit::sigma_type;
+	using X_delta = typename X_fit::delta_type;
+	return _xtd::bit_cast<X_alpha>(_xtd::bit_cast<X_sigma>(x)|one);
+}
+
+template <int N_zoom=0>
+XTAL_DEF_(return,verbatim,set)
+bit_fuzz_f(complex_variable_q auto x)
+noexcept -> XTAL_ALL_(x)
+{
+	return {bit_fuzz_f<N_zoom>(x.real()), x.imag()};
 }
 
 

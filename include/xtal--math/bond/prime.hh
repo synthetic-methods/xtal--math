@@ -36,7 +36,7 @@ XTAL_DEF_(return,inline,let)
 primer_f(int n_index)
 noexcept -> extent_type
 {
-	auto const i = n_index&0x7F; assert(i == n_index);
+	int const i = n_index&0x7F; assert(i == n_index);
 	return (static_cast<extent_type>(_detail::primed[i]) + i << 1)|!i + 1;
 }
 template <int N_index>
@@ -220,30 +220,30 @@ XTAL_DEF_(return,inline,let)
 prime_root_f(unsigned const n_prime, unsigned r_prime)
 noexcept -> bool
 {
-	int o_count{0}, r_power{1};
-	for (int i{0}; i < n_prime; ++i) {
+	unsigned o_count{0}, r_power{1};
+	for (unsigned i{0}; i < n_prime; ++i) {
 		r_power *= r_prime;
 		r_power %= n_prime;
-		o_count += r_power == 1;
+		o_count += r_power == 1U;
 	}
-	return o_count == 1 or n_prime == 2*r_prime;
+	return o_count == 1U or n_prime == (r_prime << 1);
 }
 XTAL_DEF_(return,inline,let)
 prime_root_f(unsigned const n_prime)
 noexcept -> unsigned
 {
-	assert(2 <= n_prime and n_prime <= 229 or n_prime == 257);
-	auto p_prime = n_prime &  1;
-	auto r_prime = p_prime +  1;
-	auto m_prime = n_prime >> 1;
-	m_prime &= (m_prime + 1)&(m_prime - 1);
+	assert(2U <= n_prime and n_prime <= 229U or n_prime == 257U);
+	auto p_prime = n_prime &  1U;
+	auto r_prime = p_prime +  1U;
+	auto m_prime = n_prime >> 1U;
+	m_prime &= (m_prime + 1U)&(m_prime - 1U);
 
-	     if (3 <  n_prime    and not m_prime) {r_prime +=  1;}// => 5*7*17*31*127 * 257
-	else if (0 == (  79*113*137*199)%n_prime) {r_prime +=  1;}// 28-bits
-	else if (0 == ( 157*167*193*223)%n_prime) {r_prime +=  3;}// 31-bits
-	else if (0 == (      97*151*229)%n_prime) {r_prime +=  5;}// 22-bits
-	else if (0 == (23*71*73*103*109)%n_prime) {r_prime +=  9;}// 31-bits
-	else if (0 == (41*43*47* 89*191)%n_prime) {r_prime += 17;}// 31-bits
+	     if (3U <  n_prime         and not m_prime) {r_prime +=  1U;}// => 5*7*17*31*127 * 257
+	else if (0U == (   79U*113U*137U*199U)%n_prime) {r_prime +=  1U;}// 28-bits
+	else if (0U == (  157U*167U*193U*223U)%n_prime) {r_prime +=  3U;}// 31-bits
+	else if (0U == (        97U*151U*229U)%n_prime) {r_prime +=  5U;}// 22-bits
+	else if (0U == (23U*71U*73U*103U*109U)%n_prime) {r_prime +=  9U;}// 31-bits
+	else if (0U == (41U*43U*47U* 89U*191U)%n_prime) {r_prime += 17U;}// 31-bits
 	return r_prime;
 }
 template <unsigned N_prime>

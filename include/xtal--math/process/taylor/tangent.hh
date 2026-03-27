@@ -57,7 +57,7 @@ struct tangent<M_ism, -0>
 		method_f(auto &&o)
 		noexcept -> decltype(auto)
 		{
-			auto const o_sgn = decompose_f<signed>(o);
+			auto const o_sgn = part_f<signed>(o);
 			auto x = objective_f(XTAL_REF_(o));
 			XTAL_IF0
 			XTAL_0IF (0 < M_ism) {

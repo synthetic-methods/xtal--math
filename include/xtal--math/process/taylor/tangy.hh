@@ -34,14 +34,14 @@ template <int M_iso, int M_car> requires (0 < M_iso)
 struct tangy<M_iso, M_car>
 :	process::lift<void
 	,	tangent<M_iso, M_car>
-	,	dilate<[] XTAL_1FN_(to) (one/bond::fit<>::patio_1)>
+	,	dilate<[] XTAL_1FN_(to) (one*bond::fit<>::patio_1)>
 	>
 {
 };
 template <int M_iso, int M_car> requires (M_iso < 0)
 struct tangy<M_iso, M_car>
 :	process::lift<void
-	,	dilate<[] XTAL_1FN_(to) (one*bond::fit<>::patio_1)>
+	,	dilate<[] XTAL_1FN_(to) (one/bond::fit<>::patio_1)>
 	,	tangent<M_iso, M_car>
 	>
 {

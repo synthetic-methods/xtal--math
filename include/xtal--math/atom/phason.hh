@@ -23,7 +23,7 @@ and addition (affecting only the initial element).
 */
 template <class   ..._s>	struct          phason;
 template <class   ..._s>	using           phason_t = typename phason<_s...>::type;
-template <class   ...Ts>	concept         phason_q = bond::tag_infixed_p<phason_t, Ts...>;
+template <class   ...Ts>	concept         phason_q = bond::tag_inner_fixed_p<phason_t, Ts...>;
 template <class   ...Ts>	concept phason_simplex_q = phason_q<Ts...> and simplex_field_q<initializer_t<Ts>...>;
 template <class   ...Ts>	concept phason_complex_q = phason_q<Ts...> and complex_field_q<initializer_t<Ts>...>;
 template <class   ...Ts>	concept complex_phason_q = complex_variable_q<Ts...> and phason_simplex_q<typename destruct<Ts>::value_type...>;

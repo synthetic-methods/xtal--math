@@ -2,8 +2,8 @@
 #include "./any.cc"
 #include "./tangy.hh"// testing...
 
-#include "../dilated.hh"
-#include "../dilate.hh"
+
+
 
 
 XTAL_ENV_(push)
@@ -35,6 +35,7 @@ TAG_("tangy")
 	/**/
 	TRY_("scalar evaluation")
 	{
+
 		TRUE_(check_f<-25>(tangy_t< 2>::template method_f<~0>(-2.0), tangy_t< 2, 1>::template method_f< 3>(-2.0)));
 		TRUE_(check_f<-30>(tangy_t< 2>::template method_f<~0>(-2.0), tangy_t< 2, 1>::template method_f< 2>(-2.0)));
 		TRUE_(check_f<-34>(tangy_t< 2>::template method_f<~0>(-2.0), tangy_t< 2, 1>::template method_f< 1>(-2.0)));

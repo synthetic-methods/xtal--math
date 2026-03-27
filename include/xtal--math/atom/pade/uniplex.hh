@@ -15,7 +15,7 @@ namespace xtal::atom::math::pade
 */
 template <class   ..._s>	struct  uniplex;
 template <class   ..._s>	using   uniplex_t = typename uniplex<_s...>::type;
-template <class   ...Ts>	concept uniplex_q = bond::tag_in_p<uniplex_t, Ts...>;
+template <class   ...Ts>	concept uniplex_q = bond::tag_inner_p<uniplex_t, Ts...>;
 
 namespace _detail
 {///////////////////////////////////////////////////////////////////////////////
@@ -207,66 +207,66 @@ public:
 		reflection_f(auto &&that)
 		noexcept -> auto
 		{
-			auto &&[o, q_] = qualify_f<T>(XTAL_REF_(that));
-			XTAL_IF0
-			XTAL_0IF (N_dir != 0) {
-				return complex_type {
-					o.real()*q_.template sum<+N_dir>()
-				,	o.imag()*q_.template sum<-N_dir>()
-				};
-			}
-			XTAL_0IF (N_dir == 0) {
-				auto const q_up = q_.template sum<+1>();
-				auto const q_dn = q_.template sum<-1>();
-				return couplex_type {
-					{q_up*o.real(), q_dn*o.imag()},
-					{q_dn*o.real(), q_up*o.imag()}
-				};
-			}
+			return reflection_f<N_dir>(XTAL_REF_(that), zero);
 		}
-		template <int N_dir=0>
+		template <int N_dir=0> requires un_v<N_dir, 0>
 		XTAL_DEF_(return,inline,set)
-		reflection_f(auto &&that, auto const &with)
-		noexcept -> auto
+		reflection_f(auto &&that, auto const &plus)
+		noexcept -> complex_type
 		{
 			//\
 			using _xtd::plus_multiplies_f;
 			using process::math::term_f;
 			auto &&[o, q_] = qualify_f<T>(XTAL_REF_(that));
 			XTAL_IF0
-			XTAL_0IF (N_dir != 0) {
-				XTAL_IF0
-				XTAL_0IF (simplex_field_q<decltype(with)>) {
-					return complex_type {
-						term_f(with       , o.real(), q_.template sum<+N_dir>())
-					,	                    o.imag()* q_.template sum<-N_dir>() 
-					};
-				}
-				XTAL_0IF (complex_field_q<decltype(with)>) {
-					return complex_type {
-						term_f(with.real(), o.real(), q_.template sum<+N_dir>())
-					,	term_f(with.imag(), o.imag(), q_.template sum<-N_dir>())
-					};
-				}
-			}
-			XTAL_0IF (N_dir == 0) {
-				auto const q_up = q_.template sum<+1>();
-				auto const q_dn = q_.template sum<-1>();
-				XTAL_IF0
-				XTAL_0IF (simplex_field_q<decltype(with)>) {
-					return couplex_type {
-						{term_f(with       , o.real(), q_up),                     o.imag()* q_dn },
-						{term_f(with       , o.real(), q_dn),                     o.imag()* q_up }
-					};
-				}
-				XTAL_0IF (complex_field_q<decltype(with)>) {
-					return couplex_type {
-						{term_f(with.real(), o.real(), q_up), term_f(with.imag(), o.imag(), q_dn)},
-						{term_f(with.real(), o.real(), q_dn), term_f(with.imag(), o.imag(), q_up)}
-					};
-				}
-			}
+			XTAL_0IF (same_q<decltype(zero), decltype(plus)>) {return {
+				o.real()*q_.template sum<+N_dir>()
+			,	o.imag()*q_.template sum<-N_dir>()
+			};}
+			XTAL_0IF (simplex_field_q<       decltype(plus)>) {return {
+				term_f(plus       , o.real(), q_.template sum<+N_dir>())
+			,	term_f(zero       , o.imag(), q_.template sum<-N_dir>())
+			};}
+			XTAL_0IF (complex_field_q<       decltype(plus)>) {return {
+				term_f(plus.real(), o.real(), q_.template sum<+N_dir>())
+			,	term_f(plus.imag(), o.imag(), q_.template sum<-N_dir>())
+			};}
 		}
+		template <int N_dir=0> requires in_v<N_dir, 0>
+		XTAL_DEF_(return,inline,set)
+		reflection_f(auto &&that, auto const &plus=zero)
+		noexcept -> couplex_type
+		{
+			//\
+			using _xtd::plus_multiplies_f;
+			using process::math::term_f;
+			auto &&[o, q_] = qualify_f<T>(XTAL_REF_(that));
+			auto const q_up = q_.template sum<+1>();
+			auto const q_dn = q_.template sum<-1>();
+			XTAL_IF0
+			XTAL_0IF (same_q<decltype(zero), decltype(plus)>) {return {
+				{q_up*o.real(), q_dn*o.imag()},
+				{q_dn*o.real(), q_up*o.imag()}
+			};}
+			XTAL_0IF (simplex_field_q<       decltype(plus)>) {return {
+				{term_f(plus       , o.real(), q_up), term_f(zero       , o.imag(), q_dn)},
+				{term_f(plus       , o.real(), q_dn), term_f(zero       , o.imag(), q_up)}
+			};}
+			XTAL_0IF (complex_field_q<       decltype(plus)>) {return {
+				{term_f(plus.real(), o.real(), q_up), term_f(plus.imag(), o.imag(), q_dn)},
+				{term_f(plus.real(), o.real(), q_dn), term_f(plus.imag(), o.imag(), q_up)}
+			};}
+		}
+		template <int N_dir=0>
+		XTAL_DEF_(return,inline,set)
+		reflection_f(auto &&that, auto &&plus, auto &&...times_)
+		noexcept -> auto
+		requires (1 <= sizeof...(times_))
+		{
+			auto &&[o, q_] = qualify_f<T>(XTAL_REF_(that));
+			return reflection_f<N_dir>(T{XTAL_REF_(o), XTAL_REF_(q_)*(times_ *...* one)}, XTAL_REF_(plus));
+		}
+
 		XTAL_FN1_(go) (template <int N_dir=0> XTAL_DEF_(return,inline,get) resolution, resolution_f<N_dir>)
 		XTAL_FN1_(go) (template <int N_dir=0> XTAL_DEF_(return,inline,get) reflection, reflection_f<N_dir>)
 		XTAL_FN1_(go) (template <int N_dir=1> XTAL_DEF_(return,inline,get)        sum, reflection_f<N_dir>)

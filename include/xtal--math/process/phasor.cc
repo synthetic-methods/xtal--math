@@ -127,8 +127,9 @@ TAG_("phasor")
 {
 	using namespace Eigen;
 	
-	using U_stored  = provision::stored<unit_type[0x100]>;
-	using U_sampled = occur::resample_t<>::template attach<>;
+	using U_stored   = provision::stored<unit_type[0x100]>;
+	using U_sampled  = occur::resample_t<>::template attach<>;
+	using U_resynced = occur::resync_t  <>::template attach<>;
 
 	using _Op = bond::fit<>;
 	using T_sigma = typename _Op::sigma_type;
@@ -145,7 +146,7 @@ TAG_("phasor")
 	using W_phi = bond::repack_t<_phi>;
 	using X_phi = atom::math::phason_t<_phi>;
 	
-	using Y_chi = process::conveyor_t<phasor<_phi, U_sampled>>;
+	using Y_chi = process::conveyor_t<phasor<_phi, U_sampled, U_resynced>>;
 //	using Y_chi = process::conveyor_t<phasor<_phi>>;
 	using Y_phi = phasor_t<_phi>;
 
@@ -194,6 +195,8 @@ TAG_("phasor")
 		auto z_phi = Z_phi::bind_f(); z_phi <<= occur::math::indent_s<X_phi, 1>{_fit::ratio_f(7)}; z_phi <<= occur::resize_t<>(N_data);
 		auto z_psi = Z_psi::bind_f(); z_psi <<= occur::math::indent_s<X_phi, 1>{_fit::ratio_f(7)}; z_psi <<= occur::resize_t<>(N_data);
 	//	auto z_eig = Z_eig::bind_f(); z_eig <<= occur::math::indent_s<X_phi, 1>{_fit::ratio_f(7)}; z_eig <<= occur::resize_t<>(N_data);
+
+		z_chi >>= occur::stage_t<>(0);
 
 		occur::cursor_t<>               z_cursor(N_data);
 		occur::math::indent_s<X_phi, 1> z_indent{x_delta};

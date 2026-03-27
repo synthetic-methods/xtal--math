@@ -7,58 +7,57 @@
 
 
 XTAL_ENV_(push)
-namespace xtal::process::math::zavalishin
+namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-///\
-Modulates between `ArSinh[#1]`/`Sinh[#1]` and `Log[#1 + 1]`/`Exp[#1] - 1` via `Tan[#2*Pi/4]`. \
+/*!
+\brief   General purpose waveshaper.
+\note    Because the implementation for `M_ism=-3` has mixed-order,
+         the corresponding inverse `M_ism=3` is imprecise,
+         and should only be used in suitable contexts (e.g. antisaturation).
 
-///\
-The sign of `M_ism` determines the direction of the isomorphism, with `M_ism=0` leaving the input unchanged. \
-The magnitude determines the class of approximations, with order indexed by `n = Abs[M_ism]^N_lim`. \
+Modulates between `ArSinh[#1]`/`Sinh[#1]` and `Log[#1 + 1]`/`Exp[#1] - 1` via `Tan[#2*Pi/4]`.
 
-///\
+The sign of `M_ism` determines the direction of the isomorphism, with `M_ism=0` leaving the input unchanged.
+The magnitude determines the class of approximations, with order indexed by `n = Abs[M_ism]^N_lim`.
+
 The definitions are based on the respective approximations of `log` and `exp`:
+```m
+log0[n_]:= Module[{u=1/n}, RightComposition[#^u&, (# - 1/#)/2         &, #*n&]]
+exp0[n_]:= Module[{u=1/n}, RightComposition[#*u&, (# + Sqrt[1 + #^2]) &, #^n&]]
+```
 
-///	log0[n_]:= Module[{u=1/n}, RightComposition[#^u&, (# - 1/#)/2         &, #*n&]]
-///	exp0[n_]:= Module[{u=1/n}, RightComposition[#*u&, (# + Sqrt[1 + #^2]) &, #^n&]]
-
-///\
-Composing the above with `# + Sqrt[#^2 + 1] &` and its inverse `(# - 1/#)/2 &` \
+Composing the above with `# + Sqrt[#^2 + 1] &` and its inverse `(# - 1/#)/2 &`
 yields the respective approximations of `ArSinh` and `Sinh` (equivalent when `n==1`):
+```m
+asinh0[n_]:= Module[{u=1/n}, RightComposition[#*1&, # + Sqrt[1 + #^2] &, #^u&, (# - 1/#)/2 &, #*n &]];
+ sinh0[n_]:= Module[{u=1/n}, RightComposition[#*u&, # + Sqrt[1 + #^2] &, #^n&, (# - 1/#)/2 &, #*1 &]];
+```
 
-///	asinh0[n_]:= Module[{u=1/n}, RightComposition[#*1&, # + Sqrt[1 + #^2] &, #^u&, (# - 1/#)/2 &, #*n &]];
-///	 sinh0[n_]:= Module[{u=1/n}, RightComposition[#*u&, # + Sqrt[1 + #^2] &, #^n&, (# - 1/#)/2 &, #*1 &]];
-
-///\
 The modulated factor `Cosh[#] - 1` is obtained with the additive formula `(# + 1/#)/2 - 1 &`:
+```m
+cozh0[n_]:= Module[{u=1/n}, RightComposition[#*u&, # + Sqrt[1 + #^2] &, #^n&, (# + 1/#)/2 - 1&]];
+```
 
-///	 cozh0[n_]:= Module[{u=1/n}, RightComposition[#*u&, # + Sqrt[1 + #^2] &, #^n&, (# + 1/#)/2 - 1&]];
+More accurate approximations can be attained by scaling/shrinking the domain/codomain by `n/Sqrt[n^2 - {1,2}]`:
+```m
+sinh1[n_] := Module[{r=n/Sqrt[n^2 - 1^2]}, RightComposition[#*r&, sinh0[n], #/r^1 &]];
+cozh1[n_] := Module[{r=n/Sqrt[n^2 - 2^2]}, RightComposition[#*r&, cozh0[n], #/r^2 &]];
+```
 
-///\
-More accurate approximations can be attained by scaling/shrinking the domain/codomain by `n/Sqrt[n^2 - {1,2}]`: \
-
-///	sinh1[n_] := Module[{r=n/Sqrt[n^2 - 1^2]}, RightComposition[#*r&, sinh0[n], #/r^1 &]];
-///	cozh1[n_] := Module[{r=n/Sqrt[n^2 - 2^2]}, RightComposition[#*r&, cozh0[n], #/r^2 &]];
-
-///\
-When `n` is a multiple of 3 or 2 respectively, the formulae above reduce to the recursive polynomials applied when `M_ism=-3`: \
-
-///	Module[{n=3^i}, Module[{m=n^2 - 1^2}, Module[{t=4 #^2/m}, FixedPoint[Term[3, t, #^2] # &, 1, i]/n]]]*# &
-///	Module[{n=2^i}, Module[{m=n^2 - 2^2}, Times@@FixedPointList[Term[-1, 2, #]^2 &, Term[1, 1/m, #^2], i - 2]/2]*#^2 &
-
-///\note\
-Because the implementation for `M_ism=-3` has mixed-order, the corresponding inverse `M_ism=3` is imprecise, \
-and should only be used in suitable contexts (e.g. antisaturation). \
-
-
-template <int M_ism=1, int M_car=0>	struct   curve;
-template <int M_ism=1, int M_car=0>	using    curve_t = process::confined_t<curve<M_ism, M_car>>;
+When `n` is a multiple of 3 or 2 respectively, the formulae above reduce to the recursive polynomials applied when `M_ism=-3`:
+```m
+Module[{n=3^i}, Module[{m=n^2 - 1^2}, Module[{t=4 #^2/m}, FixedPoint[Term[3, t, #^2] # &, 1, i]/n]]]*# &
+Module[{n=2^i}, Module[{m=n^2 - 2^2}, Times@@FixedPointList[Term[-1, 2, #]^2 &, Term[1, 1/m, #^2], i - 2]/2]*#^2 &
+```
+*/
+template <int M_ism=1, int M_car=0>	struct   hype;
+template <int M_ism=1, int M_car=0>	using    hype_t = process::confined_t<hype<M_ism, M_car>>;
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int M_ism, int M_car>
-struct curve
+struct hype
 {
 	static constexpr int N_ism = sign_v<M_ism>*M_ism;
 
@@ -127,7 +126,7 @@ struct curve
 			using      _fit  = bond::fit<decltype(u)>;
 			auto       z_re  = z.real();
 			auto       z_im  = z.imag();
-			auto const z_io  = decompose_t<signed>::method_e(z_im);
+			auto const z_io  = part_t<signed>::method_e(z_im);
 			auto const z_co  = z_im*root_f<-1>(z_re);
 			auto      [z_up, z_dn] = roots_f<2>(square_f(z_re, z_im));
 
@@ -141,7 +140,7 @@ struct curve
 					u = log(XTAL_MOV_(u));
 				}
 				else {
-					auto constexpr N_ord = power_f<N_lim>(N_ism);
+					auto constexpr N_ord = monomial_f<N_lim>(N_ism);
 					u = _fit::ratio_f(N_ord, 2)*roots_f<N_ord>(XTAL_MOV_(u)).template sum<-1>();
 				}
 			}
@@ -150,10 +149,10 @@ struct curve
 					u  = exp(XTAL_MOV_(u));
 				}
 				else {
-					auto constexpr N_ord = power_f<N_lim>(N_ism);
+					auto constexpr N_ord = monomial_f<N_lim>(N_ism);
 					u *= root_f<-1>(N_ord);
 					u += root_f< 2>(term_f<1, 2>(one, u));
-					u  = power_f<N_ord>(XTAL_MOV_(u));
+					u  = monomial_f<N_ord>(XTAL_MOV_(u));
 				}
 				u = half*term_f(term_f(z_co*-two, z_co - one, root_f<-1>(u)), z_co + one, XTAL_MOV_(u));
 			}
@@ -197,10 +196,10 @@ struct curve
 				return w0*u_*term_f(term_f(one, w, w1), u, u1, z_co);
 			}
 			XTAL_0IF_(else) {
-				auto constexpr N0 = power_f<N_lim + 0>(U3), T0 = U4/square_f<-1>(N0, U1);
-				auto constexpr N1 = power_f<N_lim + 2>(U2), T1 = U1/square_f<-1>(N1, U2);
+				auto constexpr N0 = monomial_f<N_lim + 0>(U3), T0 = U4/square_f<-1>(N0, U1);
+				auto constexpr N1 = monomial_f<N_lim + 2>(U2), T1 = U1/square_f<-1>(N1, U2);
 
-				u *= decompose_t<signed>::method_e(z_co);
+				u *= part_t<signed>::method_e(z_co);
 
 				U t0{term_f(U0, T0, w)}, s0{U1};
 				U t1{term_f(U1, T1, w)}, s1{U1_02*u*z_co*t1};
@@ -223,12 +222,12 @@ struct curve
 
 template <auto N>
 XTAL_DEF_(return,inline,let)
-curve_f(auto &&...oo)
+hype_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
 	auto constexpr N_sgn =   sign_v<N>;
 	auto constexpr N_abs = N*sign_v<N>;
-	return curve_t<3*N_sgn>::template method_f<N_abs>(XTAL_REF_(oo)...);
+	return hype_t<3*N_sgn>::template method_f<N_abs>(XTAL_REF_(oo)...);
 }
 
 

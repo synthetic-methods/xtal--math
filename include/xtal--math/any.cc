@@ -10,7 +10,7 @@
 namespace xtal
 {
 template <class U, class V=U>	struct  complexion;
-template <class        ...Ts>	concept complexion_q = bond::tag_in_p<complexion, Ts...>;
+template <class        ...Ts>	concept complexion_q = bond::tag_inner_p<complexion, Ts...>;
 
 XTAL_DEF_(return,inline,let)
 objective_f(complexion_q auto &&o)
@@ -213,7 +213,7 @@ namespace xtal::_test
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <int N_index>
+template <int N_ind>
 XTAL_DEF_(return,let)
 check_f(auto const &u, auto const &v)
 noexcept -> bool
@@ -222,39 +222,39 @@ noexcept -> bool
 	using V = XTAL_ALL_(v);
 	XTAL_IF0
 	XTAL_0IF (not  atom::block_q<U, V>) {
-		return bond::math::bit_trim_f<N_index>(u) == bond::math::bit_trim_f<N_index>(v)
-		or     bond::math::bit_trim_f<N_index>(u - v) == zero;
+		return bond::math::bit_trim_f<N_ind>(u) == bond::math::bit_trim_f<N_ind>(v)
+		or     bond::math::bit_trim_f<N_ind>(u - v) == zero;
 	}
 	XTAL_0IF (not fixed_shaped_q<U, V>) {
 		return false;
 	}
 	XTAL_0IF_(else) {
 		return [&]<auto ...I>(bond::seek_t<I...>)
-			XTAL_0FN_(to) (...and (check_f<N_index>(get<I>(u), get<I>(v))))
+			XTAL_0FN_(to) (...and (check_f<N_ind>(get<I>(u), get<I>(v))))
 		(bond::seek_s<U::size()&V::size()>{});
 	}
 }
-template <int N_index, int N_limit>
+template <int N_ind, int N_lim>
 XTAL_DEF_(return,let)
 check_f(auto const &u, auto const &v)
 noexcept -> int
 {
-	auto constexpr Z_index = sign_v<N_index>;
-	auto constexpr Z_limit = sign_v<N_limit>;
-	static_assert(Z_index == Z_limit);
+	auto constexpr Z_ind = sign_v<N_ind>;
+	auto constexpr Z_lim = sign_v<N_lim>;
+	static_assert(Z_ind == Z_lim);
 
 	XTAL_IF0
-	XTAL_0IF (Z_limit*N_limit <  Z_index*N_index) {
-		return check_f<N_limit, N_index>(u, v);
+	XTAL_0IF (Z_lim*N_lim <  Z_ind*N_ind) {
+		return check_f<N_lim, N_ind>(u, v);
 	}
-	XTAL_0IF (Z_limit*N_limit == Z_index*N_index) {
+	XTAL_0IF (Z_lim*N_lim == Z_ind*N_ind) {
 		return 0;
 	}
-	XTAL_0IF (Z_index == -1) {
-		return check_f<N_index>(u, v)? N_index: check_f<Z_index + N_index, N_limit>(u, v);
+	XTAL_0IF (Z_ind == -1) {
+		return check_f<N_ind>(u, v)? N_ind: check_f<Z_ind + N_ind, N_lim>(u, v);
 	}
-	XTAL_0IF (Z_index ==  1) {
-		return check_f<N_limit>(u, v)? N_limit: check_f<N_index, N_limit - Z_limit>(u, v);
+	XTAL_0IF (Z_ind ==  1) {
+		return check_f<N_lim>(u, v)? N_lim: check_f<N_ind, N_lim - Z_lim>(u, v);
 	}
 }
 XTAL_DEF_(return,let)

@@ -61,8 +61,8 @@ struct roots
 			XTAL_0IF (M_exp == -2) {auto const n = root_f<-2, M_cut>(w); return W2{n,     n*w};}
 			XTAL_0IF (M_exp == -3) {auto const n = root_f<-3, M_cut>(w); return W2{n,   n*n*w};}
 			XTAL_0IF (M_exp == -4) {auto const n = root_f<-4, M_cut>(w); return W2{n, n*n*n*w};}
-			XTAL_0IF (0 <   M_exp) {auto const n = root_f<-M_exp, M_cut, Ns...>(w); return W2{w*power_f<+M_exp - 1>(n),n};}
-			XTAL_0IF (M_exp <   0) {auto const n = root_f<+M_exp, M_cut, Ns...>(w); return W2{n,power_f<-M_exp - 1>(n)*w};}
+			XTAL_0IF (0 <   M_exp) {auto const n = root_f<-M_exp, M_cut, Ns...>(w); return W2{w*monomial_f<+M_exp - 1>(n),n};}
+			XTAL_0IF (M_exp <   0) {auto const n = root_f<+M_exp, M_cut, Ns...>(w); return W2{n,monomial_f<-M_exp - 1>(n)*w};}
 		}
 
 	};

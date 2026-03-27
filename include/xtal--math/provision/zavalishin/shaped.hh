@@ -7,7 +7,7 @@
 
 
 XTAL_ENV_(push)
-namespace xtal::provision::math
+namespace xtal::provision::math::zavalishin
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -15,7 +15,7 @@ namespace _detail
 {///////////////////////////////////////////////////////////////////////////////
 
 template <auto ...Ms>
-struct saturator
+struct shaper
 {
 	template <class S>
 	class subtype : public S
@@ -37,19 +37,19 @@ struct saturator
 
 }///////////////////////////////////////////////////////////////////////////////
 
-template <template <auto ...> class A_=_detail::saturator>	struct  saturation;
-template <template <auto ...> class A_=_detail::saturator>	using   saturation_t = confined_t<saturation<A_>>;
-template <                                    class ..._s>	concept saturation_q = bond::tab_in_p<saturation<>, _s...>;
+template <template <auto ...> class A_=_detail::shaper>	struct  shaped;
+template <template <auto ...> class A_=_detail::shaper>	using   shaped_t = confined_t<shaped<A_>>;
+template <                                 class ..._s>	concept shaped_q = bond::tab_inner_p<shaped<>, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 /*!
-\brief   Provides the member-`saturate_t`.
+\brief   Provides the member-`shaper_t`.
 */
 template <template <auto ...> class A_>
-struct saturation
+struct shaped
 {
-	using superkind = bond::tab<saturation<>>;
+	using superkind = bond::tab<shaped<>>;
 	
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -60,7 +60,7 @@ struct saturation
 		using S_::S_;
 		
 		template <auto ...Ms>
-		using saturate_t = process::confined_t<A_<Ms...>>;
+		using shaper_t = process::confined_t<A_<Ms...>>;
 
 	};
 };

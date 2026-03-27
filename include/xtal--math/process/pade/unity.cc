@@ -2,8 +2,8 @@
 #include "./any.cc"
 #include "./unity.hh"// testing...
 
-#include "../dilated.hh"
-#include "../dilate.hh"
+
+
 
 
 XTAL_ENV_(push)
@@ -210,8 +210,8 @@ TAG_("unity")
 
 		auto z = unity_t<1>::template method_f<N_lim>(t1);
 
-		TRUE_(check_f<-1>(z, process::lift_t<unity<1, 1>, dilate<2>>::template method_f<N_lim>(t2)));
-		TRUE_(check_f<-1>(z, process::lift_t<unity<1, 1>           >::template method_f<N_lim>(t1)));
+		TRUE_(check_f<-1>(z, process::lift_t<unity<1, 1>, dilate<-2>>::template method_f<N_lim>(t2)));
+		TRUE_(check_f<-1>(z, process::lift_t<unity<1, 1>            >::template method_f<N_lim>(t1)));
 
 	}
 

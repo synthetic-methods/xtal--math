@@ -17,15 +17,15 @@ Wrapper used to tunnel an existing type using `std::tuple`-based traversal.
 */
 ////////////////////////////////////////////////////////////////////////////////
 
-template <          typename ..._s> struct   indent;
-template <          typename ..._s> struct   intent;
-template <          typename ...Ts> concept  intent_q = bond::tag_in_p<indent, Ts...>;
-template <class T                 > using    intent_t = typename intent<based_t<T>>::type;
-template <          typename ...Ts> concept  indent_q = in_v<true, intent_q<Ts>...> and fungible_q<intent_t<Ts>...>;
-template <class S,  int      ...Ns> using    indent_s = bond::compose_s<S, indent<ordinal_constant_t<Ns>...>>;
+template <          typename ..._s> XTAL_TYP_(new) indent;
+template <          typename ..._s> XTAL_TYP_(new) intent;
+template <          typename ...Ts> XTAL_TYP_(ask) intent_q = bond::tag_inner_p<indent, Ts...>;
+template <class T                 > XTAL_TYP_(set) intent_t = typename intent<based_t<T>>::type;
+template <          typename ...Ts> XTAL_TYP_(ask) indent_q = in_v<true, intent_q<Ts>...> and fungible_q<intent_t<Ts>...>;
+template <class S,  int      ...Ns> XTAL_TYP_(set) indent_s = bond::compose_s<S, indent<ordinal_constant_t<Ns>...>>;
 
-template <                 class T> struct   intent<T> {using type =          T           ;};
-template <bond::tag_in_q<indent> T> struct   intent<T> {using type = typename T::data_type;};
+template <                 class T> XTAL_TYP_(new) intent<T> {using type =          T           ;};
+template <bond::tag_inner_q<indent> T> XTAL_TYP_(new) intent<T> {using type = typename T::data_type;};
 
 template <constant_q ...Ns>
 struct indent<Ns...>

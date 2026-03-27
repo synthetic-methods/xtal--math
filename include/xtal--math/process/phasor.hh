@@ -13,7 +13,7 @@ namespace xtal::process::math
 
 template <typename ..._s>	struct  phasor;
 template <typename ..._s>	using   phasor_t = confined_t<phasor<_s...>>;
-template <typename ..._s>	concept phasor_q = bond::tag_in_p<phasor, _s...>;
+template <typename ..._s>	concept phasor_q = bond::tag_inner_p<phasor, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -86,8 +86,12 @@ struct phasor<A, As...>
 		fuse(occur::stage_q auto &&o)
 		noexcept -> signed
 		{
-			if (o.head() == 0) {
-				get<0>(head()) = zero;
+			using resync_type = occur::resync_t<>;
+			if constexpr (complete_q<typename S_::template head_t<resync_type>>) {
+				auto const sync = S_::template head<resync_type>();
+				if (1 != sync and sync == o.head()) {
+					get<0>(head()) = zero;
+				}
 			}
 			return S_::template fuse<N_ion>(XTAL_REF_(o));
 		}
@@ -232,9 +236,9 @@ namespace xtal::occur
 ////////////////////////////////////////////////////////////////////////////
 
 template <class ..._s>
-struct context<process::math::phasor<_s...>>
+struct codex<process::math::phasor<_s...>>
 {
-	using superkind = context<>;
+	using superkind = codex<>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -264,11 +268,11 @@ struct context<process::math::phasor<_s...>>
 	};
 };
 template <scalar_q A>
-struct context<process::math::phasor<A>> : context<process::math::phasor<A[2]>>
+struct codex<process::math::phasor<A>> : codex<process::math::phasor<A[2]>>
 {
 };
 template <>
-struct context<process::math::phasor< >> : context<process::math::phasor<typename bond::fit<>::alpha_type>>
+struct codex<process::math::phasor< >> : codex<process::math::phasor<typename bond::fit<>::alpha_type>>
 {
 };
 

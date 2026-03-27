@@ -15,8 +15,8 @@ namespace xtal::occur::math
 */
 template <         typename ..._s>	struct  produce;
 template <class S, typename ..._s>	using   produce_s = bond::compose_s<S, produce<_s...>>;
-template <         typename ..._s>	concept produce_q = bond::tag_in_p<produce, _s...> or
-	indent_q<_s...> and bond::tag_in_p<produce, typename _s::tail_type...>;
+template <         typename ..._s>	concept produce_q = bond::tag_inner_p<produce, _s...> or
+	indent_q<_s...> and bond::tag_inner_p<produce, typename _s::tail_type...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////

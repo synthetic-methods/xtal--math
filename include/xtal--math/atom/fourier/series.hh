@@ -13,7 +13,7 @@ namespace xtal::atom::math::fourier
 
 template <class   ..._s>	struct  series;
 template <class   ..._s>	using   series_t = typename series<_s...>::type;
-template <class   ...Ts>	concept series_q = bond::tag_in_p<series_t, Ts...>;
+template <class   ...Ts>	concept series_q = bond::tag_inner_p<series_t, Ts...>;
 
 XTAL_DEF_(let) series_f = [] XTAL_1FN_(call) (_detail::factory<series_t>::make);
 
@@ -92,8 +92,8 @@ public:
 		generate(value_type const &u)
 		noexcept -> T &
 		{
-			using process::math::limit_f;
-			using process::math::power_f;
+			using process::math::truncate_f;
+			using process::math::monomial_f;
 			using A_delta = typename S_::difference_type;
 
 		//	Compute the start- and end-points for the required segment:
@@ -109,16 +109,16 @@ public:
 			XTAL_0IF (N_index == -1 and N_inset == 0 and N_step == 1 and N_size == size) {
 				generate<1, -1, 1, size - 1>(u);
 				if constexpr (un_v<N_size&1>) {
-					get<N_limit>(s) = power_f<2>(get<N_limit/2>(s));
+					get<N_limit>(s) = monomial_f<2>(get<N_limit/2>(s));
 				}
 			}
 			XTAL_0IF (N_size < I0 + _1) {
-			//	Populate the 0th power only:
-				get<I0>(s) = power_f<N_index>(u);
+			//	Populate the 0th-power only:
+				get<I0>(s) = monomial_f<N_index>(u);
 			}
 			XTAL_0IF_(else) {
 			//	Populate the 0th and 1st powers:
-				auto const o = power_f<N_index>(u);
+				auto const o = monomial_f<N_index>(u);
 				get<I0 + _0>(s) = o;
 				get<I0 + _1>(s) = o*u;
 
@@ -128,7 +128,7 @@ public:
 						auto constexpr UM = I0 + _1*M;
 						auto constexpr WM = J0 + _2*M;
 						
-						auto const w = power_f<2>(limit_f<-3>(get<UM>(s)));
+						auto const w = monomial_f<2>(truncate_f<-3>(get<UM>(s)));
 						get<WM + _0>(s) =   w;
 						get<WM + _1>(s) = u*w;
 					}

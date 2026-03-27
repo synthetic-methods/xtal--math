@@ -29,7 +29,7 @@ logarithm_f = [] XTAL_1FN_(call) (logarithm_t<M_ism, M_car>::template method_f<N
 template <>
 struct logarithm< 1, 0>
 {
-	using superprocess = process::confined_t<dilated<2>, taylor::sine<-2>>;
+	using superprocess = process::confined_t<typename dilate_t<2>::template infix<>, taylor::sine<-2>>;
 	
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -43,20 +43,30 @@ struct logarithm< 1, 0>
 		XTAL_DEF_(return,inline,set)
 		method_f(auto &&o)
 		noexcept -> decltype(auto)
+		requires un_v<atom::groupoid_q<decltype(o)>>
 		{
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim)                   {return methodology_f<N_lim>(XTAL_REF_(o));}
-			XTAL_0IF_(consteval)                    {return methodology_f<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim)                   {return method_approx_f<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)                    {return method_approx_f<   ~0>(XTAL_REF_(o));}
 	#if   XTAL_SYS_(builtin)
-			XTAL_0IF (real_variable_q<decltype(o)>) {return        __builtin_log(XTAL_REF_(o));}
+			XTAL_0IF (real_variable_q<decltype(o)>) {return          __builtin_log(XTAL_REF_(o));}
 	#endif
-			XTAL_0IF_(else)                         {return                  log(XTAL_REF_(o));}
+			XTAL_0IF_(else)                         {return                    log(XTAL_REF_(o));}
+		}
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		method_f(auto &&o)
+		noexcept -> decltype(auto)
+		requires in_v<atom::groupoid_q<decltype(o)>>
+		{
+			return XTAL_ALL_(o)::template zip_from<[]
+				XTAL_1FN_(call) (method_f<Ns...>)>(XTAL_REF_(o));
 		}
 
 	protected:
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
-		methodology_f(auto o)
+		method_approx_f(auto o)
 		noexcept -> decltype(auto)
 		{
 			return superprocess::template method_f<N_lim>(roots_f<2>(XTAL_MOV_(o)).template sum<-1>());
@@ -72,7 +82,7 @@ Approximated by `((Sqrt[(#/2)^2 + 1] + (#/2))^2 &)`.
 template <>
 struct logarithm<-1, 0>
 {
-	using superprocess = process::confined_t<dilated<2>, taylor::sine<+2>>;
+	using superprocess = process::confined_t<typename dilate_t<2>::template infix<>, taylor::sine<+2>>;
 	
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -86,27 +96,37 @@ struct logarithm<-1, 0>
 		XTAL_DEF_(return,inline,set)
 		method_f(auto &&o)
 		noexcept -> decltype(auto)
+		requires un_v<atom::groupoid_q<decltype(o)>>
 		{
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim)          {return methodology_f<N_lim>(XTAL_REF_(o));}
-			XTAL_0IF_(consteval)           {return methodology_f<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim)          {return method_approx_f<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)           {return method_approx_f<   ~0>(XTAL_REF_(o));}
 	#if XTAL_SYS_(builtin)
-			XTAL_0IF (real_q<decltype(o)>) {return        __builtin_exp(XTAL_REF_(o));}
+			XTAL_0IF (real_q<decltype(o)>) {return          __builtin_exp(XTAL_REF_(o));}
 	#endif
-			XTAL_0IF_(else)                {return                  exp(XTAL_REF_(o));}
+			XTAL_0IF_(else)                {return                    exp(XTAL_REF_(o));}
+		}
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		method_f(auto &&o)
+		noexcept -> decltype(auto)
+		requires in_v<atom::groupoid_q<decltype(o)>>
+		{
+			return XTAL_ALL_(o)::template zip_from<[]
+				XTAL_1FN_(call) (method_f<Ns...>)>(XTAL_REF_(o));
 		}
 
 	protected:
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
-		methodology_f(auto &&o)
+		method_approx_f(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			using U_fit = bond::fit<decltype(o)>;
 			/*/
 			auto constexpr zoom_up2 = U_fit::haplo_f(N_lim*2 + 1);
 
-			auto v = decompose_f<signed>(o), w = square_f(XTAL_REF_(o));
+			auto v = part_f<signed>(o), w = square_f(XTAL_REF_(o));
 			w = term_f(one, zoom_up2, XTAL_MOV_(w));
 
 			#pragma unroll
@@ -148,17 +168,27 @@ struct logarithm< 1, 1>
 		XTAL_DEF_(return,inline,set)
 		method_f(auto &&o)
 		noexcept -> XTAL_ALL_(o)
+		requires un_v<atom::groupoid_q<decltype(o)>>
 		{
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim) {return methodology_f<N_lim>(XTAL_REF_(o));}
-			XTAL_0IF_(consteval)  {return methodology_f<   ~0>(XTAL_REF_(o));}
-			XTAL_0IF_(else)       {return                  log(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim) {return method_approx_f<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)  {return method_approx_f<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF_(else)       {return                    log(XTAL_REF_(o));}
+		}
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		method_f(auto &&o)
+		noexcept -> decltype(auto)
+		requires in_v<atom::groupoid_q<decltype(o)>>
+		{
+			return XTAL_ALL_(o)::template zip_from<[]
+				XTAL_1FN_(call) (method_f<Ns...>)>(XTAL_REF_(o));
 		}
 
 	protected:
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
-		methodology_f(real_variable_q auto o)
+		method_approx_f(real_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using   L = bond::fit<decltype(o)>;
@@ -166,7 +196,7 @@ struct logarithm< 1, 1>
 		}
 		template <int N_lim=0>
 		XTAL_DEF_(return,set)
-		methodology_f(complex_variable_q auto o)
+		method_approx_f(complex_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using K = bond::fit<decltype(o)>;
@@ -200,20 +230,30 @@ struct logarithm<-1, 1>
 		XTAL_DEF_(return,inline,set)
 		method_f(auto &&o)
 		noexcept -> XTAL_ALL_(o)
+		requires un_v<atom::groupoid_q<decltype(o)>>
 		{
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim)          {return methodology_f<N_lim>(XTAL_REF_(o));}
-			XTAL_0IF_(consteval)           {return methodology_f<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim)          {return method_approx_f<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)           {return method_approx_f<   ~0>(XTAL_REF_(o));}
 	#if XTAL_SYS_(builtin)
-			XTAL_0IF (real_q<decltype(o)>) {return        __builtin_exp(XTAL_REF_(o));}
+			XTAL_0IF (real_q<decltype(o)>) {return          __builtin_exp(XTAL_REF_(o));}
 	#endif
-			XTAL_0IF_(else)                {return                  exp(XTAL_REF_(o));}
+			XTAL_0IF_(else)                {return                    exp(XTAL_REF_(o));}
+		}
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		method_f(auto &&o)
+		noexcept -> decltype(auto)
+		requires in_v<atom::groupoid_q<decltype(o)>>
+		{
+			return XTAL_ALL_(o)::template zip_from<[]
+				XTAL_1FN_(call) (method_f<Ns...>)>(XTAL_REF_(o));
 		}
 
 	protected:
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,set)
-		methodology_f(real_variable_q auto o)
+		method_approx_f(real_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			using U_fit = bond::fit<decltype(o)>;
@@ -227,7 +267,7 @@ struct logarithm<-1, 1>
 			U_delta N;
 			o *= _N_log2;
 			XTAL_IF1_(consteval) {
-				N = static_cast<U_delta>(o + U_fit::dnsilon_f(1)*half*decompose_f<signed>(o));
+				N = static_cast<U_delta>(o + U_fit::dnsilon_f(1)*half*part_f<signed>(o));
 				n = static_cast<U_alpha>(N);
 			}
 			XTAL_0IF_(else) {

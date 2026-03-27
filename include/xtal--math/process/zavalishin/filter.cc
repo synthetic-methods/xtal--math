@@ -1,8 +1,8 @@
 #pragma once
 #include "./any.cc"
-#include "./pulse.hh"
+#include "../../occur/all.hh"
+#include "../../provision/all.hh"
 #include "./reuse.hh"
-#include "../../provision/prewarping.hh"
 
 
 #include "./filter.hh"// testing...
@@ -31,6 +31,13 @@ TAG_("filter")
 	using W_alpha = atom::math::dot_t<U_alpha[2]>;
 	using Z_slice = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
 
+	using U_resample = occur::resample_t<>;
+	using U_resync   = occur::resync_t<>;
+
+
+	using U_coeff  = atom::math::dot_t<U_alpha[2]>;
+	using X_coeff  = occur::inferred_t<U_coeff, union COEFF>;
+
 	using _0 = ordinal_constant_t<0>;
 	using _1 = ordinal_constant_t<1>;
 
@@ -38,23 +45,23 @@ TAG_("filter")
 	TRY_("instantiation")
 	{
 		using R_def = filter<>;
-		using R_etc = occur::context_t<R_def>;
+		using R_etc = occur::codex_t<R_def>;
 		using R_prx = confined_t<void
-		,	provision::math::prewarping< 1>
-		,	reuse< 0>
-		,	typename R_etc::fade_parameter::template   attend<>
-	//	,	typename R_etc::zoom_parameter::template   attend<>
-		,	typename R_etc::             template   attach<>
-		,	typename R_etc::             template dispatch<>
+		,	per_t<U_resample>          ::   refix <1>
+		,	U_resync                   ::   attach <>
+		,	coefficient_t<X_coeff>     ::   attach <>
+	//	,	reuse< 0>
+		,	R_etc                      ::   attach <>
+		,	R_etc                      :: dispatch <>
 		,	R_def
-		,	provision::math::saturation<identity>
+		,	provision::math::zavalishin::shaped<identity>
 		>;
 		using R_pxr = processor::monomer_t<R_prx>;
 
 		R_prx svf{};
 		svf <<= occur::resample_f(44100);
 		svf <<= typename R_etc::  order_attribute{2};
-		svf <<= typename R_etc:: fade_parameter{0};
+		svf <<= X_coeff{1, 0};
 	
 		U_alpha constexpr r_omega = 2*2*3*3*5*5*7;
 		U_alpha constexpr   rho = 1;
@@ -105,13 +112,13 @@ TAG_("filter")
 	TRY_("filter parameterization")
 	{
 		using Y_ramp = confined_t<void
-		,	provision::math::prewarping< 1>
+		,	typename per_t<U_resample>::template refix<1>
 		//\
 		,	filter<union RAMP>
 		,	filter<U_alpha[2], union RAMP>
 		>;
 		using Y_ring = confined_t<void
-		,	provision::math::prewarping< 1>
+		,	typename per_t<U_resample>::template refix<1>
 		//\
 		,	filter<union RING>
 		,	filter<U_alpha[2], union RING>
@@ -130,6 +137,17 @@ TAG_("filter-ring")
 	using T_aphex = typename bond::fit<>::aphex_type;
 	using Z_slice = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
 
+	using U_resample = occur::resample_t<>;
+	using U_resync = occur::resync_t<>;
+	using U_stage    = occur::stage_t<>;
+
+	using U_coeff  = atom::math::dot_t<U_alpha[2]>;
+	using X_coeff  = occur::inferred_t<U_coeff, union COEFF>;
+
+	using Y_trig  = pulse_t< 0>;
+	using Y_gate  = pulse_t< 1>;
+	using Y_hold  = pulse_t<-1>;
+
 	using _0 = ordinal_constant_t<0>;
 	using _1 = ordinal_constant_t<1>;
 
@@ -137,21 +155,23 @@ TAG_("filter-ring")
 	TRY_("filter-ring monophony")
 	{
 		using R_def = filter<U_alpha[2], union RING>;
-		using R_etc = occur::context_t<R_def>;
-		using R_eve = flow::packet_t<typename R_etc::stage_type, typename R_etc::damp_parameter>;
+		using R_etc = occur::codex_t<R_def>;
+		using R_eve = flow::packet_t<U_stage, typename R_etc::damp_parameter>;
 		using R_prx = confined_t<void
-		,	provision::math::prewarping< 0>
-		,	pulse<-1>
-		,	reuse< 0>
-		,	reuse<-1>
-		,	typename R_etc::damp_parameter::template   attend<>
-		,	typename R_etc::fade_parameter::template   attend<>
-		,	typename R_etc::                template   attach<>
-		,	typename R_etc::                template dispatch<>
+		,	per_t<U_resample>::refix<0>
+		//\
+		,	reuse<0, -1>
+		,	reuse<   -1>
+		,	U_resync               ::   attach <>
+		,	coefficient_t<X_coeff> ::   attach <>
+		,	Y_hold                 ::   infix  <>
+		,	R_etc::damp_parameter  ::   affix  <>
+		,	R_etc::                     attach <>
+		,	R_etc::                   dispatch <>
 		,	R_def
 		>;
 		using R_pxr = processor::monomer_t<R_prx
-		,	Z_slice::template accept<R_eve>
+		,	Z_slice::template suspend<R_eve>
 		,	provision::stored  <null_type[0x100]>
 		,	provision::spooled <null_type[0x100]>
 		>;
@@ -164,7 +184,9 @@ TAG_("filter-ring")
 		auto z = R_pxr::bind_f(processor::let_f(r_omega));
 		z <<= typename R_etc::order_attribute{2};
 		z <<= typename R_etc:: damp_parameter{1};
-		z <<= typename R_etc:: fade_parameter{1};
+		z <<= X_coeff{0, 1};
+
+		z <<= typename occur::resync_t<>{0};
 
 		z <<= z_sample;
 		z <<= z_resize;
@@ -180,15 +202,15 @@ TAG_("filter-ring")
 	//	echo_rule_<28>("\u2500");
 
 		TRUE_(0 == z.efflux(z_cursor++));
-		TRUE_(1 == z.influx(flow::assess_f(occur::stage_f( 0))));// Would be unchanged...
-		TRUE_(0 == z.influx(flow::assess_f(occur::stage_f( 1))));
-		TRUE_(0 == z.influx(flow::assess_f(occur::stage_f(-1))));
+		TRUE_(1 == z.influx(occur::stage_f( 0)));// Would be unchanged...
+		TRUE_(0 == z.influx(occur::stage_f( 1)));
+		TRUE_(0 == z.influx(occur::stage_f(-1)));
 		echo_plot_<28>(z.store(), 0x08, 0x10);
 
 		TRUE_(0 == z.efflux(z_cursor++));
-		TRUE_(0 == z.influx(flow::assess_f(occur::stage_f( 0))));
-		TRUE_(1 == z.influx(flow::assess_f(occur::stage_f( 1))));// Would be unchanged...
-		TRUE_(0 == z.influx(flow::assess_f(occur::stage_f(-1))));
+		TRUE_(0 == z.influx(occur::stage_f( 0)));
+		TRUE_(1 == z.influx(occur::stage_f( 1)));// Would be unchanged...
+		TRUE_(0 == z.influx(occur::stage_f(-1)));
 		//\
 		echo_plot_<28>(z.store(), 0x00);
 		echo_plot_<28>(z.store(), 0x01);
@@ -199,22 +221,24 @@ TAG_("filter-ring")
 	TRY_("filter-ring polyphony")
 	{
 		using R_def = filter<U_alpha[2], union RING>;
-		using R_etc = occur::context_t<R_def>;
-		using R_eve = flow::key_s<typename R_etc::stage_type>;
+		using R_etc = occur::codex_t<R_def>;
+		using R_eve = flow::key_s<U_stage>;
+
 		using R_prx = confined_t<void
-		,	provision::math::prewarping< 0>
-		,	pulse< 1>
-		,	reuse< 0>
-		,	reuse<-1>
-		,	typename R_etc:: stage_type::template assignment<typename R_etc::damp_parameter>
-		,	typename R_etc::damp_parameter::template   attend<>
-		,	typename R_etc::fade_parameter::template   attend<>
-		,	typename R_etc             ::template   attach<>
-		,	typename R_etc             ::template dispatch<>
+	//	,	reuse<0, -1>
+		,	reuse<   -1>
+		,	per_t<U_resample>      ::   refix <0>
+		,	coefficient_t<X_coeff> ::   attach <>
+		,	U_resync               ::   attach <>
+		,	Y_gate                 ::   infix  <>
+		,	U_stage::template assignment<typename R_etc::damp_parameter>
+		,	R_etc::damp_parameter  ::   affix  <>
+		,	R_etc                  ::   attach <>
+		,	R_etc                  :: dispatch <>
 		,	R_def
 		>;
 		using R_pxr = processor::polymer_t<R_prx
-		,	Z_slice::template accept<R_eve>
+		,	Z_slice::template suspend<R_eve>
 		,	provision::stored <null_type[0x100]>
 		,	provision::spooled<null_type[0x100]>
 		>;
@@ -225,17 +249,18 @@ TAG_("filter-ring")
 		auto z_sample = occur::resample_f(44100);
 
 		auto z = R_pxr::bind_f(processor::let_f(r_omega));
-		z <<= typename R_etc::  order_attribute{2};
+		z <<= typename R_etc::order_attribute{2};
 		z <<= typename R_etc:: damp_parameter{1};
-		z <<= typename R_etc:: fade_parameter{1};
-		z <<= flow::assign_f(typename R_etc::stage_type{ 0}) << typename R_etc::damp_parameter{0.000F};
-		z <<= flow::assign_f(typename R_etc::stage_type{ 1}) << typename R_etc::damp_parameter{0.060F};
-		z <<= flow::assign_f(typename R_etc::stage_type{-1}) << typename R_etc::damp_parameter{0.707F};
+		z <<= X_coeff{0, 1};
+		z <<= typename occur::resync_t<>{0};
+		z <<= flow::assign_f(U_stage{ 0}) << typename R_etc::damp_parameter{0.000F};
+		z <<= flow::assign_f(U_stage{ 1}) << typename R_etc::damp_parameter{0.060F};
+		z <<= flow::assign_f(U_stage{-1}) << typename R_etc::damp_parameter{0.707F};
 
 		z <<= z_sample;
 		z <<= z_resize;
 
-		z.lead() >>= typename R_etc::stage_type{-1};
+		z.lead() >>= U_stage{-1};
 
 		z >>= flow::cue_f(0x08).then(R_eve{69, 0});
 		z >>= flow::cue_f(0x18).then(R_eve{69, 0});
@@ -274,6 +299,224 @@ TAG_("filter-ring")
 	/***/
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+
+TAG_("vectrol")
+{
+	using U_alpha = typename bond::fit<>::alpha_type;
+	using W_alpha = atom::math::dot_t<U_alpha[2]>;
+	using Z_slice = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
+
+	using U_resample = occur::resample_t<>;
+	using U_stage = occur::stage_t<>;
+
+	using U_coeff = atom::math::dot_t<U_alpha[2]>;
+	using X_coeff = occur::inferred_t<U_coeff, union COEFF>;
+
+	using Y_trig  = pulse_t< 0>;
+	using Y_gate  = pulse_t< 1>;
+	using Y_hold  = pulse_t<-1>;
+
+	using _0 = ordinal_constant_t<0>;
+	using _1 = ordinal_constant_t<1>;
+
+	/**/
+	TRY_("vectrol: monophony")
+	{
+		//\
+		using S_content = filter<>;
+		using S_content = filter<U_alpha[2], union ENV>;
+		//\
+		using S_codex = confined_t<S_content>;
+		using S_codex = occur::codex_t<S_content>;
+
+		using S_damp_   = occur::math::zavalishin::probe_t<typename S_codex::codata_type>;
+	//	using S_damp    = typename S_codex::damp_parameter;
+
+		using S_order   = typename S_codex::order_attribute;
+
+		using S_process = confined_t<void
+		,	reuse<0, -1>
+		,	coefficient_t<X_coeff> ::   attach <>
+		,	per_t<U_resample>      ::   refix <0>
+		,	Y_trig                 ::   infix  <>
+		,	S_damp_                ::   affix  <>
+	//	,	S_damp                 ::   affix  <>
+		,	S_codex                ::   attach <>
+		,	S_codex                :: dispatch <>
+		,	S_content
+		>;
+		using S_processor = processor::monomer_t<S_process
+		,	Z_slice::template suspend<U_stage>
+		,	provision::stored  <null_type[0x100]>
+		,	provision::spooled <null_type[0x100]>
+		>;
+
+		U_alpha constexpr e_omega = 2*2*3*3*5*5;
+		auto z_resize = occur::resize_t<>(0x020);
+		auto z_cursor = occur::cursor_t<>(0x020);
+		auto z_sample = occur::resample_f(44100);
+
+		auto z = S_processor::bind_f(processor::let_f(e_omega));
+		z <<= S_order{2};
+		z <<= S_damp_{one - 0.0, zero - 1.0};
+		z <<= X_coeff{1, 1};
+
+		z <<= z_sample;
+		z <<= z_resize;
+		z >>= U_stage{-1};
+
+		z >>= flow::cue_f(0x08).then(U_stage{ 0});
+		z >>= flow::cue_f(0x18).then(U_stage{ 0});
+		z >>= flow::cue_f(0x28).then(U_stage{-1});
+	//	z >>= flow::cue_f(0x38).then(U_stage{ 0});
+
+		echo_("\nvectrol: monophony");
+	//	echo_rule_<28>("\u2500");
+
+		TRUE_(0 == z.efflux(z_cursor++));
+		TRUE_(0 == z.influx(occur::stage_f(-1)));
+
+		echo_plot_<28>(z.store(), 0x08, 0x18);
+
+		TRUE_(0 == z.efflux(z_cursor++));
+	//	TRUE_(1 == z.influx(occur::stage_f(-1)));
+
+		echo_plot_<28>(z.store(), 0x08);
+
+	}
+	/***/
+	/**/
+	TRY_("vectrol: patch")
+	{
+		using S_content = filter<U_alpha[2], union ENV>;
+		using S_codex   = occur::codex_t<S_content>;
+		using S_damp_   = occur::math::zavalishin::probe_t<typename S_codex::codata_type>;
+		using S_damp    = typename S_codex::  damp_parameter;
+		using S_order   = typename S_codex:: order_attribute;
+
+		using S_process = confined_t<void
+		,	reuse< 0, -1>
+	//	,	process::lift<W_alpha>
+		,	typename per_t<U_resample> ::   refix <0>
+		,	typename Y_trig            ::   infix  <>
+		,	typename S_damp_           ::   affix  <>
+		,	typename S_codex           ::   attach <>
+		,	typename S_codex           :: dispatch <>
+		,	S_content
+		>;
+		//\
+		using S_processor = processor::conferred_t<S_process
+		using S_processor = processor::monomer_t<S_process
+	//	,	Z_slice::template suspend<U_stage>
+		,	provision::stored  <unit_type[0x100]>
+		,	provision::spooled <null_type[0x100]>
+		>;
+
+		using T_content = filter<U_alpha[2], union RING>;
+		using T_codex   = occur::codex_t<T_content>;
+	//	using T_damp_   = occur::math::zavalishin::probe_t<typename T_codex::codata_type>;
+		using T_damp    = typename T_codex:: damp_parameter;
+
+		using T_order   = typename T_codex::order_attribute;
+		using T_event   = flow::packet_t<U_stage, T_damp>;
+
+		using T_process = process::confined_t<void
+		,	reuse< 0>
+		,	coefficient_t<X_coeff> ::   attach <>
+		,	coefficient_t<       > ::   unfix  <>
+		,	per_t<U_resample>      ::   refix <0>
+		,	Y_gate                 ::   infix  <>
+	//	,	T_damp_                ::   affix  <>
+		,	T_damp                 ::   affix  <>
+		,	T_codex                ::   attach <>
+		,	T_codex                :: dispatch <>
+		,	T_content
+		>;
+		using X_vector    = atom::brace_t<U_alpha, W_alpha>;
+		using X_matrix    = atom::brace_t<X_vector[2]>;
+		using X_process   = patch_t<T_process>::template matrix_t<X_matrix>;
+		using X_processor = processor::monomer_t<X_process
+		,	Z_slice::template suspend<T_event>
+		,	provision::stored  <null_type[0x100]>
+	//	,	provision::spooled <null_type[0x100]>
+		>;
+
+		static_assert(           fungible_q<typename occur::math::indent_s<X_matrix, 1>::data_type, X_matrix>);
+		static_assert(occur::math::indent_q<typename occur::math::indent_s<X_matrix, 1>           , X_matrix>);
+
+		U_alpha constexpr r_omega = 3*3*3*5*5*5;
+		U_alpha constexpr e_omega = 2*2*3*3*5*5;
+		auto z_resize = occur::resize_t<>(0x020);
+		auto z_cursor = occur::cursor_t<>(0x020);
+		auto z_sample = occur::resample_f(44100);
+
+		auto _1 = processor::let_f(U_alpha{one});
+		auto _e = processor::let_f(e_omega);
+		auto _r = processor::let_f(r_omega);
+		auto _x = S_processor::bind_f(_e);
+		//\
+		auto _y = X_processor::bind_f(_1, _x);
+		auto _y = X_processor::bind_f(_1, S_processor::bind_f(_e));
+
+		//\
+		_y <<= occur::math::indent_s<X_matrix>({r_omega, 1.0});
+	//	_y <<= occur::math::indent_s<X_matrix>({r_omega, W_alpha{111., 111.}});
+		_y <<= occur::math::indent_s<X_matrix, 1>({r_omega, W_alpha{1111, 1111}});
+		_y <<= occur::math::indent_s<X_matrix, 0>({0.0    , W_alpha{1.00, 1.00}});
+
+		_y <<= S_order{2};
+		_y <<= S_damp_{one - 0.0, zero - 1.0};
+	//	_y <<= S_damp {1.0};
+
+		_y <<= T_order{2};
+	//	_y <<= T_damp_{1};
+		_y <<= T_damp {1};
+		_y <<= X_coeff {0, 1};
+
+		_y <<= z_sample;
+		_y <<= z_resize;
+		_y >>= U_stage{-1};
+
+		_y >>= flow::cue_f(0x08).then(T_event{ 0});
+	//	_y >>= flow::cue_f(0x08).then(U_stage{ 0});
+	//	_y >>= flow::cue_f(0x18).then(T_event{ 1});
+	//	_y >>= flow::cue_f(0x18).then(U_stage{ 1});
+
+		_y >>= flow::cue_f(0x18).then(T_event{ 0});
+	//	_y >>= flow::cue_f(0x18).then(U_stage{ 0});
+		_y >>= flow::cue_f(0x1C).then(T_event{ 1});
+
+	//	_y >>= flow::cue_f(0x18).then(U_stage{ 0});
+	//	_y >>= flow::cue_f(0x18).then(T_event{ 0});
+	//	_y >>= flow::cue_f(0x28).then(U_stage{-1});
+		_y >>= flow::cue_f(0x28).then(T_event{ 1});
+	//	_y >>= flow::cue_f(0x38).then(U_stage{ 0});
+	//	_y >>= flow::cue_f(0x38).then(T_event{ 0});
+
+		echo_("\nvectrol: patch");
+	//	echo_rule_<28>("\u2500");
+
+		TRUE_(0 == _y.efflux(z_cursor++));
+	//	TRUE_(0 == _y.influx(occur::stage_f(-1)));
+		echo_plot_<28>(_y.store(), 0x08, 0x18);
+
+	//	_y >>= flow::cue_f(0x08).then(T_event{ 0});
+	//	_y >>= flow::cue_f(0x08).then(U_stage{ 0});
+	//	_y >>= flow::cue_f(0x18).then(U_stage{ 1});
+	//	_y >>= flow::cue_f(0x18).then(T_event{ 1});
+
+		TRUE_(0 == _y.efflux(z_cursor++));
+	//	TRUE_(1 == _y.influx(occur::stage_f(-1)));
+		echo_plot_<28>(_y.store(), 0x08);
+
+	}
+	/***/
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////

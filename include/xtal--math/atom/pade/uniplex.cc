@@ -29,16 +29,12 @@ TAG_("uniplex")
 	auto constexpr pi = U_fit::patio_1;
 	auto constexpr qi = U_fit::patio_2;
 	/**/
-	TRY_("operation")
+	TRY_("destructuring")
 	{
 		U_aphex const x{-0.125, -0.125};
 		//\
 		uniplex_t<U_alpha> u(x);
 		auto u = uniplex_f(x);
-		auto const [v_re, v_im] = u.reflection();
-		auto const [w_re, w_im] = u.resolution();
-		TRUE_(check_f<-30>(v_re, process::math::imagine_f<0>(two*cos(two*pi*x))));
-		TRUE_(check_f<-30>(v_im, process::math::imagine_f<1>(two*sin(two*pi*x))));
 
 		u *= u;
 		TRUE_(check_f<-2>(u, u.flipped(U_alpha{1})));
@@ -55,6 +51,28 @@ TAG_("uniplex")
 
 		static_assert(complex_variable_q<XTAL_ALL_(get<0>(u))>);
 		static_assert(atom::couple_q<XTAL_ALL_(get<1>(u))>);
+
+	}
+	/***/
+	/**/
+	TRY_("restructuring")
+	{
+		using process::math::imagine_f;
+		U_aphex const x{-0.125, -0.125};
+		//\
+		uniplex_t<U_alpha> u(x);
+		auto u = uniplex_f(x);
+		auto const [u_re, u_im] = u.reflection(zero, half);
+		auto const [v_re, v_im] = u.reflection();
+		auto const [w_re, w_im] = u.resolution();
+		TRUE_(check_f<-30>(u_re, imagine_f<0>(one*cos(two*pi*x))));
+		TRUE_(check_f<-30>(u_im, imagine_f<1>(one*sin(two*pi*x))));
+		TRUE_(check_f<-30>(v_re, imagine_f<0>(two*cos(two*pi*x))));
+		TRUE_(check_f<-30>(v_im, imagine_f<1>(two*sin(two*pi*x))));
+		TRUE_(check_f<-30>(w_re, exp(imagine_f< 1>(two*pi*x))));
+		TRUE_(check_f<-30>(w_im, exp(imagine_f<-1>(two*pi*x))));
+
+		u *= u;
 
 	}
 	/***/

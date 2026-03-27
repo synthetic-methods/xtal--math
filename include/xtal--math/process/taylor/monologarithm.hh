@@ -2,9 +2,9 @@
 #include "./any.hh"
 
 #include "./sine.hh"
-#include "../dilated.hh"
-#include "../square.hh"
-#include "../root.hh"
+
+
+
 
 XTAL_ENV_(push)
 namespace xtal::process::math::taylor
@@ -31,8 +31,8 @@ struct monologarithm<M_ism, -0>
 	static int constexpr I_ism = M_ism&1;
 
 	using superprocess = process::lift_t<void
-	,	bond::compose<dilated<2>, taylor::sine<-2>>
-	,	bond::compose<discarded<1>, monologarithm<M_ism, -1>>
+	,	bond::compose<typename dilate_t <2>::template infix<>, taylor::sine<-2>>
+	,	bond::compose<typename discard_t<1>::template infix<>, monologarithm<M_ism, -1>>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -70,8 +70,8 @@ struct monologarithm<M_ism, -0>
 	static int constexpr I_ism = M_ism&1;
 
 	using superprocess = process::lift_t<void
-	,	bond::compose<discarded<1>, monologarithm<M_ism, -1>>
-	,	bond::compose<dilated<2>, taylor::sine<+2>>
+	,	bond::compose<typename discard_t<1>::template infix<>, monologarithm<M_ism, -1>>
+	,	bond::compose<typename dilate_t <2>::template infix<>, taylor::sine<+2>>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S>
