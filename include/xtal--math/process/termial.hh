@@ -32,7 +32,7 @@ noexcept -> auto
 		return XTAL_REF_(k);
 	}
 	XTAL_0IF (1 == M_pow) {
-		return term_f<M_sgn>(k, x, termial_f<M_sgn>(x, ks...));
+		return term_f<1, M_sgn>(k, x, termial_f<M_sgn>(x, ks...));
 	}
 	XTAL_0IF (2 == M_pow) {
 		return termial_f<M_sgn>(square_f(XTAL_REF_(x)), k, ks...);

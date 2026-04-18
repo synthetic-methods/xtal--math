@@ -13,25 +13,23 @@ namespace xtal::process::math
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_alt=1, int M_pow=1, class W>
+template <int M_add=1, int M_mul=1, class W>
 XTAL_DEF_(return,inline,let)
 term_f(W &&w)
 noexcept -> auto
 {
 	return XTAL_REF_(w);
 }
-template <int M_alt=1, int M_pow=1, class W, class X, class ...Xs>
+template <int M_add=1, int M_mul=1, class W, class X, class ...Xs>
 XTAL_DEF_(return,inline,let)
 term_f(W &&w, X &&x, Xs &&...xs)
 noexcept -> auto
 {
-	bool constexpr W_zero = same_q<W, decltype(zero)>;
-	bool constexpr X_zero = same_q<X, decltype(zero)>;
-	bool constexpr X_some = 1 <= sizeof...(Xs);
-	bool constexpr X_none = 0 == sizeof...(Xs);
+	static_assert(-2 <= M_add and M_add <= +2);
+	static_assert(-2 <= M_mul and M_mul <= +2);
 
 	using _xtd::plus_multiplies_f;
-	auto constexpr then = [] XTAL_1FN_(call) (term_f<M_alt, M_pow>);
+	auto constexpr then = [] XTAL_1FN_(call) (term_f<M_add, M_mul>);
 	using Y = unstruct_t<X, Xs...>;// NOTE: Constants interpreted as scalar quantities...
 	XTAL_IF0
 
@@ -55,32 +53,53 @@ noexcept -> auto
 	}
 
 //	Resolve parameters...
-	XTAL_0IF (X_zero or  M_alt ==  0) {return   XTAL_REF_(w);}
-	XTAL_0IF (W_zero and M_alt ==  1) {return  (XTAL_REF_(x) *...* XTAL_REF_(xs));}
-	XTAL_0IF (W_zero and M_alt == -1) {return -(XTAL_REF_(x) *...* XTAL_REF_(xs));}
+	XTAL_0IF (M_mul == 0 or same_q<X, decltype(zero)>) {
+		XTAL_IF0
+		XTAL_0IF (M_add ==  1) {return          (XTAL_REF_(w));}
+		XTAL_0IF (M_add ==  2) {return  square_f(XTAL_REF_(w));}
+		XTAL_0IF (M_add == -1) {return -        (XTAL_REF_(w));}
+		XTAL_0IF (M_add == -2) {return -square_f(XTAL_REF_(w));}
+	}
+	XTAL_0IF (M_add == 0 or same_q<W, decltype(zero)>) {
+		XTAL_IF0
+		XTAL_0IF (M_mul ==  1) {return          ((XTAL_REF_(x) *...* XTAL_REF_(xs)));}
+		XTAL_0IF (M_mul ==  2) {return  square_f((XTAL_REF_(x) *...* XTAL_REF_(xs)));}
+		XTAL_0IF (M_mul == -1) {return -        ((XTAL_REF_(x) *...* XTAL_REF_(xs)));}
+		XTAL_0IF (M_mul == -2) {return -square_f((XTAL_REF_(x) *...* XTAL_REF_(xs)));}
+	}
+	XTAL_0IF (0 == sizeof...(Xs)) {
+		XTAL_IF0
+		XTAL_0IF (M_add ==  1 and M_mul ==  1) {return   XTAL_REF_(w) + XTAL_REF_(x);}
+		XTAL_0IF (M_add == -1 and M_mul == -1) {return - XTAL_REF_(x) - XTAL_REF_(w);}
+		XTAL_0IF (M_add == -1 and M_mul ==  1) {return   XTAL_REF_(x) - XTAL_REF_(w);}
+		XTAL_0IF (M_add ==  1 and M_mul == -1) {return   XTAL_REF_(w) - XTAL_REF_(x);}
+		XTAL_0IF (M_add ==  1 and M_mul ==  2) {return   plus_multiplies_f(         (XTAL_REF_(w)), x, x);}
+		XTAL_0IF (M_add == -1 and M_mul == -2) {return - plus_multiplies_f(         (XTAL_REF_(w)), x, x);}
+		XTAL_0IF (M_add == -1 and M_mul ==  2) {return   plus_multiplies_f(-        (XTAL_REF_(w)), x, x);}
+		XTAL_0IF (M_add ==  1 and M_mul == -2) {return - plus_multiplies_f(-        (XTAL_REF_(w)), x, x);}
+		XTAL_0IF (M_add ==  2 and M_mul ==  2) {return   plus_multiplies_f( square_f(XTAL_REF_(w)), x, x);}
+		XTAL_0IF (M_add == -2 and M_mul == -2) {return - plus_multiplies_f( square_f(XTAL_REF_(w)), x, x);}
+		XTAL_0IF (M_add == -2 and M_mul ==  2) {return   plus_multiplies_f(-square_f(XTAL_REF_(w)), x, x);}
+		XTAL_0IF (M_add ==  2 and M_mul == -2) {return - plus_multiplies_f(-square_f(XTAL_REF_(w)), x, x);}
+	}
+	XTAL_0IF (1 <= sizeof...(Xs)) {
+		XTAL_IF0
+		/**/
+		XTAL_0IF (                M_mul ==  2) {return   then(XTAL_REF_(w),  (XTAL_REF_(x) *...* XTAL_REF_(xs)));}
+		XTAL_0IF (                M_mul == -2) {return   then(XTAL_REF_(w), -(XTAL_REF_(x) *...* XTAL_REF_(xs)));}
+		XTAL_0IF (M_add ==  2                ) {return   plus_multiplies_f( square_f(XTAL_REF_(w)), XTAL_REF_(xs)...);}
+		XTAL_0IF (M_add == -2                ) {return   plus_multiplies_f(-square_f(XTAL_REF_(w)), XTAL_REF_(xs)...);}
+		/*/
+		XTAL_0IF (M_add ==  1 and M_mul ==  2) {return   XTAL_REF_(w) + square_f((XTAL_REF_(x) *...* XTAL_REF_(xs)));}
+		XTAL_0IF (M_add == -1 and M_mul == -2) {return - XTAL_REF_(w) - square_f((XTAL_REF_(x) *...* XTAL_REF_(xs)));}
+		XTAL_0IF (M_add == -1 and M_mul ==  2) {return - XTAL_REF_(w) + square_f((XTAL_REF_(x) *...* XTAL_REF_(xs)));}
+		XTAL_0IF (M_add ==  1 and M_mul == -2) {return   XTAL_REF_(w) - square_f((XTAL_REF_(x) *...* XTAL_REF_(xs)));}
+		/***/
 
-	XTAL_0IF (X_none and M_alt ==  1 and M_pow == 1) {return  XTAL_REF_(w) + XTAL_REF_(x);}
-	XTAL_0IF (X_none and M_alt == -1 and M_pow == 1) {return  XTAL_REF_(w) - XTAL_REF_(x);}
-	XTAL_0IF (X_none and M_alt ==  1 and M_pow == 2) {return  plus_multiplies_f( XTAL_REF_(w), x, x);}
-	XTAL_0IF (X_none and M_alt == -1 and M_pow == 2) {return -plus_multiplies_f(-XTAL_REF_(w), x, x);}
-	/**/
-	XTAL_0IF (M_pow == 2) {
-		return then(XTAL_REF_(w), (XTAL_REF_(x) *...* XTAL_REF_(xs)));
-	}
-	/*/
-	XTAL_0IF (M_alt ==  1 and M_pow == 2) {
-		return XTAL_REF_(w) + square_f((XTAL_REF_(x) *...* XTAL_REF_(xs)));
-	}
-	XTAL_0IF (M_alt == -1 and M_pow == 2) {
-		return XTAL_REF_(w) - square_f((XTAL_REF_(x) *...* XTAL_REF_(xs)));
-	}
-	/***/
-
-	XTAL_0IF (M_alt ==  1 and M_pow == 1) {
-		return  plus_multiplies_f( XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
-	}
-	XTAL_0IF (M_alt == -1 and M_pow == 1) {
-		return -plus_multiplies_f(-XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
+		XTAL_0IF (M_add ==  1 and M_mul ==  1) {return   plus_multiplies_f( XTAL_REF_(w),  XTAL_REF_(x), XTAL_REF_(xs)...);}
+		XTAL_0IF (M_add == -1 and M_mul == -1) {return - plus_multiplies_f( XTAL_REF_(w),  XTAL_REF_(x), XTAL_REF_(xs)...);}
+		XTAL_0IF (M_add == -1 and M_mul ==  1) {return   plus_multiplies_f(-XTAL_REF_(w),  XTAL_REF_(x), XTAL_REF_(xs)...);}
+		XTAL_0IF (M_add ==  1 and M_mul == -1) {return   plus_multiplies_f( XTAL_REF_(w), -XTAL_REF_(x), XTAL_REF_(xs)...);}
 	}
 
 	XTAL_0IF_(void)
@@ -99,8 +118,6 @@ starting from the kernel `a[M_limit]`.
 template <auto ...Ms>
 struct  term
 {
-//	static_assert(in_v<M_alt, 1,-1>);
-
 	template <class S>
 	class subtype : public bond::compose_s<S>
 	{

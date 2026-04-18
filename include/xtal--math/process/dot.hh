@@ -85,14 +85,14 @@ struct dot
 			}
 			XTAL_0IF (2 == N) {
 				auto const &[x0, x1] = destruct_f(XTAL_REF_(x));
-				return term_f<M_alt, 2>(square_f(x0), x1);
+				return term_f<1, 2*M_alt>(square_f(x0), x1);
 			}
 			XTAL_0IF (3 <= N) {
 				_detail::coefficient_t<X> w{0};
 				bond::seek_until_f<N>([&]<constant_q I> (I) XTAL_0FN {
 					XTAL_IF0
-					XTAL_0IF (0 < M_alt) {w = term_f<               2>(XTAL_MOV_(w), get<I{}>(x));}
-					XTAL_0IF (M_alt < 0) {w = term_f<cosign_v<I{}>, 2>(XTAL_MOV_(w), get<I{}>(x));}
+					XTAL_0IF (0 < M_alt) {w = term_f<1, 2              >(XTAL_MOV_(w), get<I{}>(x));}
+					XTAL_0IF (M_alt < 0) {w = term_f<1, 2*cosign_v<I{}>>(XTAL_MOV_(w), get<I{}>(x));}
 				});
 				return w;
 			}
@@ -122,8 +122,8 @@ struct dot
 				_detail::coefficient_t<X, Y> w{0};
 				bond::seek_until_f<N>([&]<constant_q I> (I) XTAL_0FN {
 					XTAL_IF0
-					XTAL_0IF (0 < M_alt) {w = term_f<               1>(XTAL_MOV_(w), get<I{}>(x), get<I{}>(y));}
-					XTAL_0IF (M_alt < 0) {w = term_f<cosign_v<I{}>, 1>(XTAL_MOV_(w), get<I{}>(x), get<I{}>(y));}
+					XTAL_0IF (0 < M_alt) {w = term_f<1, 1              >(XTAL_MOV_(w), get<I{}>(x), get<I{}>(y));}
+					XTAL_0IF (M_alt < 0) {w = term_f<1, 1*cosign_v<I{}>>(XTAL_MOV_(w), get<I{}>(x), get<I{}>(y));}
 				});
 				return w;
 			}
