@@ -40,7 +40,7 @@ private:
 	template <class T>
 	//\
 	using endotype = typename field_arithmetic<Us...>::template homotype<T>;
-	using endotype = typename field<wrap_s<Us, _xtd::plus_multiplies>...>::template homotype<T>;
+	using endotype = typename field<applied_s<Us, _xtd::plus_multiplies>...>::template homotype<T>;
 
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<quason_t>>;

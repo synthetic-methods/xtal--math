@@ -1,9 +1,9 @@
 #pragma once
 #include "./any.hh"
 
+#include "./dot.hh"
 #include "./term.hh"
 #include "./square.hh"
-
 
 
 XTAL_ENV_(push)
@@ -48,7 +48,7 @@ struct coefficient<M>
 				method(auto &&...oo)
 				noexcept -> auto
 				{
-					return R_::head().head()*R_::template method<Ns...>(XTAL_REF_(oo)...);
+					return R_::headed()*R_::template method<Ns...>(XTAL_REF_(oo)...);
 				}
 
 			};

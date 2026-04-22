@@ -47,14 +47,14 @@ struct differ
 		
 	public:// FUNC*
 
-		template <int N_ord=1, int N_nyq=1> requires un_v<N_ord, 1>
+		template <int N_ord=1, int N_nyq=0> requires un_v<N_ord, 1>
 		XTAL_DEF_(return,inline,let)
 		method(auto const &u, auto &&...oo) const
 		noexcept -> auto
 		{
 			return u;
 		}
-		template <int N_ord=1, int N_nyq=1> requires in_v<N_ord, 1>
+		template <int N_ord=1, int N_nyq=0> requires in_v<N_ord, 1>
 		XTAL_DEF_(return,inline,let)
 		method(auto u) const
 		noexcept -> auto
@@ -74,14 +74,14 @@ struct differ
 				return u;
 			}
 		}
-		template <int N_ord=1, int N_nyq=1> requires in_v<N_ord, 1>
+		template <int N_ord=1, int N_nyq=0> requires in_v<N_ord, 1>
 		XTAL_DEF_(return,inline,let)
 		method(auto u, atom::math::phason_q auto const &t_) const
 		noexcept -> auto
 		{
 			return method<N_ord, N_nyq>(XTAL_MOV_(u))*root_f<-1>(t_(1));
 		}
-		template <int N_ord=1, int N_nyq=1> requires in_v<N_ord, 1>
+		template <int N_ord=1, int N_nyq=0> requires in_v<N_ord, 1>
 		XTAL_DEF_(return,inline,let)
 		method(auto u, auto v, atom::math::phason_q auto const &t_) const
 		noexcept -> auto
@@ -104,7 +104,7 @@ struct differ
 		}
 
 	protected:
-		template <int N_ord=1, int N_nyq=1> requires in_v<N_ord, 1>
+		template <int N_ord=1, int N_nyq=0> requires in_v<N_ord, 1>
 		XTAL_DEF_(return,inline,set)
 		fact_f(auto const &...oo)
 		noexcept -> auto

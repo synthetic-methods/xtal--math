@@ -17,24 +17,24 @@ Wrapper used to tunnel an existing type using `std::tuple`-based traversal.
 */
 ////////////////////////////////////////////////////////////////////////////////
 
-template <          typename ..._s> XTAL_TYP_(new) indent;
-template <          typename ..._s> XTAL_TYP_(new) intent;
-template <          typename ...Ts> XTAL_TYP_(ask) intent_q = bond::tag_inner_p<indent, Ts...>;
-template <class T                 > XTAL_TYP_(set) intent_t = typename intent<based_t<T>>::type;
-template <          typename ...Ts> XTAL_TYP_(ask) indent_q = in_v<true, intent_q<Ts>...> and fungible_q<intent_t<Ts>...>;
-template <class S,  int      ...Ns> XTAL_TYP_(set) indent_s = bond::compose_s<S, indent<ordinal_constant_t<Ns>...>>;
+template <             typename ..._s> XTAL_TYP_(new) dent;
+template <             typename ..._s> XTAL_TYP_(new) dented;
+template <             typename ...Ts> XTAL_TYP_(ask) dented_q = bond::tag_inner_p<dent, Ts...>;
+template <class T                    > XTAL_TYP_(set) dented_t = typename dented<based_t<T>>::type;
+template <             typename ...Ts> XTAL_TYP_(ask) dent_q = in_v<true, dented_q<Ts>...> and fungible_q<dented_t<Ts>...>;
+template <class S,     int      ...Ns> XTAL_TYP_(set) dent_s = bond::compose_s<S, dent<ordinal_constant_t<Ns>...>>;
 
-template <                 class T> XTAL_TYP_(new) intent<T> {using type =          T           ;};
-template <bond::tag_inner_q<indent> T> XTAL_TYP_(new) intent<T> {using type = typename T::data_type;};
+template <                    class T> XTAL_TYP_(new) dented<T> {using type =          T           ;};
+template <bond::tag_inner_q<dent>   T> XTAL_TYP_(new) dented<T> {using type = typename T::data_type;};
 
 template <constant_q ...Ns>
-struct indent<Ns...>
+struct dent<Ns...>
 {
 	template <class S> using indicated_t = bond::pack_item_t<S, Ns{}...>;
 	template <class S> using indicated_s = bond::pack_item_s<S, Ns{}...>;
 	
 	using superkind = bond::compose<void
-	,	confined<bond::tag<indent>, confer<Ns>...>
+	,	confined<bond::tag<dent>, confer<Ns>...>
 	,	bond::compose_t<conferred_t>
 	,	bond::compose_t<indicated_t>
 	>;
@@ -106,6 +106,7 @@ struct indent<Ns...>
 				using R_::R_;
 				using R_::self;
 				using R_::head;
+				using R_::headed;
 
 				/*!
 				\brief   Forwards the message upstream.
@@ -122,17 +123,15 @@ struct indent<Ns...>
 				*/
 				template <signed N_ion>// requires in_v<N_ion, +1>
 				XTAL_DEF_(return,let)
-				fuse(indent_q<S> auto &&o)
+				fuse(dent_q<S> auto &&o)
 				noexcept -> signed
 				{
-					/*/
-					auto &m = bond::pack_item_f(o.seek(), head());
-					XTAL_ALL_(m) x(o);
-					_std::swap(m, x);
-					return m == x;
-					/*/
 					auto &m = bond::pack_item_f(o.seek(), head());
 					using M = XTAL_ALL_(m);
+					/*/
+					M x(o); _std::swap(m, x);
+					return m == x;
+					/*/
 					m.~M(); new (&m) M(XTAL_REF_(o));
 					return 0;
 					/***/
@@ -140,10 +139,6 @@ struct indent<Ns...>
 
 			};
 		};
-	//	template <extent_type N_mask> requires (1 <= sizeof...(Ns))
-	//	struct attach<N_mask> : indent<>::template attach<N_mask>
-	//	{
-	//	};
 
 	};
 };

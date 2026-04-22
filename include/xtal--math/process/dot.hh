@@ -29,9 +29,9 @@ template <int M_alt=1>
 XTAL_DEF_(return,inline,let)
 dot_f(auto &&...oo)
 noexcept -> decltype(auto)
-{
-	return dot_t<M_alt>::method_f(XTAL_REF_(oo)...);
-}
+requires XTAL_TRY_(to)
+	(dot_t<M_alt>::method_f(XTAL_REF_(oo)...))
+
 
 namespace _detail
 {///////////////////////////////////////////////////////////////////////////////
@@ -89,7 +89,7 @@ struct dot
 			}
 			XTAL_0IF (3 <= N) {
 				_detail::coefficient_t<X> w{0};
-				bond::seek_until_f<N>([&]<constant_q I> (I) XTAL_0FN {
+				bond::seek_to_f<N>([&]<constant_q I> (I) XTAL_0FN {
 					XTAL_IF0
 					XTAL_0IF (0 < M_alt) {w = term_f<1, 2              >(XTAL_MOV_(w), get<I{}>(x));}
 					XTAL_0IF (M_alt < 0) {w = term_f<1, 2*cosign_v<I{}>>(XTAL_MOV_(w), get<I{}>(x));}
@@ -116,11 +116,11 @@ struct dot
 			XTAL_0IF (2 == N) {
 				auto const &[x0, x1] = destruct_f(XTAL_REF_(x));
 				auto const &[y0, y1] = destruct_f(XTAL_REF_(y));
-				return term_f<M_alt>(x0*y0, x1,y1);
+				return term_f<1, M_alt>(x0*y0, x1,y1);
 			}
 			XTAL_0IF (3 <= N) {
 				_detail::coefficient_t<X, Y> w{0};
-				bond::seek_until_f<N>([&]<constant_q I> (I) XTAL_0FN {
+				bond::seek_to_f<N>([&]<constant_q I> (I) XTAL_0FN {
 					XTAL_IF0
 					XTAL_0IF (0 < M_alt) {w = term_f<1, 1              >(XTAL_MOV_(w), get<I{}>(x), get<I{}>(y));}
 					XTAL_0IF (M_alt < 0) {w = term_f<1, 1*cosign_v<I{}>>(XTAL_MOV_(w), get<I{}>(x), get<I{}>(y));}

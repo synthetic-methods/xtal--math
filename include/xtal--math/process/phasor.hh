@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-#include "../occur/indent.hh"
+#include "../occur/dent.hh"
 #include "../atom/phason.hh"
 
 
@@ -20,7 +20,7 @@ template <typename ..._s>	concept phasor_q = bond::tag_inner_p<phasor, _s...>;
 /*!
 \brief   Manages a truncated fixed-point unit differential.
 
-May be updated via the `indent` mechanism.
+May be updated via the `dent` mechanism.
 Provides evaluation/update via succession/replacement.
 
 \todo    Attach a parameter to govern suboctave scaling?
@@ -40,7 +40,7 @@ struct phasor<A, As...>
 	//\
 	,	refer<U_phason>
 	,	cell::_detail::refer_multiplicative_group<U_phason>
-	,	typename occur::math::indent_s<U_phason>::template attach<>
+	,	typename occur::math::dent_s<U_phason>::template attach<>
 	,	As...
 	>;
 	using superkind = bond::compose<bond::tag<phasor>
@@ -120,7 +120,7 @@ struct phasor<A, As...>
 			}
 		}
 	//	/*!
-	//	\brief   Evaluation by (possibly indented) replacement then succession.
+	//	\brief   Evaluation by (possibly dented) replacement then succession.
 	//	*/		
 	//	template <auto ...Is> requires (0 == sizeof...(Is))
 	//	XTAL_DEF_(return,inline,let)

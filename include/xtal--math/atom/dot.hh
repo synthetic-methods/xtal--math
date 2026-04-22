@@ -47,7 +47,7 @@ private:
 	template <class T>
 	//\
 	using endotype = typename group_addition<_s...>::template homotype<T>;
-	using endotype = typename group<wrap_s<_s, _std::plus>...>::template homotype<T>;
+	using endotype = typename group<applied_s<_s, _std::plus>...>::template homotype<T>;
 
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<dot_t>>;
@@ -71,6 +71,7 @@ public:
 		using S_::twin;
 
 	public:// OPERATE
+		using S_::product;
 
 		XTAL_DEF_(return,inline,let)
 		product() const
@@ -97,7 +98,8 @@ public:
 		requires XTAL_TRY_(to_if) (t.size()) and XTAL_TRY_(to_if)     (t.capacity())
 		{
 			auto &s = self();
-			auto  u = revalue_type{};
+			using U = XTAL_ALL_(s[0]*t[0]);
+			auto  u = U{};
 			auto  n = bond::math::bit_extremum_f<-1>(t.size(), size());
 			for (int i{}; i < n; ++i) {
 				u = _xtd::plus_multiplies_f(XTAL_MOV_(u), s[i], t[i]);
@@ -110,8 +112,9 @@ public:
 		requires XTAL_TRY_(to_if) (t.size()) and XTAL_TRY_(to_unless) (t.capacity())
 		{
 			auto &s = self();
-			revalue_type u{};
-			bond::seek_until_f<size>([&]<constant_q I> (I) XTAL_0FN {
+			using U = XTAL_ALL_(get<0>(s)*get<0>(t));
+			U u{};
+			bond::seek_to_f<size>([&]<constant_q I> (I) XTAL_0FN {
 				u = _xtd::plus_multiplies_f(XTAL_MOV_(u), got<I{}>(s), got<I{}>(t));
 			});
 			return u;

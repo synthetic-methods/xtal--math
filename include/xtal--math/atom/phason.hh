@@ -328,7 +328,7 @@ public:
 		scale(W u, W w=one)
 		noexcept -> auto &
 		{
-			bond::seek_until_f<size - 1, 1>([&, this]<constant_q I> (I)
+			bond::seek_to_f<size - 1, 1>([&, this]<constant_q I> (I)
 				XTAL_0FN_(do) (get<I{}>(self()) = T::devalue_f(got<I{}>(self())*(w *= u))));
 			return self();
 		}

@@ -30,8 +30,8 @@ TAG_("vactrol")
 	using U_shape = atom::      couple_t<U_alpha[2]>;
 	using U_coeff = atom::math::   dot_t<U_alpha[2]>;
 
-	using X_shape = occur::inferred_t<U_shape, union SHAPE>;
-	using X_coeff = occur::inferred_t<U_coeff, union COEFF>;
+	using X_shape = occur::reinferred_t<U_shape, union SHAPE>;
+	using X_coeff = occur::reinferred_t<U_coeff, union COEFF>;
 
 	using X_stage = occur::stage_t<>;
 	using Y_trig  = pulse_t< 0>;
@@ -87,7 +87,6 @@ TAG_("vactrol")
 		z >>= flow::cue_f(0x18).then(X_env{ X_stage{1}, X_shape{ 1.00, -0.00}});
 
 		echo_("\nvactrol: monophony");
-	//	echo_rule_<28>("\u2500");
 
 		TRUE_(0 == z.efflux(z_cursor++));
 	//	TRUE_(0 == z.influx(occur::stage_f(-1)));

@@ -123,7 +123,7 @@ public:
 				get<I0 + _1>(s) = o*u;
 
 			//	Populate the remaining powers by squaring/multiplication:
-				bond::seek_until_f<(N_size >> 1U)>([&] (auto M)
+				bond::seek_to_f<(N_size >> 1U)>([&] (auto M)
 					XTAL_0FN {
 						auto constexpr UM = I0 + _1*M;
 						auto constexpr WM = J0 + _2*M;
@@ -307,7 +307,7 @@ public:
 			template <class Y>
 			//\
 			using holotype = typename group_multiplication<A>::template homotype<T>;
-			using holotype = typename group<wrap_s<A, _std::multiplies>>::template homotype<Y>;
+			using holotype = typename group<applied_s<A, _std::multiplies>>::template homotype<Y>;
 
 			template <class Y>
 			class homotype : public holotype<homotype<Y>>

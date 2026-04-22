@@ -8,7 +8,7 @@
 #include "./filter.hh"// testing...
 XTAL_ENV_(push)
 namespace xtal::process::math::zavalishin::_test
-{/////////////////////////////////////////////////////////////////////////////////
+{/////////////////////////////////////////////////////////////////////////////////FIXME
 /////////////////////////////////////////////////////////////////////////////////
 
 struct filter_parameters
@@ -27,7 +27,8 @@ struct filter_parameters
 ////////////////////////////////////////////////////////////////////////////////
 TAG_("filter")
 {
-	using U_alpha = typename bond::fit<>::alpha_type;
+	using U_fit   = typename bond::fit<>;
+	using U_alpha = U_fit::alpha_type;
 	using W_alpha = atom::math::dot_t<U_alpha[2]>;
 	using Z_slice = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
 
@@ -42,7 +43,7 @@ TAG_("filter")
 	using _1 = ordinal_constant_t<1>;
 
 	/**/
-	TRY_("instantiation")
+	TRY_("filter: 1D instantiation")
 	{
 		using R_def = filter<>;
 		using R_etc = occur::codex_t<R_def>;
@@ -59,54 +60,131 @@ TAG_("filter")
 		using R_pxr = processor::monomer_t<R_prx>;
 
 		R_prx svf{};
-		svf <<= occur::resample_f(44100);
-		svf <<= typename R_etc::  order_attribute{2};
+
+		auto constexpr N0_sample_rate  =  (2*2)*(3*3)*(5*5)*(7*7);    // 44100
+		auto constexpr N0_filter_rate  =  (2*2)*(3*3)*(5*5)*(7);      //  6300
+		auto constexpr N1_filter_rate  =  U_fit::ratio_f(N0_filter_rate, N0_sample_rate);
+		auto constexpr K1_filter_rate  =  pade::tangy_f<1>(                       N1_filter_rate);
+	//	auto constexpr K1_growth_rate  =  pade::tangy_f<1>(U_fit::ratio_f(1, 4) - N1_filter_rate);
+		auto constexpr K1_growth_rate  =  (one - K1_filter_rate)/(one + K1_filter_rate);
+
+		svf <<= occur::resample_f(N0_sample_rate);
+		svf <<= typename R_etc::order_attribute{1};
 		svf <<= X_coeff{1, 0};
 	
-		U_alpha constexpr r_omega = 2*2*3*3*5*5*7;
+		U_alpha constexpr omega = N0_filter_rate;
 		U_alpha constexpr   rho = 1;
 		U_alpha constexpr    up = 1;
 		U_alpha constexpr    dn = 0;
 
-		U_alpha _LP0{};
-		U_alpha _LP1{};
+		U_alpha v1{one};
+		U_alpha v0{one};
 
-		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
-		_LP1 = svf(up, r_omega, rho); TRUE_(_LP0 < _LP1); _LP0 = _LP1;
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);// TRUE_(check_f<- 0>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
 
-		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
-		_LP1 = svf(dn, r_omega, rho); TRUE_(_LP0 > _LP1); _LP0 = _LP1;
+		v1 = one - v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
 
-		_std::array<U_alpha, 4> u_{1, 2, 0, 1};
-		_std::array<U_alpha, 4> f_{3, 3, 3, 3};
+	}
+	TRY_("filter: 2D instantiation")
+	{
+		using R_def = filter<>;
+		using R_etc = occur::codex_t<R_def>;
+		using R_prx = confined_t<void
+		,	per_t<U_resample>          ::   refix <1>
+		,	U_resync                   ::   attach <>
+		,	coefficient_t<X_coeff>     ::   attach <>
+	//	,	reuse< 0>
+		,	R_etc                      ::   attach <>
+		,	R_etc                      :: dispatch <>
+		,	R_def
+		,	provision::math::zavalishin::shaped<identity>
+		>;
+		using R_pxr = processor::monomer_t<R_prx>;
+
+		R_prx svf{};
+
+		auto constexpr N0_sample_rate  =  (2*2)*(3*3)*(5*5)*(7*7);    // 44100
+		auto constexpr N0_filter_rate  =  (2*2)*(3*3)*(5*5)*(7);      //  6300
+		auto constexpr N1_filter_rate  =  U_fit::ratio_f(N0_filter_rate, N0_sample_rate);
+		auto constexpr K1_filter_rate  =  pade::tangy_f<1>(                       N1_filter_rate);
+	//	auto constexpr K1_growth_rate  =  pade::tangy_f<1>(U_fit::ratio_f(1, 4) - N1_filter_rate);
+		auto constexpr K1_growth_rate  =  (one - K1_filter_rate)/(one + K1_filter_rate);
+
+		svf <<= occur::resample_f(N0_sample_rate);
+		svf <<= typename R_etc::order_attribute{2};
+		svf <<= X_coeff{1, 1};
+	
+		U_alpha constexpr omega = N0_filter_rate;
+		U_alpha constexpr   rho = 1;
+		U_alpha constexpr    up = 1;
+		U_alpha constexpr    dn = 0;
+
+		U_alpha v1{one};
+		U_alpha v0{one};
+
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);// TRUE_(check_f<- 0>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+		v1 =       v0; v0 = one - svf(up, omega, rho); TRUE_(v0 < v1);   TRUE_(check_f<-22>(K1_growth_rate, v0/v1));
+
+		v1 = one - v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
+		v1 =       v0; v0 =       svf(dn, omega, rho); TRUE_(v1 > v0);
 
 	}
 	TRY_("filter parameterization")
@@ -253,6 +331,7 @@ TAG_("filter-ring")
 		z <<= typename R_etc:: damp_parameter{1};
 		z <<= X_coeff{0, 1};
 		z <<= typename occur::resync_t<>{0};
+
 		z <<= flow::assign_f(U_stage{ 0}) << typename R_etc::damp_parameter{0.000F};
 		z <<= flow::assign_f(U_stage{ 1}) << typename R_etc::damp_parameter{0.060F};
 		z <<= flow::assign_f(U_stage{-1}) << typename R_etc::damp_parameter{0.707F};
@@ -414,37 +493,44 @@ TAG_("vectrol")
 		,	provision::spooled <null_type[0x100]>
 		>;
 
-		using T_content = filter<U_alpha[2], union RING>;
-		using T_codex   = occur::codex_t<T_content>;
-	//	using T_damp_   = occur::math::zavalishin::probe_t<typename T_codex::codata_type>;
-		using T_damp    = typename T_codex:: damp_parameter;
+		using T_content =  filter<U_alpha[2], union RING>;
+		using T_codex   =  occur::codex_t<T_content>;
+	//	using T_damp_   =  occur::math::zavalishin::probe_t<typename T_codex::codata_type>;
+		using T_damp    =  typename T_codex:: damp_parameter;
 
-		using T_order   = typename T_codex::order_attribute;
-		using T_event   = flow::packet_t<U_stage, T_damp>;
+		using T_order   =  typename T_codex::order_attribute;
+		using T_event   =  flow::packet_t<U_stage, T_damp>;
+		using T_dummy   =  occur::inferred_t<U_alpha, union DUMMY>;
 
-		using T_process = process::confined_t<void
+		//\
+		using X_vector  =  atom::brace_t<U_alpha, W_alpha>;
+		using X_vector  =  flow::packed_t<U_alpha, W_alpha>;
+		using X_matrix  =  atom::brace_t<X_vector[2]>;
+		using X_patch   =  patch_t<X_matrix>;
+
+		using X_process = confined_t<void
+		,	X_patch                   ::   refix  <>
+		,	X_patch                   ::   refit  <>
+		,	X_patch                   ::     fit  <T_dummy, T_dummy>
 		,	reuse< 0>
-		,	coefficient_t<X_coeff> ::   attach <>
-		,	coefficient_t<       > ::   unfix  <>
-		,	per_t<U_resample>      ::   refix <0>
-		,	Y_gate                 ::   infix  <>
-	//	,	T_damp_                ::   affix  <>
-		,	T_damp                 ::   affix  <>
-		,	T_codex                ::   attach <>
-		,	T_codex                :: dispatch <>
+		,	coefficient_t<X_coeff>    ::   attach <>
+		,	coefficient_t<>           ::   unfix  <>
+		,	per_t<U_resample>         ::   refix <0>
+		,	Y_gate                    ::   infix  <>
+	//	,	T_damp_                   ::   affix  <>
+		,	T_damp                    ::   affix  <>
+		,	T_codex                   ::   attach <>
+		,	T_codex                   :: dispatch <>
 		,	T_content
 		>;
-		using X_vector    = atom::brace_t<U_alpha, W_alpha>;
-		using X_matrix    = atom::brace_t<X_vector[2]>;
-		using X_process   = patch_t<T_process>::template matrix_t<X_matrix>;
 		using X_processor = processor::monomer_t<X_process
 		,	Z_slice::template suspend<T_event>
 		,	provision::stored  <null_type[0x100]>
 	//	,	provision::spooled <null_type[0x100]>
 		>;
 
-		static_assert(           fungible_q<typename occur::math::indent_s<X_matrix, 1>::data_type, X_matrix>);
-		static_assert(occur::math::indent_q<typename occur::math::indent_s<X_matrix, 1>           , X_matrix>);
+		static_assert(         fungible_q<typename occur::math::dent_s<X_matrix, 1>::data_type, X_matrix>);
+		static_assert(occur::math::dent_q<typename occur::math::dent_s<X_matrix, 1>           , X_matrix>);
 
 		U_alpha constexpr r_omega = 3*3*3*5*5*5;
 		U_alpha constexpr e_omega = 2*2*3*3*5*5;
@@ -460,11 +546,8 @@ TAG_("vectrol")
 		auto _y = X_processor::bind_f(_1, _x);
 		auto _y = X_processor::bind_f(_1, S_processor::bind_f(_e));
 
-		//\
-		_y <<= occur::math::indent_s<X_matrix>({r_omega, 1.0});
-	//	_y <<= occur::math::indent_s<X_matrix>({r_omega, W_alpha{111., 111.}});
-		_y <<= occur::math::indent_s<X_matrix, 1>({r_omega, W_alpha{1111, 1111}});
-		_y <<= occur::math::indent_s<X_matrix, 0>({0.0    , W_alpha{1.00, 1.00}});
+		_y <<= occur::math::dent_s<X_matrix, 1>(X_vector{r_omega, W_alpha{1111, 1111}});
+		_y <<= occur::math::dent_s<X_matrix, 0>(X_vector{0.0    , W_alpha{1.00, 1.00}});
 
 		_y <<= S_order{2};
 		_y <<= S_damp_{one - 0.0, zero - 1.0};
@@ -478,6 +561,12 @@ TAG_("vectrol")
 		_y <<= z_sample;
 		_y <<= z_resize;
 		_y >>= U_stage{-1};
+
+		_y <<= z_resize;
+		//\
+		(void) _y.influx(X_vector{U_alpha{1}, W_alpha{1, 1}});
+		_y <<=                     X_vector {U_alpha{1}, W_alpha{1, 1}};
+		_y <<= occur::math::dash_f<X_matrix>(U_alpha{1}, W_alpha{1, 1});
 
 		_y >>= flow::cue_f(0x08).then(T_event{ 0});
 	//	_y >>= flow::cue_f(0x08).then(U_stage{ 0});
@@ -516,7 +605,7 @@ TAG_("vectrol")
 }
 
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////FIXME
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////

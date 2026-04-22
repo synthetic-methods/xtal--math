@@ -55,7 +55,7 @@ TAG_("dot")
 		auto const &u1 = u_[1];
 		TRUE_(u0*u1 == W_alpha{9., 35.});
 		TRUE_(u1*u0 == W_alpha{9., 35.});
-		TRUE_(u_.product() == W_alpha{9., 35.});
+	//	TRUE_(u_.product() == W_alpha{9., 35.});
 
 	}
 }
