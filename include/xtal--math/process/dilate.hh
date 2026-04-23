@@ -20,7 +20,7 @@ XTAL_DEF_(return,inline,let)
 dilate_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return dilate_t<M_val>::method_f(XTAL_REF_(o));
+	return dilate_t<M_val>{}.method(XTAL_REF_(o));
 }
 
 
@@ -49,9 +49,9 @@ struct dilate
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&o)
-		noexcept -> auto
+		XTAL_DEF_(return,inline,let)
+		method(auto &&o)
+		const noexcept -> auto
 		{
 			return after_f(XTAL_REF_(o));
 		};
@@ -64,18 +64,6 @@ struct dilate
 		template <int M_arg=0>
 		struct infix
 		{
-			template <auto f>
-			XTAL_DEF_(return,inline,set)
-			around_f(auto &&o)
-			noexcept -> decltype(auto)
-			{
-				using _fit = bond::fit<decltype(o)>;
-				auto constexpr n_val = _fit::alpha_f(bond::operate_v<M_val>);
-				auto constexpr u     =       part_f<unsigned>(n_val);
-				auto constexpr v     = (int) part_f<  signed>(n_val);
-				return f(XTAL_REF_(o)*root_f<-v>(u))*root_f<+v>(u);
-			};
-
 			using superkind = typename identity_t<>::template infix<M_arg>;
 
 			template <class R>
@@ -86,33 +74,32 @@ struct dilate
 			public:
 				using R_::R_;
 
-				template <auto ...Is>
-				XTAL_DEF_(return,inline,set)
-				method_f(auto &&o)
-				noexcept -> decltype(auto)
-				requires      in_v<requires {R ::template method_f<Is...>  (XTAL_REF_(o));}>
-				{
-					return around_f<[] XTAL_1FN_(call) (R_::template method_f<Is...>)>(XTAL_REF_(o));
-				};
-
-				template <auto ...Is>
+				template <auto ...Ns>
 				XTAL_DEF_(return,inline,let)
-				method  (auto &&o) const
-				noexcept -> decltype(auto)
-				requires      un_v<requires {R ::template method_f<Is...>  (XTAL_REF_(o));}>
-				and requires (R_ const &s_) {s_ .template method  <Is...>  (XTAL_REF_(o));}
+				method(auto &&o)
+				const noexcept -> decltype(auto)
+				requires
+				requires (R_ const &r_) {r_ .template method<Ns...>(XTAL_REF_(o));}
 				{
-					return around_f<[] XTAL_1FN_(call) (R_::template        method<Is...>)>(XTAL_REF_(o));
-				};
-				template <auto ...Is>
+					using U = typename    bond::fit<decltype(o)>::alpha_type;
+					U    constexpr n =    bond::operate_v<M_val>;
+					U    constexpr u =       part_f<unsigned>(n);
+					auto constexpr I = (int) part_f<  signed>(n);
+					return R_::template method<Ns...>(XTAL_REF_(o)*root_f<-I>(u))*root_f<I>(u);
+				}
+				template <auto ...Ns>
 				XTAL_DEF_(return,inline,let)
-				method  (auto &&o)
+				method(auto &&o)
 				noexcept -> decltype(auto)
-				requires      un_v<requires {R ::template method_f<Is...>  (XTAL_REF_(o));}>
-				and requires (R_       &s_) {s_ .template method  <Is...>  (XTAL_REF_(o));}
+				requires
+				requires (R_       &r_) {r_ .template method<Ns...>(XTAL_REF_(o));}
 				{
-					return around_f<[] XTAL_1FN_(call) (R_::template        method<Is...>)>(XTAL_REF_(o));
-				};
+					using U = typename    bond::fit<decltype(o)>::alpha_type;
+					U    constexpr n =    bond::operate_v<M_val>;
+					U    constexpr u =       part_f<unsigned>(n);
+					auto constexpr I = (int) part_f<  signed>(n);
+					return R_::template method<Ns...>(XTAL_REF_(o)*root_f<-I>(u))*root_f<I>(u);
+				}
 
 			};
 		};

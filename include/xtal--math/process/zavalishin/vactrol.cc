@@ -5,7 +5,7 @@
 
 
 
-#include "./vactrol.hh"// testing...
+#include "./vactrol.hh"
 XTAL_ENV_(push)
 namespace xtal::process::math::zavalishin::_test
 {/////////////////////////////////////////////////////////////////////////////////

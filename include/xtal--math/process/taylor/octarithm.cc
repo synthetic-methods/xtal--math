@@ -44,30 +44,30 @@ TAG_("octarithm")
 		T_alpha o{};
 
 		o = half;
-		TRUE_(check_f<- 1>(root_f< 2>(2.0), o = octarithm_t<-2>::template method_f<-1>(o)));
-		TRUE_(check_f<- 1>(root_f<-1>(2.0), o = octarithm_t< 2>::template method_f<-1>(o)));
+		TRUE_(check_f<- 1>(root_f< 2>(2.0), o = octarithm_t<-2>{}.template method<-1>(o)));
+		TRUE_(check_f<- 1>(root_f<-1>(2.0), o = octarithm_t< 2>{}.template method<-1>(o)));
 
 		o = half;
-		TRUE_(check_f<-14>(root_f< 2>(2.0), o = octarithm_t<-2>::template method_f< 3>(o)));
-		TRUE_(check_f<-14>(root_f<-1>(2.0), o = octarithm_t< 2>::template method_f< 3>(o)));
+		TRUE_(check_f<-14>(root_f< 2>(2.0), o = octarithm_t<-2>{}.template method< 3>(o)));
+		TRUE_(check_f<-14>(root_f<-1>(2.0), o = octarithm_t< 2>{}.template method< 3>(o)));
 
 		o = half;
-		TRUE_(check_f<-22>(root_f< 2>(2.0), o = octarithm_t<-2>::template method_f< 2>(o)));
-		TRUE_(check_f<-22>(root_f<-1>(2.0), o = octarithm_t< 2>::template method_f< 2>(o)));
+		TRUE_(check_f<-22>(root_f< 2>(2.0), o = octarithm_t<-2>{}.template method< 2>(o)));
+		TRUE_(check_f<-22>(root_f<-1>(2.0), o = octarithm_t< 2>{}.template method< 2>(o)));
 
 		o = half;
-		TRUE_(check_f<-30>(root_f< 2>(2.0), o = octarithm_t<-2>::template method_f< 1>(o)));
-		TRUE_(check_f<-30>(root_f<-1>(2.0), o = octarithm_t< 2>::template method_f< 1>(o)));
+		TRUE_(check_f<-30>(root_f< 2>(2.0), o = octarithm_t<-2>{}.template method< 1>(o)));
+		TRUE_(check_f<-30>(root_f<-1>(2.0), o = octarithm_t< 2>{}.template method< 1>(o)));
 
 		o = half;
-		TRUE_(check_f<-38>(root_f< 2>(2.0), o = octarithm_t<-2>::template method_f< 0>(o)));
-		TRUE_(check_f<-38>(root_f<-1>(2.0), o = octarithm_t< 2>::template method_f< 0>(o)));
+		TRUE_(check_f<-38>(root_f< 2>(2.0), o = octarithm_t<-2>{}.template method< 0>(o)));
+		TRUE_(check_f<-38>(root_f<-1>(2.0), o = octarithm_t< 2>{}.template method< 0>(o)));
 
 	};
 	TRY_("octarithm base-2 evaluation (integral)")
 	{
-		TRUE_(check_f<-32>(octarithm_t<-2, 12>::template method_f<0>( 5), 1.3348398541700344));
-		TRUE_(check_f<-32>(octarithm_t<-2, 12>::template method_f<0>(17), 2.6696797083400687));
+		TRUE_(check_f<-32>(octarithm_t<-2, 12>{}.template method<0>( 5), 1.3348398541700344));
+		TRUE_(check_f<-32>(octarithm_t<-2, 12>{}.template method<0>(17), 2.6696797083400687));
 
 	};
 
@@ -87,9 +87,9 @@ TAG_("octarithm trials")
 	EST_("real octarithm... <N_lim=~0>")
 	{
 		T_alpha w{1};
-		for (T_sigma i = 100; ~--i;) {
+		for (int i{0x60}; ~--i;) {
 			//\
-			w *= octarithm_t<-1>::template method_f<~0>(mt19937_f());
+			w *= octarithm_t<-1>{}.template method<~0>(mt19937_f());
 			w *= exp(0.693*mt19937_f());
 		}
 		return w;
@@ -98,9 +98,9 @@ TAG_("octarithm trials")
 	EST_("real octarithm... <N_lim=3>")
 	{
 		T_alpha w{1};
-		for (T_sigma i = 100; ~--i;) {
+		for (int i{0x60}; ~--i;) {
 			auto x = mt19937_f();
-			w *= octarithm_t<-2>::template method_f<3>(x);
+			w *= octarithm_t<-2>{}.template method<3>(x);
 		}
 		return w;
 	
@@ -108,9 +108,9 @@ TAG_("octarithm trials")
 	EST_("real octarithm... <N_lim=2>")
 	{
 		T_alpha w{1};
-		for (T_sigma i = 100; ~--i;) {
+		for (int i{0x60}; ~--i;) {
 			auto x = mt19937_f();
-			w *= octarithm_t<-2>::template method_f<2>(x);
+			w *= octarithm_t<-2>{}.template method<2>(x);
 		}
 		return w;
 	
@@ -118,9 +118,9 @@ TAG_("octarithm trials")
 	EST_("real octarithm... <N_lim=1>")
 	{
 		T_alpha w{1};
-		for (T_sigma i = 100; ~--i;) {
+		for (int i{0x60}; ~--i;) {
 			auto x = mt19937_f();
-			w *= octarithm_t<-2>::template method_f<1>(x);
+			w *= octarithm_t<-2>{}.template method<1>(x);
 		}
 		return w;
 	
@@ -128,9 +128,9 @@ TAG_("octarithm trials")
 	EST_("real octarithm... <N_lim=0>")
 	{
 		T_alpha w{1};
-		for (T_sigma i = 100; ~--i;) {
+		for (int i{0x60}; ~--i;) {
 			auto x = mt19937_f();
-			w *= octarithm_t<-2>::template method_f<0>(x);
+			w *= octarithm_t<-2>{}.template method<0>(x);
 		}
 		return w;
 	

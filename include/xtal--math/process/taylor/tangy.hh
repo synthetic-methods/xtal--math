@@ -32,7 +32,9 @@ struct  tangy;
 
 template <int M_iso, int M_car> requires (0 < M_iso)
 struct tangy<M_iso, M_car>
+//\
 :	process::lift<void
+:	process::link<void
 	,	tangent<M_iso, M_car>
 	,	dilate<[] XTAL_1FN_(to) (one*bond::fit<>::patio_1)>
 	>
@@ -40,7 +42,9 @@ struct tangy<M_iso, M_car>
 };
 template <int M_iso, int M_car> requires (M_iso < 0)
 struct tangy<M_iso, M_car>
+//\
 :	process::lift<void
+:	process::link<void
 	,	dilate<[] XTAL_1FN_(to) (one/bond::fit<>::patio_1)>
 	,	tangent<M_iso, M_car>
 	>
@@ -54,7 +58,7 @@ template <int M_ism=0, int M_car=0>
 XTAL_TYP_(let) tangy_t = process::confined_t<tangy<M_ism, M_car>>;
 
 template <int M_ism=0, int M_car=0, int N_lim=4>
-XTAL_DEF_(let) tangy_f = [] XTAL_1FN_(call) (tangy_t<M_ism, M_car>::template method_f<N_lim>);
+XTAL_DEF_(let) tangy_f = [] XTAL_1FN_(call) (tangy_t<M_ism, M_car>{}.template method<N_lim>);
 
 
 ///////////////////////////////////////////////////////////////////////////////

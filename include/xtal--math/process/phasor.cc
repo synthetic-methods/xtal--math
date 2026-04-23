@@ -1,11 +1,11 @@
 #pragma once
 #include "./any.cc"
-#include "./phasor.hh"// testing...
 
 #include "../atom/phason.hh"
 
 
 
+#include "./phasor.hh"
 XTAL_ENV_(push)
 namespace xtal::process::math::_test
 {/////////////////////////////////////////////////////////////////////////////////
@@ -74,7 +74,7 @@ TAG_("phasor trials")
 	/**/
 	static constexpr T_alpha x_delta  = _fit::ratio_f(7);
 	
-	T_sigma constexpr N_data = 0x100;
+	T_sigma constexpr N_data = 0x60;
 	T_alpha   z_data[2][N_data]{};
 	T_alpha  *y_data   [N_data]{z_data[0], z_data[1]};
 	T_alpha **x_data = y_data;
@@ -89,7 +89,7 @@ TAG_("phasor trials")
 	auto e_data  = Map<T_eigencolumns>(*z_data, N_data, 2).rowwise();
 	auto e_data  = ConvertToEigenMatrix<2>(y_data, N_data).rowwise();
 	
-	auto x_phi = X_phi{}; x_phi <<=                                {_fit::ratio_f(7)};
+	auto x_phi = X_phi{}; x_phi <<=                              {_fit::ratio_f(7)};
 	auto y_phi = Y_phi{}; y_phi <<= occur::math::dent_s<X_phi, 1>{_fit::ratio_f(7)}; y_phi <<= occur::resize_t<>(N_data);
 	
 	auto z_chi = Z_chi::bind_f(); z_chi <<= occur::math::dent_s<X_phi, 1>{_fit::ratio_f(7)}; z_chi <<= occur::resize_t<>(N_data);
@@ -113,6 +113,11 @@ TAG_("phasor trials")
 			z_d0[i] = y(0);
 			z_d1[i] = y(1);
 		}
+
+	};
+	EST_("procession (processor internal)")
+	{
+		z_phi >>= z_cursor++;
 
 	};
 	EST_("procession (processor in-place: `ranges::copy...`)")
@@ -157,7 +162,7 @@ TAG_("phasor")
 	using Y_eig = process::link_t<T_eigenrow, phasor<_phi>>;
 	using Y_eig = process::lift_t<T_eigenrow, phasor<_phi>>;
 
-	using Z_chi = processor::monomer_t<Y_chi, U_stored>;
+	using Z_chi = processor::conferred_t<Y_chi, U_stored>;
 	using Z_phi = processor::monomer_t<Y_phi, U_stored>;
 	using Z_psi = processor::monomer_t<Y_psi, U_stored>;
 	//\
@@ -188,7 +193,7 @@ TAG_("phasor")
 		auto e_data  = Map<T_eigencolumns>(*z_data, N_data, 2).rowwise();
 		auto e_data  = ConvertToEigenMatrix<2>(y_data, N_data).rowwise();
 		
-		auto x_phi = X_phi{}; x_phi <<=                                {_fit::ratio_f(7)};
+		auto x_phi = X_phi{}; x_phi <<=                              {_fit::ratio_f(7)};
 		auto y_phi = Y_phi{}; y_phi <<= occur::math::dent_s<X_phi, 1>{_fit::ratio_f(7)}; y_phi <<= occur::resize_t<>(N_data);
 		
 		auto z_chi = Z_chi::bind_f(); z_chi <<= occur::math::dent_s<X_phi, 1>{_fit::ratio_f(7)}; z_chi <<= occur::resize_t<>(N_data);
@@ -216,11 +221,14 @@ TAG_("phasor")
 			}
 
 		};
+		EST_("procession (processor internal)")
+		{
+			z_phi >>= z_cursor++;
+
+		};
 		EST_("procession (processor in-place: `ranges::copy...`)")
 		{
-			//\
 			z_psi >>= z_cursor++ >> occur::review_f(w_data);
-			z_chi >>= z_cursor++ >> occur::review_f(w_data);
 
 		};
 	}

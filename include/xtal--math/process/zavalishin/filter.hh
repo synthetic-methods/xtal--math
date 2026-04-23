@@ -17,7 +17,7 @@ Implementation outlined in _The Art of VA Synthesis_ by Vadim Zavalishin.
 
 The non-linearity is supplied as a `process`-`template` using `provision::math::zavalishin::shaped`.
 The process must conform to the signature `<M_ism, M_car>`,
-defining a stateless `method_f<N_var, ...>` within the `subtype`.
+defining a stateless `method<N_var, ...>` within the `subtype`.
 
 The parameters `M_ism` and `M_car` determine the type and return-value of shape, respectively.
 `M_ism` is expected to yield convex/concave shapes for positive/negative values,
@@ -58,8 +58,8 @@ struct filter
 		{
 			XTAL_IF0
 			XTAL_0IF (provision::math::zavalishin::shaped_q<S_>) {
-				return S_::template shaper_t<N_ism, N_car>::
-					template method_f<Ns...>(XTAL_REF_(x), XTAL_REF_(oo)...);
+				return typename S_::template shaper_t<N_ism, N_car>{}.
+					template method<Ns...>(XTAL_REF_(x), XTAL_REF_(oo)...);
 			}
 			XTAL_0IF (N_car == -0) {return XTAL_REF_(x)       ;}// f[x]
 			XTAL_0IF (N_car == -1) {return XTAL_ALL_(x) {one };}// f[x]/x
@@ -131,7 +131,7 @@ struct filter
 		method_impl(auto const &x
 		,	auto &&...
 		)
-		noexcept -> atom::couple_t<XTAL_ALL_(x)[M_lim]>
+		const noexcept -> atom::couple_t<XTAL_ALL_(x)[M_lim]>
 		{
 			return {XTAL_REF_(x)};
 		}
@@ -142,8 +142,8 @@ struct filter
 		,	atom::couple_q auto const &coeffs_
 	//	,	atom::couple_q<null_type[N_ord]> auto &&coeffs_
 		,	auto &&...oo
-		)	const
-		noexcept -> atom::couple_t<XTAL_ALL_(x)[M_lim]>
+		)
+		const noexcept -> atom::couple_t<XTAL_ALL_(x)[M_lim]>
 		requires in_v<N_ord, XTAL_ALL_(coeffs_)::size()>
 		{
 			using  X         = XTAL_ALL_(x);
@@ -223,7 +223,7 @@ struct filter
 	//	,	atom::couple_q<null_type[N_ord + 0]> auto &&coeffs_
 		,	auto &&...oo
 		)
-		noexcept -> atom::couple_t<XTAL_ALL_(x)[M_lim]>
+		const noexcept -> atom::couple_t<XTAL_ALL_(x)[M_lim]>
 		requires in_v<N_ord + 0, XTAL_ALL_(coeffs_)::size()>
 		{
 			return method_impl<N_ord, Ns...>(XTAL_REF_(x),
@@ -238,7 +238,7 @@ struct filter
 		,	atom::couple_q auto &&coeffs
 		,	auto &&...oo
 		)
-		noexcept -> decltype(auto)
+		const noexcept -> decltype(auto)
 		requires in_v<N_ord + 1, XTAL_ALL_(coeffs)::size()>
 		{
 			using X = XTAL_ALL_(x);
@@ -259,7 +259,7 @@ struct filter
 		,	unstruct_t<decltype(x)> u_warp
 		,	atom::couple_q auto &&coeffs
 		)
-		noexcept -> decltype(auto)
+		const noexcept -> decltype(auto)
 		{
 			using X = XTAL_ALL_(x);
 			return method<N_ord, Ns...>(x, u_warp, XTAL_REF_(coeffs), unstruct_t<X>{one});
@@ -271,7 +271,7 @@ struct filter
 		,	unstruct_t<decltype(x)> u_damp
 		,	auto &&...oo
 		)
-		noexcept -> decltype(auto)
+		const noexcept -> decltype(auto)
 		{
 			using X  = XTAL_ALL_(x);
 			using U  = unstruct_t<X>;
@@ -292,13 +292,13 @@ struct filter
 		Requires `1 <= Abs@s && Re@s <= 0 && 0 <= Im@s`.
 		*/
 		template <int N_ord=0, auto ...Ns>
-		XTAL_DEF_(return,let)
+		XTAL_DEF_(return,inline,let)
 		method(auto &&x
 		,	atom::math::phason_simplex_q auto const &t_
 		,	complex_field_q auto const &s
 		,	auto &&...oo
 		)
-		noexcept -> auto
+		const noexcept -> auto
 		{
 			auto const &[s_re,  s_im] = destruct_f(XTAL_REF_(s));
 			auto const  [s_a1, _s_a1] = roots_f<2>(square_f(s_re, s_im));

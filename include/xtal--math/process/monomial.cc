@@ -1,11 +1,11 @@
 #pragma once
 #include "./any.cc"
-#include "./monomial.hh"// testing...
 
 
 
 
 
+#include "./monomial.hh"
 XTAL_ENV_(push)
 namespace xtal::process::math::_test
 {/////////////////////////////////////////////////////////////////////////////////
@@ -26,7 +26,7 @@ TAG_("monomial")
 
 	TRY_("monomial evaluation")
 	{
-		TRUE_(monomial_t< 7>::method_f(3.) == 2187.);
+		TRUE_(monomial_t< 7>{}.method(3.) == 2187.);
 		TRUE_(monomial_f< 7>          (3.) == 2187.);
 
 	};

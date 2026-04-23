@@ -66,9 +66,9 @@ struct square
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&...xs)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(auto &&...xs)
+		const noexcept -> decltype(auto)
 		{
 			return square_f<Ns...>(XTAL_REF_(xs)...);
 		}

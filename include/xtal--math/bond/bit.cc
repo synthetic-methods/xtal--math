@@ -1,11 +1,11 @@
 #pragma once
 #include "./any.cc"
-#include "./bit.hh"// testing...
 
 
 
 
 
+#include "./bit.hh"
 XTAL_ENV_(push)
 namespace xtal::bond::math::_test
 {/////////////////////////////////////////////////////////////////////////////////

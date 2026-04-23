@@ -1,11 +1,11 @@
 #pragma once
 #include "./any.cc"
-#include "./serial.hh"// testing...
 
 
 
 
 
+#include "./serial.hh"
 XTAL_ENV_(push)
 namespace xtal::atom::math::fourier::_test
 {/////////////////////////////////////////////////////////////////////////////////

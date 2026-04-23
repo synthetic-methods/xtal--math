@@ -1,14 +1,16 @@
 #pragma once
 #include "./any.c"
-#include "./any.hh"// testing...
 
+#include <string>
 #include "./bond/bit.hh"
 
 
-#include <string>
-
+#include "./any.hh"
+XTAL_ENV_(push)
 namespace xtal
-{
+{/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
 template <class U, class V=U>	struct  complexion;
 template <class        ...Ts>	concept complexion_q = bond::tag_inner_p<complexion, Ts...>;
 
@@ -205,7 +207,11 @@ auto conj(xtal::complexion_q auto &&x)
 template <> struct complex<           Eigen::ArrayXd > : xtal::complexion<           Eigen::ArrayXd , Eigen::ArrayXd> {};
 template <> struct complex<Eigen::Map<Eigen::ArrayXd>> : xtal::complexion<Eigen::Map<Eigen::ArrayXd>, Eigen::ArrayXd> {};
 
-}
+
+///////////////////////////////////////////////////////////////////////////////
+}/////////////////////////////////////////////////////////////////////////////
+XTAL_ENV_(pop)
+
 
 
 XTAL_ENV_(push)

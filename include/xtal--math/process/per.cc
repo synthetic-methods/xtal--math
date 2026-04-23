@@ -5,7 +5,7 @@
 
 
 
-#include "./pulse.hh"// testing...
+#include "./pulse.hh"
 XTAL_ENV_(push)
 namespace xtal::process::math::_test
 {/////////////////////////////////////////////////////////////////////////////////

@@ -72,21 +72,21 @@ struct hype
 	public:// OPERATE
 
 		template <int N_lim=0, int N_adj=0>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto const &u)
-		noexcept -> auto
+		XTAL_DEF_(return,inline,let)
+		method(auto const &u)
+		const noexcept -> auto
 		{
 			using V = unstruct_t<decltype(u)>;
 			V constexpr I = root_f<-2>(2.);
 			XTAL_IF0
-			XTAL_0IF (N_adj ==  0) {return method_f<N_lim>(u, _std::complex<V>{1,  0});}
-			XTAL_0IF (N_adj ==  1) {return method_f<N_lim>(u, _std::complex<V>{I,  I});}
-			XTAL_0IF (N_adj == -1) {return method_f<N_lim>(u, _std::complex<V>{I, -I});}
+			XTAL_0IF (N_adj ==  0) {return method<N_lim>(u, _std::complex<V>{1,  0});}
+			XTAL_0IF (N_adj ==  1) {return method<N_lim>(u, _std::complex<V>{I,  I});}
+			XTAL_0IF (N_adj == -1) {return method<N_lim>(u, _std::complex<V>{I, -I});}
 		}
 		template <int N_lim=0, int N_adj=0>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto const &u, simplex_field_q auto const &v)
-		noexcept -> auto
+		XTAL_DEF_(return,inline,let)
+		method(auto const &u, simplex_field_q auto const &v)
+		const noexcept -> auto
 		{
 			using  U     = XTAL_ALL_(u);
 			using  U_fit = bond::fit<U>;
@@ -101,36 +101,36 @@ struct hype
 			auto const w = v*v;
 			auto const x = termial_f(w, x0, x1, x2);
 			auto const y = termial_f(w, y0, y1)*v;
-			return method_f<N_lim>(u, complexion_f(x, y));
+			return method<N_lim>(u, complexion_f(x, y));
 		}
 
 		template <int N_lim=0, int N_adj=0>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto const &u, complex_field_q auto const &z)
-		noexcept -> auto
+		XTAL_DEF_(return,inline,let)
+		method(auto const &u, complex_field_q auto const &z)
+		const noexcept -> auto
 		{
 			auto const o = objective_f(u);
 			using      O =   XTAL_ALL_(o);
 			XTAL_IF0
-			XTAL_0IF (M_car == -0 and N_lim == 0) {return o                   ;}
-			XTAL_0IF (M_car == -1 and N_lim == 0) {return O{one}              ;}
-			XTAL_0IF_(else)                       {return fiction<N_lim>(o, z);}
+			XTAL_0IF (M_car == -0 and N_lim == 0) {return o                         ;}
+			XTAL_0IF (M_car == -1 and N_lim == 0) {return O{one}                    ;}
+			XTAL_0IF_(else)                       {return method_approx<N_lim>(o, z);}
 		}
 
 	private:
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,set)
-		fiction(auto u, complex_field_q auto const &z)
+		XTAL_DEF_(return,inline,let)
+		method_approx(auto u, complex_field_q auto const &z)
 		noexcept -> auto
 		{
 			using      _fit  = bond::fit<decltype(u)>;
 			auto       z_re  = z.real();
 			auto       z_im  = z.imag();
-			auto const z_io  = part_t<signed>::method_e(z_im);
+			auto const z_io  = part_t<signed>{}.edit(z_im);
 			auto const z_co  = z_im*root_f<-1>(z_re);
 			auto      [z_up, z_dn] = roots_f<2>(square_f(z_re, z_im));
 
-			auto const _u = discard_t<M_car>::template method_f<0>(u, z_up);
+			auto const _u = discard_t<M_car>{}.template method<0>(u, z_up);
 			u *= z_up*z_io;
 			XTAL_IF0
 			XTAL_0IF (0 < M_ism) {
@@ -161,8 +161,8 @@ struct hype
 		}
 		/**/
 		template <int N_lim=0> requires in_v<M_ism, -3> and (0 < N_lim)
-		XTAL_DEF_(return,inline,set)
-		fiction(auto u, complex_field_q auto const &z)
+		XTAL_DEF_(return,inline,let)
+		method_approx(auto u, complex_field_q auto const &z)
 		noexcept -> auto
 		{
 			using          U     = XTAL_ALL_(u);
@@ -183,7 +183,7 @@ struct hype
 			auto  z_co = z_im/z_re;
 
 			u *= root_f<2>(square_f(z_re, z_im));
-			auto const u_ = discard_t<M_car>::template method_f<1>(u);
+			auto const u_ = discard_t<M_car>{}.template method<1>(u);
 			auto const w  = square_f(u);
 
 			XTAL_IF0
@@ -199,7 +199,7 @@ struct hype
 				auto constexpr N0 = monomial_f<N_lim + 0>(U3), T0 = U4/square_f<-1>(N0, U1);
 				auto constexpr N1 = monomial_f<N_lim + 2>(U2), T1 = U1/square_f<-1>(N1, U2);
 
-				u *= part_t<signed>::method_e(z_co);
+				u *= part_t<signed>{}.edit(z_co);
 
 				U t0{term_f(U0, T0, w)}, s0{U1};
 				U t1{term_f(U1, T1, w)}, s1{U1_02*u*z_co*t1};
@@ -227,7 +227,7 @@ noexcept -> decltype(auto)
 {
 	auto constexpr N_sgn =   sign_v<N>;
 	auto constexpr N_abs = N*sign_v<N>;
-	return hype_t<3*N_sgn>::template method_f<N_abs>(XTAL_REF_(oo)...);
+	return hype_t<3*N_sgn>{}.template method<N_abs>(XTAL_REF_(oo)...);
 }
 
 

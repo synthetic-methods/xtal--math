@@ -24,7 +24,7 @@ template <int M_ind>
 struct vactrol<M_ind>
 {
 private:
-	XTAL_DEF_(set) exp_f = [] XTAL_1FN_(call) (taylor::logarithm_t<-1, 0>::template method_f<0>);
+	XTAL_DEF_(set) exp_f = [] XTAL_1FN_(call) (taylor::logarithm_t<-1, 0>{}.template method<0>);
 	XTAL_DEF_(set) oct_f = [] XTAL_1FN_(call) (taylor::octarithm_f<-2>);
 
 public:
@@ -53,7 +53,8 @@ public:
 		,	atom::math:: phason_q<null_type[2]> auto t_// <- clock
 		,	atom::       couple_q<null_type[2]> auto f_// <- note head/body
 		,	auto &&...oo
-		)	noexcept -> decltype(auto)
+		)
+		const noexcept -> decltype(auto)
 		{
 		//	static_assert(N_ord == 2);
 			using U = unstruct_t<decltype(o)>;
@@ -81,7 +82,8 @@ public:
 		,	atom::math:: phason_q<null_type[2]> auto t_// <- clock
 		,	atom::       couple_q<null_type[2]> auto f_// <- note head/body
 		,	auto &&...oo
-		)	noexcept -> decltype(auto)
+		)
+		const noexcept -> decltype(auto)
 		{
 		//	static_assert(N_ord == 2);
 

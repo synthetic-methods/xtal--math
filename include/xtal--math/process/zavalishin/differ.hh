@@ -49,15 +49,15 @@ struct differ
 
 		template <int N_ord=1, int N_nyq=0> requires un_v<N_ord, 1>
 		XTAL_DEF_(return,inline,let)
-		method(auto const &u, auto &&...oo) const
-		noexcept -> auto
+		method(auto const &u, auto &&...oo)
+		const noexcept -> auto
 		{
 			return u;
 		}
 		template <int N_ord=1, int N_nyq=0> requires in_v<N_ord, 1>
 		XTAL_DEF_(return,inline,let)
-		method(auto u) const
-		noexcept -> auto
+		method(auto u)
+		const noexcept -> auto
 		{
 			if constexpr (N_nyq == 0) {
 				auto  [u_] = S_::memory(u);
@@ -76,15 +76,15 @@ struct differ
 		}
 		template <int N_ord=1, int N_nyq=0> requires in_v<N_ord, 1>
 		XTAL_DEF_(return,inline,let)
-		method(auto u, atom::math::phason_q auto const &t_) const
-		noexcept -> auto
+		method(auto u, atom::math::phason_q auto const &t_)
+		const noexcept -> auto
 		{
 			return method<N_ord, N_nyq>(XTAL_MOV_(u))*root_f<-1>(t_(1));
 		}
 		template <int N_ord=1, int N_nyq=0> requires in_v<N_ord, 1>
 		XTAL_DEF_(return,inline,let)
-		method(auto u, auto v, atom::math::phason_q auto const &t_) const
-		noexcept -> auto
+		method(auto u, auto v, atom::math::phason_q auto const &t_)
+		const noexcept -> auto
 		{
 			if constexpr (N_nyq == 0) {
 				auto   [u_, v_] = S_::memory(u, v);

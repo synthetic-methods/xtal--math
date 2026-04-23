@@ -1,11 +1,11 @@
 #pragma once
 #include "./any.cc"
-#include "./root.hh"// testing...
 
 
 
 
 
+#include "./root.hh"
 XTAL_ENV_(push)
 namespace xtal::process::math::_test
 {/////////////////////////////////////////////////////////////////////////////////
@@ -102,7 +102,7 @@ TAG_("root trials")
 	{
 		double w{1};
 		for (int i = 0x100; ~--i;) {
-			w *= root_t<-3>::template method_f<3>(mt19937_f() + one);
+			w *= root_t<-3>{}.template method<3>(mt19937_f() + one);
 		}
 		return w;
 
@@ -111,7 +111,7 @@ TAG_("root trials")
 	{
 		double w{1};
 		for (int i = 0x100; ~--i;) {
-			w *= root_t<-3>::template method_f<2>(mt19937_f() + one);
+			w *= root_t<-3>{}.template method<2>(mt19937_f() + one);
 		}
 		return w;
 
@@ -120,7 +120,7 @@ TAG_("root trials")
 	{
 		double w{1};
 		for (int i = 0x100; ~--i;) {
-			w *= root_t<-3>::template method_f<1>(mt19937_f() + one);
+			w *= root_t<-3>{}.template method<1>(mt19937_f() + one);
 		}
 		return w;
 

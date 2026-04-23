@@ -1,11 +1,11 @@
 #pragma once
 #include "./any.cc"
-#include "./square.hh"// testing...
 
 
 
 
 
+#include "./square.hh"
 XTAL_ENV_(push)
 namespace xtal::process::math::_test
 {/////////////////////////////////////////////////////////////////////////////////

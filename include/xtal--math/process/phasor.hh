@@ -103,7 +103,7 @@ struct phasor<A, As...>
 		\brief   Evaluation by succession.
 		\todo    Override constructors to apply fractional `bias`.
 		*/		
-		template <auto ...Is> requires (0 == sizeof...(Is))
+		template <auto ...Ns> requires (0 == sizeof...(Ns))
 		XTAL_DEF_(return,inline,let)
 		method()
 		noexcept -> decltype(auto)
@@ -122,7 +122,7 @@ struct phasor<A, As...>
 	//	/*!
 	//	\brief   Evaluation by (possibly dented) replacement then succession.
 	//	*/		
-	//	template <auto ...Is> requires (0 == sizeof...(Is))
+	//	template <auto ...Ns> requires (0 == sizeof...(Ns))
 	//	XTAL_DEF_(return,inline,let)
 	//	method(fixed_shaped_q auto &&a)
 	//	noexcept -> decltype(auto)
@@ -135,7 +135,7 @@ struct phasor<A, As...>
 		\returns The current differential after setting the stored frequency to `omega`.
 		*/
 		template <int N_root=1>
-		XTAL_DEF_(return,let)
+		XTAL_DEF_(return,inline,let)
 		method(revalue_type omega)
 		noexcept -> auto
 		{
@@ -150,7 +150,7 @@ struct phasor<A, As...>
 		\returns The current differential after scaling the incoming `phi` by `co`.
 		*/
 		template <int N_root=1>
-		XTAL_DEF_(return,let)
+		XTAL_DEF_(return,inline,let)
 		method(U_phason phi, revalue_type co)
 		noexcept -> auto
 		//	requires same_q<U_phason, typename S_::template head_t<ordinal_constant_t<1>>>

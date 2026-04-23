@@ -5,7 +5,7 @@
 
 
 
-#include "./patch.hh"// testing...
+#include "./patch.hh"
 XTAL_ENV_(push)
 namespace xtal::process::math::_test::XTAL_NUM
 {/////////////////////////////////////////////////////////////////////////////////
@@ -23,10 +23,10 @@ struct sum
 		using S_::S_;
 
 		XTAL_DEF_(return,inline,let)
-		method(auto &&...xs) const
-		noexcept -> auto
+		method(auto &&...xs)
+		const noexcept -> auto
 		{
-			return (XTAL_REF_(xs) +...+ 0);
+			return (XTAL_REF_(xs) +...+ zero);
 		}
 
 	};
@@ -44,7 +44,7 @@ TAG_("route", "process")
 
 		using U_matrix = atom::brace_t<int[3][2]>;
 		using Y_routed = process::confined_t<void
-		,	patch_t<U_matrix>::template attach<>
+		,	patch_t<U_matrix>::template refix<>
 		,	sum
 		>;
 
@@ -67,7 +67,7 @@ TAG_("route", "processor")
 		using namespace _xtd::ranges::views;
 		using U_matrix = atom::brace_t<int[3][2]>;// 3-outputs, 2-inputs
 		using Y_routed = process::confined_t<void
-		,	patch_t<U_matrix>::template attach<>
+		,	patch_t<U_matrix>::template refix<>
 		,	sum
 		>;
 		using Z_router = processor::monomer_t<Y_routed, provision::stored<>>;
@@ -102,7 +102,7 @@ TAG_("route", "processor")
 		using U_vector = bond::pack_t<int, int>;
 		using U_matrix = atom::brace_t<U_vector[3]>;
 		using Y_routed = process::confined_t<void
-		,	patch_t<U_matrix>::template attach<>
+		,	patch_t<U_matrix>::template refix<>
 		,	sum
 		>;
 		using Z_router = processor::monomer_t<Y_routed, provision::stored<>>;
@@ -127,7 +127,7 @@ TAG_("route", "processor")
 		using U_matrix = atom::brace_t<int[3][2]>;
 		using U_matrix = atom::brace_t<bond::pack_t<int, int>[3]>;
 		using Y_routed = process::confined_t<void
-		,	patch_t<U_matrix>::template attach<>
+		,	patch_t<U_matrix>::template refix<>
 		,	sum
 		>;
 		using Z_router = processor::monomer_t<Y_routed, provision::stored<>>;
@@ -155,7 +155,7 @@ TAG_("route", "processor")
 		using U_matrix = atom::brace_t<int[3][2]>;
 		using U_matrix = atom::brace_t<bond::pack_t<int, int>[3]>;
 		using Y_routed = process::confined_t<void
-		,	patch_t<U_matrix>::template attach<>
+		,	patch_t<U_matrix>::template refix<>
 		,	sum
 		>;
 		using Z_router = processor::monomer_t<Y_routed, provision::stored<>>;

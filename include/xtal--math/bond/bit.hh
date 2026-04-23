@@ -833,7 +833,7 @@ requires requires {bit_fraction_f(x.real()); bit_fraction_f(x.imag());}
 \returns The `target` to `N_zoom` bits of precision after the decimal.
 */
 template <int N_zoom=0>
-XTAL_DEF_(return,inline,set)
+XTAL_DEF_(return,inline,let)
 bit_fuzz_f(real_variable_q auto x)
 noexcept -> XTAL_ALL_(x)
 {

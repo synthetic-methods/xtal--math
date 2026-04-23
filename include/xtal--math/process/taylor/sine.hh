@@ -33,13 +33,13 @@ struct sine<M_ism, -0>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&o)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(auto &&o)
+		const noexcept -> decltype(auto)
 		{
 			XTAL_IF0
-			XTAL_0IF_(consteval)   {return S_::template method_f<   ~0>(XTAL_REF_(o));}
-			XTAL_0IF (0 <= N_lim)  {return S_::template method_f<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)   {return S_::template method<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim)  {return S_::template method<N_lim>(XTAL_REF_(o));}
 			XTAL_0IF (M_ism ==  2) {return  sinh(XTAL_REF_(o));}
 			XTAL_0IF (M_ism ==  1) {return  sin (XTAL_REF_(o));}
 			XTAL_0IF (M_ism == -1) {return asin (XTAL_REF_(o));}
@@ -62,13 +62,13 @@ struct sine<M_ism, -1>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&o)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(auto &&o)
+		const noexcept -> decltype(auto)
 		{
 			XTAL_IF0
-			XTAL_0IF_(consteval)   {return S_::template method_f<   ~0>(XTAL_REF_(o));}
-			XTAL_0IF (0 <= N_lim)  {return S_::template method_f<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)   {return S_::template method<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim)  {return S_::template method<N_lim>(XTAL_REF_(o));}
 			XTAL_0IF (M_ism ==  2) {return  sinh(o)/o;}
 			XTAL_0IF (M_ism ==  1) {return  sin (o)/o;}
 			XTAL_0IF (M_ism == -1) {return asin (o)/o;}
@@ -94,9 +94,9 @@ struct sine<M_ism, -2>
 
 	public:
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&w)
-		noexcept -> auto
+		XTAL_DEF_(return,inline,let)
+		method(auto &&w)
+		const noexcept -> auto
 		{
 			XTAL_IF0
 			XTAL_0IF (0 == N_lim)  {return XTAL_ALL_(w) {one};}
@@ -114,9 +114,9 @@ struct sine<M_ism, -2>
 
 	protected:
 		template <int N_lim>
-		XTAL_DEF_(return,set)
+		XTAL_DEF_(return,inline,let)
 		approximate(auto &&w)
-		noexcept -> auto
+		const noexcept -> auto
 		{
 			int constexpr N = 1 + 2*below_v<0x10, (unsigned) N_lim>;
 

@@ -25,7 +25,7 @@ template <int M_ism=0, int M_car=0>
 XTAL_TYP_(let) tangent_t = process::confined_t<tangent<M_ism, M_car>>;
 
 template <int M_ism=0, int M_car=0, int N_lim=4>
-XTAL_DEF_(let) tangent_f = [] XTAL_1FN_(call) (tangent_t<M_ism, M_car>::template method_f<N_lim>);
+XTAL_DEF_(let) tangent_f = [] XTAL_1FN_(call) (tangent_t<M_ism, M_car>{}.template method<N_lim>);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -42,9 +42,9 @@ struct tangent<M_ism, -0>
 		using S_::S_;
 
 		template <int N_lim=0> requires (N_lim <  0)
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&o)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(auto &&o)
+		const noexcept -> decltype(auto)
 		{
 			XTAL_IF0
 			XTAL_0IF (M_ism ==  2) {return  tanh(XTAL_REF_(o));}
@@ -53,20 +53,20 @@ struct tangent<M_ism, -0>
 			XTAL_0IF (M_ism == -2) {return atanh(XTAL_REF_(o));}
 		}
 		template <int N_lim=0> requires (0 <= N_lim)
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&o)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(auto &&o)
+		const noexcept -> decltype(auto)
 		{
 			auto const o_sgn = part_f<signed>(o);
 			auto x = objective_f(XTAL_REF_(o));
 			XTAL_IF0
 			XTAL_0IF (0 < M_ism) {
-				x *= sine_t<M_ism, -1>::template method_f<N_lim>(x);
+				x *= sine_t<M_ism, -1>{}.template method<N_lim>(x);
 				x *= root_f<-2>(term_f(one,  cosign_v<M_ism>, square_f(x)));
 			}
 			XTAL_0IF (M_ism < 0) {
 				x *= root_f<-2>(term_f(one, -cosign_v<M_ism>, square_f(x)));
-				x *= sine_t<M_ism, -1>::template method_f<N_lim>(x);
+				x *= sine_t<M_ism, -1>{}.template method<N_lim>(x);
 			}
 			return x;
 		}
@@ -87,11 +87,11 @@ struct tangent<M_ism, -1>
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto const &o)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(auto const &o)
+		const noexcept -> decltype(auto)
 		{
-			return S_::template method_f<Ns...>(o)*root_f<-1, 1>(o);
+			return S_{}.template method<Ns...>(o)*root_f<-1, 1>(o);
 		}
 
 	};

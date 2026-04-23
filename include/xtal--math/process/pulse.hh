@@ -71,7 +71,7 @@ public:
 				template <auto ...Ns> requires un_v<N_stage, 0>
 				XTAL_DEF_(return,inline,let)
 				method(auto &&o, auto &&...oo)
-				noexcept -> decltype(auto)
+				const noexcept -> decltype(auto)
 				{
 					using X = XTAL_ALL_(per_f(o));
 					auto const    &u =   R_::template head<U_stage>();
@@ -89,13 +89,13 @@ public:
 				template <auto ...Ns> requires in_v<N_stage, 0>
 				XTAL_DEF_(return,inline,let)
 				method(auto &&o, auto &&...oo)
-				noexcept -> decltype(auto)
+				const noexcept -> decltype(auto)
 				{
 					auto  &u =  R_::template head<U_stage>();
 					auto  &v =  u.head();
 					signed n = !v;
 					auto   x =  n*per_f(o);
-					u |= n;
+					const_cast<U_stage &>(u) |= n;
 					return R_::template method<Ns...>(x, XTAL_REF_(o), XTAL_REF_(oo)...);
 				}
 

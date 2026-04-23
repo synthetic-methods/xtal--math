@@ -4,8 +4,8 @@
 
 
 
-#include "./coefficient.hh"// testing...
 
+#include "./coefficient.hh"
 XTAL_ENV_(push)
 namespace xtal::process::math::_test
 {/////////////////////////////////////////////////////////////////////////////////

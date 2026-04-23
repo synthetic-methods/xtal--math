@@ -4,8 +4,8 @@
 
 
 
-#include "./nearest.hh"// testing...
 
+#include "./nearest.hh"
 XTAL_ENV_(push)
 namespace xtal::process::math::_test
 {/////////////////////////////////////////////////////////////////////////////////

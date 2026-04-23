@@ -30,7 +30,7 @@ XTAL_DEF_(return,inline,let)
 dot_f(auto &&...oo)
 noexcept -> decltype(auto)
 requires XTAL_TRY_(to)
-	(dot_t<M_alt>::method_f(XTAL_REF_(oo)...))
+	(dot_t<M_alt>{}.method(XTAL_REF_(oo)...))
 
 
 namespace _detail
@@ -54,10 +54,10 @@ struct dot
 	public:
 		using S_::S_;
 
-		template <auto ...Is>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&x)
-		noexcept -> auto
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,let)
+		method(auto &&x)
+		const noexcept -> auto
 		requires un_v<fixed_shaped_q<decltype(x)>>
 		{
 			using _std::norm;// In case...
@@ -65,10 +65,10 @@ struct dot
 			XTAL_IF1_(to) (norm(XTAL_REF_(x)))
 			XTAL_0IF_(to) (square_f(abs(x)))
 		}
-		template <auto ...Is>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&x)
-		noexcept -> auto
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,let)
+		method(auto &&x)
+		const noexcept -> auto
 		requires in_v<fixed_shaped_q<decltype(x)>>
 		{
 			using _std::norm;// In case...
@@ -97,10 +97,10 @@ struct dot
 				return w;
 			}
 		}
-		template <auto ...Is>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&x, auto &&y)
-		noexcept -> auto
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,let)
+		method(auto &&x, auto &&y)
+		const noexcept -> auto
 		requires in_v<fixed_shaped_q<decltype(x), decltype(y)>>
 		{
 			using X = XTAL_ALL_(x);

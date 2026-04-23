@@ -5,7 +5,7 @@
 
 
 
-#include "./factorial.hh"// testing...
+#include "./factorial.hh"
 XTAL_ENV_(push)
 namespace xtal::process::math::_test
 {/////////////////////////////////////////////////////////////////////////////////

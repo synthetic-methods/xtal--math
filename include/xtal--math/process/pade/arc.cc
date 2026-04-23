@@ -5,7 +5,7 @@
 
 
 
-#include "./arc.hh"// testing...
+#include "./arc.hh"
 XTAL_ENV_(push)
 namespace xtal::process::math::pade::_test
 {/////////////////////////////////////////////////////////////////////////////////
@@ -31,15 +31,15 @@ TAG_("arc")
 	{
 		int  constexpr M_lim = -0;
 		int  constexpr M_car =  0;
-		auto constexpr fN = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f<~0   >);
-		auto constexpr f7 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 3, 2>);
-		auto constexpr f6 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 3, 1>);
-		auto constexpr f5 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 2, 2>);
-		auto constexpr f4 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 2, 1>);
-		auto constexpr f3 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 1, 2>);
-		auto constexpr f2 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 1, 1>);
-		auto constexpr f1 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 0, 2>);
-		auto constexpr f0 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 0, 1>);
+		auto constexpr fN = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method<~0   >);
+		auto constexpr f7 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 3, 2>);
+		auto constexpr f6 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 3, 1>);
+		auto constexpr f5 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 2, 2>);
+		auto constexpr f4 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 2, 1>);
+		auto constexpr f3 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 1, 2>);
+		auto constexpr f2 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 1, 1>);
+		auto constexpr f1 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 0, 2>);
+		auto constexpr f0 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 0, 1>);
 
 		U_alpha t{0.123};
 		U_alpha u{0.456};
@@ -73,15 +73,15 @@ TAG_("arc")
 	{
 		int  constexpr M_lim = -0;
 		int  constexpr M_car =  1;
-		auto constexpr fN = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f<~0   >);
-		auto constexpr f7 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 3, 2>);
-		auto constexpr f6 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 3, 1>);
-		auto constexpr f5 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 2, 2>);
-		auto constexpr f4 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 2, 1>);
-		auto constexpr f3 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 1, 2>);
-		auto constexpr f2 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 1, 1>);
-		auto constexpr f1 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 0, 2>);
-		auto constexpr f0 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 0, 1>);
+		auto constexpr fN = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method<~0   >);
+		auto constexpr f7 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 3, 2>);
+		auto constexpr f6 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 3, 1>);
+		auto constexpr f5 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 2, 2>);
+		auto constexpr f4 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 2, 1>);
+		auto constexpr f3 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 1, 2>);
+		auto constexpr f2 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 1, 1>);
+		auto constexpr f1 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 0, 2>);
+		auto constexpr f0 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 0, 1>);
 
 		U_alpha t{2.123};
 		U_alpha u{5.456};
@@ -114,15 +114,15 @@ TAG_("arc")
 	{
 		int  constexpr M_lim = -1;
 		int  constexpr M_car =  0;
-		auto constexpr fN = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f<~0   >);
-		auto constexpr f7 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 3, 2>);
-		auto constexpr f6 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 3, 1>);
-		auto constexpr f5 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 2, 2>);
-		auto constexpr f4 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 2, 1>);
-		auto constexpr f3 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 1, 2>);
-		auto constexpr f2 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 1, 1>);
-		auto constexpr f1 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 0, 2>);
-		auto constexpr f0 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 0, 1>);
+		auto constexpr fN = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method<~0   >);
+		auto constexpr f7 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 3, 2>);
+		auto constexpr f6 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 3, 1>);
+		auto constexpr f5 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 2, 2>);
+		auto constexpr f4 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 2, 1>);
+		auto constexpr f3 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 1, 2>);
+		auto constexpr f2 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 1, 1>);
+		auto constexpr f1 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 0, 2>);
+		auto constexpr f0 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 0, 1>);
 
 		U_alpha t{0.123};
 		U_alpha u{0.456};
@@ -153,15 +153,15 @@ TAG_("arc")
 	{
 		int  constexpr M_lim = -1;
 		int  constexpr M_car =  1;
-		auto constexpr fN = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f<~0   >);
-		auto constexpr f7 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 3, 2>);
-		auto constexpr f6 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 3, 1>);
-		auto constexpr f5 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 2, 2>);
-		auto constexpr f4 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 2, 1>);
-		auto constexpr f3 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 1, 2>);
-		auto constexpr f2 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 1, 1>);
-		auto constexpr f1 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 0, 2>);
-		auto constexpr f0 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>::template method_f< 0, 1>);
+		auto constexpr fN = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method<~0   >);
+		auto constexpr f7 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 3, 2>);
+		auto constexpr f6 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 3, 1>);
+		auto constexpr f5 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 2, 2>);
+		auto constexpr f4 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 2, 1>);
+		auto constexpr f3 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 1, 2>);
+		auto constexpr f2 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 1, 1>);
+		auto constexpr f1 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 0, 2>);
+		auto constexpr f0 = [] XTAL_1FN_(call) (arc_t<M_lim, M_car>{}.template method< 0, 1>);
 
 		U_alpha t{0.123};
 		U_alpha u{0.456};

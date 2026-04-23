@@ -333,8 +333,8 @@ public:
 			return self();
 		}
 		XTAL_DEF_(inline,let)
-		scaled(W u, W w=one) const
-		noexcept -> auto
+		scaled(W u, W w=one)
+		const noexcept -> auto
 		{
 			using T_ = XTAL_ALL_(twin());
 			return [&, this]<auto ...I> (bond::seek_t<I...>)

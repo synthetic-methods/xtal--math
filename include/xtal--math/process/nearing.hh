@@ -33,11 +33,11 @@ struct nearing
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto const &u)
-		noexcept -> XTAL_ALL_(u)
+		XTAL_DEF_(return,inline,let)
+		method(auto const &u)
+		const noexcept -> XTAL_ALL_(u)
 		{
-			return u - S_::template method_f<Ns...>(u);
+			return u - S_::template method<Ns...>(u);
 		}
 
 	};
@@ -55,8 +55,8 @@ nearing_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
 	//\
-	return nearing_t<Ms...>::method_f(XTAL_REF_(oo)...);
-	return nearing_t<>::template method_f<Ns...>(XTAL_REF_(oo)...);
+	return nearing_t<Ms...>{}.template method(XTAL_REF_(oo)...);
+	return nearing_t<>{}.template method<Ns...>(XTAL_REF_(oo)...);
 }
 
 

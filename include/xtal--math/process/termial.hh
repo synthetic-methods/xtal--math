@@ -56,9 +56,9 @@ struct termial
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&...oo)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(auto &&...oo)
+		const noexcept -> decltype(auto)
 		{
 			return termial_f<M_sgn, M_pow>(XTAL_REF_(oo)...);
 		}

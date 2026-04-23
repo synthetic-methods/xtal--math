@@ -32,9 +32,9 @@ struct near
 
 		/*/
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
-		method_f(integral_variable_q auto n)
-		noexcept -> XTAL_ALL_(n)
+		XTAL_DEF_(return,inline,let)
+		method(integral_variable_q auto n)
+		const noexcept -> XTAL_ALL_(n)
 		{
 			using U = XTAL_ALL_(n);
 			using U_fit = bond::fit<U>;
@@ -46,9 +46,9 @@ struct near
 		}
 		/***/
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
-		method_f(real_variable_q auto u)
-		noexcept -> XTAL_ALL_(u)
+		XTAL_DEF_(return,inline,let)
+		method(real_variable_q auto u)
+		const noexcept -> XTAL_ALL_(u)
 		{
 			using U = XTAL_ALL_(u);
 			using U_fit = bond::fit<U>;
@@ -60,11 +60,11 @@ struct near
 			return _xtd::bit_cast<U_alpha>(_xtd::bit_cast<U_sigma>(u*N_half_sqrt)&N_mask);
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
-		method_f(complex_variable_q auto const &u)
-		noexcept -> XTAL_ALL_(u)
+		XTAL_DEF_(return,inline,let)
+		method(complex_variable_q auto const &u)
+		const noexcept -> XTAL_ALL_(u)
 		{
-			return {method_f<Ns...>(u.real()), method_f<Ns...>(u.imag())};
+			return {method<Ns...>(u.real()), method<Ns...>(u.imag())};
 		}
 
 	};
@@ -82,8 +82,8 @@ near_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
 	//\
-	return near_t<Ms...>::method_f(XTAL_REF_(oo)...);
-	return near_t<>::template method_f<Ns...>(XTAL_REF_(oo)...);
+	return near_t<Ms...>{}.method(XTAL_REF_(oo)...);
+	return near_t<>{}.template method<Ns...>(XTAL_REF_(oo)...);
 }
 
 

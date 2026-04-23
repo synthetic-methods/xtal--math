@@ -24,7 +24,7 @@ XTAL_DEF_(return,inline,let)
 nearest_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
-	return nearest_t<M_dir>::method_f(XTAL_REF_(oo)...);
+	return nearest_t<M_dir>{}.method(XTAL_REF_(oo)...);
 };
 
 
@@ -53,9 +53,9 @@ struct nearest
 		using S::S;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&z)
-		noexcept -> auto
+		XTAL_DEF_(return,inline,let)
+		method(auto &&z)
+		const noexcept -> auto
 		{
 			using Z = XTAL_ALL_(z);
 			using Z_fit = bond::fit<Z>;
@@ -77,18 +77,18 @@ struct nearest
 			}
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
-		method_f(complex_field_q auto &&z)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(complex_field_q auto &&z)
+		const noexcept -> decltype(auto)
 		{
-			return complexion_f(method_f<Ns...>(z.real()), method_f<Ns...>(z.imag()));
+			return complexion_f(method<Ns...>(z.real()), method<Ns...>(z.imag()));
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
-		method_f(atom::groupoid_q auto &&z)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(atom::groupoid_q auto &&z)
+		const noexcept -> decltype(auto)
 		{
-			return XTAL_ALL_(z)::template zip_from<[] XTAL_1FN_(call) (method_f<Ns...>)>(z);
+			return XTAL_ALL_(z)::template zip_from<[] XTAL_1FN_(call) (subtype{}.template method<Ns...>)>(z);
 		}
 
 	};

@@ -47,7 +47,7 @@ struct per<M_att>
 				template <auto ...Ns> requires un_v<M_arg, 0>
 				XTAL_DEF_(return,inline,let)
 				method(auto ...oo)
-				noexcept -> decltype(auto)
+				const noexcept -> decltype(auto)
 				{
 					auto &o = get<M_arg>(_std::tie(oo...)); o *= fact();
 					return R_::template method<Ns...>(XTAL_MOV_(oo)...);
@@ -55,7 +55,7 @@ struct per<M_att>
 				template <auto ...Ns> requires in_v<M_arg, 0>
 				XTAL_DEF_(return,inline,let)
 				method(auto &&o, auto &&...oo)
-				noexcept -> decltype(auto)
+				const noexcept -> decltype(auto)
 				{
 					return R_::template method<Ns...>(XTAL_REF_(o)*fact(), XTAL_REF_(oo)...);
 				}
@@ -63,8 +63,8 @@ struct per<M_att>
 			private:// OPERATE
 
 				XTAL_DEF_(return,inline,let)
-				fact() const
-				noexcept -> decltype(auto)
+				fact()
+				const noexcept -> decltype(auto)
 				{
 					auto const &m = R_::template head<M_att>();
 					XTAL_IF0

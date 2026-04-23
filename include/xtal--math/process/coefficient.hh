@@ -46,7 +46,7 @@ struct coefficient<M>
 				template <auto ...Ns>
 				XTAL_DEF_(inline,let)
 				method(auto &&...oo)
-				noexcept -> auto
+				const noexcept -> auto
 				{
 					return R_::headed()*R_::template method<Ns...>(XTAL_REF_(oo)...);
 				}
@@ -81,9 +81,9 @@ struct coefficient<>
 				using R_::R_;
 
 				template <auto ...Ns>
-				XTAL_DEF_(inline,let)
+				XTAL_DEF_(return,inline,let)
 				method(auto &&o, auto &&...oo)
-				noexcept -> auto
+				const noexcept -> auto
 				{
 					return R_::template method<Ns...>(XTAL_REF_(oo)...)*XTAL_REF_(o);
 				}

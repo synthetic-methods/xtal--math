@@ -131,9 +131,9 @@ struct  monomial
 	public:
 
 		template <int ...Ns>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&...oo)
-		noexcept -> auto
+		XTAL_DEF_(return,inline,let)
+		method(auto &&...oo)
+		const noexcept -> auto
 		{
 			XTAL_IF0
 			XTAL_0IF (0 == sizeof...(Ms)) {return monomial_f<Ns...>(XTAL_REF_(oo)...);}

@@ -122,7 +122,7 @@ struct dent<Ns...>
 				\brief   Updates the internal state at the given path.
 				*/
 				template <signed N_ion>// requires in_v<N_ion, +1>
-				XTAL_DEF_(return,let)
+				XTAL_DEF_(return,inline,let)
 				fuse(dent_q<S> auto &&o)
 				noexcept -> signed
 				{

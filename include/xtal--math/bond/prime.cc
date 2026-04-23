@@ -5,7 +5,7 @@
 
 
 
-#include "./prime.hh"// testing...
+#include "./prime.hh"
 XTAL_ENV_(push)
 namespace xtal::bond::math::_test
 {/////////////////////////////////////////////////////////////////////////////////

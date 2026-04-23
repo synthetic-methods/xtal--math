@@ -39,9 +39,9 @@ struct impunity<M_ism,-2>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,set)
-		method_f(auto const &o)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(auto const &o)
+		const noexcept -> decltype(auto)
 		{
 			using X = XTAL_ALL_(o); using _fit = bond::fit<X>;
 
@@ -51,7 +51,7 @@ struct impunity<M_ism,-2>
 
 			XTAL_IF0
 			XTAL_0IF (M_ism == (+1)) {
-				return impunity_t<(+2),-2>::template method_f<N_lim>(-o);
+				return impunity_t<(+2),-2>{}.template method<N_lim>(-o);
 			}
 			/*/
 			XTAL_0IF (N_lim == 0x00) {// 2:1 D[...1]@0 && D[...0]@¼
@@ -154,11 +154,11 @@ struct impunity<M_ism,-2>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,set)
+		XTAL_DEF_(return,inline,let)
 		//\
-		method_f(simplex_field_q auto o)
-		method_f(auto o)
-		noexcept -> auto
+		method(simplex_field_q auto o) const
+		method(auto o)
+		const noexcept -> auto
 		{
 			using          _fit = bond::fit<decltype(o)>;
 			auto constexpr _pi  = one/_fit::patio_1;
@@ -279,8 +279,8 @@ struct impunity<M_ism,-2>
 			}
 			XTAL_0IF_(else) {
 				auto [d, q] = roots_f<2, 1>(o);
-				(void) truncate_t<-1>::method_e(d);
-				(void) truncate_t<-1>::method_e(q);
+				(void) truncate_t<-1>{}.edit(d);
+				(void) truncate_t<-1>{}.edit(q);
 				XTAL_IF0
 				XTAL_0IF (M_ism == -1) {return complexion_f(_fit::alpha_1, _pi*q*atan (d));}
 				XTAL_0IF (M_ism == -2) {return complexion_f(_fit::alpha_1, _pi*q*atanh(d));}

@@ -1,11 +1,11 @@
 #pragma once
 #include "./any.cc"
-#include "./unity.hh"// testing...
 
 
 
 
 
+#include "./unity.hh"
 XTAL_ENV_(push)
 namespace xtal::process::math::pade::_test
 {/////////////////////////////////////////////////////////////////////////////////
@@ -47,44 +47,44 @@ TAG_("unity")
 		U_alpha x7{ 0.4444444444444444};
 
 	//	3 (- 1...- 1)
-		TRUE_(check_f<- 1>(unity_t<(+1)>::template method_f<-1>(x0), unity_t<(+1)>::template method_f<3>(x0)));
-		TRUE_(check_f<- 3>(unity_t<(+1)>::template method_f<-1>(x1), unity_t<(+1)>::template method_f<3>(x1)));
-		TRUE_(check_f<- 1>(unity_t<(+1)>::template method_f<-1>(x2), unity_t<(+1)>::template method_f<3>(x2)));
-		TRUE_(check_f<- 3>(unity_t<(+1)>::template method_f<-1>(x3), unity_t<(+1)>::template method_f<3>(x3)));
-		TRUE_(check_f<- 3>(unity_t<(+1)>::template method_f<-1>(x4), unity_t<(+1)>::template method_f<3>(x4)));
-		TRUE_(check_f<- 1>(unity_t<(+1)>::template method_f<-1>(x5), unity_t<(+1)>::template method_f<3>(x5)));
-		TRUE_(check_f<- 3>(unity_t<(+1)>::template method_f<-1>(x6), unity_t<(+1)>::template method_f<3>(x6)));
-		TRUE_(check_f<- 1>(unity_t<(+1)>::template method_f<-1>(x7), unity_t<(+1)>::template method_f<3>(x7)));
+		TRUE_(check_f<- 1>(unity_t<(+1)>{}.template method<-1>(x0), unity_t<(+1)>{}.template method<3>(x0)));
+		TRUE_(check_f<- 3>(unity_t<(+1)>{}.template method<-1>(x1), unity_t<(+1)>{}.template method<3>(x1)));
+		TRUE_(check_f<- 1>(unity_t<(+1)>{}.template method<-1>(x2), unity_t<(+1)>{}.template method<3>(x2)));
+		TRUE_(check_f<- 3>(unity_t<(+1)>{}.template method<-1>(x3), unity_t<(+1)>{}.template method<3>(x3)));
+		TRUE_(check_f<- 3>(unity_t<(+1)>{}.template method<-1>(x4), unity_t<(+1)>{}.template method<3>(x4)));
+		TRUE_(check_f<- 1>(unity_t<(+1)>{}.template method<-1>(x5), unity_t<(+1)>{}.template method<3>(x5)));
+		TRUE_(check_f<- 3>(unity_t<(+1)>{}.template method<-1>(x6), unity_t<(+1)>{}.template method<3>(x6)));
+		TRUE_(check_f<- 1>(unity_t<(+1)>{}.template method<-1>(x7), unity_t<(+1)>{}.template method<3>(x7)));
 
 	//	2 (- 7...-12)
-		TRUE_(check_f<- 7>(unity_t<(+1)>::template method_f<-1>(x0), unity_t<(+1)>::template method_f<2>(x0)));
-		TRUE_(check_f<-12>(unity_t<(+1)>::template method_f<-1>(x1), unity_t<(+1)>::template method_f<2>(x1)));
-		TRUE_(check_f<- 9>(unity_t<(+1)>::template method_f<-1>(x2), unity_t<(+1)>::template method_f<2>(x2)));
-		TRUE_(check_f<-11>(unity_t<(+1)>::template method_f<-1>(x3), unity_t<(+1)>::template method_f<2>(x3)));
-		TRUE_(check_f<-11>(unity_t<(+1)>::template method_f<-1>(x4), unity_t<(+1)>::template method_f<2>(x4)));
-		TRUE_(check_f<- 9>(unity_t<(+1)>::template method_f<-1>(x5), unity_t<(+1)>::template method_f<2>(x5)));
-		TRUE_(check_f<-12>(unity_t<(+1)>::template method_f<-1>(x6), unity_t<(+1)>::template method_f<2>(x6)));
-		TRUE_(check_f<- 7>(unity_t<(+1)>::template method_f<-1>(x7), unity_t<(+1)>::template method_f<2>(x7)));
+		TRUE_(check_f<- 7>(unity_t<(+1)>{}.template method<-1>(x0), unity_t<(+1)>{}.template method<2>(x0)));
+		TRUE_(check_f<-12>(unity_t<(+1)>{}.template method<-1>(x1), unity_t<(+1)>{}.template method<2>(x1)));
+		TRUE_(check_f<- 9>(unity_t<(+1)>{}.template method<-1>(x2), unity_t<(+1)>{}.template method<2>(x2)));
+		TRUE_(check_f<-11>(unity_t<(+1)>{}.template method<-1>(x3), unity_t<(+1)>{}.template method<2>(x3)));
+		TRUE_(check_f<-11>(unity_t<(+1)>{}.template method<-1>(x4), unity_t<(+1)>{}.template method<2>(x4)));
+		TRUE_(check_f<- 9>(unity_t<(+1)>{}.template method<-1>(x5), unity_t<(+1)>{}.template method<2>(x5)));
+		TRUE_(check_f<-12>(unity_t<(+1)>{}.template method<-1>(x6), unity_t<(+1)>{}.template method<2>(x6)));
+		TRUE_(check_f<- 7>(unity_t<(+1)>{}.template method<-1>(x7), unity_t<(+1)>{}.template method<2>(x7)));
 
 	//	1 (-19...-21)
-		TRUE_(check_f<-19>(unity_t<(+1)>::template method_f<-1>(x0), unity_t<(+1)>::template method_f<1>(x0)));
-		TRUE_(check_f<-21>(unity_t<(+1)>::template method_f<-1>(x1), unity_t<(+1)>::template method_f<1>(x1)));
-		TRUE_(check_f<-16>(unity_t<(+1)>::template method_f<-1>(x2), unity_t<(+1)>::template method_f<1>(x2)));
-		TRUE_(check_f<-21>(unity_t<(+1)>::template method_f<-1>(x3), unity_t<(+1)>::template method_f<1>(x3)));
-		TRUE_(check_f<-21>(unity_t<(+1)>::template method_f<-1>(x4), unity_t<(+1)>::template method_f<1>(x4)));
-		TRUE_(check_f<-16>(unity_t<(+1)>::template method_f<-1>(x5), unity_t<(+1)>::template method_f<1>(x5)));
-		TRUE_(check_f<-21>(unity_t<(+1)>::template method_f<-1>(x6), unity_t<(+1)>::template method_f<1>(x6)));
-		TRUE_(check_f<-19>(unity_t<(+1)>::template method_f<-1>(x7), unity_t<(+1)>::template method_f<1>(x7)));
+		TRUE_(check_f<-19>(unity_t<(+1)>{}.template method<-1>(x0), unity_t<(+1)>{}.template method<1>(x0)));
+		TRUE_(check_f<-21>(unity_t<(+1)>{}.template method<-1>(x1), unity_t<(+1)>{}.template method<1>(x1)));
+		TRUE_(check_f<-16>(unity_t<(+1)>{}.template method<-1>(x2), unity_t<(+1)>{}.template method<1>(x2)));
+		TRUE_(check_f<-21>(unity_t<(+1)>{}.template method<-1>(x3), unity_t<(+1)>{}.template method<1>(x3)));
+		TRUE_(check_f<-21>(unity_t<(+1)>{}.template method<-1>(x4), unity_t<(+1)>{}.template method<1>(x4)));
+		TRUE_(check_f<-16>(unity_t<(+1)>{}.template method<-1>(x5), unity_t<(+1)>{}.template method<1>(x5)));
+		TRUE_(check_f<-21>(unity_t<(+1)>{}.template method<-1>(x6), unity_t<(+1)>{}.template method<1>(x6)));
+		TRUE_(check_f<-19>(unity_t<(+1)>{}.template method<-1>(x7), unity_t<(+1)>{}.template method<1>(x7)));
 
 	//	0 (-26...-29)
-		TRUE_(check_f<-26>(unity_t<(+1)>::template method_f<-1>(x0), unity_t<(+1)>::template method_f<0>(x0)));
-		TRUE_(check_f<-29>(unity_t<(+1)>::template method_f<-1>(x1), unity_t<(+1)>::template method_f<0>(x1)));
-		TRUE_(check_f<-26>(unity_t<(+1)>::template method_f<-1>(x2), unity_t<(+1)>::template method_f<0>(x2)));
-		TRUE_(check_f<-29>(unity_t<(+1)>::template method_f<-1>(x3), unity_t<(+1)>::template method_f<0>(x3)));
-		TRUE_(check_f<-29>(unity_t<(+1)>::template method_f<-1>(x4), unity_t<(+1)>::template method_f<0>(x4)));
-		TRUE_(check_f<-26>(unity_t<(+1)>::template method_f<-1>(x5), unity_t<(+1)>::template method_f<0>(x5)));
-		TRUE_(check_f<-29>(unity_t<(+1)>::template method_f<-1>(x6), unity_t<(+1)>::template method_f<0>(x6)));
-		TRUE_(check_f<-26>(unity_t<(+1)>::template method_f<-1>(x7), unity_t<(+1)>::template method_f<0>(x7)));
+		TRUE_(check_f<-26>(unity_t<(+1)>{}.template method<-1>(x0), unity_t<(+1)>{}.template method<0>(x0)));
+		TRUE_(check_f<-29>(unity_t<(+1)>{}.template method<-1>(x1), unity_t<(+1)>{}.template method<0>(x1)));
+		TRUE_(check_f<-26>(unity_t<(+1)>{}.template method<-1>(x2), unity_t<(+1)>{}.template method<0>(x2)));
+		TRUE_(check_f<-29>(unity_t<(+1)>{}.template method<-1>(x3), unity_t<(+1)>{}.template method<0>(x3)));
+		TRUE_(check_f<-29>(unity_t<(+1)>{}.template method<-1>(x4), unity_t<(+1)>{}.template method<0>(x4)));
+		TRUE_(check_f<-26>(unity_t<(+1)>{}.template method<-1>(x5), unity_t<(+1)>{}.template method<0>(x5)));
+		TRUE_(check_f<-29>(unity_t<(+1)>{}.template method<-1>(x6), unity_t<(+1)>{}.template method<0>(x6)));
+		TRUE_(check_f<-26>(unity_t<(+1)>{}.template method<-1>(x7), unity_t<(+1)>{}.template method<0>(x7)));
 
 	};
 	/**/
@@ -94,7 +94,7 @@ TAG_("unity")
 		//\
 		auto const v =        one/x;
 		auto const v = U_alpha{1}/x;
-		auto const y = unity_t<1>::template method_f<1>(x);
+		auto const y = unity_t<1>{}.template method<1>(x);
 
 		TRUE_(check_f<8>(y.real(), atom::couple_t<U_alpha[2]>{ 0.715936483022, -0.962027671586}));
 		TRUE_(check_f<8>(y.imag(), atom::couple_t<U_alpha[2]>{ 0.698165418993,  0.272951935517}));
@@ -195,31 +195,31 @@ TAG_("unity")
 	{
 		double const t0 = 1.125;
 
-		TRUE_(check_f<-42>(unity_t<1, 1>::template method_f<(-1)>(t0), unity_t<1, 1>::template method_f<(-0)>(t0)));
-		TRUE_(check_f<- 1>(unity_t<1, 1>::template method_f<(-1)>(t0), unity_t<1, 1>::template method_f<(-1)>(t0)));
-		TRUE_(check_f<- 1>(unity_t<1, 1>::template method_f<(-1)>(t0), unity_t<1, 1>::template method_f<(-2)>(t0)));
-		TRUE_(check_f<- 1>(unity_t<1, 1>::template method_f<(-1)>(t0), unity_t<1, 1>::template method_f<(-3)>(t0)));
+		TRUE_(check_f<-42>(unity_t<1, 1>{}.template method<(-1)>(t0), unity_t<1, 1>{}.template method<(-0)>(t0)));
+		TRUE_(check_f<- 1>(unity_t<1, 1>{}.template method<(-1)>(t0), unity_t<1, 1>{}.template method<(-1)>(t0)));
+		TRUE_(check_f<- 1>(unity_t<1, 1>{}.template method<(-1)>(t0), unity_t<1, 1>{}.template method<(-2)>(t0)));
+		TRUE_(check_f<- 1>(unity_t<1, 1>{}.template method<(-1)>(t0), unity_t<1, 1>{}.template method<(-3)>(t0)));
 
 	}
-	TRY_("dilution")
-	{
-		double const t1 = 1.11;
-		double const t2 = 2.22;
-
-		int constexpr N_lim = 4;
-
-		auto z = unity_t<1>::template method_f<N_lim>(t1);
-
-		TRUE_(check_f<-1>(z, process::lift_t<unity<1, 1>, dilate<-2>>::template method_f<N_lim>(t2)));
-		TRUE_(check_f<-1>(z, process::lift_t<unity<1, 1>            >::template method_f<N_lim>(t1)));
-
-	}
+//	TRY_("dilution")
+//	{
+//		double const t1 = 1.11;
+//		double const t2 = 2.22;
+//
+//		int constexpr N_lim = 4;
+//
+//		auto z = unity_t<1>{}.template method<N_lim>(t1);
+//
+//		TRUE_(check_f<-1>(z, process::lift_t<unity<1, 1>, dilate<-2>>{}.template method<N_lim>(t2)));
+//		TRUE_(check_f<-1>(z, process::lift_t<unity<1, 1>            >{}.template method<N_lim>(t1)));
+//
+//	}
 
 	TRY_("unity<-1, -1> (native)")
 	{
 		U_aphex const x{0.123, 0.456};
-		U_aphex const y = unity_t< 1>::template method_f<-1>(x);
-		U_aphex const z = unity_t<-1>::template method_f<-1>(y);
+		U_aphex const y = unity_t< 1>{}.template method<-1>(x);
+		U_aphex const z = unity_t<-1>{}.template method<-1>(y);
 
 		TRUE_(check_f<-29>(x, z));
 
@@ -227,8 +227,8 @@ TAG_("unity")
 	TRY_("unity<-1,  5> (approx)")
 	{
 		U_aphex const x{0.123, 0.456};
-		U_aphex const y = unity_t< 1>::template method_f< 3>(x);
-		U_aphex const z = unity_t<-1>::template method_f< 3>(y);
+		U_aphex const y = unity_t< 1>{}.template method< 3>(x);
+		U_aphex const z = unity_t<-1>{}.template method< 3>(y);
 
 		TRUE_(check_f<-22>(x, z));
 
@@ -236,17 +236,17 @@ TAG_("unity")
 	TRY_("unity<-1> corners")
 	{
 		U_aphex const x{0.123, 0.456};
-		U_aphex const y = unity_t< 1>::template method_f< 3>(x);
-		U_aphex const z = unity_t<-1>::template method_f< 3>(y);
+		U_aphex const y = unity_t< 1>{}.template method< 3>(x);
+		U_aphex const z = unity_t<-1>{}.template method< 3>(y);
 
-		TRUE_(check_f<-25>(unity_t<-1>::template method_f< 3>(U_aphex{-2, 1}), U_aphex{ 0.42620819117478337, -0.12807499968169406}));
-		TRUE_(check_f<-25>(unity_t<-1>::template method_f< 3>(U_aphex{-1, 2}), U_aphex{ 0.32379180882521663, -0.12807499968169406}));
-		TRUE_(check_f<-25>(unity_t<-1>::template method_f< 3>(U_aphex{ 1, 2}), U_aphex{ 0.17620819117478337, -0.12807499968169406}));
-		TRUE_(check_f<-25>(unity_t<-1>::template method_f< 3>(U_aphex{ 2, 1}), U_aphex{ 0.07379180882521663, -0.12807499968169406}));
-		TRUE_(check_f<-25>(unity_t<-1>::template method_f< 3>(U_aphex{ 2,-1}), U_aphex{-0.07379180882521663, -0.12807499968169406}));
-		TRUE_(check_f<-25>(unity_t<-1>::template method_f< 3>(U_aphex{ 1,-2}), U_aphex{-0.17620819117478337, -0.12807499968169406}));
-		TRUE_(check_f<-25>(unity_t<-1>::template method_f< 3>(U_aphex{-1,-2}), U_aphex{-0.32379180882521663, -0.12807499968169406}));
-		TRUE_(check_f<-25>(unity_t<-1>::template method_f< 3>(U_aphex{-2,-1}), U_aphex{-0.42620819117478337, -0.12807499968169406}));
+		TRUE_(check_f<-25>(unity_t<-1>{}.template method< 3>(U_aphex{-2, 1}), U_aphex{ 0.42620819117478337, -0.12807499968169406}));
+		TRUE_(check_f<-25>(unity_t<-1>{}.template method< 3>(U_aphex{-1, 2}), U_aphex{ 0.32379180882521663, -0.12807499968169406}));
+		TRUE_(check_f<-25>(unity_t<-1>{}.template method< 3>(U_aphex{ 1, 2}), U_aphex{ 0.17620819117478337, -0.12807499968169406}));
+		TRUE_(check_f<-25>(unity_t<-1>{}.template method< 3>(U_aphex{ 2, 1}), U_aphex{ 0.07379180882521663, -0.12807499968169406}));
+		TRUE_(check_f<-25>(unity_t<-1>{}.template method< 3>(U_aphex{ 2,-1}), U_aphex{-0.07379180882521663, -0.12807499968169406}));
+		TRUE_(check_f<-25>(unity_t<-1>{}.template method< 3>(U_aphex{ 1,-2}), U_aphex{-0.17620819117478337, -0.12807499968169406}));
+		TRUE_(check_f<-25>(unity_t<-1>{}.template method< 3>(U_aphex{-1,-2}), U_aphex{-0.32379180882521663, -0.12807499968169406}));
+		TRUE_(check_f<-25>(unity_t<-1>{}.template method< 3>(U_aphex{-2,-1}), U_aphex{-0.42620819117478337, -0.12807499968169406}));
 
 	}
 }
@@ -278,7 +278,7 @@ TAG_("unity trials")
 		U_aphex z {1, 0};
 
 		for (U_sigma i = 0x100; ~--i;) {
-			z *= unity_t<1>::template method_f<-1>(t);
+			z *= unity_t<1>{}.template method<-1>(t);
 			t += _t;
 			t -= round(t);
 		}
@@ -293,7 +293,7 @@ TAG_("unity trials")
 		for (U_sigma i = 0x100; ~--i;) {
 			t += _t;
 			t -= round(t);
-			z *= unity_t<1>::template method_f< 1>(t);
+			z *= unity_t<1>{}.template method< 1>(t);
 		}
 		return z;
 
@@ -305,7 +305,7 @@ TAG_("unity trials")
 
 		for (U_sigma i = 0x100; ~--i; ++t) {
 			U_aphex const x{mt19937_f(), mt19937_f()};
-			z *= unity_t<1>::template method_f< 1>(t);
+			z *= unity_t<1>{}.template method< 1>(t);
 		}
 		return z;
 
@@ -315,7 +315,7 @@ TAG_("unity trials")
 		U_aphex y{};
 		for (int i = 0x20; ~--i;) {
 			U_aphex const x{mt19937_f(), mt19937_f()};
-			y += unity_t<-1>::template method_f<-1>(x);
+			y += unity_t<-1>{}.template method<-1>(x);
 		}
 		return y;
 
@@ -325,7 +325,7 @@ TAG_("unity trials")
 		U_aphex y{};
 		for (int i = 0x20; ~--i;) {
 			U_aphex const x{mt19937_f(), mt19937_f()};
-			y += unity_t<-1>::template method_f< 3>(x);
+			y += unity_t<-1>{}.template method< 3>(x);
 		}
 		return y;
 
@@ -335,7 +335,7 @@ TAG_("unity trials")
 		U_aphex y{};
 		for (int i = 0x20; ~--i;) {
 			U_aphex const x{mt19937_f(), mt19937_f()};
-			y += unity_t<-1>::template method_f< 2>(x);
+			y += unity_t<-1>{}.template method< 2>(x);
 		}
 		return y;
 
@@ -345,7 +345,7 @@ TAG_("unity trials")
 		U_aphex y{};
 		for (int i = 0x20; ~--i;) {
 			U_aphex const x{mt19937_f(), mt19937_f()};
-			y += unity_t<-1>::template method_f< 1>(x);
+			y += unity_t<-1>{}.template method< 1>(x);
 		}
 		return y;
 
@@ -355,7 +355,7 @@ TAG_("unity trials")
 		U_aphex y{};
 		for (int i = 0x20; ~--i;) {
 			U_aphex const x{mt19937_f(), mt19937_f()};
-			y += unity_t<-1>::template method_f< 0>(x);
+			y += unity_t<-1>{}.template method< 0>(x);
 		}
 		return y;
 

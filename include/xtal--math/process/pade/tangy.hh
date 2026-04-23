@@ -38,9 +38,9 @@ struct tangy<M_ism,-0>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&o)
-		noexcept -> auto
+		XTAL_DEF_(return,inline,let)
+		method(auto &&o)
+		const noexcept -> auto
 		{
 			using _fit = bond::fit<decltype(o)>;
 			
@@ -51,8 +51,8 @@ struct tangy<M_ism,-0>
 				XTAL_0IF (2 == M_ism) {return tanh(XTAL_REF_(o)*_fit::patio_1);}
 			}
 			XTAL_0IF (0 <= N_lim) {
-				auto const w1 = _detail::impunity_t<M_ism,-0>::
-					template method_f<N_lim>(method_domain_f<N_lim>(XTAL_REF_(o)));
+				auto const w1 = _detail::impunity_t<M_ism,-0>{}.
+					template method<N_lim>(domain_f<N_lim>(XTAL_REF_(o)));
 
 				auto const x1 =  w1.real();
 				auto const y1 =  w1.imag();
@@ -65,7 +65,7 @@ struct tangy<M_ism,-0>
 	protected:
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,set)
-		method_domain_f(auto &&o)
+		domain_f(auto &&o)
 		noexcept -> auto
 		{
 			using _fit = bond::fit<decltype(o)>;
@@ -103,9 +103,9 @@ struct tangy<M_ism, 1>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&o)
-		noexcept -> auto
+		XTAL_DEF_(return,inline,let)
+		method(auto &&o)
+		const noexcept -> auto
 		{
 			using _fit = bond::fit<decltype(o)>;
 			
@@ -113,12 +113,12 @@ struct tangy<M_ism, 1>
 			//\
 			XTAL_0IF (M_ism == 2 and N_lim%2 == 0) {
 			XTAL_0IF (M_ism == 2 and N_lim   == 0) {
-				auto constexpr zoom_dn =     superprocess::template method_f<N_lim>(_fit::alpha_f(4.L));
-				auto constexpr zoom_up = one/superprocess::template method_f<N_lim>(_fit::alpha_f(4.L));
-				return superprocess::template method_f<N_lim>(XTAL_REF_(o)*zoom_dn)*zoom_up;
+				auto constexpr zoom_dn =     superprocess{}.template method<N_lim>(_fit::alpha_f(4.L));
+				auto constexpr zoom_up = one/superprocess{}.template method<N_lim>(_fit::alpha_f(4.L));
+				return superprocess{}.template method<N_lim>(XTAL_REF_(o)*zoom_dn)*zoom_up;
 			}
 			XTAL_0IF_(else) {
-				return superprocess::template method_f<N_lim>(XTAL_REF_(o));// TODO: Normalize `tangy<1>`?
+				return superprocess{}.template method<N_lim>(XTAL_REF_(o));// TODO: Normalize `tangy<1>`?
 			}
 		}
 
@@ -139,31 +139,31 @@ struct tangy<M_ism, 1>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,set)
-		method_f(simplex_field_q auto &&t)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(simplex_field_q auto &&t)
+		const noexcept -> decltype(auto)
 		{
-			return method_f<N_lim>(XTAL_REF_(t), unstruct_t<decltype(t)>{one});
+			return method<N_lim>(XTAL_REF_(t), unstruct_t<decltype(t)>{one});
 		}
 		template <int N_lim=-1> requires in_v<M_ism, -1, -2>
-		XTAL_DEF_(return,inline,set)
-		method_f(complex_field_q auto &&o)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(complex_field_q auto &&o)
+		const noexcept -> decltype(auto)
 		{
-			return method_f<N_lim>(o.imag(), o.real());
+			return method<N_lim>(o.imag(), o.real());
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,set)
-		method_f(simplex_field_q auto &&v, simplex_field_q auto &&u)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(simplex_field_q auto &&v, simplex_field_q auto &&u)
+		const noexcept -> decltype(auto)
 		{
 			using _fit = bond::fit<decltype(v), decltype(u)>;
 			using U_aphex = typename _fit::aphex_type;
 			using U_alpha = typename _fit::alpha_type;
 			using W_alpha = atom::couple_t<U_alpha[2]>;
 
-			auto u_abs = u, u_sgn = part_t<signed>::method_e(u_abs);
-			auto v_abs = v, v_sgn = part_t<signed>::method_e(v_abs);// v_sgn *= *_fit::haplo_1;
+			auto u_abs = u, u_sgn = part_t<signed>{}.edit(u_abs);
+			auto v_abs = v, v_sgn = part_t<signed>{}.edit(v_abs);// v_sgn *= *_fit::haplo_1;
 
 			W_alpha co{v_abs < u_abs, _std::in_place};
 			W_alpha up{v, u_abs}; up *= co;
@@ -172,7 +172,7 @@ struct tangy<M_ism, 1>
 			auto const &[co_0, co_1]  = co;
 			auto const u_flp = _fit::haplo_1 - _fit::haplo_1*co_0*u_sgn;
 
-			return term_f(u_flp*v_sgn, u_sgn, S_::template method_f<N_lim>(up.sum()/dn.sum()));
+			return term_f(u_flp*v_sgn, u_sgn, S_::template method<N_lim>(up.sum()/dn.sum()));
 		}
 
 	};
@@ -191,25 +191,25 @@ struct tangy<M_ism,-0>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&o)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(auto &&o)
+		const noexcept -> decltype(auto)
 		{
-			return S_::template method_f<N_lim>(XTAL_REF_(o));
+			return S_::template method<N_lim>(XTAL_REF_(o));
 		}
 		template <int N_lim=-1> requires in_v<M_ism, -1, -2>
-		XTAL_DEF_(return,inline,set)
-		method_f(complex_field_q auto &&o)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(complex_field_q auto &&o)
+		const noexcept -> decltype(auto)
 		{
-			return method_f<N_lim>(o.imag(), o.real());
+			return method<N_lim>(o.imag(), o.real());
 		}
 		template <int N_lim=-1> requires in_v<M_ism, -1, -2>
-		XTAL_DEF_(return,inline,set)
-		method_f(simplex_field_q auto &&v, simplex_field_q auto &&u)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(simplex_field_q auto &&v, simplex_field_q auto &&u)
+		const noexcept -> decltype(auto)
 		{
-			return method_f<N_lim>(XTAL_REF_(v)/XTAL_REF_(u));
+			return method<N_lim>(XTAL_REF_(v)/XTAL_REF_(u));
 		}
 
 
@@ -234,11 +234,11 @@ struct tangy<M_ism,-2>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&o)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(auto &&o)
+		const noexcept -> decltype(auto)
 		{
-			auto const [t_re, t_im] = destruct_f(_detail::impunity_t<M_ism,-2>::template method_f<N_lim>(XTAL_REF_(o)));
+			auto const [t_re, t_im] = destruct_f(_detail::impunity_t<M_ism,-2>{}.template method<N_lim>(XTAL_REF_(o)));
 			return t_im*root_f<-1, 1>(t_re);
 		}
 
@@ -248,7 +248,7 @@ struct tangy<M_ism,-2>
 ///////////////////////////////////////////////////////////////////////////////
 
 template <int M_ism=1, int M_car=1, int N_lim=2>
-XTAL_DEF_(let) tangy_f = [] XTAL_1FN_(call) (tangy_t<M_ism, M_car>::template method_f<N_lim>);
+XTAL_DEF_(let) tangy_f = [] XTAL_1FN_(call) (tangy_t<M_ism, M_car>{}.template method<N_lim>);
 
 
 ///////////////////////////////////////////////////////////////////////////////

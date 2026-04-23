@@ -35,7 +35,9 @@ struct unity<M_ism, M_car>
 template <int M_ism, int M_car> requires in_v<M_ism, 1, 2> and in_v<M_car, 0, 1>
 struct unity<M_ism, M_car>
 {
+	//\
 	using superprocess = process::lift_t<unify<M_ism>, _detail::impunity<M_ism>>;
+	using superprocess = process::link_t<unify<M_ism>, _detail::impunity<M_ism>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -46,35 +48,35 @@ struct unity<M_ism, M_car>
 		using S_::S_;
 
 		template <int N_lim=-1, class U>
-		XTAL_DEF_(return,inline,set)
-		method_f(_std::initializer_list<U> o)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(_std::initializer_list<U> o)
+		const noexcept -> decltype(auto)
 		{
 			using _fit = bond::fit<decltype(o)>;
 			_std::complex<U> w; auto &m = destruct_f(w);
 			_std::copy_n(point_f(o), 2, m);
-			return method_f<N_lim>(w);
+			return method<N_lim>(w);
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,set)
-		method_f(complex_field_q auto const &u)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(complex_field_q auto const &u)
+		const noexcept -> decltype(auto)
 		{
-			return method_f<N_lim>(u.real(), u.imag());
+			return method<N_lim>(u.real(), u.imag());
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&t_re, simplex_field_q auto &&t_im)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(auto &&t_re, simplex_field_q auto &&t_im)
+		const noexcept -> decltype(auto)
 		{
-			auto constexpr _exp_2pi = [] XTAL_1FN_(call) (taylor::octarithm_t<-1>::template method_f<2>);
-			return method_f<N_lim>(XTAL_REF_(t_re))*_exp_2pi(XTAL_REF_(t_im));
+			auto constexpr _exp_2pi = [] XTAL_1FN_(call) (taylor::octarithm_t<-1>{}.template method<2>);
+			return method<N_lim>(XTAL_REF_(t_re))*_exp_2pi(XTAL_REF_(t_im));
 		}
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,set)
-		method_f(simplex_field_q auto const &t)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(simplex_field_q auto const &t)
+		const noexcept -> decltype(auto)
 		{
 			using U       = XTAL_ALL_(t);
 			using U_fit   = bond::fit<U>;
@@ -82,18 +84,18 @@ struct unity<M_ism, M_car>
 
 			XTAL_IF0
 			XTAL_0IF (M_car == 1) {
-				return confined_t<unity<M_ism, 0>>::
-					template method_f<N_lim>(modulo_f<-0>(t));
+				return confined_t<unity<M_ism, 0>>{}.
+					template method<N_lim>(modulo_f<-0>(t));
 			}
 			XTAL_0IF (0 <= N_lim) {
 				auto const w = modulo_f<-0>(t)*U_fit::dnsilon_f(1);
 				auto const u = modulo_f<-1>(w)*U_fit::upsilon_f(1);
 				auto const v = part_f<signed>(u)*part_f<signed>(w);
-				return superprocess::template method_f<N_lim>(u)*(v);
+				return superprocess{}.template method<N_lim>(u)*(v);
 			}
 			XTAL_0IF (N_lim <  0) {
 				XTAL_IF1_(consteval) {
-					return method_f<below_v<(1<<2), (unsigned) N_lim>>(t);
+					return method<below_v<(1<<2), (unsigned) N_lim>>(t);
 				}
 				XTAL_0IF_(else) {
 					auto const x = objective_f(t*U_fit::patio_2);
@@ -104,9 +106,9 @@ struct unity<M_ism, M_car>
 			}
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,set)
-		method_f(atom::math::phason_q auto const &t_)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(atom::math::phason_q auto const &t_)
+		const noexcept -> decltype(auto)
 		{
 			using T_      = XTAL_ALL_(t_);
 			using T_fit   = bond::fit<decltype(t_[0])>;// Underlying...
@@ -116,7 +118,7 @@ struct unity<M_ism, M_car>
 
 			XTAL_IF0
 			XTAL_0IF (N_lim <  0) {
-				return method_f<N_lim>(t_(0));
+				return method<N_lim>(t_(0));
 			}
 			XTAL_0IF_(else) {
 				auto f_  = modulo_f<-1>(t_);
@@ -125,7 +127,7 @@ struct unity<M_ism, M_car>
 				n1      &= U_fit::sign.mask;
 				n1      |= U_fit::unit.mask;
 				auto const u1 = operative_f<[] XTAL_1FN_(call) (_xtd::bit_cast<U_alpha>)>(n1);
-				return superprocess::template method_f<N_lim>(f_(0))*u1;
+				return superprocess{}.template method<N_lim>(f_(0))*u1;
 			}
 		}
 
@@ -143,15 +145,15 @@ struct unity<M_ism, M_car>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,set)
-		method_f(complex_field_q auto &&u)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(complex_field_q auto &&u)
+		const noexcept -> decltype(auto)
 		{
 		//	TODO: Handle `M_car == 1`?
 			auto const   x_re = u.real();
 			auto const   x_im = u.imag();
-			auto const   y_re = half*arc_t<-0, M_car>::template method_f<N_lim>(x_im, x_re);
-			auto const   y_im = half*arc_t<-1, M_car>::template method_f<N_lim>(square_f(x_re, x_im));
+			auto const   y_re = half*arc_t<-0, M_car>{}.template method<N_lim>(x_im, x_re);
+			auto const   y_im = half*arc_t<-1, M_car>{}.template method<N_lim>(square_f(x_re, x_im));
 			return complexion_f(y_re, y_im);
 		}
 
@@ -165,7 +167,7 @@ template <int M_ism=1, int M_car=1>
 XTAL_TYP_(let) unity_t = process::confined_t<unity<M_ism, M_car>>;
 
 template <int M_ism=1, int M_car=1, int N_lim=2>
-XTAL_DEF_(let) unity_f = [] XTAL_1FN_(call) (unity_t<M_ism, M_car>::template method_f<N_lim>);
+XTAL_DEF_(let) unity_f = [] XTAL_1FN_(call) (unity_t<M_ism, M_car>{}.template method<N_lim>);
 
 
 ///////////////////////////////////////////////////////////////////////////////

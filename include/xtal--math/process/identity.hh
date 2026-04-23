@@ -22,7 +22,7 @@ XTAL_DEF_(return,inline,let)
 identity_f(auto &&x, auto &&...oo)
 noexcept -> decltype(auto)
 {
-	return identity_t<M_ism, M_car>::method_f(XTAL_REF_(x), XTAL_REF_(oo)...);
+	return identity_t<M_ism, M_car>{}.method(XTAL_REF_(x), XTAL_REF_(oo)...);
 };
 
 
@@ -41,9 +41,9 @@ struct identity
 
 	public:// OPERATE
 		template <auto ...>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&x, auto &&...oo)
-		noexcept -> auto
+		XTAL_DEF_(return,inline,let)
+		method(auto &&x, auto &&...oo)
+		const noexcept -> auto
 		{
 			XTAL_IF0
 			XTAL_0IF (M_car >= -0) {return XTAL_REF_(x);}
@@ -74,31 +74,20 @@ struct identity
 				using R_::R_;
 
 				template <auto ...Ns>
-				XTAL_DEF_(return,inline,set)
-				method_f(auto &&o, auto &&...oo)
-				noexcept -> decltype(auto)
-				requires      in_v<requires {R ::template method_f<Ns...>  (XTAL_REF_(oo)..., XTAL_REF_(o));}>
-				{
-					return                    R_::template method_f<Ns...>  (XTAL_REF_(oo)..., XTAL_REF_(o));
-				};
-
-				template <auto ...Ns>
 				XTAL_DEF_(return,inline,let)
-				method(auto &&o, auto &&...oo) const
-				noexcept -> decltype(auto)
-				requires      un_v<requires {R ::template method_f<Ns...>  (XTAL_REF_(oo)..., XTAL_REF_(o));}>
-				and requires (R_ const &s_) {s_ .template method  <Ns...>  (XTAL_REF_(oo)..., XTAL_REF_(o));}
-				{
-					return                    R_::template method  <Ns...>  (XTAL_REF_(oo)..., XTAL_REF_(o));
+				method(auto &&o, auto &&...oo)
+				const noexcept -> decltype(auto)
+				requires
+				requires (R_ const &r_) {r_ .template method<Ns...>(XTAL_REF_(oo)..., XTAL_REF_(o));}
+				{	return                R_::template method<Ns...>(XTAL_REF_(oo)..., XTAL_REF_(o));
 				};
 				template <auto ...Ns>
 				XTAL_DEF_(return,inline,let)
 				method(auto &&o, auto &&...oo)
 				noexcept -> decltype(auto)
-				requires      un_v<requires {R ::template method_f<Ns...>  (XTAL_REF_(oo)..., XTAL_REF_(o));}>
-				and requires (R_       &s_) {s_ .template method  <Ns...>  (XTAL_REF_(oo)..., XTAL_REF_(o));}
-				{
-					return                    R_::template method  <Ns...>  (XTAL_REF_(oo)..., XTAL_REF_(o));
+				requires
+				requires (R_       &r_) {r_ .template method<Ns...>(XTAL_REF_(oo)..., XTAL_REF_(o));}
+				{	return                R_::template method<Ns...>(XTAL_REF_(oo)..., XTAL_REF_(o));
 				};
 
 			};

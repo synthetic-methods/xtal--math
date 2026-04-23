@@ -274,24 +274,24 @@ public:
 	public:// OPERATE
 
 		XTAL_DEF_(return,inline,let)
-		flipped(simplex_type const w) const
-		noexcept -> auto
+		flipped(simplex_type const w)
+		const noexcept -> auto
 		{
 			auto const &o  = signum();
 			auto const &q_ = magnum();
 			return S_::form(complex_type{o.real(), w*o.imag()}, q_.flipped(w));
 		}
 		XTAL_DEF_(return,inline,let)
-		flipped() const
-		noexcept -> auto
+		flipped()
+		const noexcept -> auto
 		{
 			auto const &o  = signum();
 			auto const &q_ = magnum();
 			return S_::form(conj(o), q_.flipped());
 		}
 		XTAL_DEF_(return,inline,let)
-		operator ~ () const
-		noexcept -> auto
+		operator ~ ()
+		const noexcept -> auto
 		{
 			return flipped();
 		}

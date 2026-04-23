@@ -18,7 +18,7 @@ XTAL_DEF_(return,inline,let)
 roots_f(auto &&o)
 noexcept -> decltype(auto)
 {
-	return roots_t<M_exp, M_cut>::method_f(XTAL_REF_(o));
+	return roots_t<M_exp, M_cut>{}.method(XTAL_REF_(o));
 }
 
 
@@ -37,17 +37,17 @@ struct roots
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&w)
-		noexcept -> auto
+		XTAL_DEF_(return,inline,let)
+		method(auto &&w)
+		const noexcept -> auto
 		requires different_q<decltype(w), decltype(objective_f(w))>
 		{
-			return method_f(objective_f(XTAL_REF_(w)));
+			return method(objective_f(XTAL_REF_(w)));
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&w)
-		noexcept -> auto
+		XTAL_DEF_(return,inline,let)
+		method(auto &&w)
+		const noexcept -> auto
 		requires      same_q<decltype(w), decltype(objective_f(w))>
 		{
 			using W0 = XTAL_ALL_(w);

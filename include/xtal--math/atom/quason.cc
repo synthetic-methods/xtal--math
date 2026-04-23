@@ -5,7 +5,7 @@
 
 
 
-#include "./quason.hh"// testing...
+#include "./quason.hh"
 XTAL_ENV_(push)
 namespace xtal::atom::math::_test
 {/////////////////////////////////////////////////////////////////////////////////

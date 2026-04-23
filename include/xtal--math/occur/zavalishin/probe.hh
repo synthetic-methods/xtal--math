@@ -37,7 +37,7 @@ struct probe<U>
 		using U_ = U;
 		
 		XTAL_DEF_(set) dot_f = [] XTAL_1FN_(call) (process::math::dot_f);
-		XTAL_DEF_(set) exp_f = [] XTAL_1FN_(call) (process::math::taylor::logarithm_t<-1>::template method_f<3>);
+		XTAL_DEF_(set) exp_f = [] XTAL_1FN_(call) (process::math::taylor::logarithm_t<-1>{}.template method<3>);
 
 	public:
 		using S_::S_;
@@ -59,8 +59,8 @@ struct probe<U>
 
 				template <auto ...Ns>
 				XTAL_DEF_(return,inline,let)
-				method(auto &&...oo)// NOTE: Non-`const` only, for now...
-				noexcept -> decltype(auto)
+				method(auto &&...oo)
+				const noexcept -> decltype(auto)
 				{
 					auto const &[s_state_] = R_::template memory<typename R_::data_type>();
 					auto const & s_shape_  = R_::template head<T_>().template head<U_>();

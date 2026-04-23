@@ -4,8 +4,8 @@
 
 
 
-#include "./modulo.hh"// testing...
 
+#include "./modulo.hh"
 XTAL_ENV_(push)
 namespace xtal::process::math::_test
 {/////////////////////////////////////////////////////////////////////////////////

@@ -5,7 +5,7 @@
 
 
 
-#include "./dent.hh"// testing...
+#include "./dent.hh"
 XTAL_ENV_(push)
 namespace xtal::occur::math::_test
 {/////////////////////////////////////////////////////////////////////////////////

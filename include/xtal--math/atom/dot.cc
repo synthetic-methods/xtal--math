@@ -5,7 +5,7 @@
 
 
 
-#include "./dot.hh"// testing...
+#include "./dot.hh"
 XTAL_ENV_(push)
 namespace xtal::atom::math::_test
 {/////////////////////////////////////////////////////////////////////////////////

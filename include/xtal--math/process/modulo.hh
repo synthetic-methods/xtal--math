@@ -37,9 +37,9 @@ struct modulo<M_mod>
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&z)
-		noexcept -> auto
+		XTAL_DEF_(return,inline,let)
+		method(auto &&z)
+		const noexcept -> auto
 		requires un_v<atom::math::phason_q<decltype(z)>>
 		{
 			using bond::math::bit_count_f;
@@ -47,10 +47,10 @@ struct modulo<M_mod>
 			using Z_fit = bond::fit<Z>;
 			XTAL_IF0
 			XTAL_0IF (complex_field_q<Z>) {
-				return complexion_f(method_f<Ns...>(z.real()), method_f<Ns...>(z.imag()));
+				return complexion_f(method<Ns...>(z.real()), method<Ns...>(z.imag()));
 			}
 			XTAL_0IF (integral_constant_q<Z>) {
-				return constant_t<method_f<Ns...>(z())>{};
+				return constant_t<method<Ns...>(z())>{};
 			}
 			XTAL_0IF (0 == bit_count_f(M_mod)) {
 				return Z{};
@@ -79,9 +79,9 @@ struct modulo<M_mod>
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&z)
-		noexcept -> auto
+		XTAL_DEF_(return,inline,let)
+		method(auto &&z)
+		const noexcept -> auto
 		requires un_v<atom::math::phason_q<decltype(z)>>
 		{
 			using bond::math::bit_count_f;
@@ -89,14 +89,14 @@ struct modulo<M_mod>
 			using Z_fit = bond::fit<Z>;
 			XTAL_IF0
 			XTAL_0IF (complex_field_q<Z>) {
-				return complexion_f(method_f<Ns...>(z.real()), method_f<Ns...>(z.imag()));
+				return complexion_f(method<Ns...>(z.real()), method<Ns...>(z.imag()));
 			}
 			XTAL_0IF (integral_constant_q<Z>) {
-				return constant_t<method_f<Ns...>(z())>{};
+				return constant_t<method<Ns...>(z())>{};
 			}
 			XTAL_0IF (1 <= M_mod and integral_q<Z>) {
 				auto constexpr  Z_mod = Z_fit::sigma_1 << M_mod;
-				return modulo_t<Z_mod>::template method_f<Ns...>(XTAL_REF_(z));
+				return modulo_t<Z_mod>{}.template method<Ns...>(XTAL_REF_(z));
 			}
 			XTAL_0IF (M_mod <= 0 and integral_q<Z>) {
 				return Z{};
@@ -104,16 +104,16 @@ struct modulo<M_mod>
 			XTAL_0IF (M_mod != 0) {
 				auto constexpr Z_up = Z_fit::haplo_f(M_mod);
 				auto constexpr Z_dn = Z_fit::diplo_f(M_mod);
-				return modulo_t<-0>::template method_f<Ns...>(XTAL_REF_(z)*Z_up)*Z_dn;
+				return modulo_t<-0>{}.template method<Ns...>(XTAL_REF_(z)*Z_up)*Z_dn;
 			}
 			XTAL_0IF_(to) (bond::math::bit_fraction_f(XTAL_REF_(z)))
 			XTAL_0IF_(to) (z - nearest_f(z))
 			XTAL_0IF_(void)
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&z)
-		noexcept -> auto
+		XTAL_DEF_(return,inline,let)
+		method(auto &&z)
+		const noexcept -> auto
 		requires in_v<atom::math::phason_q<decltype(z)>>
 		{
 			using Z     = XTAL_ALL_(z);
@@ -142,9 +142,9 @@ struct modulo<0, 0>
 		using S_::S_;
 
 		template <int N_re=0, int N_im=0>
-		XTAL_DEF_(return,set)
-		method_f(auto &&x)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(auto &&x)
+		const noexcept -> decltype(auto)
 		{
 			using X = XTAL_ALL_(x);
 
@@ -160,7 +160,7 @@ struct modulo<0, 0>
 				using W = typename X::value_type;
 				using V = typename W::value_type;
 				V constexpr v = bond::fit<V>::sign.mask;
-				return method_f(XTAL_REF_(x) - X{K_re*v, K_im*v});
+				return method(XTAL_REF_(x) - X{K_re*v, K_im*v});
 			}
 			XTAL_0IF (atom::math::complex_phason_q<X>) {
 				using W = typename X::value_type;
@@ -184,7 +184,7 @@ struct modulo<0, 0>
 			}
 			XTAL_0IF (simplex_variable_q<X>) {
 				auto const v = half*part_f<signed>(x);
-				return method_f(XTAL_REF_(x) - XTAL_MOV_(v));
+				return method(XTAL_REF_(x) - XTAL_MOV_(v));
 			}
 		}
 
@@ -199,7 +199,7 @@ XTAL_DEF_(return,inline,let)
 modulo_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
-	return modulo_t<Ms...>::method_f(XTAL_REF_(oo)...);
+	return modulo_t<Ms...>{}.method(XTAL_REF_(oo)...);
 }
 
 

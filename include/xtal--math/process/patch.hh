@@ -88,7 +88,7 @@ struct patch<U_mat>
 				template <auto ...Ns>
 				XTAL_DEF_(return,inline,let)
 				method(auto &&...oo)
-				noexcept -> auto
+				const noexcept -> auto
 				{
 					/**/
 					return [this, o_=_std::tuple{XTAL_REF_(oo)...}]<auto ...I>(bond::seek_t<I...>)
@@ -161,7 +161,7 @@ struct patch<U_mat>
 				template <auto ...Ns>
 				XTAL_DEF_(return,inline,let)
 				method(auto &&...oo)
-				noexcept -> auto
+				const noexcept -> auto
 				{
 					return R_::template method<Ns...>(bond::operate<_s>{}(XTAL_REF_(oo))...);
 				}

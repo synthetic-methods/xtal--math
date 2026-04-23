@@ -35,9 +35,9 @@ struct discard
 		using S_::S_;
 
 		template <int N_car=0>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto const &x)
-		noexcept -> auto
+		XTAL_DEF_(return,inline,let)
+		method(auto const &x)
+		const noexcept -> auto
 		{
 			auto constexpr m_car = M_car&1;
 			auto constexpr n_car = N_car&1;
@@ -47,9 +47,9 @@ struct discard
 			XTAL_0IF (m_car ==     1) {return   root_f<-1, 1>(x);}
 		}
 		template <int N_car=0>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto const &x, auto const &z)
-		noexcept -> XTAL_ALL_(x)
+		XTAL_DEF_(return,inline,let)
+		method(auto const &x, auto const &z)
+		const noexcept -> XTAL_ALL_(x)
 		{
 			auto constexpr m_car = M_car&1;
 			auto constexpr n_car = N_car&1;
@@ -110,25 +110,28 @@ struct discard<1, M_aux>
 			public:
 				using R_::R_;
 
-			//	TODO: Account for `const &` and `&`, or find a cleaner way to express...
-				XTAL_FN2_(do) (template <auto ...Is>
+				template <auto ...Ns>
 				XTAL_DEF_(return,inline,let)
-				method(auto &&u, auto &&...oo),
-				noexcept -> auto
+				method(auto &&u, auto &&...oo)
+				const noexcept -> decltype(auto)
+				requires
+				requires (R_ const &r_) {r_ .template method<Ns...>(XTAL_REF_(u));}
 				{
-					auto  v = R_::template method<Is...>(u, XTAL_REF_(oo)...);
+					auto  v = R_::template method<Ns...>(u, XTAL_REF_(oo)...);
 					using V = XTAL_ALL_(v);
 					using U = XTAL_ALL_(u);
 					static_assert(same_q<U, V>);
 
 					return v*root_f<M_pow, 1>(XTAL_REF_(u));
-				})
-				template <auto ...Is>
-				XTAL_DEF_(return,inline,set)
-				method_f(auto &&u, auto &&...oo)
-				noexcept -> auto
+				}
+				template <auto ...Ns>
+				XTAL_DEF_(return,inline,let)
+				method(auto &&u, auto &&...oo)
+				noexcept -> decltype(auto)
+				requires
+				requires (R_       &r_) {r_ .template method<Ns...>(XTAL_REF_(u));}
 				{
-					auto  v = R_::template method_f<Is...>(u, XTAL_REF_(oo)...);
+					auto  v = R_::template method<Ns...>(u, XTAL_REF_(oo)...);
 					using V = XTAL_ALL_(v);
 					using U = XTAL_ALL_(u);
 					static_assert(same_q<U, V>);
@@ -165,12 +168,14 @@ struct discard<1>
 			public:
 				using R_::R_;
 
-				XTAL_FN2_(do) (template <auto ...Is>
+				template <auto ...Ns>
 				XTAL_DEF_(return,inline,let)
-				method(auto &&u, auto &&...oo),
-				noexcept -> auto
+				method(auto &&u, auto &&...oo)
+				const noexcept -> decltype(auto)
+				requires
+				requires (R_ const &r_) {r_ .template method<Ns...>(XTAL_REF_(u));}
 				{
-					auto  v = R_::template method<Is...>(u, XTAL_REF_(oo)...);
+					auto  v = R_::template method<Ns...>(u, XTAL_REF_(oo)...);
 					using V = XTAL_ALL_(v);
 					using U = XTAL_ALL_(u);
 
@@ -189,13 +194,15 @@ struct discard<1>
 					XTAL_0IF (complex_field_q<V>) {
 						return complexion_f(v.real(), v.imag()*XTAL_REF_(u));
 					}
-				})
-				template <auto ...Is>
-				XTAL_DEF_(return,inline,set)
-				method_f(auto &&u, auto &&...oo)
-				noexcept -> auto
+				}
+				template <auto ...Ns>
+				XTAL_DEF_(return,inline,let)
+				method(auto &&u, auto &&...oo)
+				noexcept -> decltype(auto)
+				requires
+				requires (R_       &r_) {r_ .template method<Ns...>(XTAL_REF_(u));}
 				{
-					auto  v = R_::template method_f<Is...>(u, XTAL_REF_(oo)...);
+					auto  v = R_::template method<Ns...>(u, XTAL_REF_(oo)...);
 					using V = XTAL_ALL_(v);
 					using U = XTAL_ALL_(u);
 
@@ -245,23 +252,25 @@ struct discard<2, M_aux>
 			public:
 				using R_::R_;
 
-				XTAL_FN2_(do) (template <auto ...Is>
+				template <auto ...Ns>
 				XTAL_DEF_(return,inline,let)
-				method(auto &&u, auto &&...oo),
-				noexcept -> decltype(auto)
+				method(auto &&u, auto &&...oo)
+				const noexcept -> decltype(auto)
+				requires
+				requires (R_ const &r_) {r_ .template method<Ns...>(XTAL_REF_(u));}
 				{
-					using _fit = bond::fit<decltype(u)>;
-					auto constexpr v = _fit::alpha_f(cosign_v<M_aux>);
-					return R_::template        method<Is...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
-				})
-				template <auto ...Is>
-				XTAL_DEF_(return,inline,set)
-				method_f(auto &&u, auto &&...oo)
+					unstruct_t<decltype(u)> constexpr v = cosign_v<M_aux>;
+					return R_::template method<Ns...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
+				}
+				template <auto ...Ns>
+				XTAL_DEF_(return,inline,let)
+				method(auto &&u, auto &&...oo)
 				noexcept -> decltype(auto)
+				requires
+				requires (R_       &r_) {r_ .template method<Ns...>(XTAL_REF_(u));}
 				{
-					using _fit = bond::fit<decltype(u)>;
-					auto constexpr v = _fit::alpha_f(cosign_v<M_aux>);
-					return R_::template method_f<Is...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
+					unstruct_t<decltype(u)> constexpr v = cosign_v<M_aux>;
+					return R_::template method<Ns...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
 				}
 
 			};

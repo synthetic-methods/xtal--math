@@ -1,11 +1,11 @@
 #pragma once
 #include "./any.cc"
-#include "./symbol.hh"// testing...
 
 #include "../../process/all.hh"
 
 
 
+#include "./symbol.hh"
 XTAL_ENV_(push)
 namespace xtal::atom::math::dirichlet::_test
 {/////////////////////////////////////////////////////////////////////////////////

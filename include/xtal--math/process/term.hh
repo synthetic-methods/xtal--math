@@ -127,9 +127,9 @@ struct  term
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,set)
-		method_f(auto &&...oo)
-		noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,let)
+		method(auto &&...oo)
+		const noexcept -> decltype(auto)
 		{
 			return term_f<Ms...>(XTAL_REF_(oo)...);
 		}

@@ -74,8 +74,8 @@ public:
 		using S_::product;
 
 		XTAL_DEF_(return,inline,let)
-		product() const
-		noexcept -> auto
+		product()
+		const noexcept -> auto
 		{
 			static_assert(dot_q<value_type> and size == 2);
 			auto &s = self();
@@ -86,15 +86,15 @@ public:
 		operator() () const noexcept {product();}
 
 		XTAL_DEF_(return,inline,let)
-		operator * (auto const &t) const
-		noexcept -> auto
+		operator * (auto const &t)
+		const noexcept -> auto
 		requires XTAL_TRY_(to_unless) (t.size())
 		{
 			return S_::operator*(t);
 		}
 		XTAL_DEF_(return,inline,let)
-		operator * (auto const &t) const
-		noexcept -> auto
+		operator * (auto const &t)
+		const noexcept -> auto
 		requires XTAL_TRY_(to_if) (t.size()) and XTAL_TRY_(to_if)     (t.capacity())
 		{
 			auto &s = self();
@@ -107,8 +107,8 @@ public:
 			return u;
 		}
 		XTAL_DEF_(return,inline,let)
-		operator * (auto const &t) const
-		noexcept -> auto
+		operator * (auto const &t)
+		const noexcept -> auto
 		requires XTAL_TRY_(to_if) (t.size()) and XTAL_TRY_(to_unless) (t.capacity())
 		{
 			auto &s = self();
