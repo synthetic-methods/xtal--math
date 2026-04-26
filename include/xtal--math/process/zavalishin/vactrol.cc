@@ -113,6 +113,7 @@ TAG_("vactrol")
 		,	coefficient_t<X_coeff> ::   attach <>
 		,	Y_trig                 ::   infix  <>
 		,	X_shape                ::   affix  <>
+		,	X_stage                ::   attach <>
 		,	L_env                  ::   attach <>
 		,	L_env                  :: dispatch <>
 		,	vactrol<0>
@@ -122,7 +123,7 @@ TAG_("vactrol")
 		using Z_env = processor::monomer_t<Y_env
 		,	Z_slice::template suspend<X_env>
 		,	provision::stored  <null_type[0x100]>
-		,	provision::spooled <null_type[0x100]>
+	//	,	provision::spooled <null_type[0x100]>
 		>;
 
 		//\
