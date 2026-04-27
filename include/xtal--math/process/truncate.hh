@@ -118,7 +118,7 @@ struct truncate<M_app>
 		requires un_v<complex_variable_q<decltype(w_)>>
 		{
 			XTAL_TYP_(let) W_ = XTAL_ALL_(w_);
-			auto constexpr N_ = bond::pack_size_v<W_>;
+			auto constexpr N_ = (int) bond::pack_size_v<W_>;
 			XTAL_IF0
 			XTAL_0IF (0 == N_) {
 				return W_{};
@@ -156,7 +156,7 @@ struct truncate<M_app>
 			//	TODO: Accommodate returning materialized `atom::block` from `span`s...
 				return [&]<auto ...I> (bond::seek_t<I...>)
 					XTAL_0FN_(to) (W_(edit<Ns...>(get<I>(w_))...))
-				(bond::seek_reverse_s<N_>{});
+				(bond::seek_s<-N_>{});
 			}
 		}
 

@@ -48,7 +48,7 @@ struct imagine
 		template <auto ...>
 		XTAL_DEF_(return,inline,let)
 		method(complex_field_q auto &&z)
-		const noexcept -> auto
+		const noexcept -> decltype(auto)
 		{
 			if constexpr (complex_variable_q<decltype(z)>) {
 				if constexpr (N_rot&1) {

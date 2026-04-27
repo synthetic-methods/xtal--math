@@ -74,7 +74,7 @@ public:
 				const noexcept -> decltype(auto)
 				{
 					using X = XTAL_ALL_(per_f(o));
-					auto const    &u =   R_::template head<U_stage>();
+					auto const    &u =   R_::self().template head<U_stage>();
 					auto const    &v =   u.head();
 					auto const     i = _xtd::make_unsigned_f((signed) v);
 					auto constexpr I = _xtd::make_unsigned_f((N_stage));

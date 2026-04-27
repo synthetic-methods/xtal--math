@@ -51,7 +51,7 @@ TAG_("prime")
 		TRUE_(prime_encode_f(0, 1, 0, 2) == 147);
 
 		auto constexpr N_22335577   = prime_encode_f<2, 4>();
-		auto constexpr N_2222333557 = prime_encode_f(bond::seek_reverse_s<4 + (1)>{});
+		auto constexpr N_2222333557 = prime_encode_f(bond::seek_s<-(4 + 1)>{});
 		TRUE_(N_22335577   == 2*2*3*3*5*5*7*7    );
 		TRUE_(N_2222333557 == 2*2*2*2*3*3*3*5*5*7);
 
@@ -64,10 +64,10 @@ TAG_("prime")
 	//		-	Allow for `couple`/`dot` initialization.
 	//		-	Provide operators for bag/set union/intersection/difference.
 
-	//	using  primer = xtal::atom::math::primer_t<bond::bond::seek_reverse_s<4 + (1)>>;
+	//	using  primer = xtal::atom::math::primer_t<bond::bond::seek_s<-(4 + 1)>>;
 	//	return primer::encode_f(0, 2, 0,-1);
 
-	//	using  primer = xtal::atom::math::primer_t<bond::bond::seek_reverse_s<4 + (1)>>;
+	//	using  primer = xtal::atom::math::primer_t<bond::bond::seek_s<-(4 + 1)>>;
 	//	primer primed(0, 2, 0,-1);
 	//	primer primed(9./7.);
 
