@@ -1,5 +1,6 @@
 #include "./any.cc"
 #include "./dot.cc"
+#include "./loop.cc"
 #include "./phason.cc"
 #include "./quason.cc"
 
