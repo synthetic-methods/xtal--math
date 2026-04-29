@@ -174,9 +174,9 @@ struct filter
 			get<N_ord>(values) = root_f<-1>(term_f(one, u_warp, get<N_ord - 1>(values)));
 
 		//	Update `values` by iterating `slopes`:
-			auto constexpr K_sat = provision::math::zavalishin::shaped_q<S_>;
-			auto constexpr K_max = term_f(0, 2, K_sat);
-			auto constexpr K_lim = term_f(1, 1, K_max);
+			auto constexpr  K_sat = provision::math::zavalishin::shaped_q<S_>;
+			auto constexpr  K_max = term_f(0, 2, K_sat);
+			auto constexpr  K_lim = term_f(1, 1, K_max);
 			bond::seek_to_f<K_lim>([&] (auto const K) XTAL_0FN {
 				if constexpr (0 == K) {get<N_ord>(values) *= x - dot_f(values_, states_);}
 				if constexpr (1 <= K) {get<N_ord>(values)  = x - dot_f(values_, slopes_);}
@@ -184,8 +184,8 @@ struct filter
 					auto const &value = get<I>(values_) = term_f(get<I>(states_), get<I + 1>(values), u_warp);
 					auto const &coeff = get<I>(coeffs_);
 					auto       &slope = get<I>(slopes_);
-					if constexpr (0 == I) {slope  = zero;}
-					if constexpr (1 <= I) {slope  = shaper_f<-1,-2, Ns...>(value, oo...);}
+					if constexpr (0 == I) {slope = zero;}
+					if constexpr (1 <= I) {slope = shaper_f<-1,-2, Ns...>(value, oo...);}
 					if constexpr (K < K_max) {
 						//\
 						slope *= fact_v<N_ord, I, 1>;
