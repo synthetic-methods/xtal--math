@@ -1,4 +1,5 @@
 #include "./any.cc"
+#include "./codeficient.cc"
 #include "./coefficient.cc"
 #include "./dilate.cc"
 #include "./discard.cc"

@@ -1,9 +1,9 @@
 #pragma once
 #include "./any.hh"
 
-#include "./dot.hh"
-#include "./term.hh"
-#include "./square.hh"
+
+
+
 
 
 XTAL_ENV_(push)
@@ -13,6 +13,10 @@ namespace xtal::process::math
 /*!
 \brief   Multiplies the leading argument with the result of the parent-`method` applied to the trailing arguments.
 \todo    Implement positional parameter `M_pos`?
+
+Diagonalization is provided by `coefficient<one, ...>`,
+equivalent to `(Re@# + I Im@#*-co &)/*(#*(1 + I) &)`.
+
 */
 template <class ...Ms>	struct  coefficient;
 template <class ...Ms>	using   coefficient_t = process::confined_t<coefficient<Ms...>>;
@@ -48,7 +52,8 @@ struct coefficient<M>
 				method(auto &&...oo)
 				const noexcept -> auto
 				{
-					return R_::headed()*R_::template method<Ns...>(XTAL_REF_(oo)...);
+					return R_::headed()*
+						R_::template method<Ns...>(XTAL_REF_(oo)...);
 				}
 
 			};
@@ -85,7 +90,8 @@ struct coefficient<>
 				method(auto &&o, auto &&...oo)
 				const noexcept -> auto
 				{
-					return R_::template method<Ns...>(XTAL_REF_(oo)...)*XTAL_REF_(o);
+					return XTAL_REF_(o)*
+						R_::template method<Ns...>(XTAL_REF_(oo)...);
 				}
 
 			};
@@ -94,6 +100,8 @@ struct coefficient<>
 	};
 };
 
+
+////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////
