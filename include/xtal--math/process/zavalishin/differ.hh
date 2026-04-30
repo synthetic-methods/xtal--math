@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-#include "./meta.hh"
+#include "./base.hh"
 #include "../pade/tangy.hh"
 #include "../taylor/tangy.hh"
 
@@ -29,13 +29,12 @@ template <typename ...As>	using   differ_t = process::confined_t<differ<As...>>;
 template <class ..._s>
 struct differ
 {
-	using cotype = occur::meta_t<differ>;
-
+	using    cotype = occur::auxiliary_t<differ>;
 	using data_type = typename cotype::data_type;
 
 	using superkind = bond::compose<bond::tag<differ_t>
 	,	provision::memorized<data_type[2]>
-	,	meta<_s...>
+	,	base<_s...>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -153,9 +152,9 @@ namespace xtal::occur
 ////////////////////////////////////////////////////////////////////////////
 
 template <class ..._s>
-struct meta<process::math::zavalishin::differ<_s...>>
+struct auxiliary<process::math::zavalishin::differ<_s...>>
 {
-	using superkind = meta<process::math::zavalishin::meta<_s...>>;
+	using superkind = auxiliary<process::math::zavalishin::base<_s...>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>

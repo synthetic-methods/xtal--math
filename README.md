@@ -113,7 +113,7 @@ configured as a polyphonic instrument.
 // Process definition...
 
 using T_content = process::filter<U_alpha[2]>;         // 2nd-order filter.
-using T_meta    = occur::meta_t<T_content>;           // 2nd-order filter parameters.
+using T_meta    = occur::auxiliary_t<T_content>;           // 2nd-order filter parameters.
 
 using P_damp    = typename T_meta::damp_parameter;
 using P_fade    = typename T_meta::fade_parameter;

@@ -236,9 +236,9 @@ namespace xtal::occur
 ////////////////////////////////////////////////////////////////////////////
 
 template <class ..._s>
-struct meta<process::math::phasor<_s...>>
+struct auxiliary<process::math::phasor<_s...>>
 {
-	using superkind = meta<>;
+	using superkind = auxiliary<>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -268,11 +268,11 @@ struct meta<process::math::phasor<_s...>>
 	};
 };
 template <scalar_q A>
-struct meta<process::math::phasor<A>> : meta<process::math::phasor<A[2]>>
+struct auxiliary<process::math::phasor<A>> : auxiliary<process::math::phasor<A[2]>>
 {
 };
 template <>
-struct meta<process::math::phasor< >> : meta<process::math::phasor<typename bond::fit<>::alpha_type>>
+struct auxiliary<process::math::phasor< >> : auxiliary<process::math::phasor<typename bond::fit<>::alpha_type>>
 {
 };
 

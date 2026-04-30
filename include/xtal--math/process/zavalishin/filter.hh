@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-#include "./meta.hh"
+#include "./base.hh"
 #include "../../atom/fourier/series.hh"
 #include "../../provision/zavalishin/shaped.hh"
 
@@ -23,7 +23,7 @@ The parameters `M_ism` and `M_car` determine the type and return-value of shape,
 `M_ism` is expected to yield convex/concave shapes for positive/negative values,
 and `M_car` is expected to return the slope when `== -1`.
 
-\note    Despite the parameterization defined by `occur::meta<filter<...>>`, `filter<...>::method` is
+\note    Despite the parameterization defined by `occur::auxiliary<filter<...>>`, `filter<...>::method` is
 polymorphic and can accomodate up to the given cache-width (determined by `U_pole[N_pole][2]`).
 For example, with base-types of `double` and `std::complex<double>` respectively,
 the storage required is `16` and `32` bytes-per-pole.
@@ -34,16 +34,15 @@ template <class ..._s>	concept filter_q = bond::tag_inner_p<filter, _s...>;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <class ...As>
+template <class ..._s>
 struct filter
 {
-	using cotype = occur::meta_t<filter>;
-
+	using    cotype = occur::auxiliary_t<filter>;
 	using data_type = typename cotype::data_type;
 
 	using superkind = bond::compose<bond::tag<filter>
 	,	provision::memorized<data_type[2]>
-	,	meta<As...>
+	,	base<_s...>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -347,9 +346,9 @@ namespace xtal::occur
 ////////////////////////////////////////////////////////////////////////////
 
 template <class ..._s>
-struct meta<process::math::zavalishin::filter<_s...>>
+struct auxiliary<process::math::zavalishin::filter<_s...>>
 {
-	using superkind = meta<process::math::zavalishin::meta<_s...>>;
+	using superkind = auxiliary<process::math::zavalishin::base<_s...>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>

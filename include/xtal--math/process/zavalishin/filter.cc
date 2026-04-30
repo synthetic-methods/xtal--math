@@ -46,7 +46,7 @@ TAG_("filter")
 	TRY_("filter: 1D instantiation")
 	{
 		using R_def = filter<>;
-		using R_etc = occur::meta_t<R_def>;
+		using R_etc = occur::auxiliary_t<R_def>;
 		using R_prx = confined_t<void
 		,	per_t<U_resample>          ::   refix <1>
 		,	U_resync                   ::   attach <>
@@ -118,7 +118,7 @@ TAG_("filter")
 	TRY_("filter: 2D instantiation")
 	{
 		using R_def = filter<>;
-		using R_etc = occur::meta_t<R_def>;
+		using R_etc = occur::auxiliary_t<R_def>;
 		using R_prx = confined_t<void
 		,	per_t<U_resample>          ::   refix <1>
 		,	U_resync                   ::   attach <>
@@ -233,7 +233,7 @@ TAG_("filter-ring")
 	TRY_("filter-ring monophony")
 	{
 		using R_def = filter<U_alpha[2], union RING>;
-		using R_etc = occur::meta_t<R_def>;
+		using R_etc = occur::auxiliary_t<R_def>;
 		using R_eve = flow::packet_t<U_stage, typename R_etc::damp_parameter>;
 		using R_prx = confined_t<void
 		,	per_t<U_resample>::refix<0>
@@ -299,7 +299,7 @@ TAG_("filter-ring")
 	TRY_("filter-ring polyphony")
 	{
 		using R_def = filter<U_alpha[2], union RING>;
-		using R_etc = occur::meta_t<R_def>;
+		using R_etc = occur::auxiliary_t<R_def>;
 		using R_eve = flow::key_s<U_stage>;
 
 		using R_prx = confined_t<void
@@ -408,7 +408,7 @@ TAG_("vectrol")
 		using S_content = filter<U_alpha[2], union ENV>;
 		//\
 		using S_meta = confined_t<S_content>;
-		using S_meta = occur::meta_t<S_content>;
+		using S_meta = occur::auxiliary_t<S_content>;
 
 		using S_damp_   = occur::math::zavalishin::probe_t<typename S_meta::codata_type>;
 	//	using S_damp    = typename S_meta::damp_parameter;
@@ -470,7 +470,7 @@ TAG_("vectrol")
 	TRY_("vectrol: patch")
 	{
 		using S_content = filter<U_alpha[2], union ENV>;
-		using S_meta   = occur::meta_t<S_content>;
+		using S_meta   = occur::auxiliary_t<S_content>;
 		using S_damp_   = occur::math::zavalishin::probe_t<typename S_meta::codata_type>;
 		using S_damp    = typename S_meta::  damp_parameter;
 		using S_order   = typename S_meta:: order_attribute;
@@ -494,7 +494,7 @@ TAG_("vectrol")
 		>;
 
 		using T_content =  filter<U_alpha[2], union RING>;
-		using T_meta   =  occur::meta_t<T_content>;
+		using T_meta   =  occur::auxiliary_t<T_content>;
 	//	using T_damp_   =  occur::math::zavalishin::probe_t<typename T_meta::codata_type>;
 		using T_damp    =  typename T_meta:: damp_parameter;
 

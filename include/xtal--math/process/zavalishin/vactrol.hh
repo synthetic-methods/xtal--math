@@ -57,12 +57,9 @@ public:
 			using X = XTAL_ALL_(x);
 			using U = unstruct_t<X>;
 
-			auto constexpr   U0  =  U(0);
-			auto constexpr   U1  =  U(1);
-			auto const      [s_] =  S_::template memory<D_>();
-			auto       &[f0, f1] =  f_;
-			auto         u_damp  =  U1;
-			auto         u_warp  =  oct_f(-term_f(f0, f1 - U1, x - s_[1]));
+			auto const [s_]    = S_::template memory<D_>();
+			auto        u_damp = U(1);
+			auto        u_warp = oct_f(-term_f(f_[0], f_[1] - U(1), x - s_[1]));
 			u_warp *= part_f<_xtd::real<>>(t_(1));
 
 			auto [y0, y1, y2] = S_::template method<Ns...>(XTAL_MOV_(x),
@@ -76,8 +73,8 @@ public:
 		/*!
 		\brief   Produces a `{voice, accent}` pair from the trigger input `x`.
 		\note    If `reuse_q`, begins at the peak by advancing the filter state.
-		\todo    Eliminate trigger generation by resetting the state on `efflux`
-		         (requiring frequency/warp to be `attach`ed).
+		\todo    Provide alternative to trigger generation by resetting state
+		         on `efflux` (requires frequency/warp to be `attach`ed).
 		*/
 		template <auto ...Ns> requires in_v<M_ind, 0>
 		XTAL_DEF_(return,inline,let)
@@ -94,18 +91,16 @@ public:
 			auto [s_] = S_::template memory<D_>();
 
 			auto const &[f_damp, f_warp] = f_;
-			auto e_warp =  exp_f(f_warp);
+			auto e_warp =                                  exp_f(f_warp);
 			auto w_warp = part_f<_xtd::real<>>(t_(1))*root_f<-1>(e_warp);
 			/**/
 			if constexpr (reuse_q<T_>) {
-				//\
-				auto const x_warp =                 pade::tangy_f<1>(w_warp);
-				auto const x_warp =          _std::numbers::pi_v<U>*(w_warp);
-				auto  [x0, x1]    = atom::couple_t<X[2]>{!x, _std::in_place};
-				auto &[s0, s1]    = s_;
-				s1  += x1 *= root_f<-1>(square_f(one + x_warp));
-				s0  += x1 *= x_warp;
-				x   *= x0;
+			//	auto const x_warp =        pade::tangy_f<1>(w_warp);
+				auto const x_warp = _std::numbers::pi_v<U>*(w_warp);
+				atom::couple_t<X[2]> x_{!x, _std::in_place};
+				s_[1] += x_[1] *= root_f<-1>(square_f(one + x_warp));
+				s_[0] += x_[1] *= x_warp;
+				x     *= x_[0];
 			}
 			/***/
 			auto [u_damp, n_warp] = exp_f(f_*-s_.sum());

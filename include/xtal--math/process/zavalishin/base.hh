@@ -14,8 +14,8 @@ namespace xtal::process::math::zavalishin
 \brief   Defines associated types.
 */
 template <class ...As>
-struct meta
-:	occur::meta<meta<As...>>
+struct base
+:	occur::auxiliary<base<As...>>
 {
 };
 
@@ -31,7 +31,7 @@ namespace xtal::occur
 ////////////////////////////////////////////////////////////////////////////
 
 template <vector_q A, class ..._s>
-struct meta<process::math::zavalishin::meta<A, _s...>>
+struct auxiliary<process::math::zavalishin::base<A, _s...>>
 {
 private:
 	static_assert(incomplete_q<_s...>);
@@ -40,7 +40,7 @@ private:
 	XTAL_TYP_(set) V_pole = unstruct_t<A>;
 
 public:
-	using superkind = meta<>;
+	using superkind = auxiliary<>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -51,8 +51,8 @@ public:
 		using S_::S_;
 
 	public:// INTERNAL
-		using   data_type      = atom::math::dot_t<U_pole[N_pole]>;
-		using codata_type      = atom::math::dot_t<V_pole[N_pole]>;
+		using   data_type = atom::math::dot_t<U_pole[N_pole]>;
+		using codata_type = atom::math::dot_t<V_pole[N_pole]>;
 
 	public:// DISPATCH
 		using  order_attribute = occur::inferred_t<_s..., union ORDER, bond::seek_s<1 + N_pole>>;
@@ -61,32 +61,32 @@ public:
 };
 
 template <scalar_q A>
-struct meta<process::math::zavalishin::meta<A>>
-:	meta<process::math::zavalishin::meta<A[2]>>
+struct auxiliary<process::math::zavalishin::base<A>>
+:	auxiliary<process::math::zavalishin::base<A[2]>>
 {
 };
 template <>
-struct meta<process::math::zavalishin::meta< >>
-:	meta<process::math::zavalishin::meta<typename bond::fit<>::alpha_type>>
+struct auxiliary<process::math::zavalishin::base< >>
+:	auxiliary<process::math::zavalishin::base<typename bond::fit<>::alpha_type>>
 {
 };
 
 template <bond::compose_q A, class ..._s>
-struct meta<process::math::zavalishin::meta<A, _s...>>
+struct auxiliary<process::math::zavalishin::base<A, _s...>>
 :	bond::compose<A
-	,	meta<process::math::zavalishin::meta<_s...>>
+	,	auxiliary<process::math::zavalishin::base<_s...>>
 	>
 {
 };
 template <incomplete_q A, class ..._s>
-struct meta<process::math::zavalishin::meta<A, _s...>>
-:	bond::compose<meta<A>
-	,	meta<process::math::zavalishin::meta<_s...>>
+struct auxiliary<process::math::zavalishin::base<A, _s...>>
+:	bond::compose<auxiliary<A>
+	,	auxiliary<process::math::zavalishin::base<_s...>>
 	>
 {
 };
 //template <template <class ...> class T_, class ..._s>
-//struct meta<T_<_s...>> : meta<process::math::zavalishin::meta<_s...>>
+//struct auxiliary<T_<_s...>> : auxiliary<process::math::zavalishin::base<_s...>>
 //{
 //};
 

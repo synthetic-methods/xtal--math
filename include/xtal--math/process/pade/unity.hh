@@ -179,9 +179,9 @@ namespace xtal::occur
 ////////////////////////////////////////////////////////////////////////////
 
 template <auto ..._s>
-struct meta<process::math::pade::unity<_s...>>
+struct auxiliary<process::math::pade::unity<_s...>>
 {
-	using superkind = meta<>;
+	using superkind = auxiliary<>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>

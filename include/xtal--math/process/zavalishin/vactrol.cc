@@ -47,7 +47,7 @@ TAG_("vactrol")
 		//\
 		using F_env = filter<>;
 		using F_env = filter<U_alpha[2], union ENV>;
-		using L_env = occur::meta_t<F_env>;
+		using L_env = occur::auxiliary_t<F_env>;
 		using X_env = flow::packet_t<X_stage, X_shape>;
 		using Y_env = confined_t<void
 		,	reuse< 0, -1>
@@ -106,7 +106,7 @@ TAG_("vactrol")
 		//\
 		using F_env = filter<>;
 		using F_env = filter<U_alpha[2], union ENV>;
-		using L_env = occur::meta_t<F_env>;
+		using L_env = occur::auxiliary_t<F_env>;
 		using X_env = flow::packet_t<X_stage, X_shape>;
 		using Y_env = confined_t<void
 		,	reuse< 0, -1>
