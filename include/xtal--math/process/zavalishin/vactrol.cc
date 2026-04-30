@@ -47,7 +47,7 @@ TAG_("vactrol")
 		//\
 		using F_env = filter<>;
 		using F_env = filter<U_alpha[2], union ENV>;
-		using L_env = occur::codex_t<F_env>;
+		using L_env = occur::meta_t<F_env>;
 		using X_env = flow::packet_t<X_stage, X_shape>;
 		using Y_env = confined_t<void
 		,	reuse< 0, -1>
@@ -106,7 +106,7 @@ TAG_("vactrol")
 		//\
 		using F_env = filter<>;
 		using F_env = filter<U_alpha[2], union ENV>;
-		using L_env = occur::codex_t<F_env>;
+		using L_env = occur::meta_t<F_env>;
 		using X_env = flow::packet_t<X_stage, X_shape>;
 		using Y_env = confined_t<void
 		,	reuse< 0, -1>
@@ -143,7 +143,7 @@ TAG_("vactrol")
 		z <<= z_sample;
 		z <<= z_resize;
 
-		z >>= flow::cue_f(0x08).then(X_env{ X_stage{0}, X_shape{0.125,  1.00}});
+		z >>= flow::cue_f(0x08).then(X_env{ X_stage{0}, X_shape{ 0.50,  0.50}});
 	//	z >>= flow::cue_f(0x18).then(X_env{ X_stage{1}, X_shape{1.000, -0.00}});
 
 		echo_("\nvactrol: monophony");
@@ -151,6 +151,12 @@ TAG_("vactrol")
 
 		TRUE_(0 == z.efflux(z_cursor++));
 	//	TRUE_(0 == z.influx(occur::stage_f(-1)));
+
+		echo_();
+		echo_("f [-1]", z.store()[8 - 1]);
+		echo_("f [ 0]", z.store()[8    ]);
+		echo_("f [ 1]", z.store()[8 + 1]);
+		echo_("f'[ 0]", z.store()[8 + 1]/z.store()[8] - one);
 
 		echo_plot_<28>(z.store(), 0x08);
 

@@ -46,7 +46,7 @@ TAG_("filter")
 	TRY_("filter: 1D instantiation")
 	{
 		using R_def = filter<>;
-		using R_etc = occur::codex_t<R_def>;
+		using R_etc = occur::meta_t<R_def>;
 		using R_prx = confined_t<void
 		,	per_t<U_resample>          ::   refix <1>
 		,	U_resync                   ::   attach <>
@@ -118,7 +118,7 @@ TAG_("filter")
 	TRY_("filter: 2D instantiation")
 	{
 		using R_def = filter<>;
-		using R_etc = occur::codex_t<R_def>;
+		using R_etc = occur::meta_t<R_def>;
 		using R_prx = confined_t<void
 		,	per_t<U_resample>          ::   refix <1>
 		,	U_resync                   ::   attach <>
@@ -233,7 +233,7 @@ TAG_("filter-ring")
 	TRY_("filter-ring monophony")
 	{
 		using R_def = filter<U_alpha[2], union RING>;
-		using R_etc = occur::codex_t<R_def>;
+		using R_etc = occur::meta_t<R_def>;
 		using R_eve = flow::packet_t<U_stage, typename R_etc::damp_parameter>;
 		using R_prx = confined_t<void
 		,	per_t<U_resample>::refix<0>
@@ -299,7 +299,7 @@ TAG_("filter-ring")
 	TRY_("filter-ring polyphony")
 	{
 		using R_def = filter<U_alpha[2], union RING>;
-		using R_etc = occur::codex_t<R_def>;
+		using R_etc = occur::meta_t<R_def>;
 		using R_eve = flow::key_s<U_stage>;
 
 		using R_prx = confined_t<void
@@ -407,13 +407,13 @@ TAG_("vectrol")
 		using S_content = filter<>;
 		using S_content = filter<U_alpha[2], union ENV>;
 		//\
-		using S_codex = confined_t<S_content>;
-		using S_codex = occur::codex_t<S_content>;
+		using S_meta = confined_t<S_content>;
+		using S_meta = occur::meta_t<S_content>;
 
-		using S_damp_   = occur::math::zavalishin::probe_t<typename S_codex::codata_type>;
-	//	using S_damp    = typename S_codex::damp_parameter;
+		using S_damp_   = occur::math::zavalishin::probe_t<typename S_meta::codata_type>;
+	//	using S_damp    = typename S_meta::damp_parameter;
 
-		using S_order   = typename S_codex::order_attribute;
+		using S_order   = typename S_meta::order_attribute;
 
 		using S_process = confined_t<void
 		,	reuse<0, -1>
@@ -422,8 +422,8 @@ TAG_("vectrol")
 		,	Y_trig                 ::   infix  <>
 		,	S_damp_                ::   affix  <>
 	//	,	S_damp                 ::   affix  <>
-		,	S_codex                ::   attach <>
-		,	S_codex                :: dispatch <>
+		,	S_meta                ::   attach <>
+		,	S_meta                :: dispatch <>
 		,	S_content
 		>;
 		using S_processor = processor::monomer_t<S_process
@@ -470,10 +470,10 @@ TAG_("vectrol")
 	TRY_("vectrol: patch")
 	{
 		using S_content = filter<U_alpha[2], union ENV>;
-		using S_codex   = occur::codex_t<S_content>;
-		using S_damp_   = occur::math::zavalishin::probe_t<typename S_codex::codata_type>;
-		using S_damp    = typename S_codex::  damp_parameter;
-		using S_order   = typename S_codex:: order_attribute;
+		using S_meta   = occur::meta_t<S_content>;
+		using S_damp_   = occur::math::zavalishin::probe_t<typename S_meta::codata_type>;
+		using S_damp    = typename S_meta::  damp_parameter;
+		using S_order   = typename S_meta:: order_attribute;
 
 		using S_process = confined_t<void
 		,	reuse< 0, -1>
@@ -481,8 +481,8 @@ TAG_("vectrol")
 		,	typename per_t<U_resample> ::   refix <0>
 		,	typename Y_trig            ::   infix  <>
 		,	typename S_damp_           ::   affix  <>
-		,	typename S_codex           ::   attach <>
-		,	typename S_codex           :: dispatch <>
+		,	typename S_meta           ::   attach <>
+		,	typename S_meta           :: dispatch <>
 		,	S_content
 		>;
 		//\
@@ -494,11 +494,11 @@ TAG_("vectrol")
 		>;
 
 		using T_content =  filter<U_alpha[2], union RING>;
-		using T_codex   =  occur::codex_t<T_content>;
-	//	using T_damp_   =  occur::math::zavalishin::probe_t<typename T_codex::codata_type>;
-		using T_damp    =  typename T_codex:: damp_parameter;
+		using T_meta   =  occur::meta_t<T_content>;
+	//	using T_damp_   =  occur::math::zavalishin::probe_t<typename T_meta::codata_type>;
+		using T_damp    =  typename T_meta:: damp_parameter;
 
-		using T_order   =  typename T_codex::order_attribute;
+		using T_order   =  typename T_meta::order_attribute;
 		using T_event   =  flow::packet_t<U_stage, T_damp>;
 		using T_dummy   =  occur::inferred_t<U_alpha, union DUMMY>;
 
@@ -519,8 +519,8 @@ TAG_("vectrol")
 		,	Y_gate                    ::   infix  <>
 	//	,	T_damp_                   ::   affix  <>
 		,	T_damp                    ::   affix  <>
-		,	T_codex                   ::   attach <>
-		,	T_codex                   :: dispatch <>
+		,	T_meta                   ::   attach <>
+		,	T_meta                   :: dispatch <>
 		,	T_content
 		>;
 		using X_processor = processor::monomer_t<X_process

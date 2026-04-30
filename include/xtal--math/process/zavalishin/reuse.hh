@@ -14,21 +14,28 @@ namespace xtal::process::math::zavalishin
 \brief   Manages the lifecycle of the current voice.
 \todo    Provision toggle to select between monophonic/polyphonic.
 */
-template <auto ...Ms>	struct  reuse : bond::compose<reuse<Ms>...> {};
-template <auto ...Ms>	using   reuse_t = confined_t<reuse<Ms...>>;
+template <auto  ..._s>	XTAL_TYP_(new) reuse   : bond::compose<reuse<_s>...> {};
+template <auto  ..._s>	XTAL_TYP_(set) reuse_t = confined_t<reuse<_s...>>;
+template <class ..._s>	XTAL_TYP_(ask) reuse_q = bond::tab_inner_p<reuse<>, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 /*!
 \brief   Responds to `efflux(occur::stage_f(+0))` by clearing the filter state.
 */
+template <>
+struct reuse<>
+{
+};
 template <int M_ind>
 struct reuse<M_ind>
 {
+	using superkind = bond::tab<reuse<>>;
+
 	template <class S>
-	class subtype : public bond::compose_s<S>
+	class subtype : public bond::compose_s<S, superkind>
 	{
-		using S_ = bond::compose_s<S>;
+		using S_ = bond::compose_s<S, superkind>;
 
 	public:// CONSTRUCT
 		using S_::S_;

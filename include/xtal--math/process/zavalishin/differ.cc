@@ -45,8 +45,8 @@ TAG_("differ")
 	using D1     = differ<_differ::reparameterized, U_pole[1]>;
 	using D1     = differ<U_pole[1]>;
 	using D2     = differ<U_pole[2]>;
-	using D1_etc = occur::codex_t<D1>;
-	using D2_etc = occur::codex_t<D2>;
+	using D1_etc = occur::meta_t<D1>;
+	using D2_etc = occur::meta_t<D2>;
 	using D1_prx = process::confined_t<void
 	,	typename D1_etc::template dispatch<>
 	,	D1

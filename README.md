@@ -113,11 +113,11 @@ configured as a polyphonic instrument.
 // Process definition...
 
 using T_content = process::filter<U_alpha[2]>;         // 2nd-order filter.
-using T_codex    = occur::codex_t<T_content>;           // 2nd-order filter parameters.
+using T_meta    = occur::meta_t<T_content>;           // 2nd-order filter parameters.
 
-using P_damp    = typename T_codex::damp_parameter;
-using P_fade    = typename T_codex::fade_parameter;
-using Q_order   = typename T_codex::order_attribute;
+using P_damp    = typename T_meta::damp_parameter;
+using P_fade    = typename T_meta::fade_parameter;
+using Q_order   = typename T_meta::order_attribute;
 using U_resample   = occur::resample_t<>;        // Note stage: `0` on, `1` off, `-1` cut/rest.
 using U_stage   = occur:stage_t<>;        // Note stage: `0` on, `1` off, `-1` cut/rest.
 using U_event   = flow::key_s<U_stage>;                // Key-Trigger pair.
@@ -134,8 +134,8 @@ using T_process = process::confined_t<void             // Wrap the process.
 ,  typename P_damp    ::template   affix <>            // Attach/append damping to the arguments-list.
 ,  typename P_fade    ::template   affix <>            // Attach/append  fading to the arguments-list.
 ,  typename A_reuse                                    // Behaves as a polyphonic voice.
-,  typename T_codex ::template   attach<>              // Attach the remaining   object properties.
-,  typename T_codex ::template dispatch<>              // Attach the remaining template parameters.
+,  typename T_meta ::template   attach<>              // Attach the remaining   object properties.
+,  typename T_meta ::template dispatch<>              // Attach the remaining template parameters.
 ,  T_content
 >;
 

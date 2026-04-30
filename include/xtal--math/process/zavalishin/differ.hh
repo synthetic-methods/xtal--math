@@ -29,7 +29,7 @@ template <typename ...As>	using   differ_t = process::confined_t<differ<As...>>;
 template <class ..._s>
 struct differ
 {
-	using cotype = occur::codex_t<differ>;
+	using cotype = occur::meta_t<differ>;
 
 	using data_type = typename cotype::data_type;
 
@@ -153,9 +153,9 @@ namespace xtal::occur
 ////////////////////////////////////////////////////////////////////////////
 
 template <class ..._s>
-struct codex<process::math::zavalishin::differ<_s...>>
+struct meta<process::math::zavalishin::differ<_s...>>
 {
-	using superkind = codex<process::math::zavalishin::meta<_s...>>;
+	using superkind = meta<process::math::zavalishin::meta<_s...>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>

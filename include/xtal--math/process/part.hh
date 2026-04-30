@@ -246,7 +246,7 @@ struct part<unsigned>
 	};
 };
 template <>
-struct part<float>
+struct part<_xtd::real<>>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>

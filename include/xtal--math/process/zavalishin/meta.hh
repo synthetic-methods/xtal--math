@@ -15,7 +15,7 @@ namespace xtal::process::math::zavalishin
 */
 template <class ...As>
 struct meta
-:	occur::codex<meta<As...>>
+:	occur::meta<meta<As...>>
 {
 };
 
@@ -31,7 +31,7 @@ namespace xtal::occur
 ////////////////////////////////////////////////////////////////////////////
 
 template <vector_q A, class ..._s>
-struct codex<process::math::zavalishin::meta<A, _s...>>
+struct meta<process::math::zavalishin::meta<A, _s...>>
 {
 private:
 	static_assert(incomplete_q<_s...>);
@@ -40,7 +40,7 @@ private:
 	XTAL_TYP_(set) V_pole = unstruct_t<A>;
 
 public:
-	using superkind = codex<>;
+	using superkind = meta<>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -61,32 +61,32 @@ public:
 };
 
 template <scalar_q A>
-struct codex<process::math::zavalishin::meta<A>>
-:	codex<process::math::zavalishin::meta<A[2]>>
+struct meta<process::math::zavalishin::meta<A>>
+:	meta<process::math::zavalishin::meta<A[2]>>
 {
 };
 template <>
-struct codex<process::math::zavalishin::meta< >>
-:	codex<process::math::zavalishin::meta<typename bond::fit<>::alpha_type>>
+struct meta<process::math::zavalishin::meta< >>
+:	meta<process::math::zavalishin::meta<typename bond::fit<>::alpha_type>>
 {
 };
 
 template <bond::compose_q A, class ..._s>
-struct codex<process::math::zavalishin::meta<A, _s...>>
+struct meta<process::math::zavalishin::meta<A, _s...>>
 :	bond::compose<A
-	,	codex<process::math::zavalishin::meta<_s...>>
+	,	meta<process::math::zavalishin::meta<_s...>>
 	>
 {
 };
 template <incomplete_q A, class ..._s>
-struct codex<process::math::zavalishin::meta<A, _s...>>
-:	bond::compose<codex<A>
-	,	codex<process::math::zavalishin::meta<_s...>>
+struct meta<process::math::zavalishin::meta<A, _s...>>
+:	bond::compose<meta<A>
+	,	meta<process::math::zavalishin::meta<_s...>>
 	>
 {
 };
 //template <template <class ...> class T_, class ..._s>
-//struct codex<T_<_s...>> : codex<process::math::zavalishin::meta<_s...>>
+//struct meta<T_<_s...>> : meta<process::math::zavalishin::meta<_s...>>
 //{
 //};
 
