@@ -160,7 +160,7 @@ struct filter
 			u_warp *= pade::tangy_f<1, -1>(u_warp);
 
 		//	Denormalize `slopes` and initialize `values`:
-			bond::seek_to_f<N_ord>([&] (auto const I) XTAL_0FN {
+			bond::seek_to_e<N_ord>([&] (auto const I) XTAL_0FN {
 				auto const &coeff = get<I>(coeffs_);
 				auto        slope = get<I>(slopes_);
 				//\
@@ -176,10 +176,10 @@ struct filter
 			auto constexpr  K_sat = provision::math::zavalishin::shaped_q<S_>;
 			auto constexpr  K_max = term_f(0, 2, K_sat);
 			auto constexpr  K_lim = term_f(1, 1, K_max);
-			bond::seek_to_f<K_lim>([&] (auto const K) XTAL_0FN {
+			bond::seek_to_e<K_lim>([&] (auto const K) XTAL_0FN {
 				if constexpr (0 == K) {get<N_ord>(values) *= x - dot_f(values_, states_);}
 				if constexpr (1 <= K) {get<N_ord>(values)  = x - dot_f(values_, slopes_);}
-				bond::seek_to_f<-N_ord>([&] (auto const I) XTAL_0FN {
+				bond::seek_to_e<-N_ord>([&] (auto const I) XTAL_0FN {
 					auto const &value = get<I>(values_) = term_f(get<I>(states_), get<I + 1>(values), u_warp);
 					auto const &coeff = get<I>(coeffs_);
 					auto       &slope = get<I>(slopes_);
@@ -195,7 +195,7 @@ struct filter
 			});
 
 		//	Accumulate `states` and carry distortiond `slopes`:
-			bond::seek_to_f<-N_ord>([&, w_warp=u_warp*two] (auto const I) XTAL_0FN {
+			bond::seek_to_e<-N_ord>([&, w_warp=u_warp*two] (auto const I) XTAL_0FN {
 				auto const &coeff  = get<I + 0>(coeffs_);
 				auto const &slope  = get<I + 0>(slopes_);
 				auto       &state  = get<I + 0>(states_);
@@ -275,11 +275,11 @@ struct filter
 			using X  = XTAL_ALL_(x);
 			using U  = unstruct_t<X>;
 			return method_impl<N_ord, Ns...>(XTAL_REF_(x), u_warp
-			,	[a=truncate_f<+1>(u_damp)]<auto ...I> (bond::seek_t<I...>)
+			,	[a=truncate_f<+1>(u_damp)]<auto ...I> (bond::seek_in_t<I...>)
 					XTAL_0FN -> atom::couple_t<U[N_ord]> {
 						return {term_f(fact_v<N_ord, I, 0>, fact_v<N_ord, I, 1>, a)...};
 					}
-				(bond::seek_s<N_ord>{})
+				(bond::seek_to_t<N_ord>{})
 			,	XTAL_REF_(oo)...
 			);
 		}

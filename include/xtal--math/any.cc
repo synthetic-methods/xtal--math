@@ -235,9 +235,9 @@ noexcept -> bool
 		return false;
 	}
 	XTAL_0IF_(else) {
-		return [&]<auto ...I>(bond::seek_t<I...>)
+		return [&]<auto ...I>(bond::seek_in_t<I...>)
 			XTAL_0FN_(to) (...and (check_f<N_ind>(get<I>(u), get<I>(v))))
-		(bond::seek_s<U::size()&V::size()>{});
+		(bond::seek_to_t<U::size()&V::size()>{});
 	}
 }
 template <int N_ind, int N_lim>
@@ -340,9 +340,9 @@ void echo_plot_(iterated_q auto const list, integral_q auto ...markers)
 		using Item = XTAL_ALL_(item);
 		if constexpr (fixed_shaped_q<Item>) {
 			auto etc = destruct_f(item);
-			[&]<auto ...I> (bond::seek_t<I...>)
+			[&]<auto ...I> (bond::seek_in_t<I...>)
 				XTAL_0FN_(do) (echo_plot_<N>(line, bond::pack_item_f<I>(item), markers...), ...)
-			(bond::seek_s<fixed_shaped<Item>::extent()>{});
+			(bond::seek_to_t<fixed_shaped<Item>::extent()>{});
 		}
 		else {
 			echo_plot_<N>(line, item, markers...);

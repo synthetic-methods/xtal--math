@@ -114,7 +114,7 @@ public:
 			auto &s = self();
 			using U = XTAL_ALL_(get<0>(s)*get<0>(t));
 			U u{};
-			bond::seek_to_f<size>([&]<constant_q I> (I) XTAL_0FN {
+			bond::seek_to_e<size>([&]<constant_q I> (I) XTAL_0FN {
 				u = _xtd::plus_multiplies_f(XTAL_MOV_(u), got<I{}>(s), got<I{}>(t));
 			});
 			return u;

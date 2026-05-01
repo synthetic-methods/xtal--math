@@ -328,7 +328,7 @@ public:
 		scale(W u, W w=one)
 		noexcept -> auto &
 		{
-			bond::seek_to_f<size - 1, 1>([&, this]<constant_q I> (I)
+			bond::seek_to_e<size - 1, 1>([&, this]<constant_q I> (I)
 				XTAL_0FN_(do) (get<I{}>(self()) = T::devalue_f(got<I{}>(self())*(w *= u))));
 			return self();
 		}
@@ -337,9 +337,9 @@ public:
 		const noexcept -> auto
 		{
 			using T_ = XTAL_ALL_(twin());
-			return [&, this]<auto ...I> (bond::seek_t<I...>)
+			return [&, this]<auto ...I> (bond::seek_in_t<I...>)
 				XTAL_0FN_(to) (T_{_detail::thunk_f(got<I>(self())*(w)) (w *= u)...})
-			(bond::seek_s<size>{});
+			(bond::seek_to_t<size>{});
 		}
 
 		/*!

@@ -154,9 +154,9 @@ struct truncate<M_app>
 			}
 			XTAL_0IF_(else) {
 			//	TODO: Accommodate returning materialized `atom::block` from `span`s...
-				return [&]<auto ...I> (bond::seek_t<I...>)
+				return [&]<auto ...I> (bond::seek_in_t<I...>)
 					XTAL_0FN_(to) (W_(edit<Ns...>(get<I>(w_))...))
-				(bond::seek_s<-N_>{});
+				(bond::seek_to_t<-N_>{});
 			}
 		}
 

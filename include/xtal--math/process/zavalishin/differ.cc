@@ -25,7 +25,7 @@ struct reparameterized
 		using S_::S_;
 
 		using order_attribute = occur::inferred_t<union ORDER,
-			bond::seek_s<1 + S_::data_type::size()>>;
+			bond::seek_to_t<1 + S_::data_type::size()>>;
 
 	};
 };
@@ -56,7 +56,7 @@ TAG_("differ")
 	,	D2
 	>;
 
-	using U0_order = occur::inferred_t<union ORDER, bond::seek_s<1 + N_pole>>;
+	using U0_order = occur::inferred_t<union ORDER, bond::seek_to_t<1 + N_pole>>;
 	using U1_order = typename D1_etc::order_attribute;
 	using U2_order = typename D2_etc::order_attribute;
 //	static_assert(same_q<U1_order, typename D1_prx::order_attribute>);

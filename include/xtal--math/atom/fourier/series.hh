@@ -123,7 +123,7 @@ public:
 				get<I0 + _1>(s) = o*u;
 
 			//	Populate the remaining powers by squaring/multiplication:
-				bond::seek_to_f<(N_size >> 1U)>([&] (auto M)
+				bond::seek_to_e<(N_size >> 1U)>([&] (auto M)
 					XTAL_0FN {
 						auto constexpr UM = I0 + _1*M;
 						auto constexpr WM = J0 + _2*M;

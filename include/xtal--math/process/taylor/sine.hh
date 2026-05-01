@@ -126,7 +126,7 @@ struct sine<M_ism, -2>
 			XTAL_0IF (0 < M_ism) {
 				W x{one};
 
-				bond::seek_to_f<-N>([&] (auto I) XTAL_0FN_(to) (
+				bond::seek_to_e<-N>([&] (auto I) XTAL_0FN_(to) (
 					x = term_f(one
 					,	+_fit::ratio_f(1, (2 + 2*I)*(3 + 2*I))
 					,	w
@@ -138,7 +138,7 @@ struct sine<M_ism, -2>
 			XTAL_0IF (M_ism < 0) {
 				W x = _fit::ratio_f(1, 1 + 2*N);
 
-				bond::seek_to_f<-N>([&] (auto I) XTAL_0FN_(to) (
+				bond::seek_to_e<-N>([&] (auto I) XTAL_0FN_(to) (
 					x = term_f(_fit::ratio_f(1, 1 + 2*I)
 					,	-_fit::ratio_f(1 + 2*I, 2 + 2*I)
 					,	w

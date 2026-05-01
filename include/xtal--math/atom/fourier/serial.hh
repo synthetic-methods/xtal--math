@@ -79,8 +79,8 @@ public:
 			}
 			else {
 				int constexpr N{size};
-				bond::seek_to_f<-N, 0>([&, this] (auto I) XTAL_0FN {get<I>(s) *= get<0>(t);
-				bond::seek_to_f<-I, 1>([&, this] (auto J) XTAL_0FN {get<I>(s) += get<J>(t)*get<I - J>(s);});});
+				bond::seek_to_e<-N, 0>([&, this] (auto I) XTAL_0FN {get<I>(s) *= get<0>(t);
+				bond::seek_to_e<-I, 1>([&, this] (auto J) XTAL_0FN {get<I>(s) += get<J>(t)*get<I - J>(s);});});
 			}
 			return s;
 		}

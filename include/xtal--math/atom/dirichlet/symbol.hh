@@ -90,7 +90,7 @@ public:
 			element(0) = {};
 
 			if constexpr (integral_variable_q<value_type>) {
-				bond::seek_to_f<K>([&, this] (auto i) XTAL_0FN {
+				bond::seek_to_e<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
 					element(    o) =  i;
 					element(N - o) =  i - K;
@@ -104,7 +104,7 @@ public:
 				if constexpr (complex_field_q<value_type>) {
 					u = pade::unity_f<1>(_fit::ratio_f(1, 2*K));
 				}
-				bond::seek_to_f<K>([&, this] (auto i) XTAL_0FN {
+				bond::seek_to_e<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
 					element(    o) =  w;
 					element(N - o) = -w;
@@ -126,7 +126,7 @@ public:
 			extent_type           k = size;
 
 			if constexpr (integral_variable_q<value_type>) {
-				bond::seek_to_f<K>([&, this] (auto i) XTAL_0FN {
+				bond::seek_to_e<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
 					if (K < o) {
 						element(M - o) = (1 + i) - K;
@@ -147,7 +147,7 @@ public:
 					u = 1;
 				}
 				w = u;
-				bond::seek_to_f<K>([&, this] (auto i) XTAL_0FN {
+				bond::seek_to_e<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
 					if (K < o) {
 						element(M - o) = -w;

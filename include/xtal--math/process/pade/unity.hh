@@ -193,7 +193,7 @@ struct auxiliary<process::math::pade::unity<_s...>>
 	public:
 		using S_::S_;
 
-		using order_attribute = occur::inferred_t<union ORDER, bond::seek_s<(1<<3)>>;
+		using order_attribute = occur::inferred_t<union ORDER, bond::seek_to_t<(1<<3)>>;
 
 		template <extent_type N_mask=1>
 		struct dispatch

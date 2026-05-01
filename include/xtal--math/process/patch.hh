@@ -91,17 +91,17 @@ struct patch<U_mat>
 				const noexcept -> auto
 				{
 					/**/
-					return [this, o_=_std::tuple{XTAL_REF_(oo)...}]<auto ...I>(bond::seek_t<I...>)
+					return [this, o_=_std::tuple{XTAL_REF_(oo)...}]<auto ...I>(bond::seek_in_t<I...>)
 					XTAL_0FN_(to) (R_::template method<Ns...>(dot_f(get<I>(R_::coefficients()), o_)...))
-						(bond::seek_s<matrix_size> {});
+						(bond::seek_to_t<matrix_size> {});
 					/*/
 					auto const o_ = _std::tuple{XTAL_REF_(oo)...};
 					return\
-						([&, this]<auto ...I>(bond::seek_t<I...>)          XTAL_0FN_(to) (R_::template method<Ns...>((
-						([&, this]<auto ...J>(bond::seek_t<J...>, auto _I) XTAL_0FN_(to)
+						([&, this]<auto ...I>(bond::seek_in_t<I...>)          XTAL_0FN_(to) (R_::template method<Ns...>((
+						([&, this]<auto ...J>(bond::seek_in_t<J...>, auto _I) XTAL_0FN_(to)
 							(zero +...+ (bond::pack_item_f<XTAL_ALL_(_I){}, J>(R_::coefficients())*get<J>(o_)))
-							(bond::seek_s<vector_size> {}, constant_t<I>{})))...))
-							(bond::seek_s<matrix_size> {}));
+							(bond::seek_to_t<vector_size> {}, constant_t<I>{})))...))
+							(bond::seek_to_t<matrix_size> {}));
 					/***/
 				}
 
@@ -136,10 +136,10 @@ struct patch<U_mat>
 				requires same_q<vector_type, decltype(o_)> or occur::math::dash_p<U_mat, decltype(o_)>
 				and      same_v<vector_size, bond::pack_size_v<decltype(o_)>>
 				{
-					return [&, this]<auto ...I>(bond::seek_t<I...>)
+					return [&, this]<auto ...I>(bond::seek_in_t<I...>)
 						XTAL_0FN_(to) (R_::template flux<N_ion>(
 							occur::math::dash_f<U_mat>(dot_f(get<I>(R_::coefficients()), o_)...)))
-							(bond::seek_s<matrix_size> {});
+							(bond::seek_to_t<matrix_size> {});
 				}
 
 			};

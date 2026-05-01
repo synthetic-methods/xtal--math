@@ -70,9 +70,9 @@ struct prime< 1>
 		method()
 		noexcept -> auto
 		{
-			return [&]<auto ...I> (bond::seek_t<I...>)
+			return [&]<auto ...I> (bond::seek_in_t<I...>)
 			XTAL_0FN_(to) (Y_{method(I)...})
-				(bond::seek_s<fixed<Y_>::extent()>{});
+				(bond::seek_to_t<fixed<Y_>::extent()>{});
 		}
 
 		template <int ...Ns_pow>
@@ -206,20 +206,20 @@ struct prime<M_nom>
 			auto constexpr X_ext =  fixed_shaped<X_>::extent();
 			static_assert(X_ext <= M_ext);
 
-			auto const num = [&]<auto ...I> (bond::seek_t<I...>)
+			auto const num = [&]<auto ...I> (bond::seek_in_t<I...>)
 			XTAL_0FN_(to) (one *...* factor_f<I,  1>(x_))
-				(bond::seek_s<X_ext>{});
+				(bond::seek_to_t<X_ext>{});
 
-			auto const nom = [&]<auto ...I> (bond::seek_t<I...>)
+			auto const nom = [&]<auto ...I> (bond::seek_in_t<I...>)
 			XTAL_0FN_(to) (one *...* factor_f<I, -1>(x_))
-				(bond::seek_s<X_ext>{});
+				(bond::seek_to_t<X_ext>{});
 
 			return bond::fit<X_>::ratio_f(num, nom);
 		}
 		/**/
 		template <int ...Ns>
 		XTAL_DEF_(return,inline,set)
-		method(bond::seek_t<Ns...>)
+		method(bond::seek_in_t<Ns...>)
 		noexcept -> auto
 		{
 			return method(M_typ{Ns...});
@@ -235,9 +235,9 @@ struct prime<M_nom>
 			using U_fit = bond::fit<U>;
 			auto  n = U_fit::delta_f(nearest_f<>(u*method<Ns...>(M_nom)));
 
-			return [&]<auto ...I> (bond::seek_t<I...>)
+			return [&]<auto ...I> (bond::seek_in_t<I...>)
 			XTAL_0FN_(to) (M_typ{(edit<I>(n) - get<I>(M_nom))...})
-				(bond::seek_s<M_ext>{});
+				(bond::seek_to_t<M_ext>{});
 		}
 
 	};

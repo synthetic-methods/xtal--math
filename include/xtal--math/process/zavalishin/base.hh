@@ -55,7 +55,7 @@ public:
 		using codata_type = atom::math::dot_t<V_pole[N_pole]>;
 
 	public:// DISPATCH
-		using  order_attribute = occur::inferred_t<_s..., union ORDER, bond::seek_s<1 + N_pole>>;
+		using  order_attribute = occur::inferred_t<_s..., union ORDER, bond::seek_to_t<1 + N_pole>>;
 
 	};
 };
