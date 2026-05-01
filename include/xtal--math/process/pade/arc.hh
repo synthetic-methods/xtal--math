@@ -61,8 +61,10 @@ struct arc<-0, 0>
 		method_approx(auto &&y, auto &&x)
 		const noexcept -> decltype(auto)
 		{
-			auto constexpr I_par = 1 + (~N_par&1);
-			auto constexpr I_lim = below_v<4, (unsigned) N_lim>;
+			static_assert(-1 <= N_lim);
+			auto constexpr Z_par = 1 & ~N_par;
+			auto constexpr I_par = 1 +  Z_par;
+			auto constexpr I_lim = 0b11&N_lim;
 			auto     const yy =   square_f(y);
 			auto     const xx =   square_f(x);
 			using           X =  XTAL_ALL_(x);
@@ -273,8 +275,10 @@ struct arc<-1, 0>
 		method_approx(auto &&u)
 		const noexcept -> decltype(auto)
 		{
-			auto constexpr I_par = 1 + (~N_par&1);
-			auto constexpr I_lim = below_v<4, (unsigned) N_lim>;
+			static_assert(-1 <= N_lim);
+			auto constexpr Z_par = 1 & ~N_par;
+			auto constexpr I_par = 1 +  Z_par;
+			auto constexpr I_lim = 0b11&N_lim;
 			using K = unstruct_t<XTAL_ALL_(u)>;
 			using L = bond::fit<K>;
 			auto constexpr  _1pi = one/L::patio_f(-1);

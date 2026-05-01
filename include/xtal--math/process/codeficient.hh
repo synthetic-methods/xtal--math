@@ -32,7 +32,7 @@ struct codeficient<>
 	{
 		auto const y = _std::imag(o);
 		auto const x = _std::real(o);
-		return atom::couple_f(x - y, x + y);
+		return _std::pair{x - y, x + y};
 	}
 
 	template <class S>
@@ -64,7 +64,7 @@ struct codeficient<>
 					auto const z =  R_ ::template method<Ns...>(XTAL_REF_(oo)...);
 					auto const y = _std::imag(z)*XTAL_REF_(o);
 					auto const x = _std::real(z);
-					return atom::couple_f(x - y, x + y);
+					return _std::pair{x - y, x + y};
 				}
 
 			};
@@ -104,7 +104,7 @@ struct codeficient<M>
 					auto const z =  R_ ::template method<Ns...>(XTAL_REF_(oo)...);
 					auto const y = _std::imag(z)*R_::headed();
 					auto const x = _std::real(z);
-					return atom::couple_f(x - y, x + y);
+					return _std::pair{x - y, x + y};
 				}
 
 			};

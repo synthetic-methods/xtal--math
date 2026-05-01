@@ -4,6 +4,7 @@
 #include "./dilate.cc"
 #include "./discard.cc"
 #include "./dot.cc"
+#include "./exponential.cc"
 #include "./factorial.cc"
 #include "./identity.cc"
 #include "./imagine.cc"

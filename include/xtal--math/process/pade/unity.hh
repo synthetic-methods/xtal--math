@@ -78,6 +78,7 @@ struct unity<M_ism, M_car>
 		method(simplex_field_q auto const &t)
 		const noexcept -> decltype(auto)
 		{
+			static_assert(-1 <= N_lim);
 			using U       = XTAL_ALL_(t);
 			using U_fit   = bond::fit<U>;
 			using U_alpha = typename U_fit::alpha_type;
@@ -95,7 +96,7 @@ struct unity<M_ism, M_car>
 			}
 			XTAL_0IF (N_lim <  0) {
 				XTAL_IF1_(consteval) {
-					return method<below_v<(1<<2), (unsigned) N_lim>>(t);
+					return method<N_lim&0b11>(t);
 				}
 				XTAL_0IF_(else) {
 					auto const x = objective_f(t*U_fit::patio_2);

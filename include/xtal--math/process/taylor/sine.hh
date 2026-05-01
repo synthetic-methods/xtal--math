@@ -118,7 +118,8 @@ struct sine<M_ism, -2>
 		approximate(auto &&w)
 		const noexcept -> auto
 		{
-			int constexpr N = 1 + 2*below_v<0x10, (unsigned) N_lim>;
+			static_assert(-1 <= N_lim);
+			int constexpr N = term_f(1, 2, N_lim&0b1111);
 
 			using W = XTAL_ALL_(w); using _fit = bond::fit<W>;
 			XTAL_IF0

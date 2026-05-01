@@ -196,9 +196,6 @@ TAG_("unity")
 		double const t0 = 1.125;
 
 		TRUE_(check_f<-42>(unity_t<1, 1>{}.template method<(-1)>(t0), unity_t<1, 1>{}.template method<(-0)>(t0)));
-		TRUE_(check_f<- 1>(unity_t<1, 1>{}.template method<(-1)>(t0), unity_t<1, 1>{}.template method<(-1)>(t0)));
-		TRUE_(check_f<- 1>(unity_t<1, 1>{}.template method<(-1)>(t0), unity_t<1, 1>{}.template method<(-2)>(t0)));
-		TRUE_(check_f<- 1>(unity_t<1, 1>{}.template method<(-1)>(t0), unity_t<1, 1>{}.template method<(-3)>(t0)));
 
 	}
 //	TRY_("dilution")

@@ -210,17 +210,18 @@ struct octarithm<M_ism, M_div>
 		method_approximate(real_variable_q auto &o, real_variable_q auto n)
 		const noexcept -> void
 		{
+			static_assert(-1 <= N_lim);
 			using U_fit = bond::fit<decltype(o)>;
 			using U_alpha = typename U_fit::alpha_type;
 
-			auto constexpr I_lim = 4 + 4*below_v<4, (unsigned) N_lim>;
-			auto constexpr U1 = U_fit::haplo_f(I_lim)*_std::numbers::ln2_v<U_alpha>;
+			auto constexpr L4 = term_f(4, 4, N_lim&0b11);
+			auto constexpr U1 = U_fit::haplo_f(L4)*_std::numbers::ln2_v<U_alpha>;
 			auto constexpr W2 = U_fit::haplo_f(1)*U1*U1;
 
 			o -= n;
 			o  = term_f(one, o, term_f(U1, W2, o));
 			#pragma unroll
-			for (int i{}; i < I_lim; ++i) {
+			for (int i{}; i < L4; ++i) {
 				o *= o;
 			}
 		}

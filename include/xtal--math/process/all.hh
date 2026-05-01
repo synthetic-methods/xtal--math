@@ -4,6 +4,7 @@
 #include "./dilate.hh"
 #include "./discard.hh"
 #include "./dot.hh"
+#include "./exponential.hh"
 #include "./factorial.hh"
 #include "./identity.hh"
 #include "./imagine.hh"

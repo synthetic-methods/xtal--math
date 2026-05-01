@@ -2,7 +2,7 @@
 #include "./any.hh"
 
 #include "../../process/pade/unity.hh"
-
+#include "../../process/proot.hh"
 
 
 
@@ -55,11 +55,20 @@ public:
 		using S_::self;
 		using S_::twin;
 
-		XTAL_DEF_(return,inline,let) element(index_type i) const &&noexcept -> decltype(auto) {return XTAL_MOV_(S_::operator[](process::math::modulo_f<size>(i)));}
-		XTAL_DEF_(return,inline,let) element(index_type i) const  &noexcept -> decltype(auto) {return           S_::operator[](process::math::modulo_f<size>(i)) ;}
-
-		XTAL_DEF_(return,inline,let) element(index_type i)       &&noexcept -> decltype(auto) {return XTAL_MOV_(S_::operator[](process::math::modulo_f<size>(i)));}
-		XTAL_DEF_(return,inline,let) element(index_type i)        &noexcept -> decltype(auto) {return           S_::operator[](process::math::modulo_f<size>(i)) ;}
+		template <index_type I=0>
+		XTAL_DEF_(return,inline,set)
+		element_f(auto &&o)
+		noexcept -> decltype(auto)
+		{
+			return S_::template element_f<I>(XTAL_REF_(o));// Already wrapped...
+		}
+		template <index_type I=0>
+		XTAL_DEF_(return,inline,set)
+		element_f(auto &&o, index_type i)
+		noexcept -> decltype(auto)
+		{
+			return S_::element_f(XTAL_REF_(o), process::math::modulo_f<size>(I + i));
+		}
 
 
 	public:// CONSTRUCT
@@ -85,7 +94,7 @@ public:
 					auto const o = k%N;
 					element(    o) =  i;
 					element(N - o) =  i - K;
-					k *= bond::math::prime_root_f<size>();
+					k *= process::math::proot_f<>(size);
 				});
 				element(1) = 0;
 			}
@@ -100,7 +109,7 @@ public:
 					element(    o) =  w;
 					element(N - o) = -w;
 					w *= u;
-					k *= bond::math::prime_root_f<size>();
+					k *= process::math::proot_f<>(size);
 				});
 			}
 			return self();

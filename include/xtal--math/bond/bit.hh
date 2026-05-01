@@ -660,11 +660,9 @@ XTAL_DEF_(return,inline,let)
 bit_reverse_f(auto &&x)
 noexcept -> auto
 {
-	auto constexpr N_depth = bond::fit<decltype(x)>::full.depth;
-	//\
-	int constexpr n_subdepth = below_v<N_depth, (unsigned) N_subdepth>;
-	int constexpr n_subdepth = 0 < N_subdepth? N_subdepth: N_depth;
-	return bit_reverse_f(XTAL_REF_(x), n_subdepth);
+	using X = XTAL_ALL_(x);
+	return bit_reverse_f(XTAL_REF_(x),
+		0 < N_subdepth? N_subdepth: bond::fit<X>::full.depth);
 }
 
 

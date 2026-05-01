@@ -54,10 +54,11 @@ struct root
 		const noexcept -> auto
 		requires un_v<atom::groupoid_q<XTAL_ALL_(z)>>
 		{
+			static_assert(-1 <= N_lim);
 			using Z     = objective_t<XTAL_ALL_(z)>;
 			using Z_fit = bond::fit<Z>;
 
-			auto constexpr I_lim = below_v<(1<<4), (unsigned) N_lim>;
+			auto constexpr I_lim = N_lim&0b1111;
 
 			XTAL_IF0
 			XTAL_0IF (integral_variable_q<Z>) {
