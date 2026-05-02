@@ -15,17 +15,17 @@ namespace xtal::atom::math::fourier::_test
 
 TAG_("solid", "series")
 {
-	using _fit = bond::fit<>;
-	using T_delta = typename _fit::delta_type;
-	using T_sigma = typename _fit::sigma_type;
-	using T_alpha = typename _fit::alpha_type;
-	using T_aphex = typename _fit::aphex_type;
+	using U_fit = bond::fit<>;
+	using U_delta = typename U_fit::delta_type;
+	using U_sigma = typename U_fit::sigma_type;
+	using U_alpha = typename U_fit::alpha_type;
+	using U_aphex = typename U_fit::aphex_type;
 
 	/**/
-	TRY_("generation of single")
+	TRY_("generation")
 	{
-		using W7 = series_t<T_alpha[0x7]>;
-		using W8 = series_t<T_alpha[0x8]>;
+		using W7 = series_t<U_alpha[0x7]>;
+		using W8 = series_t<U_alpha[0x8]>;
 
 		W7 w7; w7.template generate<-1>(2.0);
 		W8 w8; w8.template generate<-1>(2.0);
@@ -53,39 +53,39 @@ TAG_("solid", "series")
 	/**/
 	TRY_("transformation")
 	{
-		T_sigma constexpr O = 1 << 5;
-		T_sigma constexpr N = 1 << 3;
-		T_sigma constexpr M = N  - 1;
+		U_sigma constexpr O = 1 << 5;
+		U_sigma constexpr N = 1 << 3;
+		U_sigma constexpr M = N  - 1;
 
-		using V_series = series_t<T_aphex[O]>;
-		using U_series = series_t<T_aphex[N]>;
+		using V_series = series_t<U_aphex[O]>;
+		using U_series = series_t<U_aphex[N]>;
 		V_series basis(constant_t<-1>{});
 
 		U_series source;
-		source[0] = source[M - 0] = T_aphex(0.0, 0.0);
-		source[1] = source[M - 1] = T_aphex(1.0, 1.0);
-		source[2] = source[M - 2] = T_aphex(3.0, 3.0);
-		source[3] = source[M - 3] = T_aphex(4.0, 4.0);
+		source[0] = source[M - 0] = U_aphex(0.0, 0.0);
+		source[1] = source[M - 1] = U_aphex(1.0, 1.0);
+		source[2] = source[M - 2] = U_aphex(3.0, 3.0);
+		source[3] = source[M - 3] = U_aphex(4.0, 4.0);
 
 		auto target = basis.transformation(source);
-		TRUE_(check_f<-6>(target[0], T_aphex{ 0.1600000000000000e+2,  0.1600000000000000e+2}));
-		TRUE_(check_f<-6>(target[1], T_aphex{-0.4828427124746192e+1, -0.1165685424949238e+2}));
-		TRUE_(check_f<-6>(target[2], T_aphex{ 0.0000000000000000e+0,  0.0000000000000000e+0}));
-		TRUE_(check_f<-6>(target[3], T_aphex{-0.3431457505076203e+0,  0.8284271247461885e+0}));
-		TRUE_(check_f<-6>(target[4], T_aphex{ 0.0000000000000000e+0,  0.0000000000000000e+0}));
-		TRUE_(check_f<-6>(target[5], T_aphex{ 0.8284271247461912e+0, -0.3431457505076203e+0}));
-		TRUE_(check_f<-6>(target[6], T_aphex{ 0.0000000000000000e+0,  0.0000000000000000e+0}));
-		TRUE_(check_f<-6>(target[7], T_aphex{-0.1165685424949238e+2, -0.4828427124746188e+1}));
+		TRUE_(check_f<-6>(target[0], U_aphex{ 0.1600000000000000e+2,  0.1600000000000000e+2}));
+		TRUE_(check_f<-6>(target[1], U_aphex{-0.4828427124746192e+1, -0.1165685424949238e+2}));
+		TRUE_(check_f<-6>(target[2], U_aphex{ 0.0000000000000000e+0,  0.0000000000000000e+0}));
+		TRUE_(check_f<-6>(target[3], U_aphex{-0.3431457505076203e+0,  0.8284271247461885e+0}));
+		TRUE_(check_f<-6>(target[4], U_aphex{ 0.0000000000000000e+0,  0.0000000000000000e+0}));
+		TRUE_(check_f<-6>(target[5], U_aphex{ 0.8284271247461912e+0, -0.3431457505076203e+0}));
+		TRUE_(check_f<-6>(target[6], U_aphex{ 0.0000000000000000e+0,  0.0000000000000000e+0}));
+		TRUE_(check_f<-6>(target[7], U_aphex{-0.1165685424949238e+2, -0.4828427124746188e+1}));
 
 	}
 	/***/
 	/**/
 	TRY_("convolution")
 	{
-		T_sigma constexpr N = 1 << 3;
-		T_sigma constexpr M = N  - 1;
+		U_sigma constexpr N = 1 << 3;
+		U_sigma constexpr M = N  - 1;
 
-		using U_series = series_t<T_aphex[N]>;
+		using U_series = series_t<U_aphex[N]>;
 		U_series basis(constant_t<-1>{});
 
 		U_series lhs = {0, 1, 2, 0, 0, 0, 0, 0};
@@ -100,8 +100,8 @@ TAG_("solid", "series")
 	/**/
 	TRY_("multiplication")
 	{
-		using C4 = series_t<T_aphex[4]>;
-		using D4 = series_t<T_aphex[4]>;
+		using C4 = series_t<U_aphex[4]>;
+		using D4 = series_t<U_aphex[4]>;
 		
 		TRUE_(C4{1000, 100, 10, 1} * C4{2000, 200, 20, 2} == C4{2000600, 400040, 60002, 8000});
 		TRUE_(D4{1000, 100, 10, 1} * D4{2000, 200, 20, 2} == D4{2000600, 400040, 60002, 8000});

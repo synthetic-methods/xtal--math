@@ -121,14 +121,14 @@ struct sine<M_ism, -2>
 			static_assert(-1 <= N_lim);
 			int constexpr N = term_f(1, 2, N_lim&0b1111);
 
-			using W = XTAL_ALL_(w); using _fit = bond::fit<W>;
+			using W = XTAL_ALL_(w); using U_fit = bond::fit<W>;
 			XTAL_IF0
 			XTAL_0IF (0 < M_ism) {
 				W x{one};
 
 				bond::seek_to_e<-N>([&] (auto I) XTAL_0FN_(to) (
 					x = term_f(one
-					,	+_fit::ratio_f(1, (2 + 2*I)*(3 + 2*I))
+					,	+U_fit::ratio_f(1, (2 + 2*I)*(3 + 2*I))
 					,	w
 					,	x
 					)
@@ -136,11 +136,11 @@ struct sine<M_ism, -2>
 				return x;
 			}
 			XTAL_0IF (M_ism < 0) {
-				W x = _fit::ratio_f(1, 1 + 2*N);
+				W x = U_fit::ratio_f(1, 1 + 2*N);
 
 				bond::seek_to_e<-N>([&] (auto I) XTAL_0FN_(to) (
-					x = term_f(_fit::ratio_f(1, 1 + 2*I)
-					,	-_fit::ratio_f(1 + 2*I, 2 + 2*I)
+					x = term_f(U_fit::ratio_f(1, 1 + 2*I)
+					,	-U_fit::ratio_f(1 + 2*I, 2 + 2*I)
 					,	w
 					,	x
 					)

@@ -38,7 +38,7 @@ TAG_("phason")
 	static constexpr W_alpha six =  6;
 	static constexpr W_alpha ten = 10;
 
-	auto mt19937_f = W_fit::mt19937_t(Catch::rngSeed());
+	auto mt19937_f = W_fit::MT19937(Catch::rngSeed());
 
 	using V_phi = W_alpha;
 	using U_phi = phason_t<V_phi[2]>;
@@ -252,7 +252,7 @@ TAG_("phason trials")
 	static constexpr W_alpha six =  6;
 	static constexpr W_alpha ten = 10;
 
-	auto mt19937_o = typename W_fit::mt19937_t{}; mt19937_o.seed(Catch::rngSeed());
+	auto mt19937_o = typename W_fit::MT19937{}; mt19937_o.seed(Catch::rngSeed());
 	auto mt19937_f = [&] XTAL_1FN_(to) (W_fit::mantissa_f(mt19937_o));
 
 	using V_phi = W_alpha;

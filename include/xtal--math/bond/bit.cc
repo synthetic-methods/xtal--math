@@ -13,14 +13,36 @@ namespace xtal::bond::math::_test
 
 ////////////////////////////////////////////////////////////////////////////////
 
-TAG_("bit", "bit_swap_f")
+TAG_("bit", "constants")
 {
-	using T_fit = fit<>;
+	using T_fit = fit<unsigned>;
 	using T_sigma = typename T_fit::sigma_type;
 	using T_delta = typename T_fit::delta_type;
-	using T_alpha = typename T_fit::alpha_type;
-	using T_aphex = typename T_fit::aphex_type;
-	auto mt19937_f = typename T_fit::mt19937_t(Catch::rngSeed());
+
+	TRY_("constant evaluation and access")
+	{
+		TRUE_(0xAAAAAAAAU ==  (~unsigned{}/3<<1));
+		TRUE_(0x7FFFFFFFU ==  (~unsigned{}>>1));
+		TRUE_(0x80000000U == ~(~unsigned{}>>1));
+
+		TRUE_(0xAAAAAAAAU ==  T_fit::full.mask/3<<1);
+		TRUE_(0x7FFFFFFFU == ~T_fit::sign.mask);
+		TRUE_(0x80000000U ==  T_fit::sign.mask);
+
+	}
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+TAG_("bit", "bit_swap_f")
+{
+	using T_fit    = fit<>;
+	using T_sigma  = typename T_fit::sigma_type;
+	using T_delta  = typename T_fit::delta_type;
+	using T_alpha  = typename T_fit::alpha_type;
+	using T_aphex  = typename T_fit::aphex_type;
+	auto mt19937_f = typename T_fit::MT19937(Catch::rngSeed());
 
 	TRY_("bit_swap_f<+1>( ordinal_q)")
 	{
@@ -47,14 +69,36 @@ TAG_("bit", "bit_swap_f")
 
 ////////////////////////////////////////////////////////////////////////////////
 
+TAG_("bit", "bit_zoom_f")
+{
+	using U_fit    = fit<>;
+	using U_sigma  = typename U_fit::sigma_type;
+	using U_delta  = typename U_fit::delta_type;
+	using U_alpha  = typename U_fit::alpha_type;
+	using U_aphex  = typename U_fit::aphex_type;
+	auto mt19937_f = typename U_fit::MT19937(Catch::rngSeed());
+
+	TRY_("bit_zoom_f evaluation")
+	{
+		U_alpha x{1'000};
+		U_alpha y{0.001};
+		U_aphex z{x, y};
+		echo_(z*bit_zoom_f(z));
+
+	}
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+
 TAG_("bit", "bit_shift_f")
 {
-	using T_fit = fit<>;
-	using T_sigma = typename T_fit::sigma_type;
-	using T_delta = typename T_fit::delta_type;
-	using T_alpha = typename T_fit::alpha_type;
-	using T_aphex = typename T_fit::aphex_type;
-	auto mt19937_f = typename T_fit::mt19937_t(Catch::rngSeed());
+	using T_fit    = fit<>;
+	using T_sigma  = typename T_fit::sigma_type;
+	using T_delta  = typename T_fit::delta_type;
+	using T_alpha  = typename T_fit::alpha_type;
+	using T_aphex  = typename T_fit::aphex_type;
+	auto mt19937_f = typename T_fit::MT19937(Catch::rngSeed());
 
 	TRY_("bit_shift_f evaluation")
 	{
@@ -69,12 +113,12 @@ TAG_("bit", "bit_shift_f")
 
 TAG_("bit", "bit_clasp_f")
 {
-	using T_fit = fit<>;
-	using T_sigma = typename T_fit::sigma_type;
-	using T_delta = typename T_fit::delta_type;
-	using T_alpha = typename T_fit::alpha_type;
-	using T_aphex = typename T_fit::aphex_type;
-	auto mt19937_f = typename T_fit::mt19937_t(Catch::rngSeed());
+	using T_fit    = fit<>;
+	using T_sigma  = typename T_fit::sigma_type;
+	using T_delta  = typename T_fit::delta_type;
+	using T_alpha  = typename T_fit::alpha_type;
+	using T_aphex  = typename T_fit::aphex_type;
+	auto mt19937_f = typename T_fit::MT19937(Catch::rngSeed());
 
 	TRY_("bit_clasp_f evaluation")
 	{
@@ -93,12 +137,12 @@ TAG_("bit", "bit_clasp_f")
 
 TAG_("bit", "bit_extremal_f")
 {
-	using T_fit = fit<>;
-	using T_sigma = typename T_fit::sigma_type;
-	using T_delta = typename T_fit::delta_type;
-	using T_alpha = typename T_fit::alpha_type;
-	using T_aphex = typename T_fit::aphex_type;
-	auto mt19937_f = typename T_fit::mt19937_t(Catch::rngSeed());
+	using T_fit    = fit<>;
+	using T_sigma  = typename T_fit::sigma_type;
+	using T_delta  = typename T_fit::delta_type;
+	using T_alpha  = typename T_fit::alpha_type;
+	using T_aphex  = typename T_fit::aphex_type;
+	auto mt19937_f = typename T_fit::MT19937(Catch::rngSeed());
 
 	TRY_("bit_extremal_f(cardinal_q)")
 	{
@@ -118,12 +162,12 @@ TAG_("bit", "bit_extremal_f")
 
 TAG_("bit", "bit_trim_f")
 {
-	using T_fit = fit<>;
-	using T_sigma = typename T_fit::sigma_type;
-	using T_delta = typename T_fit::delta_type;
-	using T_alpha = typename T_fit::alpha_type;
-	using T_aphex = typename T_fit::aphex_type;
-	auto mt19937_f = typename T_fit::mt19937_t(Catch::rngSeed());
+	using T_fit    = fit<>;
+	using T_sigma  = typename T_fit::sigma_type;
+	using T_delta  = typename T_fit::delta_type;
+	using T_alpha  = typename T_fit::alpha_type;
+	using T_aphex  = typename T_fit::aphex_type;
+	auto mt19937_f = typename T_fit::MT19937(Catch::rngSeed());
 
 	TRY_("trim")
 	{
@@ -136,57 +180,56 @@ TAG_("bit", "bit_trim_f")
 /**/
 TAG_("bit", "bit_reverse")
 {
-	using T_fit = fit<>;
-	using T_sigma = typename T_fit::sigma_type;
-	using T_delta = typename T_fit::delta_type;
-	using T_alpha = typename T_fit::alpha_type;
-	using T_aphex = typename T_fit::aphex_type;
-	auto mt19937_f = typename T_fit::mt19937_t(Catch::rngSeed());
-
+	using T_fit    = fit<>;
+	using T_sigma  = typename T_fit::sigma_type;
+	using T_delta  = typename T_fit::delta_type;
+	using T_alpha  = typename T_fit::alpha_type;
+	using T_aphex  = typename T_fit::aphex_type;
+	auto mt19937_f = typename T_fit::MT19937(Catch::rngSeed());
 
 	TRY_("32:03")
 	{
 		using T_fit = fit<uint32_t>;
-		T_sigma question = 0b011;
-		T_sigma answer   = 0b110;
-
-		TRUE_(answer == bit_reverse_f<3>(question));
+		T_sigma constexpr question = 0b011;
+		T_sigma constexpr answer   = 0b110;
+		T_sigma constexpr guess    = bit_reverse_f< 3>(question);
+		TRUE_(answer == guess);
 
 	}
 	TRY_("16:16")
 	{
 		using T_fit = fit<uint16_t>;
-		T_sigma question = 0b0100100011100101;
-		T_sigma answer   = 0b1010011100010010;
-
-		TRUE_(answer == bit_reverse_f<16>(question));
+		T_sigma constexpr question = 0b0100100011100101;
+		T_sigma constexpr answer   = 0b1010011100010010;
+		T_sigma constexpr guess    = bit_reverse_f<16>(question);
+		TRUE_(answer == guess);
 
 	}
 	TRY_("16:12")
 	{
 		using T_fit = fit<uint16_t>;
-		T_sigma question = 0b010010001110;
-		T_sigma answer   = 0b011100010010;
-
-		TRUE_(answer == bit_reverse_f<12>(question));
+		T_sigma constexpr question = 0b010010001110;
+		T_sigma constexpr answer   = 0b011100010010;
+		T_sigma constexpr guess    = bit_reverse_f<12>(question);
+		TRUE_(answer == guess);
 
 	}
 	TRY_("8:8")
 	{
 		using T_fit = fit<uint8_t>;
-		T_sigma question = 0b01001101;
-		T_sigma answer   = 0b10110010;
-
-		TRUE_(answer == bit_reverse_f<8>(question));
+		T_sigma constexpr question = 0b01001101;
+		T_sigma constexpr answer   = 0b10110010;
+		T_sigma constexpr guess    = bit_reverse_f< 8>(question);
+		TRUE_(answer == guess);
 
 	}
 	TRY_("8:6")
 	{
 		using T_fit = fit<uint8_t>;
-		T_sigma question = 0b010011;
-		T_sigma answer   = 0b110010;
-
-		TRUE_(answer == bit_reverse_f<6>(question));
+		T_sigma constexpr question = 0b010011;
+		T_sigma constexpr answer   = 0b110010;
+		T_sigma constexpr guess    = bit_reverse_f< 6>(question);
+		TRUE_(answer == guess);
 
 	}
 }
@@ -196,12 +239,12 @@ TAG_("bit", "bit_reverse")
 
 TAG_("bit_floor_f")
 {
-	using T_fit = fit<>;
-	using T_delta = typename T_fit::delta_type;
-	using T_sigma = typename T_fit::sigma_type;
-	using T_alpha = typename T_fit::alpha_type;
-	using T_aphex = typename T_fit::aphex_type;
-	auto mt19937_f = typename T_fit::mt19937_t(Catch::rngSeed());
+	using T_fit    = fit<>;
+	using T_delta  = typename T_fit::delta_type;
+	using T_sigma  = typename T_fit::sigma_type;
+	using T_alpha  = typename T_fit::alpha_type;
+	using T_aphex  = typename T_fit::aphex_type;
+	auto mt19937_f = typename T_fit::MT19937(Catch::rngSeed());
 
 	TRY_("trial")
 	{
@@ -328,12 +371,12 @@ TAG_("bit_floor_f")
 
 TAG_("bit_representation_f")
 {
-	using T_fit = fit<>;
-	using T_delta = typename T_fit::delta_type;
-	using T_sigma = typename T_fit::sigma_type;
-	using T_alpha = typename T_fit::alpha_type;
-	using T_aphex = typename T_fit::aphex_type;
-	auto mt19937_f = typename T_fit::mt19937_t(Catch::rngSeed());
+	using T_fit    = fit<>;
+	using T_delta  = typename T_fit::delta_type;
+	using T_sigma  = typename T_fit::sigma_type;
+	using T_alpha  = typename T_fit::alpha_type;
+	using T_aphex  = typename T_fit::aphex_type;
+	auto mt19937_f = typename T_fit::MT19937(Catch::rngSeed());
 
 	TRY_("trial")
 	{
@@ -359,13 +402,13 @@ TAG_("bit_representation_f")
 
 TAG_("semifractional")
 {
-	using T_fit = fit<>;
+	using T_fit   = fit<>;
 	using T_delta = typename T_fit::delta_type;
 	using T_sigma = typename T_fit::sigma_type;
 	using T_alpha = typename T_fit::alpha_type;
 	using T_aphex = typename T_fit::aphex_type;
 
-	using U_fit = fit<float>;
+	using U_fit   = fit<float>;
 	using U_delta = typename U_fit::delta_type;
 	using U_sigma = typename U_fit::sigma_type;
 	using U_alpha = typename U_fit::alpha_type;
@@ -427,12 +470,12 @@ TAG_("semifractional")
 
 TAG_("fraction")
 {
-	using T_fit = fit<>;
-	using T_sigma = typename T_fit::sigma_type;
-	using T_delta = typename T_fit::delta_type;
-	using T_alpha = typename T_fit::alpha_type;
-	using T_aphex = typename T_fit::aphex_type;
-	auto mt19937_f = typename T_fit::mt19937_t(Catch::rngSeed());
+	using T_fit    = fit<>;
+	using T_sigma  = typename T_fit::sigma_type;
+	using T_delta  = typename T_fit::delta_type;
+	using T_alpha  = typename T_fit::alpha_type;
+	using T_aphex  = typename T_fit::aphex_type;
+	auto mt19937_f = typename T_fit::MT19937(Catch::rngSeed());
 
 	static constexpr T_alpha two =  2;
 	static constexpr T_alpha ten = 10;
@@ -452,7 +495,7 @@ TAG_("bit trials")
 	using T_delta  = typename T_fit::delta_type;
 	using T_alpha  = typename T_fit::alpha_type;
 	using T_aphex  = typename T_fit::aphex_type;
-	auto mt19937_o = typename T_fit::mt19937_t{}; mt19937_o.seed(Catch::rngSeed());
+	auto mt19937_o = typename T_fit::MT19937{}; mt19937_o.seed(Catch::rngSeed());
 	auto mt19937_f = [&] XTAL_1FN_(to) (T_fit::mantissa_f(mt19937_o));
 
 	static constexpr T_alpha two =  2;

@@ -15,33 +15,53 @@ namespace xtal::process::math::taylor::_test
 
 TAG_("octarithm")
 {
-	using _fit = bond::fit<>;
+	using U_fit = bond::fit<>;
+	using U_sigma = typename U_fit::sigma_type;
+	using U_delta = typename U_fit::delta_type;
+	using U_alpha = typename U_fit::alpha_type;
+	using U_aphex = typename U_fit::aphex_type;
+	static constexpr U_alpha pie = 3.141592653589793238462643383279503L;
+	static constexpr U_alpha egg = 1.23456789;
+	static constexpr U_alpha ten = 10;
 
-	using T_sigma = typename _fit::sigma_type;
-	using T_delta = typename _fit::delta_type;
-	using T_alpha = typename _fit::alpha_type;
-	using T_aphex = typename _fit::aphex_type;
-	static constexpr T_alpha egg = 1.23456789;
-	static constexpr T_alpha ten = 10;
-
-	auto mt19937_f = typename _fit::mt19937_t();
+	auto mt19937_f = typename U_fit::MT19937();
 	mt19937_f.seed(Catch::rngSeed());
 
 	TRY_("octarithm tuning")
 	{
-		T_alpha constexpr A4_Hz = 440, C4_Hz = 261.625565300598634677849993523304L;
-		T_alpha constexpr A4_st =  69, C4_st =  60;
+		U_alpha constexpr A4_Hz = 440.000000000000000000000000000000L;
+		U_alpha constexpr C4_Hz = 261.625565300598634677849993523304L;
+		U_alpha constexpr c1_Hz =   8.175798915643707333682812297603L;
 
-		T_alpha constexpr oct_01 = A4_Hz*octarithm_f<-2, 1,~0>(-_fit::ratio_f(A4_st, 12));
-		TRUE_(check_f<-23>(oct_01*octarithm_f<-2, 1, 2>(_fit::ratio_f(C4_st, 12)), C4_Hz));
-		TRUE_(check_f<-23>(oct_01*octarithm_f<-2, 1, 3>(_fit::ratio_f(C4_st, 12)), C4_Hz));
+		int     constexpr A4_st =  69;
+		int     constexpr C4_st =  60;
+		int     constexpr c1_st =   0;
 
-		T_alpha constexpr oct_12 = A4_Hz*octarithm_f<-2, 12,~0>(-A4_st);
-		TRUE_(check_f<-23>(oct_12*octarithm_f<-2, 12, 3>(C4_st), C4_Hz));
+		TRUE_(check_f<-23>(A4_Hz, c1_Hz*octarithm_f<-2,  1, 3>(U_fit::ratio_f(A4_st, 12))));
+		TRUE_(check_f<-27>(A4_Hz, c1_Hz*octarithm_f<-2,  1, 2>(U_fit::ratio_f(A4_st, 12))));
+		TRUE_(check_f<-35>(A4_Hz, c1_Hz*octarithm_f<-2,  1, 1>(U_fit::ratio_f(A4_st, 12))));
+		TRUE_(check_f<-43>(A4_Hz, c1_Hz*octarithm_f<-2,  1, 0>(U_fit::ratio_f(A4_st, 12))));
+
+		TRUE_(check_f<- 1>(C4_Hz, c1_Hz*octarithm_f<-2,  1, 3>(U_fit::ratio_f(C4_st, 12))));
+		TRUE_(check_f<- 1>(C4_Hz, c1_Hz*octarithm_f<-2,  1, 2>(U_fit::ratio_f(C4_st, 12))));
+		TRUE_(check_f<- 1>(C4_Hz, c1_Hz*octarithm_f<-2,  1, 1>(U_fit::ratio_f(C4_st, 12))));
+		TRUE_(check_f<- 1>(C4_Hz, c1_Hz*octarithm_f<-2,  1, 0>(U_fit::ratio_f(C4_st, 12))));
+
+		TRUE_(check_f<-40>(A4_Hz, c1_Hz*octarithm_f<-2, 12, 3>(A4_st)));
+		TRUE_(check_f<-40>(A4_Hz, c1_Hz*octarithm_f<-2, 12, 2>(A4_st)));
+		TRUE_(check_f<-40>(A4_Hz, c1_Hz*octarithm_f<-2, 12, 1>(A4_st)));
+		TRUE_(check_f<-40>(A4_Hz, c1_Hz*octarithm_f<-2, 12, 0>(A4_st)));
+
+		TRUE_(check_f<- 1>(C4_Hz, c1_Hz*octarithm_f<-2, 12, 3>(C4_st)));
+		TRUE_(check_f<- 1>(C4_Hz, c1_Hz*octarithm_f<-2, 12, 2>(C4_st)));
+		TRUE_(check_f<- 1>(C4_Hz, c1_Hz*octarithm_f<-2, 12, 1>(C4_st)));
+		TRUE_(check_f<- 1>(C4_Hz, c1_Hz*octarithm_f<-2, 12, 0>(C4_st)));
+
+		TRUE_(check_f<-33>(c1_Hz, octarithm_f<-2, 12,~0>(-A4_st)*(A4_Hz)));
 	}
 	TRY_("octarithm base-2 evaluation (real)")
 	{
-		T_alpha o{};
+		U_alpha o{};
 
 		o = half;
 		TRUE_(check_f<- 1>(root_f< 2>(2.0), o = octarithm_t<-2>{}.template method<-1>(o)));
@@ -63,6 +83,11 @@ TAG_("octarithm")
 		TRUE_(check_f<-38>(root_f< 2>(2.0), o = octarithm_t<-2>{}.template method< 0>(o)));
 		TRUE_(check_f<-38>(root_f<-1>(2.0), o = octarithm_t< 2>{}.template method< 0>(o)));
 
+		TRUE_(check_f<- 1>(octarithm_t<-1, 1>{}.template method<-1>(egg*-half/pie), exp(egg)));
+		TRUE_(check_f<-16>(octarithm_t<-1, 1>{}.template method< 3>(egg*-half/pie), exp(egg)));
+		TRUE_(check_f<-20>(octarithm_t<-1, 1>{}.template method< 2>(egg*-half/pie), exp(egg)));
+		TRUE_(check_f<-27>(octarithm_t<-1, 1>{}.template method< 1>(egg*-half/pie), exp(egg)));
+
 	};
 	TRY_("octarithm base-2 evaluation (integral)")
 	{
@@ -74,63 +99,63 @@ TAG_("octarithm")
 }
 TAG_("octarithm trials")
 {
-	using _fit = bond::fit<>;
+	using U_fit = bond::fit<>;
 
-	using T_sigma = typename _fit::sigma_type;
-	using T_delta = typename _fit::delta_type;
-	using T_alpha = typename _fit::alpha_type;
-	using T_aphex = typename _fit::aphex_type;
+	using U_sigma = typename U_fit::sigma_type;
+	using U_delta = typename U_fit::delta_type;
+	using U_alpha = typename U_fit::alpha_type;
+	using U_aphex = typename U_fit::aphex_type;
 
-	auto mt19937_o = typename _fit::mt19937_t{}; mt19937_o.seed(Catch::rngSeed());
-	auto mt19937_f = [&] XTAL_1FN_(to) (_fit::mantissa_f(mt19937_o));
+	auto mt19937_o = typename U_fit::MT19937{}; mt19937_o.seed(Catch::rngSeed());
+	auto mt19937_f = [&] XTAL_1FN_(to) (U_fit::mantissa_f(mt19937_o));
 
-	EST_("real octarithm... <N_lim=~0>")
+	EST_("real octarithm<-2;~0>")
 	{
-		T_alpha w{1};
+		U_alpha w{1};
 		for (int i{0x60}; ~--i;) {
 			//\
-			w *= octarithm_t<-1>{}.template method<~0>(mt19937_f());
-			w *= exp(0.693*mt19937_f());
+			w += octarithm_t<-1>{}.template method<~0>(mt19937_f());
+			w += exp(0.693*mt19937_f());
 		}
 		return w;
 	
 	};
-	EST_("real octarithm... <N_lim=3>")
+	EST_("real octarithm<-2; 3>")
 	{
-		T_alpha w{1};
+		U_alpha w{1};
 		for (int i{0x60}; ~--i;) {
-			auto x = mt19937_f();
-			w *= octarithm_t<-2>{}.template method<3>(x);
+			auto x = one + mt19937_f();
+			w += octarithm_t<-2>{}.template method<3>(x);
 		}
 		return w;
 	
 	};
-	EST_("real octarithm... <N_lim=2>")
+	EST_("real octarithm<-2; 2>")
 	{
-		T_alpha w{1};
+		U_alpha w{1};
 		for (int i{0x60}; ~--i;) {
-			auto x = mt19937_f();
-			w *= octarithm_t<-2>{}.template method<2>(x);
+			auto x = one + mt19937_f();
+			w += octarithm_t<-2>{}.template method<2>(x);
 		}
 		return w;
 	
 	};
-	EST_("real octarithm... <N_lim=1>")
+	EST_("real octarithm<-2; 1>")
 	{
-		T_alpha w{1};
+		U_alpha w{1};
 		for (int i{0x60}; ~--i;) {
-			auto x = mt19937_f();
-			w *= octarithm_t<-2>{}.template method<1>(x);
+			auto x = one + mt19937_f();
+			w += octarithm_t<-2>{}.template method<1>(x);
 		}
 		return w;
 	
 	};
-	EST_("real octarithm... <N_lim=0>")
+	EST_("real octarithm<-2; 0>")
 	{
-		T_alpha w{1};
+		U_alpha w{1};
 		for (int i{0x60}; ~--i;) {
-			auto x = mt19937_f();
-			w *= octarithm_t<-2>{}.template method<0>(x);
+			auto x = one + mt19937_f();
+			w += octarithm_t<-2>{}.template method<0>(x);
 		}
 		return w;
 	

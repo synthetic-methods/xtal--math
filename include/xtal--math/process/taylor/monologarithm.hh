@@ -49,9 +49,8 @@ struct monologarithm<M_ism, -0>
 		method(auto &&o)
 		const noexcept -> auto
 		{
-			using _fit = bond::fit<decltype(o)>;
-			auto constexpr k = _fit::alpha_f(sign_v<I_ism, -1>);
-
+			using U_fit = bond::fit<decltype(o)>;
+			auto constexpr k = U_fit::alpha_f(sign_v<I_ism, -1>);
 			XTAL_IF0
 			XTAL_0IF (0 <= N_lim) {return  superprocess{}.template method<N_lim>(XTAL_REF_(o));}
 			XTAL_0IF (0 == I_ism) {return -log(one - XTAL_REF_(o));}

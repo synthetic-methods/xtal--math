@@ -41,7 +41,6 @@ XTAL_DEF_(return,inline,set)
 monomial_f(objective_q auto &&o)
 noexcept -> XTAL_ALL_(o)
 {
-	using _fit = bond::fit<decltype(o)>;
 	if constexpr (complex_variable_q<decltype(o)>) {
 		auto const x  = _std::real(o), xx = monomial_f<2>(x);
 		auto const y  = _std::imag(o), yy = monomial_f<2>(y);
@@ -58,7 +57,6 @@ XTAL_DEF_(return,inline,set)
 monomial_f(objective_q auto &&o)
 noexcept -> XTAL_ALL_(o)
 {
-	using _fit = bond::fit<decltype(o)>;
 	if constexpr (complex_variable_q<decltype(o)>) {
 		using U = XTAL_ALL_(o);
 		using V = typename U::value_type;

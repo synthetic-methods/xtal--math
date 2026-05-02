@@ -15,11 +15,11 @@ namespace xtal::atom::math::dirichlet::_test
 
 TAG_("symbol")
 {
-	using _fit = bond::fit<>;
-	using T_delta = typename _fit::delta_type;
-	using T_sigma = typename _fit::sigma_type;
-	using T_alpha = typename _fit::alpha_type;
-	using T_aphex = typename _fit::aphex_type;
+	using U_fit   = bond::fit<>;
+	using U_delta = typename U_fit::delta_type;
+	using U_sigma = typename U_fit::sigma_type;
+	using U_alpha = typename U_fit::alpha_type;
+	using U_aphex = typename U_fit::aphex_type;
 
 	TRY_("11th characterization (integer)")
 	{
@@ -27,7 +27,7 @@ TAG_("symbol")
 		int constexpr M = N  - 1;
 		int constexpr K = M >> 1;
 
-		using W = symbol_t<T_delta[N]>;
+		using W = symbol_t<U_delta[N]>;
 		W w; w.characterize();
 
 		TRUE_(w == W{0, 0, 1,-2, 2, 4,-1,-3, 3,-4,-5});
@@ -39,7 +39,7 @@ TAG_("symbol")
 		int constexpr M = N  - 1;
 		int constexpr K = M >> 1;
 
-		using W = symbol_t<T_delta[K]>;
+		using W = symbol_t<U_delta[K]>;
 
 		W w; w.subcharacterize();
 
@@ -52,10 +52,10 @@ TAG_("symbol")
 		int constexpr M = N  - 1;
 		int constexpr K = M >> 1;
 
-		using W = symbol_t<T_aphex[N]>;
+		using W = symbol_t<U_aphex[N]>;
 		W w; w.characterize();
 		W m {process::math::monomial_f<K>(w)};
-		_detail::apply_to<[] (auto &&z) XTAL_0FN_(to) (arg(XTAL_REF_(z))*K/_fit::patio_1)>(w);
+		_detail::apply_to<[] (auto &&z) XTAL_0FN_(to) (arg(XTAL_REF_(z))*K/U_fit::patio_1)>(w);
 
 		_detail::apply_to<[] XTAL_1FN_(call) (bond::math::bit_trim_f<16>)>(m);
 		_detail::apply_to<[] XTAL_1FN_(call) (bond::math::bit_trim_f<16>)>(w);
@@ -71,7 +71,7 @@ TAG_("symbol")
 		int constexpr M = N  - 1;
 		int constexpr K = M >> 1;
 
-		using W = symbol_t<T_delta[N]>;
+		using W = symbol_t<U_delta[N]>;
 		W w; w.characterize();
 
 		TRUE_(w == W{ 0, 0, 2, 1,-2,-1,-3});
@@ -83,7 +83,7 @@ TAG_("symbol")
 		int constexpr M = N  - 1;
 		int constexpr K = M >> 1;
 
-		using W = symbol_t<T_delta[K]>;
+		using W = symbol_t<U_delta[K]>;
 		W w; w.subcharacterize();
 
 		TRUE_(w == W{ 0, 2, 1});
@@ -95,10 +95,10 @@ TAG_("symbol")
 		int constexpr M = N  - 1;
 		int constexpr K = M >> 1;
 
-		using W = symbol_t<T_aphex[N]>;
+		using W = symbol_t<U_aphex[N]>;
 		W w; w.characterize();
 		W m {process::math::monomial_f<K>(w)};
-		_detail::apply_to<[] (auto &&z) XTAL_0FN_(to) (arg(XTAL_REF_(z))*K/_fit::patio_1)>(w);
+		_detail::apply_to<[] (auto &&z) XTAL_0FN_(to) (arg(XTAL_REF_(z))*K/U_fit::patio_1)>(w);
 
 		_detail::apply_to<[] XTAL_1FN_(call) (bond::math::bit_trim_f<16>)>(m);
 		_detail::apply_to<[] XTAL_1FN_(call) (bond::math::bit_trim_f<16>)>(w);
@@ -113,10 +113,10 @@ TAG_("symbol")
 		int constexpr M = N  - 1;
 		int constexpr K = M >> 1;
 
-		using W = symbol_t<T_aphex[K]>;
+		using W = symbol_t<U_aphex[K]>;
 		W w; w.subcharacterize();
 		W m {process::math::monomial_f<K>(w)};
-		_detail::apply_to<[] (auto &&z) XTAL_0FN_(to) (arg(XTAL_REF_(z))*K/_fit::patio_1)>(w);
+		_detail::apply_to<[] (auto &&z) XTAL_0FN_(to) (arg(XTAL_REF_(z))*K/U_fit::patio_1)>(w);
 
 		_detail::apply_to<[] XTAL_1FN_(call) (bond::math::bit_trim_f<16>)>(m);
 		_detail::apply_to<[] XTAL_1FN_(call) (bond::math::bit_trim_f<16>)>(w);
@@ -130,7 +130,7 @@ TAG_("symbol")
 		int constexpr M = N  - 1;
 		int constexpr K = M >> 1;
 
-		using W = symbol_t<T_alpha[N]>;
+		using W = symbol_t<U_alpha[N]>;
 		W w; w.characterize();
 
 		_detail::apply_to<[] XTAL_1FN_(call) (bond::math::bit_trim_f<16>)>(w);
@@ -145,10 +145,10 @@ TAG_("symbol")
 		int constexpr M = N  - 1;
 		int constexpr K = M >> 1;
 
-		using W = symbol_t<T_aphex[N]>;
+		using W = symbol_t<U_aphex[N]>;
 		W w; w.characterize();
 		W m{process::math::monomial_f<K>(w)};
-		_detail::apply_to<[] (auto &&z) XTAL_0FN_(to) (arg(XTAL_REF_(z))*K/_fit::patio_1)>(w);
+		_detail::apply_to<[] (auto &&z) XTAL_0FN_(to) (arg(XTAL_REF_(z))*K/U_fit::patio_1)>(w);
 
 		_detail::apply_to<[] XTAL_1FN_(call) (bond::math::bit_trim_f<16>)>(m);
 		_detail::apply_to<[] XTAL_1FN_(call) (bond::math::bit_trim_f<16>)>(w);
@@ -163,7 +163,7 @@ TAG_("symbol")
 		int constexpr M = N  - 1;
 		int constexpr K = M >> 1;
 
-		using W = symbol_t<T_alpha[N]>;
+		using W = symbol_t<U_alpha[N]>;
 		W w; w.template characterize<2>();
 		_detail::apply_to<[] XTAL_1FN_(call) (bond::math::bit_trim_f<16>)>(w);
 	}

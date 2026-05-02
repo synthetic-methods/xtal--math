@@ -26,7 +26,7 @@ TAG_("whatever")
 
 	using U_phi = atom::math::phason_t<U_alpha[2]>;
 
-	auto mt19937_f = typename U_fit::mt19937_t();
+	auto mt19937_f = typename U_fit::MT19937();
 	mt19937_f.seed(Catch::rngSeed());
 
 	TRY_("stuff")
@@ -90,7 +90,7 @@ TAG_("tangent trials")
 	using U_delta  = typename U_fit::delta_type;
 	using U_alpha  = typename U_fit::alpha_type;
 	using U_aphex  = typename U_fit::aphex_type;
-	auto mt19937_o = typename U_fit::mt19937_t{}; mt19937_o.seed(Catch::rngSeed());
+	auto mt19937_o = typename U_fit::MT19937{}; mt19937_o.seed(Catch::rngSeed());
 	auto mt19937_f = [&] XTAL_1FN_(to) (U_fit::mantissa_f(mt19937_o));
 
 	auto const mt19937_y = half*mt19937_f();

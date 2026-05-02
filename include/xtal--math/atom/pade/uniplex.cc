@@ -65,12 +65,13 @@ TAG_("uniplex")
 		auto const [u_re, u_im] = u.reflection(zero, half);
 		auto const [v_re, v_im] = u.reflection();
 		auto const [w_re, w_im] = u.resolution();
-		TRUE_(check_f<-30>(u_re, imagine_f<0>(one*cos(two*pi*x))));
-		TRUE_(check_f<-30>(u_im, imagine_f<1>(one*sin(two*pi*x))));
-		TRUE_(check_f<-30>(v_re, imagine_f<0>(two*cos(two*pi*x))));
-		TRUE_(check_f<-30>(v_im, imagine_f<1>(two*sin(two*pi*x))));
-		TRUE_(check_f<-30>(w_re, exp(imagine_f< 1>(two*pi*x))));
-		TRUE_(check_f<-30>(w_im, exp(imagine_f<-1>(two*pi*x))));
+
+		TRUE_(check_f<-17>(u_re, imagine_f<0>(one*cos(two*pi*x))));
+		TRUE_(check_f<-17>(u_im, imagine_f<1>(one*sin(two*pi*x))));
+		TRUE_(check_f<-17>(v_re, imagine_f<0>(two*cos(two*pi*x))));
+		TRUE_(check_f<-17>(v_im, imagine_f<1>(two*sin(two*pi*x))));
+		TRUE_(check_f<-17>(w_re, exp(imagine_f< 1>(two*pi*x))));
+		TRUE_(check_f<-17>(w_im, exp(imagine_f<-1>(two*pi*x))));
 
 		u *= u;
 

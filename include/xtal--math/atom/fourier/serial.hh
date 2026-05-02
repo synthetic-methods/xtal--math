@@ -32,7 +32,7 @@ template <vector_q A>
 struct serial<A>
 {
 private:
-	using _fit = bond::fit<A>;
+	using U_fit = bond::fit<A>;
 	
 	template <class T>
 	using endotype = typename differential<atom::applied_s<A, _std::plus>>::template homotype<T>;
@@ -73,7 +73,7 @@ public:
 		{
 			auto &s = self();
 			
-			if constexpr (typename _fit::alignment{}() < size()) {
+			if constexpr (U_fit::alignment < size) {
 				for (auto i = size(); ~--i;) {element(i) *= get<0>(t);
 				for (auto j =      i; j-- ;) {element(i) += t.element(j)*element(i - j);}}
 			}

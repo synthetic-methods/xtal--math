@@ -33,8 +33,8 @@ struct dilate
 	after_f(auto &&o)
 	noexcept -> decltype(auto)
 	{
-		using _fit = bond::fit<decltype(o)>;
-		auto constexpr n_val = _fit::alpha_f(bond::operate_v<M_val>);
+		using U_fit = bond::fit<decltype(o)>;
+		auto constexpr n_val = U_fit::alpha_f(bond::operate_v<M_val>);
 		auto constexpr u     =       part_f<unsigned>(n_val);
 		auto constexpr v     = (int) part_f<  signed>(n_val);
 		return XTAL_REF_(o)*root_f<+v>(u);

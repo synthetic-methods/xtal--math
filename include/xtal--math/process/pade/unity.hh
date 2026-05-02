@@ -52,7 +52,6 @@ struct unity<M_ism, M_car>
 		method(_std::initializer_list<U> o)
 		const noexcept -> decltype(auto)
 		{
-			using _fit = bond::fit<decltype(o)>;
 			_std::complex<U> w; auto &m = destruct_f(w);
 			_std::copy_n(point_f(o), 2, m);
 			return method<N_lim>(w);

@@ -123,7 +123,7 @@ struct hype
 		method_approx(auto u, complex_field_q auto const &z)
 		noexcept -> auto
 		{
-			using      _fit  = bond::fit<decltype(u)>;
+			using      U_fit = bond::fit<decltype(u)>;
 			auto       z_re  = z.real();
 			auto       z_im  = z.imag();
 			auto const z_io  = part_t<signed>{}.edit(z_im);
@@ -141,7 +141,7 @@ struct hype
 				}
 				else {
 					auto constexpr N_ord = monomial_f<N_lim>(N_ism);
-					u = _fit::ratio_f(N_ord, 2)*roots_f<N_ord>(XTAL_MOV_(u)).template sum<-1>();
+					u = U_fit::ratio_f(N_ord, 2)*roots_f<N_ord>(XTAL_MOV_(u)).template sum<-1>();
 				}
 			}
 			XTAL_0IF (M_ism < 0) {

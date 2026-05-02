@@ -15,12 +15,11 @@ namespace xtal::process::math::pade::_test
 
 TAG_("arc")
 {
-	using _fit = bond::fit<>;
-
-	using U_sigma = typename _fit::sigma_type;
-	using U_delta = typename _fit::delta_type;
-	using U_alpha = typename _fit::alpha_type;
-	using U_aphex = typename _fit::aphex_type;
+	using U_fit   = bond::fit<>;
+	using U_sigma = typename U_fit::sigma_type;
+	using U_delta = typename U_fit::delta_type;
+	using U_alpha = typename U_fit::alpha_type;
+	using U_aphex = typename U_fit::aphex_type;
 	static constexpr U_alpha egg =  1.23456789;
 	static constexpr U_alpha ten = 10;
 

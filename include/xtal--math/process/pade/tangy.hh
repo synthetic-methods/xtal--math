@@ -38,17 +38,16 @@ struct tangy<M_ism,-0>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_DEF_(return,let)
 		method(auto &&o)
 		const noexcept -> auto
 		{
-			using _fit = bond::fit<decltype(o)>;
-			
+			using U_fit = bond::fit<decltype(o)>;
 			XTAL_IF0
 			XTAL_0IF (N_lim <  0) {
 				XTAL_IF0
-				XTAL_0IF (1 == M_ism) {return tan (XTAL_REF_(o)*_fit::patio_1);}
-				XTAL_0IF (2 == M_ism) {return tanh(XTAL_REF_(o)*_fit::patio_1);}
+				XTAL_0IF (1 == M_ism) {return tan (XTAL_REF_(o)*U_fit::patio_1);}
+				XTAL_0IF (2 == M_ism) {return tanh(XTAL_REF_(o)*U_fit::patio_1);}
 			}
 			XTAL_0IF (0 <= N_lim) {
 				auto const w1 = _detail::impunity_t<M_ism,-0>{}.
@@ -56,8 +55,8 @@ struct tangy<M_ism,-0>
 
 				auto const x1 =  w1.real();
 				auto const y1 =  w1.imag();
-				auto const x2 =  term_f(square_f(x1), square_f(y1), _fit::alpha_f(cosign_v<M_ism>));
-				auto const y2 = _fit::diplo_1*x1*y1;
+				auto const x2 =  term_f(square_f(x1), square_f(y1), U_fit::alpha_f(cosign_v<M_ism>));
+				auto const y2 = U_fit::diplo_1*x1*y1;
 				return y2*root_f<-1, 1>(x2);
 			}
 		}
@@ -68,13 +67,13 @@ struct tangy<M_ism,-0>
 		domain_f(auto &&o)
 		noexcept -> auto
 		{
-			using _fit = bond::fit<decltype(o)>;
+			using U_fit = bond::fit<decltype(o)>;
 			XTAL_IF0
 			XTAL_0IF (1 == M_ism or un_v<real_q<decltype(o)>>) {
-				return XTAL_REF_(o)*_fit::haplo_f(1);
+				return XTAL_REF_(o)*U_fit::haplo_f(1);
 			}
 			XTAL_0IF (2 == M_ism) {
-				_std::array<typename _fit::alpha_type, 8> constexpr bounds_{
+				_std::array<typename U_fit::alpha_type, 8> constexpr bounds_{
 					1.9096980357053441147549036436586719e0L
 				,	2.2822895356638484368650166829565960e0L
 				,	2.7608321718626827008543388837862171e0L
@@ -83,7 +82,7 @@ struct tangy<M_ism,-0>
 				};
 				auto const o_up = part_f<unsigned>(o + bounds_[N_lim]);
 				auto const o_dn = part_f<unsigned>(o - bounds_[N_lim]);
-				return (o_up - o_dn)*_fit::haplo_f(2);
+				return (o_up - o_dn)*U_fit::haplo_f(2);
 			}
 		}
 
@@ -107,14 +106,14 @@ struct tangy<M_ism, 1>
 		method(auto &&o)
 		const noexcept -> auto
 		{
-			using _fit = bond::fit<decltype(o)>;
+			using U_fit = bond::fit<decltype(o)>;
 			
 			XTAL_IF0
 			//\
 			XTAL_0IF (M_ism == 2 and N_lim%2 == 0) {
 			XTAL_0IF (M_ism == 2 and N_lim   == 0) {
-				auto constexpr zoom_dn =     superprocess{}.template method<N_lim>(_fit::alpha_f(4.L));
-				auto constexpr zoom_up = one/superprocess{}.template method<N_lim>(_fit::alpha_f(4.L));
+				auto constexpr zoom_dn =     superprocess{}.template method<N_lim>(U_fit::alpha_f(4.L));
+				auto constexpr zoom_up = one/superprocess{}.template method<N_lim>(U_fit::alpha_f(4.L));
 				return superprocess{}.template method<N_lim>(XTAL_REF_(o)*zoom_dn)*zoom_up;
 			}
 			XTAL_0IF_(else) {
@@ -153,24 +152,24 @@ struct tangy<M_ism, 1>
 			return method<N_lim>(o.imag(), o.real());
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_DEF_(return,let)
 		method(simplex_field_q auto &&v, simplex_field_q auto &&u)
 		const noexcept -> decltype(auto)
 		{
-			using _fit = bond::fit<decltype(v), decltype(u)>;
-			using U_aphex = typename _fit::aphex_type;
-			using U_alpha = typename _fit::alpha_type;
+			using U_fit = bond::fit<decltype(v), decltype(u)>;
+			using U_aphex = typename U_fit::aphex_type;
+			using U_alpha = typename U_fit::alpha_type;
 			using W_alpha = atom::couple_t<U_alpha[2]>;
 
 			auto u_abs = u, u_sgn = part_t<signed>{}.edit(u_abs);
-			auto v_abs = v, v_sgn = part_t<signed>{}.edit(v_abs);// v_sgn *= *_fit::haplo_1;
+			auto v_abs = v, v_sgn = part_t<signed>{}.edit(v_abs);// v_sgn *= *U_fit::haplo_1;
 
 			W_alpha co{v_abs < u_abs, _std::in_place};
 			W_alpha up{v, u_abs}; up *= co;
 			W_alpha dn{u_abs,-v}; dn *= co;
 
 			auto const &[co_0, co_1]  = co;
-			auto const u_flp = _fit::haplo_1 - _fit::haplo_1*co_0*u_sgn;
+			auto const u_flp = U_fit::haplo_1 - U_fit::haplo_1*co_0*u_sgn;
 
 			return term_f(u_flp*v_sgn, u_sgn, S_::template method<N_lim>(up.sum()/dn.sum()));
 		}

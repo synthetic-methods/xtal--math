@@ -15,16 +15,15 @@ namespace xtal::process::math::_test
 
 TAG_("hype")
 {
-	using _fit = bond::fit<>;
+	using U_fit   = bond::fit<>;
+	using U_sigma = typename U_fit::sigma_type;
+	using U_delta = typename U_fit::delta_type;
+	using U_alpha = typename U_fit::alpha_type;
+	using U_aphex = typename U_fit::aphex_type;
 
-	using T_sigma = typename _fit::sigma_type;
-	using T_delta = typename _fit::delta_type;
-	using T_alpha = typename _fit::alpha_type;
-	using T_aphex = typename _fit::aphex_type;
+	using U_phi = atom::math::phason_t<U_alpha[2]>;
 
-	using U_phi = atom::math::phason_t<T_alpha[2]>;
-
-	auto mt19937_f = typename _fit::mt19937_t();
+	auto mt19937_f = typename U_fit::MT19937();
 	mt19937_f.seed(Catch::rngSeed());
 
 	TRY_("hype cardinal")
@@ -161,11 +160,11 @@ TAG_("hype")
 
 	EST_("hype_t<-3>::method<~0, 0> (exp(#) - one)")
 	{
-		T_alpha o{1};
-		for (T_sigma i = 0x100; ~--i;) {
+		U_alpha o{1};
+		for (U_sigma i = 0x100; ~--i;) {
 			//\
-			o *= hype_t<-3, -0>{}.template method<~0, 0>(_fit::mantissa_f(mt19937_f));
-			o *= exp(_fit::mantissa_f(mt19937_f)) - one;
+			o *= hype_t<-3, -0>{}.template method<~0, 0>(U_fit::mantissa_f(mt19937_f));
+			o *= exp(U_fit::mantissa_f(mt19937_f)) - one;
 		}
 		return o;
 
@@ -173,50 +172,50 @@ TAG_("hype")
 	/**/
 	EST_("hype_t<-3>::method< 8, 0>")
 	{
-		T_alpha o{1};
+		U_alpha o{1};
 
 		for (int i{0}; i < 0x100; ++i) {
-			o *= hype_t<-3, -0>{}.template method< 8, 0>(_fit::mantissa_f(mt19937_f));
+			o *= hype_t<-3, -0>{}.template method< 8, 0>(U_fit::mantissa_f(mt19937_f));
 		}
 		return o;
 
 	};
 	EST_("hype_t<-3>::method< 4, 0>")
 	{
-		T_alpha o{1};
+		U_alpha o{1};
 
 		for (int i{0}; i < 0x100; ++i) {
-			o *= hype_t<-3, -0>{}.template method< 4, 0>(_fit::mantissa_f(mt19937_f));
+			o *= hype_t<-3, -0>{}.template method< 4, 0>(U_fit::mantissa_f(mt19937_f));
 		}
 		return o;
 
 	};
 	EST_("hype_t<-3>::method< 3, 0>")
 	{
-		T_alpha o{1};
+		U_alpha o{1};
 
 		for (int i{0}; i < 0x100; ++i) {
-			o *= hype_t<-3, -0>{}.template method< 3, 0>(_fit::mantissa_f(mt19937_f));
+			o *= hype_t<-3, -0>{}.template method< 3, 0>(U_fit::mantissa_f(mt19937_f));
 		}
 		return o;
 
 	};
 	EST_("hype_t<-3>::method< 2, 0>")
 	{
-		T_alpha o{1};
+		U_alpha o{1};
 
 		for (int i{0}; i < 0x100; ++i) {
-			o *= hype_t<-3, -0>{}.template method< 2, 0>(_fit::mantissa_f(mt19937_f));
+			o *= hype_t<-3, -0>{}.template method< 2, 0>(U_fit::mantissa_f(mt19937_f));
 		}
 		return o;
 
 	};
 	EST_("hype_t<-3>::method< 1, 0>")
 	{
-		T_alpha o{1};
+		U_alpha o{1};
 
 		for (int i{0}; i < 0x100; ++i) {
-			o *= hype_t<-3, -0>{}.template method< 1, 0>(_fit::mantissa_f(mt19937_f));
+			o *= hype_t<-3, -0>{}.template method< 1, 0>(U_fit::mantissa_f(mt19937_f));
 		}
 		return o;
 

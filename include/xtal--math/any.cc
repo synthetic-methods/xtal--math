@@ -39,8 +39,6 @@ struct complexion
 	using source_type = _std::complex<U>;
 	using target_type = _std::complex<V>;
 
-	using _fit = xtal::bond::fit<value_type>;
-
 	value_type re;
 	value_type im;
 
@@ -333,7 +331,6 @@ void echo_plot_(iterated_q auto const list, integral_q auto ...markers)
 	using _std::get;
 	using W = XTAL_ALL_(list);
 	using U = iteratee_t<W>;
-	using _fit = bond::fit<decltype(list)>;
 	int line{};
 	for (auto item: list) {
 		using List = XTAL_ALL_(list);

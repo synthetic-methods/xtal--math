@@ -12,14 +12,13 @@ namespace xtal::process::math::taylor
 /////////////////////////////////////////////////////////////////////////////////
 
 template <int M_ism=1, int M_car=0>
-struct  logarithm;
+XTAL_TYP_(new) logarithm;
 
 template <int M_ism=1, int M_car=0>
-using   logarithm_t = process::confined_t<logarithm<M_ism, M_car>>;
+XTAL_TYP_(let) logarithm_t = process::confined_t<logarithm<M_ism, M_car>>;
 
 template <int M_ism=1, int M_car=0, int ...Ns>
-XTAL_DEF_(let)
-logarithm_f = [] XTAL_1FN_(call) (logarithm_t<M_ism, M_car>{}.template method<Ns...>);
+XTAL_DEF_(let) logarithm_f = [] XTAL_1FN_(call) (logarithm_t<M_ism, M_car>{}.template method<Ns...>);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,34 +39,34 @@ struct logarithm< 1, 0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,let)
+		XTAL_DEF_(return,inline,set)
 		method(auto &&o)
-		const noexcept -> decltype(auto)
+		noexcept -> decltype(auto)
 		requires un_v<atom::groupoid_q<decltype(o)>>
 		{
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim)                   {return method_approx<N_lim>(XTAL_REF_(o));}
-			XTAL_0IF_(consteval)                    {return method_approx<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim)                   {return methox<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)                    {return methox<   ~0>(XTAL_REF_(o));}
 	#if   XTAL_SYS_(builtin)
 			XTAL_0IF (real_variable_q<decltype(o)>) {return        __builtin_log(XTAL_REF_(o));}
 	#endif
 			XTAL_0IF_(else)                         {return                  log(XTAL_REF_(o));}
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_DEF_(return,inline,set)
 		method(auto &&o)
-		const noexcept -> decltype(auto)
+		noexcept -> decltype(auto)
 		requires in_v<atom::groupoid_q<decltype(o)>>
 		{
 			return XTAL_ALL_(o)::template zip_from<[]
-				XTAL_1FN_(call) (subtype{}.template method<Ns...>)>(XTAL_REF_(o));
+				XTAL_1FN_(call) (method<Ns...>)>(XTAL_REF_(o));
 		}
 
 	protected:
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,let)
-		method_approx(auto o)
-		const noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,set)
+		methox(auto o)
+		noexcept -> decltype(auto)
 		{
 			return superprocess{}.template method<N_lim>(roots_f<2>(XTAL_MOV_(o)).template sum<-1>());
 		}
@@ -93,34 +92,34 @@ struct logarithm<-1, 0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,let)
+		XTAL_DEF_(return,inline,set)
 		method(auto &&o)
-		const noexcept -> decltype(auto)
+		noexcept -> decltype(auto)
 		requires un_v<atom::groupoid_q<decltype(o)>>
 		{
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim)          {return method_approx<N_lim>(XTAL_REF_(o));}
-			XTAL_0IF_(consteval)           {return method_approx<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim)          {return methox<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)           {return methox<   ~0>(XTAL_REF_(o));}
 	#if XTAL_SYS_(builtin)
 			XTAL_0IF (real_q<decltype(o)>) {return        __builtin_exp(XTAL_REF_(o));}
 	#endif
 			XTAL_0IF_(else)                {return                  exp(XTAL_REF_(o));}
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_DEF_(return,inline,set)
 		method(auto &&o)
-		const noexcept -> decltype(auto)
+		noexcept -> decltype(auto)
 		requires in_v<atom::groupoid_q<decltype(o)>>
 		{
 			return XTAL_ALL_(o)::template zip_from<[]
-				XTAL_1FN_(call) (subtype{}.template method<Ns...>)>(XTAL_REF_(o));
+				XTAL_1FN_(call) (method<Ns...>)>(XTAL_REF_(o));
 		}
 
-	protected:
+//	protected:
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,let)
-		method_approx(auto &&o)
-		const noexcept -> decltype(auto)
+		XTAL_DEF_(return,inline,set)
+		methox(auto &&o)
+		noexcept -> decltype(auto)
 		{
 			using U_fit = bond::fit<decltype(o)>;
 			/*/
@@ -165,46 +164,45 @@ struct logarithm< 1, 1>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,let)
+		XTAL_DEF_(return,inline,set)
 		method(auto &&o)
-		const noexcept -> XTAL_ALL_(o)
+		noexcept -> XTAL_ALL_(o)
 		requires un_v<atom::groupoid_q<decltype(o)>>
 		{
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim) {return method_approx<N_lim>(XTAL_REF_(o));}
-			XTAL_0IF_(consteval)  {return method_approx<   ~0>(XTAL_REF_(o));}
-			XTAL_0IF_(else)       {return                  log(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim) {return methox<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)  {return methox<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF_(else)       {return           log(XTAL_REF_(o));}
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_DEF_(return,inline,set)
 		method(auto &&o)
-		const noexcept -> decltype(auto)
+		noexcept -> decltype(auto)
 		requires in_v<atom::groupoid_q<decltype(o)>>
 		{
 			return XTAL_ALL_(o)::template zip_from<[]
-				XTAL_1FN_(call) (subtype{}.template method<Ns...>)>(XTAL_REF_(o));
+				XTAL_1FN_(call) (method<Ns...>)>(XTAL_REF_(o));
 		}
 
 	protected:
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,let)
-		method_approx(   real_variable_q auto o)
-		const noexcept -> XTAL_ALL_(o)
+		XTAL_DEF_(return,inline,set)
+		methox(   real_variable_q auto o)
+		noexcept -> XTAL_ALL_(o)
 		{
-			using   L = bond::fit<decltype(o)>;
-			return -L::patio_2*pade::arc_t<-1, 1>{}.template method<N_lim>(XTAL_MOV_(o));
+			auto constexpr two_pi  =  bond::fit<decltype(o)>::patio_2;
+			return -two_pi*pade::arc_t<-1, 1>{}.template method<N_lim>(XTAL_MOV_(o));
 		}
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,let)
-		method_approx(complex_variable_q auto o)
-		const noexcept -> XTAL_ALL_(o)
+		XTAL_DEF_(return,inline,set)
+		methox(complex_variable_q auto o)
+		noexcept -> XTAL_ALL_(o)
 		{
-			using K = bond::fit<decltype(o)>;
-			auto const [u_re,
-			            u_im] = destruct_f(XTAL_REF_(o));
-			auto const  y_re = -K::patio_1*pade::  arc_t<~0, 1>{}.template method<N_lim>(u_im, u_re);
-			auto const  y_im =  K::patio_1*pade::  arc_t< 0, 1>{}.template method<N_lim>(u_im, u_re);
-		//	auto const  y_im =  K::patio_1*pade::tangy_t<-1, 1>{}.template method<N_lim>(u_im, u_re);
+			auto constexpr one_pi  =  bond::fit<decltype(o)>::patio_1;
+			auto const      [u_re,
+			                 u_im] =  destruct_f(XTAL_REF_(o));
+			auto const       y_re  = -one_pi*pade::arc_t<~0, 1>{}.template method<N_lim>(u_im, u_re);
+			auto const       y_im  =  one_pi*pade::arc_t< 0, 1>{}.template method<N_lim>(u_im, u_re);
 			return {y_re, y_im};
 		}
 
@@ -227,34 +225,34 @@ struct logarithm<-1, 1>
 	//	TODO: Define `complex` variant!
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,let)
+		XTAL_DEF_(return,inline,set)
 		method(auto &&o)
-		const noexcept -> XTAL_ALL_(o)
+		noexcept -> XTAL_ALL_(o)
 		requires un_v<atom::groupoid_q<decltype(o)>>
 		{
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim)          {return method_approx<N_lim>(XTAL_REF_(o));}
-			XTAL_0IF_(consteval)           {return method_approx<   ~0>(XTAL_REF_(o));}
+			XTAL_0IF (0 <= N_lim)          {return methox<N_lim>(XTAL_REF_(o));}
+			XTAL_0IF_(consteval)           {return methox<   ~0>(XTAL_REF_(o));}
 	#if XTAL_SYS_(builtin)
-			XTAL_0IF (real_q<decltype(o)>) {return        __builtin_exp(XTAL_REF_(o));}
+			XTAL_0IF (real_q<decltype(o)>) {return __builtin_exp(XTAL_REF_(o));}
 	#endif
-			XTAL_0IF_(else)                {return                  exp(XTAL_REF_(o));}
+			XTAL_0IF_(else)                {return           exp(XTAL_REF_(o));}
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_DEF_(return,inline,set)
 		method(auto &&o)
-		const noexcept -> decltype(auto)
+		noexcept -> decltype(auto)
 		requires in_v<atom::groupoid_q<decltype(o)>>
 		{
 			return XTAL_ALL_(o)::template zip_from<[]
-				XTAL_1FN_(call) (subtype{}.template method<Ns...>)>(XTAL_REF_(o));
+				XTAL_1FN_(call) (method<Ns...>)>(XTAL_REF_(o));
 		}
 
 	protected:
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,let)
-		method_approx(real_variable_q auto o)
-		const noexcept -> XTAL_ALL_(o)
+		XTAL_DEF_(return,set)
+		methox(real_variable_q auto o)
+		noexcept -> XTAL_ALL_(o)
 		{
 			using U_fit = bond::fit<decltype(o)>;
 			using U_alpha = typename U_fit::alpha_type;
@@ -276,15 +274,15 @@ struct logarithm<-1, 1>
 			}
 			o -= n;
 			o *= N_log2;
-			o  = logarithm_t<-1>{}.template method<N_lim>(XTAL_MOV_(o));
+			o  = logarithm_t<-1>::template method<N_lim>(XTAL_MOV_(o));
 			XTAL_IF1_(consteval) {
-				auto m = _xtd::bit_cast<U_sigma>(o);
+				auto  m = _xtd::bit_cast<U_sigma>(o);
 				N <<= U_fit::exponent.shift;
-				m += N;
+				m  += N;
 				return _xtd::bit_cast<U_alpha>(m);
 			}
 			XTAL_0IF_(else) {
-				return ldexp(XTAL_MOV_(o), XTAL_MOV_(N));
+				return _std::ldexp(XTAL_MOV_(o), XTAL_MOV_(N));
 			}
 		}
 

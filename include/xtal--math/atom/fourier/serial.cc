@@ -22,11 +22,11 @@ static_assert(_xtd::trivially_movable      <serial_t<float[2]>>);
 
 TAG_("atom", "serial")
 {
-	using _fit = bond::fit<>;
-	using T_delta = typename _fit::delta_type;
-	using T_sigma = typename _fit::sigma_type;
-	using T_alpha = typename _fit::alpha_type;
-	using T_aphex = typename _fit::aphex_type;
+	using U_fit   = bond::fit<>;
+	using U_delta = typename U_fit::delta_type;
+	using U_sigma = typename U_fit::sigma_type;
+	using U_alpha = typename U_fit::alpha_type;
+	using U_aphex = typename U_fit::aphex_type;
 
 	using D1 = serial_t<int[1]>;
 	using D2 = serial_t<int[2]>;

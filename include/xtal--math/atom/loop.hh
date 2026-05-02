@@ -31,7 +31,7 @@ template <vector_q A>
 struct loop<A>
 {
 private:
-	using _fit = bond::fit<A>;
+	using U_fit = bond::fit<A>;
 	
 	template <class T>
 	using endotype = typename group_addition<A>::template homotype<T>;
@@ -53,7 +53,8 @@ public:
 	//\
 	public:// ACCESS
 	protected:// ACCESS
-		typename S_::index_type pushdex{};
+		typename S_::index_type m_index{};
+		typename S_::index_type m_limit{};
 
 	public:// ACCESS
 	//	using S_::element_f;
@@ -62,6 +63,32 @@ public:
 		using S_::self;
 		using S_::twin;
 
+	protected:
+		template <index_type I=0>
+		XTAL_DEF_(inline,set)
+		wrap_e(index_type &i)
+		noexcept -> void
+		{
+			i += I;
+			XTAL_IF0
+			XTAL_0IF (1 == _std::popcount(size())) {
+				i &= mask;
+			}
+			XTAL_0IF (2 <= _std::popcount(size())) {
+				i %= size;
+				i += size;
+				i %= size;
+			}
+		}
+		template <index_type I=0>
+		XTAL_DEF_(return,inline,set)
+		wrap_f(index_type  i)
+		noexcept -> decltype(auto)
+		{
+			(void) wrap_e<I>(i); return i;
+		}
+
+	public:
 		XTAL_DEF_(set) mask = size_constant_t<size - 1>{};
 
 		template <index_type I=0>
@@ -76,8 +103,8 @@ public:
 		element_f(auto &&o, index_type i)
 		noexcept -> decltype(auto)
 		{
-			i += qualify_f<homotype>(XTAL_REF_(o)).pushdex;
-			return S_::template element_f<I%size + size>(XTAL_REF_(o), XTAL_MOV_(i));
+			i += qualify_f<homotype>(o).m_index;
+			return S_::element_f(XTAL_REF_(o), wrap_f(XTAL_MOV_(i)));
 		}
 
 		template <index_type I=0>
@@ -96,22 +123,22 @@ public:
 		}
 		template <index_type I=0>
 		XTAL_DEF_(return,inline,set)
-		coelement_f(auto &&o, real_q auto k)
+		coelement_f(auto &&o, real_q auto h)
 		noexcept -> decltype(auto)
 		{
 			using process::math::   term_f;
 			using process::math:: square_f;
 			using process::math::nearest_f;
-			using K = XTAL_ALL_(k);
-			auto constexpr two     =     K(2);
-			auto constexpr four    =     K(4);
-			auto constexpr quarter = one/K(4);
+			using H = XTAL_ALL_(h);
+			auto constexpr two     =     H(2);
+			auto constexpr four    =     H(4);
+			auto constexpr quarter = one/H(4);
 
 		//	TODO: Customize interpolation either within `atom` or `process`.
 		//	TODO: Customize out-of-bounds handling.
 
-			auto const k_dn = nearest_f<-1>(k), t_dn = k_dn - k;
-			auto const k_up =       k_dn + one, t_up = k - k_up;
+			auto const k_dn = nearest_f<-1>(h), t_dn = k_dn - h;
+			auto const k_up =       k_dn + one, t_up = h - k_up;
 			auto const i_dn = static_cast<index_type>(k_dn);
 			auto const i_up = static_cast<index_type>(k_up);
 			auto const u_dn = element_f<I>(o, i_dn), w_dn = element_f<I>(o, i_dn - 1);
@@ -121,18 +148,26 @@ public:
 			return v_dn + v_up;
 		}
 
-		XTAL_DEF_(let)
+		XTAL_DEF_(inline,let)
+		peek(atom::groupoid_q auto const &h_)
+		noexcept -> auto
+		{
+			using H_ = objective_t<decltype(h_)>;
+			return [&]<auto ...I> (bond::seek_in_t<I...>)
+			XTAL_0FN_(to) (H_{peek(get<I>(h_))...})
+				(bond::seek_to_t<H_::size()>{});
+		}
+		XTAL_DEF_(inline,let)
+		peek(real_q auto h)
+		noexcept -> auto
+		{
+			return S_::coelement(h);
+		}
+		XTAL_DEF_(inline,let)
 		push(auto &&e)
 		noexcept -> auto
 		{
-			--pushdex;
-			XTAL_IF0
-			XTAL_0IF (1 == _std::popcount(size())) {
-				pushdex &= mask;
-			}
-			XTAL_0IF (2 <= _std::popcount(size())) {
-				pushdex += size&bond::math::bit_sign_f(pushdex);
-			}
+			--m_index; (void) wrap_e(m_index);
 			return _std::exchange(S_::element(), XTAL_REF_(e));
 		}
 

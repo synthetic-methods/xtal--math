@@ -31,7 +31,7 @@ template <vector_q A>
 struct symbol<A>
 {
 private:
-	using _fit = bond::fit<A>;
+	using U_fit = bond::fit<A>;
 	
 	template <class T>
 	using endotype = typename couple<A>::template homotype<T>;
@@ -102,7 +102,7 @@ public:
 				value_type w =  1;
 				value_type u = -1;
 				if constexpr (complex_field_q<value_type>) {
-					u = pade::unity_f<1>(_fit::ratio_f(1, 2*K));
+					u = pade::unity_f<1>(U_fit::ratio_f(1, 2*K));
 				}
 				bond::seek_to_e<K>([&, this] (auto i) XTAL_0FN {
 					auto const o = k%N;
@@ -141,7 +141,7 @@ public:
 			else {
 				value_type w, u;
 				if constexpr (complex_field_q<value_type>) {
-					u = pade::unity_f<1>(_fit::ratio_f(1, 2*K));
+					u = pade::unity_f<1>(U_fit::ratio_f(1, 2*K));
 				}
 				else {
 					u = 1;

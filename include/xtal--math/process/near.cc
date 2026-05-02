@@ -15,13 +15,13 @@ namespace xtal::process::math::_test
 /**/
 TAG_("near")
 {
-	using T_fit = bond::fit<>;
-	using T_sigma = typename T_fit::sigma_type;
-	using T_delta = typename T_fit::delta_type;
-	using T_alpha = typename T_fit::alpha_type;
-	using T_aphex = typename T_fit::aphex_type;
+	using U_fit = bond::fit<>;
+	using U_sigma = typename U_fit::sigma_type;
+	using U_delta = typename U_fit::delta_type;
+	using U_alpha = typename U_fit::alpha_type;
+	using U_aphex = typename U_fit::aphex_type;
 
-	auto mt19937_f = typename T_fit::mt19937_t();
+	auto mt19937_f = typename U_fit::MT19937();
 	mt19937_f.seed(Catch::rngSeed());
 
 	TRY_("near evaluation")

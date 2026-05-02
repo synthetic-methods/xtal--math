@@ -15,11 +15,11 @@ namespace xtal::provision::math::zavalishin::_test
 /*/
 TAG_("shaped")
 {
-	using _fit = bond::fit<>;
-	using T_sigma = typename _fit::sigma_type;
-	using T_delta = typename _fit::delta_type;
-	using T_alpha = typename _fit::alpha_type;
-	using T_aphex = typename _fit::aphex_type;
+	using U_fit   = bond::fit<>;
+	using U_sigma = typename U_fit::sigma_type;
+	using U_delta = typename U_fit::delta_type;
+	using U_alpha = typename U_fit::alpha_type;
+	using U_aphex = typename U_fit::aphex_type;
 
 	TRY_("task")
 	{
