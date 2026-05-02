@@ -166,7 +166,7 @@ noexcept -> auto
 	using U_delta = typename U_fit::delta_type;
 	using U_sigma = typename U_fit::sigma_type;
 
-	if constexpr (U_fit::use_IEC) {
+	if constexpr (U_fit::IEC&559) {
 		auto x = bit_exchange_f(XTAL_MOV_(u));
 		x >>= U_fit::exponent.shift;
 		x  &= U_fit::exponent. mark;
@@ -626,15 +626,14 @@ XTAL_DEF_(return,let)
 bit_reverse_f(cardinal_variable_q auto u, int const &n_subdepth)
 noexcept -> auto
 {
-	using          U =      decltype(u);
-	auto constexpr N = bit_depth_f<U>();
-
+	using       U  = XTAL_ALL_(u);
+	U constexpr N0 = bit_depth_f<U>(), N1 = N0 >>  1;
+	U constexpr M0 =            ~U {}, M1 = M0 >> N1;
 	#pragma inline
-	for (U m = -1, i = N; i >>= 1;) {
-		m ^= m<<i;
-		u = (u&m)<<i | (u&~m)>>i;
+	for (auto m = M1, n = N1; n; m ^= m << (n >>= 1)) {
+		u = (u&m)<<n | (u&~m)>>n;
 	}
-	u >>= N - n_subdepth; assert(0 < n_subdepth and n_subdepth <= N);
+	u >>= N0 - n_subdepth; assert(0 < n_subdepth and n_subdepth <= N0);
 	return u;
 }
 XTAL_DEF_(return,inline,let)

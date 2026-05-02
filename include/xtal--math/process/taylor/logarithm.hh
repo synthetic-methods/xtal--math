@@ -116,7 +116,7 @@ struct logarithm<-1, 0>
 				XTAL_1FN_(call) (subtype{}.template method<Ns...>)>(XTAL_REF_(o));
 		}
 
-	protected:
+//	protected:
 		template <int N_lim=0>
 		XTAL_DEF_(return,inline,let)
 		method_approx(auto &&o)

@@ -49,28 +49,28 @@ struct truncate<M_app>
 		{
 			using _xtd::bit_cast;
 
-			using _fit = bond::fit<XTAL_ALL_(o)>;
-			using U_delta = typename _fit::delta_type;
-			using U_sigma = typename _fit::sigma_type;
-			using U_alpha = typename _fit::alpha_type;
+			using U_fit   = bond::fit<XTAL_ALL_(o)>;
+			using U_delta = typename U_fit::delta_type;
+			using U_sigma = typename U_fit::sigma_type;
+			using U_alpha = typename U_fit::alpha_type;
 
 			auto constexpr o_stop = static_cast<U_alpha>(M_abs);
 			auto constexpr N_side = static_cast<U_delta>(M_dir);
 			//\
-			if (_std::is_constant_evaluated() or not _fit::IEC) {
-			if (_std::is_constant_evaluated() or not _fit::IEC or XTAL_ENV_(GNUC)) {
+			if (_std::is_constant_evaluated() or not (U_fit::IEC&559)) {
+			if (_std::is_constant_evaluated() or not (U_fit::IEC&559) or XTAL_ENV_(GNUC)) {
 				U_alpha const s = part_t<signed>{}.edit(o);
 				XTAL_IF0
-				XTAL_0IF (M_dir <= 0) {o = _fit::minimum_f(XTAL_MOV_(o), o_stop);}
-				XTAL_0IF (M_dir == 1) {o = _fit::maximum_f(XTAL_MOV_(o), o_stop);}
+				XTAL_0IF (M_dir <= 0) {o = U_fit::minimum_f(XTAL_MOV_(o), o_stop);}
+				XTAL_0IF (M_dir == 1) {o = U_fit::maximum_f(XTAL_MOV_(o), o_stop);}
 				U_alpha const q = o == o_stop;
 				o *= s; return q*s;
 			}
 			else {
 				U_sigma constexpr K_stop = bit_cast<U_sigma>(o_stop);
-				U_sigma constexpr K_side = N_side >> _fit::sign.shift;
-				auto constexpr sign = _fit::sign;
-				auto constexpr unit = _fit::unit;
+				U_sigma constexpr K_side = N_side >> U_fit::sign.shift;
+				auto constexpr sign = U_fit::sign;
+				auto constexpr unit = U_fit::unit;
 
 				auto   &t = reinterpret_cast<U_sigma &>(o);
 				U_sigma s = t&sign.mask;

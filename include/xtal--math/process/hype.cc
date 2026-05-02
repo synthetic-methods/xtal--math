@@ -24,7 +24,7 @@ TAG_("hype")
 
 	using U_phi = atom::math::phason_t<T_alpha[2]>;
 
-	auto mt19937_f = typename _fit::mt19937_t();
+	auto mt19937_f = typename _fit::MT19937();
 	mt19937_f.seed(Catch::rngSeed());
 
 	TRY_("hype cardinal")

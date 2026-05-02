@@ -82,12 +82,10 @@ public:
 		}
 
 		/*!
-		\brief   Populates `this` with powers of `u` from `N_index` to `N_index + N_count - 1`.
+		\brief   Populates `this` with powers of `u` from `N_dex` to `N_dex + N_count - 1`.
 		\returns `this`.
 		*/
-		//\
-		template <int N_count=size, int N_index=0, int N_step=1, int N_inset=0>
-		template <int N_index=0, int N_inset=0, int N_step=1, int N_size=size>
+		template <int N_dex=0, int N_ind=0, int N_step=1, int N_size=size>
 		XTAL_DEF_(inline,let)
 		generate(value_type const &u)
 		noexcept -> T &
@@ -97,28 +95,28 @@ public:
 			using A_delta = typename S_::difference_type;
 
 		//	Compute the start- and end-points for the required segment:
-			A_delta constexpr N_limit = N_index + N_size;
+			A_delta constexpr N_lim = N_dex + N_size;
 			A_delta constexpr _0 =  0*N_step;
 			A_delta constexpr _1 =  1*N_step;
 			A_delta constexpr _2 =  2*N_step;
-			A_delta constexpr I0 = _1*N_index + N_inset, J0 = _2*N_index + N_inset;
-			A_delta constexpr IZ = _1*N_limit + N_inset, JZ = _2*N_limit + N_inset;
+			A_delta constexpr I0 = _1*N_dex + N_ind, J0 = _2*N_dex + N_ind;
+			A_delta constexpr IZ = _1*N_lim + N_ind, JZ = _2*N_lim + N_ind;
 
 			auto &s = self();
 			XTAL_IF0
-			XTAL_0IF (N_index == -1 and N_inset == 0 and N_step == 1 and N_size == size) {
-				generate<1, -1, 1, size - 1>(u);
-				if constexpr (un_v<N_size&1>) {
-					get<N_limit>(s) = monomial_f<2>(get<N_limit/2>(s));
+			XTAL_0IF (N_dex < 0) {
+				generate<-N_dex, I0, N_step, N_lim>(u);
+				if constexpr (N_lim&1) {
+					get<N_lim>(s) = monomial_f<2>(get<N_lim/2>(s));
 				}
 			}
 			XTAL_0IF (N_size < I0 + _1) {
 			//	Populate the 0th-power only:
-				get<I0>(s) = monomial_f<N_index>(u);
+				get<I0>(s) = monomial_f<N_dex>(u);
 			}
 			XTAL_0IF_(else) {
 			//	Populate the 0th and 1st powers:
-				auto const o = monomial_f<N_index>(u);
+				auto const o = monomial_f<N_dex>(u);
 				get<I0 + _0>(s) = o;
 				get<I0 + _1>(s) = o*u;
 

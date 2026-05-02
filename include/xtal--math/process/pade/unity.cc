@@ -32,7 +32,7 @@ TAG_("unity")
 
 	static_assert(same_q<U_alpha, decltype(U_phi{} (0))>);
 
-	auto mt19937_o = typename U_fit::mt19937_t{}; mt19937_o.seed(Catch::rngSeed());
+	auto mt19937_o = typename U_fit::MT19937{}; mt19937_o.seed(Catch::rngSeed());
 	auto mt19937_f = [&] XTAL_1FN_(to) (U_fit::mantissa_f(mt19937_o));
 
 	TRY_("unity<(+1)> // precision grading")
@@ -266,7 +266,7 @@ TAG_("unity trials")
 
 	static_assert(same_q<U_alpha, decltype(U_phi{} (0))>);
 
-	auto mt19937_o = typename U_fit::mt19937_t{}; mt19937_o.seed(Catch::rngSeed());
+	auto mt19937_o = typename U_fit::MT19937{}; mt19937_o.seed(Catch::rngSeed());
 	auto mt19937_f = [&] XTAL_1FN_(to) (U_fit::mantissa_f(mt19937_o));
 
 	EST_("unity<+1; -1>\n   I^(4#)&\n   (*native floating-point*)")

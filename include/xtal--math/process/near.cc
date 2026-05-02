@@ -21,7 +21,7 @@ TAG_("near")
 	using T_alpha = typename T_fit::alpha_type;
 	using T_aphex = typename T_fit::aphex_type;
 
-	auto mt19937_f = typename T_fit::mt19937_t();
+	auto mt19937_f = typename T_fit::MT19937();
 	mt19937_f.seed(Catch::rngSeed());
 
 	TRY_("near evaluation")

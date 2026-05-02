@@ -21,7 +21,7 @@ TAG_("truncate")
 	using U_alpha = typename U_fit::alpha_type; using W_alpha = atom::couple_t<U_alpha[2]>;
 	using U_aphex = typename U_fit::aphex_type; using W_aphex = atom::couple_t<U_aphex[2]>;
 
-	auto mt19937_f = typename U_fit::mt19937_t();
+	auto mt19937_f = typename U_fit::MT19937();
 	mt19937_f.seed(Catch::rngSeed());
 
 	auto constexpr N_half = U_fit::ratio_f(1, 2);

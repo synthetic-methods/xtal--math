@@ -21,7 +21,7 @@ TAG_("monomial")
 	using T_alpha = typename _fit::alpha_type;
 	using T_aphex = typename _fit::aphex_type;
 
-	auto mt19937_f = typename _fit::mt19937_t();
+	auto mt19937_f = typename _fit::MT19937();
 	mt19937_f.seed(Catch::rngSeed());
 
 	TRY_("monomial evaluation")

@@ -52,7 +52,7 @@ struct filter
 
 		template <int N_ism=0, int N_car=0, auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		shaper_f(auto &&x, auto &&...oo)
+		sh_f(auto &&x, auto &&...oo)
 		noexcept -> auto
 		{
 			XTAL_IF0
@@ -74,14 +74,14 @@ struct filter
 		*/
 		template <int N_ord, int N_ind, int N_dex=1> requires (0 == N_ord)
 		XTAL_DEF_(inline,set)
-		fact_f()
+		co_f()
 		noexcept -> int
 		{
 			return 0;
 		}
 		template <int N_ord, int N_ind, int N_dex=1> requires (1 <= N_ord)
 		XTAL_DEF_(inline,set)
-		fact_f()
+		co_f()
 		noexcept -> int
 		{
 			auto constexpr I_ind = modulo_v<N_ord, N_ind*sign_v<N_ord|1 - N_ind*2>>;
@@ -107,7 +107,7 @@ struct filter
 		}
 		template <int ...Ns>
 		XTAL_DEF_(set)
-		fact_v = bond::operate_v<fact_f<Ns...>()>();
+		co_v = bond::operate_v<co_f<Ns...>()>();
 
 
 	public:// CONSTRUCT
@@ -164,7 +164,7 @@ struct filter
 				auto const &coeff = get<I>(coeffs_);
 				auto        slope = get<I>(slopes_);
 				//\
-				slope *= fact_v<N_ord, I, 1>;
+				slope *= co_v<N_ord, I, 1>;
 				slope *= coeff;
 				slope += coeff;
 				if constexpr (0 == I) get<I>(values_) = term_f(slope);
@@ -184,10 +184,10 @@ struct filter
 					auto const &coeff = get<I>(coeffs_);
 					auto       &slope = get<I>(slopes_);
 					if constexpr (0 == I) {slope = zero;}
-					if constexpr (1 <= I) {slope = shaper_f<-1,-2, Ns...>(value, oo...);}
+					if constexpr (1 <= I) {slope = sh_f<-1,-2, Ns...>(value, oo...);}
 					if constexpr (K < K_max) {
 						//\
-						slope *= fact_v<N_ord, I, 1>;
+						slope *= co_v<N_ord, I, 1>;
 						slope *= coeff;
 						slope += coeff;
 					}
@@ -277,7 +277,7 @@ struct filter
 			return method_impl<N_ord, Ns...>(XTAL_REF_(x), u_warp
 			,	[a=truncate_f<+1>(u_damp)]<auto ...I> (bond::seek_in_t<I...>)
 					XTAL_0FN -> atom::couple_t<U[N_ord]> {
-						return {term_f(fact_v<N_ord, I, 0>, fact_v<N_ord, I, 1>, a)...};
+						return {term_f(co_v<N_ord, I, 0>, co_v<N_ord, I, 1>, a)...};
 					}
 				(bond::seek_to_t<N_ord>{})
 			,	XTAL_REF_(oo)...

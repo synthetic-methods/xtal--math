@@ -57,15 +57,16 @@ private:
 	using W = typename fixed<A>::value_type;
 	static_assert(continuous_field_q<W>);
 
-	using W_fit   = bond::fit<W>;
-	using U_fit   = typename W_fit::template adjust<-1>;
-	using W_sigma = typename W_fit::sigma_type;
-	using U_sigma = typename U_fit::sigma_type;
-	using W_delta = typename W_fit::delta_type;
-	using U_delta = typename U_fit::delta_type;
+	using W_depose = bond::depose<W>;
+	using W_fit    = bond::   fit<W>;
+	using U_fit    = typename W_fit::template adjust<-1>;
+	using W_sigma  = typename W_fit::sigma_type;
+	using U_sigma  = typename U_fit::sigma_type;
+	using W_delta  = typename W_fit::delta_type;
+	using U_delta  = typename U_fit::delta_type;
 
-	using V = bond::compose_s<U_delta, W_fit>;
-	using U = bond::compose_s<U_sigma, W_fit>;
+	using V = bond::compose_s<U_delta, W_depose>;
+	using U = bond::compose_s<U_sigma, W_depose>;
 
 	using    pack_type = bond::repack_t<W[M_data]>;
 	using revalue_type = W;

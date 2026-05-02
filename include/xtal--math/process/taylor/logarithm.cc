@@ -37,6 +37,10 @@ TAG_("logarithm")
 		TRUE_(check_f<-19>(logarithm_t< 1   >{}.template method< 1>(egg), log(egg)));
 		TRUE_(check_f<-40>(logarithm_t< 1   >{}.template method< 0>(egg), log(egg)));
 
+		TRUE_(check_f<- 1>(logarithm_t<-1, 1>{}.template method<-1>(egg), exp(egg)));
+		TRUE_(check_f<- 2>(logarithm_t<-1, 1>{}.template method< 3>(egg), exp(egg)));
+		TRUE_(check_f<- 2>(logarithm_t<-1, 1>{}.template method< 2>(egg), exp(egg)));
+		TRUE_(check_f<- 2>(logarithm_t<-1, 1>{}.template method< 1>(egg), exp(egg)));
 		TRUE_(check_f<- 1>(logarithm_t<-1   >{}.template method<-1>(egg), exp(egg)));
 		TRUE_(check_f<- 1>(logarithm_t<-1   >{}.template method< 3>(egg), exp(egg)));
 		TRUE_(check_f<-13>(logarithm_t<-1   >{}.template method< 2>(egg), exp(egg)));
@@ -57,14 +61,14 @@ TAG_("logarithm trials")
 	using U_alpha = typename U_fit::alpha_type;
 	using U_aphex = typename U_fit::aphex_type;
 
-	auto mt19937_o = typename U_fit::mt19937_t{}; mt19937_o.seed(Catch::rngSeed());
+	auto mt19937_o = typename U_fit::MT19937{}; mt19937_o.seed(Catch::rngSeed());
 	auto mt19937_f = [&] XTAL_1FN_(to) (U_fit::mantissa_f(mt19937_o));
 
 	EST_("logarithm_t<+1,  1; -1>\n   Log@#&\n   (*complex, native*)")
 	{
 		U_aphex w{};
 		for (int i{0x60}; ~--i;) {
-			auto x = mt19937_f() + 1.0;
+			auto x = one + mt19937_f();
 			auto y = mt19937_f() + 1.0;
 			w += log(U_aphex{x, y});
 		//	w += logarithm_t< 1, 1>{}.template method<-1>(U_aphex{x, y});
@@ -75,7 +79,7 @@ TAG_("logarithm trials")
 	{
 		U_aphex w{};
 		for (int i{0x60}; ~--i;) {
-			auto x = mt19937_f() + 1.0;
+			auto x = one + mt19937_f();
 			auto y = mt19937_f() + 1.0;
 			w += logarithm_t< 1, 1>{}.template method< 2>(U_aphex{x, y});
 		}
@@ -85,7 +89,7 @@ TAG_("logarithm trials")
 	{
 		U_aphex w{};
 		for (int i{0x60}; ~--i;) {
-			auto x = mt19937_f() + 1.0;
+			auto x = one + mt19937_f();
 			auto y = mt19937_f() + 1.0;
 			w += logarithm_t< 1, 0>{}.template method< 2>(U_aphex{x, y});
 		}
@@ -96,7 +100,7 @@ TAG_("logarithm trials")
 	{
 		U_alpha w{};
 		for (int i{0x60}; ~--i;) {
-			auto x = mt19937_f() + 1.0;
+			auto x = one + mt19937_f();
 			w += log(x);
 		}
 		return w;
@@ -105,7 +109,7 @@ TAG_("logarithm trials")
 	{
 		U_alpha w{};
 		for (int i{0x60}; ~--i;) {
-			auto x = mt19937_f() + 1.0;
+			auto x = one + mt19937_f();
 			w += logarithm_t< 1, 1>{}.template method<2>(x);
 		}
 		return w;
@@ -114,7 +118,7 @@ TAG_("logarithm trials")
 	{
 		U_alpha w{};
 		for (int i{0x60}; ~--i;) {
-			auto x = mt19937_f() + 1.0;
+			auto x = one + mt19937_f();
 			w += logarithm_t< 1>{}.template method<2>(x);
 		}
 		return w;
@@ -123,7 +127,7 @@ TAG_("logarithm trials")
 	{
 		U_alpha w{};
 		for (int i{0x60}; ~--i;) {
-			auto x = mt19937_f() + 1.0;
+			auto x = one + mt19937_f();
 			w += logarithm_t< 1>{}.template method<1>(x);
 		}
 		return w;
@@ -132,7 +136,7 @@ TAG_("logarithm trials")
 	{
 		U_alpha w{};
 		for (int i{0x60}; ~--i;) {
-			auto x = mt19937_f() + 1.0;
+			auto x = one + mt19937_f();
 			w += logarithm_t< 1>{}.template method<0>(x);
 		}
 		return w;
@@ -146,7 +150,7 @@ TAG_("logarithm trials")
 		return o;
 	
 	};
-	EST_("real antilogarithm... <N_lim=~0>")
+	EST_("real (anti)logarithm<-1, 1;~0>")
 	{
 		U_alpha w{1};
 		for (int i{0x60}; ~--i;) {
@@ -157,7 +161,8 @@ TAG_("logarithm trials")
 		return w;
 	
 	};
-	EST_("real antilogarithm... <N_lim=2, M_car=1>")
+
+	EST_("real (anti)logarithm<-1, 1; 2>")
 	{
 		U_alpha w{1};
 		for (int i{0x60}; ~--i;) {
@@ -167,32 +172,33 @@ TAG_("logarithm trials")
 		return w;
 	
 	};
-	EST_("real antilogarithm... <N_lim=2>")
+	EST_("real (anti)logarithm<-1, 0; 2>")
 	{
 		U_alpha w{1};
 		for (int i{0x60}; ~--i;) {
 			auto x = mt19937_f();
-			w *= logarithm_t<-1>{}.template method<2>(x);
+			w *= logarithm_t<-1, 0>{}.template method<2>(x);
 		}
 		return w;
 	
 	};
-	EST_("real antilogarithm... <N_lim=1>")
+
+	EST_("real (anti)logarithm<-1, 1; 1>")
 	{
 		U_alpha w{1};
 		for (int i{0x60}; ~--i;) {
 			auto x = mt19937_f();
-			w *= logarithm_t<-1>{}.template method<1>(x);
+			w *= logarithm_t<-1, 1>{}.template method<1>(x);
 		}
 		return w;
 	
 	};
-	EST_("real antilogarithm... <N_lim=0>")
+	EST_("real (anti)logarithm<-1, 0; 1>")
 	{
 		U_alpha w{1};
 		for (int i{0x60}; ~--i;) {
 			auto x = mt19937_f();
-			w *= logarithm_t<-1>{}.template method<0>(x);
+			w *= logarithm_t<-1, 0>{}.template method<1>(x);
 		}
 		return w;
 	

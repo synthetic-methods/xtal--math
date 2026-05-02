@@ -73,7 +73,7 @@ public:
 		{
 			auto &s = self();
 			
-			if constexpr (typename _fit::alignment{}() < size()) {
+			if constexpr (_fit::alignment < size) {
 				for (auto i = size(); ~--i;) {element(i) *= get<0>(t);
 				for (auto j =      i; j-- ;) {element(i) += t.element(j)*element(i - j);}}
 			}

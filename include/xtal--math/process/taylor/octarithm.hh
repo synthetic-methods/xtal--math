@@ -78,10 +78,12 @@ struct octarithm<M_ism, M_div>
 template <int M_ism, int M_div> requires in_v<M_ism, -1, -2>
 struct octarithm<M_ism, M_div>
 {
+	using superkind = logarithm<-1, 1>;
+
 	template <class S>
-	class subtype : public bond::compose_s<S>
+	class subtype : public bond::compose_s<S, superkind>
 	{
-		using S_ = bond::compose_s<S>;
+		using S_ = bond::compose_s<S, superkind>;
 
 	public:
 		using S_::S_;
@@ -159,12 +161,14 @@ struct octarithm<M_ism, M_div>
 			if constexpr (M_ism == -1) {o *= N1/N2;}
 		//	if constexpr (M_ism == -2) {o *= N2/N2;}
 			XTAL_IF0
-			XTAL_0IF (0 <= N_lim)          {return method_approximant<N_lim>(XTAL_MOV_(o));}
-			XTAL_0IF_(consteval)           {return method_approximant<   ~0>(XTAL_MOV_(o));}
+			XTAL_0IF (0 <= N_lim)          {return  method_approximant<N_lim>(XTAL_MOV_(o));}
+			XTAL_0IF_(consteval)           {return  method_approximant<   ~0>(XTAL_MOV_(o));}
+		//	XTAL_0IF (0 <= N_lim)          {return S_::template method<N_lim>(XTAL_MOV_(o)*N2);}
+		//	XTAL_0IF_(consteval)           {return S_::template method<   ~0>(XTAL_MOV_(o)*N2);}
 #if XTAL_SYS_(builtin)
-			XTAL_0IF (real_q<decltype(o)>) {return       __builtin_exp2(XTAL_MOV_(o));}
+			XTAL_0IF (real_q<decltype(o)>) {return             __builtin_exp2(XTAL_MOV_(o));}
 #endif
-			XTAL_0IF_(else)                {return               exp(N2*XTAL_MOV_(o));}
+			XTAL_0IF_(else)                {return                     exp(N2*XTAL_MOV_(o));}
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,let)

@@ -24,10 +24,7 @@ template <int M_exp=1, int M_cut=0, auto N_lim=0b11>
 XTAL_DEF_(let) root_f = [] (auto &&z)
 XTAL_0FN
 {
-	XTAL_IF0
-//	XTAL_0IF_(consteval) {return root_t<M_exp, 0    >{}.template method<   ~0>(XTAL_REF_(z));}
-	XTAL_0IF (M_cut <=0) {return root_t<M_exp, 0    >{}.template method<N_lim>(XTAL_REF_(z));}
-	XTAL_0IF (0 < M_cut) {return root_t<M_exp, M_cut>{}.template method<N_lim>(XTAL_REF_(z));}
+	return root_t<M_exp, M_cut>::template method<N_lim>(XTAL_REF_(z));
 };
 
 
@@ -37,6 +34,7 @@ XTAL_0FN
 template <int M_exp, int M_cut>
 struct root
 {
+	using M_fit = bond::fit<decltype(M_exp)>;
 	static int constexpr M_exp_sgn = sign_v<M_exp>;
 	static int constexpr M_exp_mag = M_exp*M_exp_sgn;
 
@@ -49,9 +47,9 @@ struct root
 		using S_::S_;
 
 		template <int N_lim=0b11>
-		XTAL_DEF_(return,inline,let)
+		XTAL_DEF_(return,inline,set)
 		method(auto &&z)
-		const noexcept -> auto
+		noexcept -> auto
 		requires un_v<atom::groupoid_q<XTAL_ALL_(z)>>
 		{
 			static_assert(-1 <= N_lim);
@@ -64,9 +62,9 @@ struct root
 			XTAL_0IF (integral_variable_q<Z>) {
 				return method<I_lim>(Z_fit::alpha_f(XTAL_REF_(z)));
 			}
-			XTAL_0IF (M_exp ==  zero                        ) {return Z{one};}
-			XTAL_0IF (M_exp ==  bond::math::bit_reverse_f(1)) {return Z{one};}
-			XTAL_0IF (M_exp == ~bond::math::bit_reverse_f(1)) {return Z{one};}
+			XTAL_0IF (M_exp ==  zero)             {return Z{one};}
+			XTAL_0IF (M_exp ==  M_fit::sign.mask) {return Z{one};}
+			XTAL_0IF (M_exp == ~M_fit::sign.mask) {return Z{one};}
 			XTAL_0IF_(to) (evaluate<I_lim>(XTAL_REF_(z)))
 			XTAL_0IF_(to) (evaluate<I_lim>(XTAL_REF_(z)))
 			XTAL_0IF_(to) (evaluate<I_lim>(XTAL_REF_(z), constant_t<2>{}))
@@ -76,9 +74,9 @@ struct root
 			XTAL_0IF_(else) {return pow(XTAL_REF_(z), Z_fit::alpha_1/M_exp);}
 		}
 		template <int N_lim=0b11>
-		XTAL_DEF_(return,inline,let)
+		XTAL_DEF_(return,inline,set)
 		method(auto &&z)
-		const noexcept -> auto
+		noexcept -> auto
 		requires in_v<atom::groupoid_q<XTAL_ALL_(z)>>
 		{
 			using Z = XTAL_ALL_(z);
@@ -93,7 +91,7 @@ struct root
 			}
 			XTAL_0IF_(else) {
 			//	TODO: Approximate collectively?
-				return Z::template zip_from<[] XTAL_1FN_(call) (subtype{}.template method<N_lim>)>(XTAL_REF_(z));
+				return Z::template zip_from<[] XTAL_1FN_(call) (method<N_lim>)>(XTAL_REF_(z));
 			}
 		}
 
@@ -104,8 +102,8 @@ struct root
 		noexcept -> objective_t<XTAL_ALL_(z)>
 		requires (M_exp%i_exp == 0 and 1 != M_exp/i_exp)
 		{
-			return root_t<M_exp/-i_exp>{}.template
-				method<I_lim>(root_t<-i_exp>{}.template method<I_lim>(XTAL_REF_(z)));
+			return root_t<M_exp/-i_exp>::template
+				method<I_lim>(root_t<-i_exp>::template method<I_lim>(XTAL_REF_(z)));
 		}
 		template <int I_lim> requires in_v<M_exp_mag, 1>
 		XTAL_DEF_(return,inline,set)
@@ -119,14 +117,14 @@ struct root
 			
 			auto constexpr _1      = Z_fit::alpha_1;
 			auto constexpr  Z_exp  = Z_fit::exponent.mask;
-			auto constexpr  Z_cut  = M_cut == 0? Z_fit::alpha_f(0): Z_fit::minilon_f(M_cut);
 
 			XTAL_IF0
 			XTAL_0IF (1 == M_exp) {
 				return XTAL_REF_(z);
 			}
 			XTAL_0IF (   real_variable_q<Z> and 1 <= M_cut) {
-				auto const z_cut = _xtd::copysign(Z_cut, z);
+				auto constexpr Z_cut =  Z_fit::minilon_f(M_cut);
+				auto const     z_cut = _xtd::copysign(Z_cut, z);
 				return _1/(XTAL_REF_(z) + z_cut);
 			}
 			XTAL_0IF (   complex_field_q<Z> and 1 <= M_cut) {
@@ -159,7 +157,7 @@ struct root
 				auto const x_re = z.real();
 				auto const x_im = z.imag();
 				auto const x_a2 = square_f(x_re, x_im);
-				auto const x_a1 = root_t<2>{}.template method<I_lim>(x_a2);
+				auto const x_a1 = root_t<2>::template method<I_lim>(x_a2);
 
 				auto y_re = x_a1 + x_re, v_re = y_re;
 				auto y_im = x_a1 - x_re, v_im = y_im;
@@ -167,8 +165,8 @@ struct root
 					v_re *= x_a2;
 					v_im *= x_a2;
 				}
-				y_re *= root_t<-M_exp_mag, 1>{}.template method<I_lim>(v_re);
-				y_im *= root_t<-M_exp_mag, 1>{}.template method<I_lim>(v_im);
+				y_re *= root_t<-M_exp_mag, 1>::template method<I_lim>(v_re);
+				y_im *= root_t<-M_exp_mag, 1>::template method<I_lim>(v_im);
 
 				auto const y_im_sgn = M_exp_sgn*_xtd::copysign(Z_fit::alpha_1, x_im);
 				return {y_re, y_im*y_im_sgn};

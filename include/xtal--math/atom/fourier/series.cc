@@ -22,7 +22,7 @@ TAG_("solid", "series")
 	using T_aphex = typename _fit::aphex_type;
 
 	/**/
-	TRY_("generation of single")
+	TRY_("generation")
 	{
 		using W7 = series_t<T_alpha[0x7]>;
 		using W8 = series_t<T_alpha[0x8]>;
