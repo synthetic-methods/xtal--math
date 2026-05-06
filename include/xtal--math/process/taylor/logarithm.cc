@@ -7,9 +7,12 @@
 
 #include "./logarithm.hh"
 XTAL_ENV_(push)
-namespace xtal::process::math::taylor::_test
+namespace xtal::process::math::taylor::_test::XTAL_NUM
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
+
+using namespace xtal::process::math::taylor::_test;
+
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -31,21 +34,32 @@ TAG_("logarithm")
 		TRUE_(check_f<- 8>(logarithm_t< 1, 1>{}.template method< 3>(egg), log(egg)));
 		TRUE_(check_f<- 2>(logarithm_t<-1, 1>{}.template method< 3>(egg), exp(egg)));
 
-		TRUE_(check_f<- 1>(logarithm_t< 1   >{}.template method<-1>(egg), log(egg)));
-		TRUE_(check_f<- 1>(logarithm_t< 1   >{}.template method< 3>(egg), log(egg)));
-		TRUE_(check_f<- 5>(logarithm_t< 1   >{}.template method< 2>(egg), log(egg)));
-		TRUE_(check_f<-19>(logarithm_t< 1   >{}.template method< 1>(egg), log(egg)));
-		TRUE_(check_f<-40>(logarithm_t< 1   >{}.template method< 0>(egg), log(egg)));
+		TRUE_(check_f<- 1>(logarithm_t< 1, 0>{}.template method<-1>(egg), log(egg)));
+		TRUE_(check_f<- 1>(logarithm_t< 1, 0>{}.template method< 3>(egg), log(egg)));
+		TRUE_(check_f<- 5>(logarithm_t< 1, 0>{}.template method< 2>(egg), log(egg)));
+		TRUE_(check_f<-19>(logarithm_t< 1, 0>{}.template method< 1>(egg), log(egg)));
+		TRUE_(check_f<-40>(logarithm_t< 1, 0>{}.template method< 0>(egg), log(egg)));
 
 		TRUE_(check_f<- 1>(logarithm_t<-1, 1>{}.template method<-1>(egg), exp(egg)));
 		TRUE_(check_f<- 2>(logarithm_t<-1, 1>{}.template method< 3>(egg), exp(egg)));
 		TRUE_(check_f<- 2>(logarithm_t<-1, 1>{}.template method< 2>(egg), exp(egg)));
-		TRUE_(check_f<- 2>(logarithm_t<-1, 1>{}.template method< 1>(egg), exp(egg)));
+		TRUE_(check_f<-11>(logarithm_t<-1, 1>{}.template method< 1>(egg), exp(egg)));
+		TRUE_(check_f<-40>(logarithm_t<-1, 1>{}.template method< 0>(egg), exp(egg)));
+	//	TRUE_(check_f<-27>(logarithm_t<-1, 1>{}.template method< 0>(egg), exp(egg)));// 0x08 squares
+	//	TRUE_(check_f<-16>(logarithm_t<-1, 1>{}.template method< 0>(egg), exp(egg)));// 0x10 squares
 
-		TRUE_(check_f<- 1>(logarithm_t<-1   >{}.template method<-1>(egg), exp(egg)));
-		TRUE_(check_f<- 1>(logarithm_t<-1   >{}.template method< 3>(egg), exp(egg)));
-		TRUE_(check_f<-13>(logarithm_t<-1   >{}.template method< 2>(egg), exp(egg)));
-		TRUE_(check_f<-29>(logarithm_t<-1   >{}.template method< 1>(egg), exp(egg)));
+		TRUE_(check_f<- 1>(logarithm_t<-1, 0>{}.template method<-1>(egg), exp(egg)));
+		TRUE_(check_f<-10>(logarithm_t<-1, 0>{}.template method< 3>(egg), exp(egg)));
+		TRUE_(check_f<-25>(logarithm_t<-1, 0>{}.template method< 2>(egg), exp(egg)));
+		TRUE_(check_f<-38>(logarithm_t<-1, 0>{}.template method< 1>(egg), exp(egg)));
+		TRUE_(check_f<-50>(logarithm_t<-1, 0>{}.template method< 0>(egg), exp(egg)));
+	//	TRUE_(check_f<-45>(logarithm_t<-1, 0>{}.template method< 0>(egg), exp(egg)));// 0x04 squares
+	//	TRUE_(check_f<-36>(logarithm_t<-1, 0>{}.template method< 0>(egg), exp(egg)));// 0x08 squares
+
+	//	for (int i = -0x20; i < 0x20; ++i) {
+	//		auto const x = static_cast<U_alpha>(i << 3);
+	//		echo_(check_f(0.0, logarithm_t<-1, 1>{}.template method< 0>(x)/exp(x) - one));
+	//	}
 	//	UNTRUE_(check_f(logarithm_t<-1>{}.template method< 0>(egg), exp(egg)));
 
 		TRUE_(check_f<-48>(logarithm_t< 1, 1>{}.template method<~0>(U_aphex{0.3, 0.8}), logarithm_t< 1, 1>{}.template method< 3>(U_aphex{0.3, 0.8})));
@@ -54,6 +68,7 @@ TAG_("logarithm")
 	}
 	/***/
 }
+
 TAG_("logarithm trials")
 {
 	using U_fit = bond::fit<>;
@@ -204,6 +219,28 @@ TAG_("logarithm trials")
 		return w;
 	
 	};
+
+	EST_("real (anti)logarithm<-1, 1; 0>")
+	{
+		U_alpha w{1};
+		for (int i{0x60}; ~--i;) {
+			auto x = mt19937_f();
+			w *= logarithm_t<-1, 1>{}.template method<0>(x);
+		}
+		return w;
+	
+	};
+	EST_("real (anti)logarithm<-1, 0; 0>")
+	{
+		U_alpha w{1};
+		for (int i{0x60}; ~--i;) {
+			auto x = mt19937_f();
+			w *= logarithm_t<-1, 0>{}.template method<0>(x);
+		}
+		return w;
+	
+	};
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////

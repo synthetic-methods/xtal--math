@@ -13,8 +13,7 @@ namespace xtal::process::math::taylor
 /*!
 \brief   Produces the base-two logarithm and its inverse.
 \todo    Either define `subdivision` to apply `1/N_ind` prescaling, or supply an `attach`ed parameter to do so.
-\todo    Allow for recentering w.r.t. `A4`, e.g. `440*Exp2[-69/12]*Exp2[#/12]&`,
-         or `440*0.1858136117191751604527105712350021e-1L*octarithm_f<-2>(n/m_div)`.
+\todo    Allow for recentering w.r.t. `A4`.
 */
 template <int M_ism=2, int M_div=1>
 struct  octarithm;
@@ -213,11 +212,13 @@ struct octarithm<M_ism, M_div>
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int M_ism=2, int M_div=1>
-XTAL_TYP_(let) octarithm_t = process::confined_t<octarithm<M_ism, M_div>>;
-
+XTAL_TYP_(let) octarithm_t = process::confined_t<
+	octarithm  <M_ism, M_div>
+>;
 template <int M_ism=2, int M_div=1, int N_lim=2>
-XTAL_DEF_(let) octarithm_f = [] XTAL_1FN_(call)
-	(octarithm_t<M_ism, M_div>::template method<N_lim>);
+XTAL_DEF_(let) octarithm_f = [] XTAL_1FN_(call) (
+	octarithm_t<M_ism, M_div>::template method<N_lim>
+);
 
 
 ///////////////////////////////////////////////////////////////////////////////

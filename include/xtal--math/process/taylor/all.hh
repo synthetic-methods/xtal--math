@@ -1,4 +1,6 @@
 #include "./any.hh"
+#include "./cosy.hh"
+#include "./dilogarithm.hh"
 #include "./logarithm.hh"
 #include "./monologarithm.hh"
 #include "./octarithm.hh"

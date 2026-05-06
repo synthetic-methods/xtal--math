@@ -76,8 +76,6 @@ private:
 	XTAL_DEF_(set) mag_f = process::math::taylor::octarithm_f<-1>;
 
 	template <class T>
-	//\
-	using endotype = typename couple<complex_type, duplex_type>::template homotype<T>;
 	using endotype = typename group_multiplication<complex_type, duplex_type>::template homotype<T>;
 
 	template <class T>

@@ -100,8 +100,8 @@ struct sine<M_ism, -2>
 		{
 			XTAL_IF0
 			XTAL_0IF (0 == N_lim)  {return XTAL_ALL_(w) {one};}
-			XTAL_0IF (1 <= N_lim)  {return approximate<N_lim>(XTAL_REF_(w));}
-			XTAL_0IF_(consteval)   {return approximate<   ~0>(XTAL_REF_(w));}
+			XTAL_0IF (1 <= N_lim)  {return methox<N_lim>(XTAL_REF_(w));}
+			XTAL_0IF_(consteval)   {return methox<   ~0>(XTAL_REF_(w));}
 			XTAL_0IF_(else) {
 				auto const u = root_f<2>(w);
 				XTAL_IF0
@@ -115,37 +115,27 @@ struct sine<M_ism, -2>
 	protected:
 		template <int N_lim>
 		XTAL_DEF_(return,inline,let)
-		approximate(auto &&w)
+		methox(auto &&w)
 		const noexcept -> auto
 		{
 			static_assert(-1 <= N_lim);
 			int constexpr N = term_f(1, 2, N_lim&0b1111);
 
-			using W = XTAL_ALL_(w); using U_fit = bond::fit<W>;
+			using W     = XTAL_ALL_(w);
+			using U_fit = bond::fit<W>;
+			auto  constexpr q_ = [] (auto &&o) XTAL_0FN_(to) (U_fit::ratio_f(one, XTAL_REF_(o)));
 			XTAL_IF0
 			XTAL_0IF (0 < M_ism) {
 				W x{one};
-
-				bond::seek_to_e<-N>([&] (auto I) XTAL_0FN_(to) (
-					x = term_f(one
-					,	+U_fit::ratio_f(1, (2 + 2*I)*(3 + 2*I))
-					,	w
-					,	x
-					)
-				));
-				return x;
+				return bond::seek_to_e<-N>([&] (auto I)
+					XTAL_0FN_(to) (x = term_f(one,
+						XTAL_MOV_(x), w, q_((2 + 2*I)*(3 + 2*I)))));
 			}
 			XTAL_0IF (M_ism < 0) {
-				W x = U_fit::ratio_f(1, 1 + 2*N);
-
-				bond::seek_to_e<-N>([&] (auto I) XTAL_0FN_(to) (
-					x = term_f(U_fit::ratio_f(1, 1 + 2*I)
-					,	-U_fit::ratio_f(1 + 2*I, 2 + 2*I)
-					,	w
-					,	x
-					)
-				));
-				return x;
+				W x = q_(1 + 2*N);
+				return bond::seek_to_e<-N>([&] (auto I)
+					XTAL_0FN_(to) (x = term_f(q_(1 + 2*I),
+						XTAL_MOV_(x), w, q_(2 + 2*I) - one)));
 			}
 		}
 

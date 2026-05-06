@@ -1,4 +1,6 @@
 #include "./any.cc"
+#include "./cosy.cc"
+#include "./dilogarithm.cc"
 #include "./logarithm.cc"
 #include "./monologarithm.cc"
 #include "./octarithm.cc"

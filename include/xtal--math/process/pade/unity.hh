@@ -164,10 +164,13 @@ struct unity<M_ism, M_car>
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int M_ism=1, int M_car=1>
-XTAL_TYP_(let) unity_t = process::confined_t<unity<M_ism, M_car>>;
-
+XTAL_TYP_(let) unity_t = process::confined_t<
+	unity  <M_ism, M_car>
+>;
 template <int M_ism=1, int M_car=1, int N_lim=2>
-XTAL_DEF_(let) unity_f = [] XTAL_1FN_(call) (unity_t<M_ism, M_car>{}.template method<N_lim>);
+XTAL_DEF_(let) unity_f = [] XTAL_1FN_(call) (
+	unity_t<M_ism, M_car>{}.template method<N_lim>
+);
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -192,7 +195,7 @@ struct auxiliary<process::math::pade::unity<_s...>>
 	public:
 		using S_::S_;
 
-		using order_attribute = occur::inferred_t<union ORDER, bond::seek_to_t<(1<<3)>>;
+		using limit_attribute = occur::inferred_t<union LIMIT, bond::seek_to_t<(1<<3)>>;
 
 		template <extent_type N_mask=1>
 		struct dispatch
@@ -200,7 +203,7 @@ struct auxiliary<process::math::pade::unity<_s...>>
 			template <class R>
 			using subtype = bond::compose_s<R, typename S_::template dispatch<N_mask>
 			,	provision::voiced<void
-				,	typename T_::order_attribute::template dispatch<N_mask>
+				,	typename T_::limit_attribute::template dispatch<N_mask>
 				>
 			>;
 
