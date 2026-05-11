@@ -17,11 +17,11 @@ namespace xtal::process::math::pade
 Specifies the underlying morphism \f$\in {1, 2}\f$,
 generating either the circular or hyperbolic tangent.
 */
-template <int M_ism=0, int M_car=0>
-struct tangy;
+template <auto ...Ms>
+struct tangy {static_assert(2 <= sizeof...(Ms));};
 
-template <int M_ism=1, int M_car=0>
-using tangy_t = process::confined_t<tangy<M_ism, M_car>>;
+template <auto ...Ms>
+using tangy_t = process::confined_t<tangy<Ms...>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -211,7 +211,6 @@ struct tangy<M_ism,-0>
 			return method<N_lim>(XTAL_REF_(v)/XTAL_REF_(u));
 		}
 
-
 	};
 };
 template <int M_ism>
@@ -243,6 +242,42 @@ struct tangy<M_ism,-2>
 
 	};
 };
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <bond::seek_is_q auto M_, auto ..._s>
+struct tangy<M_, _s...>
+{
+	using superkind = bond::seek_expand_t<M_, tangy>;
+
+	template <class S>
+	class subtype : public bond::compose_s<S, superkind>
+	{
+		using S_ = bond::compose_s<S, superkind>;
+
+	public:
+		using S_::S_;
+
+		template <auto ...Ns>
+		XTAL_DEF_(return,let)
+		method(auto &&...oo)
+		const noexcept -> auto
+		{
+			return S_::template method<_s..., Ns...>(XTAL_REF_(oo)...);
+		}
+
+	};
+};
+template <int M_ism>
+struct tangy<M_ism> : tangy<M_ism, 1>
+{
+};
+template <>
+struct tangy<> : tangy<0>
+{
+};
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
