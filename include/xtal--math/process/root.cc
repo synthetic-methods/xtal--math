@@ -15,16 +15,17 @@ namespace xtal::process::math::_test
 /**/
 TAG_("root")
 {
-	using U_fit   = bond::fit<>;
-	using U_sigma = typename U_fit::sigma_type;
-	using U_delta = typename U_fit::delta_type;
-	using U_alpha = typename U_fit::alpha_type;
-	using U_aphex = typename U_fit::aphex_type;
-
-	auto constexpr N_half_root2 = root_f<-2>(U_fit::diplo_1);
-	auto constexpr N_half_root3 = root_f<-3>(U_fit::diplo_1);
-	auto constexpr N_half_root4 = root_f<-4>(U_fit::diplo_1);
-	auto constexpr N_half_root5 = root_f<-5>(U_fit::diplo_1);
+	using U_fit     = bond::fit<>;
+	using U_sigma   = typename U_fit::sigma_type;
+	using U_delta   = typename U_fit::delta_type;
+	using U_alpha   = typename U_fit::alpha_type;
+	using U_aphex   = typename U_fit::aphex_type;
+	auto  mt19937_o = typename U_fit::MT19937{}; mt19937_o.seed(Catch::rngSeed());
+	auto  mt19937_f = [&] XTAL_1FN_(to) (U_fit::mantissa_f(mt19937_o));
+	auto  constexpr N_half_root2 = root_f<-2>(U_fit::diplo_1);
+	auto  constexpr N_half_root3 = root_f<-3>(U_fit::diplo_1);
+	auto  constexpr N_half_root4 = root_f<-4>(U_fit::diplo_1);
+	auto  constexpr N_half_root5 = root_f<-5>(U_fit::diplo_1);
 
 	TRY_("evaluation (constexpr)")
 	{
@@ -76,84 +77,120 @@ TAG_("root")
 }
 /***/
 /**/
-TAG_("root trials")
+TAG_("root<-3> real trials")
 {
-	using U_fit = bond::fit<>;
-	using U_sigma  = typename U_fit::sigma_type;
-	using U_delta  = typename U_fit::delta_type;
-	using U_alpha  = typename U_fit::alpha_type;
-	using U_aphex  = typename U_fit::aphex_type;
-	auto mt19937_o = typename U_fit::MT19937{}; mt19937_o.seed(Catch::rngSeed());
-	auto mt19937_f = [&] XTAL_1FN_(to) (U_fit::mantissa_f(mt19937_o));
+	using U_fit     = bond::fit<>;
+	using U_sigma   = typename U_fit::sigma_type;
+	using U_delta   = typename U_fit::delta_type;
+	using U_alpha   = typename U_fit::alpha_type;
+	using U_aphex   = typename U_fit::aphex_type;
+	auto  mt19937_o = typename U_fit::MT19937{}; mt19937_o.seed(Catch::rngSeed());
+	auto  mt19937_f = [&] XTAL_1FN_(to) (U_fit::mantissa_f(mt19937_o));
 
-	auto constexpr N_half_root2 = root_f<-2>(U_fit::diplo_1);
-	auto constexpr N_half_root3 = root_f<-3>(U_fit::diplo_1);
-	auto constexpr N_half_root4 = root_f<-4>(U_fit::diplo_1);
-	auto constexpr N_half_root5 = root_f<-5>(U_fit::diplo_1);
-
-	EST_("root<-3;  3>\n   #^3^-1 &\n   (*native real*)")
+	EST_("=\troot<-3;-1>(flt)")
 	{
 		double w{1};
-		for (int i = 0x100; ~--i;) {
+		for (int i = 0x60; ~--i;) {
 			w *= one/cbrt(mt19937_f() + one);
 		}
 		return w;
 
 	};
-	EST_("root<-3;  3>\n   #^3^-1 &\n   (*approx real*)")
+	EST_("~\troot<-3; 3>(flt)")
 	{
 		double w{1};
-		for (int i = 0x100; ~--i;) {
+		for (int i = 0x60; ~--i;) {
 			w *= root_t<-3>{}.template method<3>(mt19937_f() + one);
 		}
 		return w;
 
 	};
-	EST_("root<-3;  2>\n   #^3^-1 &\n   (*approx real*)")
+	EST_("~\troot<-3; 2>(flt)")
 	{
 		double w{1};
-		for (int i = 0x100; ~--i;) {
+		for (int i = 0x60; ~--i;) {
 			w *= root_t<-3>{}.template method<2>(mt19937_f() + one);
 		}
 		return w;
 
 	};
-	EST_("root<-3;  1>\n   #^3^-1 &\n   (*approx real*)")
+	EST_("~\troot<-3; 1>(flt)")
 	{
 		double w{1};
-		for (int i = 0x100; ~--i;) {
+		for (int i = 0x60; ~--i;) {
 			w *= root_t<-3>{}.template method<1>(mt19937_f() + one);
 		}
 		return w;
 
 	};
-	EST_("root<-3;  0>\n     #^-1 &\n   (*native complex*)")
+	EST_("~\troot<-3; 0>(flt)")
 	{
-		U_aphex w{1};
-		for (int i = 0x100; ~--i;) {
-			w *= root_f<-1,  0>(U_aphex{mt19937_f(), mt19937_f()});
+		double w{1};
+		for (int i = 0x60; ~--i;) {
+			w *= root_t<-3>{}.template method<0>(mt19937_f() + one);
 		}
 		return w;
 
 	};
-	EST_("root<-3;  1>\n     #^-1 &\n   (*native complex*)")
-	{
-		U_aphex w{1};
-		for (int i = 0x100; ~--i;) {
-			w *= root_f<-1,  1>(U_aphex{mt19937_f(), mt19937_f()});
-		}
-		return w;
+};
+/***/
+/**/
+TAG_("root<-3> real trials")
+{
+	using U_fit     = bond::fit<>;
+	using U_sigma   = typename U_fit::sigma_type;
+	using U_delta   = typename U_fit::delta_type;
+	using U_alpha   = typename U_fit::alpha_type;
+	using U_aphex   = typename U_fit::aphex_type;
+	auto  mt19937_o = typename U_fit::MT19937{}; mt19937_o.seed(Catch::rngSeed());
+	auto  mt19937_f = [&] XTAL_1FN_(to) (U_fit::mantissa_f(mt19937_o));
 
-	};
-	EST_("root<-3; -1>\n     #^-1 &\n   (*native complex*)")
+	EST_("=\troot<-3;-1>(clx)")
 	{
 		U_aphex w{1};
-		for (int i = 0x100; ~--i;) {
+		for (int i = 0x60; ~--i;) {
 			w *= root_f<-1, -1>(U_aphex{mt19937_f(), mt19937_f()});
 		}
 		return w;
 
 	};
+	EST_("~\troot<-3; 3>(clx)")
+	{
+		U_aphex w{1};
+		for (int i = 0x60; ~--i;) {
+			w *= root_f<-1,  3>(U_aphex{mt19937_f(), mt19937_f()});
+		}
+		return w;
+
+	};
+	EST_("~\troot<-3; 2>(clx)")
+	{
+		U_aphex w{1};
+		for (int i = 0x60; ~--i;) {
+			w *= root_f<-1,  2>(U_aphex{mt19937_f(), mt19937_f()});
+		}
+		return w;
+
+	};
+	EST_("~\troot<-3; 1>(clx)")
+	{
+		U_aphex w{1};
+		for (int i = 0x60; ~--i;) {
+			w *= root_f<-1,  1>(U_aphex{mt19937_f(), mt19937_f()});
+		}
+		return w;
+
+	};
+	EST_("~\troot<-3; 0>(clx)")
+	{
+		U_aphex w{1};
+		for (int i = 0x60; ~--i;) {
+			w *= root_f<-1,  0>(U_aphex{mt19937_f(), mt19937_f()});
+		}
+		return w;
+
+	};
+
 };
 /***/
 

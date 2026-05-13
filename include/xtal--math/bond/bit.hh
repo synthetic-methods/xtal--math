@@ -12,7 +12,7 @@ namespace xtal::bond::math
 /////////////////////////////////////////////////////////////////////////////////
 
 template <class T=void>
-XTAL_DEF_(return,let)
+XTAL_DEF_(return,inline,let)
 bit_exchange_f(auto &&u)
 noexcept -> auto
 {

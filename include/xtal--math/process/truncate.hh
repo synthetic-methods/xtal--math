@@ -43,19 +43,25 @@ struct truncate<M_app>
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,let)
+		XTAL_DEF_(return,inline,let)
 		edit(real_variable_q auto &o)
 		const noexcept -> XTAL_ALL_(o)
 		{
 			using _xtd::bit_cast;
+			using bond::math::bit_sign_f;
+			using bond::math::bit_exchange_f;
 
 			using U_fit   = bond::fit<XTAL_ALL_(o)>;
 			using U_delta = typename U_fit::delta_type;
 			using U_sigma = typename U_fit::sigma_type;
 			using U_alpha = typename U_fit::alpha_type;
 
+			auto constexpr   sign = U_fit::sign;
+			auto constexpr   unit = U_fit::unit;
 			auto constexpr o_stop = static_cast<U_alpha>(M_abs);
 			auto constexpr N_side = static_cast<U_delta>(M_dir);
+			auto constexpr K_stop = bit_cast<U_sigma>(o_stop);
+			auto constexpr K_side = bit_cast<U_sigma>(-N_side >> sign.shift);
 			//\
 			if (_std::is_constant_evaluated() or not (U_fit::IEC&559)) {
 			if (_std::is_constant_evaluated() or not (U_fit::IEC&559) or XTAL_ENV_(GNUC)) {
@@ -66,24 +72,22 @@ struct truncate<M_app>
 				U_alpha const q = o == o_stop;
 				o *= s; return q*s;
 			}
+			/**/
 			else {
-				U_sigma constexpr K_stop = bit_cast<U_sigma>(o_stop);
-				U_sigma constexpr K_side = N_side >> U_fit::sign.shift;
-				auto constexpr sign = U_fit::sign;
-				auto constexpr unit = U_fit::unit;
-
-				auto   &t = reinterpret_cast<U_sigma &>(o);
-				U_sigma s = t&sign.mask;
-				U_sigma r = t^s;
-				s  |=   unit.mask;
-				r  -= K_stop;
-				U_delta q = bit_cast<U_delta>(r) >> sign.shift;
-				q  ^= K_side;
-				r  &= q;
-				s  &= q;
-				t  -= r;
-				return bit_cast<U_alpha>(s);
+				auto  &t = reinterpret_cast<U_sigma &>(o), s = t&sign.mask, r = s|K_stop; r -= t;
+				auto   q = K_side^bit_sign_f(r);
+				t  +=  q & r;
+				s  |=  q & unit.mask;
+				return bit_exchange_f(s);
 			}
+			/*/
+			else {
+				auto  &t = reinterpret_cast<U_sigma &>(o), r = t&sign.mask|K_stop;
+				r  -=  t;  r &= K_side^bit_sign_f(r);
+				t  +=  r;
+				return zero;
+			}
+			/***/
 		}
 		/**/
 		template <auto ...Ns>
@@ -92,7 +96,9 @@ struct truncate<M_app>
 		const noexcept -> XTAL_ALL_(o)
 		{
 			auto &[x, y] = destruct_f(o);
+			//\
 			return {edit<Ns...>(x), edit<Ns...>(y)};
+			return {edit<Ns...>(x), zero};
 		}
 		/*/
 		template <auto ...Ns>

@@ -143,6 +143,38 @@ TAG_("truncate")
 	};
 }
 /***/
+/**/
+TAG_("truncate trials")
+{
+	using U_fit   = bond::fit<>;
+	using U_sigma = typename U_fit::sigma_type; using W_sigma = atom::couple_t<U_sigma[2]>;
+	using U_delta = typename U_fit::delta_type; using W_delta = atom::couple_t<U_delta[2]>;
+	using U_alpha = typename U_fit::alpha_type; using W_alpha = atom::couple_t<U_alpha[2]>;
+	using U_aphex = typename U_fit::aphex_type; using W_aphex = atom::couple_t<U_aphex[2]>;
+
+	auto mt19937_o = typename U_fit::MT19937{}; mt19937_o.seed(Catch::rngSeed());
+	auto mt19937_f = [&] XTAL_1FN_(to) (U_fit::mantissa_f(mt19937_o));
+
+	auto constexpr N_half = U_fit::ratio_f(1, 2);
+	auto constexpr N_zero = U_fit::ratio_f(0, 2);
+	auto constexpr N_min = _std::numeric_limits<U_alpha>::min();
+	auto constexpr N_max = _std::numeric_limits<U_alpha>::max();
+#ifndef __FINITE_MATH_ONLY__
+	auto constexpr N_inf = _std::numeric_limits<U_alpha>::inf();
+#endif
+
+	EST_("truncate down")
+	{
+		double w{1};
+		for (int i = 0x60; ~--i;) {
+			auto x = one/mt19937_f(); (void) truncate_t<-8>{}.edit(x);
+			w += x;
+		}
+		return w;
+
+	};
+}
+/***/
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////
