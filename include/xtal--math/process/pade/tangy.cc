@@ -53,9 +53,9 @@ TAG_("tangy")
 		TRUE_(check_f<-28>(tangy_t<M_hyp,~0>{}.method(-0.5), tangy_t<M_hyp, 1>{}.method(-0.5)));
 		TRUE_(check_f<-37>(tangy_t<M_hyp,~0>{}.method(-0.5), tangy_t<M_hyp, 0>{}.method(-0.5)));
 
-		TRUE_(check_f<51 - 38>(tangy_t< 2>{}.template method<-1>(U_aphex{1.0, 0.1}), tangy_t< 2>{}.template method< 2>(U_aphex{1.0, 0.1})));
-		TRUE_(check_f<51 - 45>(tangy_t< 2>{}.template method<-1>(U_aphex{1.0, 0.1}), tangy_t< 2>{}.template method< 1>(U_aphex{1.0, 0.1})));
-		TRUE_(check_f<51 - 41>(tangy_t< 2>{}.template method<-1>(U_aphex{1.0, 0.1}), tangy_t< 2>{}.template method< 0>(U_aphex{1.0, 0.1})));
+		TRUE_(check_f<13>(tangy_t< 2>{}.template method<-1>(U_aphex{1.0, 0.1}), tangy_t< 2>{}.template method< 2>(U_aphex{1.0, 0.1})));
+		TRUE_(check_f< 6>(tangy_t< 2>{}.template method<-1>(U_aphex{1.0, 0.1}), tangy_t< 2>{}.template method< 1>(U_aphex{1.0, 0.1})));
+		TRUE_(check_f<10>(tangy_t< 2>{}.template method<-1>(U_aphex{1.0, 0.1}), tangy_t< 2>{}.template method< 0>(U_aphex{1.0, 0.1})));
 
 		TRUE_(check_f<-38>(tangy_t< 1>{}.template method<-1>(0.375), tangy_t< 1>{}.template method< 1>(0.375)));
 		TRUE_(check_f<-40>(tangy_t< 1>{}.template method<-1>(0.375), tangy_t< 1>{}.template method< 0>(0.375)));

@@ -18,7 +18,7 @@ Specifies the underlying morphism \f$\in {1, 2}\f$,
 generating either the circular or hyperbolic tangent.
 */
 template <auto ...Ms>
-struct tangy {static_assert(2 <= sizeof...(Ms));};
+struct tangy {};
 
 template <auto ...Ms>
 using tangy_t = process::confined_t<tangy<Ms...>>;
@@ -246,10 +246,10 @@ struct tangy<M_ism,-2>
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <bond::seek_is_q auto M_, auto ..._s>
+template <bond::seek_q auto M_, auto ..._s>
 struct tangy<M_, _s...>
 {
-	using superkind = bond::seek_expand_t<M_, tangy>;
+	using superkind = bond::compose_s<decltype(M_), bond::seek_impose<tangy>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
