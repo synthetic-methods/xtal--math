@@ -106,36 +106,6 @@ noexcept -> auto
 
 ///////////////////////////////////////////////////////////////////////////////
 
-template <int N_ord=0>
-XTAL_DEF_(return,inline,let)
-bit_shift_f(integral_variable_q auto u)
-noexcept -> auto
-{
-	XTAL_IF0
-	XTAL_0IF (0 <= N_ord) {
-		return XTAL_MOV_(u) << N_ord;
-	}
-	XTAL_0IF (N_ord <  0) {
-		auto const v = bit_sign_f(u);
-		u  ^= v;
-		u  -= v;
-		u >>= N_ord;
-		u  ^= v;
-		u  -= v;
-		return u;
-	}
-}
-XTAL_DEF_(return,inline,let)
-bit_shift_f(integral_variable_q auto u, ordinal_q auto n)
-noexcept -> auto
-{
-	XTAL_ALL_(n) constexpr ex = sizeof(n)*(8) - (1);
-	auto const [up, dn] = bit_axes_f<+1>(n);
-	u <<= up;//bit_extremum_f<-1>(up, ex);
-	u >>= dn;//bit_extremum_f<-1>(dn, ex);
-	return u;
-}
-
 template <int N_depth>
 XTAL_DEF_(return,inline,let)
 bit_mask_f()
@@ -151,72 +121,6 @@ bit_mask_f(ordinal_q auto const u)
 noexcept -> auto
 {
 	return u&bit_mask_f<N_depth>();
-}
-
-
-///////////////////////////////////////////////////////////////////////////////
-
-template <int N_ord=0>
-XTAL_DEF_(return,inline,let)
-bit_exponent_f(real_variable_q auto u)
-noexcept -> auto
-{
-	using U     = XTAL_ALL_(u);
-	using U_fit = bond::fit<U>;
-	using U_delta = typename U_fit::delta_type;
-	using U_sigma = typename U_fit::sigma_type;
-
-	if constexpr (U_fit::IEC&559) {
-		auto x = bit_exchange_f(XTAL_MOV_(u));
-		x >>= U_fit::exponent.shift;
-		x  &= U_fit::exponent. mark;
-		x  -= U_fit::    unit. mark;
-		return bit_shift_f<N_ord>(_xtd::bit_cast<U_delta>(XTAL_MOV_(x)));
-	}
-	else {
-		return bit_shift_f<N_ord>(   static_cast<U_delta>(_std::ilogb(XTAL_MOV_(u))));
-	}
-}
-template <int N_dir=0>
-XTAL_DEF_(return,inline,let)
-bit_exponent_f(complex_variable_q auto &&w)
-noexcept -> auto
-{
-	//\
-	return bond::fit<int>::maximum_f(std::ilogb(w.real()), std::ilogb(w.real()));
-	return bit_exponent_f<N_dir>(norm(XTAL_REF_(w))) >> one;
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-
-/*!
-\returns The number of bits constituting `V`.
-*/
-template <class V>
-XTAL_DEF_(return,inline,let)
-bit_depth_f()
-noexcept -> int
-{
-	return static_cast<int>(sizeof(V) << 3);
-}
-/*!
-\returns The number of bits constituting `v`.
-*/
-XTAL_DEF_(return,inline,let)
-bit_depth_f(variable_q auto v)
-noexcept -> int
-{
-	return static_cast<int>(sizeof(v) << 3);
-}
-/*!
-\returns The number of bits constituting `w`.
-*/
-XTAL_DEF_(return,inline,let)
-bit_depth_f(constant_q auto w)
-noexcept -> int
-{
-	return constant_t<bit_depth_f(w())>{};
 }
 
 
@@ -245,22 +149,23 @@ noexcept -> auto
 	using T_delta = typename T_fit::delta_type;
 	using T_alpha = typename T_fit::alpha_type;
 
-	auto constexpr N = bit_depth_f<decltype(o)>() - 1;
+	auto constexpr N = sizeof(o) << 3;
+	auto constexpr M = N - 1;
 	auto const     i = ordinal_f(XTAL_REF_(o));
 	XTAL_IF0
 	XTAL_0IF (incomplete_q<T> or same_q<T, T_delta>) {
-		return i >> N;
+		return i >> M;
 	}
 	XTAL_0IF (integral_q<T> and sizeof(T) == sizeof(i)) {
-		return _xtd::bit_cast<T>(i >> N);
+		return _xtd::bit_cast<T>(i >> M);
 	}
 	XTAL_0IF (integral_q<T> and sizeof(T) != sizeof(i)) {
 		auto const j = static_cast<T_delta>(i);
-		return _xtd::bit_cast<T>(j >> N);
+		return _xtd::bit_cast<T>(j >> M);
 	}
 	XTAL_0IF (real_q<T>) {
 		auto k = static_cast<T_delta>(i);
-		k >>= N;
+		k >>= M;
 		k  &= T_fit::sign.mask;
 		k  |= T_fit::unit.mask;
 		return _xtd::bit_cast<T>(k);
@@ -308,6 +213,137 @@ noexcept -> auto
 }
 
 
+///////////////////////////////////////////////////////////////////////////////
+
+XTAL_DEF_(return,inline,let)
+bit_exponent_f(real_variable_q auto u)
+noexcept -> auto
+{
+	using U     = XTAL_ALL_(u);
+	using U_fit = bond::fit<U>;
+	using U_delta = typename U_fit::delta_type;
+	using U_sigma = typename U_fit::sigma_type;
+
+	if constexpr (U_fit::IEC&559) {
+		auto x = bit_exchange_f(XTAL_MOV_(u));
+		x >>= U_fit::exponent.shift;
+		x  &= U_fit::exponent. mark;
+		x  -= U_fit::    unit. mark;
+		return _xtd::bit_cast<U_delta>(XTAL_MOV_(x));
+	}
+	else {
+		return    static_cast<U_delta>(_std::ilogb(XTAL_MOV_(u)));
+	}
+}
+XTAL_DEF_(return,inline,let)
+bit_exponent_f(complex_variable_q auto &&w)
+noexcept -> auto
+{
+	//\
+	return bond::fit<int>::maximum_f(std::ilogb(w.real()), std::ilogb(w.real()));
+	return bit_exponent_f(norm(XTAL_REF_(w))) >> one;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+/*!
+\returns The number of bits constituting `V`.
+*/
+template <class V>
+XTAL_DEF_(return,inline,let)
+bit_depth_f()
+noexcept -> int
+{
+	return static_cast<int>(sizeof(V) << 3);
+}
+
+XTAL_DEF_(return,inline,let)
+bit_depth_f(cardinal_variable_q auto u)
+noexcept -> int
+{
+	auto const r = one&bit_sign_f(-u);
+	return _std::bit_width(u - r) + r;
+}
+XTAL_DEF_(return,inline,let)
+bit_depth_f(ordinal_variable_q auto v)
+noexcept -> int
+{
+	int  x = bit_sign_f<int>(v);
+	v ^= x;
+	v -= x;
+	int  y = bit_depth_f(cardinal_f(v));
+	y ^= x;
+	y -= x;
+	return y;
+}
+XTAL_DEF_(return,inline,let)
+bit_depth_f(real_variable_q auto &&x)
+noexcept -> int
+{
+	using          X_fit    = bond::fit<decltype(x)>;
+	auto constexpr X_factor = X_fit::diplo_2*X_fit::dnsilon_1;
+	return bit_axis_f<1>(bit_exponent_f(X_factor*XTAL_REF_(x)));
+}
+XTAL_DEF_(return,inline,let)
+bit_depth_f(complex_variable_q auto &&x)
+noexcept -> int
+{
+	auto  y = bit_depth_f(norm(XTAL_REF_(x)));
+	y  += y&1;
+	y >>=   1;
+	return  y;
+	//\
+	return bit_floor_f<N_zero>(XTAL_REF_(x)) + 1;
+}
+XTAL_DEF_(return,inline,let)
+bit_depth_f(constant_q auto w)
+noexcept -> auto
+{
+	return constant_t<bit_depth_f(w())>{};
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+XTAL_DEF_(return,inline,let)
+bit_shift_f(auto &&o)
+noexcept -> auto
+{
+	return bit_depth_f(XTAL_REF_(o)) - one;
+}
+template <int N_ord>
+XTAL_DEF_(return,inline,let)
+bit_shift_f(integral_variable_q auto u)
+noexcept -> auto
+{
+	XTAL_IF0
+	XTAL_0IF (0 <= N_ord) {
+		return XTAL_MOV_(u) << N_ord;
+	}
+	XTAL_0IF (N_ord <  0) {
+		auto const v = bit_sign_f(u);
+		u  ^= v;
+		u  -= v;
+		u >>= N_ord;
+		u  ^= v;
+		u  -= v;
+		return u;
+	}
+}
+XTAL_DEF_(return,inline,let)
+bit_shift_f(integral_variable_q auto u, ordinal_q auto n)
+noexcept -> auto
+{
+	XTAL_ALL_(n) constexpr ex = sizeof(n)*(8) - (1);
+	auto const [up, dn] = bit_axes_f<+1>(n);
+	u <<= up;//bit_extremum_f<-1>(up, ex);
+	u >>= dn;//bit_extremum_f<-1>(dn, ex);
+	return u;
+}
+
+
+
 ////////////////////////////////////////////////////////////////////////////////
 
 template <unsigned int N_mask>
@@ -326,29 +362,6 @@ noexcept -> auto
 {
 	int constexpr N_width = 1 << N_exit;
 	return bit_clasp_f<bit_mask_f<N_width>()>(x);
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-
-template <int N_sgn=1>
-XTAL_DEF_(return,inline,let)
-bit_swatch_f(ordinal_variable_q auto &&u)
-noexcept -> auto
-{
-	using U     = XTAL_ALL_(u);
-	using U_fit = bond::fit<U>;
-	using U_delta = typename U_fit::delta_type;
-	using U_alpha = typename U_fit::alpha_type;
-	using W_alpha = _std::array<U_alpha, 2>;
-	auto             mask_dn  =  XTAL_REF_(u) >> U_fit::sign.shift;
-	auto             mask_up  = ~mask_dn;
-	auto constexpr       _1   =  U_fit::unit.mask|U_fit::sign.mask;
-	auto const           _dn  =  bit_exchange_f(mask_dn&_1), dn = -_dn;
-	auto const           _up  =  bit_exchange_f(mask_up&_1), up = -_up;
-	XTAL_IF0
-	XTAL_0IF (0 < N_sgn) {return W_alpha{ dn,  up};}
-	XTAL_0IF (N_sgn < 0) {return W_alpha{_dn, _up};}
 }
 
 
@@ -480,142 +493,7 @@ noexcept -> auto
 }
 
 
-template <int N_zero=-1> requires (N_zero == -1)
-XTAL_DEF_(return,inline,let)
-bit_floor_f(cardinal_variable_q auto u)
-noexcept -> int
-{
-	/*/
-	U const  z =      one == u;
-	U const _z = bond::fit<decltype(u)>::unit.depth&-z;
-	return _std::bit_width(u) - (one << _z) + z;// 0 -> -1023
-	/*/
-	return _std::bit_width(u) - one;// 0 -> -1
-	/***/
-}
-template <int N_zero=-1> requires (N_zero != -1)
-XTAL_DEF_(return,inline,let)
-bit_floor_f(cardinal_variable_q auto u)
-noexcept -> int
-{
-	int constexpr N = N_zero + one;
-	int y = bit_floor_f(u); y += (N&bit_sign_f(y));
-	return y;
-}
-template <int N_zero=-1>
-XTAL_DEF_(return,inline,let)
-bit_floor_f(ordinal_variable_q auto v)
-noexcept -> int
-{
-	int  x = bit_sign_f<int>(v);
-	v ^= x;
-	v -= x;
-	int  y = bit_floor_f<N_zero>(cardinal_f(v));
-	y ^= x;
-	y -= x;
-	return y;
-}
-template <int N_zero>
-XTAL_DEF_(return,inline,let)
-bit_floor_f(real_variable_q auto &&x)
-noexcept -> int
-{
-	auto constexpr N = -static_cast<int>(bond::fit<decltype(x)>::unit.mark);
-	if constexpr  (N == N_zero) {
-		return  bit_exponent_f(XTAL_REF_(x));
-	}
-	else {
-		int n = bit_exponent_f(XTAL_REF_(x));
-		if constexpr (N_zero != 0) {n -=         N_zero;}
-		if constexpr (N_zero != N) {n &= ~bit_sign_f(n);}
-		if constexpr (N_zero != 0) {n +=         N_zero;}
-		return n;
-	}
-}
-template <int N_zero>
-XTAL_DEF_(return,inline,let)
-bit_floor_f(complex_variable_q auto &&x)
-noexcept -> int
-{
-	return bit_floor_f<N_zero>(norm(XTAL_REF_(x))) >> one;
-}
-XTAL_DEF_(return,inline,let)
-bit_floor_f(auto &&x)
-noexcept -> int
-requires real_variable_q<unstruct_t<decltype(x)>>
-{
-	auto constexpr N = -static_cast<int>(bond::fit<decltype(x)>::unit.mark);
-	return bit_floor_f<N>(XTAL_REF_(x));
-}
-template <int N_zero=-1>
-XTAL_DEF_(return,inline,let)
-bit_floor_f(constant_q auto w)
-noexcept -> auto
-{
-	return constant_t<bit_floor_f<N_zero>(w())>{};
-}
-
-
-template <int N_zero=-1> requires (N_zero == -1)
-XTAL_DEF_(return,inline,let)
-bit_ceiling_f(cardinal_variable_q auto u)
-noexcept -> int
-{
-	int const z = u == zero;
-	//\
-	return _std::bit_width(u - !z) - (z << unit.depth) + z;// 0 -> -1023
-	return _std::bit_width(u - !z)                     - z;// 0 -> -1
-}
-template <int N_zero=-1> requires (N_zero != -1)
-XTAL_DEF_(return,inline,let)
-bit_ceiling_f(cardinal_variable_q auto u)
-noexcept -> int
-{
-	int constexpr N = N_zero + one;
-	int y = bit_ceiling_f(u); y += N&bit_sign_f(y);
-	return y;
-}
-template <int N_zero=-1>
-XTAL_DEF_(return,inline,let)
-bit_ceiling_f(ordinal_variable_q auto v)
-noexcept -> int
-{
-	int  x = bit_sign_f<int>(v);
-	v ^= x;
-	v -= x;
-	int  y = bit_ceiling_f<N_zero>(cardinal_f(v));
-	y ^= x;
-	y -= x;
-	return y;
-}
-template <int N_zero=+1>
-XTAL_DEF_(return,inline,let)
-bit_ceiling_f(real_variable_q auto &&x)
-noexcept -> int
-{
-	using X_fit = bond::fit<decltype(x)>;
-	return bit_floor_f<N_zero>(X_fit::diplo_1*X_fit::dnsilon_f(1)*XTAL_REF_(x));
-}
-template <int N_zero=+1>
-XTAL_DEF_(return,inline,let)
-bit_ceiling_f(complex_variable_q auto &&x)
-noexcept -> int
-{
-	auto  y = bit_ceiling_f<N_zero>(norm(XTAL_REF_(x)));
-	y  += y&1;
-	y >>=   1;
-	return  y;
-	//\
-	return bit_floor_f<N_zero>(XTAL_REF_(x)) + 1;
-}
-template <int N_zero=-1>
-XTAL_DEF_(return,inline,let)
-bit_ceiling_f(constant_q auto w)
-noexcept -> auto
-{
-	return constant_t<bit_ceiling_f<N_zero>(w())>{};
-}
-
+////////////////////////////////////////////////////////////////////////////////
 
 /*!
 \returns The bitwise-reversal of `u`,
@@ -662,37 +540,6 @@ noexcept -> auto
 	using X = XTAL_ALL_(x);
 	return bit_reverse_f(XTAL_REF_(x),
 		0 < N_subdepth? N_subdepth: bond::fit<X>::full.depth);
-}
-
-
-///////////////////////////////////////////////////////////////////////////////
-
-XTAL_DEF_(return,let)
-bit_representation_f(real_variable_q auto x)
-noexcept -> auto
-{
-	using X_fit =  bond::fit<decltype(x)>;
-	using U = typename X_fit::sigma_type;
-	using V = typename X_fit::delta_type;
-
-	U constexpr N = X_fit::unit.mark + X_fit::fraction.depth;
-	U constexpr M =             one << X_fit::fraction.depth;
-	
-	auto const o = _xtd::bit_cast<U>(x);
-	V const z = static_cast<V>(o) >> X_fit::positive.depth;
-	V const n = N - (o << X_fit::sign.depth >> X_fit::sign.depth + X_fit::exponent.shift);
-	V       m = M | (o&X_fit::fraction.mask);
-	m  ^= z;
-	m  -= z;
-	return atom::couple_t<V[2]>{m, n};
-}
-XTAL_DEF_(return,inline,let)
-bit_presentation_f(atom::couple_q auto const &mn)
-noexcept -> auto
-{
-	auto const &[m, n] = mn;
-	using MN_op = bond::fit<decltype(m), decltype(n)>;
-	return static_cast<typename MN_op::alpha_type>(m)*MN_op::haplo_f(n);
 }
 
 
@@ -822,6 +669,37 @@ requires requires {bit_fraction_f(x.real()); bit_fraction_f(x.imag());}
 	using V = typename Y::value_type;
 
 	return Y{bit_fraction_f<V>(x.real()), bit_fraction_f<V>(x.imag())};
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+XTAL_DEF_(return,let)
+bit_representation_f(real_variable_q auto x)
+noexcept -> auto
+{
+	using X_fit =  bond::fit<decltype(x)>;
+	using U = typename X_fit::sigma_type;
+	using V = typename X_fit::delta_type;
+
+	U constexpr N = X_fit::unit.mark + X_fit::fraction.depth;
+	U constexpr M =             one << X_fit::fraction.depth;
+	
+	auto const o = _xtd::bit_cast<U>(x);
+	V const z = static_cast<V>(o) >> X_fit::positive.depth;
+	V const n = N - (o << X_fit::sign.depth >> X_fit::sign.depth + X_fit::exponent.shift);
+	V       m = M | (o&X_fit::fraction.mask);
+	m  ^= z;
+	m  -= z;
+	return atom::couple_t<V[2]>{m, n};
+}
+XTAL_DEF_(return,inline,let)
+bit_presentation_f(atom::couple_q auto const &mn)
+noexcept -> auto
+{
+	auto const &[m, n] = mn;
+	using MN_op = bond::fit<decltype(m), decltype(n)>;
+	return static_cast<typename MN_op::alpha_type>(m)*MN_op::haplo_f(n);
 }
 
 

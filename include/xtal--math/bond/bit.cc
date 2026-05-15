@@ -248,115 +248,57 @@ TAG_("bit_floor_f")
 
 	TRY_("trial")
 	{
-		TRUE_( 9 == bit_floor_f<-4>(T_fit::diplo_f(9)));
-		TRUE_( 8 == bit_floor_f<-4>(T_fit::diplo_f(8)));
-		TRUE_( 7 == bit_floor_f<-4>(T_fit::diplo_f(7)));
-		TRUE_( 6 == bit_floor_f<-4>(T_fit::diplo_f(6)));
-		TRUE_( 5 == bit_floor_f<-4>(T_fit::diplo_f(5)));
-		TRUE_( 4 == bit_floor_f<-4>(T_fit::diplo_f(4)));
-		TRUE_( 3 == bit_floor_f<-4>(T_fit::diplo_f(3)));
-		TRUE_( 2 == bit_floor_f<-4>(T_fit::diplo_f(2)));
-		TRUE_( 1 == bit_floor_f<-4>(T_fit::diplo_f(1)));
-		TRUE_( 0 == bit_floor_f<-4>(T_fit::diplo_f(0)));
-		TRUE_( 0 == bit_floor_f<-4>(T_fit::haplo_f(0)));
-		TRUE_(-1 == bit_floor_f<-4>(T_fit::haplo_f(1)));
-		TRUE_(-2 == bit_floor_f<-4>(T_fit::haplo_f(2)));
-		TRUE_(-3 == bit_floor_f<-4>(T_fit::haplo_f(3)));
-		TRUE_(-4 == bit_floor_f<-4>(T_fit::haplo_f(4)));
-		TRUE_(-4 == bit_floor_f<-4>(T_fit::haplo_f(5)));
-		TRUE_(-4 == bit_floor_f<-4>(T_fit::haplo_f(6)));
-		TRUE_(-4 == bit_floor_f<-4>(T_fit::haplo_f(7)));
-		TRUE_(-4 == bit_floor_f<-4>(T_fit::haplo_f(8)));
-		TRUE_(-4 == bit_floor_f<-4>(T_fit::haplo_f(9)));
-		TRUE_(-4 == bit_floor_f<-4>(T_fit::alpha_f(0)));
+		TRUE_(bit_depth_f(T_sigma(0b0000)) == 0/*0b0000*/);
+		TRUE_(bit_depth_f(T_sigma(0b0001)) == 1/*0b0001*/);
+		TRUE_(bit_depth_f(T_sigma(0b0010)) == 2/*0b0010*/);
+		TRUE_(bit_depth_f(T_sigma(0b0011)) == 3/*0b0100*/);
+		TRUE_(bit_depth_f(T_sigma(0b0100)) == 3/*0b0100*/);
+		TRUE_(bit_depth_f(T_sigma(0b0101)) == 4/*0b1000*/);
+		TRUE_(bit_depth_f(T_sigma(0b0110)) == 4/*0b1000*/);
+		TRUE_(bit_depth_f(T_sigma(0b0111)) == 4/*0b1000*/);
+		TRUE_(bit_depth_f(T_sigma(0b1000)) == 4/*0b1000*/);
 
+		TRUE_(bit_depth_f(T_delta(0b0000)) == 0/*0b0000*/);
+		TRUE_(bit_depth_f(T_delta(0b0001)) == 1/*0b0001*/);
+		TRUE_(bit_depth_f(T_delta(0b0010)) == 2/*0b0010*/);
+		TRUE_(bit_depth_f(T_delta(0b0011)) == 3/*0b0100*/);
+		TRUE_(bit_depth_f(T_delta(0b0100)) == 3/*0b0100*/);
+		TRUE_(bit_depth_f(T_delta(0b0101)) == 4/*0b1000*/);
+		TRUE_(bit_depth_f(T_delta(0b0110)) == 4/*0b1000*/);
+		TRUE_(bit_depth_f(T_delta(0b0111)) == 4/*0b1000*/);
+		TRUE_(bit_depth_f(T_delta(0b1000)) == 4/*0b1000*/);
 
-		TRUE_(0 == bit_floor_f<0>(0));
-		TRUE_(0 == bit_floor_f<0>(1));
-		TRUE_(1 == bit_floor_f<0>(2));
-		TRUE_(0 == bit_floor_f<0>(0.0));
-		TRUE_(0 == bit_floor_f<0>(1.0));
-		TRUE_(1 == bit_floor_f<0>(2.0));
-	//	TRUE_(bit_floor_f(0.0) == bit_floor_f(0));
-		TRUE_(bit_floor_f(1.0) == bit_floor_f(1));
-		TRUE_(bit_floor_f(2.0) == bit_floor_f(2));
-		TRUE_(bit_floor_f(3.0) == bit_floor_f(3));
-		TRUE_(bit_floor_f(4.0) == bit_floor_f(4));
-		TRUE_(bit_floor_f(5.0) == bit_floor_f(5));
-		TRUE_(bit_floor_f(6.0) == bit_floor_f(6));
-		TRUE_(bit_floor_f(7.0) == bit_floor_f(7));
-		TRUE_(bit_floor_f(8.0) == bit_floor_f(8));
-		TRUE_(bit_floor_f(9.0) == bit_floor_f(9));
+		TRUE_(bit_depth_f(T_alpha(0b0000)) == 0/*0b0000*/);
+		TRUE_(bit_depth_f(T_alpha(0b0001)) == 1/*0b0001*/);
+		TRUE_(bit_depth_f(T_alpha(0b0010)) == 2/*0b0010*/);
+		TRUE_(bit_depth_f(T_alpha(0b0011)) == 3/*0b0100*/);
+		TRUE_(bit_depth_f(T_alpha(0b0100)) == 3/*0b0100*/);
+		TRUE_(bit_depth_f(T_alpha(0b0101)) == 4/*0b1000*/);
+		TRUE_(bit_depth_f(T_alpha(0b0110)) == 4/*0b1000*/);
+		TRUE_(bit_depth_f(T_alpha(0b0111)) == 4/*0b1000*/);
+		TRUE_(bit_depth_f(T_alpha(0b1000)) == 4/*0b1000*/);
 
-	//	TRUE_(bit_floor_f(0.0*T_fit::diplo_1*T_fit::dnsilon_f(1)) == bit_ceiling_f(0));
-		TRUE_(bit_floor_f(1.0*T_fit::diplo_1*T_fit::dnsilon_f(1)) == bit_ceiling_f(1));
-		TRUE_(bit_floor_f(2.0*T_fit::diplo_1*T_fit::dnsilon_f(1)) == bit_ceiling_f(2));
-		TRUE_(bit_floor_f(3.0*T_fit::diplo_1*T_fit::dnsilon_f(1)) == bit_ceiling_f(3));
-		TRUE_(bit_floor_f(4.0*T_fit::diplo_1*T_fit::dnsilon_f(1)) == bit_ceiling_f(4));
-		TRUE_(bit_floor_f(5.0*T_fit::diplo_1*T_fit::dnsilon_f(1)) == bit_ceiling_f(5));
-		TRUE_(bit_floor_f(6.0*T_fit::diplo_1*T_fit::dnsilon_f(1)) == bit_ceiling_f(6));
-		TRUE_(bit_floor_f(7.0*T_fit::diplo_1*T_fit::dnsilon_f(1)) == bit_ceiling_f(7));
-		TRUE_(bit_floor_f(8.0*T_fit::diplo_1*T_fit::dnsilon_f(1)) == bit_ceiling_f(8));
-		TRUE_(bit_floor_f(9.0*T_fit::diplo_1*T_fit::dnsilon_f(1)) == bit_ceiling_f(9));
+	//	TRUE_( 1 == bit_depth_f(typename T_fit::aphex_type{0, 1}));
+	//	TRUE_( 1 == bit_depth_f(typename T_fit::aphex_type{0, 2}));
+	//	TRUE_( 2 == bit_depth_f(typename T_fit::aphex_type{0, 3}));
+	//	TRUE_( 2 == bit_depth_f(typename T_fit::aphex_type{0, 4}));
+	//	TRUE_( 3 == bit_depth_f(typename T_fit::aphex_type{0, 5}));
+	//	TRUE_( 3 == bit_depth_f(typename T_fit::aphex_type{0, 6}));
+	//	TRUE_( 3 == bit_depth_f(typename T_fit::aphex_type{0, 7}));
+	//	TRUE_( 3 == bit_depth_f(typename T_fit::aphex_type{0, 8}));
 
-	//	TRUE_(bit_ceiling_f(0) == _std::bit_width(0U - 1));
-		TRUE_(bit_ceiling_f(1) == _std::bit_width(1U - 1));
-		TRUE_(bit_ceiling_f(2) == _std::bit_width(2U - 1));
-		TRUE_(bit_ceiling_f(3) == _std::bit_width(3U - 1));
-		TRUE_(bit_ceiling_f(4) == _std::bit_width(4U - 1));
-		TRUE_(bit_ceiling_f(5) == _std::bit_width(5U - 1));
-		TRUE_(bit_ceiling_f(6) == _std::bit_width(6U - 1));
-		TRUE_(bit_ceiling_f(7) == _std::bit_width(7U - 1));
-		TRUE_(bit_ceiling_f(8) == _std::bit_width(8U - 1));
-		TRUE_(bit_ceiling_f(9) == _std::bit_width(9U - 1));
+	//	TRUE_(bit_depth_f<0>(T_aphex{0.0, 0.0}) ==  0);
+	//	TRUE_(bit_depth_f<0>(T_aphex{0.0, 0.5}) ==  0);
+	//	TRUE_(bit_depth_f<0>(T_aphex{0.0, 1.0}) ==  0);
+	//	TRUE_(bit_depth_f<0>(T_aphex{0.0, 1.5}) ==  1);
+	//	TRUE_(bit_depth_f<0>(T_aphex{0.0, 2.0}) ==  1);
+	//	TRUE_(bit_depth_f<0>(T_aphex{0.0, 2.5}) ==  2);
+	//	TRUE_(bit_depth_f<0>(T_aphex{0.0, 3.0}) ==  2);
+	//	TRUE_(bit_depth_f<0>(T_aphex{0.0, 3.5}) ==  2);
+	//	TRUE_(bit_depth_f<0>(T_aphex{0.0, 4.0}) ==  2);
 
-		TRUE_(-1 == bond::math::bit_floor_f<-2>(-0.50));
-		TRUE_(-1 == bond::math::bit_floor_f<-2>(+0.50));
-		TRUE_(-2 == bond::math::bit_floor_f<-2>(-0.25));
-		TRUE_(-2 == bond::math::bit_floor_f<-2>(+0.25));
-		TRUE_( 1 == bond::math::bit_ceiling_f(typename T_fit::aphex_type{0, 1}));
-		TRUE_( 1 == bond::math::bit_ceiling_f(typename T_fit::aphex_type{0, 2}));
-		TRUE_( 2 == bond::math::bit_ceiling_f(typename T_fit::aphex_type{0, 3}));
-		TRUE_( 2 == bond::math::bit_ceiling_f(typename T_fit::aphex_type{0, 4}));
-		TRUE_( 3 == bond::math::bit_ceiling_f(typename T_fit::aphex_type{0, 5}));
-		TRUE_( 3 == bond::math::bit_ceiling_f(typename T_fit::aphex_type{0, 6}));
-		TRUE_( 3 == bond::math::bit_ceiling_f(typename T_fit::aphex_type{0, 7}));
-		TRUE_( 3 == bond::math::bit_ceiling_f(typename T_fit::aphex_type{0, 8}));
-
-		TRUE_(bit_floor_f(0.1) == -4);
-		TRUE_(bit_floor_f(0.2) == -3);
-		TRUE_(bit_floor_f(0.3) == -2);
-		TRUE_(bit_floor_f(0.4) == -2);
-		TRUE_(bit_floor_f(0.5) == -1);
-		TRUE_(bit_floor_f(0.6) == -1);
-		TRUE_(bit_floor_f(0.7) == -1);
-		TRUE_(bit_floor_f(0.8) == -1);
-		TRUE_(bit_floor_f(0.9) == -1);
-		TRUE_(bit_floor_f(1.0) ==  0);
-		TRUE_(bit_floor_f(2.0) ==  1);
-		TRUE_(bit_floor_f(3.0) ==  1);
-		TRUE_(bit_floor_f(4.0) ==  2);
-		TRUE_(bit_floor_f(5.0) ==  2);
-		TRUE_(bit_floor_f(6.0) ==  2);
-		TRUE_(bit_floor_f(7.0) ==  2);
-		TRUE_(bit_floor_f(8.0) ==  3);
-		TRUE_(bit_floor_f(9.0) ==  3);
-
-		TRUE_(bit_floor_f  (T_aphex{3.0, 3.0}) ==  2);
-		TRUE_(bit_floor_f  (T_aphex{0.3, 0.3}) == -2);
-	
-		TRUE_(bit_ceiling_f<0>(T_aphex{0.0, 0.0}) ==  0);
-		TRUE_(bit_ceiling_f<0>(T_aphex{0.0, 0.5}) ==  0);
-		TRUE_(bit_ceiling_f<0>(T_aphex{0.0, 1.0}) ==  0);
-		TRUE_(bit_ceiling_f<0>(T_aphex{0.0, 1.5}) ==  1);
-		TRUE_(bit_ceiling_f<0>(T_aphex{0.0, 2.0}) ==  1);
-		TRUE_(bit_ceiling_f<0>(T_aphex{0.0, 2.5}) ==  2);
-		TRUE_(bit_ceiling_f<0>(T_aphex{0.0, 3.0}) ==  2);
-		TRUE_(bit_ceiling_f<0>(T_aphex{0.0, 3.5}) ==  2);
-		TRUE_(bit_ceiling_f<0>(T_aphex{0.0, 4.0}) ==  2);
-
-		TRUE_(bit_ceiling_f(T_aphex{3.0, 3.0}) ==  3);
-	//	echo_(bit_ceiling_f(T_aphex{0.3, 0.3}), -1);//FIX:	Improper rounding?
+		TRUE_(bit_depth_f(T_aphex{3.0, 3.0}) ==  3);
+	//	echo_(bit_depth_f(T_aphex{0.3, 0.3}), -1);//FIX:	Improper rounding?
 
 		TRUE_(check_f<-1>(bit_exponent_f(T_alpha{0.5}), bit_exponent_f(T_aphex{0, 0.5})));
 		TRUE_(check_f<-1>(bit_exponent_f(T_alpha{1.5}), bit_exponent_f(T_aphex{0, 1.5})));

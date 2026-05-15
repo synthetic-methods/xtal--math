@@ -267,20 +267,30 @@ public:
 		operator -= (X &&x)
 		noexcept -> auto &
 		{
-			if constexpr (un_v<integral_q<unstruct_t<X>>>) {
-				get<0>(self()) -= bond::math::bit_fraction_f<V>(x);
+			auto &s = self();
+			XTAL_IF0
+			XTAL_0IF (applicable_q<X> and requires {requires X{}() == half;}) {
+				s.element() -= terminal_constant_v<U>;
 			}
-			return self();
+			XTAL_0IF (not integral_q<X>) {
+				s.element() -= bond::math::bit_fraction_f<V>(x);
+			}
+			return s;
 		}
 		template <class X> requires additive_group_p<1, W, X>
 		XTAL_DEF_(mutate,inline,let)
 		operator += (X &&x)
 		noexcept -> auto &
 		{
-			if constexpr (un_v<integral_q<unstruct_t<X>>>) {
-				get<0>(self()) += bond::math::bit_fraction_f<V>(x);
+			auto &s = self();
+			XTAL_IF0
+			XTAL_0IF (applicable_q<X> and requires {requires X{}() == half;}) {
+				s.element() += terminal_constant_v<U>;
 			}
-			return self();
+			XTAL_0IF (not integral_q<X>) {
+				s.element() += bond::math::bit_fraction_f<V>(x);
+			}
+			return s;
 		}
 
 	public:

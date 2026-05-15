@@ -7,9 +7,10 @@
 
 #include "./filter.hh"
 XTAL_ENV_(push)
-namespace xtal::process::math::zavalishin::_test
+namespace xtal::process::math::zavalishin::_test::XTAL_NUM
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
+using namespace xtal::process::math::zavalishin;
 
 struct filter_parameters
 {
@@ -494,7 +495,7 @@ TAG_("vectrol")
 		>;
 
 		using T_content =  filter<U_alpha[2], union RING>;
-		using T_meta   =  occur::auxiliary_t<T_content>;
+		using T_meta    =  occur::auxiliary_t<T_content>;
 	//	using T_damp_   =  occur::math::zavalishin::probe_t<typename T_meta::codata_type>;
 		using T_damp    =  typename T_meta:: damp_parameter;
 
@@ -528,7 +529,6 @@ TAG_("vectrol")
 		,	provision::stored  <null_type[0x100]>
 	//	,	provision::spooled <null_type[0x100]>
 		>;
-
 		static_assert(         fungible_q<typename occur::math::dent_s<X_matrix, 1>::data_type, X_matrix>);
 		static_assert(occur::math::dent_q<typename occur::math::dent_s<X_matrix, 1>           , X_matrix>);
 

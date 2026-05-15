@@ -189,15 +189,15 @@ public:
 			using I  = typename Xs:: difference_type;
 		
 		//	Ensure the size of both domain and codomain are powers of two:
-			I constexpr N_width =        size();
-			I const     n_width = source.size();
-			I const     h_width = n_width >> 1U; assert(1 <= h_width);
-			I const     n_depth = bond::math::bit_ceiling_f(n_width); assert(n_width == I{1} << n_depth);
-			I constexpr N_depth = bond::math::bit_ceiling_f(N_width); assert(n_depth         <= N_depth);
+			I constexpr N_size  =        size();
+			I const     n_size  = source.size();
+			I const     h_size  = n_size >> one; assert(one <= h_size);
+			I const     n_shift = bond::math::bit_shift_f(n_size); assert(n_size  == one << n_shift);
+			I constexpr N_shift = bond::math::bit_shift_f(N_size); assert(n_shift        <= N_shift);
 
 		//	Move all entries to their bit-reversed locations:
-			for (I h{}; h < h_width; ++h) {
-				_std::swap(source[h], source[bond::math::bit_reverse_f(h, n_depth)]);
+			for (I h{}; h < h_size; ++h) {
+				_std::swap(source[h], source[bond::math::bit_reverse_f(h, n_shift)]);
 			}
 		
 		//	Conjugate the input if computing the inverse transform of the codomain:
@@ -205,12 +205,12 @@ public:
 				_detail::apply_to<[] XTAL_1FN_(call) (_std::conj)>(source);
 			}
 		//	Compute the transform of `source` using the precomputed half-period sinusoid in `this`:
-			for (I n{}; n < n_depth; ++n) {
+			for (I n{}; n < n_shift; ++n) {
 				I const  u_width = I{1} << n;
 				I const  w_width = u_width << 1U;
-				I const un_depth = N_depth   - n;
+				I const un_depth = N_shift   - n;
 				for (I u{ }; u < u_width; u +=     one) {auto const &o = S_::element(u << un_depth);
-				for (I w{u}; w < n_width; w += w_width) {
+				for (I w{u}; w < n_size ; w += w_width) {
 					auto const m = w + u_width;
 					value_type &y = source[m];
 					value_type &x = source[w];
@@ -222,7 +222,7 @@ public:
 		//	Conjugate and scale the output if computing the inverse transform of the codomain:
 			if constexpr (N_direction == -1) {
 				_detail::apply_to<[] XTAL_1FN_(call) (_std::conj)>(source);
-				source /= U_fit::alpha_f(n_width);
+				source /= U_fit::alpha_f(n_size );
 			}
 
 		//	Cast the output to the transformed domain:

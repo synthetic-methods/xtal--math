@@ -65,7 +65,6 @@ TAG_("vactrol")
 		,	provision::stored  <null_type[0x100]>
 		,	provision::spooled <null_type[0x100]>
 		>;
-
 		//\
 		using Y_phi = phasor_t<U_alpha[2], typename X_resample::template attach<>>;
 		using Y_phi = confined_t<phasor<U_alpha[2]>, typename X_resample::attach<>>;
@@ -125,7 +124,6 @@ TAG_("vactrol")
 		,	provision::stored  <null_type[0x100]>
 	//	,	provision::spooled <null_type[0x100]>
 		>;
-
 		//\
 		using Y_phi = phasor_t<U_alpha[2], typename X_resample::template attach<>>;
 		using Y_phi = confined_t<phasor<U_alpha[2]>, typename X_resample::attach<>>;

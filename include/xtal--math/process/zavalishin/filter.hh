@@ -211,7 +211,6 @@ struct filter
 			return values;
 		}
 
-
 	public:// OPERATE
 
 		template <int N_ord=0, auto ...Ns>

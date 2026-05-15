@@ -218,6 +218,10 @@ TAG_("phason")
 		phi += y;
 	//	TRUE_(check_f<8>(phi[0], z));
 		TRUE_(check_f<8>(phi(0), z));
+		TRUE_(check_f<8>(phi(1), x_dt));
+
+		phi += half;
+		TRUE_(check_f<8>(phi(0), z + half));
 
 	}
 	/***/

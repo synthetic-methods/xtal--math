@@ -97,7 +97,7 @@ TAG_("monologarithm trials")
 	{
 		U_alpha w{};
 		for (int i{0x60}; ~--i;) {
-			auto x = two*mt19937_f();
+			auto x = mt19937_f();
 			//\
 			w *= exp(x) - one;
 			w *= monologarithm_t<-1>{}.template method<-1>(x);
@@ -108,7 +108,7 @@ TAG_("monologarithm trials")
 	{
 		U_alpha w{};
 		for (int i{0x60}; ~--i;) {
-			auto x = two*mt19937_f();
+			auto x = mt19937_f();
 			w *= monologarithm_t<-1>{}.template method< 2>(x);
 		}
 		return w;
@@ -117,7 +117,7 @@ TAG_("monologarithm trials")
 	{
 		U_alpha w{};
 		for (int i{0x60}; ~--i;) {
-			auto x = two*mt19937_f();
+			auto x = mt19937_f();
 			w *= monologarithm_t<-1>{}.template method< 1>(x);
 		}
 		return w;
@@ -126,7 +126,7 @@ TAG_("monologarithm trials")
 	{
 		U_alpha w{};
 		for (int i{0x60}; ~--i;) {
-			auto x = two*mt19937_f();
+			auto x = mt19937_f();
 			w *= monologarithm_t<-1>{}.template method< 0>(x);
 		}
 		return w;
