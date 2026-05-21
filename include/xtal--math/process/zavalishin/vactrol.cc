@@ -47,21 +47,21 @@ TAG_("vactrol")
 		//\
 		using F_env = filter<>;
 		using F_env = filter<U_alpha[2], union ENV>;
-		using L_env = occur::auxiliary_t<F_env>;
-		using X_env = flow::packet_t<X_stage, X_shape>;
+		using P_env = occur::auxiliary_t<F_env>;
+		using K_env = flow::packet_t<X_stage, X_shape>;
 		using Y_env = confined_t<void
 		,	reuse< 0, -1>
 		,	coefficient_t<X_coeff> ::   attach <>
 		,	Y_gate                 ::   infix  <>
 		,	X_shape                ::   affix  <>
-		,	L_env                  ::   attach <>
-		,	L_env                  :: dispatch <>
+		,	P_env                  ::   attach <>
+		,	P_env                  :: dispatch <>
 		,	vactrol<1>
 		,	F_env
 		,	provision::math::zavalishin::shaped<identity>
 		>;
 		using Z_env = processor::monomer_t<Y_env
-		,	Z_slice::template suspend<X_env>
+		,	Z_slice::template suspend<K_env>
 		,	provision::stored  <null_type[0x100]>
 		,	provision::spooled <null_type[0x100]>
 		>;
@@ -76,14 +76,14 @@ TAG_("vactrol")
 		auto z_sample = occur::resample_f(44100);
 
 		auto z = Z_env::bind_f(Z_phi::bind_f(processor::let_f(e_omega)));
-		z <<= typename L_env::order_attribute{2};
+		z <<= typename P_env::order_attribute{2};
 		z <<= X_coeff{1, 0};
 		z >>= X_stage{  -1};
 		z <<= z_sample;
 		z <<= z_resize;
 
-		z >>= flow::cue_f(0x08).then(X_env{ X_stage{0}, X_shape{-0.50, -1.00}});
-		z >>= flow::cue_f(0x18).then(X_env{ X_stage{1}, X_shape{ 1.00, -0.00}});
+		z >>= flow::cue_f(0x08).then(K_env{ X_stage{0}, X_shape{-0.50, -1.00}});
+		z >>= flow::cue_f(0x18).then(K_env{ X_stage{1}, X_shape{ 1.00, -0.00}});
 
 		echo_("\nvactrol: monophony");
 
@@ -105,22 +105,22 @@ TAG_("vactrol")
 		//\
 		using F_env = filter<>;
 		using F_env = filter<U_alpha[2], union ENV>;
-		using L_env = occur::auxiliary_t<F_env>;
-		using X_env = flow::packet_t<X_stage, X_shape>;
+		using P_env = occur::auxiliary_t<F_env>;
+		using K_env = flow::packet_t<X_stage, X_shape>;
 		using Y_env = confined_t<void
 		,	reuse< 0, -1>
 		,	coefficient_t<X_coeff> ::   attach <>
 		,	Y_trig                 ::   infix  <>
 		,	X_shape                ::   affix  <>
 		,	X_stage                ::   attach <>
-		,	L_env                  ::   attach <>
-		,	L_env                  :: dispatch <>
+		,	P_env                  ::   attach <>
+		,	P_env                  :: dispatch <>
 		,	vactrol<0>
 		,	F_env
 		,	provision::math::zavalishin::shaped<identity>
 		>;
 		using Z_env = processor::monomer_t<Y_env
-		,	Z_slice::template suspend<X_env>
+		,	Z_slice::template suspend<K_env>
 		,	provision::stored  <null_type[0x100]>
 	//	,	provision::spooled <null_type[0x100]>
 		>;
@@ -135,14 +135,14 @@ TAG_("vactrol")
 		auto z_sample = occur::resample_f(44100);
 
 		auto z = Z_env::bind_f(Z_phi::bind_f(processor::let_f(e_omega)));
-		z <<= typename L_env::order_attribute{2};
+		z <<= typename P_env::order_attribute{2};
 		z <<= X_coeff{1, 0};
 		z >>= X_stage{  -1};
 		z <<= z_sample;
 		z <<= z_resize;
 
-		z >>= flow::cue_f(0x08).then(X_env{ X_stage{0}, X_shape{ 0.50,  0.50}});
-	//	z >>= flow::cue_f(0x18).then(X_env{ X_stage{1}, X_shape{1.000, -0.00}});
+		z >>= flow::cue_f(0x08).then(K_env{ X_stage{0}, X_shape{ 0.50,  0.50}});
+	//	z >>= flow::cue_f(0x18).then(K_env{ X_stage{1}, X_shape{1.000, -0.00}});
 
 		echo_("\nvactrol: monophony");
 	//	echo_rule_<28>("\u2500");

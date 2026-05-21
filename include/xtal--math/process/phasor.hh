@@ -252,18 +252,10 @@ struct auxiliary<process::math::phasor<_s...>>
 		using scale_type = occur::inferred_t<union scale, float>;
 
 		template <extent_type N_mask=1>
-		struct dispatch
-		{
-			using superkind = provision::voiced<void
-			,	typename T_::index_type::template dispatch<N_mask>
-			>;
-			template <class R>
-			using subtype = bond::compose_s<R
-			,	typename S_::template dispatch<N_mask>
-			,	superkind
-			>;
-
-		};
+		struct dispatch : bond::compose<void
+		,	typename T_::index_type::template dispatch<N_mask>
+		,	typename S_            ::template dispatch<N_mask>
+		>	{};
 
 	};
 };

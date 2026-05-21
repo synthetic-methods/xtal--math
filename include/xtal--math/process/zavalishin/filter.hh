@@ -212,7 +212,6 @@ struct filter
 		}
 
 	public:// OPERATE
-
 		template <int N_ord=0, auto ...Ns>
 		XTAL_DEF_(inline,let)
 		method(auto const &x
@@ -227,7 +226,6 @@ struct filter
 			return method_impl<N_ord, Ns...>(XTAL_REF_(x),
 				u_warp, XTAL_REF_(coeffs_), XTAL_REF_(oo)...);
 		}
-
 
 		template <int N_ord=0, auto ...Ns>
 		XTAL_DEF_(inline,let)
@@ -271,8 +269,8 @@ struct filter
 		)
 		const noexcept -> decltype(auto)
 		{
-			using X  = XTAL_ALL_(x);
-			using U  = unstruct_t<X>;
+			using X = XTAL_ALL_(x);
+			using U = unstruct_t<X>;
 			return method_impl<N_ord, Ns...>(XTAL_REF_(x), u_warp
 			,	[a=truncate_f<+1>(u_damp)]<auto ...I> (bond::seek_in_t<I...>)
 					XTAL_0FN -> atom::couple_t<U[N_ord]> {
@@ -307,7 +305,6 @@ struct filter
 		}
 
 	//	FUSE
-
 		template <signed N_ion>
 		XTAL_DEF_(return,inline,let)
 		fuse(auto &&o)
@@ -365,19 +362,9 @@ struct auxiliary<process::math::zavalishin::filter<_s...>>
 
 		template <extent_type N_mask=1>
 		struct dispatch : bond::compose<void
-		,	provision::voiced<void
-			,	typename T_::order_attribute::template dispatch<N_mask>
-			>
-		,	typename S_::template dispatch<N_mask>
-		>
-		{};
-	//	template <extent_type N_mask=1>
-	//	struct   attach : bond::compose<void
-	//	,	provision::voiced<void
-	//		>
-	//	,	typename S_::template   attach<N_mask>
-	//	>
-	//	{};
+		,	typename T_::order_attribute::template dispatch<N_mask>
+		,	typename S_::                 template dispatch<N_mask>
+		>	{};
 
 	};
 };

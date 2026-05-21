@@ -316,7 +316,7 @@ TAG_("filter-ring")
 		,	R_etc                  :: dispatch <>
 		,	R_def
 		>;
-		using R_pxr = processor::polymer_t<R_prx
+		using R_pxy = processor::polymer_t<R_prx
 		,	Z_slice::template suspend<R_eve>
 		,	provision::stored <null_type[0x100]>
 		,	provision::spooled<null_type[0x100]>
@@ -327,7 +327,7 @@ TAG_("filter-ring")
 		auto z_cursor = occur::cursor_t<>(0x020);
 		auto z_sample = occur::resample_f(44100);
 
-		auto z = R_pxr::bind_f(processor::let_f(r_omega));
+		auto z = R_pxy::bind_f(processor::let_f(r_omega));
 		z <<= typename R_etc::order_attribute{2};
 		z <<= typename R_etc:: damp_parameter{1};
 		z <<= X_coeff{0, 1};
