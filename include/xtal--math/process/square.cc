@@ -48,9 +48,9 @@ TAG_("math")
 	TRY_("square (onion)")
 	{
 	//	using T = U_alpha;
-	//	using U = _std::complex<T>;
-	//	using V = _std::complex<U>;
-	//	using W = _std::complex<V>;
+	//	using U = std::complex<T>;
+	//	using V = std::complex<U>;
+	//	using W = std::complex<V>;
 	//	U const u0{ 1,  2};
 	//	U const u1{ 3,  4};
 	//	U const u2{ 5,  6};

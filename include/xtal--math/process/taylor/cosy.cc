@@ -22,8 +22,8 @@ TAG_("cosy")
 
 	TRY_("task")
 	{
-		double constexpr N_1pi = one*_std::numbers::pi_v<U_alpha>;
-		double constexpr N_2pi = two*_std::numbers::pi_v<U_alpha>;
+		double constexpr N_1pi = one*std::numbers::pi_v<U_alpha>;
+		double constexpr N_2pi = two*std::numbers::pi_v<U_alpha>;
 		
 		double const t9 = 0.99999;
 		double const t8 = 0.88888;

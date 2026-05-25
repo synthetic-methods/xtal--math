@@ -28,7 +28,7 @@ Provides evaluation/update via succession/replacement.
 template <vector_q A, typename ...As>
 struct phasor<A, As...>
 {
-	static auto constexpr N = _xtd::extent_v<A>;
+	static auto constexpr N = xtd::extent_v<A>;
 
 	using U_phason = atom::math::phason_t<A>;
 	using revalue_type = typename U_phason::revalue_type;
@@ -45,7 +45,7 @@ struct phasor<A, As...>
 	>;
 	using superkind = bond::compose<bond::tag<phasor>
 	,	semikind
-	,	provision::biased<constant_t<1>>
+	,	scheme::biased<constant_t<1>>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -231,14 +231,14 @@ struct phasor<A, As...>
 }/////////////////////////////////////////////////////////////////////////////
 
 
-namespace xtal::occur
+namespace xtal::process
 {////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
 template <class ..._s>
-struct auxiliary<process::math::phasor<_s...>>
+struct occurrence<process::math::phasor<_s...>>
 {
-	using superkind = auxiliary<>;
+	using superkind = occurrence<>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -260,11 +260,11 @@ struct auxiliary<process::math::phasor<_s...>>
 	};
 };
 template <scalar_q A>
-struct auxiliary<process::math::phasor<A>> : auxiliary<process::math::phasor<A[2]>>
+struct occurrence<process::math::phasor<A>> : occurrence<process::math::phasor<A[2]>>
 {
 };
 template <>
-struct auxiliary<process::math::phasor< >> : auxiliary<process::math::phasor<typename bond::fit<>::alpha_type>>
+struct occurrence<process::math::phasor< >> : occurrence<process::math::phasor<typename bond::fit<>::alpha_type>>
 {
 };
 

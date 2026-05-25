@@ -40,7 +40,7 @@ struct near
 			using U_fit = bond::fit<U>;
 
 			--n;
-			bond::seek_to_e<_std::bit_width(U_fit::full.depth - one)>([&]<constant_q I> (I) XTAL_0FN {n |= n >> (1 << I{});});
+			bond::seek_to_e<std::bit_width(U_fit::full.depth - one)>([&]<constant_q I> (I) XTAL_0FN {n |= n >> (1 << I{});});
 			++n;
 			return n;
 		}
@@ -55,9 +55,9 @@ struct near
 			using U_sigma = typename U_fit::sigma_type;
 			using U_alpha = typename U_fit::alpha_type;
 
-			U_alpha constexpr N_half_sqrt = _std::numbers::sqrt2_v<U_alpha>;// root_f<2>(2.);
+			U_alpha constexpr N_half_sqrt = std::numbers::sqrt2_v<U_alpha>;// root_f<2>(2.);
 			U_sigma constexpr N_mask      = U_fit::sign.mask|U_fit::exponent.mask;
-			return _xtd::bit_cast<U_alpha>(_xtd::bit_cast<U_sigma>(u*N_half_sqrt)&N_mask);
+			return xtd::bit_cast<U_alpha>(xtd::bit_cast<U_sigma>(u*N_half_sqrt)&N_mask);
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,let)

@@ -33,7 +33,7 @@ TAG_("phasor trials")
 {
 	using namespace Eigen;
 	
-	using A_stored = provision::stored<unit_type[0x100]>;
+	using A_stored = scheme::stored<unit_type[0x100]>;
 	using A_sample = occur::resample_t<>::template attach<>;
 	using U_sample = occur::resample_t<>;
 
@@ -72,7 +72,7 @@ TAG_("phasor trials")
 	using Z_psi = processor::monomer_t<Y_psi, A_stored>;
 	//\
 	using Z_eig = processor::monomer_t<process::lift<bond::operate<T_eigenrow>>, Y_chi>;
-//	using Z_eig = processor::monomer_t<confined_t<lift<bond::operate<_std::array<T_cell, 2>>>, phasor<_phi, A_sample>>>;
+//	using Z_eig = processor::monomer_t<confined_t<lift<bond::operate<std::array<T_cell, 2>>>, phasor<_phi, A_sample>>>;
 
 	using Z_fit = bond::template fit<typename X_phi::value_type>;
 
@@ -187,7 +187,7 @@ TAG_("phasor")
 {
 	using namespace Eigen;
 	
-	using A_stored   = provision::stored<unit_type[0x100]>;
+	using A_stored   = scheme::stored<unit_type[0x100]>;
 	using A_sample   = occur::resample_t<>::template attach<>;
 	using U_resynced = occur::resync_t  <>::template attach<>;
 
@@ -222,7 +222,7 @@ TAG_("phasor")
 	using Z_psi = processor::monomer_t<Y_psi, A_stored>;
 	//\
 	using Z_eig = processor::monomer_t<process::lift<bond::operate<T_eigenrow>>, Y_chi>;
-//	using Z_eig = processor::monomer_t<confined_t<lift<bond::operate<_std::array<T_cell, 2>>>, phasor<_phi, A_sample>>>;
+//	using Z_eig = processor::monomer_t<confined_t<lift<bond::operate<std::array<T_cell, 2>>>, phasor<_phi, A_sample>>>;
 
 	using Z_fit = bond::template fit<typename X_phi::value_type>;
 
@@ -398,7 +398,7 @@ TAG_("phasor")
 		auto z_phi = Z_phi::bind_f();
 		static_assert(same_q<X_phi, decltype(z_phi.store().front())>);
 
-		auto constexpr z_fit = _xtd::ranges::views::transform([] XTAL_1FN_(call) (W_phi));
+		auto constexpr z_fit = xtd::ranges::views::transform([] XTAL_1FN_(call) (W_phi));
 
 		occur::resize_t<> z_req(8);
 		occur::cursor_t<> z_ren(8);
@@ -408,8 +408,8 @@ TAG_("phasor")
 		z_phi <<= z_req;
 		z_phi >>= z_ren++;
 		//\
-		_xtd::ranges::move(z_phi|z_fit, z_out.begin());
-		_xtd::ranges::copy(z_phi|z_fit, z_out.begin());
+		xtd::ranges::move(z_phi|z_fit, z_out.begin());
+		xtd::ranges::copy(z_phi|z_fit, z_out.begin());
 
 		TRUE_(z_out[0] == bond::pack_f( 1*x_d4, x_d4));
 		TRUE_(z_out[1] == bond::pack_f( 2*x_d4, x_d4));
@@ -423,8 +423,8 @@ TAG_("phasor")
 		z_phi <<= occur::math::dent_s<X_phi, 1>{x_d3};
 		z_phi >>= z_ren++;
 		//\
-		_xtd::ranges::copy(z_phi|z_fit, z_out.begin());
-		_xtd::ranges::copy(z_phi|z_fit, z_out.begin());
+		xtd::ranges::copy(z_phi|z_fit, z_out.begin());
+		xtd::ranges::copy(z_phi|z_fit, z_out.begin());
 		
 		TRUE_(z_out[0] == bond::pack_f(-3*x_d3, x_d3));
 		TRUE_(z_out[1] == bond::pack_f(-2*x_d3, x_d3));
@@ -452,7 +452,7 @@ TAG_("phasor")
 		TRUE_(check_f<6>(x, y_phi.head() (0)));
 
 		y_phi *= y;
-		TRUE_(check_f<6>(y_phi.head() (0), z - _std::round(z)));
+		TRUE_(check_f<6>(y_phi.head() (0), z - std::round(z)));
 
 	}
 	/***/

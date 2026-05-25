@@ -79,9 +79,9 @@ struct hype
 			using V = unstruct_t<decltype(u)>;
 			V constexpr I = root_f<-2>(2.);
 			XTAL_IF0
-			XTAL_0IF (N_adj ==  0) {return method<N_lim>(u, _std::complex<V>{1,  0});}
-			XTAL_0IF (N_adj ==  1) {return method<N_lim>(u, _std::complex<V>{I,  I});}
-			XTAL_0IF (N_adj == -1) {return method<N_lim>(u, _std::complex<V>{I, -I});}
+			XTAL_0IF (N_adj ==  0) {return method<N_lim>(u, std::complex<V>{1,  0});}
+			XTAL_0IF (N_adj ==  1) {return method<N_lim>(u, std::complex<V>{I,  I});}
+			XTAL_0IF (N_adj == -1) {return method<N_lim>(u, std::complex<V>{I, -I});}
 		}
 		template <int N_lim=0, int N_adj=0>
 		XTAL_DEF_(return,inline,let)

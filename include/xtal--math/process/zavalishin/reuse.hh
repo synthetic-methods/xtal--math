@@ -59,7 +59,7 @@ struct reuse<M_ind>
 		noexcept -> signed
 		{
 			if (o.head() == 0) {
-				S_::memory(constant_t<>{});
+				S_::stash(constant_t<>{});
 			}
 			return S_::template fuse<N_ion>(XTAL_REF_(o));
 		}
@@ -81,7 +81,7 @@ struct reuse<M_ind>
 			auto constexpr esquilon = V_fit::haplo_f(0x11);// ~-48dBFS squared...
 
 			signed x = S_::template fuse<N_ion>(XTAL_REF_(o));
-			auto const [states_] = S_::template memory<U_state>();
+			auto const [states_] = S_::template stash<U_state>();
 			auto const n_order   = U_order{S_::self()};
 			if (o == -1 and 1 <= n_order) {
 				V_scale sum{};

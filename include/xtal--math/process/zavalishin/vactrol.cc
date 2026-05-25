@@ -22,7 +22,7 @@ TAG_("vactrol")
 	using U_aphex = U_fit::aphex_type;
 
 	using W_alpha = atom::math::dot_t<U_alpha[2]>;
-	using Z_slice = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
+	using Z_slice = schedule::slicer_t<scheme::spooled<extent_constant_t<0x10>>>;
 
 	using X_resample = occur::resample_t<>;
 	using A_resample = typename X_resample::template attach<>;
@@ -47,7 +47,7 @@ TAG_("vactrol")
 		//\
 		using F_env = filter<>;
 		using F_env = filter<U_alpha[2], union ENV>;
-		using P_env = occur::auxiliary_t<F_env>;
+		using P_env = process::occurrence_t<F_env>;
 		using K_env = flow::packet_t<X_stage, X_shape>;
 		using Y_env = confined_t<void
 		,	reuse< 0, -1>
@@ -58,12 +58,12 @@ TAG_("vactrol")
 		,	P_env                  :: dispatch <>
 		,	vactrol<1>
 		,	F_env
-		,	provision::math::zavalishin::shaped<identity>
+		,	scheme::math::zavalishin::shaped<identity>
 		>;
 		using Z_env = processor::monomer_t<Y_env
 		,	Z_slice::template suspend<K_env>
-		,	provision::stored  <null_type[0x100]>
-		,	provision::spooled <null_type[0x100]>
+		,	scheme::stored  <null_type[0x100]>
+		,	scheme::spooled <null_type[0x100]>
 		>;
 		//\
 		using Y_phi = phasor_t<U_alpha[2], typename X_resample::template attach<>>;
@@ -105,7 +105,7 @@ TAG_("vactrol")
 		//\
 		using F_env = filter<>;
 		using F_env = filter<U_alpha[2], union ENV>;
-		using P_env = occur::auxiliary_t<F_env>;
+		using P_env = process::occurrence_t<F_env>;
 		using K_env = flow::packet_t<X_stage, X_shape>;
 		using Y_env = confined_t<void
 		,	reuse< 0, -1>
@@ -117,12 +117,12 @@ TAG_("vactrol")
 		,	P_env                  :: dispatch <>
 		,	vactrol<0>
 		,	F_env
-		,	provision::math::zavalishin::shaped<identity>
+		,	scheme::math::zavalishin::shaped<identity>
 		>;
 		using Z_env = processor::monomer_t<Y_env
 		,	Z_slice::template suspend<K_env>
-		,	provision::stored  <null_type[0x100]>
-	//	,	provision::spooled <null_type[0x100]>
+		,	scheme::stored  <null_type[0x100]>
+	//	,	scheme::spooled <null_type[0x100]>
 		>;
 		//\
 		using Y_phi = phasor_t<U_alpha[2], typename X_resample::template attach<>>;

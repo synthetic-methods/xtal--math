@@ -59,7 +59,7 @@ struct dent<Ns...>
 		noexcept -> auto
 		{
 			if constexpr      (requires{W_::devalue_f(XTAL_REF_(u));}
-				and different_q<decltype(W_::devalue_f), _std::identity>
+				and different_q<decltype(W_::devalue_f), std::identity>
 			)	{
 				return W_::devalue_f(XTAL_REF_(u));
 			}
@@ -85,8 +85,8 @@ struct dent<Ns...>
 		:	S_{inject_f(XTAL_MOV_(u))}
 		{}
 		XTAL_NEW_(implicit)
-		subtype(_std::initializer_list<U_> u_)
-		noexcept requires make_p<S_, _std::initializer_list<U_>>
+		subtype(std::initializer_list<U_> u_)
+		noexcept requires make_p<S_, std::initializer_list<U_>>
 		:	S_{u_}
 		{}
 
@@ -129,7 +129,7 @@ struct dent<Ns...>
 					auto &m = bond::pack_item_f(o.seek(), head());
 					using M = XTAL_ALL_(m);
 					/*/
-					M x(o); _std::swap(m, x);
+					M x(o); std::swap(m, x);
 					return m == x;
 					/*/
 					m.~M(); new (&m) M(XTAL_REF_(o));

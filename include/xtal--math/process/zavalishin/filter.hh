@@ -3,7 +3,7 @@
 
 #include "./base.hh"
 #include "../../atom/fourier/series.hh"
-#include "../../provision/zavalishin/shaped.hh"
+#include "../../scheme/zavalishin/shaped.hh"
 
 
 XTAL_ENV_(push)
@@ -15,7 +15,7 @@ namespace xtal::process::math::zavalishin
 
 Implementation outlined in _The Art of VA Synthesis_ by Vadim Zavalishin.
 
-The non-linearity is supplied as a `process`-`template` using `provision::math::zavalishin::shaped`.
+The non-linearity is supplied as a `process`-`template` using `scheme::math::zavalishin::shaped`.
 The process must conform to the signature `<M_ism, M_car>`,
 defining a stateless `method<N_var, ...>` within the `subtype`.
 
@@ -23,7 +23,7 @@ The parameters `M_ism` and `M_car` determine the type and return-value of shape,
 `M_ism` is expected to yield convex/concave shapes for positive/negative values,
 and `M_car` is expected to return the slope when `== -1`.
 
-\note    Despite the parameterization defined by `occur::auxiliary<filter<...>>`, `filter<...>::method` is
+\note    Despite the parameterization defined by `process::occurrence<filter<...>>`, `filter<...>::method` is
 polymorphic and can accomodate up to the given cache-width (determined by `U_pole[N_pole][2]`).
 For example, with base-types of `double` and `std::complex<double>` respectively,
 the storage required is `16` and `32` bytes-per-pole.
@@ -37,11 +37,11 @@ template <class ..._s>	concept filter_q = bond::tag_inner_p<filter, _s...>;
 template <class ..._s>
 struct filter
 {
-	using    cotype = occur::auxiliary_t<filter>;
+	using    cotype = process::occurrence_t<filter>;
 	using data_type = typename cotype::data_type;
 
 	using superkind = bond::compose<bond::tag<filter>
-	,	provision::memorized<data_type[2]>
+	,	scheme::stashed<data_type[2]>
 	,	base<_s...>
 	>;
 	template <class S>
@@ -56,7 +56,7 @@ struct filter
 		noexcept -> auto
 		{
 			XTAL_IF0
-			XTAL_0IF (provision::math::zavalishin::shaped_q<S_>) {
+			XTAL_0IF (scheme::math::zavalishin::shaped_q<S_>) {
 				return typename S_::template shaper_t<N_ism, N_car>{}.
 					template method<Ns...>(XTAL_REF_(x), XTAL_REF_(oo)...);
 			}
@@ -153,7 +153,7 @@ struct filter
 
 			X_values values;
 			auto     values_ = values.self(cardinal_constant_t<N_ord>{});// NOTE: `span`-based!
-			auto     mem     = S_::template memory<X_states_, X_slopes_>();
+			auto     mem     = S_::template stash<X_states_, X_slopes_>();
 			auto    &states_ = get<0>(mem);
 			auto    &slopes_ = get<1>(mem);
 
@@ -173,7 +173,7 @@ struct filter
 			get<N_ord>(values) = root_f<-1>(term_f(one, u_warp, get<N_ord - 1>(values)));
 
 		//	Update `values` by iterating `slopes`:
-			auto constexpr  K_sat = provision::math::zavalishin::shaped_q<S_>;
+			auto constexpr  K_sat = scheme::math::zavalishin::shaped_q<S_>;
 			auto constexpr  K_max = term_f(0, 2, K_sat);
 			auto constexpr  K_lim = term_f(1, 1, K_max);
 			bond::seek_to_e<K_lim>([&] (auto const K) XTAL_0FN {
@@ -321,7 +321,7 @@ struct filter
 			if constexpr (requires {self().template head<resync_type>();}) {
 				auto const    sync = self().template head<resync_type>();
 				if (1 != sync and sync == o.head()) {
-					S_::memory(constant_t<>{});
+					S_::stash(constant_t<>{});
 				}
 			}
 			return S_::template fuse<N_ion>(XTAL_REF_(o));
@@ -337,14 +337,14 @@ struct filter
 }/////////////////////////////////////////////////////////////////////////////
 
 
-namespace xtal::occur
+namespace xtal::process
 {////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
 template <class ..._s>
-struct auxiliary<process::math::zavalishin::filter<_s...>>
+struct occurrence<process::math::zavalishin::filter<_s...>>
 {
-	using superkind = auxiliary<process::math::zavalishin::base<_s...>>;
+	using superkind = occurrence<process::math::zavalishin::base<_s...>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>

@@ -49,11 +49,11 @@ struct unity<M_ism, M_car>
 
 		template <int N_lim=-1, class U>
 		XTAL_DEF_(return,inline,let)
-		method(_std::initializer_list<U> o)
+		method(std::initializer_list<U> o)
 		const noexcept -> decltype(auto)
 		{
-			_std::complex<U> w; auto &m = destruct_f(w);
-			_std::copy_n(point_f(o), 2, m);
+			std::complex<U> w; auto &m = destruct_f(w);
+			std::copy_n(point_f(o), 2, m);
 			return method<N_lim>(w);
 		}
 		template <int N_lim=-1>
@@ -126,7 +126,7 @@ struct unity<M_ism, M_car>
 				n1     <<= U_fit::full.depth - T_fit::full.depth;
 				n1      &= U_fit::sign.mask;
 				n1      |= U_fit::unit.mask;
-				auto const u1 = operative_f<[] XTAL_1FN_(call) (_xtd::bit_cast<U_alpha>)>(n1);
+				auto const u1 = operative_f<[] XTAL_1FN_(call) (xtd::bit_cast<U_alpha>)>(n1);
 				return superprocess{}.template method<N_lim>(f_(0))*u1;
 			}
 		}
@@ -177,14 +177,14 @@ XTAL_DEF_(let) unity_f = [] XTAL_1FN_(call) (
 }/////////////////////////////////////////////////////////////////////////////
 
 
-namespace xtal::occur
+namespace xtal::process
 {////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
 template <auto ..._s>
-struct auxiliary<process::math::pade::unity<_s...>>
+struct occurrence<process::math::pade::unity<_s...>>
 {
-	using superkind = auxiliary<>;
+	using superkind = occurrence<>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>

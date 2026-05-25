@@ -50,7 +50,7 @@ noexcept -> auto
 {
 //	Inclusion returns complex-of-array.
 //	Exclusion returns array-of-complex.
-	return _std::complex<Eigen::ArrayXd>{XTAL_REF_(xs)...};
+	return std::complex<Eigen::ArrayXd>{XTAL_REF_(xs)...};
 }
 /***/
 #endif

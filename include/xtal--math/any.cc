@@ -27,7 +27,7 @@ dinormalize_f(auto &&o)
 noexcept -> decltype(auto)
 requires requires {o.real(); o.imag();}
 {
-	return _std::make_pair(objective_f(o.real()), objective_f(o.imag()));
+	return std::make_pair(objective_f(o.real()), objective_f(o.imag()));
 }
 
 template <class U, class V>
@@ -36,8 +36,8 @@ struct complexion
 	using        type = complexion;
 	using  value_type = U;
 	using  valve_type = V;
-	using source_type = _std::complex<U>;
-	using target_type = _std::complex<V>;
+	using source_type = std::complex<U>;
+	using target_type = std::complex<V>;
 
 	value_type re;
 	value_type im;
@@ -225,7 +225,7 @@ noexcept -> bool
 	using U = XTAL_ALL_(u);
 	using V = XTAL_ALL_(v);
 	XTAL_IF0
-	XTAL_0IF (not  atom::block_q<U, V>) {
+	XTAL_0IF (not  atom::bucket_q<U, V>) {
 		return bond::math::bit_trim_f<N_ind>(u) == bond::math::bit_trim_f<N_ind>(v)
 		or     bond::math::bit_trim_f<N_ind>(u - v) == zero;
 	}
@@ -276,12 +276,12 @@ template <int N>
 void echo_rule_(auto const z)
 {
 	for (int n = -N; n <= -1; ++n) {
-		_std::cout << z;
+		std::cout << z;
 	}
 	for (int n = +1; n <= +N; ++n) {
-		_std::cout << z;
+		std::cout << z;
 	}
-	_std::cout << _std::endl;
+	std::cout << std::endl;
 }
 template <int N>
 void echo_rule_()
@@ -292,8 +292,8 @@ template <int N>
 void echo_plot_(int line, auto item, integral_q auto ...markers)
 {
 	auto uZERO = 0 == line? "\u2504": "\u0020";// ...BOX DRAWINGS LIGHT TRIPLE-DASH HORIZONTAL, or ...SPACE
-	_std::vector<int> m_{markers...};
-	bool marked = _std::find(m_.begin(), m_.end(), line) < m_.end();
+	std::vector<int> m_{markers...};
+	bool marked = std::find(m_.begin(), m_.end(), line) < m_.end();
 	item *= N;
 	item *= 2;
 	item += 0 < item;
@@ -304,31 +304,31 @@ void echo_plot_(int line, auto item, integral_q auto ...markers)
 	for (int n = -N; n <= -1; ++n) {
 		auto const m = n << 1;
 		if (false);
-		else if (m <  w     and n == -1 and marked) _std::cout << "\u22A3";// -| TACK LEFT
-		else if (m <  w - 1 and n != -1 or  u == 0) _std::cout <<   uZERO ;//    ...
-		else if (m == w - 1 and          line == 0) _std::cout << "\u2574";// -  BOX DRAWINGS LIGHT LEFT
-		else if (n <  u)                            _std::cout << "\u0020";//    SPACE
-		else if (u <  n)                            _std::cout << "\u2501";// == BOX DRAWINGS HEAVY HORIZONTAL
-		else if (w <  m)                            _std::cout << "\u257A";//  = BOX DRAWINGS HEAVY RIGHT
-		else                                        _std::cout << "\u0020";//    SPACE
+		else if (m <  w     and n == -1 and marked) std::cout << "\u22A3";// -| TACK LEFT
+		else if (m <  w - 1 and n != -1 or  u == 0) std::cout <<   uZERO ;//    ...
+		else if (m == w - 1 and          line == 0) std::cout << "\u2574";// -  BOX DRAWINGS LIGHT LEFT
+		else if (n <  u)                            std::cout << "\u0020";//    SPACE
+		else if (u <  n)                            std::cout << "\u2501";// == BOX DRAWINGS HEAVY HORIZONTAL
+		else if (w <  m)                            std::cout << "\u257A";//  = BOX DRAWINGS HEAVY RIGHT
+		else                                        std::cout << "\u0020";//    SPACE
 	}
 	for (int n = +1; n <= +N; ++n) {
 		auto const m = n << 1;
 		if (false);
-		else if (w <  m     and n == +1 and marked) _std::cout << "\u22A2";// |- TACK RIGHT
-		else if (w <  m - 1 and n != +1 or  u == 0) _std::cout <<   uZERO ;//    ...
-		else if (w == m - 1 and          line == 0) _std::cout << "\u2576";//  - BOX DRAWINGS LIGHT RIGHT
-		else if (u <  n - 0)                        _std::cout << "\u0020";//    SPACE
-		else if (n <  u)                            _std::cout << "\u2501";// == BOX DRAWINGS HEAVY HORIZONTAL
-		else if (m <  w)                            _std::cout << "\u2578";// =  BOX DRAWINGS HEAVY LEFT
-		else                                        _std::cout << "\u0020";//    SPACE
+		else if (w <  m     and n == +1 and marked) std::cout << "\u22A2";// |- TACK RIGHT
+		else if (w <  m - 1 and n != +1 or  u == 0) std::cout <<   uZERO ;//    ...
+		else if (w == m - 1 and          line == 0) std::cout << "\u2576";//  - BOX DRAWINGS LIGHT RIGHT
+		else if (u <  n - 0)                        std::cout << "\u0020";//    SPACE
+		else if (n <  u)                            std::cout << "\u2501";// == BOX DRAWINGS HEAVY HORIZONTAL
+		else if (m <  w)                            std::cout << "\u2578";// =  BOX DRAWINGS HEAVY LEFT
+		else                                        std::cout << "\u0020";//    SPACE
 	}
-	_std::cout << "\u0020";//    SPACE
+	std::cout << "\u0020";//    SPACE
 }
 template <int N>
 void echo_plot_(iterated_q auto const list, integral_q auto ...markers)
 {
-	using _std::get;
+	using std::get;
 	using W = XTAL_ALL_(list);
 	using U = iteratee_t<W>;
 	int line{};
@@ -359,8 +359,8 @@ TAG_("any")
 	using Y_alpha =     ArrayXd ;
 	using X_alpha = Map<ArrayXd>;
 	
-	using Y_aphex = _std::complex<Y_alpha>;
-	using X_aphex = _std::complex<X_alpha>;
+	using Y_aphex = std::complex<Y_alpha>;
+	using X_aphex = std::complex<X_alpha>;
 
 	static_assert(same_q<X_aphex, typename X_aphex::source_type>);
 	static_assert(same_q<Y_aphex, typename X_aphex::target_type>);
@@ -374,7 +374,7 @@ TAG_("any")
 		X_aphex car{X_alpha(goo[0], 2), X_alpha(goo[1], 2)};
 		//\
 		Y_aphex baz = car*car + bar;
-		Y_aphex baz = _std::exp(bar) * car;
+		Y_aphex baz = std::exp(bar) * car;
 
 		TRUE_(true);
 

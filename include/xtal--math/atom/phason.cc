@@ -11,10 +11,10 @@ namespace xtal::atom::math::_test
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-//atic_assert(_xtd::trivially_initializable<phason_t<float[2]>>);
-static_assert(_xtd::trivially_destructible <phason_t<float[2]>>);
-static_assert(_xtd::trivially_copyable     <phason_t<float[2]>>);
-static_assert(_xtd::trivially_movable      <phason_t<float[2]>>);
+//atic_assert(xtd::trivially_initializable<phason_t<float[2]>>);
+static_assert(xtd::trivially_destructible <phason_t<float[2]>>);
+static_assert(xtd::trivially_copyable     <phason_t<float[2]>>);
+static_assert(xtd::trivially_movable      <phason_t<float[2]>>);
 //atic_assert(                     atomic_q<phason_t<float[2]>>);
 
 
@@ -42,8 +42,8 @@ TAG_("phason")
 
 	using V_phi = W_alpha;
 	using U_phi = phason_t<V_phi[2]>;
-	using W_phi = _std::complex<phason_t<W_alpha[2]>>;
-	using A_phi = _std::array<V_phi, 2>;
+	using W_phi = std::complex<phason_t<W_alpha[2]>>;
+	using A_phi = std::array<V_phi, 2>;
 
 	using _qp = bond::template fit<typename U_phi::value_type>;
 
@@ -72,9 +72,9 @@ TAG_("phason")
 	/**/
 	TRY_("phason of complex")
 	{
-		using M_phi = phason_t<_std::complex<W_alpha>[2]>;
-		phason_t<_std::complex<W_alpha>[2]> a{{0.1, 0.2}, {0.3, 0.3}};
-		phason_t<_std::complex<W_alpha>[2]> b{{0.1, 0.2}, {0.3, 0.3}};
+		using M_phi = phason_t<std::complex<W_alpha>[2]>;
+		phason_t<std::complex<W_alpha>[2]> a{{0.1, 0.2}, {0.3, 0.3}};
+		phason_t<std::complex<W_alpha>[2]> b{{0.1, 0.2}, {0.3, 0.3}};
 
 		++a;
 		++a;
@@ -122,8 +122,8 @@ TAG_("phason")
 	}
 	TRY_("tuple with phason")
 	{
-		using U_psi = group_t<_std::plus<W_alpha>[2]>;
-		using W     = group_t<_std::plus<U_phi>, _std::plus<U_psi>>;
+		using U_psi = quantity_t<std::plus<W_alpha>[2]>;
+		using W     = quantity_t<std::plus<U_phi>, std::plus<U_psi>>;
 
 		TRUE_(sizeof(W) == sizeof(U_phi) + sizeof(U_psi));
 
@@ -155,8 +155,8 @@ TAG_("phason")
 		TRUE_(z_d2 == D2{0.125, 0.000});
 
 		TRUE_(y_d2 == D2{0.000, 0.125}); y_d2 <<= {0.250};
-		TRUE_(y_d2 == D2{0.000, 0.250}); y_d2 <<= _std::array<W_alpha, 1>{0.500};
-	//	TRUE_(y_d2 == D2{0.000, 0.500}); y_d2 >>= _std::array<W_alpha, 1>{0.333};
+		TRUE_(y_d2 == D2{0.000, 0.250}); y_d2 <<= std::array<W_alpha, 1>{0.500};
+	//	TRUE_(y_d2 == D2{0.000, 0.500}); y_d2 >>= std::array<W_alpha, 1>{0.333};
 	//	TRUE_(y_d2 == D2{0.333, 0.500});
 
 		y_d2 = D2{0.333, 0.500};
@@ -211,7 +211,7 @@ TAG_("phason")
 	{
 		W_alpha x =  0.33, x_dt = W_fit::haplo_f(4);
 		W_alpha y =  5.55;
-		W_alpha z =  x+y; z -= _std::round(z);
+		W_alpha z =  x+y; z -= std::round(z);
 
 		U_phi phi{x, x_dt};
 
@@ -237,7 +237,7 @@ TAG_("phason")
 			auto const u{exp(asinh(v*W_fit::haplo_1))};
 			phi *= u;
 			foo *= u;
-			foo -= _std::round(foo);
+			foo -= std::round(foo);
 			TRUE_(check_f<8>(phi(0), foo));
 		}
 
@@ -261,8 +261,8 @@ TAG_("phason trials")
 
 	using V_phi = W_alpha;
 	using U_phi = phason_t<V_phi[2]>;
-	using W_phi = _std::complex<phason_t<W_alpha[2]>>;
-	using A_phi = _std::array<V_phi, 2>;
+	using W_phi = std::complex<phason_t<W_alpha[2]>>;
+	using A_phi = std::array<V_phi, 2>;
 
 	using _qp = bond::template fit<typename U_phi::value_type>;
 
@@ -279,7 +279,7 @@ TAG_("phason trials")
 	//	W_alpha foo{x};
 
 		for (W_sigma i = 0x100; ~--i;) {
-			W_alpha const u = _std::pow(two, 1 + mt19937_f());
+			W_alpha const u = std::pow(two, 1 + mt19937_f());
 			phi *= u;
 		}
 		return phi;
@@ -292,9 +292,9 @@ TAG_("phason trials")
 		W_alpha foo{x};
 
 		for (W_sigma i = 0x100; ~--i;) {
-			W_alpha const u = _std::pow(two, 1 + mt19937_f());
+			W_alpha const u = std::pow(two, 1 + mt19937_f());
 			foo *= u;
-			foo -= _std::round(foo);
+			foo -= std::round(foo);
 		}
 		return foo;
 	};

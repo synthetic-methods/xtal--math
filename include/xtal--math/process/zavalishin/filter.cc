@@ -2,7 +2,7 @@
 #include "./any.cc"
 
 #include "../../occur/all.hh"
-#include "../../provision/all.hh"
+#include "../../scheme/all.hh"
 #include "./reuse.hh"
 
 #include "./filter.hh"
@@ -31,7 +31,7 @@ TAG_("filter")
 	using U_fit   = typename bond::fit<>;
 	using U_alpha = U_fit::alpha_type;
 	using W_alpha = atom::math::dot_t<U_alpha[2]>;
-	using Z_slice = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
+	using Z_slice = schedule::slicer_t<scheme::spooled<extent_constant_t<0x10>>>;
 
 	using U_resample = occur::resample_t<>;
 	using U_resync   = occur::resync_t<>;
@@ -47,7 +47,7 @@ TAG_("filter")
 	TRY_("filter: 1D instantiation")
 	{
 		using R_def = filter<>;
-		using R_etc = occur::auxiliary_t<R_def>;
+		using R_etc = process::occurrence_t<R_def>;
 		using R_prx = confined_t<void
 		,	per_t<U_resample>          ::   refix <1>
 		,	U_resync                   ::   attach <>
@@ -56,7 +56,7 @@ TAG_("filter")
 		,	R_etc                      ::   attach <>
 		,	R_etc                      :: dispatch <>
 		,	R_def
-		,	provision::math::zavalishin::shaped<identity>
+		,	scheme::math::zavalishin::shaped<identity>
 		>;
 		using R_pxr = processor::monomer_t<R_prx>;
 
@@ -119,7 +119,7 @@ TAG_("filter")
 	TRY_("filter: 2D instantiation")
 	{
 		using R_def = filter<>;
-		using R_etc = occur::auxiliary_t<R_def>;
+		using R_etc = process::occurrence_t<R_def>;
 		using R_prx = confined_t<void
 		,	per_t<U_resample>          ::   refix <1>
 		,	U_resync                   ::   attach <>
@@ -128,7 +128,7 @@ TAG_("filter")
 		,	R_etc                      ::   attach <>
 		,	R_etc                      :: dispatch <>
 		,	R_def
-		,	provision::math::zavalishin::shaped<identity>
+		,	scheme::math::zavalishin::shaped<identity>
 		>;
 		using R_pxr = processor::monomer_t<R_prx>;
 
@@ -214,7 +214,7 @@ TAG_("filter-ring")
 {
 	using U_alpha = typename bond::fit<>::alpha_type;
 	using T_aphex = typename bond::fit<>::aphex_type;
-	using Z_slice = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
+	using Z_slice = schedule::slicer_t<scheme::spooled<extent_constant_t<0x10>>>;
 
 	using U_resample = occur::resample_t<>;
 	using U_resync = occur::resync_t<>;
@@ -234,7 +234,7 @@ TAG_("filter-ring")
 	TRY_("filter-ring monophony")
 	{
 		using R_def = filter<U_alpha[2], union RING>;
-		using R_etc = occur::auxiliary_t<R_def>;
+		using R_etc = process::occurrence_t<R_def>;
 		using R_eve = flow::packet_t<U_stage, typename R_etc::damp_parameter>;
 		using R_prx = confined_t<void
 		,	per_t<U_resample>::refix<0>
@@ -251,8 +251,8 @@ TAG_("filter-ring")
 		>;
 		using R_pxr = processor::monomer_t<R_prx
 		,	Z_slice::template suspend<R_eve>
-		,	provision::stored  <null_type[0x100]>
-		,	provision::spooled <null_type[0x100]>
+		,	scheme::stored  <null_type[0x100]>
+		,	scheme::spooled <null_type[0x100]>
 		>;
 
 		U_alpha constexpr r_omega = 2*2*2*3*5*5*7;
@@ -300,7 +300,7 @@ TAG_("filter-ring")
 	TRY_("filter-ring polyphony")
 	{
 		using R_def = filter<U_alpha[2], union RING>;
-		using R_etc = occur::auxiliary_t<R_def>;
+		using R_etc = process::occurrence_t<R_def>;
 		using R_eve = flow::key_s<U_stage>;
 
 		using R_prx = confined_t<void
@@ -318,8 +318,8 @@ TAG_("filter-ring")
 		>;
 		using R_pxy = processor::polymer_t<R_prx
 		,	Z_slice::template suspend<R_eve>
-		,	provision::stored <null_type[0x100]>
-		,	provision::spooled<null_type[0x100]>
+		,	scheme::stored <null_type[0x100]>
+		,	scheme::spooled<null_type[0x100]>
 		>;
 
 		U_alpha constexpr r_omega = 59*61;
@@ -386,7 +386,7 @@ TAG_("vectrol")
 {
 	using U_alpha = typename bond::fit<>::alpha_type;
 	using W_alpha = atom::math::dot_t<U_alpha[2]>;
-	using Z_slice = schedule::slicer_t<provision::spooled<extent_constant_t<0x10>>>;
+	using Z_slice = schedule::slicer_t<scheme::spooled<extent_constant_t<0x10>>>;
 
 	using U_resample = occur::resample_t<>;
 	using U_stage = occur::stage_t<>;
@@ -409,7 +409,7 @@ TAG_("vectrol")
 		using S_content = filter<U_alpha[2], union ENV>;
 		//\
 		using S_meta = confined_t<S_content>;
-		using S_meta = occur::auxiliary_t<S_content>;
+		using S_meta = process::occurrence_t<S_content>;
 
 		using S_damp_   = occur::math::zavalishin::probe_t<typename S_meta::codata_type>;
 	//	using S_damp    = typename S_meta::damp_parameter;
@@ -429,8 +429,8 @@ TAG_("vectrol")
 		>;
 		using S_processor = processor::monomer_t<S_process
 		,	Z_slice::template suspend<U_stage>
-		,	provision::stored  <null_type[0x100]>
-		,	provision::spooled <null_type[0x100]>
+		,	scheme::stored  <null_type[0x100]>
+		,	scheme::spooled <null_type[0x100]>
 		>;
 
 		U_alpha constexpr e_omega = 2*2*3*3*5*5;
@@ -471,7 +471,7 @@ TAG_("vectrol")
 	TRY_("vectrol: patch")
 	{
 		using S_content = filter<U_alpha[2], union ENV>;
-		using S_meta   = occur::auxiliary_t<S_content>;
+		using S_meta   = process::occurrence_t<S_content>;
 		using S_damp_   = occur::math::zavalishin::probe_t<typename S_meta::codata_type>;
 		using S_damp    = typename S_meta::  damp_parameter;
 		using S_order   = typename S_meta:: order_attribute;
@@ -490,12 +490,12 @@ TAG_("vectrol")
 		using S_processor = processor::conferred_t<S_process
 		using S_processor = processor::monomer_t<S_process
 	//	,	Z_slice::template suspend<U_stage>
-		,	provision::stored  <unit_type[0x100]>
-		,	provision::spooled <null_type[0x100]>
+		,	scheme::stored  <unit_type[0x100]>
+		,	scheme::spooled <null_type[0x100]>
 		>;
 
 		using T_content =  filter<U_alpha[2], union RING>;
-		using T_meta    =  occur::auxiliary_t<T_content>;
+		using T_meta    =  process::occurrence_t<T_content>;
 	//	using T_damp_   =  occur::math::zavalishin::probe_t<typename T_meta::codata_type>;
 		using T_damp    =  typename T_meta:: damp_parameter;
 
@@ -504,9 +504,9 @@ TAG_("vectrol")
 		using T_dummy   =  occur::inferred_t<U_alpha, union DUMMY>;
 
 		//\
-		using X_vector  =  atom::brace_t<U_alpha, W_alpha>;
+		using X_vector  =  atom::bracket_t<U_alpha, W_alpha>;
 		using X_vector  =  flow::packed_t<U_alpha, W_alpha>;
-		using X_matrix  =  atom::brace_t<X_vector[2]>;
+		using X_matrix  =  atom::bracket_t<X_vector[2]>;
 		using X_patch   =  patch_t<X_matrix>;
 
 		using X_process = confined_t<void
@@ -526,8 +526,8 @@ TAG_("vectrol")
 		>;
 		using X_processor = processor::monomer_t<X_process
 		,	Z_slice::template suspend<T_event>
-		,	provision::stored  <null_type[0x100]>
-	//	,	provision::spooled <null_type[0x100]>
+		,	scheme::stored  <null_type[0x100]>
+	//	,	scheme::spooled <null_type[0x100]>
 		>;
 		static_assert(         fungible_q<typename occur::math::dent_s<X_matrix, 1>::data_type, X_matrix>);
 		static_assert(occur::math::dent_q<typename occur::math::dent_s<X_matrix, 1>           , X_matrix>);

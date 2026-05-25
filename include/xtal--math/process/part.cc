@@ -50,8 +50,8 @@ TAG_("part")
 		TRUE_(same_q<float, decltype(std::copysign(bond::fit<float>::alpha_1, +1.F))>);
 		TRUE_(same_q<float, decltype(std::copysign(bond::fit<float>::alpha_1, -1.F))>);
 
-		TRUE_(same_q<float, decltype(_xtd::copysign(bond::fit<float>::alpha_1, +1.F))>);
-		TRUE_(same_q<float, decltype(_xtd::copysign(bond::fit<float>::alpha_1, -1.F))>);
+		TRUE_(same_q<float, decltype(xtd::copysign(bond::fit<float>::alpha_1, +1.F))>);
+		TRUE_(same_q<float, decltype(xtd::copysign(bond::fit<float>::alpha_1, -1.F))>);
 
 		TRUE_(same_q<float, decltype(part_f<unsigned>(+1.F))>);
 		TRUE_(same_q<float, decltype(part_f<unsigned>(-1.F))>);

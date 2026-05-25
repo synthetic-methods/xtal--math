@@ -27,14 +27,14 @@ noexcept -> decltype(auto)
 	return atom::_detail::factory<uniplex_t>::make(XTAL_REF_(oo)...);
 }
 XTAL_DEF_(return,inline,let)
-uniplex_f(decltype(_std::in_place), simplex_variable_q auto &&o)
+uniplex_f(decltype(std::in_place), simplex_variable_q auto &&o)
 noexcept -> decltype(auto)
 {
 	using  W = uniplex_t<XTAL_ALL_(o)>;
 	return W{{one, zero}, process::math::roots_f<1>(XTAL_REF_(o))};
 }
 XTAL_DEF_(return,inline,let)
-uniplex_f(decltype(_std::in_place), complex_variable_q auto &&o)
+uniplex_f(decltype(std::in_place), complex_variable_q auto &&o)
 noexcept -> decltype(auto)
 {
 	using  W = uniplex_t<XTAL_ALL_(o)>;
@@ -43,7 +43,7 @@ noexcept -> decltype(auto)
 	return W{XTAL_REF_(o)*XTAL_MOV_(dn), XTAL_MOV_(vs)};
 }
 XTAL_DEF_(return,inline,let)
-uniplex_f(complex_variable_q auto &&o, decltype(_std::in_place))
+uniplex_f(complex_variable_q auto &&o, decltype(std::in_place))
 noexcept -> decltype(auto)
 {
 	using  W = uniplex_t<XTAL_ALL_(o)>;
@@ -67,7 +67,7 @@ template <scalar_q A> requires simplex_field_q<A>
 struct uniplex<A>
 {
 	using simplex_type =  A;
-	using complex_type = _std::complex<simplex_type>;
+	using complex_type = std::complex<simplex_type>;
 	using couplex_type =      couple_t<complex_type[2]>;
 	using  duplex_type =      couple_t<simplex_type[2]>;
 
@@ -76,7 +76,7 @@ private:
 	XTAL_DEF_(set) mag_f = process::math::taylor::octarithm_f<-1>;
 
 	template <class T>
-	using endotype = typename group_multiplication<complex_type, duplex_type>::template homotype<T>;
+	using endotype = typename quantity_multiplies<complex_type, duplex_type>::template homotype<T>;
 
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<uniplex_t>>;
@@ -114,7 +114,7 @@ public:
 		noexcept
 		:	homotype{
 				signum_type{sig_f(x.real())}
-			,	magnum_type{mag_f(x.imag()), _std::in_place}
+			,	magnum_type{mag_f(x.imag()), std::in_place}
 			}
 		{
 		}
@@ -212,8 +212,6 @@ public:
 		reflection_f(auto &&that, auto const &plus)
 		noexcept -> complex_type
 		{
-			//\
-			using _xtd::plus_multiplies_f;
 			using process::math::term_f;
 			auto &&[o, q_] = qualify_f<T>(XTAL_REF_(that));
 			XTAL_IF0
@@ -235,8 +233,6 @@ public:
 		reflection_f(auto &&that, auto const &plus=zero)
 		noexcept -> couplex_type
 		{
-			//\
-			using _xtd::plus_multiplies_f;
 			using process::math::term_f;
 			auto &&[o, q_] = qualify_f<T>(XTAL_REF_(that));
 			auto const q_up = q_.template sum<+1>();

@@ -20,7 +20,7 @@ XTAL_DEF_(let) loop_f = [] XTAL_1FN_(call) (_detail::factory<loop_t>::make);
 
 ////////////////////////////////////////////////////////////////////////////////
 /*!
-\brief   Extends `group_addition` with Dirichlet characterization and modulo access.
+\brief   Extends `quantity_plus` with Dirichlet characterization and modulo access.
 */
 template <scalar_q ..._s> requires same_q<_s...>
 struct loop<_s ...>
@@ -34,7 +34,7 @@ private:
 	using U_fit = bond::fit<A>;
 	
 	template <class T>
-	using endotype = typename group_addition<A>::template homotype<T>;
+	using endotype = typename quantity_plus<A>::template homotype<T>;
 
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<loop_t>>;
@@ -71,10 +71,10 @@ public:
 		{
 			i += I;
 			XTAL_IF0
-			XTAL_0IF (1 == _std::popcount(size())) {
+			XTAL_0IF (1 == std::popcount(size())) {
 				i &= mask;
 			}
-			XTAL_0IF (2 <= _std::popcount(size())) {
+			XTAL_0IF (2 <= std::popcount(size())) {
 				i %= size;
 				i += size;
 				i %= size;
@@ -149,7 +149,7 @@ public:
 		}
 
 		XTAL_DEF_(inline,let)
-		peek(atom::groupoid_q auto const &h_)
+		peek(atom::quantify_q auto const &h_)
 		noexcept -> auto
 		{
 			using H_ = objective_t<decltype(h_)>;
@@ -168,7 +168,7 @@ public:
 		noexcept -> auto
 		{
 			--m_index; (void) wrap_e(m_index);
-			return _std::exchange(S_::element(), XTAL_REF_(e));
+			return std::exchange(S_::element(), XTAL_REF_(e));
 		}
 
 	};

@@ -66,7 +66,7 @@ struct part<signed>
 				if constexpr (false) {
 					o &= U_fit::sign.mask;
 					o |= U_fit::unit.mask;
-					return _xtd::bit_cast<U_alpha>(o);
+					return xtd::bit_cast<U_alpha>(o);
 				}
 				else {
 					o |= 1;
@@ -79,10 +79,10 @@ struct part<signed>
 				if constexpr (false) {
 					o <<= U_fit::positive.depth;
 					o  ^= U_fit::sign.mask|U_fit::unit.mask;
-					return _xtd::bit_cast<U_alpha>(o);
+					return xtd::bit_cast<U_alpha>(o);
 				}
 				else {
-					return method(_xtd::bit_cast<U_delta>(o&one));
+					return method(xtd::bit_cast<U_delta>(o&one));
 				}
 			}
 		}
@@ -93,7 +93,7 @@ struct part<signed>
 		const noexcept -> XTAL_ALL_(o)
 		{
 			using U_fit = bond::fit<decltype(o)>;
-			return _xtd::copysign(U_fit::alpha_1, o);
+			return xtd::copysign(U_fit::alpha_1, o);
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,let)
@@ -105,7 +105,7 @@ struct part<signed>
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,let)
-		method(atom::groupoid_q auto &&o)
+		method(atom::quantify_q auto &&o)
 		const noexcept -> decltype(auto)
 		{
 			using  U = XTAL_ALL_(o);
@@ -114,7 +114,7 @@ struct part<signed>
 
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,let)
-		method(_std::in_place_t, auto &&...oo)
+		method(std::in_place_t, auto &&...oo)
 		const noexcept -> decltype(auto)
 		{
 			return edit(XTAL_REF_(oo)...);
@@ -204,7 +204,7 @@ struct part<unsigned>
 		const noexcept -> auto
 		{
 			using U_fit = bond::fit<decltype(o)>;
-			return _xtd::copysign(o, U_fit::alpha_1);
+			return xtd::copysign(o, U_fit::alpha_1);
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,let)
@@ -216,7 +216,7 @@ struct part<unsigned>
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,let)
-		method(atom::groupoid_q auto &&o)
+		method(atom::quantify_q auto &&o)
 		const noexcept -> decltype(auto)
 		{
 			using  U = XTAL_ALL_(o);
@@ -229,7 +229,7 @@ struct part<unsigned>
 		const noexcept -> auto
 		{
 			using U_fit = bond::fit<decltype(o)>;
-			auto const o_sgn = _xtd::copysign(U_fit::alpha_1, o);
+			auto const o_sgn = xtd::copysign(U_fit::alpha_1, o);
 			auto const o_mgn = o*o_sgn;
 			o =    o_sgn;
 			return o_mgn;
@@ -246,7 +246,7 @@ struct part<unsigned>
 	};
 };
 template <>
-struct part<_xtd::real<>>
+struct part<xtd::real<>>
 {
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -261,7 +261,7 @@ struct part<_xtd::real<>>
 		method(auto &&o)
 		const noexcept -> auto
 		{
-			return _std::real(XTAL_REF_(o));
+			return std::real(XTAL_REF_(o));
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,let)

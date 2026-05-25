@@ -52,7 +52,7 @@ template <vector_q A> requires     real_variable_q<unstruct_t<A>>
 struct phason<A>
 {
 private:
-	static auto constexpr M_data = _xtd::extent_v<based_t<A>>;
+	static auto constexpr M_data = xtd::extent_v<based_t<A>>;
 
 	using W = typename fixed<A>::value_type;
 	static_assert(continuous_field_q<W>);
@@ -73,10 +73,10 @@ private:
 	using invalue_type = V;
 	using devalue_type = U;
 
-	static_assert(_std::numeric_limits<unstruct_t<U>>::is_modulo);// D'oh!
+	static_assert(std::numeric_limits<unstruct_t<U>>::is_modulo);// D'oh!
 
 	template <class T>
-	using holotype = bond::compose_s<typename differential<_std::plus<U>[M_data]>::template homotype<T>, bond::tag<phason_t>>;
+	using holotype = bond::compose_s<typename differential<std::plus<U>[M_data]>::template homotype<T>, bond::tag<phason_t>>;
 
 public:
 	template <class T>
@@ -108,7 +108,7 @@ public:
 		XTAL_NEW_(else) (homotype, noexcept:S_)
 
 		XTAL_NEW_(implicit)
-		homotype(_std::initializer_list<W> o)
+		homotype(std::initializer_list<W> o)
 		noexcept
 		:	S_(variable{count_f(o)})
 		{
@@ -145,10 +145,10 @@ public:
 		}
 
 	public:// RECONSTRUCT
-		XTAL_DEF_(mutate,inline,let) operator >>=(iterable_q         auto &&o) noexcept -> auto & {return place<0>(XTAL_REF_(o));}
-		XTAL_DEF_(mutate,inline,let) operator <<=(iterable_q         auto &&o) noexcept -> auto & {return place<1>(XTAL_REF_(o));}
-		XTAL_DEF_(mutate,inline,let) operator >>=(_std::initializer_list<W> o) noexcept -> auto & {return place<0>(XTAL_MOV_(o));}
-		XTAL_DEF_(mutate,inline,let) operator <<=(_std::initializer_list<W> o) noexcept -> auto & {return place<1>(XTAL_MOV_(o));}
+		XTAL_DEF_(mutate,inline,let) operator >>=(iterable_q        auto &&o) noexcept -> auto & {return place<0>(XTAL_REF_(o));}
+		XTAL_DEF_(mutate,inline,let) operator <<=(iterable_q        auto &&o) noexcept -> auto & {return place<1>(XTAL_REF_(o));}
+		XTAL_DEF_(mutate,inline,let) operator >>=(std::initializer_list<W> o) noexcept -> auto & {return place<0>(XTAL_MOV_(o));}
+		XTAL_DEF_(mutate,inline,let) operator <<=(std::initializer_list<W> o) noexcept -> auto & {return place<1>(XTAL_MOV_(o));}
 
 
 	public:// OPERATE
@@ -256,8 +256,8 @@ public:
 		/*!
 		\brief   Offsets the first element.
 		*/		
-	//	XTAL_DEF_(mutate,inline,let) operator +=(_std::initializer_list<W> o) noexcept -> auto & {return S_::operator+=(T(o));}
-	//	XTAL_DEF_(mutate,inline,let) operator -=(_std::initializer_list<W> o) noexcept -> auto & {return S_::operator-=(T(o));}
+	//	XTAL_DEF_(mutate,inline,let) operator +=(std::initializer_list<W> o) noexcept -> auto & {return S_::operator+=(T(o));}
+	//	XTAL_DEF_(mutate,inline,let) operator -=(std::initializer_list<W> o) noexcept -> auto & {return S_::operator-=(T(o));}
 
 		XTAL_DEF_(mutate,inline,get) operator -= (auto &&x) noexcept {return S_::operator-=(XTAL_REF_(x));}
 		XTAL_DEF_(mutate,inline,get) operator += (auto &&x) noexcept {return S_::operator+=(XTAL_REF_(x));}
@@ -318,8 +318,8 @@ public:
 		{
 			auto &s = self();
 			XTAL_IF0
-			XTAL_0IF (0 < N) {get<0>(s) += _xtd::bit_cast<invalue_type>(get<1>(s)) << +N;}
-			XTAL_0IF (N < 0) {get<0>(s) += _xtd::bit_cast<invalue_type>(get<1>(s)) >> -N;}
+			XTAL_0IF (0 < N) {get<0>(s) += xtd::bit_cast<invalue_type>(get<1>(s)) << +N;}
+			XTAL_0IF (N < 0) {get<0>(s) += xtd::bit_cast<invalue_type>(get<1>(s)) >> -N;}
 			return s;
 		}
 		template <int N> requires in_v<size, 2>
@@ -329,8 +329,8 @@ public:
 		{
 			auto &s = self();
 			XTAL_IF0
-			XTAL_0IF (0 < N) {get<0>(s) -= _xtd::bit_cast<invalue_type>(get<1>(s)) << +N;}
-			XTAL_0IF (N < 0) {get<0>(s) -= _xtd::bit_cast<invalue_type>(get<1>(s)) >> -N;}
+			XTAL_0IF (0 < N) {get<0>(s) -= xtd::bit_cast<invalue_type>(get<1>(s)) << +N;}
+			XTAL_0IF (N < 0) {get<0>(s) -= xtd::bit_cast<invalue_type>(get<1>(s)) >> -N;}
 			return s;
 		}
 
@@ -364,8 +364,8 @@ public:
 		//	TODO: Accommodate `continuity` for `complex_variable_q<V>`...
 			auto constexpr N1 = U_fit::positive.depth;
 			auto [u0, u1] =  self();
-			auto const v0 = _xtd::bit_cast<V>(u0) >> N1; u0 ^= v0; u0 -= v0;
-			auto const v1 = _xtd::bit_cast<V>(u1) >> N1; u1 ^= v1; u1 -= v1;
+			auto const v0 = xtd::bit_cast<V>(u0) >> N1; u0 ^= v0; u0 -= v0;
+			auto const v1 = xtd::bit_cast<V>(u1) >> N1; u1 ^= v1; u1 -= v1;
 			return bond::math::bit_sign_f<Y>(v0 == v1 and u0 < u1);
 		}
 

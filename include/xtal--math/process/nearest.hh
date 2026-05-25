@@ -38,21 +38,45 @@ struct nearest
 	{
 	protected:
 
-		template <auto ...>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		method_base_f(auto &&z)
+		method_default(auto &&z)
 		noexcept -> auto
 		{
 			XTAL_IF0
-			XTAL_0IF (M_dir == -1) {return floor(XTAL_REF_(z));}
-			XTAL_0IF (M_dir ==  0) {return round(XTAL_REF_(z));}
-			XTAL_0IF (M_dir ==  1) {return ceil (XTAL_REF_(z));}
+			XTAL_0IF (M_dir == -1) {return floor (XTAL_REF_(z));}
+			XTAL_0IF (M_dir ==  0) {return round (XTAL_REF_(z));}
+			XTAL_0IF (M_dir ==  1) {return ceil  (XTAL_REF_(z));}
+		}
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		method_default(real_variable_q auto &&z)
+		noexcept -> auto
+		requires (0x04 == sizeof(z))
+		{
+			using namespace std;
+			XTAL_IF0
+			XTAL_0IF (M_dir == -1) {return floorf(XTAL_REF_(z));}
+			XTAL_0IF (M_dir ==  0) {return roundf(XTAL_REF_(z));}
+			XTAL_0IF (M_dir ==  1) {return ceilf (XTAL_REF_(z));}
+		}
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		method_default(real_variable_q auto &&z)
+		noexcept -> auto
+		requires (0x10 == sizeof(z))
+		{
+			using namespace std;
+			XTAL_IF0
+			XTAL_0IF (M_dir == -1) {return floorl(XTAL_REF_(z));}
+			XTAL_0IF (M_dir ==  0) {return roundl(XTAL_REF_(z));}
+			XTAL_0IF (M_dir ==  1) {return ceill (XTAL_REF_(z));}
 		}
 
 	public:
 		using S::S;
 
-		template <auto ...>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,let)
 		method(auto &&z)
 		const noexcept -> auto
@@ -61,19 +85,20 @@ struct nearest
 			using Z_fit = bond::fit<Z>;
 
 			XTAL_IF1_(eval) {
-				return method_base_f(XTAL_REF_(z));
+				return method_default<Ns...>(XTAL_REF_(z));
 			}
 			XTAL_0IF (real_variable_q<Z>) {
 				using Z_alpha = typename Z_fit::alpha_type;
 				using Z_delta = typename Z_fit::delta_type;
 				auto u = XTAL_REF_(z);
+				static_assert(same_q<Z, Z_alpha>);
 				XTAL_IF0
 				XTAL_0IF (M_dir ==  0) {u += Z_fit::  haplo_f(1);}
 				XTAL_0IF (M_dir ==  1) {u += Z_fit::dnsilon_f(1);}
 				return Z_alpha(Z_delta(XTAL_REF_(z)));
 			}
 			XTAL_0IF_(else) {
-				return method_base_f(XTAL_REF_(z));
+				return method_default<Ns...>(XTAL_REF_(z));
 			}
 		}
 		template <auto ...Ns>
@@ -85,7 +110,7 @@ struct nearest
 		}
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,let)
-		method(atom::groupoid_q auto &&z)
+		method(atom::quantify_q auto &&z)
 		const noexcept -> decltype(auto)
 		{
 			return XTAL_ALL_(z)::template zip_from<[] XTAL_1FN_(call) (subtype{}.template method<Ns...>)>(z);

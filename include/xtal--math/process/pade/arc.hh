@@ -70,7 +70,7 @@ struct arc<-0, 0>
 			using           X =  XTAL_ALL_(x);
 			using           Y =  XTAL_ALL_(y);
 			using           K = unstruct_t<Y>;
-			K constexpr   _pi = _std::numbers::inv_pi_v<K>;// 1/Pi
+			K constexpr   _pi = std::numbers::inv_pi_v<K>;// 1/Pi
 			auto const   y_pi = XTAL_REF_(y)*_pi;
 			XTAL_IF0
 		//	N_par == 1
@@ -215,7 +215,7 @@ struct arc<-0, 1>
 			auto u_abs = u, u_sgn = part_t<signed>{}.edit(u_abs);
 			auto v_abs = v, v_sgn = part_t<signed>{}.edit(v_abs);// v_sgn *= *L::haplo_1;
 
-			W_alpha co{v_abs < u_abs, _std::in_place};
+			W_alpha co{v_abs < u_abs, std::in_place};
 			W_alpha up{v, u_abs}; up *= co;
 			W_alpha dn{u_abs,-v}; dn *= co;
 
@@ -502,13 +502,13 @@ struct arc<-1, 1>
 
 		//	Log[m * 2^n] == Log[m] + Log[Sqrt@2]*n
 		//	Log[m/Sqrt@2 * Sqrt@2^(1 + 2x)] == Log[m/Sqrt@2] + Log[Sqrt@2]*(1 + 2*n)*
-			U_sigma m = _xtd::bit_cast<U_sigma>(o);
+			U_sigma m = xtd::bit_cast<U_sigma>(o);
 			U_delta n = m - L::unit.mask;
 			m  &= L::fraction.mask;
 			m  |= L::unit.mask;
 			n >>= L::unit.shift - one;
 			n  |=                 one;
-			return term_f(S_::template method<N_lim, N_par>(K_inv*_xtd::bit_cast<U_alpha>(m)),
+			return term_f(S_::template method<N_lim, N_par>(K_inv*xtd::bit_cast<U_alpha>(m)),
 				K_log, static_cast<U_alpha>(n));
 		}
 		template <int N_lim=-1, int N_par=1>

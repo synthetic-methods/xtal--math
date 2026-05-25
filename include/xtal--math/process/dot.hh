@@ -37,7 +37,7 @@ namespace _detail
 {///////////////////////////////////////////////////////////////////////////////
 
 template <class ...Ts>
-using coefficient_t = common_t<return_t<_std::multiplies<void>,
+using coefficient_t = common_t<return_t<std::multiplies<void>,
 	decltype(one), typename fluid<Ts>::value_type>...>;
 
 
@@ -60,7 +60,7 @@ struct dot
 		const noexcept -> auto
 		requires un_v<fixed_shaped_q<decltype(x)>>
 		{
-			using _std::norm;// In case...
+			using std::norm;// In case...
 		//	static_assert(M_alt == 1);
 			XTAL_IF1_(to) (norm(XTAL_REF_(x)))
 			XTAL_0IF_(to) (square_f(abs(x)))
@@ -71,7 +71,7 @@ struct dot
 		const noexcept -> auto
 		requires in_v<fixed_shaped_q<decltype(x)>>
 		{
-			using _std::norm;// In case...
+			using std::norm;// In case...
 			using X = XTAL_ALL_(x);
 			auto constexpr N = fixed_shaped<X>::extent();
 

@@ -22,7 +22,7 @@ TAG_("sine")
 
 	TRY_("task")
 	{
-		double constexpr N_2pi = two*_std::numbers::pi_v<U_alpha>;
+		double constexpr N_2pi = two*std::numbers::pi_v<U_alpha>;
 		int constexpr N_lim = 0b111;
 		int constexpr N_bas = 0;// e
 		

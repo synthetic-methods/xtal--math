@@ -20,7 +20,7 @@ TAG_("dot")
 	using U_sigma = typename U_fit::sigma_type;
 	using U_alpha = typename U_fit::alpha_type;
 	using U_aphex = typename U_fit::aphex_type;
-	using W_alpha = atom::field_t<_xtd::plus_multiplies<U_alpha>>;
+	using W_alpha = atom::quantity_t<xtd::plus_multiplies<U_alpha>>;
 
 	TRY_("dot (different scalar type)")
 	{

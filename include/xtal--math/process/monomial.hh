@@ -42,10 +42,10 @@ monomial_f(objective_q auto &&o)
 noexcept -> XTAL_ALL_(o)
 {
 	if constexpr (complex_variable_q<decltype(o)>) {
-		auto const x  = _std::real(o), xx = monomial_f<2>(x);
-		auto const y  = _std::imag(o), yy = monomial_f<2>(y);
-		auto const u  = xx - yy;
-		auto const v  = two*x*y;
+		auto const x = std::real(o), xx = monomial_f<2>(x);
+		auto const y = std::imag(o), yy = monomial_f<2>(y);
+		auto const u = xx - yy;
+		auto const v = two*x*y;
 		return {u, v};
 	}
 	else {
@@ -60,10 +60,10 @@ noexcept -> XTAL_ALL_(o)
 	if constexpr (complex_variable_q<decltype(o)>) {
 		using U = XTAL_ALL_(o);
 		using V = typename U::value_type;
-		auto const x  = _std::real(o), xx = monomial_f<2>(x);
-		auto const y  = _std::imag(o), yy = monomial_f<2>(y);
-		auto const u  = _xtd::plus_multiplies_f(xx, yy, V(-3))* x;
-		auto const v  = _xtd::plus_multiplies_f(yy, xx, V(-3))*-y;
+		auto const x = std::real(o), xx = monomial_f<2>(x);
+		auto const y = std::imag(o), yy = monomial_f<2>(y);
+		auto const u = xtd::plus_multiplies{} (xx, yy, V(-3))* x;
+		auto const v = xtd::plus_multiplies{} (yy, xx, V(-3))*-y;
 		return {u, v};
 	}
 	else {

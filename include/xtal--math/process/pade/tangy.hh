@@ -73,7 +73,7 @@ struct tangy<M_ism,-0>
 				return XTAL_REF_(o)*U_fit::haplo_f(1);
 			}
 			XTAL_0IF (2 == M_ism) {
-				_std::array<typename U_fit::alpha_type, 8> constexpr bounds_{
+				std::array<typename U_fit::alpha_type, 8> constexpr bounds_{
 					1.9096980357053441147549036436586719e0L
 				,	2.2822895356638484368650166829565960e0L
 				,	2.7608321718626827008543388837862171e0L
@@ -164,7 +164,7 @@ struct tangy<M_ism, 1>
 			auto u_abs = u, u_sgn = part_t<signed>{}.edit(u_abs);
 			auto v_abs = v, v_sgn = part_t<signed>{}.edit(v_abs);// v_sgn *= *U_fit::haplo_1;
 
-			W_alpha co{v_abs < u_abs, _std::in_place};
+			W_alpha co{v_abs < u_abs, std::in_place};
 			W_alpha up{v, u_abs}; up *= co;
 			W_alpha dn{u_abs,-v}; dn *= co;
 

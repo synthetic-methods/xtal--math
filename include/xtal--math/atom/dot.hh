@@ -11,14 +11,14 @@ namespace xtal::atom::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 /*!
-\brief   Extends `group`-addition with `operator*` defined by the scalar product.
+\brief   Extends `quantity`-addition with `operator*` defined by the scalar product.
 
 Indended to act as a coefficient of a similar type where a scalar result is required.
 
 \todo    Either define `std::complex` construction/operation,
 or create a similar complex sentinel with multiplication/projection.
 
-\todo    Specialize `plus_multiplies_f` or `fma`?
+\todo    Specialize `plus_multiplies` or `fma`?
 */
 
 template <class ..._s>	struct  dot;
@@ -46,8 +46,8 @@ struct dot
 private:
 	template <class T>
 	//\
-	using endotype = typename group_addition<_s...>::template homotype<T>;
-	using endotype = typename group<applied_s<_s, _std::plus>...>::template homotype<T>;
+	using endotype = typename quantity_plus<_s...>::template homotype<T>;
+	using endotype = typename quantity<qualify_s<_s, std::plus>...>::template homotype<T>;
 
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<dot_t>>;
@@ -102,7 +102,7 @@ public:
 			auto  u = U{};
 			auto  n = bond::math::bit_extremum_f<-1>(t.size(), size());
 			for (int i{}; i < n; ++i) {
-				u = _xtd::plus_multiplies_f(XTAL_MOV_(u), s[i], t[i]);
+				u = xtd::plus_multiplies{} (XTAL_MOV_(u), s[i], t[i]);
 			}
 			return u;
 		}
@@ -115,7 +115,7 @@ public:
 			using U = XTAL_ALL_(get<0>(s)*get<0>(t));
 			U u{};
 			bond::seek_to_e<size>([&]<constant_q I> (I) XTAL_0FN {
-				u = _xtd::plus_multiplies_f(XTAL_MOV_(u), got<I{}>(s), got<I{}>(t));
+				u = xtd::plus_multiplies{} (XTAL_MOV_(u), got<I{}>(s), got<I{}>(t));
 			});
 			return u;
 		}
@@ -123,7 +123,7 @@ public:
 		XTAL_DEF_(return,inline,met)
 		operator * (U const &u, homotype const &s)
 		noexcept
-		requires un_v<_std::derived_from<U, homotype>>
+		requires un_v<std::derived_from<U, homotype>>
 		{
 			return s.operator*(u);
 		}

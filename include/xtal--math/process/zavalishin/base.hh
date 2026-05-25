@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 #include "../../atom/dot.hh"
-#include "../../provision/zavalishin/shaped.hh"
+#include "../../scheme/zavalishin/shaped.hh"
 
 
 
@@ -15,7 +15,7 @@ namespace xtal::process::math::zavalishin
 */
 template <class ...As>
 struct base
-:	occur::auxiliary<base<As...>>
+:	process::occurrence<base<As...>>
 {
 };
 
@@ -26,12 +26,12 @@ struct base
 }/////////////////////////////////////////////////////////////////////////////
 
 
-namespace xtal::occur
+namespace xtal::process
 {////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
 template <vector_q A, class ..._s>
-struct auxiliary<process::math::zavalishin::base<A, _s...>>
+struct occurrence<process::math::zavalishin::base<A, _s...>>
 {
 private:
 	static_assert(incomplete_q<_s...>);
@@ -40,7 +40,7 @@ private:
 	XTAL_TYP_(set) V_pole = unstruct_t<A>;
 
 public:
-	using superkind = auxiliary<>;
+	using superkind = occurrence<>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -61,32 +61,32 @@ public:
 };
 
 template <scalar_q A>
-struct auxiliary<process::math::zavalishin::base<A>>
-:	auxiliary<process::math::zavalishin::base<A[2]>>
+struct occurrence<process::math::zavalishin::base<A>>
+:	occurrence<process::math::zavalishin::base<A[2]>>
 {
 };
 template <>
-struct auxiliary<process::math::zavalishin::base< >>
-:	auxiliary<process::math::zavalishin::base<typename bond::fit<>::alpha_type>>
+struct occurrence<process::math::zavalishin::base< >>
+:	occurrence<process::math::zavalishin::base<typename bond::fit<>::alpha_type>>
 {
 };
 
 template <bond::compose_q A, class ..._s>
-struct auxiliary<process::math::zavalishin::base<A, _s...>>
+struct occurrence<process::math::zavalishin::base<A, _s...>>
 :	bond::compose<A
-	,	auxiliary<process::math::zavalishin::base<_s...>>
+	,	occurrence<process::math::zavalishin::base<_s...>>
 	>
 {
 };
 template <incomplete_q A, class ..._s>
-struct auxiliary<process::math::zavalishin::base<A, _s...>>
-:	bond::compose<auxiliary<A>
-	,	auxiliary<process::math::zavalishin::base<_s...>>
+struct occurrence<process::math::zavalishin::base<A, _s...>>
+:	bond::compose<occurrence<A>
+	,	occurrence<process::math::zavalishin::base<_s...>>
 	>
 {
 };
 //template <template <class ...> class T_, class ..._s>
-//struct auxiliary<T_<_s...>> : auxiliary<process::math::zavalishin::base<_s...>>
+//struct occurrence<T_<_s...>> : occurrence<process::math::zavalishin::base<_s...>>
 //{
 //};
 

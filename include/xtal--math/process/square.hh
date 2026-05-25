@@ -33,7 +33,7 @@ noexcept -> auto
 			using W = unstruct_t<X>;
 			auto constexpr K_sgn = N_alt*N_sgn;
 			auto constexpr k_sgn =   (W) K_sgn;
-			return _xtd::plus_multiplies_f(k_sgn*square_f<N_alt, K_sgn>(XTAL_REF_(xs)...), x, x);
+			return xtd::plus_multiplies{} (k_sgn*square_f<N_alt, K_sgn>(XTAL_REF_(xs)...), x, x);
 		}
 		XTAL_0IF (complex_field_q<X>) {
 			using W = unstruct_t<X>;

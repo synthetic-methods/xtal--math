@@ -11,10 +11,10 @@ namespace xtal::atom::math::fourier::_test
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-//atic_assert(_xtd::trivially_initializable<serial_t<float[2]>>);
-static_assert(_xtd::trivially_destructible <serial_t<float[2]>>);
-static_assert(_xtd::trivially_copyable     <serial_t<float[2]>>);
-static_assert(_xtd::trivially_movable      <serial_t<float[2]>>);
+//atic_assert(xtd::trivially_initializable<serial_t<float[2]>>);
+static_assert(xtd::trivially_destructible <serial_t<float[2]>>);
+static_assert(xtd::trivially_copyable     <serial_t<float[2]>>);
+static_assert(xtd::trivially_movable      <serial_t<float[2]>>);
 //atic_assert(                     atomic_q<serial_t<float[2]>>);
 
 

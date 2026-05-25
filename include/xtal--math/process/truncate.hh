@@ -47,7 +47,7 @@ struct truncate<M_app>
 		edit(real_variable_q auto &o)
 		const noexcept -> XTAL_ALL_(o)
 		{
-			using _xtd::bit_cast;
+			using xtd::bit_cast;
 			using bond::math::bit_sign_f;
 			using bond::math::bit_exchange_f;
 
@@ -63,8 +63,8 @@ struct truncate<M_app>
 			auto constexpr K_stop = bit_cast<U_sigma>(o_stop);
 			auto constexpr K_side = bit_cast<U_sigma>(-N_side >> sign.shift);
 			//\
-			if (_std::is_constant_evaluated() or not (U_fit::IEC&559)) {
-			if (_std::is_constant_evaluated() or not (U_fit::IEC&559) or XTAL_ENV_(GNUC)) {
+			if (std::is_constant_evaluated() or not (U_fit::IEC&559)) {
+			if (std::is_constant_evaluated() or not (U_fit::IEC&559) or XTAL_ENV_(GNUC)) {
 				U_alpha const s = part_t<signed>{}.edit(o);
 				XTAL_IF0
 				XTAL_0IF (M_dir <= 0) {o = U_fit::minimum_f(XTAL_MOV_(o), o_stop);}
@@ -130,7 +130,7 @@ struct truncate<M_app>
 			XTAL_0IF (1 == N_) {
 				return W_{edit<Ns...>(get<0>(w_))};
 			}
-			XTAL_0IF (2 == N_ and atom::group_multiplication_q<W_>) {
+			XTAL_0IF (2 == N_ and atom::quantity_multiplies_q<W_>) {
 			//	auto &[w0, w1] = w_;
 				auto &w0 = get<0>(w_); using W0 = XTAL_ALL_(w0);
 				auto &w1 = get<1>(w_); using W1 = XTAL_ALL_(w1);
@@ -157,7 +157,7 @@ struct truncate<M_app>
 				}
 			}
 			XTAL_0IF_(else) {
-			//	TODO: Accommodate returning materialized `atom::block` from `span`s...
+			//	TODO: Accommodate returning materialized `atom::bucket` from `span`s...
 				return [&]<auto ...I> (bond::seek_in_t<I...>)
 					XTAL_0FN_(to) (W_(edit<Ns...>(get<I>(w_))...))
 				(bond::seek_to_t<-N_>{});

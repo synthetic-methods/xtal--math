@@ -1,26 +1,23 @@
 #pragma once
-#include "./any.cc"
+#include "../any.cc"
 
 
 
 
 
-#include "./shaped.hh"
+#include "./any.hh"
 XTAL_ENV_(push)
-namespace xtal::provision::math::zavalishin::_test
+namespace xtal::scheme::math::_test
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
+using namespace xtal::_test;
+
+
 ////////////////////////////////////////////////////////////////////////////////
 /*/
-TAG_("shaped")
+TAG_("any")
 {
-	using U_fit   = bond::fit<>;
-	using U_sigma = typename U_fit::sigma_type;
-	using U_delta = typename U_fit::delta_type;
-	using U_alpha = typename U_fit::alpha_type;
-	using U_aphex = typename U_fit::aphex_type;
-
 	TRY_("task")
 	{
 		TRUE_(true);

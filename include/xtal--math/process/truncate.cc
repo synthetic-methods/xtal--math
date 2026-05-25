@@ -26,10 +26,10 @@ TAG_("truncate")
 
 	auto constexpr N_half = U_fit::ratio_f(1, 2);
 	auto constexpr N_zero = U_fit::ratio_f(0, 2);
-	auto constexpr N_min = _std::numeric_limits<U_alpha>::min();
-	auto constexpr N_max = _std::numeric_limits<U_alpha>::max();
+	auto constexpr N_min  =   std::numeric_limits<U_alpha>::min();
+	auto constexpr N_max  =   std::numeric_limits<U_alpha>::max();
 #ifndef __FINITE_MATH_ONLY__
-	auto constexpr N_inf = _std::numeric_limits<U_alpha>::inf();
+	auto constexpr N_inf  =   std::numeric_limits<U_alpha>::inf();
 #endif
 
 	TRY_("uniplex evaluation")
@@ -49,11 +49,11 @@ TAG_("truncate")
 	//	TRUE_(truncate_f<atom::couple_f(-1, 1)>(0) == 0);
 	//	TRUE_(truncate_f<atom::couple_f(-1, 1)>(2) == 1);
 
-		TRUE_(truncate_f<_std::pair{-1, 1}>(0) == 0);
-		TRUE_(truncate_f<_std::pair{-1, 1}>(2) == 1);
+		TRUE_(truncate_f<std::pair{-1, 1}>(0) == 0);
+		TRUE_(truncate_f<std::pair{-1, 1}>(2) == 1);
 
-	//	TRUE_(truncate_f<_std::pair{-1, 1}>(0.F) == 0.F);
-	//	TRUE_(truncate_f<_std::pair{-1, 1}>(2.F) == 1.F);
+	//	TRUE_(truncate_f<std::pair{-1, 1}>(0.F) == 0.F);
+	//	TRUE_(truncate_f<std::pair{-1, 1}>(2.F) == 1.F);
 
 	}
 	TRY_("finite evaluation")
@@ -157,10 +157,10 @@ TAG_("truncate trials")
 
 	auto constexpr N_half = U_fit::ratio_f(1, 2);
 	auto constexpr N_zero = U_fit::ratio_f(0, 2);
-	auto constexpr N_min = _std::numeric_limits<U_alpha>::min();
-	auto constexpr N_max = _std::numeric_limits<U_alpha>::max();
+	auto constexpr N_min  =   std::numeric_limits<U_alpha>::min();
+	auto constexpr N_max  =   std::numeric_limits<U_alpha>::max();
 #ifndef __FINITE_MATH_ONLY__
-	auto constexpr N_inf = _std::numeric_limits<U_alpha>::inf();
+	auto constexpr N_inf =    std::numeric_limits<U_alpha>::inf();
 #endif
 
 	EST_("truncate down")

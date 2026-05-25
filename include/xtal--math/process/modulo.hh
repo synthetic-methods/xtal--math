@@ -154,7 +154,7 @@ struct modulo<0, 0>
 			XTAL_IF0
 			XTAL_0IF (atom::math::phason_complex_q<X> and K_re == 0 and K_im == 0) {
 				auto const y = XTAL_REF_(x) (0);
-				return _std::pair{y.real(), y.imag()};
+				return std::pair{y.real(), y.imag()};
 			}
 			XTAL_0IF (atom::math::phason_complex_q<X>) {
 				using W = typename X::value_type;
@@ -170,17 +170,17 @@ struct modulo<0, 0>
 				auto xO_ = x.imag(); if constexpr (K_im) xO_[0] -= v;
 				auto xO  = xO_(0);
 				auto x0  = x0_(0);
-				return _std::pair{XTAL_MOV_(x0), XTAL_MOV_(xO)};
+				return std::pair{XTAL_MOV_(x0), XTAL_MOV_(xO)};
 			}
 			XTAL_0IF (complex_variable_q<X>) {
 				auto x0  = x.real(); if constexpr (K_re) x0 -= half*part_f<signed>(x0);
 				auto xO  = x.imag(); if constexpr (K_im) xO -= half*part_f<signed>(xO);
 				xO -= nearest_f<>(xO);
 				x0 -= nearest_f<>(x0);
-				return _std::pair{XTAL_MOV_(x0), XTAL_MOV_(xO)};
+				return std::pair{XTAL_MOV_(x0), XTAL_MOV_(xO)};
 			}
 			XTAL_0IF (simplex_variable_q<X> and K_re == 0) {
-				return _std::pair{x - nearest_f(x), X{}};
+				return std::pair{x - nearest_f(x), X{}};
 			}
 			XTAL_0IF (simplex_variable_q<X>) {
 				auto const v = half*part_f<signed>(x);

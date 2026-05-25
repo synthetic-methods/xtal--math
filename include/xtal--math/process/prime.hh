@@ -132,9 +132,9 @@ struct prime<-1>
 		requires un_v<fixed_shaped_q<decltype(Ns)...>>
 		{
 			assert(0 <= n and n <= 719);
-			auto constexpr *i0 = _std:: begin(_detail::U8_PRIME_HALF_SUBDEX);
-			auto constexpr *iN = _std::   end(_detail::U8_PRIME_HALF_SUBDEX);
-			auto const     *i_ = _std::lower_bound(i0, iN, n,
+			auto constexpr *i0 = std:: begin(_detail::U8_PRIME_HALF_SUBDEX);
+			auto constexpr *iN = std::   end(_detail::U8_PRIME_HALF_SUBDEX);
+			auto const     *i_ = std::lower_bound(i0, iN, n,
 				[] (unsigned char const &x, extent_type const &y)
 				XTAL_0FN_(to) (y > prime_f<1>(&x - i0)));
 
@@ -181,7 +181,7 @@ struct prime<M_nom>
 			using bond::math::bit_axis_f;
 			auto const &x = get<N_ind>(x_);
 			auto const &y = get<N_ind>(M_num);
-			return exponential_f<>(_xtd::make_unsigned_f(bit_axis_f<N_dir>(x)), y);
+			return exponential_f<>(xtd::unsigned_cast(bit_axis_f<N_dir>(x)), y);
 		}
 
 	public:// OPERATE

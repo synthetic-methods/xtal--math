@@ -91,11 +91,11 @@ struct patch<U_mat>
 				const noexcept -> auto
 				{
 					/**/
-					return [this, o_=_std::tuple{XTAL_REF_(oo)...}]<auto ...I>(bond::seek_in_t<I...>)
+					return [this, o_=std::tuple{XTAL_REF_(oo)...}]<auto ...I>(bond::seek_in_t<I...>)
 					XTAL_0FN_(to) (R_::template method<Ns...>(dot_f(get<I>(R_::coefficients()), o_)...))
 						(bond::seek_to_t<matrix_size> {});
 					/*/
-					auto const o_ = _std::tuple{XTAL_REF_(oo)...};
+					auto const o_ = std::tuple{XTAL_REF_(oo)...};
 					return\
 						([&, this]<auto ...I>(bond::seek_in_t<I...>)          XTAL_0FN_(to) (R_::template method<Ns...>((
 						([&, this]<auto ...J>(bond::seek_in_t<J...>, auto _I) XTAL_0FN_(to)

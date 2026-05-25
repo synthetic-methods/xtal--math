@@ -31,7 +31,7 @@ template <vector_q A>
 struct series<A>
 {
 private:
-	using U0 = _xtd::remove_extent_t<A>;
+	using U0 = xtd::remove_extent_t<A>;
 	using U1 =  typename destruct<U0>::value_type;
 	using U2 =  typename destruct<U1>::value_type;
 
@@ -150,9 +150,9 @@ public:
 		generate()
 		noexcept -> T &
 		{
-			using _std::span;
-			using _std::prev;
-			using _std::next;
+			using std::span;
+			using std::prev;
+			using std::next;
 
 		//	Initialize the forwards and backwards iterators:
 			auto const i = S_::begin();
@@ -197,12 +197,12 @@ public:
 
 		//	Move all entries to their bit-reversed locations:
 			for (I h{}; h < h_size; ++h) {
-				_std::swap(source[h], source[bond::math::bit_reverse_f(h, n_shift)]);
+				std::swap(source[h], source[bond::math::bit_reverse_f(h, n_shift)]);
 			}
 		
 		//	Conjugate the input if computing the inverse transform of the codomain:
 			if constexpr (N_direction == -1) {
-				_detail::apply_to<[] XTAL_1FN_(call) (_std::conj)>(source);
+				_detail::apply_to<[] XTAL_1FN_(call) (std::conj)>(source);
 			}
 		//	Compute the transform of `source` using the precomputed half-period sinusoid in `this`:
 			for (I n{}; n < n_shift; ++n) {
@@ -221,7 +221,7 @@ public:
 			}
 		//	Conjugate and scale the output if computing the inverse transform of the codomain:
 			if constexpr (N_direction == -1) {
-				_detail::apply_to<[] XTAL_1FN_(call) (_std::conj)>(source);
+				_detail::apply_to<[] XTAL_1FN_(call) (std::conj)>(source);
 				source /= U_fit::alpha_f(n_size );
 			}
 
@@ -276,7 +276,7 @@ public:
 		using S_::operator*=;
 
 		XTAL_DEF_(return,inline,let)  operator * (auto const &                       w) const noexcept -> auto   {return twin() *=   w ;}
-		XTAL_DEF_(inline,let)         operator *=(_std::initializer_list<value_type> w)       noexcept -> auto & {return self() *= T(w);}
+		XTAL_DEF_(inline,let)         operator *=(std::initializer_list<value_type> w)       noexcept -> auto & {return self() *= T(w);}
 
 		XTAL_DEF_(let)
 		operator *=(T const &t)
@@ -292,7 +292,7 @@ public:
 				Y s_(s);
 				Y t_(t);
 				Y(constant_t<-1>{}).convolve(s_, t_);
-				_detail::move_to<[] XTAL_1FN_(call) (_std::real)>(s.begin(), s_);
+				_detail::move_to<[] XTAL_1FN_(call) (std::real)>(s.begin(), s_);
 			}
 			return s;
 		}
@@ -304,8 +304,8 @@ public:
 		{
 			template <class Y>
 			//\
-			using holotype = typename group_multiplication<A>::template homotype<T>;
-			using holotype = typename group<applied_s<A, _std::multiplies>>::template homotype<Y>;
+			using holotype = typename quantity_multiplies<A>::template homotype<T>;
+			using holotype = typename quantity<qualify_s<A, std::multiplies>>::template homotype<Y>;
 
 			template <class Y>
 			class homotype : public holotype<homotype<Y>>

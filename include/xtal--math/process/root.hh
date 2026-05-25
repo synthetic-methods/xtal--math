@@ -50,7 +50,7 @@ struct root
 		XTAL_DEF_(return,inline,set)
 		method(auto &&z)
 		noexcept -> auto
-		requires un_v<atom::groupoid_q<XTAL_ALL_(z)>>
+		requires un_v<atom::quantify_q<XTAL_ALL_(z)>>
 		{
 			static_assert(-1 <= N_lim);
 			using Z     = objective_t<XTAL_ALL_(z)>;
@@ -77,7 +77,7 @@ struct root
 		XTAL_DEF_(return,inline,set)
 		method(auto &&z)
 		noexcept -> auto
-		requires in_v<atom::groupoid_q<XTAL_ALL_(z)>>
+		requires in_v<atom::quantify_q<XTAL_ALL_(z)>>
 		{
 			using Z = XTAL_ALL_(z);
 			using Z_fit = bond::fit<Z>;
@@ -124,7 +124,7 @@ struct root
 			}
 			XTAL_0IF (   real_variable_q<Z> and 1 <= M_cut) {
 				auto constexpr Z_cut =  Z_fit::minilon_f(M_cut);
-				auto const     z_cut = _xtd::copysign(Z_cut, z);
+				auto const     z_cut =    xtd::copysign(Z_cut, z);
 				return _1/(XTAL_REF_(z) + z_cut);
 			}
 			XTAL_0IF (   complex_field_q<Z> and 1 <= M_cut) {
@@ -168,7 +168,7 @@ struct root
 				y_re *= root_t<-M_exp_mag, 1>::template method<I_lim>(v_re);
 				y_im *= root_t<-M_exp_mag, 1>::template method<I_lim>(v_im);
 
-				auto const y_im_sgn = M_exp_sgn*_xtd::copysign(Z_fit::alpha_1, x_im);
+				auto const y_im_sgn = M_exp_sgn*xtd::copysign(Z_fit::alpha_1, x_im);
 				return {y_re, y_im*y_im_sgn};
 			}
 			XTAL_0IF_(else) {
@@ -184,7 +184,7 @@ struct root
 			using Z_fit = bond::fit<Z>;
 
 			auto constexpr z_one = Z{1};
-			auto const     z_sig = _xtd::copysign(z_one, z); z *= z_sig;
+			auto const     z_sig = xtd::copysign(z_one, z); z *= z_sig;
 			XTAL_IF0
 			XTAL_0IF_(consteval) {
 				return z_sig*approximate<I_lim>(z);
@@ -225,7 +225,7 @@ struct root
 			using U_alpha = typename U_fit::alpha_type;
 
 			U_alpha constexpr  m_1 = U_fit::dnsilon_f(U_fit::exponent.depth + M_exp_mag);// Experimental error term...
-			U_delta constexpr  M_1 = _xtd::bit_cast<U_delta>(m_1);
+			U_delta constexpr  M_1 = xtd::bit_cast<U_delta>(m_1);
 
 			U_delta constexpr  N = -M_exp_mag;
 			U_alpha constexpr  n = -M_exp_mag;
@@ -241,22 +241,22 @@ struct root
 			U_alpha const      z_    =         z*_n;
 			U_alpha constexpr  h     =         half;
 
-			auto y = _xtd::bit_cast<U_alpha>(K_ + _xtd::bit_cast<U_delta>(z)/N);
+			auto y = xtd::bit_cast<U_alpha>(K_ + xtd::bit_cast<U_delta>(z)/N);
 			
 			XTAL_IF0
 			XTAL_0IF_(consteval) {
 				auto v = z;
 				for (int i{}; i < 0x10 and v != y; ++i) {
-					y *= _xtd::plus_multiplies_f(k_, z_, monomial_f<M_exp_mag>(v = y));
+					y *= xtd::plus_multiplies{} (k_, z_, monomial_f<M_exp_mag>(v = y));
 				}
 				{
-					y /= _xtd::plus_multiplies_f(h, h, z*monomial_f<M_exp_mag>(v = y));
+					y /= xtd::plus_multiplies{} (h, h, z*monomial_f<M_exp_mag>(v = y));
 				}
 			}
 			XTAL_0IF_(else) {
 				#pragma unroll
 				for (int i{}; i < I_lim; ++i) {
-					y *= _xtd::plus_multiplies_f(k_, z_, monomial_f<M_exp_mag>(y));
+					y *= xtd::plus_multiplies{} (k_, z_, monomial_f<M_exp_mag>(y));
 				}
 			}
 			return y;

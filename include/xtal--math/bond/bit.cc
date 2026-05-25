@@ -426,7 +426,7 @@ TAG_("fraction")
 	{
 		for (T_sigma i = 0x100; ~--i;) {
 			T_alpha const u = ten*T_fit::mantissa_f(mt19937_f);
-			TRUE_(check_f<16>(bit_fraction_f<T_alpha>(u), u - _std::round(u)));
+			TRUE_(check_f<16>(bit_fraction_f<T_alpha>(u), u - std::round(u)));
 		}
 	};
 }
@@ -457,7 +457,7 @@ TAG_("bit trials")
 		T_delta w{};
 		for (T_sigma i = 0x100; ~--i;) {
 			auto const u = ten*mt19937_f();
-			w ^= static_cast<T_delta>(T_fit::diplo_f(T_fit::full.depth)*(u - _std::round(u)));
+			w ^= static_cast<T_delta>(T_fit::diplo_f(T_fit::full.depth)*(u - std::round(u)));
 		}
 		return w;
 	};

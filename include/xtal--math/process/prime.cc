@@ -22,9 +22,9 @@ TAG_("prime")
 	using U_aphex = typename U_fit::aphex_type;
 
 
-	TRY_("prime_f<_std::array<...>>")
+	TRY_("prime_f<std::array<...>>")
 	{
-		using U_nom = _std::array<U_delta, 4>;
+		using U_nom = std::array<U_delta, 4>;
 		U_nom constexpr M_nom{3, 3, 3, 3};
 		U_nom constexpr   vec{1, 2, 0,-3};
 		

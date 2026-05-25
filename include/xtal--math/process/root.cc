@@ -65,7 +65,7 @@ TAG_("root")
 		TRUE_(check_f<- 1>(root_f<-2>(pow(U_aphex {2, 3}, -2.0)), U_aphex {2, 3}));
 		TRUE_(check_f<- 1>(pow(U_aphex {2, 3}, 0.5), root_f< 2>(U_aphex {2, 3})));
 
-		TRUE_(check_f<- 1>(1.0/sqrt(2.2345268795805384), root_f<-2>(_std::complex{2.2345268795805384, 0.0}).real()));
+		TRUE_(check_f<- 1>(1.0/sqrt(2.2345268795805384), root_f<-2>(std::complex{2.2345268795805384, 0.0}).real()));
 	}
 	TRY_("punctured evaluation")
 	{

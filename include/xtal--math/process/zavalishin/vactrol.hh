@@ -57,10 +57,10 @@ public:
 			using X = XTAL_ALL_(x);
 			using U = unstruct_t<X>;
 
-			auto const [s_]    = S_::template memory<D_>();
+			auto const [s_]    = S_::template stash<D_>();
 			auto        u_damp = U(1);
 			auto        u_warp = oct_f(-term_f(f_[0], f_[1] - U(1), x - s_[1]));
-			u_warp *= part_f<_xtd::real<>>(t_(1));
+			u_warp *= part_f<xtd::real<>>(t_(1));
 
 			auto [y0, y1, y2] = S_::template method<Ns...>(XTAL_MOV_(x),
 				XTAL_MOV_(u_warp), XTAL_MOV_(u_damp), XTAL_REF_(oo)...);
@@ -88,16 +88,16 @@ public:
 			static_assert(D_::size() == two);
 			using X = XTAL_ALL_(x);
 			using U = unstruct_t<X>;
-			auto [s_] = S_::template memory<D_>();
+			auto [s_] = S_::template stash<D_>();
 
 			auto const &[f_damp, f_warp] = f_;
 			auto e_warp =                                  exp_f(f_warp);
-			auto w_warp = part_f<_xtd::real<>>(t_(1))*root_f<-1>(e_warp);
+			auto w_warp = part_f<xtd::real<>>(t_(1))*root_f<-1>(e_warp);
 			/**/
 			if constexpr (reuse_q<T_>) {
 			//	auto const x_warp =        pade::tangy_f<1>(w_warp);
-				auto const x_warp = _std::numbers::pi_v<U>*(w_warp);
-				atom::couple_t<X[2]> x_{!x, _std::in_place};
+				auto const x_warp = std::numbers::pi_v<U>*(w_warp);
+				atom::couple_t<X[2]> x_{!x, std::in_place};
 				s_[1] += x_[1] *= root_f<-1>(square_f(one + x_warp));
 				s_[0] += x_[1] *= x_warp;
 				x     *= x_[0];

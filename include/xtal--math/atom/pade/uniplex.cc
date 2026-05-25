@@ -23,8 +23,8 @@ TAG_("uniplex")
 
 	//\
 	using W_alpha = atom::couple_t<U_alpha[2]>;
-	using W_alpha = field_t<_xtd::plus_multiplies<U_alpha>[2]>;
-	using W_aphex = _std::complex<W_alpha>;
+	using W_alpha = quantity_t<xtd::plus_multiplies<U_alpha>[2]>;
+	using W_aphex = std::complex<W_alpha>;
 
 	auto constexpr pi = U_fit::patio_1;
 	auto constexpr qi = U_fit::patio_2;

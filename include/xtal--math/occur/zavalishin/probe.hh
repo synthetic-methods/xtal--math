@@ -62,7 +62,7 @@ struct probe<U>
 				method(auto &&...oo)
 				const noexcept -> decltype(auto)
 				{
-					auto const &[s_state_] = R_::template memory<typename R_::data_type>();
+					auto const &[s_state_] = R_::template stash<typename R_::data_type>();
 					auto const & s_shape_  = R_::template head<T_>().template head<U_>();
 					return R_::template method<Ns...>(XTAL_REF_(oo)..., exp_f(dot_f(s_state_, s_shape_)));
 				}

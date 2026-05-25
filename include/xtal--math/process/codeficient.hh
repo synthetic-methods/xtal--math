@@ -30,9 +30,9 @@ struct codeficient<>
 	method(auto &&o)
 	const noexcept -> auto
 	{
-		auto const y = _std::imag(o);
-		auto const x = _std::real(o);
-		return _std::pair{x - y, x + y};
+		auto const y = std::imag(o);
+		auto const x = std::real(o);
+		return std::pair{x - y, x + y};
 	}
 
 	template <class S>
@@ -61,10 +61,10 @@ struct codeficient<>
 				method(auto &&o, auto &&...oo)
 				const noexcept -> auto
 				{
-					auto const z =  R_ ::template method<Ns...>(XTAL_REF_(oo)...);
-					auto const y = _std::imag(z)*XTAL_REF_(o);
-					auto const x = _std::real(z);
-					return _std::pair{x - y, x + y};
+					auto const z = R_ ::template method<Ns...>(XTAL_REF_(oo)...);
+					auto const y = std::imag(z)*XTAL_REF_(o);
+					auto const x = std::real(z);
+					return std::pair{x - y, x + y};
 				}
 
 			};
@@ -101,10 +101,10 @@ struct codeficient<M>
 				method(auto &&...oo)
 				const noexcept -> auto
 				{
-					auto const z =  R_ ::template method<Ns...>(XTAL_REF_(oo)...);
-					auto const y = _std::imag(z)*R_::headed();
-					auto const x = _std::real(z);
-					return _std::pair{x - y, x + y};
+					auto const z = R_ ::template method<Ns...>(XTAL_REF_(oo)...);
+					auto const y = std::imag(z)*R_::headed();
+					auto const x = std::real(z);
+					return std::pair{x - y, x + y};
 				}
 
 			};

@@ -35,7 +35,7 @@ private:
 	using U_fit = bond::fit<A>;
 	
 	template <class T>
-	using endotype = typename differential<atom::applied_s<A, _std::plus>>::template homotype<T>;
+	using endotype = typename differential<atom::qualify_s<A, std::plus>>::template homotype<T>;
 
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<serial_t>>;
@@ -62,7 +62,7 @@ public:
 		using S_::operator*=;
 
 		XTAL_DEF_(return,inline,let)  operator  * (auto const &                       t) const noexcept -> auto   {return twin() *=   t ;}
-		XTAL_DEF_(inline,let)         operator  *=(_std::initializer_list<value_type> t)       noexcept -> auto & {return self() *= T(t);}
+		XTAL_DEF_(inline,let)         operator  *=(std::initializer_list<value_type> t)       noexcept -> auto & {return self() *= T(t);}
 
 		/*!
 		\brief   Multiplication by linear convolution, truncated by `size`.

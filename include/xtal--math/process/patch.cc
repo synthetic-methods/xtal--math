@@ -40,9 +40,9 @@ TAG_("route", "process")
 {
 	TRY_("shape with matrix")
 	{
-		using namespace _xtd::ranges::views;
+		using namespace xtd::ranges::views;
 
-		using U_matrix = atom::brace_t<int[3][2]>;
+		using U_matrix = atom::bracket_t<int[3][2]>;
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template refix<>
 		,	sum
@@ -64,17 +64,17 @@ TAG_("route", "processor")
 	/**/
 	TRY_("shape with matrix")
 	{
-		using namespace _xtd::ranges::views;
-		using U_matrix = atom::brace_t<int[3][2]>;// 3-outputs, 2-inputs
+		using namespace xtd::ranges::views;
+		using U_matrix = atom::bracket_t<int[3][2]>;// 3-outputs, 2-inputs
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template refix<>
 		,	sum
 		>;
-		using Z_router = processor::monomer_t<Y_routed, provision::stored<>>;
+		using Z_router = processor::monomer_t<Y_routed, scheme::stored<>>;
 
 		//\
 		auto _1 = processor::let_f(1);
-		auto _1 = processor::let_f(_xtd::ranges::views::repeat(1));
+		auto _1 = processor::let_f(xtd::ranges::views::repeat(1));
 		auto _n = processor::let_f(iota(0, 10));
 	//
 		auto io = Z_router::bind_f(_1, _n);
@@ -82,7 +82,7 @@ TAG_("route", "processor")
 		io <<= occur::resize_t<>(3);
 		io >>= occur::cursor_t<>(3);
 
-		TRUE_(equal_f(io, _std::vector { 9, 21, 33}));
+		TRUE_(equal_f(io, std::vector { 9, 21, 33}));
 	//	(1*1 + 2*0) + (3*1 + 4*0) + (5*1 + 6*0)
 	//	(1*1 + 2*1) + (3*1 + 4*1) + (5*1 + 6*1)
 	//	(1*1 + 2*2) + (3*1 + 4*2) + (5*1 + 6*2)
@@ -96,16 +96,16 @@ TAG_("route", "processor")
 	/**/
 	TRY_("shape with matrix dent")
 	{
-		using namespace _xtd::ranges::views;
+		using namespace xtd::ranges::views;
 		//\
-		using U_vector = atom::brace_t<int[2]>;
+		using U_vector = atom::bracket_t<int[2]>;
 		using U_vector = bond::pack_t<int, int>;
-		using U_matrix = atom::brace_t<U_vector[3]>;
+		using U_matrix = atom::bracket_t<U_vector[3]>;
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template refix<>
 		,	sum
 		>;
-		using Z_router = processor::monomer_t<Y_routed, provision::stored<>>;
+		using Z_router = processor::monomer_t<Y_routed, scheme::stored<>>;
 
 		auto _1 = processor::let_f(1);
 		auto _n = processor::let_f(iota(0, 10));
@@ -115,22 +115,22 @@ TAG_("route", "processor")
 		io <<= occur::resize_t<>(3);
 		io >>= occur::cursor_t<>(3);
 
-		TRUE_(equal_f(io, _std::vector { 9, 21, 33}));
+		TRUE_(equal_f(io, std::vector { 9, 21, 33}));
 
 	}
 	/***/
 	/**/
 	TRY_("shape with column dent")
 	{
-		using namespace _xtd::ranges::views;
+		using namespace xtd::ranges::views;
 		//\
-		using U_matrix = atom::brace_t<int[3][2]>;
-		using U_matrix = atom::brace_t<bond::pack_t<int, int>[3]>;
+		using U_matrix = atom::bracket_t<int[3][2]>;
+		using U_matrix = atom::bracket_t<bond::pack_t<int, int>[3]>;
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template refix<>
 		,	sum
 		>;
-		using Z_router = processor::monomer_t<Y_routed, provision::stored<>>;
+		using Z_router = processor::monomer_t<Y_routed, scheme::stored<>>;
 
 
 		auto _1 = processor::let_f(1);
@@ -143,22 +143,22 @@ TAG_("route", "processor")
 		io <<= occur::resize_t<>(3);
 		io >>= occur::cursor_t<>(3);
 
-		TRUE_(equal_f(io, _std::vector { 9, 21, 33}));
+		TRUE_(equal_f(io, std::vector { 9, 21, 33}));
 
 	}
 	/***/
 	/**/
 	TRY_("shape with vector dent")
 	{
-		using namespace _xtd::ranges::views;
+		using namespace xtd::ranges::views;
 		//\
-		using U_matrix = atom::brace_t<int[3][2]>;
-		using U_matrix = atom::brace_t<bond::pack_t<int, int>[3]>;
+		using U_matrix = atom::bracket_t<int[3][2]>;
+		using U_matrix = atom::bracket_t<bond::pack_t<int, int>[3]>;
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template refix<>
 		,	sum
 		>;
-		using Z_router = processor::monomer_t<Y_routed, provision::stored<>>;
+		using Z_router = processor::monomer_t<Y_routed, scheme::stored<>>;
 
 		auto _1 = processor::let_f(1);
 		auto _n = processor::let_f(iota(0, 10));
@@ -173,13 +173,13 @@ TAG_("route", "processor")
 		io <<= occur::resize_t<>(3);
 		io >>= occur::cursor_t<>(3);
 
-		TRUE_(equal_f(io, _std::vector { 9, 21, 33}));
+		TRUE_(equal_f(io, std::vector { 9, 21, 33}));
 
 	}
 	/***/
 	TRY_("shape with column dent")
 	{
-		using M   = atom::brace_t<bond::pack_t<int, int, int>[3]>;
+		using M   = atom::bracket_t<bond::pack_t<int, int, int>[3]>;
 		using W   = occur::math::dent_s<M>;
 		using W1  = occur::math::dent_s<M, 1>;
 		using W12 = occur::math::dent_s<M, 1, 2>;

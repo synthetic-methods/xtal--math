@@ -74,11 +74,11 @@ public:
 				const noexcept -> decltype(auto)
 				{
 					using X = XTAL_ALL_(per_f(o));
-					auto const    &u =   R_::self().template head<U_stage>();
-					auto const    &v =   u.head();
-					auto const     i = _xtd::make_unsigned_f((signed) v);
-					auto constexpr I = _xtd::make_unsigned_f((N_stage));
-					auto const     x =  static_cast<X>(i < I);
+					auto const    &u = R_::self().template head<U_stage>();
+					auto const    &v = u.head();
+					auto const     i = xtd::unsigned_cast((signed) v);
+					auto constexpr I = xtd::unsigned_cast((N_stage));
+					auto const     x = static_cast<X>(i < I);
 					return two*R_::template method<Ns...>(half*x, XTAL_REF_(o), XTAL_REF_(oo)...);
 				}
 				/*!

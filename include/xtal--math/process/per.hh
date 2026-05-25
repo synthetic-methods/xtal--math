@@ -49,7 +49,7 @@ struct per<M_att>
 				method(auto ...oo)
 				const noexcept -> decltype(auto)
 				{
-					auto &o = get<M_arg>(_std::tie(oo...)); o *= period();
+					auto &o = get<M_arg>(std::tie(oo...)); o *= period();
 					return R_::template method<Ns...>(XTAL_MOV_(oo)...);
 				}
 				template <auto ...Ns> requires in_v<M_arg, 0>

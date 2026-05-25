@@ -22,8 +22,8 @@ TAG_("dent")
 
 	TRY_("task")
 	{
-		using X_vector = atom::brace_t<U_alpha, W_alpha>;
-		using X_matrix = atom::brace_t<X_vector[2]>;
+		using X_vector = atom::bracket_t<U_alpha, W_alpha>;
+		using X_matrix = atom::bracket_t<X_vector[2]>;
 
 		using D22   = X_matrix;
 		using D22_0 = dent_s<X_matrix, 0>;

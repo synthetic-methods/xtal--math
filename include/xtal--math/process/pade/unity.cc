@@ -168,7 +168,7 @@ TAG_("unity")
 		Eigen::Map<A_alpha> xs_re(xs_co[0], 8);
 		Eigen::Map<A_alpha> xs_im(xs_co[1], 8);
 
-		_std::complex<A_alpha> xs{xs_re, xs_im};
+		std::complex<A_alpha> xs{xs_re, xs_im};
 
 		auto y0 = unity_t<1>(x0);
 		auto y1 = unity_t<1>(x1);

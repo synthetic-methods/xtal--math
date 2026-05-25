@@ -28,7 +28,6 @@ noexcept -> auto
 	static_assert(-2 <= M_add and M_add <= +2);
 	static_assert(-2 <= M_mul and M_mul <= +2);
 
-	using _xtd::plus_multiplies_f;
 	auto constexpr then = [] XTAL_1FN_(call) (term_f<M_add, M_mul>);
 	using Y = unstruct_t<X, Xs...>;// NOTE: Constants interpreted as scalar quantities...
 	XTAL_IF0
@@ -44,11 +43,11 @@ noexcept -> auto
 		return then(              (XTAL_REF_(w)), static_cast<Y>(XTAL_REF_(x)), XTAL_REF_(xs)...);
 	}
 
-//	Map groupoids...
-	XTAL_0IF (atom::groupoid_q<W> and not atom::math::dot_q<W>) {
+//	Map quantifys...
+	XTAL_0IF (atom::quantify_q<W> and not atom::math::dot_q<W>) {
 		return based_t<W>::template zip_from<then>(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
 	}
-	XTAL_0IF (atom::groupoid_q<X> and not atom::math::dot_q<X>) {
+	XTAL_0IF (atom::quantify_q<X> and not atom::math::dot_q<X>) {
 		return based_t<X>::template zip_from<then>(XTAL_REF_(w), XTAL_REF_(x), XTAL_REF_(xs)...);
 	}
 
@@ -73,22 +72,22 @@ noexcept -> auto
 		XTAL_0IF (M_add == -1 and M_mul == -1) {return - XTAL_REF_(x) - XTAL_REF_(w);}
 		XTAL_0IF (M_add == -1 and M_mul ==  1) {return   XTAL_REF_(x) - XTAL_REF_(w);}
 		XTAL_0IF (M_add ==  1 and M_mul == -1) {return   XTAL_REF_(w) - XTAL_REF_(x);}
-		XTAL_0IF (M_add ==  1 and M_mul ==  2) {return   plus_multiplies_f(         (XTAL_REF_(w)), x, x);}
-		XTAL_0IF (M_add == -1 and M_mul == -2) {return - plus_multiplies_f(         (XTAL_REF_(w)), x, x);}
-		XTAL_0IF (M_add == -1 and M_mul ==  2) {return   plus_multiplies_f(-        (XTAL_REF_(w)), x, x);}
-		XTAL_0IF (M_add ==  1 and M_mul == -2) {return - plus_multiplies_f(-        (XTAL_REF_(w)), x, x);}
-		XTAL_0IF (M_add ==  2 and M_mul ==  2) {return   plus_multiplies_f( square_f(XTAL_REF_(w)), x, x);}
-		XTAL_0IF (M_add == -2 and M_mul == -2) {return - plus_multiplies_f( square_f(XTAL_REF_(w)), x, x);}
-		XTAL_0IF (M_add == -2 and M_mul ==  2) {return   plus_multiplies_f(-square_f(XTAL_REF_(w)), x, x);}
-		XTAL_0IF (M_add ==  2 and M_mul == -2) {return - plus_multiplies_f(-square_f(XTAL_REF_(w)), x, x);}
+		XTAL_0IF (M_add ==  1 and M_mul ==  2) {return   xtd::plus_multiplies{} (         (XTAL_REF_(w)), x, x);}
+		XTAL_0IF (M_add == -1 and M_mul == -2) {return - xtd::plus_multiplies{} (         (XTAL_REF_(w)), x, x);}
+		XTAL_0IF (M_add == -1 and M_mul ==  2) {return   xtd::plus_multiplies{} (-        (XTAL_REF_(w)), x, x);}
+		XTAL_0IF (M_add ==  1 and M_mul == -2) {return - xtd::plus_multiplies{} (-        (XTAL_REF_(w)), x, x);}
+		XTAL_0IF (M_add ==  2 and M_mul ==  2) {return   xtd::plus_multiplies{} ( square_f(XTAL_REF_(w)), x, x);}
+		XTAL_0IF (M_add == -2 and M_mul == -2) {return - xtd::plus_multiplies{} ( square_f(XTAL_REF_(w)), x, x);}
+		XTAL_0IF (M_add == -2 and M_mul ==  2) {return   xtd::plus_multiplies{} (-square_f(XTAL_REF_(w)), x, x);}
+		XTAL_0IF (M_add ==  2 and M_mul == -2) {return - xtd::plus_multiplies{} (-square_f(XTAL_REF_(w)), x, x);}
 	}
 	XTAL_0IF (1 <= sizeof...(Xs)) {
 		XTAL_IF0
 		/**/
 		XTAL_0IF (                M_mul ==  2) {return   then(XTAL_REF_(w),  (XTAL_REF_(x) *...* XTAL_REF_(xs)));}
 		XTAL_0IF (                M_mul == -2) {return   then(XTAL_REF_(w), -(XTAL_REF_(x) *...* XTAL_REF_(xs)));}
-		XTAL_0IF (M_add ==  2                ) {return   plus_multiplies_f( square_f(XTAL_REF_(w)), XTAL_REF_(xs)...);}
-		XTAL_0IF (M_add == -2                ) {return   plus_multiplies_f(-square_f(XTAL_REF_(w)), XTAL_REF_(xs)...);}
+		XTAL_0IF (M_add ==  2                ) {return   xtd::plus_multiplies{} ( square_f(XTAL_REF_(w)), XTAL_REF_(xs)...);}
+		XTAL_0IF (M_add == -2                ) {return   xtd::plus_multiplies{} (-square_f(XTAL_REF_(w)), XTAL_REF_(xs)...);}
 		/*/
 		XTAL_0IF (M_add ==  1 and M_mul ==  2) {return   XTAL_REF_(w) + square_f((XTAL_REF_(x) *...* XTAL_REF_(xs)));}
 		XTAL_0IF (M_add == -1 and M_mul == -2) {return - XTAL_REF_(w) - square_f((XTAL_REF_(x) *...* XTAL_REF_(xs)));}
@@ -96,10 +95,10 @@ noexcept -> auto
 		XTAL_0IF (M_add ==  1 and M_mul == -2) {return   XTAL_REF_(w) - square_f((XTAL_REF_(x) *...* XTAL_REF_(xs)));}
 		/***/
 
-		XTAL_0IF (M_add ==  1 and M_mul ==  1) {return   plus_multiplies_f( XTAL_REF_(w),  XTAL_REF_(x), XTAL_REF_(xs)...);}
-		XTAL_0IF (M_add == -1 and M_mul == -1) {return - plus_multiplies_f( XTAL_REF_(w),  XTAL_REF_(x), XTAL_REF_(xs)...);}
-		XTAL_0IF (M_add == -1 and M_mul ==  1) {return   plus_multiplies_f(-XTAL_REF_(w),  XTAL_REF_(x), XTAL_REF_(xs)...);}
-		XTAL_0IF (M_add ==  1 and M_mul == -1) {return   plus_multiplies_f( XTAL_REF_(w), -XTAL_REF_(x), XTAL_REF_(xs)...);}
+		XTAL_0IF (M_add ==  1 and M_mul ==  1) {return   xtd::plus_multiplies{} ( XTAL_REF_(w),  XTAL_REF_(x), XTAL_REF_(xs)...);}
+		XTAL_0IF (M_add == -1 and M_mul == -1) {return - xtd::plus_multiplies{} ( XTAL_REF_(w),  XTAL_REF_(x), XTAL_REF_(xs)...);}
+		XTAL_0IF (M_add == -1 and M_mul ==  1) {return   xtd::plus_multiplies{} (-XTAL_REF_(w),  XTAL_REF_(x), XTAL_REF_(xs)...);}
+		XTAL_0IF (M_add ==  1 and M_mul == -1) {return   xtd::plus_multiplies{} ( XTAL_REF_(w), -XTAL_REF_(x), XTAL_REF_(xs)...);}
 	}
 
 	XTAL_0IF_(void)

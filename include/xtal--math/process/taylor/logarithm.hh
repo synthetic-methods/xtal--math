@@ -48,7 +48,7 @@ struct logarithm< 1, 0>
 		XTAL_DEF_(return,inline,set)
 		method(auto &&o)
 		noexcept -> decltype(auto)
-		requires un_v<atom::groupoid_q<decltype(o)>>
+		requires un_v<atom::quantify_q<decltype(o)>>
 		{
 			XTAL_IF0
 			XTAL_0IF (0 <= N_lim)                   {return methox<N_lim>(XTAL_REF_(o));}
@@ -62,7 +62,7 @@ struct logarithm< 1, 0>
 		XTAL_DEF_(return,inline,set)
 		method(auto &&o)
 		noexcept -> decltype(auto)
-		requires in_v<atom::groupoid_q<decltype(o)>>
+		requires in_v<atom::quantify_q<decltype(o)>>
 		{
 			return XTAL_ALL_(o)::template zip_from<[]
 				XTAL_1FN_(call) (method<Ns...>)>(XTAL_REF_(o));
@@ -102,7 +102,7 @@ struct logarithm<-1, 0>
 		XTAL_DEF_(return,inline,set)
 		method(auto &&o)
 		noexcept -> decltype(auto)
-		requires un_v<atom::groupoid_q<decltype(o)>>
+		requires un_v<atom::quantify_q<decltype(o)>>
 		{
 			XTAL_IF0
 			XTAL_0IF (0 <= N_lim)          {return methox<N_lim>(XTAL_REF_(o));}
@@ -116,7 +116,7 @@ struct logarithm<-1, 0>
 		XTAL_DEF_(return,inline,set)
 		method(auto &&o)
 		noexcept -> decltype(auto)
-		requires in_v<atom::groupoid_q<decltype(o)>>
+		requires in_v<atom::quantify_q<decltype(o)>>
 		{
 			return XTAL_ALL_(o)::template zip_from<[]
 				XTAL_1FN_(call) (method<Ns...>)>(XTAL_REF_(o));
@@ -155,7 +155,7 @@ struct logarithm< 1, 1>
 		XTAL_DEF_(return,inline,set)
 		method(auto &&o)
 		noexcept -> XTAL_ALL_(o)
-		requires un_v<atom::groupoid_q<decltype(o)>>
+		requires un_v<atom::quantify_q<decltype(o)>>
 		{
 			XTAL_IF0
 			XTAL_0IF (0 <= N_lim) {return methox<N_lim>(XTAL_REF_(o));}
@@ -166,7 +166,7 @@ struct logarithm< 1, 1>
 		XTAL_DEF_(return,inline,set)
 		method(auto &&o)
 		noexcept -> decltype(auto)
-		requires in_v<atom::groupoid_q<decltype(o)>>
+		requires in_v<atom::quantify_q<decltype(o)>>
 		{
 			return XTAL_ALL_(o)::template zip_from<[]
 				XTAL_1FN_(call) (method<Ns...>)>(XTAL_REF_(o));
@@ -216,7 +216,7 @@ struct logarithm<-1, 1>
 		XTAL_DEF_(return,inline,set)
 		method(auto &&o)
 		noexcept -> XTAL_ALL_(o)
-		requires un_v<atom::groupoid_q<decltype(o)>>
+		requires un_v<atom::quantify_q<decltype(o)>>
 		{
 			XTAL_IF0
 			XTAL_0IF (0 <= N_lim)          {return methox<N_lim>(XTAL_REF_(o));}
@@ -230,7 +230,7 @@ struct logarithm<-1, 1>
 		XTAL_DEF_(return,inline,set)
 		method(auto &&o)
 		noexcept -> decltype(auto)
-		requires in_v<atom::groupoid_q<decltype(o)>>
+		requires in_v<atom::quantify_q<decltype(o)>>
 		{
 			return XTAL_ALL_(o)::template zip_from<[]
 				XTAL_1FN_(call) (method<Ns...>)>(XTAL_REF_(o));
@@ -248,16 +248,16 @@ struct logarithm<-1, 1>
 			using U_sigma = typename U_fit::sigma_type;
 
 			U_alpha constexpr M  =  one << U_fit::fraction.depth;
-			U_alpha constexpr X  = _std::numbers::log2e_v<U_alpha>;       // 1 / Log@2
+			U_alpha constexpr X  =  std::numbers::log2e_v<U_alpha>;       // 1 / Log@2
 			U_alpha constexpr X_ =  X*M;
 		//	U_alpha constexpr K  =  0.021838724451800924121345965705447L; //     Log2[1/E/Log@2 + 1/2]/2
 			U_alpha constexpr K_ =  0.978161275548199075878654034294553L; // 1 - Log2[1/E/Log@2 + 1/2]/2
-			U_delta constexpr I  = _std::bit_cast<U_delta>(K_);
+			U_delta constexpr I  =  std::bit_cast<U_delta>(K_);
 
-			auto i = I + static_cast<U_delta>(X_*x); x = _std::bit_cast<U_alpha>(i);
+			auto i = I + static_cast<U_delta>(X_*x); x = std::bit_cast<U_alpha>(i);
 			i &= U_fit::fraction.mask;
 			i |= U_fit::    unit.mask;
-			auto w = _std::bit_cast<U_alpha>(i);
+			auto w = std::bit_cast<U_alpha>(i);
 			U_alpha constexpr a0 = -1.15254531398409900;
 			U_alpha constexpr a1 =  1.25646677591560070;
 			U_alpha constexpr a2 = -0.41619451269060210;
@@ -276,8 +276,8 @@ struct logarithm<-1, 1>
 			using U_sigma = typename U_fit::sigma_type;
 			using U_delta = typename U_fit::delta_type;
 
-			U_alpha constexpr  N_log2 = one*_std::numbers::ln2_v<U_alpha>;
-			U_alpha constexpr _N_log2 = one/_std::numbers::ln2_v<U_alpha>;
+			U_alpha constexpr  N_log2 = one*std::numbers::ln2_v<U_alpha>;
+			U_alpha constexpr _N_log2 = one/std::numbers::ln2_v<U_alpha>;
 			U_alpha constexpr _N_dns2 = U_fit::dnsilon_f(1)*half;
 			U_alpha n;
 			U_delta N;
@@ -294,15 +294,14 @@ struct logarithm<-1, 1>
 			o *= N_log2;
 			o  = logarithm_t<-1, 0>::template method<N_lim>(XTAL_MOV_(o));
 			XTAL_IF1_(consteval) {
-				auto  m = _xtd::bit_cast<U_sigma>(o);
+				auto  m = xtd::bit_cast<U_sigma>(o);
 				N <<= U_fit::exponent.shift;
 				m  += N;
-				return _xtd::bit_cast<U_alpha>(m);
+				return xtd::bit_cast<U_alpha>(m);
 			}
 			XTAL_0IF_(else) {
-				//\
-				reinterpret_cast<U_sigma &>(o) += N << U_fit::exponent.shift; return o;
-				return _std::ldexp(XTAL_MOV_(o), XTAL_MOV_(N));
+				return U_fit::diplo_f(N, o);
+
 			}
 		}
 
