@@ -300,7 +300,7 @@ struct logarithm<-1, 1>
 				return xtd::bit_cast<U_alpha>(m);
 			}
 			XTAL_0IF_(else) {
-				return U_fit::diplo_f(N, o);
+				return xtd::ldexp(o, N);
 
 			}
 		}

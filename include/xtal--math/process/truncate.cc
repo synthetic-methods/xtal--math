@@ -36,8 +36,8 @@ TAG_("truncate")
 	{
 		auto const foo = atom::math::pade::uniplex_f(U_aphex{0.125, 64.00});
 		auto const bar = truncate_f<3>(foo);
-		TRUE_(bond::pack_item_f<1, 0>(foo) <             (bond::pack_item_f<1, 0>(bar)));
-		TRUE_(bond::pack_item_f<1, 1>(bar) <             (bond::pack_item_f<1, 1>(foo)));
+		TRUE_(bond::pack_item_f<1, 0>(foo) <                (bond::pack_item_f<1, 0>(bar)));
+		TRUE_(bond::pack_item_f<1, 1>(bar) <                (bond::pack_item_f<1, 1>(foo)));
 		TRUE_(bond::pack_item_f<1, 0>(bar) == truncate_f< 3>(bond::pack_item_f<1, 0>(foo)));
 		TRUE_(bond::pack_item_f<1, 1>(bar) == truncate_f<-3>(bond::pack_item_f<1, 1>(foo)));
 	}
@@ -93,26 +93,26 @@ TAG_("truncate")
 		U_alpha o;
 
 	//	Inside:
-		o = +0.75; TRUE_(truncate_t<+half>{}.edit(o) ==  0); TRUE_(o == +0.75);
-		o = -0.75; TRUE_(truncate_t<+half>{}.edit(o) ==  0); TRUE_(o == -0.75);
-		o = +0.25; TRUE_(truncate_t<-half>{}.edit(o) ==  0); TRUE_(o == +0.25);
-		o = -0.25; TRUE_(truncate_t<-half>{}.edit(o) ==  0); TRUE_(o == -0.25);
+		o = +0.75; VOID_(truncate_t<+half>::template method<std::in_place>(o)/* ==  0*/); TRUE_(o == +0.75);
+		o = -0.75; VOID_(truncate_t<+half>::template method<std::in_place>(o)/* ==  0*/); TRUE_(o == -0.75);
+		o = +0.25; VOID_(truncate_t<-half>::template method<std::in_place>(o)/* ==  0*/); TRUE_(o == +0.25);
+		o = -0.25; VOID_(truncate_t<-half>::template method<std::in_place>(o)/* ==  0*/); TRUE_(o == -0.25);
 
 	//	Outside:
-		o = +0.25; TRUE_(truncate_t<+half>{}.edit(o) == +1); TRUE_(o == +0.50);
-		o = -0.25; TRUE_(truncate_t<+half>{}.edit(o) == -1); TRUE_(o == -0.50);
-		o = +0.75; TRUE_(truncate_t<-half>{}.edit(o) == +1); TRUE_(o == +0.50);
-		o = -0.75; TRUE_(truncate_t<-half>{}.edit(o) == -1); TRUE_(o == -0.50);
+		o = +0.25; VOID_(truncate_t<+half>::template method<std::in_place>(o)/* == +1*/); TRUE_(o == +0.50);
+		o = -0.25; VOID_(truncate_t<+half>::template method<std::in_place>(o)/* == -1*/); TRUE_(o == -0.50);
+		o = +0.75; VOID_(truncate_t<-half>::template method<std::in_place>(o)/* == +1*/); TRUE_(o == +0.50);
+		o = -0.75; VOID_(truncate_t<-half>::template method<std::in_place>(o)/* == -1*/); TRUE_(o == -0.50);
 
 #ifndef __FINITE_MATH_ONLY__
-		o = +inf; TRUE_(truncate_t<[] XTAL_1FN_(to) (-U_fit::maxilon_f(1))>{}.edit(o) == +1); TRUE_(o <  +inf);
-		o = -inf; TRUE_(truncate_t<[] XTAL_1FN_(to) (-U_fit::maxilon_f(1))>{}.edit(o) == -1); TRUE_(o  > -inf);
-		o = +0.0; TRUE_(truncate_t<[] XTAL_1FN_(to) (+U_fit::minilon_f(1))>{}.edit(o) == +1); TRUE_(o  > +0.0);
-		o = -0.0; TRUE_(truncate_t<[] XTAL_1FN_(to) (+U_fit::minilon_f(1))>{}.edit(o) == -1); TRUE_(o <  -0.0);
+		o = +inf; VOID_(truncate_t<[] XTAL_1FN_(to) (-U_fit::maxilon_f(1))>::template method<std::in_place>(o)/* == +1*/); TRUE_(o <  +inf);
+		o = -inf; VOID_(truncate_t<[] XTAL_1FN_(to) (-U_fit::maxilon_f(1))>::template method<std::in_place>(o)/* == -1*/); TRUE_(o  > -inf);
+		o = +0.0; VOID_(truncate_t<[] XTAL_1FN_(to) (+U_fit::minilon_f(1))>::template method<std::in_place>(o)/* == +1*/); TRUE_(o  > +0.0);
+		o = -0.0; VOID_(truncate_t<[] XTAL_1FN_(to) (+U_fit::minilon_f(1))>::template method<std::in_place>(o)/* == -1*/); TRUE_(o <  -0.0);
 
 		o = inf - inf;
 		TRUE_(o != o);
-		(void) truncate_t<[] XTAL_1FN_(to) (-U_fit::maxilon_f(1))>{}.edit(o);
+		(void) truncate_t<[] XTAL_1FN_(to) (-U_fit::maxilon_f(1))>::template method<std::in_place>(o);
 		TRUE_(o == o);
 #endif
 
@@ -122,23 +122,23 @@ TAG_("truncate")
 		U_alpha o;
 
 	//	Inside:
-		o = +0.75; TRUE_(truncate_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::haplo_1)>{}.edit(o) ==  0); TRUE_(o == +0.75);
-		o = -0.75; TRUE_(truncate_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::haplo_1)>{}.edit(o) ==  0); TRUE_(o == -0.75);
-		o = +0.25; TRUE_(truncate_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::haplo_1)>{}.edit(o) ==  0); TRUE_(o == +0.25);
-		o = -0.25; TRUE_(truncate_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::haplo_1)>{}.edit(o) ==  0); TRUE_(o == -0.25);
+		o = +0.75; VOID_(truncate_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::haplo_1)>::template method<std::in_place>(o)/* ==  0*/); TRUE_(o == +0.75);
+		o = -0.75; VOID_(truncate_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::haplo_1)>::template method<std::in_place>(o)/* ==  0*/); TRUE_(o == -0.75);
+		o = +0.25; VOID_(truncate_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::haplo_1)>::template method<std::in_place>(o)/* ==  0*/); TRUE_(o == +0.25);
+		o = -0.25; VOID_(truncate_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::haplo_1)>::template method<std::in_place>(o)/* ==  0*/); TRUE_(o == -0.25);
 
 	//	Outside:
-		o = +0.50; TRUE_(truncate_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::haplo_1)>{}.edit(o) == +1); TRUE_(o  > +0.50);
-		o = -0.50; TRUE_(truncate_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::haplo_1)>{}.edit(o) == -1); TRUE_(o <  -0.50);
-		o = +0.50; TRUE_(truncate_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::haplo_1)>{}.edit(o) == +1); TRUE_(o <  +0.50);
-		o = -0.50; TRUE_(truncate_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::haplo_1)>{}.edit(o) == -1); TRUE_(o  > -0.50);
+		o = +0.50; VOID_(truncate_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::haplo_1)>::template method<std::in_place>(o)/* == +1*/); TRUE_(o  > +0.50);
+		o = -0.50; VOID_(truncate_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::haplo_1)>::template method<std::in_place>(o)/* == -1*/); TRUE_(o <  -0.50);
+		o = +0.50; VOID_(truncate_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::haplo_1)>::template method<std::in_place>(o)/* == +1*/); TRUE_(o <  +0.50);
+		o = -0.50; VOID_(truncate_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::haplo_1)>::template method<std::in_place>(o)/* == -1*/); TRUE_(o  > -0.50);
 
 #ifndef __FINITE_MATH_ONLY__
-		o = +inf; TRUE_(truncate_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::maxilon_f(1))>{}.edit(o) == +1); TRUE_(o <  +inf);
-		o = -inf; TRUE_(truncate_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::maxilon_f(1))>{}.edit(o) == -1); TRUE_(o  > -inf);
+		o = +inf; VOID_(truncate_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::maxilon_f(1))>::template method<std::in_place>(o)/* == +1*/); TRUE_(o <  +inf);
+		o = -inf; VOID_(truncate_t<[] XTAL_1FN_(to) (U_fit::dnsilon_f(1)*U_fit::maxilon_f(1))>::template method<std::in_place>(o)/* == -1*/); TRUE_(o  > -inf);
 #endif
-		o = +0.0; TRUE_(truncate_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::minilon_f(1))>{}.edit(o) == +1); TRUE_(o  > +0.0);
-		o = -0.0; TRUE_(truncate_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::minilon_f(1))>{}.edit(o) == -1); TRUE_(o <  -0.0);
+		o = +0.0; VOID_(truncate_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::minilon_f(1))>::template method<std::in_place>(o)/* == +1*/); TRUE_(o  > +0.0);
+		o = -0.0; VOID_(truncate_t<[] XTAL_1FN_(to) (U_fit::upsilon_f(1)*U_fit::minilon_f(1))>::template method<std::in_place>(o)/* == -1*/); TRUE_(o <  -0.0);
 
 	};
 }
@@ -167,7 +167,7 @@ TAG_("truncate trials")
 	{
 		double w{1};
 		for (int i = 0x60; ~--i;) {
-			auto x = one/mt19937_f(); (void) truncate_t<-8>{}.edit(x);
+			auto x = one/mt19937_f(); (void) truncate_t<-8>::template method<std::in_place>(x);
 			w += x;
 		}
 		return w;

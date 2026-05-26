@@ -126,7 +126,7 @@ struct hype
 			using      U_fit = bond::fit<decltype(u)>;
 			auto       z_re  = z.real();
 			auto       z_im  = z.imag();
-			auto const z_io  = part_t<signed>{}.edit(z_im);
+			auto const z_io  = part_e<signed>(z_im);
 			auto const z_co  = z_im*root_f<-1>(z_re);
 			auto      [z_up, z_dn] = roots_f<2>(square_f(z_re, z_im));
 
@@ -199,7 +199,7 @@ struct hype
 				auto constexpr N0 = monomial_f<N_lim + 0>(U3), T0 = U4/square_f<-1>(N0, U1);
 				auto constexpr N1 = monomial_f<N_lim + 2>(U2), T1 = U1/square_f<-1>(N1, U2);
 
-				u *= part_t<signed>{}.edit(z_co);
+				u *= part_e<signed>(z_co);
 
 				U t0{term_f(U0, T0, w)}, s0{U1};
 				U t1{term_f(U1, T1, w)}, s1{U1_02*u*z_co*t1};

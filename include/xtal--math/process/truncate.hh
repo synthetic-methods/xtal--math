@@ -19,7 +19,10 @@ template <auto M_lim>
 XTAL_TYP_(let) truncate_t = process::confined_t<truncate<M_lim>>;
 
 template <auto M_lim, auto ...Ns>
-XTAL_DEF_(let) truncate_f = [] XTAL_1FN_(call) (truncate_t<M_lim>{}.template method<Ns...>);
+XTAL_DEF_(let) truncate_f = [] XTAL_1FN_(call) (truncate_t<M_lim>::template method<Ns...>);
+
+template <auto M_lim>
+XTAL_DEF_(let) truncate_e = [] XTAL_1FN_(call) (truncate_t<M_lim>::template method<std::in_place>);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -42,134 +45,92 @@ struct truncate<M_app>
 	public:
 		using S_::S_;
 
-		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
-		edit(real_variable_q auto &o)
-		const noexcept -> XTAL_ALL_(o)
+		template <std::in_place_t>
+		XTAL_DEF_(inline,set)
+		method(real_variable_q auto &o)
+		noexcept -> decltype(o)
 		{
-			using xtd::bit_cast;
-			using bond::math::bit_sign_f;
-			using bond::math::bit_exchange_f;
-
 			using U_fit   = bond::fit<XTAL_ALL_(o)>;
 			using U_delta = typename U_fit::delta_type;
 			using U_sigma = typename U_fit::sigma_type;
 			using U_alpha = typename U_fit::alpha_type;
 
-			auto constexpr   sign = U_fit::sign;
-			auto constexpr   unit = U_fit::unit;
-			auto constexpr o_stop = static_cast<U_alpha>(M_abs);
-			auto constexpr N_side = static_cast<U_delta>(M_dir);
-			auto constexpr K_stop = bit_cast<U_sigma>(o_stop);
-			auto constexpr K_side = bit_cast<U_sigma>(-N_side >> sign.shift);
+			auto constexpr o_stop =   static_cast<U_alpha>(M_abs);
+			auto constexpr N_side =   static_cast<U_delta>(M_dir);
+			auto constexpr K_stop = xtd::bit_cast<U_sigma>(o_stop);
+			auto constexpr K_side = xtd::bit_cast<U_sigma>(-N_side >> U_fit::sign.shift);
 			//\
 			if (std::is_constant_evaluated() or not (U_fit::IEC&559)) {
 			if (std::is_constant_evaluated() or not (U_fit::IEC&559) or XTAL_ENV_(GNUC)) {
-				U_alpha const s = part_t<signed>{}.edit(o);
+				U_alpha const s = part_e<signed>(o);
 				XTAL_IF0
 				XTAL_0IF (M_dir <= 0) {o = U_fit::minimum_f(XTAL_MOV_(o), o_stop);}
 				XTAL_0IF (M_dir == 1) {o = U_fit::maximum_f(XTAL_MOV_(o), o_stop);}
 				U_alpha const q = o == o_stop;
-				o *= s; return q*s;
+				o *= s;
 			}
-			/**/
 			else {
-				auto  &t = reinterpret_cast<U_sigma &>(o), s = t&sign.mask, r = s|K_stop; r -= t;
-				auto   q = K_side^bit_sign_f(r);
-				t  +=  q & r;
-				s  |=  q & unit.mask;
-				return bit_exchange_f(s);
-			}
-			/*/
-			else {
-				auto  &t = reinterpret_cast<U_sigma &>(o), r = t&sign.mask|K_stop;
-				r  -=  t;  r &= K_side^bit_sign_f(r);
+				auto  &t = reinterpret_cast<U_sigma &>(o), r = t&U_fit::sign.mask|K_stop;
+				r  -=  t;  r &= K_side^bond::math::bit_sign_f(r);
 				t  +=  r;
-				return zero;
 			}
-			/***/
+			return o;
 		}
-		/**/
-		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
-		edit(complex_variable_q auto &o)
-		const noexcept -> XTAL_ALL_(o)
+		template <std::in_place_t>
+		XTAL_DEF_(inline,set)
+		method(complex_variable_q auto &o)
+		noexcept -> decltype(o)
 		{
 			auto &[x, y] = destruct_f(o);
-			//\
-			return {edit<Ns...>(x), edit<Ns...>(y)};
-			return {edit<Ns...>(x), zero};
+			(void) method<std::in_place>(x);
+		//	(void) method<std::in_place>(y);
+			return o;
 		}
-		/*/
-		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
-		edit(complex_variable_q auto &o)
-		const noexcept -> XTAL_ALL_(abs(o))
+		template <std::in_place_t>
+		XTAL_DEF_(inline,set)
+		method(bond::pack_q auto &o)
+		noexcept -> decltype(o)
+		requires un_v<complex_variable_q<decltype(o)>>
 		{
-			auto &[x, y] = destruct_f(o);
-			auto  [w, m] = roots_f<2>(dot_f(o));
-			auto r = edit<Ns...>(w);
-			w *= m;
-			x *= w;
-			y *= w;
-			return r;
-		}
-		/***/
-		template <auto ...Ns>
-		XTAL_DEF_(return,let)
-		edit(bond::pack_q auto &w_)
-		const noexcept -> auto
-		requires un_v<complex_variable_q<decltype(w_)>>
-		{
-			XTAL_TYP_(let) W_ = XTAL_ALL_(w_);
+			XTAL_TYP_(let) W_ = XTAL_ALL_(o);
 			auto constexpr N_ = (int) bond::pack_size_v<W_>;
 			XTAL_IF0
 			XTAL_0IF (0 == N_) {
-				return W_{};
 			}
 			XTAL_0IF (1 == N_) {
-				return W_{edit<Ns...>(get<0>(w_))};
+				(void) method<std::in_place>(get<0>(o));
 			}
 			XTAL_0IF (2 == N_ and atom::quantity_multiplies_q<W_>) {
-			//	auto &[w0, w1] = w_;
-				auto &w0 = get<0>(w_); using W0 = XTAL_ALL_(w0);
-				auto &w1 = get<1>(w_); using W1 = XTAL_ALL_(w1);
+				auto &x = get<0>(o); using X = XTAL_ALL_(x);
+				auto &y = get<1>(o); using Y = XTAL_ALL_(y);
 				XTAL_IF0
-				//\
-				XTAL_0IF (uniplex_q<W_>) {
-				XTAL_0IF (complex_variable_q<W0> and atom::couple_q<W1>) {
-					auto const u0 =                              edit<Ns...>(get<0>(w1));
-					auto const u1 = truncate_t<M_opp>{}.template edit<Ns...>(get<1>(w1));
-					return W_{W0{one, zero}, W1{XTAL_MOV_(u0), XTAL_MOV_(u1)}};
+			//	XTAL_0IF (atom::math::pade::uniplex_q<W_>) {
+				XTAL_0IF (complex_variable_q<X> and atom::couple_q<Y>) {(void) method<std::in_place>(y);}
+				XTAL_0IF (atom::couple_q<X> and complex_variable_q<Y>) {(void) method<std::in_place>(x);}
+				XTAL_0IF (     same_q<X, Y>) {
+					(void)                              method<std::in_place>(x);
+					(void) truncate_t<M_opp>::template method<std::in_place>(y);
 				}
-				XTAL_0IF (atom::couple_q<W0> and complex_variable_q<W1>) {
-					auto const u0 =                              edit<Ns...>(get<0>(w0));
-					auto const u1 = truncate_t<M_opp>{}.template edit<Ns...>(get<1>(w0));
-					return W_{W0{XTAL_MOV_(u0), XTAL_MOV_(u1)}, W1{one, zero}};
-				}
-				//\
-				XTAL_0IF (same_q<W0, W1>) {
-				XTAL_0IF_(else) {
-					if constexpr (different_q<W0, W1>) {
-						static_assert(complex_variable_q<W0>);
-					}
-					return W_{edit<Ns...>(w0), edit<Ns...>(w1)};
+				XTAL_0IF (different_q<X, Y>) {
+					(void) method<std::in_place>(x);
+					(void) method<std::in_place>(y);
 				}
 			}
 			XTAL_0IF_(else) {
 			//	TODO: Accommodate returning materialized `atom::bucket` from `span`s...
-				return [&]<auto ...I> (bond::seek_in_t<I...>)
-					XTAL_0FN_(to) (W_(edit<Ns...>(get<I>(w_))...))
+				[&]<auto ...I> (bond::seek_in_t<I...>)
+					XTAL_0FN_(do) (W_(method<std::in_place>(get<I>(o))...))
 				(bond::seek_to_t<-N_>{});
 			}
+			return o;
 		}
 
-		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		template <invariable_q auto ...Ns>
+		XTAL_DEF_(return,inline,set)
 		method(auto o)
-		const noexcept -> auto
+		noexcept -> auto
 		{
-			(void) edit(o); return o;
+			(void) method<std::in_place>(o); return o;
 		}
 
 	};
@@ -187,31 +148,32 @@ struct truncate<M_dir>
 	public:
 		using S_::S_;
 
-		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
-		method(auto &&u)
-		const noexcept -> auto
+		template <invariable_q auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		method(auto &&o)
+		noexcept -> auto
 		{
-			using U     = XTAL_ALL_(u);
+			using U     = XTAL_ALL_(o);
 			using U_fit = bond::fit<U>;
 			auto constexpr N_min = [] XTAL_1FN_(to) (+U_fit::minilon_f(N_dir));
 			auto constexpr N_max = [] XTAL_1FN_(to) (-U_fit::maxilon_f(N_dir));
 			XTAL_IF0
-			XTAL_0IF (0 < M_dir) {return truncate_t<N_min>{}.template method<Ns...>(XTAL_REF_(u));}
-			XTAL_0IF (M_dir < 0) {return truncate_t<N_max>{}.template method<Ns...>(XTAL_REF_(u));}
+			XTAL_0IF (0 < M_dir) {return truncate_t<N_min>::template method<Ns...>(XTAL_REF_(o));}
+			XTAL_0IF (M_dir < 0) {return truncate_t<N_max>::template method<Ns...>(XTAL_REF_(o));}
 		}
-		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
-		edit(auto &u)
-		const noexcept -> auto
+		template <std::in_place_t>
+		XTAL_DEF_(inline,set)
+		method(auto &o)
+		noexcept -> decltype(o)
 		{
-			using U     = XTAL_ALL_(u);
+			using U     = XTAL_ALL_(o);
 			using U_fit = bond::fit<U>;
 			auto constexpr N_min = [] XTAL_1FN_(to) (+U_fit::minilon_f(N_dir));
 			auto constexpr N_max = [] XTAL_1FN_(to) (-U_fit::maxilon_f(N_dir));
 			XTAL_IF0
-			XTAL_0IF (0 < M_dir) {return truncate_t<N_min>{}.template   edit<Ns...>(XTAL_REF_(u));}
-			XTAL_0IF (M_dir < 0) {return truncate_t<N_max>{}.template   edit<Ns...>(XTAL_REF_(u));}
+			XTAL_0IF (0 < M_dir) {truncate_t<N_min>::template method<std::in_place>(XTAL_REF_(o));}
+			XTAL_0IF (M_dir < 0) {truncate_t<N_max>::template method<std::in_place>(XTAL_REF_(o));}
+			return o;
 		}
 
 	};
@@ -230,21 +192,21 @@ struct truncate<M_range>
 	public:
 		using S_::S_;
 
-	//	TODO: Implement `edit`?
+	//	TODO: Implement `method<std::in_place>`?
 	//	TODO: Implement smooth version (together with smooth `part<unsigned>`) (via `Ns...`)?
 
-		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
-		method(auto &&u)
-		const noexcept -> auto
+		template <invariable_q auto ...Ns>
+		XTAL_DEF_(return,inline,set)
+		method(auto &&o)
+		noexcept -> auto
 		{
-			using U     = XTAL_ALL_(u);
+			using U     = XTAL_ALL_(o);
 			using U_fit = bond::fit<U>;
 
 			U constexpr m_up(M_up);
 			U constexpr m_dn(M_dn);
 			U constexpr m_vs(M_dn + M_up);
-			U const   w{m_vs + part_f<unsigned>(u - m_dn) - part_f<unsigned>(u - m_up)};
+			U const   w{m_vs + part_f<unsigned>(o - m_dn) - part_f<unsigned>(o - m_up)};
 			if constexpr (integral_variable_q<U>) {
 				return XTAL_MOV_(w) >> 1;
 			}

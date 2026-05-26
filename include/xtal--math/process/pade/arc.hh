@@ -212,8 +212,8 @@ struct arc<-0, 1>
 			using U_alpha = typename L::alpha_type;
 			using W_alpha = atom::couple_t<U_alpha[2]>;
 
-			auto u_abs = u, u_sgn = part_t<signed>{}.edit(u_abs);
-			auto v_abs = v, v_sgn = part_t<signed>{}.edit(v_abs);// v_sgn *= *L::haplo_1;
+			auto u_abs = u, u_sgn = part_e<signed>(u_abs);
+			auto v_abs = v, v_sgn = part_e<signed>(v_abs);// v_sgn *= *L::haplo_1;
 
 			W_alpha co{v_abs < u_abs, std::in_place};
 			W_alpha up{v, u_abs}; up *= co;

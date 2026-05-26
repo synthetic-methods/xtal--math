@@ -236,7 +236,7 @@ public:
 			}
 			XTAL_IF0
 			XTAL_0IF (2*sizeof(U) == sizeof(W)) {
-				W_sigma const u = W_fit::sigma_f(X_fit::diplo_f(N1)*XTAL_REF_(x));
+				W_sigma const u = W_fit::sigma_f(xtd::ldexp(XTAL_REF_(x), N1));
 				U_sigma t_[2];
 				#pragma unroll
 				for (size_type i{}; i < size; ++i) {
