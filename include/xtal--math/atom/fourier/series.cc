@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.cc"
 
-
+#include <unsupported/Eigen/FFT>
 
 
 
@@ -13,7 +13,7 @@ namespace xtal::atom::math::fourier::_test
 
 ////////////////////////////////////////////////////////////////////////////////
 
-TAG_("solid", "series")
+TAG_("fourier", "series")
 {
 	using U_fit = bond::fit<>;
 	using U_delta = typename U_fit::delta_type;
@@ -53,8 +53,9 @@ TAG_("solid", "series")
 	/**/
 	TRY_("transformation")
 	{
-		U_sigma constexpr O = 1 << 5;
+		U_sigma constexpr O = 1 << 3;
 		U_sigma constexpr N = 1 << 3;
+		U_sigma constexpr H = N >> 1;
 		U_sigma constexpr M = N  - 1;
 
 		using V_series = series_t<U_aphex[O]>;
@@ -66,17 +67,30 @@ TAG_("solid", "series")
 		source[1] = source[M - 1] = U_aphex(1.0, 1.0);
 		source[2] = source[M - 2] = U_aphex(3.0, 3.0);
 		source[3] = source[M - 3] = U_aphex(4.0, 4.0);
-
 		auto target = basis.transformation(source);
-		TRUE_(check_f<-6>(target[0], U_aphex{ 0.1600000000000000e+2,  0.1600000000000000e+2}));
-		TRUE_(check_f<-6>(target[1], U_aphex{-0.4828427124746192e+1, -0.1165685424949238e+2}));
-		TRUE_(check_f<-6>(target[2], U_aphex{ 0.0000000000000000e+0,  0.0000000000000000e+0}));
-		TRUE_(check_f<-6>(target[3], U_aphex{-0.3431457505076203e+0,  0.8284271247461885e+0}));
-		TRUE_(check_f<-6>(target[4], U_aphex{ 0.0000000000000000e+0,  0.0000000000000000e+0}));
-		TRUE_(check_f<-6>(target[5], U_aphex{ 0.8284271247461912e+0, -0.3431457505076203e+0}));
-		TRUE_(check_f<-6>(target[6], U_aphex{ 0.0000000000000000e+0,  0.0000000000000000e+0}));
-		TRUE_(check_f<-6>(target[7], U_aphex{-0.1165685424949238e+2, -0.4828427124746188e+1}));
 
+		std::vector<U_aphex> sourcery(source);
+		std::vector<U_aphex> targetry(source);
+		Eigen::FFT<U_alpha> fft; fft.fwd(targetry, sourcery);
+
+		TRUE_(check_f<- 1>(target[0], targetry[0]));
+		TRUE_(check_f<-12>(target[1], targetry[1]));
+		TRUE_(check_f<- 1>(target[2], targetry[2]));
+		TRUE_(check_f<-12>(target[3], targetry[3]));
+		TRUE_(check_f<- 1>(target[4], targetry[4]));
+		TRUE_(check_f<-12>(target[5], targetry[5]));
+		TRUE_(check_f<- 1>(target[6], targetry[6]));
+		TRUE_(check_f<-12>(target[7], targetry[7]));
+
+		basis.template transform<-1>(target);
+		TRUE_(check_f<- 1>(target[0], sourcery[0]));
+		TRUE_(check_f<- 1>(target[1], sourcery[1]));
+		TRUE_(check_f<- 1>(target[2], sourcery[2]));
+		TRUE_(check_f<- 1>(target[3], sourcery[3]));
+		TRUE_(check_f<- 1>(target[4], sourcery[4]));
+		TRUE_(check_f<- 1>(target[5], sourcery[5]));
+		TRUE_(check_f<- 1>(target[6], sourcery[6]));
+		TRUE_(check_f<- 1>(target[7], sourcery[7]));
 	}
 	/***/
 	/**/
@@ -107,6 +121,50 @@ TAG_("solid", "series")
 		TRUE_(D4{1000, 100, 10, 1} * D4{2000, 200, 20, 2} == D4{2000600, 400040, 60002, 8000});
 
 	}
+	/***/
+}
+TAG_("fourier", "series", "fitness")
+{
+	using U_fit = bond::fit<>;
+	using U_delta = typename U_fit::delta_type;
+	using U_sigma = typename U_fit::sigma_type;
+	using U_alpha = typename U_fit::alpha_type;
+	using U_aphex = typename U_fit::aphex_type;
+
+	auto mt19937_o = typename U_fit::MT19937{}; mt19937_o.seed(Catch::rngSeed());
+	auto mt19937_f = [&] XTAL_1FN_(to) (U_fit::mantissa_f(mt19937_o));
+
+	U_sigma constexpr N = 1 << 8;
+	U_sigma constexpr H = N >> 1;
+	U_sigma constexpr M = N  - 1;
+
+	using V_series = series_t<U_aphex[N]>;
+	using U_series = series_t<U_aphex[N]>;
+	V_series basis(constant_t<-1>{});
+
+	U_series source;
+	for (U_sigma i{}; i < H; ++i) {
+		source[i] = source[M - i] = U_aphex(mt19937_f(), mt19937_f());
+	}
+	std::vector<U_aphex> sourcery(source);
+	std::vector<U_aphex> targetry(source);
+	Eigen::FFT<U_alpha> fft;
+	/**/
+	EST_("transform via Eigen/FFT")
+	{
+		fft.fwd(targetry, sourcery);// return targetry;
+
+	};
+	EST_("transform")
+	{
+		(void) basis.transform(source);// return &source;
+
+	};
+	EST_("transformation")
+	{
+		return basis.transformation(source);
+
+	};
 	/***/
 }
 

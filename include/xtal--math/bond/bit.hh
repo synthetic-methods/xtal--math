@@ -507,7 +507,7 @@ noexcept -> auto
 	using       U  = XTAL_ALL_(u);
 	U constexpr N0 = bit_depth_f<U>(), N1 = N0 >>  1;
 	U constexpr M0 =            ~U {}, M1 = M0 >> N1;
-	#pragma inline
+	#pragma unroll
 	for (auto m = M1, n = N1; n; m ^= m << (n >>= 1)) {
 		u = (u&m)<<n | (u&~m)>>n;
 	}

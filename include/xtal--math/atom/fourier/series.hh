@@ -2,8 +2,8 @@
 #include "./any.hh"
 #include "./serial.hh"
 
+#include "../../process/imagine.hh"
 #include "../../process/pade/unity.hh"
-
 
 
 XTAL_ENV_(push)
@@ -11,11 +11,32 @@ namespace xtal::atom::math::fourier
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <class   ..._s>	struct  series;
-template <class   ..._s>	using   series_t = typename series<_s...>::type;
-template <class   ...Ts>	concept series_q = bond::tag_inner_p<series_t, Ts...>;
+template <class   ..._s>	XTAL_TYP_(new) series;
+template <class   ..._s>	XTAL_TYP_(let) series_t = typename series<_s...>::type;
+template <class   ...Ts>	XTAL_TYP_(ask) series_q = bond::tag_inner_p<series_t, Ts...>;
 
 XTAL_DEF_(let) series_f = [] XTAL_1FN_(call) (_detail::factory<series_t>::make);
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <class T> XTAL_TYP_(let) serious_t = typename std::remove_cvref_t<T>::transverse::type;
+template <class T> XTAL_TYP_(ask) serious_q = requires {typename serious_t<T>;};
+
+XTAL_DEF_(return,inline,let)
+serious_f(serious_q auto &&t)
+noexcept -> decltype(auto)
+{
+	using T = decltype(t);
+	using F = xtd::qualify_cvref_t<T, serious_t<T>>;
+	return reinterpret_cast<F>(XTAL_REF_(t));
+};
+XTAL_DEF_(return,inline,let)
+serious_f(auto &&t)
+noexcept -> decltype(auto)
+{
+	return XTAL_REF_(t);
+};
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -32,8 +53,8 @@ struct series<A>
 {
 private:
 	using U0 = xtd::remove_extent_t<A>;
-	using U1 =  typename destruct<U0>::value_type;
-	using U2 =  typename destruct<U1>::value_type;
+	using U1 = typename destruct<U0>::value_type;
+	using U2 = typename destruct<U1>::value_type;
 
 	using U_fit = bond::fit<A>;
 	
@@ -61,17 +82,17 @@ public:
 		using S_::S_;
 
 		/*!
-		\brief   Generates a section of the complex sinusoid determined by `std::pow(2, n_shift{})`.
+		\brief   Generates a section of the complex sinusoid determined by `std::pow(2, n)`.
 		*/
 		XTAL_DEF_(inline)
 		XTAL_NEW_(explicit)
-		homotype(constant_q auto const n_index, auto &&...oo)
+		homotype(constant_q auto const n, auto &&...oo)
 		noexcept
 		{
-			generate<n_index>(XTAL_REF_(oo)...);
+			generate<n>(XTAL_REF_(oo)...);
 		}
 		/*!
-		\brief   Generates a section of the complex sinusoid determined by `std::pow(2, o_shift{})`.
+		\brief   Generates a section of the complex sinusoid determined by `std::pow(2, n)`.
 		*/
 		template <auto ...Ns>
 		XTAL_DEF_(let)
@@ -178,74 +199,62 @@ public:
 		
 		\note    The size of both `this` and `source` must be expressible as an integral power-of-two,
 		         and `1 < source.size() <= this->size()`.
+
+		\note    Around 10% to 20% faster than Eigen's default (based on KISSFFT).
 		*/
-		template <int N_direction=1> requires in_v<N_direction, 1, -1> and complex_field_q<value_type>
+		template <int N_dir=1> requires in_v<N_dir, 1, -1> and complex_field_q<value_type>
 		XTAL_DEF_(let)
 		transform(isomorphic_q<T> auto &source)
 		const noexcept -> decltype(auto)
 		{
-			using Xs = XTAL_ALL_(source);
-			using Ys = typename Xs::transverse::type;
-			using I  = typename Xs:: difference_type;
-		
-		//	Ensure the size of both domain and codomain are powers of two:
-			I constexpr N_size  =        size();
-			I const     n_size  = source.size();
-			I const     h_size  = n_size >> one; assert(one <= h_size);
-			I const     n_shift = bond::math::bit_shift_f(n_size); assert(n_size  == one << n_shift);
-			I constexpr N_shift = bond::math::bit_shift_f(N_size); assert(n_shift        <= N_shift);
+			using process::math::imagine_f;
+			using    bond::math::bit_shift_f;
+			using    bond::math::bit_count_f;
+			using    bond::math::bit_reverse_f;
+			int constexpr      N_conj = N_dir < 0;
+			int const          n_size = source.size();
+			int const          n_left = bit_shift_f(n_size);
+			assert(2 <= n_size and 1 == bit_count_f(n_size));
 
-		//	Move all entries to their bit-reversed locations:
-			for (I h{}; h < h_size; ++h) {
-				std::swap(source[h], source[bond::math::bit_reverse_f(h, n_shift)]);
-			}
-		
-		//	Conjugate the input if computing the inverse transform of the codomain:
-			if constexpr (N_direction == -1) {
-				_detail::apply_to<[] XTAL_1FN_(call) (std::conj)>(source);
+		//	Move all inner entries to their bit-reversed locations:
+			for (int h{n_size >> 1}; 0 < --h;) {
+				std::swap(source[h], source[bit_reverse_f(h, n_left)]);
 			}
 		//	Compute the transform of `source` using the precomputed half-period sinusoid in `this`:
-			for (I n{}; n < n_shift; ++n) {
-				I const  u_width = I{1} << n;
-				I const  w_width = u_width << 1U;
-				I const un_depth = N_shift   - n;
-				for (I u{ }; u < u_width; u +=     one) {auto const &o = S_::element(u << un_depth);
-				for (I w{u}; w < n_size ; w += w_width) {
-					auto const m = w + u_width;
-					value_type &y = source[m];
-					value_type &x = source[w];
-					value_type const yo = y*o;
-					y  = x - yo;
-					x +=     yo;
+			for (int u_step{size}, n_step{1}; n_step < n_size;) {auto u = S_::data();
+				for (int m{   }; m < n_step;        u += u_step) {auto o = imagine_f<0, N_conj>(*u);
+				for (int n{m++}; n < n_size;        n += n_step) {
+					auto &x = source[n], &y = source[n += n_step]; y *= o;
+					auto _x = x; x += y;  y = _x - XTAL_MOV_(y);
 				}}
+				u_step >>= 1;
+				n_step <<= 1;
 			}
 		//	Conjugate and scale the output if computing the inverse transform of the codomain:
-			if constexpr (N_direction == -1) {
-				_detail::apply_to<[] XTAL_1FN_(call) (std::conj)>(source);
-				source /= U_fit::alpha_f(n_size );
+			if constexpr (N_conj) {
+				source /= U_fit::alpha_f(n_size);
 			}
-
 		//	Cast the output to the transformed domain:
-			return reinterpret_cast<Ys &>(source);
+			return serious_f(XTAL_REF_(source));
 		}
-		template <int N_direction=1> requires in_v<N_direction, 1, -1> and complex_field_q<value_type>
+		template <int N_dir=1> requires in_v<N_dir, 1, -1> and complex_field_q<value_type>
 		XTAL_DEF_(let)
 		transform(isomorphic_q<T> auto &&source)
 		const noexcept -> decltype(auto)
 		{
-			(void) transform<N_direction>(source);
-			return reinterpret_cast<typename XTAL_ALL_(source)::transverse::type &&>(source);
+			(void) transform<N_dir>(source);
+			return serious_f(XTAL_MOV_(source));
 		}
 		/*!
 		\returns a new `series` representing the FFT of `source`,
 		using `this` as the Fourier basis.
 		*/
-		template <int N_direction=1> requires in_v<N_direction, 1, -1>
+		template <int N_dir=1> requires in_v<N_dir, 1, -1>
 		XTAL_DEF_(return,inline,let)
 		transformation(isomorphic_q<T> auto source)
 		const noexcept -> auto
 		{
-			return transform<N_direction>(XTAL_MOV_(source));
+			return transform<N_dir>(XTAL_MOV_(source));
 		}
 
 		/*!
