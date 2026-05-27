@@ -22,12 +22,12 @@ XTAL_DEF_(let) series_f = [] XTAL_1FN_(call) (_detail::factory<series_t>::make);
 /*!
 \brief   Extends `serial` with multiplication via circular convolution.
 */
-template <scalar_q ..._s> requires same_q<_s...>
+template <scalar_array_q ..._s> requires same_q<_s...>
 struct series<_s ...>
 :	series<common_t<_s...>[sizeof...(_s)]>
 {
 };
-template <vector_q A>
+template <vector_array_q A>
 struct series<A>
 {
 private:

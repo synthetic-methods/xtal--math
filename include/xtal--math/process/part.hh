@@ -38,7 +38,7 @@ struct part<signed>
 	public:
 		using S_::S_;
 
-		template <invariable_q auto ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
 		method(integral_constant_q auto const &o)
 		noexcept -> auto
@@ -47,7 +47,7 @@ struct part<signed>
 			return constant_t<method(XTAL_ALL_(o)::value)>{};
 		}
 		/**/
-		template <invariable_q auto ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
 		method(integral_variable_q auto o)
 		noexcept -> auto
@@ -87,7 +87,7 @@ struct part<signed>
 			}
 		}
 		/***/
-		template <invariable_q auto ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
 		method(real_variable_q auto const &o)
 		noexcept -> XTAL_ALL_(o)
@@ -95,7 +95,7 @@ struct part<signed>
 			using U_fit = bond::fit<decltype(o)>;
 			return xtd::copysign(U_fit::alpha_1, o);
 		}
-		template <invariable_q auto ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
 		method(complex_variable_q auto const &o)
 		noexcept -> XTAL_ALL_(o)
@@ -103,46 +103,64 @@ struct part<signed>
 			using U_fit = bond::fit<decltype(o)>;
 			return o*root_f<-2>(dot_f(o));
 		}
-		template <invariable_q auto ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
 		method(atom::quantify_q auto &&o)
 		noexcept -> decltype(auto)
 		{
 			using  U = XTAL_ALL_(o);
-			return U::template zip_from<[] XTAL_1FN_(call) (subtype{}.template method<Ns...>)>(XTAL_REF_(o));
+			return U::template zip_from<[] XTAL_1FN_(call)
+				(subtype{}.template method<Ns...>)>(XTAL_REF_(o));
 		}
 
-		template <exvariable_q auto N_side>
+		template <std::in_place_t>
 		XTAL_DEF_(return,inline,set)
-		method(ordinal_variable_q auto &u)
+		method(ordinal_variable_q auto &u, integral_constant_q auto N_dir)
 		noexcept -> auto
 		{
-			auto constexpr I = N_side.index; static_assert(in_v<I, 1, 0, -1>);
-			auto const     v = bond::math::bit_sign_f(u);
+		//	static_assert(in_v<N_dir, 1, 0, -1>);
+			auto const v = bond::math::bit_sign_f(u);
 			XTAL_IF0
-			XTAL_0IF (I == -1) {
+			XTAL_0IF (N_dir == -1) {
 				u &= v;
 				u += v;
 				u ^= v;
 			}
-			XTAL_0IF (I ==  0) {
+			XTAL_0IF (N_dir ==  0) {
 				u += v;
 				u ^= v;
 			}
-			XTAL_0IF (I ==  1) {
+			XTAL_0IF (N_dir ==  1) {
 				u &=~v;
 			}
 			return method(v);
 		}
-		template <exvariable_q auto N_side>
+		template <std::in_place_t>
 		XTAL_DEF_(return,inline,set)
-		method(cardinal_variable_q auto &u)
+		method(cardinal_variable_q auto &u, integral_constant_q auto N_dir)
 		noexcept -> auto
 		{
 			using U = XTAL_ALL_(u);
 			using V = xtd::signed_case_t<U>;
-			return method<N_side>(reinterpret_cast<V &>(u));
+			return method<std::in_place>(reinterpret_cast<V &>(u), N_dir);
 		}
+		template <std::in_place_t>
+		XTAL_DEF_(return,inline,set)
+		method(integral_variable_q auto &u)
+		noexcept -> auto
+		{
+			return method<std::in_place>(u, constant_t<0>{});
+		}
+		//\
+		template <exvariable_q auto N_dir>
+		template <auto N_dir> requires requires {exvariable_f(N_dir);}// Alt. for LLVM 16
+		XTAL_DEF_(return,inline,set)
+		method(integral_variable_q auto &u)
+		noexcept -> auto
+		{
+			return method<std::in_place>(u, exvariable_f(N_dir));
+		}
+
 		template <std::in_place_t>
 		XTAL_DEF_(return,inline,set)
 		method(real_variable_q auto &o)
@@ -176,14 +194,14 @@ struct part<unsigned>
 	public:
 		using S_::S_;
 
-		template <invariable_q auto ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
 		method(cardinal_variable_q auto const &o)
 		noexcept -> auto
 		{
 			return o;
 		}
-		template <invariable_q auto ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
 		method( ordinal_variable_q auto const &o)
 		noexcept -> auto
@@ -192,7 +210,7 @@ struct part<unsigned>
 			auto const v = o >> U_fit::sign.shift;
 			return (o^v) - v;
 		}
-		template <invariable_q auto ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
 		method(real_variable_q auto const &o)
 		noexcept -> auto
@@ -200,7 +218,7 @@ struct part<unsigned>
 			using U_fit = bond::fit<decltype(o)>;
 			return xtd::copysign(o, U_fit::alpha_1);
 		}
-		template <invariable_q auto ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
 		method(complex_variable_q auto const &o)
 		noexcept -> auto
@@ -208,13 +226,14 @@ struct part<unsigned>
 			using U_fit = bond::fit<decltype(o)>;
 			return root_f<2>(dot_f(o));
 		}
-		template <invariable_q auto ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
 		method(atom::quantify_q auto &&o)
 		noexcept -> decltype(auto)
 		{
 			using  U = XTAL_ALL_(o);
-			return U::template zip_from<[] XTAL_1FN_(call) (subtype{}.template method<Ns...>)>(XTAL_REF_(o));
+			return U::template zip_from<[] XTAL_1FN_(call)
+				(subtype{}.template method<Ns...>)>(XTAL_REF_(o));
 		}
 
 		template <std::in_place_t>

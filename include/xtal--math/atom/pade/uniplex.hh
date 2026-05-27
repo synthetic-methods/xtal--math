@@ -63,7 +63,7 @@ struct uniplex<A>
 :	uniplex<typename fixed<A>::value_type>
 {
 };
-template <scalar_q A> requires simplex_field_q<A>
+template <scalar_array_q A> requires simplex_field_q<A>
 struct uniplex<A>
 {
 	using simplex_type =  A;

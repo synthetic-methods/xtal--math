@@ -108,7 +108,7 @@ struct truncate<M_app>
 				XTAL_0IF (complex_variable_q<X> and atom::couple_q<Y>) {(void) method<std::in_place>(y);}
 				XTAL_0IF (atom::couple_q<X> and complex_variable_q<Y>) {(void) method<std::in_place>(x);}
 				XTAL_0IF (     same_q<X, Y>) {
-					(void)                              method<std::in_place>(x);
+					(void)                             method<std::in_place>(x);
 					(void) truncate_t<M_opp>::template method<std::in_place>(y);
 				}
 				XTAL_0IF (different_q<X, Y>) {
@@ -125,7 +125,9 @@ struct truncate<M_app>
 			return o;
 		}
 
+		//\
 		template <invariable_q auto ...Ns>
+		template <auto ...Ns> requires (...and invariable_f(Ns)())// Alt. req'd by LLVM 16
 		XTAL_DEF_(return,inline,set)
 		method(auto o)
 		noexcept -> auto
@@ -148,7 +150,7 @@ struct truncate<M_dir>
 	public:
 		using S_::S_;
 
-		template <invariable_q auto ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
 		method(auto &&o)
 		noexcept -> auto
@@ -195,7 +197,7 @@ struct truncate<M_range>
 	//	TODO: Implement `method<std::in_place>`?
 	//	TODO: Implement smooth version (together with smooth `part<unsigned>`) (via `Ns...`)?
 
-		template <invariable_q auto ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
 		method(auto &&o)
 		noexcept -> auto

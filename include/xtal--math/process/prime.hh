@@ -186,18 +186,7 @@ struct prime<M_nom>
 
 	public:// OPERATE
 
-		template <integral_q auto N_ind>
-		XTAL_DEF_(return,inline,set)
-		edit(integral_q auto &n_product)
-		noexcept -> auto
-		{
-			auto constexpr n_prime = prime_f<1>(N_ind);
-			int i{};
-			for (; 0 == n_product%n_prime; n_product /= n_prime) {++i;}
-			return i;
-		}
-
-		template <auto ...>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
 		method(fixed_shaped_q auto &&x_)
 		noexcept -> auto
@@ -216,7 +205,7 @@ struct prime<M_nom>
 
 			return bond::fit<X_>::ratio_f(num, nom);
 		}
-		/**/
+		/*/
 		template <int ...Ns>
 		XTAL_DEF_(return,inline,set)
 		method(bond::seek_in_t<Ns...>)
@@ -228,16 +217,35 @@ struct prime<M_nom>
 
 		template <auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		method(real_q auto const u)
+		method(real_variable_q auto const u)
 		noexcept -> auto
 		{
 			using U     = XTAL_ALL_(u);
 			using U_fit = bond::fit<U>;
 			auto  n = U_fit::delta_f(nearest_f<>(u*method<Ns...>(M_nom)));
-
 			return [&]<auto ...I> (bond::seek_in_t<I...>)
-			XTAL_0FN_(to) (M_typ{(edit<I>(n) - get<I>(M_nom))...})
+			XTAL_0FN_(to) (M_typ{method<std::in_place>(n, constant_t<I>{})...})
 				(bond::seek_to_t<M_ext>{});
+		}
+
+		//\
+		template <exvariable_q auto N_ind>
+		template <auto N_ind> requires requires {exvariable_f(N_ind);}// Alt. req'd by LLVM 16
+		XTAL_DEF_(return,inline,set)
+		method(integral_q auto &n_product)
+		noexcept -> auto
+		{
+			return method<std::in_place>(n_product, exvariable_f(N_ind));
+		}
+		template <std::in_place_t>
+		XTAL_DEF_(return,inline,set)
+		method(integral_q auto &n_product, integral_constant_q auto N_ind)
+		noexcept -> auto
+		{
+			auto constexpr n_prime = prime_f<1>(N_ind);
+			int i{};
+			for (; 0 == n_product%n_prime; n_product /= n_prime) {++i;}
+			return i - get<N_ind>(M_nom);
 		}
 
 	};

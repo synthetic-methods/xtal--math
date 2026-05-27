@@ -33,22 +33,22 @@ XTAL_DEF_(let) phason_f = [] XTAL_1FN_(call) (_detail::factory<phason_t>::make);
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <scalar_q ..._s> requires same_q<_s...>
+template <scalar_array_q ..._s> requires same_q<_s...>
 struct phason<_s ...>
 :	phason<common_t<_s...>[sizeof...(_s)]>
 {
 };
-template <vector_q A> requires integral_variable_q<unstruct_t<A>>
+template <vector_array_q A> requires integral_variable_q<unstruct_t<A>>
 struct phason<A>
 :	differential<A>
 {
 };
-template <vector_q A, scalar_q ..._s>
+template <vector_array_q A, scalar_array_q ..._s>
 struct phason<A, _s...>
 :	couple_t<phason_t<A>, _s...>
 {
 };
-template <vector_q A> requires     real_variable_q<unstruct_t<A>>
+template <vector_array_q A> requires     real_variable_q<unstruct_t<A>>
 struct phason<A>
 {
 private:

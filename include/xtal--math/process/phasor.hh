@@ -25,7 +25,7 @@ Provides evaluation/update via succession/replacement.
 
 \todo    Attach a parameter to govern suboctave scaling?
 */
-template <vector_q A, typename ...As>
+template <vector_array_q A, typename ...As>
 struct phasor<A, As...>
 {
 	static auto constexpr N = xtd::extent_v<A>;
@@ -259,7 +259,7 @@ struct occurrence<process::math::phasor<_s...>>
 
 	};
 };
-template <scalar_q A>
+template <scalar_array_q A>
 struct occurrence<process::math::phasor<A>> : occurrence<process::math::phasor<A[2]>>
 {
 };

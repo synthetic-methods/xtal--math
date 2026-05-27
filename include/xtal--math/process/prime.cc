@@ -21,7 +21,6 @@ TAG_("prime")
 	using U_alpha = typename U_fit::alpha_type;
 	using U_aphex = typename U_fit::aphex_type;
 
-
 	TRY_("prime_f<std::array<...>>")
 	{
 		using U_nom = std::array<U_delta, 4>;

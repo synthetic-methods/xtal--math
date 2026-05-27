@@ -30,12 +30,12 @@ XTAL_DEF_(let) dot_f = [] XTAL_1FN_(call) (_detail::factory<dot_t>::make);
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <scalar_q ..._s> requires same_q<_s...>
+template <scalar_array_q ..._s> requires same_q<_s...>
 struct dot<_s ...>
 :	dot<common_t<_s...>[sizeof...(_s)]>
 {
 };
-template <matrix_q A>
+template <matrix_array_q A>
 struct dot<A>
 :	dot<dot_t<typename fixed<A>::value_type>[fixed<A>::extent()]>
 {
@@ -132,7 +132,7 @@ public:
 	using type = bond::derive_t<homotype>;
 
 };
-template <scalar_q U>
+template <scalar_array_q U>
 struct dot<U>
 :	dot<U[2]>
 {
