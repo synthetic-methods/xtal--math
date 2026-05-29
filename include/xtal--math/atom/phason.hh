@@ -229,10 +229,9 @@ public:
 			XTAL_0IF (1*sizeof(U) == sizeof(W)) {
 				unsigned constexpr M_bias = N2 >> M2;
 				unsigned constexpr M_size = N2  - M_bias;
-				auto [m, n] = bond::math::bit_representation_f(XTAL_REF_(x));
-				m >>= n - M_size;
-				s >>=     M_size;
-				s  *= m;
+				auto [m, n] = bond::math::bit_separation_f(XTAL_REF_(x));
+				s >>=          M_size;
+				s  *= m >> n - M_size;
 			}
 			XTAL_IF0
 			XTAL_0IF (2*sizeof(U) == sizeof(W)) {

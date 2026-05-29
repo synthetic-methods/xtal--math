@@ -52,16 +52,6 @@ noexcept -> auto
 		XTAL_0IF_(void)
 	}
 }
-template <int N_val=0>
-XTAL_DEF_(return,inline,let)
-bit_flag_f(numeric_variable_q auto const x)
-noexcept -> XTAL_ALL_(x)
-{
-	using X     = XTAL_ALL_(x);
-	using X_fit = bond::fit<X>;
-	X constexpr X_val{~N_val};
-	return static_cast<X>(X_val != x);
-}
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -346,27 +336,6 @@ noexcept -> auto
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <unsigned int N_mask>
-XTAL_DEF_(return,inline,let)
-bit_clasp_f(integral_variable_q auto x)
-noexcept -> auto
-{
-	x &= ~bit_sign_f(x); x -= N_mask;
-	x &=  bit_sign_f(x); x += N_mask;
-	return x;
-}
-template <  signed int N_exit>
-XTAL_DEF_(return,inline,let)
-bit_clamp_f(integral_variable_q auto const x)
-noexcept -> auto
-{
-	int constexpr N_width = 1 << N_exit;
-	return bit_clasp_f<bit_mask_f<N_width>()>(x);
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-
 template <int N_dir=0, cardinal_variable_q U>
 XTAL_DEF_(inline,let)
 bit_swap_f(U &x, U &y)
@@ -572,7 +541,7 @@ noexcept -> auto
 	using X_delta = typename X_fit::delta_type;
 
 	using Y       = complete_t<Y_return, X_alpha>;
-	using Y_fit    = bond::fit<Y>;
+	using Y_fit   = bond::fit<Y>;
 	using Y_alpha = typename Y_fit::alpha_type;
 	using Y_sigma = typename Y_fit::sigma_type;
 	using Y_delta = typename Y_fit::delta_type;
@@ -675,57 +644,30 @@ requires requires {bit_fraction_f(x.real()); bit_fraction_f(x.imag());}
 ///////////////////////////////////////////////////////////////////////////////
 
 XTAL_DEF_(return,let)
-bit_representation_f(real_variable_q auto x)
+bit_separation_f(real_variable_q auto const &x)
 noexcept -> auto
 {
-	using X_fit =  bond::fit<decltype(x)>;
+	using X_fit = bond::fit<decltype(x)>;
 	using U = typename X_fit::sigma_type;
 	using V = typename X_fit::delta_type;
-
-	U constexpr N = X_fit::unit.mark + X_fit::fraction.depth;
-	U constexpr M =             one << X_fit::fraction.depth;
-	
-	auto const o = xtd::bit_cast<U>(x);
-	V const z = static_cast<V>(o) >> X_fit::positive.depth;
-	V const n = N - (o << X_fit::sign.depth >> X_fit::sign.depth + X_fit::exponent.shift);
-	V       m = M | (o&X_fit::fraction.mask);
-	m  ^= z;
-	m  -= z;
-	return atom::couple_t<V[2]>{m, n};
+	V constexpr N = X_fit::    unit.mark + X_fit::fraction.depth;
+	V constexpr M = X_fit::fraction.mark + one;
+	auto        m = xtd::bit_cast<V>(x);
+	auto        z = m >> X_fit::    sign.shift;
+	auto        o = m >> X_fit::exponent.shift;
+	o  &=                X_fit::exponent.mark;
+	m  &=                X_fit::fraction.mask;
+	m  |=  M;
+	m  ^=  z; reinterpret_cast<U & >(m) -= (z);
+	return      atom::couple_t<V[2]>{m, N - o};
 }
 XTAL_DEF_(return,inline,let)
-bit_presentation_f(atom::couple_q auto const &mn)
+bit_reparation_f(atom::couple_q auto const &mn)
 noexcept -> auto
 {
 	auto const &[m, n] = mn;
 	using MN_op = bond::fit<decltype(m), decltype(n)>;
 	return static_cast<typename MN_op::alpha_type>(m)*MN_op::haplo_f(n);
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-/*!
-\returns The `target` to `N_zoom` bits of precision after the decimal.
-*/
-template <int N_zoom=0>
-XTAL_DEF_(return,inline,let)
-bit_fuzz_f(real_variable_q auto x)
-noexcept -> XTAL_ALL_(x)
-{
-	using X       = XTAL_ALL_(x);
-	using X_fit   = bond::fit<X>;
-	using X_alpha = typename X_fit::alpha_type;
-	using X_sigma = typename X_fit::sigma_type;
-	using X_delta = typename X_fit::delta_type;
-	return xtd::bit_cast<X_alpha>(xtd::bit_cast<X_sigma>(x)|one);
-}
-
-template <int N_zoom=0>
-XTAL_DEF_(return,verbatim,set)
-bit_fuzz_f(complex_variable_q auto x)
-noexcept -> XTAL_ALL_(x)
-{
-	return {bit_fuzz_f<N_zoom>(x.real()), x.imag()};
 }
 
 

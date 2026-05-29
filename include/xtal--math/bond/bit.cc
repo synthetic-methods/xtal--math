@@ -111,30 +111,6 @@ TAG_("bit", "bit_shift_f")
 
 ////////////////////////////////////////////////////////////////////////////////
 
-TAG_("bit", "bit_clasp_f")
-{
-	using T_fit    = fit<>;
-	using T_sigma  = typename T_fit::sigma_type;
-	using T_delta  = typename T_fit::delta_type;
-	using T_alpha  = typename T_fit::alpha_type;
-	using T_aphex  = typename T_fit::aphex_type;
-	auto mt19937_f = typename T_fit::MT19937(Catch::rngSeed());
-
-	TRY_("bit_clasp_f evaluation")
-	{
-		TRUE_(bit_clasp_f<0b11>(5) == 3);
-		TRUE_(bit_clasp_f<0b11>(4) == 3);
-		TRUE_(bit_clasp_f<0b11>(3) == 3);
-		TRUE_(bit_clasp_f<0b11>(2) == 2);
-		TRUE_(bit_clasp_f<0b11>(1) == 1);
-		TRUE_(bit_clasp_f<0b11>(0) == 0);
-
-	}
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-
 TAG_("bit", "bit_extremal_f")
 {
 	using T_fit    = fit<>;
@@ -311,7 +287,7 @@ TAG_("bit_floor_f")
 
 ////////////////////////////////////////////////////////////////////////////////
 
-TAG_("bit_representation_f")
+TAG_("bit_separation_f")
 {
 	using T_fit    = fit<>;
 	using T_delta  = typename T_fit::delta_type;
@@ -322,19 +298,19 @@ TAG_("bit_representation_f")
 
 	TRY_("trial")
 	{
-		TRUE_( 2.25 == bit_presentation_f(bit_representation_f( 2.25)));
-		TRUE_( 1.25 == bit_presentation_f(bit_representation_f( 1.25)));
-		TRUE_( 0.25 == bit_presentation_f(bit_representation_f( 0.25)));
-		TRUE_( 0.75 == bit_presentation_f(bit_representation_f( 0.75)));
-		TRUE_( 1.75 == bit_presentation_f(bit_representation_f( 1.75)));
-		TRUE_( 2.75 == bit_presentation_f(bit_representation_f( 2.75)));
+		TRUE_( 2.25 == bit_reparation_f(bit_separation_f( 2.25)));
+		TRUE_( 1.25 == bit_reparation_f(bit_separation_f( 1.25)));
+		TRUE_( 0.25 == bit_reparation_f(bit_separation_f( 0.25)));
+		TRUE_( 0.75 == bit_reparation_f(bit_separation_f( 0.75)));
+		TRUE_( 1.75 == bit_reparation_f(bit_separation_f( 1.75)));
+		TRUE_( 2.75 == bit_reparation_f(bit_separation_f( 2.75)));
 
-		TRUE_(-2.25 == bit_presentation_f(bit_representation_f(-2.25)));
-		TRUE_(-1.25 == bit_presentation_f(bit_representation_f(-1.25)));
-		TRUE_(-0.25 == bit_presentation_f(bit_representation_f(-0.25)));
-		TRUE_(-0.75 == bit_presentation_f(bit_representation_f(-0.75)));
-		TRUE_(-1.75 == bit_presentation_f(bit_representation_f(-1.75)));
-		TRUE_(-2.75 == bit_presentation_f(bit_representation_f(-2.75)));
+		TRUE_(-2.25 == bit_reparation_f(bit_separation_f(-2.25)));
+		TRUE_(-1.25 == bit_reparation_f(bit_separation_f(-1.25)));
+		TRUE_(-0.25 == bit_reparation_f(bit_separation_f(-0.25)));
+		TRUE_(-0.75 == bit_reparation_f(bit_separation_f(-0.75)));
+		TRUE_(-1.75 == bit_reparation_f(bit_separation_f(-1.75)));
+		TRUE_(-2.75 == bit_reparation_f(bit_separation_f(-2.75)));
 
 	};
 }
