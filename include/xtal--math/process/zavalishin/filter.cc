@@ -520,8 +520,8 @@ TAG_("vectrol")
 		,	Y_gate                    ::   infix  <>
 	//	,	T_damp_                   ::   affix  <>
 		,	T_damp                    ::   affix  <>
-		,	T_meta                   ::   attach <>
-		,	T_meta                   :: dispatch <>
+		,	T_meta                    ::   attach <>
+		,	T_meta                    :: dispatch <>
 		,	T_content
 		>;
 		using X_processor = processor::monomer_t<X_process

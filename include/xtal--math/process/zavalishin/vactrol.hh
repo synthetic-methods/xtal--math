@@ -40,7 +40,6 @@ public:
 		using S_::S_;
 
 	public:// OPERATE
-
 		/*!
 		\brief   Produces a `{voice, accent}` pair from the gate input `x`.
 		*/
@@ -91,7 +90,7 @@ public:
 			auto [s_] = S_::template stash<D_>();
 
 			auto const &[f_damp, f_warp] = f_;
-			auto e_warp =                                  exp_f(f_warp);
+			auto e_warp =                                 exp_f(f_warp);
 			auto w_warp = part_f<xtd::real<>>(t_(1))*root_f<-1>(e_warp);
 			/**/
 			if constexpr (reuse_q<T_>) {

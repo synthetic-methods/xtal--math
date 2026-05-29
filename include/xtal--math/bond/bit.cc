@@ -21,6 +21,21 @@ TAG_("bit", "constants")
 
 	TRY_("constant evaluation and access")
 	{
+		size_type constexpr N = 8;
+		size_type constexpr M = bit_mask_f<N>();
+
+		TRUE_(bit_prod_f<N>(M*1 - 2) == (M*1 - 2)%(M));
+		TRUE_(bit_prod_f<N>(M*1 - 1) == (M*1 - 1)%(M));
+		TRUE_(bit_prod_f<N>(M*1 + 0) == (M*1 + 0)%(M));
+		TRUE_(bit_prod_f<N>(M*1 + 1) == (M*1 + 1)%(M));
+		TRUE_(bit_prod_f<N>(M*1 + 2) == (M*1 + 2)%(M));
+
+		TRUE_(bit_prod_f<N>(M*2 - 2) == (M*2 - 2)%(M));
+		TRUE_(bit_prod_f<N>(M*2 - 1) == (M*2 - 1)%(M));
+		TRUE_(bit_prod_f<N>(M*2 + 0) == (M*2 + 0)%(M));
+		TRUE_(bit_prod_f<N>(M*2 + 1) == (M*2 + 1)%(M));
+		TRUE_(bit_prod_f<N>(M*2 + 2) == (M*2 + 2)%(M));
+
 		TRUE_(0xAAAAAAAAU ==  (~unsigned{}/3<<1));
 		TRUE_(0x7FFFFFFFU ==  (~unsigned{}>>1));
 		TRUE_(0x80000000U == ~(~unsigned{}>>1));

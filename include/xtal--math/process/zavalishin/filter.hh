@@ -114,7 +114,6 @@ struct filter
 		using S_::S_;
 
 	public:// TYPE
-
 		using data_type = typename S_::data_type;
 		using order_attribute = typename S_::order_attribute;
 
@@ -125,7 +124,7 @@ struct filter
 	protected:// OPERATE
 		using S_::self;
 
-		template <int N_ord=0, auto ...Ns> requires (0 == N_ord)
+		template <int N_ord=M_ord, auto ...Ns> requires (0 == N_ord)
 		XTAL_DEF_(inline,let)
 		method_impl(auto const &x
 		,	auto &&...
@@ -134,7 +133,7 @@ struct filter
 		{
 			return {XTAL_REF_(x)};
 		}
-		template <int N_ord=0, auto ...Ns> requires (1 <= N_ord)
+		template <int N_ord=M_ord, auto ...Ns> requires (1 <= N_ord)
 		XTAL_DEF_(inline,let)
 		method_impl(auto const &x
 		,	unstruct_t<decltype(x)> u_warp
@@ -157,7 +156,7 @@ struct filter
 			auto    &states_ = get<0>(mem);
 			auto    &slopes_ = get<1>(mem);
 
-			u_warp *= pade::tangy_f<1, -1>(u_warp);
+			u_warp *= pade::tangy_f< 1,-1>(u_warp);
 
 		//	Denormalize `slopes` and initialize `values`:
 			bond::seek_to_e<N_ord>([&] (auto const I) XTAL_0FN {
@@ -212,7 +211,7 @@ struct filter
 		}
 
 	public:// OPERATE
-		template <int N_ord=0, auto ...Ns>
+		template <int N_ord=M_ord, auto ...Ns>
 		XTAL_DEF_(inline,let)
 		method(auto const &x
 		,	unstruct_t<decltype(x)> u_warp
@@ -227,7 +226,7 @@ struct filter
 				u_warp, XTAL_REF_(coeffs_), XTAL_REF_(oo)...);
 		}
 
-		template <int N_ord=0, auto ...Ns>
+		template <int N_ord=M_ord, auto ...Ns>
 		XTAL_DEF_(inline,let)
 		method(auto const &x
 		,	unstruct_t<decltype(x)> u_warp
@@ -249,7 +248,7 @@ struct filter
 
 	//	TODO: Move some of the specializations into `play`?
 
-		template <int N_ord=0, auto ...Ns>
+		template <int N_ord=M_ord, auto ...Ns>
 		XTAL_DEF_(inline,let)
 		method(auto const &x
 		,	unstruct_t<decltype(x)> u_warp
@@ -260,7 +259,7 @@ struct filter
 			using X = XTAL_ALL_(x);
 			return method<N_ord, Ns...>(x, u_warp, XTAL_REF_(coeffs), unstruct_t<X>{one});
 		}
-		template <int N_ord=0, auto ...Ns>
+		template <int N_ord=M_ord, auto ...Ns>
 		XTAL_DEF_(inline,let)
 		method(auto &&x
 		,	unstruct_t<decltype(x)> u_warp
@@ -287,7 +286,7 @@ struct filter
 		
 		Requires `1 <= Abs@s && Re@s <= 0 && 0 <= Im@s`.
 		*/
-		template <int N_ord=0, auto ...Ns>
+		template <int N_ord=M_ord, auto ...Ns>
 		XTAL_DEF_(return,inline,let)
 		method(auto &&x
 		,	atom::math::phason_simplex_q auto const &t_

@@ -43,6 +43,8 @@ struct modulo<M_mod>
 		requires un_v<atom::math::phason_q<decltype(z)>>
 		{
 			using bond::math::bit_count_f;
+			using bond::math::bit_shift_f;
+			using bond::math::bit_prod_f;
 			using Z     = XTAL_ALL_(z);
 			using Z_fit = bond::fit<Z>;
 			XTAL_IF0
@@ -52,16 +54,20 @@ struct modulo<M_mod>
 			XTAL_0IF (integral_constant_q<Z>) {
 				return constant_t<method<Ns...>(z())>{};
 			}
-			XTAL_0IF (0 == bit_count_f(M_mod)) {
+			XTAL_0IF (0U == bit_count_f(M_mod)) {
 				return Z{};
 			}
-			XTAL_0IF (1 == bit_count_f(M_mod) and integral_q<Z>) {
-				Z constexpr Z_mod{M_mod - 1};
-				return XTAL_REF_(z)&Z_mod;
+			XTAL_0IF (1U == bit_count_f(M_mod + 1U) and integral_q<Z>) {
+				Z constexpr N_ind = bit_shift_f(M_mod + 1U);
+				return bit_prod_f<N_ind>(XTAL_REF_(z));
 			}
-			XTAL_0IF (2 <= bit_count_f(M_mod)) {
-				Z constexpr Z_mod{M_mod};
-				return (((XTAL_REF_(z)%Z_mod) + Z_mod)%Z_mod);
+			XTAL_0IF (1U == bit_count_f(M_mod + 0U) and integral_q<Z>) {
+				Z constexpr N_msk = M_mod - 1U;
+				return N_msk&XTAL_REF_(z);
+			}
+			XTAL_0IF (2U <= bit_count_f(M_mod)) {
+				Z constexpr N_mod = M_mod;
+				return (((XTAL_REF_(z)%N_mod) + N_mod)%N_mod);
 			}
 		}
 

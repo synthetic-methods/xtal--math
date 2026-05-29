@@ -39,6 +39,8 @@ TAG_("math")
 		TRUE_(check_f<-48>(0.05, q1(0)));
 		TRUE_(check_f<-18>(0.45, q1(1)));
 
+		TRUE_(modulo_f<0b111U>(10) == 10%7);
+
 	}
 }
 /***/

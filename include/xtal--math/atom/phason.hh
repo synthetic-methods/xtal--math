@@ -216,31 +216,26 @@ public:
 			using X_fit = bond::fit<X>;
 			auto &s = reinterpret_cast<phason_t<V[size]> &>(self());
 
-			auto constexpr N0 = U_fit::full.depth - 1;
-			auto constexpr N1 = U_fit::full.depth;
-			auto constexpr N2 = U_fit::half.depth;
-			auto constexpr M2 = U_fit::half.width;
-
 		//	TODO: Adapt for `std::complex`?
 			XTAL_IF0
 			XTAL_0IF (integral_variable_q<X>) {
 				S_::operator*=(XTAL_REF_(x));
 			}
 			XTAL_0IF (1*sizeof(U) == sizeof(W)) {
-				unsigned constexpr M_bias = N2 >> M2;
-				unsigned constexpr M_size = N2  - M_bias;
+				unsigned constexpr K_bias = bond::math::bit_depth_f(U_fit::half.width);
+				unsigned constexpr K_size = U_fit::half.depth - K_bias;
 				auto [m, n] = bond::math::bit_separation_f(XTAL_REF_(x));
-				s >>=          M_size;
-				s  *= m >> n - M_size;
+				s >>=           K_size;
+				s  *= m >> -n - K_size;
 			}
 			XTAL_IF0
 			XTAL_0IF (2*sizeof(U) == sizeof(W)) {
-				W_sigma const u = W_fit::sigma_f(xtd::ldexp(XTAL_REF_(x), N1));
+				W_sigma const u = W_fit::sigma_f(xtd::ldexp(XTAL_REF_(x), U_fit::full.depth));
 				U_sigma t_[2];
 				#pragma unroll
 				for (size_type i{}; i < size; ++i) {
 					reinterpret_cast<W_sigma &>(t_) = u*s[i];
-				//	t_[1] += t_[0] >> N0;// Rounding...
+				//	t_[1] += t_[0] >> U_fit::full.depth - 1;// Rounding...
 					s [i]  = t_[1];
 				}
 			}
