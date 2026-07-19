@@ -24,9 +24,14 @@ and addition (affecting only the initial element).
 template <class   ..._s>	struct          phason;
 template <class   ..._s>	using           phason_t = typename phason<_s...>::type;
 template <class   ...Ts>	concept         phason_q = bond::tag_inner_fixed_p<phason_t, Ts...>;
+
 template <class   ...Ts>	concept phason_simplex_q = phason_q<Ts...> and simplex_field_q<initializer_t<Ts>...>;
 template <class   ...Ts>	concept phason_complex_q = phason_q<Ts...> and complex_field_q<initializer_t<Ts>...>;
+
+template <class   ...Ts>	concept simplex_phason_q =                               phason_simplex_q<                  Ts             ...>;
+//mplate <class   ...Ts>	concept simplex_phason_q = simplex_variable_q<Ts...> and phason_simplex_q<typename destruct<Ts>::value_type...>;
 template <class   ...Ts>	concept complex_phason_q = complex_variable_q<Ts...> and phason_simplex_q<typename destruct<Ts>::value_type...>;
+template <class   ...Ts>	concept quantex_phason_q =         quantity_q<Ts...> and phason_simplex_q<typename destruct<Ts>::value_type...>;//TODO: Accommodate heterogeneous...
 
 XTAL_DEF_(let) phason_f = [] XTAL_1FN_(call) (_detail::factory<phason_t>::make);
 

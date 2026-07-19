@@ -15,7 +15,7 @@ namespace _detail
 {///////////////////////////////////////////////////////////////////////////////
 
 template <auto ...Ms>
-struct shaper
+struct distortion
 {
 	template <class S>
 	class subtype : public S
@@ -37,19 +37,19 @@ struct shaper
 
 }///////////////////////////////////////////////////////////////////////////////
 
-template <template <auto ...> class A_=_detail::shaper>	struct  shaped;
-template <template <auto ...> class A_=_detail::shaper>	using   shaped_t = confined_t<shaped<A_>>;
-template <                                 class ..._s>	concept shaped_q = bond::tab_inner_p<shaped<>, _s...>;
+template <template <auto ...> class A_=_detail::distortion>	XTAL_TYP_(new) distorted;
+template <template <auto ...> class A_=_detail::distortion>	XTAL_TYP_(let) distorted_t = confined_t<distorted<A_>>;
+template <                                     class ..._s>	XTAL_TYP_(ask) distorted_q = bond::tab_inner_p<distorted<>, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 /*!
-\brief   Provides the member-`shaper_t`.
+\brief   Provides the member-`distortion_t`.
 */
 template <template <auto ...> class A_>
-struct shaped
+struct distorted
 {
-	using superkind = bond::tab<shaped<>>;
+	using superkind = bond::tab<distorted<>>;
 	
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -60,7 +60,7 @@ struct shaped
 		using S_::S_;
 		
 		template <auto ...Ms>
-		using shaper_t = process::confined_t<A_<Ms...>>;
+		using distortion_t = process::confined_t<A_<Ms...>>;
 
 	};
 };

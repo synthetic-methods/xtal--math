@@ -40,7 +40,7 @@ struct near
 			using U_fit = bond::fit<U>;
 
 			--n;
-			bond::seek_to_e<std::bit_width(U_fit::full.depth - one)>([&]<constant_q I> (I) XTAL_0FN {n |= n >> (1 << I{});});
+			bond::seek_to_e<std::bit_width(U_fit::full.depth - one)>([&]<constant_q I> (I) XTAL_0FN -> void {n |= n >> (1 << I{});});
 			++n;
 			return n;
 		}

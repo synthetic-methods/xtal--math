@@ -44,7 +44,8 @@ struct cosy<M_ism, +2>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,let)
-		method(auto &&o)
+		method(auto &&o
+		)	const
 		noexcept -> decltype(auto)
 		{
 			return square_f(S_::template method<N_lim>(XTAL_REF_(o)));
@@ -67,7 +68,8 @@ struct cosy<M_ism, -0>
 
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,let)
-		method(auto &&o)
+		method(auto &&o
+		)	const
 		noexcept -> decltype(auto)
 		{
 			using U_fit = bond::fit<decltype(o)>;

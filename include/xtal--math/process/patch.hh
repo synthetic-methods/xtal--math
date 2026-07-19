@@ -125,21 +125,27 @@ struct patch<U_mat>
 				template <int N_ion>
 				XTAL_DEF_(return,inline,let)
 				flux(auto &&...oo)
-				noexcept -> auto
+				noexcept -> signed
 				{
 					return R_::template flux<N_ion>(XTAL_REF_(oo)...);
 				}
-				template <int N_ion>
+				template <int N_ion, class X_>
 				XTAL_DEF_(return,inline,let)
-				flux(auto &&o_)
-				noexcept -> auto
-				requires same_q<vector_type, decltype(o_)> or occur::math::dash_p<U_mat, decltype(o_)>
-				and      same_v<vector_size, bond::pack_size_v<decltype(o_)>>
+				flux(X_ &&x_)
+				noexcept -> signed
+				requires same_v<vector_size, bond::pack_size_v<X_>>
+				and in_v<1
+				,	                same_q<vector_type, X_>
+				,	bond::tab_compatible_q<vector_type, X_>
+				,	bond::tab_compatible_q<matrix_type, X_>
+				,	   occur::math::dash_p<matrix_type, X_>
+				>
 				{
-					return [&, this]<auto ...I>(bond::seek_in_t<I...>)
+					using occur::math::dash_f;
+					return [this, x_=XTAL_REF_(x_)]<auto ...I>(bond::seek_in_t<I...>)
 						XTAL_0FN_(to) (R_::template flux<N_ion>(
-							occur::math::dash_f<U_mat>(dot_f(get<I>(R_::coefficients()), o_)...)))
-							(bond::seek_to_t<matrix_size> {});
+							dash_f<U_mat>(dot_f(get<I>(R_::coefficients()), XTAL_MOV_(x_))...)))
+					(bond::seek_to_t<matrix_size> {});
 				}
 
 			};
@@ -148,6 +154,13 @@ struct patch<U_mat>
 		template <class ..._s>
 		struct fix
 		{
+		private:
+			XTAL_DEF_(set) _N = sizeof...(_s);
+			XTAL_DEF_(set) _M = vector_size;
+			static_assert(1 <= _N);
+			using U = bond::seek_front_t<_s...>;
+
+		public:
 			template <class R>
 			class subtype : public bond::compose_s<R>
 			{
@@ -163,7 +176,9 @@ struct patch<U_mat>
 				method(auto &&...oo)
 				const noexcept -> auto
 				{
-					return R_::template method<Ns...>(bond::operate<_s>{}(XTAL_REF_(oo))...);
+					XTAL_IF0
+					XTAL_0IF (_N == _M) {return R_::template method<Ns...>(bond::operate<_s>{}(XTAL_REF_(oo))...);}
+					XTAL_0IF (_N ==  1) {return R_::template method<Ns...>(bond::operate<U >{}(XTAL_REF_(oo))...);}
 				}
 
 			};
@@ -171,6 +186,13 @@ struct patch<U_mat>
 		template <class ..._s>
 		struct fit
 		{
+		private:
+			XTAL_DEF_(set) _N = sizeof...(_s);
+			XTAL_DEF_(set) _M = vector_size;
+			static_assert(1 <= _N);
+			using U = bond::seek_front_t<_s...>;
+
+		public:
 			template <class R>
 			class subtype : public bond::compose_s<R>
 			{
@@ -191,11 +213,15 @@ struct patch<U_mat>
 				template <int N_ion>
 				XTAL_DEF_(return,inline,let)
 				flux(occur::math::dash_q<U_mat> auto &&o_)
-				noexcept -> auto
+				noexcept -> signed
 				requires same_v<vector_size, bond::pack_size_v<decltype(o_)>>
 				{
 					return XTAL_REF_(o_).apply([this] (auto &&...oo)
-						XTAL_0FN_(to) (R_::template flux<N_ion>(bond::operate<_s>{}(XTAL_REF_(oo))...)));
+					XTAL_0FN -> signed {
+						XTAL_IF0
+						XTAL_0IF (_N == _M) {return R_::template flux<N_ion>(bond::operate<_s>{}(XTAL_REF_(oo))...);}
+						XTAL_0IF (_N ==  1) {return R_::template flux<N_ion>(bond::operate<U >{}(XTAL_REF_(oo))...);}
+					});
 				}
 
 			};

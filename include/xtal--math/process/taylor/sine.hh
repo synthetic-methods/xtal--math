@@ -64,7 +64,7 @@ struct sine<M_ism, -1>
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,let)
 		method(auto &&o)
-		const noexcept -> decltype(auto)
+		const noexcept -> XTAL_ALL_(o)
 		{
 			XTAL_IF0
 			XTAL_0IF_(consteval)   {return S_::template method<   ~0>(XTAL_REF_(o));}
@@ -96,7 +96,7 @@ struct sine<M_ism, -2>
 		template <int N_lim=-1>
 		XTAL_DEF_(return,inline,let)
 		method(auto &&w)
-		const noexcept -> auto
+		const noexcept -> XTAL_ALL_(w)
 		{
 			XTAL_IF0
 			XTAL_0IF (0 == N_lim)  {return XTAL_ALL_(w) {one};}

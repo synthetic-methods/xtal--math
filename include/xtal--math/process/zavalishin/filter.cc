@@ -34,7 +34,7 @@ TAG_("filter")
 	using Z_slice = schedule::slicer_t<scheme::spooled<extent_constant_t<0x10>>>;
 
 	using U_resample = occur::resample_t<>;
-	using U_resync   = occur::resync_t<>;
+	using U_rewind   = occur::rewind_t<occur::stage_t<>>;
 
 
 	using U_coeff  = atom::math::dot_t<U_alpha[2]>;
@@ -50,13 +50,13 @@ TAG_("filter")
 		using R_etc = process::occurrence_t<R_def>;
 		using R_prx = confined_t<void
 		,	per_t<U_resample>          ::   refix <1>
-		,	U_resync                   ::   attach <>
+		,	U_rewind                   ::   attach <>
 		,	coefficient_t<X_coeff>     ::   attach <>
 	//	,	reuse< 0>
 		,	R_etc                      ::   attach <>
 		,	R_etc                      :: dispatch <>
 		,	R_def
-		,	scheme::math::zavalishin::shaped<identity>
+		,	scheme::math::zavalishin::distorted<identity>
 		>;
 		using R_pxr = processor::monomer_t<R_prx>;
 
@@ -122,13 +122,13 @@ TAG_("filter")
 		using R_etc = process::occurrence_t<R_def>;
 		using R_prx = confined_t<void
 		,	per_t<U_resample>          ::   refix <1>
-		,	U_resync                   ::   attach <>
+		,	U_rewind                   ::   attach <>
 		,	coefficient_t<X_coeff>     ::   attach <>
 	//	,	reuse< 0>
 		,	R_etc                      ::   attach <>
 		,	R_etc                      :: dispatch <>
 		,	R_def
-		,	scheme::math::zavalishin::shaped<identity>
+		,	scheme::math::zavalishin::distorted<identity>
 		>;
 		using R_pxr = processor::monomer_t<R_prx>;
 
@@ -217,7 +217,7 @@ TAG_("filter-ring")
 	using Z_slice = schedule::slicer_t<scheme::spooled<extent_constant_t<0x10>>>;
 
 	using U_resample = occur::resample_t<>;
-	using U_resync = occur::resync_t<>;
+	using U_rewind = occur::rewind_t<>;
 	using U_stage    = occur::stage_t<>;
 
 	using U_coeff  = atom::math::dot_t<U_alpha[2]>;
@@ -241,7 +241,7 @@ TAG_("filter-ring")
 		//\
 		,	reuse<0, -1>
 		,	reuse<   -1>
-		,	U_resync               ::   attach <>
+		,	U_rewind               ::   attach <>
 		,	coefficient_t<X_coeff> ::   attach <>
 		,	Y_hold                 ::   infix  <>
 		,	R_etc::damp_parameter  ::   affix  <>
@@ -265,7 +265,7 @@ TAG_("filter-ring")
 		z <<= typename R_etc:: damp_parameter{1};
 		z <<= X_coeff{0, 1};
 
-		z <<= typename occur::resync_t<>{0};
+		z <<= typename occur::rewind_t<>{0};
 
 		z <<= z_sample;
 		z <<= z_resize;
@@ -308,7 +308,7 @@ TAG_("filter-ring")
 		,	reuse<   -1>
 		,	per_t<U_resample>      ::   refix <0>
 		,	coefficient_t<X_coeff> ::   attach <>
-		,	U_resync               ::   attach <>
+		,	U_rewind               ::   attach <>
 		,	Y_gate                 ::   infix  <>
 		,	U_stage::template assignment<typename R_etc::damp_parameter>
 		,	R_etc::damp_parameter  ::   affix  <>
@@ -331,7 +331,7 @@ TAG_("filter-ring")
 		z <<= typename R_etc::order_attribute{2};
 		z <<= typename R_etc:: damp_parameter{1};
 		z <<= X_coeff{0, 1};
-		z <<= typename occur::resync_t<>{0};
+		z <<= typename occur::rewind_t<>{0};
 
 		z <<= flow::assign_f(U_stage{ 0}) << typename R_etc::damp_parameter{0.000F};
 		z <<= flow::assign_f(U_stage{ 1}) << typename R_etc::damp_parameter{0.060F};
@@ -471,7 +471,7 @@ TAG_("vectrol")
 	TRY_("vectrol: patch")
 	{
 		using S_content = filter<U_alpha[2], union ENV>;
-		using S_meta   = process::occurrence_t<S_content>;
+		using S_meta    = process::occurrence_t<S_content>;
 		using S_damp_   = occur::math::zavalishin::probe_t<typename S_meta::codata_type>;
 		using S_damp    = typename S_meta::  damp_parameter;
 		using S_order   = typename S_meta:: order_attribute;
@@ -480,8 +480,8 @@ TAG_("vectrol")
 		,	reuse< 0, -1>
 	//	,	process::lift<W_alpha>
 		,	typename per_t<U_resample> ::   refix <0>
-		,	typename Y_trig            ::   infix  <>
-		,	typename S_damp_           ::   affix  <>
+		,	typename Y_trig            ::   infix <>
+		,	typename S_damp_           ::   affix <>
 		,	typename S_meta           ::   attach <>
 		,	typename S_meta           :: dispatch <>
 		,	S_content
@@ -505,7 +505,7 @@ TAG_("vectrol")
 
 		//\
 		using X_vector  =  atom::bracket_t<U_alpha, W_alpha>;
-		using X_vector  =  flow::packed_t<U_alpha, W_alpha>;
+		using X_vector  =  flow::packed_t<U_alpha, W_alpha, union SHLEEM>;
 		using X_matrix  =  atom::bracket_t<X_vector[2]>;
 		using X_patch   =  patch_t<X_matrix>;
 

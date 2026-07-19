@@ -128,8 +128,13 @@ struct logarithm<-1, 0>
 		methox(auto &&o)
 		noexcept -> decltype(auto)
 		{
-			return square_f(exp_asinh_(taylor::sine_t<2, 0>{}.
+			/**/
+			return exp_asinh_(sine_t<2, 0>{}.
+				template method<N_lim>(XTAL_REF_(o)));// Actual inverse...
+			/*/
+			return square_f(exp_asinh_(sine_t<2, 0>{}.
 				template method<N_lim>(half*XTAL_REF_(o))));// Actual inverse...
+			/***/
 		}
 
 	};

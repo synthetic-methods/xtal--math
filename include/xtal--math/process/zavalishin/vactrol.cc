@@ -26,9 +26,10 @@ TAG_("vactrol")
 
 	using X_resample = occur::resample_t<>;
 	using A_resample = typename X_resample::template attach<>;
-
-	using U_shape = atom::      couple_t<U_alpha[2]>;
-	using U_coeff = atom::math::   dot_t<U_alpha[2]>;
+	//\
+	using U_shape = atom::                   couple_t<U_alpha[2]>;
+	using U_shape = atom:: quantity_plus_multiplies_t<U_alpha[2]>;
+	using U_coeff = atom::math::                dot_t<U_alpha[2]>;
 
 	using X_shape = occur::reinferred_t<U_shape, union SHAPE>;
 	using X_coeff = occur::reinferred_t<U_coeff, union COEFF>;
@@ -56,9 +57,10 @@ TAG_("vactrol")
 		,	X_shape                ::   affix  <>
 		,	P_env                  ::   attach <>
 		,	P_env                  :: dispatch <>
+	//	,	occur::inferred_t<union ORDER, constant_t<2>>::dispatch<>
 		,	vactrol<1>
 		,	F_env
-		,	scheme::math::zavalishin::shaped<identity>
+		,	scheme::math::zavalishin::distorted<identity>
 		>;
 		using Z_env = processor::monomer_t<Y_env
 		,	Z_slice::template suspend<K_env>
@@ -85,7 +87,7 @@ TAG_("vactrol")
 		z >>= flow::cue_f(0x08).then(K_env{ X_stage{0}, X_shape{-0.50, -1.00}});
 		z >>= flow::cue_f(0x18).then(K_env{ X_stage{1}, X_shape{ 1.00, -0.00}});
 
-		echo_("\nvactrol: monophony");
+		echo_("\nvactrol: monophonic gate");
 
 		TRUE_(0 == z.efflux(z_cursor++));
 	//	TRUE_(0 == z.influx(occur::stage_f(-1)));
@@ -117,7 +119,7 @@ TAG_("vactrol")
 		,	P_env                  :: dispatch <>
 		,	vactrol<0>
 		,	F_env
-		,	scheme::math::zavalishin::shaped<identity>
+		,	scheme::math::zavalishin::distorted<identity>
 		>;
 		using Z_env = processor::monomer_t<Y_env
 		,	Z_slice::template suspend<K_env>
@@ -144,7 +146,7 @@ TAG_("vactrol")
 		z >>= flow::cue_f(0x08).then(K_env{ X_stage{0}, X_shape{ 0.50,  0.50}});
 	//	z >>= flow::cue_f(0x18).then(K_env{ X_stage{1}, X_shape{1.000, -0.00}});
 
-		echo_("\nvactrol: monophony");
+		echo_("\nvactrol: monophonic trigger");
 	//	echo_rule_<28>("\u2500");
 
 		TRUE_(0 == z.efflux(z_cursor++));

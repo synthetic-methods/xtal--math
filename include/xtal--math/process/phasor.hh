@@ -86,10 +86,12 @@ struct phasor<A, As...>
 		fuse(occur::stage_q auto &&o)
 		noexcept -> signed
 		{
-			using resync_type = occur::resync_t<>;
-			if constexpr (complete_q<typename S_::template head_t<resync_type>>) {
-				auto const sync = S_::template head<resync_type>();
-				if (1 != sync and sync == o.head()) {
+			using rewind_type = occur::rewind_t<XTAL_ALL_(o)>;
+			using rewind_node = typename S_::template head_t<rewind_type>;
+			XTAL_IF0
+			XTAL_0IF (complete_q<rewind_node>) {
+				auto const &q = S_::template head<rewind_type>().wind();
+				if (1 != q and q == o) {
 					get<0>(head()) = zero;
 				}
 			}
@@ -143,7 +145,7 @@ struct phasor<A, As...>
 			if constexpr (complete_q<typename S_::template head_t<resample_type>>) {
 				omega *= S_::template head<resample_type>().period();
 			}
-			auto &u_phi = S_::head();
+			auto &u_phi = head();
 			u_phi[1] = U_phason::devalue_f(omega); return ++u_phi;
 		}
 		/*!
@@ -151,12 +153,24 @@ struct phasor<A, As...>
 		*/
 		template <int N_root=1>
 		XTAL_DEF_(return,inline,let)
+		//\
 		method(U_phason phi, revalue_type co)
+		method(atom::math::phason_q auto phi, revalue_type co)
 		noexcept -> auto
 		//	requires same_q<U_phason, typename S_::template head_t<ordinal_constant_t<1>>>
 		{
-			auto &u_phi = S_::head();
+		//	TODO: Use `stash`ed `head`.
+			auto &u_phi = head();
 			phi *= co; u_phi[1] = phi[1]; return ++u_phi;
+		}
+
+		template <auto ...Ns>
+		XTAL_DEF_(return,inline,let)
+		method(auto &&...oo) const
+		noexcept -> decltype(auto)
+		{
+			return const_cast<subtype &>(*this).
+				template method<Ns...>(XTAL_REF_(oo)...);
 		}
 
 	protected:

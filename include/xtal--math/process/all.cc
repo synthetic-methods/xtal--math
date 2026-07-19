@@ -23,7 +23,7 @@
 #include "./square.cc"
 #include "./term.cc"
 #include "./termial.cc"
-#include "./truncate.cc"
+#include "./cut.cc"
 
 #include "./pade/all.cc"
 #include "./taylor/all.cc"

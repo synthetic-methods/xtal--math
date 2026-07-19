@@ -111,7 +111,7 @@ public:
 		generate(value_type const &u)
 		noexcept -> T &
 		{
-			using process::math::truncate_f;
+			using process::math::cut_f;
 			using process::math::monomial_f;
 			using A_delta = typename S_::difference_type;
 
@@ -143,11 +143,11 @@ public:
 
 			//	Populate the remaining powers by squaring/multiplication:
 				bond::seek_to_e<(N_size >> 1U)>([&] (auto M)
-					XTAL_0FN {
+					XTAL_0FN -> void {
 						auto constexpr UM = I0 + _1*M;
 						auto constexpr WM = J0 + _2*M;
 						
-						auto const w = monomial_f<2>(truncate_f<-3>(get<UM>(s)));
+						auto const w = monomial_f<2>(cut_f<-3>(get<UM>(s)));
 						get<WM + _0>(s) =   w;
 						get<WM + _1>(s) = u*w;
 					}
@@ -284,7 +284,7 @@ public:
 		*/
 		using S_::operator*=;
 
-		XTAL_DEF_(return,inline,let)  operator * (auto const &                       w) const noexcept -> auto   {return twin() *=   w ;}
+		XTAL_DEF_(return,inline,let)  operator * (auto const &                      w) const noexcept -> auto   {return twin() *=   w ;}
 		XTAL_DEF_(inline,let)         operator *=(std::initializer_list<value_type> w)       noexcept -> auto & {return self() *= T(w);}
 
 		XTAL_DEF_(let)

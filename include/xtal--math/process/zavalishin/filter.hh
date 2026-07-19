@@ -3,7 +3,7 @@
 
 #include "./base.hh"
 #include "../../atom/fourier/series.hh"
-#include "../../scheme/zavalishin/shaped.hh"
+#include "../../scheme/zavalishin/distorted.hh"
 
 
 XTAL_ENV_(push)
@@ -15,12 +15,12 @@ namespace xtal::process::math::zavalishin
 
 Implementation outlined in _The Art of VA Synthesis_ by Vadim Zavalishin.
 
-The non-linearity is supplied as a `process`-`template` using `scheme::math::zavalishin::shaped`.
+The non-linearity is supplied as a `process`-`template` using `scheme::math::zavalishin::distorted`.
 The process must conform to the signature `<M_ism, M_car>`,
 defining a stateless `method<N_var, ...>` within the `subtype`.
 
 The parameters `M_ism` and `M_car` determine the type and return-value of shape, respectively.
-`M_ism` is expected to yield convex/concave shapes for positive/negative values,
+`M_ism` is expected to yield convex/concave shapes for positive/negative valued,
 and `M_car` is expected to return the slope when `== -1`.
 
 \note    Despite the parameterization defined by `process::occurrence<filter<...>>`, `filter<...>::method` is
@@ -52,13 +52,13 @@ struct filter
 
 		template <int N_ism=0, int N_car=0, auto ...Ns>
 		XTAL_DEF_(return,inline,set)
-		sh_f(auto &&x, auto &&...oo)
+		f_distort(auto &&x, auto &&...oo)
 		noexcept -> auto
 		{
 			XTAL_IF0
-			XTAL_0IF (scheme::math::zavalishin::shaped_q<S_>) {
-				return typename S_::template shaper_t<N_ism, N_car>{}.
-					template method<Ns...>(XTAL_REF_(x), XTAL_REF_(oo)...);
+			XTAL_0IF (scheme::math::zavalishin::distorted_q<S_>) {
+				using  distortion_type = typename S_::template distortion_t<N_ism, N_car>;
+				return distortion_type{}.template method<Ns...>(XTAL_REF_(x), XTAL_REF_(oo)...);
 			}
 			XTAL_0IF (N_car == -0) {return XTAL_REF_(x)       ;}// f[x]
 			XTAL_0IF (N_car == -1) {return XTAL_ALL_(x) {one };}// f[x]/x
@@ -74,14 +74,14 @@ struct filter
 		*/
 		template <int N_ord, int N_ind, int N_dex=1> requires (0 == N_ord)
 		XTAL_DEF_(inline,set)
-		co_f()
+		f_consort()
 		noexcept -> int
 		{
 			return 0;
 		}
 		template <int N_ord, int N_ind, int N_dex=1> requires (1 <= N_ord)
 		XTAL_DEF_(inline,set)
-		co_f()
+		f_consort()
 		noexcept -> int
 		{
 			auto constexpr I_ind = modulo_v<N_ord, N_ind*sign_v<N_ord|1 - N_ind*2>>;
@@ -107,7 +107,7 @@ struct filter
 		}
 		template <int ...Ns>
 		XTAL_DEF_(set)
-		co_v = bond::operate_v<co_f<Ns...>()>();
+		co_v = bond::operate_v<f_consort<Ns...>()>();
 
 
 	public:// CONSTRUCT
@@ -121,105 +121,148 @@ struct filter
 		XTAL_DEF_(set) M_ord = 0 + data_type::size();
 		XTAL_DEF_(set) M_lim = 1 + data_type::size();
 
+	public:// FUSE
+		template <signed N_ion>
+		XTAL_DEF_(return,inline,let)
+		fuse(auto &&o)
+		noexcept -> signed
+		{
+			return S_::template fuse<N_ion>(XTAL_REF_(o));
+		}
+		template <signed N_ion> requires in_v<N_ion, -1>
+		XTAL_DEF_(return,inline,let)
+		fuse(occur::stage_q auto &&o)
+		noexcept -> signed
+		{
+			using rewind_type = occur::rewind_t<XTAL_ALL_(o)>;
+			using rewind_node = typename S_::template head_t<rewind_type>;
+			XTAL_IF0
+			XTAL_0IF (complete_q<rewind_node>) {
+				auto const &q = self().template head<rewind_type>().wind();
+				if (1 != q and q == o) {
+					S_::stash(constant_t<>{});
+				}
+			}
+			return S_::template fuse<N_ion>(XTAL_REF_(o));
+		}
+
 	protected:// OPERATE
 		using S_::self;
 
 		template <int N_ord=M_ord, auto ...Ns> requires (0 == N_ord)
 		XTAL_DEF_(inline,let)
-		method_impl(auto const &x
+		method_impl(auto &&x
 		,	auto &&...
-		)
-		const noexcept -> atom::couple_t<XTAL_ALL_(x)[M_lim]>
+		)	const
+		noexcept -> atom::couple_t<XTAL_ALL_(x)[M_lim]>
 		{
 			return {XTAL_REF_(x)};
 		}
 		template <int N_ord=M_ord, auto ...Ns> requires (1 <= N_ord)
 		XTAL_DEF_(inline,let)
-		method_impl(auto const &x
+		method_impl(auto &&x
 		,	unstruct_t<decltype(x)> u_warp
-		,	atom::couple_q auto const &coeffs_
-	//	,	atom::couple_q<null_type[N_ord]> auto &&coeffs_
+		,	atom::couple_q<null_type[N_ord]> auto const &coeffs
+	//	,	atom::couple_q<null_type[N_ord]> auto &&coeffs
 		,	auto &&...oo
-		)
-		const noexcept -> atom::couple_t<XTAL_ALL_(x)[M_lim]>
-		requires in_v<N_ord, XTAL_ALL_(coeffs_)::size()>
+		)	const
+		noexcept -> atom::couple_t<XTAL_ALL_(x)[M_lim]>
 		{
-			using  X         = XTAL_ALL_(x);
-			using  U         = unstruct_t<X>;
-			using  X_values  = atom::couple_t<X[M_lim]>;
-			using  X_slopes_ = atom::couple_t<X[N_ord]>;
-			using  X_states_ = atom::couple_t<X[N_ord]>;
+			using  X        = XTAL_ALL_(x);
+			using  X_fit    = bond::fit<X>;
+			using  X_valued = atom::couple_t<X[M_lim]>;
+			using  X_values = atom::couple_t<X[N_ord]>;
+			using  X_slopes = atom::couple_t<X[N_ord]>;
+			using  X_states = atom::couple_t<X[N_ord]>;
+			auto constexpr U_cut_ = cut_e<[] XTAL_1FN_(to) (-X_fit::ratio_f(1, 3))>;
+			auto constexpr X_cut_ = cut_e<[] XTAL_1FN_(to) (-X_fit::diplo_f(0x10))>;
+			auto constexpr X_cut  = cut_f<[] XTAL_1FN_(to) (-X_fit::diplo_f(0x10))>;
+		//	TODO: Using `X_cut_` fails under `clang/RELEASE`.
 
-			X_values values;
-			auto     values_ = values.self(cardinal_constant_t<N_ord>{});// NOTE: `span`-based!
-			auto     mem     = S_::template stash<X_states_, X_slopes_>();
-			auto    &states_ = get<0>(mem);
-			auto    &slopes_ = get<1>(mem);
+			X_valued valued;
+			auto     values = valued.self(cardinal_constant_t<N_ord>{});// NOTE: `span`-based!
+			auto     stash  = S_::template stash<X_states, X_slopes>();
+			auto    &states = get<0>(stash);
+			auto    &slopes = get<1>(stash);
 
+			U_cut_(u_warp);
 			u_warp *= pade::tangy_f< 1,-1>(u_warp);
 
-		//	Denormalize `slopes` and initialize `values`:
-			bond::seek_to_e<N_ord>([&] (auto const I) XTAL_0FN {
-				auto const &coeff = get<I>(coeffs_);
-				auto        slope = get<I>(slopes_);
-				//\
-				slope *= co_v<N_ord, I, 1>;
+		//	Denormalize `slopes` and initialize `valued`:
+			bond::seek_to_e<N_ord>([&] (auto const I)
+			XTAL_0FN -> void {
+				auto &coeff = get<I>(coeffs);
+				auto  slope = get<I>(slopes);
 				slope *= coeff;
 				slope += coeff;
-				if constexpr (0 == I) get<I>(values_) = term_f(slope);
-				if constexpr (1 <= I) get<I>(values_) = term_f(slope, u_warp, get<I - 1>(values_));
+				if constexpr (0 == I) get<I>(values) = term_f(slope);
+				if constexpr (1 <= I) get<I>(values) = term_f(slope, u_warp, get<I - 1>(values));
 			});
-			get<N_ord>(values) = root_f<-1>(term_f(one, u_warp, get<N_ord - 1>(values)));
+			get<N_ord>(valued) = root_f<-1>(term_f(one, u_warp, get<N_ord - 1>(valued)));
 
-		//	Update `values` by iterating `slopes`:
-			auto constexpr  K_sat = scheme::math::zavalishin::shaped_q<S_>;
-			auto constexpr  K_max = term_f(0, 2, K_sat);
-			auto constexpr  K_lim = term_f(1, 1, K_max);
-			bond::seek_to_e<K_lim>([&] (auto const K) XTAL_0FN {
-				if constexpr (0 == K) {get<N_ord>(values) *= x - dot_f(values_, states_);}
-				if constexpr (1 <= K) {get<N_ord>(values)  = x - dot_f(values_, slopes_);}
-				bond::seek_to_e<-N_ord>([&] (auto const I) XTAL_0FN {
-					auto const &value = get<I>(values_) = term_f(get<I>(states_), get<I + 1>(values), u_warp);
-					auto const &coeff = get<I>(coeffs_);
-					auto       &slope = get<I>(slopes_);
-					if constexpr (0 == I) {slope = zero;}
-					if constexpr (1 <= I) {slope = sh_f<-1,-2, Ns...>(value, oo...);}
-					if constexpr (K < K_max) {
-						//\
-						slope *= co_v<N_ord, I, 1>;
+		//	Update `valued` by iterating `slopes`:
+			auto constexpr  K_sat = scheme::math::zavalishin::distorted_q<S_>;
+			auto constexpr  K_max = 2 * K_sat;
+			auto constexpr  K_lim = 1 + K_max;
+			bond::seek_to_e<K_lim>([&] (auto const K)
+			XTAL_0FN -> void {
+				auto &valve = get<N_ord>(valued);
+				if constexpr (0 == K) valve *= X_cut(x - dot_f(values, states));
+				if constexpr (1 <= K) valve  = X_cut(x - dot_f(values, slopes));
+			//	X_cut_(valve);
+				bond::seek_to_e<-N_ord>([&] (auto const I)
+				XTAL_0FN -> void {
+					auto &value = get<I>(valued) = X_cut(term_f(get<I>(states), get<I + 1>(valued), u_warp));
+					auto &coeff = get<I>(coeffs);
+					auto &slope = get<I>(slopes);
+				//	X_cut_(value);
+					if constexpr (0 == I) slope = XTAL_ALL_(slope){};
+					if constexpr (1 <= I) slope = X_cut(f_distort<-1,-2, Ns...>(value, oo...));
+					if constexpr (K <  K_max) {
 						slope *= coeff;
 						slope += coeff;
 					}
 				});
 			});
 
-		//	Accumulate `states` and carry distortiond `slopes`:
-			bond::seek_to_e<-N_ord>([&, w_warp=u_warp*two] (auto const I) XTAL_0FN {
-				auto const &coeff  = get<I + 0>(coeffs_);
-				auto const &slope  = get<I + 0>(slopes_);
-				auto       &state  = get<I + 0>(states_);
-				auto       &value  = get<I + 0>(values);
-				auto       &value_ = get<I + 1>(values);
-				state += w_warp*value_;
-				if constexpr (1 <= I and 0 < K_max) {
-					value_ += value*slope*coeff;
-				}
+		//	Accumulate `states` and carry distorted `slopes`:
+			auto const &w_warp = u_warp *= two;
+			bond::seek_to_e<-N_ord>([&] (auto const I)
+			XTAL_0FN -> void {
+				auto const &coeff = get<I + 0>(coeffs);
+				auto const &slope = get<I + 0>(slopes);
+				auto       &state = get<I + 0>(states);
+				auto       &value = get<I + 0>(valued);
+				auto       &valve = get<I + 1>(valued);
+				state += valve*w_warp;
+				if constexpr (1 <= I and 0 < K_max) {valve += coeff*slope*value;}
 			});
 
-		//	values_ *= coeffs_;//TODO: Provide option?
-			return values;
+		//	values *= coeffs;//TODO: Provide option?
+			return valued;
 		}
 
 	public:// OPERATE
 		template <int N_ord=M_ord, auto ...Ns>
 		XTAL_DEF_(inline,let)
 		method(auto const &x
-		,	unstruct_t<decltype(x)> u_warp
-		,	atom::couple_q auto &&coeffs_
-	//	,	atom::couple_q<null_type[N_ord + 0]> auto &&coeffs_
+		,	atom::math::dot_q auto &&o
 		,	auto &&...oo
-		)
-		const noexcept -> atom::couple_t<XTAL_ALL_(x)[M_lim]>
+		)	const
+		noexcept -> decltype(auto)
+		{
+			return XTAL_REF_(o)*
+				method<N_ord, Ns...>(XTAL_REF_(x), XTAL_REF_(oo)...);
+		}
+
+		template <int N_ord=M_ord, auto ...Ns>
+		XTAL_DEF_(inline,let)
+		method(auto const &x
+		,	unstruct_t<decltype(x)> u_warp
+		,	atom::couple_q<null_type[N_ord + 0]> auto &&coeffs_
+		,	auto &&...oo
+		)	const
+		noexcept -> decltype(auto)
 		requires in_v<N_ord + 0, XTAL_ALL_(coeffs_)::size()>
 		{
 			return method_impl<N_ord, Ns...>(XTAL_REF_(x),
@@ -232,15 +275,15 @@ struct filter
 		,	unstruct_t<decltype(x)> u_warp
 		,	atom::couple_q auto &&coeffs
 		,	auto &&...oo
-		)
-		const noexcept -> decltype(auto)
+		)	const
+		noexcept -> decltype(auto)
 		requires in_v<N_ord + 1, XTAL_ALL_(coeffs)::size()>
 		{
 			using X = XTAL_ALL_(x);
 			using F = atom::math::fourier::series_t<X[N_ord]>;
 
 			auto const [up, dn] = roots_f<N_ord>(get<N_ord>(coeffs));
-			auto recoeffs = coeffs.twin(constant_t<N_ord>{});
+			auto recoeffs = coeffs.twin(cardinal_constant_t<N_ord>{});
 			recoeffs *= F{dn};
 			u_warp   *=  (up);
 			return method<N_ord, Ns...>(x, u_warp, XTAL_MOV_(recoeffs), XTAL_REF_(oo)...);
@@ -253,8 +296,8 @@ struct filter
 		method(auto const &x
 		,	unstruct_t<decltype(x)> u_warp
 		,	atom::couple_q auto &&coeffs
-		)
-		const noexcept -> decltype(auto)
+		)	const
+		noexcept -> decltype(auto)
 		{
 			using X = XTAL_ALL_(x);
 			return method<N_ord, Ns...>(x, u_warp, XTAL_REF_(coeffs), unstruct_t<X>{one});
@@ -265,13 +308,13 @@ struct filter
 		,	unstruct_t<decltype(x)> u_warp
 		,	unstruct_t<decltype(x)> u_damp
 		,	auto &&...oo
-		)
-		const noexcept -> decltype(auto)
+		)	const
+		noexcept -> decltype(auto)
 		{
 			using X = XTAL_ALL_(x);
 			using U = unstruct_t<X>;
 			return method_impl<N_ord, Ns...>(XTAL_REF_(x), u_warp
-			,	[a=truncate_f<+1>(u_damp)]<auto ...I> (bond::seek_in_t<I...>)
+			,	[a=cut_f<+1>(u_damp)]<auto ...I> (bond::seek_in_t<I...>)
 					XTAL_0FN -> atom::couple_t<U[N_ord]> {
 						return {term_f(co_v<N_ord, I, 0>, co_v<N_ord, I, 1>, a)...};
 					}
@@ -286,44 +329,30 @@ struct filter
 		
 		Requires `1 <= Abs@s && Re@s <= 0 && 0 <= Im@s`.
 		*/
-		template <int N_ord=M_ord, auto ...Ns>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,let)
-		method(auto &&x
-		,	atom::math::phason_simplex_q auto const &t_
-		,	complex_field_q auto const &s
+		method(auto &&x, atom::math::phason_q auto &&t_
+		,	atom::quantity_multiplies_q auto &&s_
 		,	auto &&...oo
-		)
-		const noexcept -> auto
+		)	const
+		noexcept -> decltype(auto)
+		requires un_v<atom::math::phason_q<decltype(x)>>
 		{
-			auto const &[s_re,  s_im] = destruct_f(XTAL_REF_(s));
-			auto const  [s_a1, _s_a1] = roots_f<2>(square_f(s_re, s_im));
-
-			auto const u_damp = s_im*_s_a1;
-			auto       u_warp = t_(1)*s_a1;
+		//	auto &&[s_sig, s_mag] = XTAL_REF_(s_);
+			auto const u_damp = std::imag(s_.signum());
+			auto const u_warp = std::real(XTAL_REF_(t_)(1))*s_.template magnum<1>();
 			return method<Ns...>(XTAL_REF_(x), u_warp, u_damp, XTAL_REF_(oo)...);
 		}
-
-	//	FUSE
-		template <signed N_ion>
+		template <auto ...Ns>
 		XTAL_DEF_(return,inline,let)
-		fuse(auto &&o)
-		noexcept -> signed
+		method(atom::math::phason_q auto &&t_, auto &&x
+		,	atom::quantity_multiplies_q auto &&s_
+		,	auto &&...oo
+		)	const
+		noexcept -> decltype(auto)
+		requires un_v<atom::math::phason_q<decltype(x)>>
 		{
-			return S_::template fuse<N_ion>(XTAL_REF_(o));
-		}
-		template <signed N_ion> requires in_v<N_ion, -1>
-		XTAL_DEF_(return,inline,let)
-		fuse(occur::stage_q auto &&o)
-		noexcept -> signed
-		{
-			using resync_type = occur::resync_t<>;
-			if constexpr (requires {self().template head<resync_type>();}) {
-				auto const    sync = self().template head<resync_type>();
-				if (1 != sync and sync == o.head()) {
-					S_::stash(constant_t<>{});
-				}
-			}
-			return S_::template fuse<N_ion>(XTAL_REF_(o));
+			return method<Ns...>(XTAL_REF_(x), XTAL_REF_(t_), XTAL_REF_(s_), XTAL_REF_(oo)...);
 		}
 
 	};

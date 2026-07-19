@@ -51,25 +51,26 @@ public:
 
 	public:// ACCESS
 		using S_::element;
+		using S_::mask;
 		using S_::size;
 		using S_::self;
 		using S_::twin;
 
-		template <index_type I=0>
 		XTAL_DEF_(return,inline,set)
-		element_f(auto &&o)
+		deindex_f(index_type i)
 		noexcept -> decltype(auto)
 		{
-			return S_::template element_f<I>(XTAL_REF_(o));// Already wrapped...
+			XTAL_IF0
+			XTAL_0IF (1 == std::popcount(size())) {
+				i &= mask;
+			}
+			XTAL_0IF (2 <= std::popcount(size())) {
+				i %= size;
+				i += size;
+				i %= size;
+			}
+			return i;
 		}
-		template <index_type I=0>
-		XTAL_DEF_(return,inline,set)
-		element_f(auto &&o, index_type i)
-		noexcept -> decltype(auto)
-		{
-			return S_::element_f(XTAL_REF_(o), process::math::modulo_f<size>(I + i));
-		}
-
 
 	public:// CONSTRUCT
 		using S_::S_;
@@ -90,7 +91,7 @@ public:
 			element(0) = {};
 
 			if constexpr (integral_variable_q<value_type>) {
-				bond::seek_to_e<K>([&, this] (auto i) XTAL_0FN {
+				bond::seek_to_e<K>([&, this] (auto i) XTAL_0FN -> void {
 					auto const o = k%N;
 					element(    o) =  i;
 					element(N - o) =  i - K;
@@ -104,7 +105,7 @@ public:
 				if constexpr (complex_field_q<value_type>) {
 					u = pade::unity_f<1>(U_fit::ratio_f(1, 2*K));
 				}
-				bond::seek_to_e<K>([&, this] (auto i) XTAL_0FN {
+				bond::seek_to_e<K>([&, this] (auto i) XTAL_0FN -> void  {
 					auto const o = k%N;
 					element(    o) =  w;
 					element(N - o) = -w;
@@ -126,7 +127,7 @@ public:
 			extent_type           k = size;
 
 			if constexpr (integral_variable_q<value_type>) {
-				bond::seek_to_e<K>([&, this] (auto i) XTAL_0FN {
+				bond::seek_to_e<K>([&, this] (auto i) XTAL_0FN -> void  {
 					auto const o = k%N;
 					if (K < o) {
 						element(M - o) = (1 + i) - K;
@@ -147,7 +148,7 @@ public:
 					u = 1;
 				}
 				w = u;
-				bond::seek_to_e<K>([&, this] (auto i) XTAL_0FN {
+				bond::seek_to_e<K>([&, this] (auto i) XTAL_0FN -> void  {
 					auto const o = k%N;
 					if (K < o) {
 						element(M - o) = -w;
