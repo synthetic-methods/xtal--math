@@ -23,4 +23,4 @@
 #include "./square.hh"
 #include "./term.hh"
 #include "./termial.hh"
-#include "./truncate.hh"
+#include "./cut.hh"

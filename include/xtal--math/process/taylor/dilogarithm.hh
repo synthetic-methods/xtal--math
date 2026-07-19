@@ -49,7 +49,7 @@ struct dilogarithm<1, M_car>
 				auto q_i = q;
 				auto z   = q*o.real();
 
-				bond::seek_to_e<-K_lim>([&] (auto const I) XTAL_0FN {
+				bond::seek_to_e<-K_lim>([&] (auto const I) XTAL_0FN -> void {
 					auto constexpr _K = U_fit::ratio_f(cosign_v<1 + I>, square_f(2 + I));
 					z = term_f(XTAL_MOV_(z), (q_i *= q), (o_i *= o).real(), _K);
 				});
@@ -82,7 +82,7 @@ struct dilogarithm<1, M_car>
 			objective_t<U> dn{one}, up{one};
 			dn *= term_f(two*_Q3 - one, _Q3, q);
 			dn *= term_f(two*_Q3 + one, _Q3, q);
-			bond::seek_to_e<-(K_lim)>([&] (auto const I) XTAL_0FN {
+			bond::seek_to_e<-(K_lim)>([&] (auto const I) XTAL_0FN -> void {
 				up = term_f(one, q, XTAL_MOV_(up)*U_fit::template ratio_f<2>(I + 1, I + 4));
 			});
 			up = term_f(two - _12, _27*q, XTAL_MOV_(up));

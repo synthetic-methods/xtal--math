@@ -61,7 +61,7 @@ public:
 	public:// OPERATE
 		using S_::operator*=;
 
-		XTAL_DEF_(return,inline,let)  operator  * (auto const &                       t) const noexcept -> auto   {return twin() *=   t ;}
+		XTAL_DEF_(return,inline,let)  operator  * (auto const &                      t) const noexcept -> auto   {return twin() *=   t ;}
 		XTAL_DEF_(inline,let)         operator  *=(std::initializer_list<value_type> t)       noexcept -> auto & {return self() *= T(t);}
 
 		/*!
@@ -79,8 +79,8 @@ public:
 			}
 			else {
 				int constexpr N{size};
-				bond::seek_to_e<-N, 0>([&, this] (auto I) XTAL_0FN {get<I>(s) *= get<0>(t);
-				bond::seek_to_e<-I, 1>([&, this] (auto J) XTAL_0FN {get<I>(s) += get<J>(t)*get<I - J>(s);});});
+				bond::seek_to_e<-N, 0>([&, this] (auto I) XTAL_0FN -> void {get<I>(s) *= get<0>(t);
+				bond::seek_to_e<-I, 1>([&, this] (auto J) XTAL_0FN -> void {get<I>(s) += get<J>(t)*get<I - J>(s);});});
 			}
 			return s;
 		}

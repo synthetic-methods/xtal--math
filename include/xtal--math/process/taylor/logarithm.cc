@@ -52,7 +52,7 @@ TAG_("logarithm")
 		TRUE_(check_f<-10>(logarithm_t<-1, 0>{}.template method< 3>(egg), exp(egg)));
 		TRUE_(check_f<-25>(logarithm_t<-1, 0>{}.template method< 2>(egg), exp(egg)));
 		TRUE_(check_f<-38>(logarithm_t<-1, 0>{}.template method< 1>(egg), exp(egg)));
-		TRUE_(check_f<-50>(logarithm_t<-1, 0>{}.template method< 0>(egg), exp(egg)));
+		TRUE_(check_f<-51>(logarithm_t<-1, 0>{}.template method< 0>(egg), exp(egg)));
 	//	TRUE_(check_f<-45>(logarithm_t<-1, 0>{}.template method< 0>(egg), exp(egg)));// 0x04 squares
 	//	TRUE_(check_f<-36>(logarithm_t<-1, 0>{}.template method< 0>(egg), exp(egg)));// 0x08 squares
 

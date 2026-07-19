@@ -47,10 +47,10 @@ public:
 		XTAL_DEF_(return,inline,let)
 		method(auto x// <- stage (gate)
 		,	atom::math:: phason_q<null_type[2]> auto t_// <- clock
-		,	atom::       couple_q<null_type[2]> auto f_// <- note head/body
+		,	atom::     quantity_q<null_type[2]> auto f_// <- note head/body
 		,	auto &&...oo
-		)
-		const noexcept -> decltype(auto)
+		)	const
+		noexcept -> decltype(auto)
 		{
 			static_assert(D_::size() == two);
 			using X = XTAL_ALL_(x);
@@ -79,10 +79,10 @@ public:
 		XTAL_DEF_(return,inline,let)
 		method(auto x// <- stage (trigger)
 		,	atom::math:: phason_q<null_type[2]> auto t_// <- clock
-		,	atom::       couple_q<null_type[2]> auto f_// <- note head/body
+		,	atom::     quantity_q<null_type[2]> auto f_// <- note head/body
 		,	auto &&...oo
-		)
-		const noexcept -> decltype(auto)
+		)	const
+		noexcept -> decltype(auto)
 		{
 			static_assert(D_::size() == two);
 			using X = XTAL_ALL_(x);

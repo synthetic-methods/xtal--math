@@ -5,7 +5,7 @@
 
 
 
-#include "./shaped.hh"
+#include "./distorted.hh"
 XTAL_ENV_(push)
 namespace xtal::scheme::math::zavalishin::_test
 {/////////////////////////////////////////////////////////////////////////////////
@@ -13,7 +13,7 @@ namespace xtal::scheme::math::zavalishin::_test
 
 ////////////////////////////////////////////////////////////////////////////////
 /*/
-TAG_("shaped")
+TAG_("distorted")
 {
 	using U_fit   = bond::fit<>;
 	using U_sigma = typename U_fit::sigma_type;

@@ -22,10 +22,7 @@ XTAL_TYP_(let) root_t = process::confined_t<root<M_exp, M_cut>>;
 
 template <int M_exp=1, int M_cut=0, auto N_lim=0b11>
 XTAL_DEF_(let) root_f = [] (auto &&z)
-XTAL_0FN
-{
-	return root_t<M_exp, M_cut>::template method<N_lim>(XTAL_REF_(z));
-};
+XTAL_0FN_(to) (root_t<M_exp, M_cut>::template method<N_lim>(XTAL_REF_(z)));
 
 
 ////////////////////////////////////////////////////////////////////////////////

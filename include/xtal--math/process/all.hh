@@ -23,7 +23,7 @@
 #include "./square.hh"
 #include "./term.hh"
 #include "./termial.hh"
-#include "./truncate.hh"
+#include "./cut.hh"
 
 #include "./pade/all.hh"
 #include "./taylor/all.hh"

@@ -189,7 +189,7 @@ TAG_("phasor")
 	
 	using A_stored   = scheme::stored<unit_type[0x100]>;
 	using A_sample   = occur::resample_t<>::template attach<>;
-	using U_resynced = occur::resync_t  <>::template attach<>;
+	using U_resynced = occur::rewind_t  <>::template attach<>;
 
 	using U_fit   = bond::fit<>;
 	using U_sigma = typename U_fit::sigma_type;

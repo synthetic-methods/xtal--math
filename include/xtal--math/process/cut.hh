@@ -13,23 +13,23 @@ namespace xtal::process::math
 ////////////////////////////////////////////////////////////////////////////////
 
 template <auto M_lim>
-XTAL_TYP_(new) truncate;
+XTAL_TYP_(new) cut;
 
 template <auto M_lim>
-XTAL_TYP_(let) truncate_t = process::confined_t<truncate<M_lim>>;
+XTAL_TYP_(let) cut_t = process::confined_t<cut<M_lim>>;
 
 template <auto M_lim, auto ...Ns>
-XTAL_DEF_(let) truncate_f = [] XTAL_1FN_(call) (truncate_t<M_lim>::template method<Ns...>);
+XTAL_DEF_(let) cut_f = [] XTAL_1FN_(call) (cut_t<M_lim>::template method<Ns...>);
 
 template <auto M_lim>
-XTAL_DEF_(let) truncate_e = [] XTAL_1FN_(call) (truncate_t<M_lim>::template method<std::in_place>);
+XTAL_DEF_(let) cut_e = [] XTAL_1FN_(call) (cut_t<M_lim>::template method<std::in_place>);
 
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
 template <applicable_q auto M_app>
-struct truncate<M_app>
+struct cut<M_app>
 {
 	static auto constexpr M_val = M_app();
 	static auto constexpr M_abs = part_f<unsigned>(M_val);
@@ -83,7 +83,7 @@ struct truncate<M_app>
 		{
 			auto &[x, y] = destruct_f(o);
 			(void) method<std::in_place>(x);
-		//	(void) method<std::in_place>(y);
+			(void) method<std::in_place>(y);
 			return o;
 		}
 		template <std::in_place_t>
@@ -107,20 +107,16 @@ struct truncate<M_app>
 			//	XTAL_0IF (atom::math::pade::uniplex_q<W_>) {
 				XTAL_0IF (complex_variable_q<X> and atom::couple_q<Y>) {(void) method<std::in_place>(y);}
 				XTAL_0IF (atom::couple_q<X> and complex_variable_q<Y>) {(void) method<std::in_place>(x);}
-				XTAL_0IF (     same_q<X, Y>) {
-					(void)                             method<std::in_place>(x);
-					(void) truncate_t<M_opp>::template method<std::in_place>(y);
-				}
-				XTAL_0IF (different_q<X, Y>) {
-					(void) method<std::in_place>(x);
-					(void) method<std::in_place>(y);
+				XTAL_0IF_(else) {
+					(void)                        method<std::in_place>(x);
+					(void) cut_t<M_opp>::template method<std::in_place>(y);
 				}
 			}
 			XTAL_0IF_(else) {
 			//	TODO: Accommodate returning materialized `atom::bucket` from `span`s...
 				[&]<auto ...I> (bond::seek_in_t<I...>)
-					XTAL_0FN_(do) (W_(method<std::in_place>(get<I>(o))...))
-				(bond::seek_to_t<-N_>{});
+				XTAL_0FN_(do) (W_(method<std::in_place>(get<I>(o))...))
+					(bond::seek_to_t<-N_>{});
 			}
 			return o;
 		}
@@ -138,7 +134,7 @@ struct truncate<M_app>
 	};
 };
 template <int M_dir>
-struct truncate<M_dir>
+struct cut<M_dir>
 {
 	static constexpr auto N_dir = part_f<unsigned>(M_dir);
 
@@ -160,8 +156,8 @@ struct truncate<M_dir>
 			auto constexpr N_min = [] XTAL_1FN_(to) (+U_fit::minilon_f(N_dir));
 			auto constexpr N_max = [] XTAL_1FN_(to) (-U_fit::maxilon_f(N_dir));
 			XTAL_IF0
-			XTAL_0IF (0 < M_dir) {return truncate_t<N_min>::template method<Ns...>(XTAL_REF_(o));}
-			XTAL_0IF (M_dir < 0) {return truncate_t<N_max>::template method<Ns...>(XTAL_REF_(o));}
+			XTAL_0IF (0 < M_dir) {return cut_t<N_min>::template method<Ns...>(XTAL_REF_(o));}
+			XTAL_0IF (M_dir < 0) {return cut_t<N_max>::template method<Ns...>(XTAL_REF_(o));}
 		}
 		template <std::in_place_t>
 		XTAL_DEF_(inline,set)
@@ -173,15 +169,15 @@ struct truncate<M_dir>
 			auto constexpr N_min = [] XTAL_1FN_(to) (+U_fit::minilon_f(N_dir));
 			auto constexpr N_max = [] XTAL_1FN_(to) (-U_fit::maxilon_f(N_dir));
 			XTAL_IF0
-			XTAL_0IF (0 < M_dir) {truncate_t<N_min>::template method<std::in_place>(XTAL_REF_(o));}
-			XTAL_0IF (M_dir < 0) {truncate_t<N_max>::template method<std::in_place>(XTAL_REF_(o));}
+			XTAL_0IF (0 < M_dir) {cut_t<N_min>::template method<std::in_place>(XTAL_REF_(o));}
+			XTAL_0IF (M_dir < 0) {cut_t<N_max>::template method<std::in_place>(XTAL_REF_(o));}
 			return o;
 		}
 
 	};
 };
 template <fixed_shaped_q<null_type[2]> auto M_range>
-struct truncate<M_range>
+struct cut<M_range>
 {
 	static auto constexpr M_dn = get<0>(M_range);
 	static auto constexpr M_up = get<1>(M_range);
