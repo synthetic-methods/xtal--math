@@ -2,4 +2,5 @@
 #include "./base.hh"
 #include "./differ.hh"
 #include "./filter.hh"
+#include "./upsample.hh"
 #include "./vactrol.hh"

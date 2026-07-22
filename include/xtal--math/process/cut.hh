@@ -12,11 +12,11 @@ namespace xtal::process::math
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <auto M_lim>
+template <auto ...Ms>
 XTAL_TYP_(new) cut;
 
-template <auto M_lim>
-XTAL_TYP_(let) cut_t = process::confined_t<cut<M_lim>>;
+template <auto ...Ms>
+XTAL_TYP_(let) cut_t = process::confined_t<cut<Ms...>>;
 
 template <auto M_lim, auto ...Ns>
 XTAL_DEF_(let) cut_f = [] XTAL_1FN_(call) (cut_t<M_lim>::template method<Ns...>);

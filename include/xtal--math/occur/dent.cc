@@ -29,9 +29,9 @@ TAG_("dent")
 		using D22_0 = dent_s<X_matrix, 0>;
 		using D22_1 = dent_s<X_matrix, 1>;
 
-		using E22_1 = typename D22_1::data_type;
+	//	using E22_1 = typename D22_1::data_type;
 
-	//	static_assert(          fungible_q<typename D22_1::data_type, X_matrix>);
+	//	static_assert(         fungible_q<typename D22_1::data_type, X_matrix>);
 	//	static_assert(occur::math::dent_q<         D22_1           , X_matrix>);
 
 	}
