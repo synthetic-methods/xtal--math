@@ -62,10 +62,10 @@ struct phasor<A, As...>
 		using S_::head;
 
 	//	NOTE: Defined in-case `refine_head` is bypassed...
-		XTAL_FN0_(go) (XTAL_DEF_(return,inline,explicit) operator U_,
+		XTAL_FN0_(go) (XTAL_VAL_(return,inline,explicit) operator U_,
 			[] (auto &&that) XTAL_0FN_(to) (XTAL_REF_(that).head()))
 
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		bias()
 		noexcept -> auto
 		{
@@ -75,14 +75,14 @@ struct phasor<A, As...>
 	public:// FLOW
 
 		template <signed N_ion>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		fuse(auto &&o)
 		noexcept -> signed
 		{
 			return S_::template fuse<N_ion>(XTAL_REF_(o));
 		}
 		template <signed N_ion> requires in_v<N_ion, -1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		fuse(occur::stage_q auto &&o)
 		noexcept -> signed
 		{
@@ -106,7 +106,7 @@ struct phasor<A, As...>
 		\todo    Override constructors to apply fractional `bias`.
 		*/		
 		template <auto ...Ns> requires (0 == sizeof...(Ns))
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method()
 		noexcept -> decltype(auto)
 		{
@@ -125,7 +125,7 @@ struct phasor<A, As...>
 	//	\brief   Evaluation by (possibly dented) replacement then succession.
 	//	*/		
 	//	template <auto ...Ns> requires (0 == sizeof...(Ns))
-	//	XTAL_DEF_(return,inline,let)
+	//	XTAL_VAL_(return,inline,let)
 	//	method(fixed_shaped_q auto &&a)
 	//	noexcept -> decltype(auto)
 	//	{
@@ -137,7 +137,7 @@ struct phasor<A, As...>
 		\returns The current differential after setting the stored frequency to `omega`.
 		*/
 		template <int N_root=1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(revalue_type omega)
 		noexcept -> auto
 		{
@@ -152,7 +152,7 @@ struct phasor<A, As...>
 		\returns The current differential after scaling the incoming `phi` by `co`.
 		*/
 		template <int N_root=1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		//\
 		method(U_phason phi, revalue_type co)
 		method(atom::math::phason_q auto phi, revalue_type co)
@@ -165,7 +165,7 @@ struct phasor<A, As...>
 		}
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&...oo) const
 		noexcept -> decltype(auto)
 		{
@@ -177,7 +177,7 @@ struct phasor<A, As...>
 		/*!
 		\brief   Evaluation by succession.
 		*/		
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		ingress()
 		noexcept -> decltype(auto)
 		{
@@ -186,7 +186,7 @@ struct phasor<A, As...>
 			XTAL_0IF_(else)        {return   head();}
 		};
 		template <class Y>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		egress(Y &&y)
 		noexcept -> auto
 		{
@@ -209,7 +209,7 @@ struct phasor<A, As...>
 		using S_::head;
 
 	//	NOTE:	Defined in-case `refine_head` is bypassed...
-		XTAL_FN0_(go) (XTAL_DEF_(return,inline,implicit) operator U_,
+		XTAL_FN0_(go) (XTAL_VAL_(return,inline,implicit) operator U_,
 			[] (auto &&o) XTAL_0FN_(to) (XTAL_REF_(o).head()))
 
 	public:// OPERATE
@@ -217,7 +217,7 @@ struct phasor<A, As...>
 		\returns The current differential after scaling the incoming `phi` by `co`.
 		*/
 		template <int N_root=1>
-		XTAL_DEF_(return,let)
+		XTAL_VAL_(return,let)
 		method(U_phason phi, revalue_type co)
 		noexcept -> auto
 		requires same_q<U_phason, typename S_::template head_t<ordinal_constant_t<1>>>

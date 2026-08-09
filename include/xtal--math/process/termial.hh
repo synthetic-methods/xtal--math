@@ -23,7 +23,7 @@ starting from the kernel `a[N_limit]`. \
 template <int M_sgn=1, int M_pow=1>	struct  termial;
 template <int M_sgn=1, int M_pow=1>	using   termial_t = process::confined_t<termial<M_sgn, M_pow>>;
 template <int M_sgn=1, int M_pow=1>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 termial_f(auto &&x, auto const &k, auto const &...ks)
 noexcept -> auto
 {
@@ -56,7 +56,7 @@ struct termial
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&...oo)
 		const noexcept -> decltype(auto)
 		{

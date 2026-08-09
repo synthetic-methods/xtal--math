@@ -22,7 +22,7 @@ struct sum
 	public:
 		using S_::S_;
 
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&...xs)
 		const noexcept -> auto
 		{

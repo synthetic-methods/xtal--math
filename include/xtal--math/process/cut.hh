@@ -19,10 +19,10 @@ template <auto ...Ms>
 XTAL_TYP_(let) cut_t = process::confined_t<cut<Ms...>>;
 
 template <auto M_lim, auto ...Ns>
-XTAL_DEF_(let) cut_f = [] XTAL_1FN_(call) (cut_t<M_lim>::template method<Ns...>);
+XTAL_VAL_(let) cut_f = [] XTAL_1FN_(call) (cut_t<M_lim>::template method<Ns...>);
 
 template <auto M_lim>
-XTAL_DEF_(let) cut_e = [] XTAL_1FN_(call) (cut_t<M_lim>::template method<std::in_place>);
+XTAL_VAL_(let) cut_e = [] XTAL_1FN_(call) (cut_t<M_lim>::template method<std::in_place>);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -46,7 +46,7 @@ struct cut<M_app>
 		using S_::S_;
 
 		template <std::in_place_t>
-		XTAL_DEF_(inline,set)
+		XTAL_VAL_(inline,set)
 		method(real_variable_q auto &o)
 		noexcept -> decltype(o)
 		{
@@ -77,7 +77,7 @@ struct cut<M_app>
 			return o;
 		}
 		template <std::in_place_t>
-		XTAL_DEF_(inline,set)
+		XTAL_VAL_(inline,set)
 		method(complex_variable_q auto &o)
 		noexcept -> decltype(o)
 		{
@@ -87,7 +87,7 @@ struct cut<M_app>
 			return o;
 		}
 		template <std::in_place_t>
-		XTAL_DEF_(inline,set)
+		XTAL_VAL_(inline,set)
 		method(bond::pack_q auto &o)
 		noexcept -> decltype(o)
 		requires un_v<complex_variable_q<decltype(o)>>
@@ -124,7 +124,7 @@ struct cut<M_app>
 		//\
 		template <invariable_q auto ...Ns>
 		template <auto ...Ns> requires (...and invariable_f(Ns)())// Alt. req'd by LLVM 16
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(auto o)
 		noexcept -> auto
 		{
@@ -147,7 +147,7 @@ struct cut<M_dir>
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(auto &&o)
 		noexcept -> auto
 		{
@@ -160,7 +160,7 @@ struct cut<M_dir>
 			XTAL_0IF (M_dir < 0) {return cut_t<N_max>::template method<Ns...>(XTAL_REF_(o));}
 		}
 		template <std::in_place_t>
-		XTAL_DEF_(inline,set)
+		XTAL_VAL_(inline,set)
 		method(auto &o)
 		noexcept -> decltype(o)
 		{
@@ -194,7 +194,7 @@ struct cut<M_range>
 	//	TODO: Implement smooth version (together with smooth `part<unsigned>`) (via `Ns...`)?
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(auto &&o)
 		noexcept -> auto
 		{

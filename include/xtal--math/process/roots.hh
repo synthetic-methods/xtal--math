@@ -14,7 +14,7 @@ namespace xtal::process::math
 template <int M_exp=1, int M_cut=0>	struct  roots;
 template <int M_exp=1, int M_cut=0>	using   roots_t = process::confined_t<roots<M_exp>>;
 template <int M_exp=1, int M_cut=0>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 roots_f(auto &&o)
 noexcept -> decltype(auto)
 {
@@ -37,7 +37,7 @@ struct roots
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&w)
 		const noexcept -> auto
 		requires different_q<decltype(w), decltype(objective_f(w))>
@@ -45,7 +45,7 @@ struct roots
 			return method(objective_f(XTAL_REF_(w)));
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&w)
 		const noexcept -> auto
 		requires      same_q<decltype(w), decltype(objective_f(w))>

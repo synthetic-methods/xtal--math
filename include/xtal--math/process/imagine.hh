@@ -36,7 +36,7 @@ struct imagine
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		//\
 		method(atom::math::pade::uniplex_q auto &&z) const
 		method(atom::couple_q auto &&z)
@@ -46,7 +46,7 @@ struct imagine
 			return z.form(method(z.signum()), z.magnum());
 		};
 		template <auto ...>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(complex_field_q auto &&z)
 		const noexcept -> decltype(auto)
 		{
@@ -71,14 +71,14 @@ struct imagine
 			}
 		};
 		template <auto ...>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(simplex_field_q auto &&x)
 		const noexcept -> decltype(auto)
 		{
 			return method(XTAL_REF_(x), XTAL_ALL_(x){});
 		};
 		template <auto ...>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(simplex_field_q auto &&x, simplex_field_q auto &&y)
 		const noexcept -> decltype(auto)
 		{
@@ -107,7 +107,7 @@ template <int M_rot=0, int M_con=0>
 XTAL_TYP_(let) imagine_t = process::confined_t<imagine<M_rot, M_con>>;
 
 template <int M_rot=0, int M_con=0, auto ...Ns>
-XTAL_DEF_(let) imagine_f = [] XTAL_1FN_(call) (imagine_t<M_rot, M_con>{}.template method<Ns...>);
+XTAL_VAL_(let) imagine_f = [] XTAL_1FN_(call) (imagine_t<M_rot, M_con>{}.template method<Ns...>);
 
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -18,7 +18,7 @@ template <int M_ism=1, int M_car=0>
 XTAL_TYP_(let) dilogarithm_t = process::confined_t<dilogarithm<M_ism, M_car>>;
 
 template <int M_ism=1, int M_car=0, int ...Ns>
-XTAL_DEF_(let) dilogarithm_f = [] XTAL_1FN_(call)
+XTAL_VAL_(let) dilogarithm_f = [] XTAL_1FN_(call)
 	(dilogarithm_t<M_ism, M_car>::template method<Ns...>);
 
 
@@ -38,7 +38,7 @@ struct dilogarithm<1, M_car>
 		using S_::S_;
 
 		template <int N_lim=3>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(complex_field_q auto const &q, complex_field_q auto const &o)
 		noexcept -> decltype(auto)
 		{
@@ -60,7 +60,7 @@ struct dilogarithm<1, M_car>
 			}
 		}
 		template <int N_lim=3>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(complex_field_q auto const &q)
 		noexcept -> decltype(auto)
 		{

@@ -26,7 +26,7 @@ template <>
 struct codeficient<>
 {
 	template <auto ...Ns>
-	XTAL_DEF_(return,inline,let)
+	XTAL_VAL_(return,inline,let)
 	method(auto &&o)
 	const noexcept -> auto
 	{
@@ -57,7 +57,7 @@ struct codeficient<>
 				using R_::R_;
 
 				template <auto ...Ns>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				method(auto &&o, auto &&...oo)
 				const noexcept -> auto
 				{
@@ -97,7 +97,7 @@ struct codeficient<M>
 				using R_::R_;
 
 				template <auto ...Ns>
-				XTAL_DEF_(inline,let)
+				XTAL_VAL_(inline,let)
 				method(auto &&...oo)
 				const noexcept -> auto
 				{

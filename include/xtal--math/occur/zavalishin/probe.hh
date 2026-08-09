@@ -36,8 +36,8 @@ struct probe<U>
 		using T_ = typename S_::self_type;
 		using U_ = U;
 		
-		XTAL_DEF_(set) dot_f = [] XTAL_1FN_(call) (process::math::dot_f);
-		XTAL_DEF_(set) exp_f = [] XTAL_1FN_(call) (process::math::taylor::logarithm_t<-1>{}.template method<3>);
+		XTAL_VAL_(set) dot_f = [] XTAL_1FN_(call) (process::math::dot_f);
+		XTAL_VAL_(set) exp_f = [] XTAL_1FN_(call) (process::math::taylor::logarithm_t<-1>{}.template method<3>);
 
 	public:
 		using S_::S_;
@@ -58,7 +58,7 @@ struct probe<U>
 			public:// OPERATE
 
 				template <auto ...Ns>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				method(auto &&...oo)
 				const noexcept -> decltype(auto)
 				{

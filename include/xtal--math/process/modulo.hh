@@ -37,7 +37,7 @@ struct modulo<M_mod>
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&z)
 		const noexcept -> auto
 		requires un_v<atom::math::phason_q<decltype(z)>>
@@ -85,7 +85,7 @@ struct modulo<M_mod>
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&z)
 		const noexcept -> auto
 		requires un_v<atom::math::phason_q<decltype(z)>>
@@ -117,7 +117,7 @@ struct modulo<M_mod>
 			XTAL_0IF_(void)
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&z)
 		const noexcept -> auto
 		requires in_v<atom::math::phason_q<decltype(z)>>
@@ -148,7 +148,7 @@ struct modulo<0, 0>
 		using S_::S_;
 
 		template <int N_re=0, int N_im=0>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&x)
 		const noexcept -> decltype(auto)
 		{
@@ -201,7 +201,7 @@ struct modulo<0, 0>
 ////////////////////////////////////////////////////////////////////////////////
 
 template <auto ...Ms>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 modulo_f(auto &&...oo)
 noexcept -> decltype(auto)
 {

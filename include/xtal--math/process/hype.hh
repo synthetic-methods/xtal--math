@@ -72,7 +72,7 @@ struct hype
 	public:// OPERATE
 
 		template <int N_lim=0, int N_adj=0>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto const &u)
 		const noexcept -> auto
 		{
@@ -84,7 +84,7 @@ struct hype
 			XTAL_0IF (N_adj == -1) {return method<N_lim>(u, std::complex<V>{I, -I});}
 		}
 		template <int N_lim=0, int N_adj=0>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto const &u, simplex_field_q auto const &v)
 		const noexcept -> auto
 		{
@@ -105,7 +105,7 @@ struct hype
 		}
 
 		template <int N_lim=0, int N_adj=0>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto const &u, complex_field_q auto const &z)
 		const noexcept -> auto
 		{
@@ -119,7 +119,7 @@ struct hype
 
 	private:
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method_approx(auto u, complex_field_q auto const &z)
 		noexcept -> auto
 		{
@@ -161,7 +161,7 @@ struct hype
 		}
 		/**/
 		template <int N_lim=0> requires in_v<M_ism, -3> and (0 < N_lim)
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method_approx(auto u, complex_field_q auto const &z)
 		noexcept -> auto
 		{
@@ -221,7 +221,7 @@ struct hype
 ////////////////////////////////////////////////////////////////////////////////
 
 template <auto N>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 hype_f(auto &&...oo)
 noexcept -> decltype(auto)
 {

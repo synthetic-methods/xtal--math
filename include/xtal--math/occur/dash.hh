@@ -24,7 +24,7 @@ template <         class S             >	struct  dash<S> : bond::compose<bond::t
 ////////////////////////////////////////////////////////////////////////////////
 
 template <class S>
-XTAL_DEF_(let) dash_f = [] (auto &&...oo) XTAL_0FN_(to) (dash_s<S, XTAL_ALL_(oo)...>(XTAL_REF_(oo)...));
+XTAL_VAL_(let) dash_f = [] (auto &&...oo) XTAL_0FN_(to) (dash_s<S, XTAL_ALL_(oo)...>(XTAL_REF_(oo)...));
 
 
 ///////////////////////////////////////////////////////////////////////////////

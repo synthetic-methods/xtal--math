@@ -18,7 +18,7 @@ template <int M_ism=-1^1>
 using proot_t = process::confined_t<proot<M_ism>>;
 
 template <int M_ism=-1^1>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 proot_f(auto &&x)
 noexcept -> decltype(auto)
 {
@@ -65,7 +65,7 @@ struct proot
 	public:// OPERATE
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(extent_type i)
 		noexcept -> extent_type
 		{
@@ -78,7 +78,7 @@ struct proot
 
 	protected:
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method_map(extent_type i)
 		noexcept -> extent_type
 		{

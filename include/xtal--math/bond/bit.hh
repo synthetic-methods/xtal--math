@@ -12,7 +12,7 @@ namespace xtal::bond::math
 /////////////////////////////////////////////////////////////////////////////////
 
 template <class T=void>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_exchange_f(auto &&u)
 noexcept -> auto
 {
@@ -57,7 +57,7 @@ noexcept -> auto
 ///////////////////////////////////////////////////////////////////////////////
 
 template <int N_dir=0>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_axes_f(ordinal_variable_q auto u)
 noexcept -> std::array<XTAL_ALL_(u), 2>
 {
@@ -72,7 +72,7 @@ noexcept -> std::array<XTAL_ALL_(u), 2>
 }
 
 template <int N_dir=0>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_axis_f(ordinal_variable_q auto u)
 noexcept -> auto
 {
@@ -86,7 +86,7 @@ noexcept -> auto
 	XTAL_0IF_(else)      {return  u   ;}
 }
 template <int N_dir=0>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_axis_f(ordinal_constant_q auto u_)
 noexcept -> auto
 {
@@ -100,7 +100,7 @@ noexcept -> auto
 \returns `~0` if the argument `== false`, `0` otherwise.
 */
 template <class T=int>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_sign_f(bool o)
 noexcept -> auto
 {
@@ -110,7 +110,7 @@ noexcept -> auto
 \returns `~0` if the argument `< 0`, `0` otherwise.
 */
 template <class T=void>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_sign_f(integral_variable_q auto o)
 noexcept -> auto
 {
@@ -145,7 +145,7 @@ noexcept -> auto
 \returns `~0` if the argument `< 0`, `0` otherwise.
 */
 template <class T=void>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_sign_f(real_variable_q auto o)
 noexcept -> auto
 {
@@ -156,7 +156,7 @@ noexcept -> auto
 \returns `~0` if the argument `< 0`, `0` otherwise.
 */
 template <class T=void>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_sign_f(constant_q auto w)
 noexcept -> auto
 {
@@ -164,7 +164,7 @@ noexcept -> auto
 }
 
 template <int N_dir=0, cardinal_variable_q U>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_sign_f(U const &x, U const &y)
 noexcept -> auto
 {
@@ -174,7 +174,7 @@ noexcept -> auto
 	XTAL_0IF (0 <  N_dir) {return  bit_sign_f(y - x);}
 }
 template <int N_dir=0,  ordinal_variable_q V>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_sign_f(V const &x, V const &y)
 noexcept -> auto
 {
@@ -183,7 +183,7 @@ noexcept -> auto
 }
 
 template <auto f>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_sign_f(ordinal_variable_q auto v, auto &&...oo)
 noexcept -> auto
 {
@@ -197,7 +197,7 @@ noexcept -> auto
 ////////////////////////////////////////////////////////////////////////////////
 
 template <auto N_ind, auto N_dex=0>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_mask_f()
 noexcept -> auto
 {
@@ -208,11 +208,11 @@ noexcept -> auto
 	XTAL_0IF (1 <= N_dex) {return bit_mask_f<N_msk, N_dex - one>();}
 }
 template <auto N_ind, auto N_dex=0>
-XTAL_DEF_(let)
+XTAL_VAL_(let)
 bit_mask_v = bit_mask_f<N_ind, N_dex>();
 
 template <auto N_ind, auto N_dex=0>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_mask_f(ordinal_q auto const u)
 noexcept -> auto
 {
@@ -221,7 +221,7 @@ noexcept -> auto
 
 
 template <auto N_ind, auto N_dex=0>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_prod_f(cardinal_variable_q auto w)
 noexcept -> auto
 {
@@ -235,7 +235,7 @@ noexcept -> auto
 	return u;
 }
 template <auto N_ind=5, auto N_dex=0>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_prod_f(ordinal_variable_q auto v)
 noexcept -> auto
 {
@@ -245,7 +245,7 @@ noexcept -> auto
 
 ///////////////////////////////////////////////////////////////////////////////
 
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_exponent_f(real_variable_q auto u)
 noexcept -> auto
 {
@@ -265,7 +265,7 @@ noexcept -> auto
 		return    static_cast<U_delta>(std::ilogb(XTAL_MOV_(u)));
 	}
 }
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_exponent_f(complex_variable_q auto &&w)
 noexcept -> auto
 {
@@ -281,27 +281,27 @@ noexcept -> auto
 \returns The number of bits constituting `V`.
 */
 template <class V>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_depth_f()
 noexcept -> int
 {
 	return static_cast<int>(sizeof(V) << 3);
 }
 
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_depth_f(cardinal_variable_q auto u)
 noexcept -> int
 {
 	auto const r = one&bit_sign_f(-u);
 	return std::bit_width(u - r) + r;
 }
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_depth_f(ordinal_variable_q auto v)
 noexcept -> int
 {
 	return bit_sign_f<[] XTAL_1FN_(call) (bit_depth_f)>(XTAL_MOV_(v));
 }
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_depth_f(real_variable_q auto &&x)
 noexcept -> int
 {
@@ -309,13 +309,13 @@ noexcept -> int
 	auto constexpr X_fat = X_fit::diplo_2*X_fit::dnsilon_1;
 	return bit_axis_f<1>(bit_exponent_f(X_fat*XTAL_REF_(x)));
 }
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_depth_f(complex_variable_q auto &&x)
 noexcept -> int
 {
 	return bit_depth_f(norm(XTAL_REF_(x))) + one >> one;
 }
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_depth_f(constant_q auto w)
 noexcept -> auto
 {
@@ -325,14 +325,14 @@ noexcept -> auto
 
 ////////////////////////////////////////////////////////////////////////////////
 
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_shift_f(auto &&o)
 noexcept -> auto
 {
 	return bit_depth_f(XTAL_REF_(o)) - one;
 }
 template <int N_ord>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_shift_f(integral_variable_q auto u)
 noexcept -> auto
 {
@@ -347,7 +347,7 @@ noexcept -> auto
 		return u;
 	}
 }
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_shift_f(integral_variable_q auto u, ordinal_q auto n)
 noexcept -> auto
 {
@@ -363,7 +363,7 @@ noexcept -> auto
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int N_dir=0, cardinal_variable_q U>
-XTAL_DEF_(inline,let)
+XTAL_VAL_(inline,let)
 bit_swap_f(U &x, U &y)
 noexcept -> auto
 {
@@ -373,7 +373,7 @@ noexcept -> auto
 	return v;
 }
 template <int N_dir=0,  ordinal_variable_q V>
-XTAL_DEF_(inline,let)
+XTAL_VAL_(inline,let)
 bit_swap_f(V &x, V &y)
 noexcept -> auto
 {
@@ -385,7 +385,7 @@ noexcept -> auto
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int N_sel=0, integral_variable_q U>
-XTAL_DEF_(inline,let)
+XTAL_VAL_(inline,let)
 bit_extremum_f(U x, U y)
 noexcept -> auto
 {
@@ -396,7 +396,7 @@ noexcept -> auto
 	XTAL_0IF (0 == N_sel) {return bond::pack_f(x^y, y);}
 }
 template <int N_sel=0, cardinal_variable_q U>
-XTAL_DEF_(inline,let)
+XTAL_VAL_(inline,let)
 bit_extremal_f(U x, U y)
 noexcept -> auto
 {
@@ -412,7 +412,7 @@ noexcept -> auto
 ////////////////////////////////////////////////////////////////////////////////
 
 template <class U>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_zoom_f(U &&x, U &&y)
 noexcept -> auto
 {
@@ -422,7 +422,7 @@ noexcept -> auto
 //	(void) bit_swap_f<+1>(i_dn,  i_up);
 	return bit_exchange_f(I_ex - ((bit_sign_f<+1>(i_dn,i_up)&(i_dn^i_up))^i_up));
 }
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_zoom_f(complex_variable_q auto const &z)
 noexcept -> auto
 {
@@ -435,7 +435,7 @@ noexcept -> auto
 /*!
 \returns The number of bits set in `u`.
 */
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_count_f(cardinal_variable_q auto u)
 noexcept -> int
 {
@@ -444,14 +444,14 @@ noexcept -> int
 /*!
 \returns The number of bits set in `v`.
 */
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_count_f(ordinal_variable_q auto v)
 noexcept -> int
 {
 	return bit_sign_f<[] XTAL_1FN_(call) (bit_count_f)>(XTAL_MOV_(v));
 }
 
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_count_f(constant_q auto w)
 noexcept -> auto
 {
@@ -466,7 +466,7 @@ noexcept -> auto
          restricted to `N_subdepth` when `0 < N_subdepth < sizeof(u) << 3U`.
 \note    Requires `log2(sizeof(u) << 3U)` iterations.
 */
-XTAL_DEF_(return,let)
+XTAL_VAL_(return,let)
 bit_reverse_f(cardinal_variable_q auto u, int const &n_subdepth)
 noexcept -> auto
 {
@@ -480,20 +480,20 @@ noexcept -> auto
 	u >>= N0 - n_subdepth; assert(0 < n_subdepth and n_subdepth <= N0);
 	return u;
 }
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_reverse_f(ordinal_variable_q auto v, int const &n_subdepth)
 noexcept -> auto
 {
 	return bit_sign_f<[] XTAL_1FN_(call) (bit_reverse_f)>(XTAL_MOV_(v), n_subdepth);
 }
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_reverse_f(constant_q auto w, int const &n_subdepth)
 noexcept -> auto
 {
 	return constant_t<bit_reverse_f(w(), n_subdepth)>{};
 }
 template <int N_subdepth=0>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_reverse_f(auto &&x)
 noexcept -> auto
 {
@@ -508,7 +508,7 @@ noexcept -> auto
 \returns The fractional portion of `x` as a full-width `delta_type`.
 */
 template <class T_return=void>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_fraction_f()
 noexcept -> auto
 {
@@ -521,7 +521,7 @@ noexcept -> auto
 	XTAL_0IF_(void)
 }
 template <class Y_return=void>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_fraction_f(integral_variable_q auto x)
 noexcept -> auto
 {
@@ -552,7 +552,7 @@ noexcept -> auto
 	XTAL_0IF_(void)
 }
 template <class Y_return=void>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_fraction_f(real_variable_q auto x)
 noexcept -> auto
 {
@@ -613,7 +613,7 @@ noexcept -> auto
 	}
 }
 template <class T_return=void>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_fraction_f(complex_variable_q auto const &x)
 noexcept -> auto
 requires requires {bit_fraction_f(x.real()); bit_fraction_f(x.imag());}
@@ -634,7 +634,7 @@ requires requires {bit_fraction_f(x.real()); bit_fraction_f(x.imag());}
 
 ///////////////////////////////////////////////////////////////////////////////
 
-XTAL_DEF_(return,let)
+XTAL_VAL_(return,let)
 bit_separation_f(real_variable_q auto const &x)
 noexcept -> auto
 {
@@ -652,7 +652,7 @@ noexcept -> auto
 	m  ^=  z; reinterpret_cast<U & >(m) -= (z);
 	return      atom::couple_t<V[2]>{m, o - N};
 }
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 bit_reparation_f(atom::couple_q auto const &mn)
 noexcept -> auto
 {
@@ -666,7 +666,7 @@ noexcept -> auto
 \returns The `target` to `N_zoom` bits of precision after the decimal.
 */
 template <int N_zoom=0>
-XTAL_DEF_(return,verbatim,set)
+XTAL_VAL_(return,verbatim,set)
 bit_trim_f(integral_variable_q auto x)
 noexcept -> XTAL_ALL_(x)
 {
@@ -676,7 +676,7 @@ noexcept -> XTAL_ALL_(x)
 #pragma optimize("", off)
 #endif
 template <int N_zoom=0>
-XTAL_DEF_(return,verbatim,set)
+XTAL_VAL_(return,verbatim,set)
 bit_trim_f(real_variable_q auto x)
 noexcept -> XTAL_ALL_(x)
 {
@@ -698,7 +698,7 @@ noexcept -> XTAL_ALL_(x)
 #endif
 
 template <int N_zoom=0>
-XTAL_DEF_(return,verbatim,set)
+XTAL_VAL_(return,verbatim,set)
 bit_trim_f(complex_variable_q auto x)
 noexcept -> XTAL_ALL_(x)
 {

@@ -12,7 +12,7 @@ namespace xtal::process::math::_test
 /////////////////////////////////////////////////////////////////////////////////
 
 template <size_type N_columns>
-XTAL_DEF_(return,let)
+XTAL_VAL_(return,let)
 ConvertToEigenMatrix(double **data, size_type n_rows)
 noexcept
 {

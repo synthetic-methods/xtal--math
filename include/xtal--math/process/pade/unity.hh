@@ -48,7 +48,7 @@ struct unity<M_ism, M_car>
 		using S_::S_;
 
 		template <int N_lim=-1, class U>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(std::initializer_list<U> o)
 		const noexcept -> decltype(auto)
 		{
@@ -57,14 +57,14 @@ struct unity<M_ism, M_car>
 			return method<N_lim>(w);
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(complex_field_q auto const &u)
 		const noexcept -> decltype(auto)
 		{
 			return method<N_lim>(u.real(), u.imag());
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&t_re, simplex_field_q auto &&t_im)
 		const noexcept -> decltype(auto)
 		{
@@ -73,7 +73,7 @@ struct unity<M_ism, M_car>
 		}
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(simplex_field_q auto const &t)
 		const noexcept -> decltype(auto)
 		{
@@ -106,7 +106,7 @@ struct unity<M_ism, M_car>
 			}
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(atom::math::phason_q auto const &t_)
 		const noexcept -> decltype(auto)
 		{
@@ -145,7 +145,7 @@ struct unity<M_ism, M_car>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(complex_field_q auto &&u)
 		const noexcept -> decltype(auto)
 		{
@@ -168,7 +168,7 @@ XTAL_TYP_(let) unity_t = process::confined_t<
 	unity  <M_ism, M_car>
 >;
 template <int M_ism=1, int M_car=1, int N_lim=2>
-XTAL_DEF_(let) unity_f = [] XTAL_1FN_(call) (
+XTAL_VAL_(let) unity_f = [] XTAL_1FN_(call) (
 	unity_t<M_ism, M_car>{}.template method<N_lim>
 );
 

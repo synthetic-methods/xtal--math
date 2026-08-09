@@ -14,14 +14,14 @@ namespace xtal::process::math
 ////////////////////////////////////////////////////////////////////////////////
 
 template <int M_add=1, int M_mul=1, class W>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 term_f(W &&w)
 noexcept -> auto
 {
 	return XTAL_REF_(w);
 }
 template <int M_add=1, int M_mul=1, class W, class X, class ...Xs>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 term_f(W &&w, X &&x, Xs &&...xs)
 noexcept -> auto
 {
@@ -126,7 +126,7 @@ struct  term
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&...oo)
 		const noexcept -> decltype(auto)
 		{

@@ -18,7 +18,7 @@ template <int M_ism=0, int M_car=0>
 using identity_t = process::confined_t<identity<M_ism, M_car>>;
 
 template <int M_ism=0, int M_car=0>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 identity_f(auto &&x, auto &&...oo)
 noexcept -> decltype(auto)
 {
@@ -41,7 +41,7 @@ struct identity
 
 	public:// OPERATE
 		template <auto ...>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&x, auto &&...oo)
 		const noexcept -> auto
 		{
@@ -74,7 +74,7 @@ struct identity
 				using R_::R_;
 
 				template <auto ...Ns>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				method(auto &&o, auto &&...oo)
 				const noexcept -> decltype(auto)
 				requires
@@ -82,7 +82,7 @@ struct identity
 				{	return                R_::template method<Ns...>(XTAL_REF_(oo)..., XTAL_REF_(o));
 				};
 				template <auto ...Ns>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				method(auto &&o, auto &&...oo)
 				noexcept -> decltype(auto)
 				requires

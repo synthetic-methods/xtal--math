@@ -39,7 +39,7 @@ struct part<signed>
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(integral_constant_q auto const &o)
 		noexcept -> auto
 		{
@@ -48,7 +48,7 @@ struct part<signed>
 		}
 		/**/
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(integral_variable_q auto o)
 		noexcept -> auto
 		{
@@ -88,7 +88,7 @@ struct part<signed>
 		}
 		/***/
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(real_variable_q auto const &o)
 		noexcept -> XTAL_ALL_(o)
 		{
@@ -96,7 +96,7 @@ struct part<signed>
 			return xtd::copysign(U_fit::alpha_1, o);
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(complex_variable_q auto const &o)
 		noexcept -> XTAL_ALL_(o)
 		{
@@ -104,7 +104,7 @@ struct part<signed>
 			return o*root_f<-2>(dot_f(o));
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(atom::quantify_q auto &&o)
 		noexcept -> decltype(auto)
 		{
@@ -114,7 +114,7 @@ struct part<signed>
 		}
 
 		template <std::in_place_t>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(ordinal_variable_q auto &u, integral_constant_q auto N_dir)
 		noexcept -> auto
 		{
@@ -136,7 +136,7 @@ struct part<signed>
 			return method(v);
 		}
 		template <std::in_place_t>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(cardinal_variable_q auto &u, integral_constant_q auto N_dir)
 		noexcept -> auto
 		{
@@ -145,7 +145,7 @@ struct part<signed>
 			return method<std::in_place>(reinterpret_cast<V &>(u), N_dir);
 		}
 		template <std::in_place_t>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(integral_variable_q auto &u)
 		noexcept -> auto
 		{
@@ -154,7 +154,7 @@ struct part<signed>
 		//\
 		template <exvariable_q auto N_dir>
 		template <auto N_dir> requires requires {exvariable_f(N_dir);}// Alt. for LLVM 16
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(integral_variable_q auto &u)
 		noexcept -> auto
 		{
@@ -162,14 +162,14 @@ struct part<signed>
 		}
 
 		template <std::in_place_t>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(real_variable_q auto &o)
 		noexcept -> XTAL_ALL_(o)
 		{
 			auto const o_sgn = method(o); o *= o_sgn; return o_sgn;
 		}
 		template <std::in_place_t>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(complex_variable_q auto &o)
 		noexcept -> XTAL_ALL_(o)
 		{
@@ -195,14 +195,14 @@ struct part<unsigned>
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(cardinal_variable_q auto const &o)
 		noexcept -> auto
 		{
 			return o;
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method( ordinal_variable_q auto const &o)
 		noexcept -> auto
 		{
@@ -211,7 +211,7 @@ struct part<unsigned>
 			return (o^v) - v;
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(real_variable_q auto const &o)
 		noexcept -> auto
 		{
@@ -219,7 +219,7 @@ struct part<unsigned>
 			return xtd::copysign(o, U_fit::alpha_1);
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(complex_variable_q auto const &o)
 		noexcept -> auto
 		{
@@ -227,7 +227,7 @@ struct part<unsigned>
 			return root_f<2>(dot_f(o));
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(atom::quantify_q auto &&o)
 		noexcept -> decltype(auto)
 		{
@@ -237,7 +237,7 @@ struct part<unsigned>
 		}
 
 		template <std::in_place_t>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(real_variable_q auto &o)
 		noexcept -> auto
 		{
@@ -248,7 +248,7 @@ struct part<unsigned>
 			return o_mgn;
 		}
 		template <std::in_place_t>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(complex_variable_q auto &o)
 		noexcept -> auto
 		{
@@ -270,14 +270,14 @@ struct part<xtd::real<>>
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(auto &&o)
 		noexcept -> auto
 		{
 			return std::real(XTAL_REF_(o));
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(atom::math::phason_q auto &&t_)
 		noexcept -> auto
 		{
@@ -294,11 +294,11 @@ template <typename ...As>
 using part_t = process::confined_t<part<As...>>;
 
 template <typename ...As>
-XTAL_DEF_(let)
+XTAL_VAL_(let)
 part_f = [] XTAL_1FN_(call) (part_t<As...>::method);
 
 template <typename ...As>
-XTAL_DEF_(let)
+XTAL_VAL_(let)
 part_e = [] XTAL_1FN_(call) (part_t<As...>::template method<std::in_place>);
 
 

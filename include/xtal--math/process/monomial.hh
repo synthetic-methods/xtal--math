@@ -16,28 +16,28 @@ namespace xtal::process::math
 template <int ...Ms> XTAL_TYP_(new)  monomial;
 template <int ...Ms> XTAL_TYP_(let)  monomial_t = process::confined_t<monomial<Ms...>>;
 template <int ...Ms> requires (0 == sizeof...(Ms))
-XTAL_DEF_(return,inline,set)
+XTAL_VAL_(return,inline,set)
 monomial_f()
 noexcept -> auto
 {
 	return one;
 }
 template <int M> requires (0 == M)
-XTAL_DEF_(return,inline,set)
+XTAL_VAL_(return,inline,set)
 monomial_f(objective_q auto &&o)
 noexcept -> XTAL_ALL_(o)
 {
 	return XTAL_ALL_(o) {one};
 }
 template <int M> requires (1 == M)
-XTAL_DEF_(return,inline,set)
+XTAL_VAL_(return,inline,set)
 monomial_f(objective_q auto &&o)
 noexcept -> XTAL_ALL_(o)
 {
 	return XTAL_REF_(o);
 }
 template <int M> requires (2 == M)
-XTAL_DEF_(return,inline,set)
+XTAL_VAL_(return,inline,set)
 monomial_f(objective_q auto &&o)
 noexcept -> XTAL_ALL_(o)
 {
@@ -53,7 +53,7 @@ noexcept -> XTAL_ALL_(o)
 	}
 }
 template <int M> requires (3 == M)
-XTAL_DEF_(return,inline,set)
+XTAL_VAL_(return,inline,set)
 monomial_f(objective_q auto &&o)
 noexcept -> XTAL_ALL_(o)
 {
@@ -71,7 +71,7 @@ noexcept -> XTAL_ALL_(o)
 	}
 }
 template <int M> requires (4 <= M)
-XTAL_DEF_(return,inline,set)
+XTAL_VAL_(return,inline,set)
 monomial_f(objective_q auto &&o)
 noexcept -> XTAL_ALL_(o)
 {
@@ -83,7 +83,7 @@ noexcept -> XTAL_ALL_(o)
 }
 
 template <int M> requires (0 <= M)
-XTAL_DEF_(return,inline,set)
+XTAL_VAL_(return,inline,set)
 monomial_f(subjective_q auto &&o)
 noexcept -> auto
 {
@@ -91,7 +91,7 @@ noexcept -> auto
 }
 
 template <int M> requires (M <  0)
-XTAL_DEF_(return,inline,set)
+XTAL_VAL_(return,inline,set)
 monomial_f(auto &&o)
 noexcept -> auto
 {
@@ -99,7 +99,7 @@ noexcept -> auto
 }
 
 template <int M, int ...Ms>
-XTAL_DEF_(return,inline,set)
+XTAL_VAL_(return,inline,set)
 monomial_f(auto &&o, auto &&...oo)
 noexcept -> auto
 requires (1 <= sizeof...(Ms)) and (1 <= sizeof...(oo))
@@ -129,7 +129,7 @@ struct  monomial
 	public:
 
 		template <int ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&...oo)
 		const noexcept -> auto
 		{

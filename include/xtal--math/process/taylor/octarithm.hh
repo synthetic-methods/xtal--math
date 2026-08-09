@@ -37,7 +37,7 @@ struct octarithm<M_ism, M_div>
 	//	TODO: Define `complex` variant!
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(auto &&...oo)
 		noexcept -> auto
 		requires (2 <= sizeof...(oo))
@@ -46,7 +46,7 @@ struct octarithm<M_ism, M_div>
 		}
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(auto o)
 		noexcept -> XTAL_ALL_(o)
 		requires un_v<atom::quantify_q<decltype(o)>>
@@ -63,7 +63,7 @@ struct octarithm<M_ism, M_div>
 			return o;
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(auto &&o)
 		noexcept -> decltype(auto)
 		requires in_v<atom::quantify_q<decltype(o)>>
@@ -90,7 +90,7 @@ struct octarithm<M_ism, M_div>
 	//	TODO: Define `complex` variant!
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(auto &&...oo)
 		noexcept -> auto
 		requires (2 <= sizeof...(oo))
@@ -99,7 +99,7 @@ struct octarithm<M_ism, M_div>
 		}
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,set)
+		XTAL_VAL_(return,set)
 		method(integral_q auto &&x)
 		noexcept -> auto
 		{
@@ -127,7 +127,7 @@ struct octarithm<M_ism, M_div>
 			}
 		}
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(real_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
@@ -148,7 +148,7 @@ struct octarithm<M_ism, M_div>
 			XTAL_0IF_(else)                {return         exp(N2*XTAL_MOV_(o));}
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(auto &&o)
 		noexcept -> decltype(auto)
 		requires in_v<atom::quantify_q<decltype(o)>>
@@ -159,7 +159,7 @@ struct octarithm<M_ism, M_div>
 
 	protected:
 		template <int N_lim=0>
-		XTAL_DEF_(return,set)
+		XTAL_VAL_(return,set)
 		methox(real_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
@@ -187,7 +187,7 @@ XTAL_TYP_(let) octarithm_t = process::confined_t<
 	octarithm  <M_ism, M_div>
 >;
 template <int M_ism=2, int M_div=1, int N_lim=2>
-XTAL_DEF_(let) octarithm_f = [] XTAL_1FN_(call) (
+XTAL_VAL_(let) octarithm_f = [] XTAL_1FN_(call) (
 	octarithm_t<M_ism, M_div>::template method<N_lim>
 );
 

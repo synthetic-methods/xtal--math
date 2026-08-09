@@ -15,7 +15,7 @@ template <class   ..._s>	struct  loop;
 template <class   ..._s>	using   loop_t = typename loop<_s...>::type;
 template <class   ...Ts>	concept loop_q = bond::tag_inner_p<loop_t, Ts...>;
 
-XTAL_DEF_(let) loop_f = [] XTAL_1FN_(call) (_detail::factory<loop_t>::make);
+XTAL_VAL_(let) loop_f = [] XTAL_1FN_(call) (_detail::factory<loop_t>::make);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -65,7 +65,7 @@ public:
 
 	protected:
 		template <index_type I=0>
-		XTAL_DEF_(inline,set)
+		XTAL_VAL_(inline,set)
 		wrap_e(index_type &i)
 		noexcept -> void
 		{
@@ -81,7 +81,7 @@ public:
 			}
 		}
 		template <index_type I=0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		wrap_f(index_type  i)
 		noexcept -> decltype(auto)
 		{
@@ -89,17 +89,17 @@ public:
 		}
 
 	public:
-		XTAL_DEF_(set) mask = size_constant_t<size - 1>{};
+		XTAL_VAL_(set) mask = size_constant_t<size - 1>{};
 
 		template <index_type I=0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		element_f(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			return T ::element_f(XTAL_REF_(o), I);
 		}
 		template <index_type I=0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		element_f(auto &&o, index_type i)
 		noexcept -> decltype(auto)
 		{
@@ -108,21 +108,21 @@ public:
 		}
 
 		template <index_type I=0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		coelement_f(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			return S_::template coelement_f<I>(XTAL_REF_(o));
 		}
 		template <index_type I=0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		coelement_f(auto &&o, integral_q auto &&i)
 		noexcept -> decltype(auto)
 		{
 			return S_::template coelement_f<I>(XTAL_REF_(o), XTAL_REF_(i));
 		}
 		template <index_type I=0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		coelement_f(auto &&o, real_q auto h)
 		noexcept -> decltype(auto)
 		{
@@ -148,7 +148,7 @@ public:
 			return v_dn + v_up;
 		}
 
-		XTAL_DEF_(inline,let)
+		XTAL_VAL_(inline,let)
 		peek(atom::quantify_q auto const &h_)
 		noexcept -> auto
 		{
@@ -157,13 +157,13 @@ public:
 			XTAL_0FN_(to) (H_{peek(get<I>(h_))...})
 				(bond::seek_to_t<H_::size()>{});
 		}
-		XTAL_DEF_(inline,let)
+		XTAL_VAL_(inline,let)
 		peek(real_q auto h)
 		noexcept -> auto
 		{
 			return S_::coelement(h);
 		}
-		XTAL_DEF_(inline,let)
+		XTAL_VAL_(inline,let)
 		push(auto &&e)
 		noexcept -> auto
 		{

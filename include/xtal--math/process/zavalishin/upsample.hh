@@ -23,7 +23,7 @@ template <variable_q auto M_sup>
 struct upsample<M_sup>
 {
 private:
-	XTAL_DEF_(set) M_len = one << M_sup;
+	XTAL_VAL_(set) M_len = one << M_sup;
 
 public:
 	template <class S>
@@ -47,7 +47,7 @@ public:
 		using S_::S_;
 
 	protected:// OPERATE
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		F_lop(auto &&u_)
 		noexcept -> auto
 		{
@@ -58,14 +58,14 @@ public:
 				XTAL_0FN_(to) (U_{u_.template element<I_end - I>()...})
 					(bond::seek_to_t<U_::size()>{});
 		}
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		F_cos(auto &&...oo)
 		noexcept -> auto
 		{
 			auto const w = taylor::cosy_t<1, 2>{}.template method<2>((one *...* XTAL_REF_(oo)));
 			return term_f(-one, two, XTAL_MOV_(w));
 		}
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		F_man(auto &&...oo)
 		noexcept -> auto
 		{
@@ -80,7 +80,7 @@ public:
 			return term_f(term_f(u, w, x), -two, x + one)*(x - one);
 		}
 		template <int N_len, int N_off=1>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		F_men(auto &&u)
 		noexcept -> auto
 		{
@@ -93,7 +93,7 @@ public:
 
 	public:// OPERATE
 		template <int N_sup=0, auto ...Ns> requires (0 == N_sup)
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&x
 		,	auto &&...oo
 		)	const
@@ -102,7 +102,7 @@ public:
 			return S_::template method<Ns...>(XTAL_REF_(x), XTAL_REF_(oo)...);
 		}
 		template <int N_sup=0, auto ...Ns> requires (1 <= N_sup)
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&x, atom::math::dot_q auto &&a
 		,	unstruct_t<decltype(x)> u
 		,	auto &&...oo
@@ -161,7 +161,7 @@ struct upsample<M_sup>
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&...oo
 		)	const
 		noexcept -> auto

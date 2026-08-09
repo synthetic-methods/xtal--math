@@ -24,7 +24,7 @@ struct distortion
 		using S::S;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&...oo)
 		const noexcept -> decltype(auto)
 		{

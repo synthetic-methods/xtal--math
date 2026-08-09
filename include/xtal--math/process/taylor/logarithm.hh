@@ -19,7 +19,7 @@ XTAL_TYP_(let) logarithm_t = process::confined_t<
 	logarithm  <M_ism, M_car>
 >;
 template <int M_ism=1, int M_car=0, int ...Ns>
-XTAL_DEF_(let) logarithm_f = [] XTAL_1FN_(call) (
+XTAL_VAL_(let) logarithm_f = [] XTAL_1FN_(call) (
 	logarithm_t<M_ism, M_car>{}.template method<Ns...>
 );
 
@@ -31,7 +31,7 @@ XTAL_DEF_(let) logarithm_f = [] XTAL_1FN_(call) (
 template <>
 struct logarithm< 1, 0>
 {
-	XTAL_DEF_(set) sinh_aexp_ = [] (auto &&u)
+	XTAL_VAL_(set) sinh_aexp_ = [] (auto &&u)
 		XTAL_0FN_(to) (roots_f<2>(XTAL_REF_(u)).template sum<-1>());
 	
 	using superprocess = process::confined_t<typename dilate_t<2>::template infix<>, taylor::sine<-2>>;
@@ -45,7 +45,7 @@ struct logarithm< 1, 0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(auto &&o)
 		noexcept -> decltype(auto)
 		requires un_v<atom::quantify_q<decltype(o)>>
@@ -59,7 +59,7 @@ struct logarithm< 1, 0>
 			XTAL_0IF_(else)                         {return           log(XTAL_REF_(o));}
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(auto &&o)
 		noexcept -> decltype(auto)
 		requires in_v<atom::quantify_q<decltype(o)>>
@@ -70,7 +70,7 @@ struct logarithm< 1, 0>
 
 	protected:
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		methox(auto &&o)
 		noexcept -> decltype(auto)
 		{
@@ -87,7 +87,7 @@ Approximated by `((Sqrt[(#/2)^2 + 1] + (#/2))^2 &)`.
 template <>
 struct logarithm<-1, 0>
 {
-	XTAL_DEF_(set) exp_asinh_ = [] (auto &&u)
+	XTAL_VAL_(set) exp_asinh_ = [] (auto &&u)
 		XTAL_0FN_(to) (u + root_f<2>(term_f<1, 2>(one, u)));
 	
 	template <class S>
@@ -99,7 +99,7 @@ struct logarithm<-1, 0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(auto &&o)
 		noexcept -> decltype(auto)
 		requires un_v<atom::quantify_q<decltype(o)>>
@@ -113,7 +113,7 @@ struct logarithm<-1, 0>
 			XTAL_0IF_(else)                {return           exp(XTAL_REF_(o));}
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(auto &&o)
 		noexcept -> decltype(auto)
 		requires in_v<atom::quantify_q<decltype(o)>>
@@ -124,7 +124,7 @@ struct logarithm<-1, 0>
 
 //	protected:
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		methox(auto &&o)
 		noexcept -> decltype(auto)
 		{
@@ -157,7 +157,7 @@ struct logarithm< 1, 1>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(auto &&o)
 		noexcept -> XTAL_ALL_(o)
 		requires un_v<atom::quantify_q<decltype(o)>>
@@ -168,7 +168,7 @@ struct logarithm< 1, 1>
 			XTAL_0IF_(else)       {return           log(XTAL_REF_(o));}
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(auto &&o)
 		noexcept -> decltype(auto)
 		requires in_v<atom::quantify_q<decltype(o)>>
@@ -179,7 +179,7 @@ struct logarithm< 1, 1>
 
 	protected:
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		methox(real_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
@@ -187,7 +187,7 @@ struct logarithm< 1, 1>
 			return -K_pi*pade::arc_t<-1, 1>{}.template method<N_lim>(XTAL_MOV_(o));
 		}
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		methox(complex_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{
@@ -218,7 +218,7 @@ struct logarithm<-1, 1>
 	//	TODO: Define `complex` variant!
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(auto &&o)
 		noexcept -> XTAL_ALL_(o)
 		requires un_v<atom::quantify_q<decltype(o)>>
@@ -232,7 +232,7 @@ struct logarithm<-1, 1>
 			XTAL_0IF_(else)                {return           exp(XTAL_REF_(o));}
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(auto &&o)
 		noexcept -> decltype(auto)
 		requires in_v<atom::quantify_q<decltype(o)>>
@@ -243,7 +243,7 @@ struct logarithm<-1, 1>
 
 	protected:
 		template <int N_lim=0> requires (0 == N_lim)
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		methox(real_variable_q auto x)
 		noexcept -> XTAL_ALL_(x)
 		{
@@ -272,7 +272,7 @@ struct logarithm<-1, 1>
 			return x;
 		}
 		template <int N_lim=0> requires (0 != N_lim)
-		XTAL_DEF_(return,set)
+		XTAL_VAL_(return,set)
 		methox(real_variable_q auto o)
 		noexcept -> XTAL_ALL_(o)
 		{

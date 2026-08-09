@@ -21,7 +21,7 @@ template <int M_exp=1, int M_cut=0>
 XTAL_TYP_(let) root_t = process::confined_t<root<M_exp, M_cut>>;
 
 template <int M_exp=1, int M_cut=0, auto N_lim=0b11>
-XTAL_DEF_(let) root_f = [] (auto &&z)
+XTAL_VAL_(let) root_f = [] (auto &&z)
 XTAL_0FN_(to) (root_t<M_exp, M_cut>::template method<N_lim>(XTAL_REF_(z)));
 
 
@@ -44,7 +44,7 @@ struct root
 		using S_::S_;
 
 		template <int N_lim=0b11>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(auto &&z)
 		noexcept -> auto
 		requires un_v<atom::quantify_q<XTAL_ALL_(z)>>
@@ -71,7 +71,7 @@ struct root
 			XTAL_0IF_(else) {return pow(XTAL_REF_(z), Z_fit::alpha_1/M_exp);}
 		}
 		template <int N_lim=0b11>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(auto &&z)
 		noexcept -> auto
 		requires in_v<atom::quantify_q<XTAL_ALL_(z)>>
@@ -94,7 +94,7 @@ struct root
 
 	protected:
 		template <int I_lim>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		evaluate(auto &&z, constant_q auto i_exp)
 		noexcept -> objective_t<XTAL_ALL_(z)>
 		requires (M_exp%i_exp == 0 and 1 != M_exp/i_exp)
@@ -103,7 +103,7 @@ struct root
 				method<I_lim>(root_t<-i_exp>::template method<I_lim>(XTAL_REF_(z)));
 		}
 		template <int I_lim> requires in_v<M_exp_mag, 1>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		evaluate(auto &&z)
 		noexcept -> objective_t<XTAL_ALL_(z)>
 		{
@@ -141,7 +141,7 @@ struct root
 		}
 
 		template <int I_lim> requires in_v<M_exp_mag, 2>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		evaluate(complex_variable_q auto z)
 		noexcept -> objective_t<XTAL_ALL_(z)>
 		{
@@ -173,7 +173,7 @@ struct root
 			}
 		}
 		template <int I_lim> requires in_v<M_exp_mag, 2, 3, 5, 7>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		evaluate(real_variable_q auto z)
 		noexcept -> objective_t<XTAL_ALL_(z)>
 		{
@@ -196,7 +196,7 @@ struct root
 
 
 		template <int I_lim>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		approximate(real_variable_q auto z)
 		noexcept -> XTAL_ALL_(z)
 		{
@@ -205,14 +205,14 @@ struct root
 			XTAL_0IF (M_exp < 0) {return infunction<I_lim>(z);}
 		}
 		template <int I_lim>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		exfunction(real_variable_q auto z)
 		noexcept -> XTAL_ALL_(z)
 		{
 			return z*monomial_f<M_exp_mag - 1>(infunction<I_lim>(z));
 		}
 		template <int I_lim>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		infunction(real_variable_q auto z)
 		noexcept -> XTAL_ALL_(z)
 		{

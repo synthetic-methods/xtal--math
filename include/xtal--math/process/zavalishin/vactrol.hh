@@ -24,8 +24,8 @@ template <int M_ind>
 struct vactrol<M_ind>
 {
 private:
-	XTAL_DEF_(set) exp_f = [] XTAL_1FN_(call) (taylor::logarithm_t<-1, 0>{}.template method<0>);
-	XTAL_DEF_(set) oct_f = [] XTAL_1FN_(call) (taylor::octarithm_f<-2>);
+	XTAL_VAL_(set) exp_f = [] XTAL_1FN_(call) (taylor::logarithm_t<-1, 0>{}.template method<0>);
+	XTAL_VAL_(set) oct_f = [] XTAL_1FN_(call) (taylor::octarithm_f<-2>);
 
 public:
 	template <class S>
@@ -44,7 +44,7 @@ public:
 		\brief   Produces a `{voice, accent}` pair from the gate input `x`.
 		*/
 		template <auto ...Ns> requires in_v<M_ind, 1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto x// <- stage (gate)
 		,	atom::math:: phason_q<null_type[2]> auto t_// <- clock
 		,	atom::     quantity_q<null_type[2]> auto f_// <- note head/body
@@ -76,7 +76,7 @@ public:
 		         on `efflux` (requires frequency/warp to be `attach`ed).
 		*/
 		template <auto ...Ns> requires in_v<M_ind, 0>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto x// <- stage (trigger)
 		,	atom::math:: phason_q<null_type[2]> auto t_// <- clock
 		,	atom::     quantity_q<null_type[2]> auto f_// <- note head/body

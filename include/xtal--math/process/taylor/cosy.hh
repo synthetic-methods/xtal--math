@@ -23,7 +23,7 @@ template <int M_ism=1, int N_car=0>	struct  cosy {static_assert(M_ism);};
 template <int M_ism=1, int N_car=0>	using   cosy_t = process::confined_t<cosy<M_ism, N_car>>;
 
 template <int M_ism=1, int M_car=0, int ...Ns>
-XTAL_DEF_(let)
+XTAL_VAL_(let)
 cosy_f = [] XTAL_1FN_(call) (cosy_t<M_ism, M_car>::template method<Ns...>);
 
 
@@ -43,7 +43,7 @@ struct cosy<M_ism, +2>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&o
 		)	const
 		noexcept -> decltype(auto)
@@ -67,7 +67,7 @@ struct cosy<M_ism, -0>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&o
 		)	const
 		noexcept -> decltype(auto)
@@ -99,7 +99,7 @@ struct cosy<M_ism, -2>
 
 	public:
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(auto &&w)
 		noexcept -> auto
 		{
@@ -113,7 +113,7 @@ struct cosy<M_ism, -2>
 
 	protected:
 		template <int N_lim>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		methox(auto &&w)
 		noexcept -> auto
 		{

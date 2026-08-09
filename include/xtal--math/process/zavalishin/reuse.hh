@@ -43,7 +43,7 @@ struct reuse<M_ind>
 	public:// FLOW
 
 		template <signed N_ion>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		fuse(auto &&o)
 		noexcept -> signed
 		{
@@ -54,7 +54,7 @@ struct reuse<M_ind>
 		\note    Active only when `M_ind == -0`.
 		*/
 		template <signed N_ion> requires in_v<M_ind, -0> and in_v<N_ion, -1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		fuse(occur::stage_q auto &&o)
 		noexcept -> signed
 		{
@@ -70,7 +70,7 @@ struct reuse<M_ind>
 		\returns `1` if the state is under threshold, `0` otherwise.
 		*/
 		template <signed N_ion> requires in_v<M_ind, -1> and in_v<N_ion, +1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		fuse(occur::stage_q auto &&o)
 		noexcept -> signed
 		{

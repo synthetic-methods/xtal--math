@@ -35,7 +35,7 @@ struct discard
 		using S_::S_;
 
 		template <int N_car=0>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto const &x)
 		const noexcept -> auto
 		{
@@ -47,7 +47,7 @@ struct discard
 			XTAL_0IF (m_car ==     1) {return   root_f<-1, 1>(x);}
 		}
 		template <int N_car=0>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto const &x, auto const &z)
 		const noexcept -> XTAL_ALL_(x)
 		{
@@ -111,7 +111,7 @@ struct discard<1, M_aux>
 				using R_::R_;
 
 				template <auto ...Ns>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				method(auto &&u, auto &&...oo)
 				const noexcept -> decltype(auto)
 				requires
@@ -125,7 +125,7 @@ struct discard<1, M_aux>
 					return v*root_f<M_pow, 1>(XTAL_REF_(u));
 				}
 				template <auto ...Ns>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				method(auto &&u, auto &&...oo)
 				noexcept -> decltype(auto)
 				requires
@@ -169,7 +169,7 @@ struct discard<1>
 				using R_::R_;
 
 				template <auto ...Ns>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				method(auto &&u, auto &&...oo)
 				const noexcept -> decltype(auto)
 				requires
@@ -196,7 +196,7 @@ struct discard<1>
 					}
 				}
 				template <auto ...Ns>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				method(auto &&u, auto &&...oo)
 				noexcept -> decltype(auto)
 				requires
@@ -253,7 +253,7 @@ struct discard<2, M_aux>
 				using R_::R_;
 
 				template <auto ...Ns>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				method(auto &&u, auto &&...oo)
 				const noexcept -> decltype(auto)
 				requires
@@ -263,7 +263,7 @@ struct discard<2, M_aux>
 					return R_::template method<Ns...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
 				}
 				template <auto ...Ns>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				method(auto &&u, auto &&...oo)
 				noexcept -> decltype(auto)
 				requires

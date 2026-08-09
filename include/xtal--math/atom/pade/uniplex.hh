@@ -20,20 +20,20 @@ template <class   ...Ts>	concept uniplex_q = bond::tag_inner_p<uniplex_t, Ts...>
 namespace _detail
 {///////////////////////////////////////////////////////////////////////////////
 
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 uniplex_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
 	return atom::_detail::factory<uniplex_t>::make(XTAL_REF_(oo)...);
 }
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 uniplex_f(decltype(std::in_place), simplex_variable_q auto &&o)
 noexcept -> decltype(auto)
 {
 	using  W = uniplex_t<XTAL_ALL_(o)>;
 	return W{{one, zero}, process::math::roots_f<1>(XTAL_REF_(o))};
 }
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 uniplex_f(decltype(std::in_place), complex_variable_q auto &&o)
 noexcept -> decltype(auto)
 {
@@ -42,7 +42,7 @@ noexcept -> decltype(auto)
 	auto   const dn = get<1>(vs);
 	return W{XTAL_REF_(o)*XTAL_MOV_(dn), XTAL_MOV_(vs)};
 }
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 uniplex_f(complex_variable_q auto &&o, decltype(std::in_place))
 noexcept -> decltype(auto)
 {
@@ -53,7 +53,7 @@ noexcept -> decltype(auto)
 
 }///////////////////////////////////////////////////////////////////////////////
 
-XTAL_DEF_(let) uniplex_f = [] XTAL_1FN_(call) (_detail::uniplex_f);
+XTAL_VAL_(let) uniplex_f = [] XTAL_1FN_(call) (_detail::uniplex_f);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -72,8 +72,8 @@ struct uniplex<A>
 	using  duplex_type =      couple_t<simplex_type[2]>;
 
 private:
-	XTAL_DEF_(set) sig_f = process::math::  pade::    unity_f<+1>;
-	XTAL_DEF_(set) mag_f = process::math::taylor::octarithm_f<-1>;
+	XTAL_VAL_(set) sig_f = process::math::  pade::    unity_f<+1>;
+	XTAL_VAL_(set) mag_f = process::math::taylor::octarithm_f<-1>;
 
 	template <class T>
 	using endotype = typename quantity_multiplies<complex_type, duplex_type>::template homotype<T>;
@@ -94,22 +94,22 @@ public:
 
 	public:// CONSTRUCT
 	//	using S_::S_;
-		XTAL_NEW_(delete) (homotype, noexcept=default)
-		XTAL_NEW_(create) (homotype, noexcept=default)
-		XTAL_NEW_(move)   (homotype, noexcept=default)
-		XTAL_NEW_(copy)   (homotype, noexcept=default)
-		XTAL_NEW_(then)   (homotype, noexcept:homotype)
-		XTAL_NEW_(else)   (homotype, noexcept:S_)
+		XTAL_VAL_(delete) (homotype, noexcept=default)
+		XTAL_VAL_(create) (homotype, noexcept=default)
+		XTAL_VAL_(move)   (homotype, noexcept=default)
+		XTAL_VAL_(copy)   (homotype, noexcept=default)
+		XTAL_VAL_(induce) (homotype, noexcept:homotype)
+		XTAL_VAL_(reduce) (homotype, noexcept:S_)
 
-		XTAL_DEF_(inline)
-		XTAL_NEW_(explicit)
+		XTAL_VAL_(inline)
+		XTAL_VAL_(new,explicit)
 		homotype(signum_type &&o, magnum_type &&q)
 		noexcept
 		:	S_{XTAL_MOV_(o), XTAL_MOV_(q)}
 		{
 		}
-		XTAL_DEF_(inline)
-		XTAL_NEW_(explicit)
+		XTAL_VAL_(inline)
+		XTAL_VAL_(new,explicit)
 		homotype(complex_variable_q auto &&x)
 		noexcept
 		:	homotype{
@@ -118,8 +118,8 @@ public:
 			}
 		{
 		}
-		XTAL_DEF_(inline)
-		XTAL_NEW_(explicit)
+		XTAL_VAL_(inline)
+		XTAL_VAL_(new,explicit)
 		homotype(simplex_variable_q auto &&x)
 		noexcept
 		:	homotype{
@@ -128,8 +128,8 @@ public:
 			}
 		{
 		}
-		XTAL_DEF_(inline)
-		XTAL_NEW_(explicit)
+		XTAL_VAL_(inline)
+		XTAL_VAL_(new,explicit)
 		homotype(decltype(one))
 		noexcept
 		:	homotype{
@@ -145,13 +145,13 @@ public:
 		using S_::self;
 		using S_::twin;
 
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		magnum_f(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			return qualify_f<T>(XTAL_REF_(o)).template element<1>();
 		}
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		signum_f(auto &&o)
 		noexcept -> decltype(auto)
 		{
@@ -159,7 +159,7 @@ public:
 		}
 		
 		template <int N_pow>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		magnum_f(auto &&o)
 		noexcept -> decltype(auto)
 		{
@@ -169,7 +169,7 @@ public:
 			XTAL_0IF (N_pow == -1) {return  get<1>(magnum_f(XTAL_REF_(o)));}
 		}
 		template <int N_pow>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		signum_f(auto &&o)
 		noexcept -> decltype(auto)
 		{
@@ -179,14 +179,14 @@ public:
 			XTAL_0IF (N_pow == -1) {return    conj(signum_f(XTAL_REF_(o)));}
 		}
 		
-		XTAL_FN1_(go) (template <auto ...Ns> XTAL_DEF_(return,inline,get) magnum, magnum_f<Ns...>)
-		XTAL_FN1_(go) (template <auto ...Ns> XTAL_DEF_(return,inline,get) signum, signum_f<Ns...>)
+		XTAL_FN1_(go) (template <auto ...Ns> XTAL_VAL_(return,inline,get) magnum, magnum_f<Ns...>)
+		XTAL_FN1_(go) (template <auto ...Ns> XTAL_VAL_(return,inline,get) signum, signum_f<Ns...>)
 
 
 	public:// RECONSTRUCT
 
 		template <int N_dir=0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		resolution_f(auto &&that)
 		noexcept -> auto
 		{
@@ -201,14 +201,14 @@ public:
 
 
 		template <int N_dir=0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		reflection_f(auto &&that)
 		noexcept -> auto
 		{
 			return reflection_f<N_dir>(XTAL_REF_(that), zero);
 		}
 		template <int N_dir=0> requires un_v<N_dir, 0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		reflection_f(auto &&that, auto const &plus)
 		noexcept -> complex_type
 		{
@@ -229,7 +229,7 @@ public:
 			};}
 		}
 		template <int N_dir=0> requires in_v<N_dir, 0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		reflection_f(auto &&that, auto const &plus=zero)
 		noexcept -> couplex_type
 		{
@@ -252,7 +252,7 @@ public:
 			};}
 		}
 		template <int N_dir=0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		reflection_f(auto &&that, auto &&plus, auto &&...times_)
 		noexcept -> auto
 		requires (1 <= sizeof...(times_))
@@ -261,13 +261,13 @@ public:
 			return reflection_f<N_dir>(T{XTAL_REF_(o), XTAL_REF_(q_)*(times_ *...* one)}, XTAL_REF_(plus));
 		}
 
-		XTAL_FN1_(go) (template <int N_dir=0> XTAL_DEF_(return,inline,get) resolution, resolution_f<N_dir>)
-		XTAL_FN1_(go) (template <int N_dir=0> XTAL_DEF_(return,inline,get) reflection, reflection_f<N_dir>)
-		XTAL_FN1_(go) (template <int N_dir=1> XTAL_DEF_(return,inline,get)        sum, reflection_f<N_dir>)
+		XTAL_FN1_(go) (template <int N_dir=0> XTAL_VAL_(return,inline,get) resolution, resolution_f<N_dir>)
+		XTAL_FN1_(go) (template <int N_dir=0> XTAL_VAL_(return,inline,get) reflection, reflection_f<N_dir>)
+		XTAL_FN1_(go) (template <int N_dir=1> XTAL_VAL_(return,inline,get)        sum, reflection_f<N_dir>)
 
 	public:// OPERATE
 
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		flipped(simplex_type const w)
 		const noexcept -> auto
 		{
@@ -275,7 +275,7 @@ public:
 			auto const &q_ = magnum();
 			return S_::form(complex_type{o.real(), w*o.imag()}, q_.flipped(w));
 		}
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		flipped()
 		const noexcept -> auto
 		{
@@ -283,7 +283,7 @@ public:
 			auto const &q_ = magnum();
 			return S_::form(conj(o), q_.flipped());
 		}
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		operator ~ ()
 		const noexcept -> auto
 		{
@@ -292,14 +292,14 @@ public:
 
 		using S_::operator*=;
 		using S_::operator/=;
-		XTAL_DEF_(mutate,inline,get) operator *=(complex_variable_q          auto &&t) noexcept {auto &s = signum(); s *=      XTAL_REF_(t) ; return self();}
-		XTAL_DEF_(mutate,inline,get) operator /=(complex_variable_q          auto &&t) noexcept {auto &s = signum(); s *= conj(XTAL_REF_(t)); return self();}
-		XTAL_DEF_(mutate,inline,get) operator +=(                   homotype      &&t) noexcept {auto &s =   self(); s *=      XTAL_MOV_(t) ; return self();}
-		XTAL_DEF_(mutate,inline,get) operator -=(                   homotype      &&t) noexcept {auto &s =   self(); s /=      XTAL_MOV_(t) ; return self();}
-		XTAL_DEF_(mutate,inline,get) operator +=(                   homotype const &t) noexcept {auto &s =   self(); s *=      XTAL_REF_(t) ; return self();}
-		XTAL_DEF_(mutate,inline,get) operator -=(                   homotype const &t) noexcept {auto &s =   self(); s /=      XTAL_REF_(t) ; return self();}
-		XTAL_DEF_(return,inline,met) operator + (homotype const &s, homotype const &t) noexcept {return s * t;}
-		XTAL_DEF_(return,inline,met) operator - (homotype const &s, homotype const &t) noexcept {return s / t;}
+		XTAL_VAL_(mutate,inline,get) operator *=(complex_variable_q          auto &&t) noexcept {auto &s = signum(); s *=      XTAL_REF_(t) ; return self();}
+		XTAL_VAL_(mutate,inline,get) operator /=(complex_variable_q          auto &&t) noexcept {auto &s = signum(); s *= conj(XTAL_REF_(t)); return self();}
+		XTAL_VAL_(mutate,inline,get) operator +=(                   homotype      &&t) noexcept {auto &s =   self(); s *=      XTAL_MOV_(t) ; return self();}
+		XTAL_VAL_(mutate,inline,get) operator -=(                   homotype      &&t) noexcept {auto &s =   self(); s /=      XTAL_MOV_(t) ; return self();}
+		XTAL_VAL_(mutate,inline,get) operator +=(                   homotype const &t) noexcept {auto &s =   self(); s *=      XTAL_REF_(t) ; return self();}
+		XTAL_VAL_(mutate,inline,get) operator -=(                   homotype const &t) noexcept {auto &s =   self(); s /=      XTAL_REF_(t) ; return self();}
+		XTAL_VAL_(return,inline,met) operator + (homotype const &s, homotype const &t) noexcept {return s * t;}
+		XTAL_VAL_(return,inline,met) operator - (homotype const &s, homotype const &t) noexcept {return s / t;}
 
 	};
 	using type = bond::derive_t<homotype>;

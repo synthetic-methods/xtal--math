@@ -18,7 +18,7 @@ template <auto ...Ms>
 using prime_t = process::confined_t<prime<Ms...>>;
 
 template <auto ...Ms>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 prime_f(auto &&...xs)
 noexcept -> decltype(auto)
 {
@@ -66,7 +66,7 @@ struct prime< 1>
 	public:// OPERATE
 
 		template <fixed_q Y_>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method()
 		noexcept -> auto
 		{
@@ -76,7 +76,7 @@ struct prime< 1>
 		}
 
 		template <int ...Ns_pow>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(integral_q auto &&...is)
 		noexcept -> auto
 		{
@@ -85,7 +85,7 @@ struct prime< 1>
 			XTAL_0IF (1 <= sizeof...(Ns_pow)) {return monomial_f<Ns_pow...>(method<1>(XTAL_REF_(is))...);}
 		}
 		template <int N_pow=1>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(integral_variable_q auto i)
 		noexcept -> auto
 		{
@@ -103,7 +103,7 @@ struct prime< 1>
 		}
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(integral_constant_q auto i)
 		noexcept -> auto
 		{
@@ -126,7 +126,7 @@ struct prime<-1>
 	public:// OPERATE
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(integral_variable_q auto n)
 		noexcept -> auto
 		requires un_v<fixed_shaped_q<decltype(Ns)...>>
@@ -142,7 +142,7 @@ struct prime<-1>
 		}
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(integral_constant_q auto i)
 		noexcept -> auto
 		requires un_v<fixed_shaped_q<decltype(Ns)...>>
@@ -160,8 +160,8 @@ template <fixed_shaped_q auto M_nom>
 struct prime<M_nom>
 {
 	XTAL_TYP_(set) M_typ = XTAL_ALL_(M_nom);
-	XTAL_DEF_(set) M_ext = fixed_shaped<M_typ>::extent();
-	XTAL_DEF_(set) M_num = prime_t<1>::template method<M_typ>();
+	XTAL_VAL_(set) M_ext = fixed_shaped<M_typ>::extent();
+	XTAL_VAL_(set) M_num = prime_t<1>::template method<M_typ>();
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -174,7 +174,7 @@ struct prime<M_nom>
 	protected:// OPERATE
 
 		template <int N_ind, int N_dir=1>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		factor_f(fixed_shaped_q auto &&x_)
 		noexcept -> auto
 		{
@@ -187,7 +187,7 @@ struct prime<M_nom>
 	public:// OPERATE
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(fixed_shaped_q auto &&x_)
 		noexcept -> auto
 		{
@@ -207,7 +207,7 @@ struct prime<M_nom>
 		}
 		/*/
 		template <int ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(bond::seek_in_t<Ns...>)
 		noexcept -> auto
 		{
@@ -216,7 +216,7 @@ struct prime<M_nom>
 		/***/
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(real_variable_q auto const u)
 		noexcept -> auto
 		{
@@ -231,14 +231,14 @@ struct prime<M_nom>
 		//\
 		template <exvariable_q auto N_ind>
 		template <auto N_ind> requires requires {exvariable_f(N_ind);}// Alt. req'd by LLVM 16
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(integral_q auto &n_product)
 		noexcept -> auto
 		{
 			return method<std::in_place>(n_product, exvariable_f(N_ind));
 		}
 		template <std::in_place_t>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(integral_q auto &n_product, integral_constant_q auto N_ind)
 		noexcept -> auto
 		{

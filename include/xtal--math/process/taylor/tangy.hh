@@ -58,7 +58,7 @@ template <int M_ism=0, int M_car=0>
 XTAL_TYP_(let) tangy_t = process::confined_t<tangy<M_ism, M_car>>;
 
 template <int M_ism=0, int M_car=0, int N_lim=4>
-XTAL_DEF_(let) tangy_f = [] XTAL_1FN_(call) (tangy_t<M_ism, M_car>{}.template method<N_lim>);
+XTAL_VAL_(let) tangy_f = [] XTAL_1FN_(call) (tangy_t<M_ism, M_car>{}.template method<N_lim>);
 
 
 ///////////////////////////////////////////////////////////////////////////////

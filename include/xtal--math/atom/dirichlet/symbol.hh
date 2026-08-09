@@ -15,7 +15,7 @@ template <class   ..._s>	struct  symbol;
 template <class   ..._s>	using   symbol_t = typename symbol<_s...>::type;
 template <class   ...Ts>	concept symbol_q = bond::tag_inner_p<symbol_t, Ts...>;
 
-XTAL_DEF_(let) symbol_f = [] XTAL_1FN_(call) (_detail::factory<symbol_t>::make);
+XTAL_VAL_(let) symbol_f = [] XTAL_1FN_(call) (_detail::factory<symbol_t>::make);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -56,7 +56,7 @@ public:
 		using S_::self;
 		using S_::twin;
 
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		deindex_f(index_type i)
 		noexcept -> decltype(auto)
 		{
@@ -79,7 +79,7 @@ public:
 		\brief   Dirichlet character generation.
 		*/
 		template <int N_subscript=1> requires ((bool) (1&size))
-		XTAL_DEF_(let)
+		XTAL_VAL_(let)
 		characterize()
 		noexcept -> T &
 		{
@@ -116,7 +116,7 @@ public:
 			return self();
 		}
 		template <int N_subscript=1>
-		XTAL_DEF_(let)
+		XTAL_VAL_(let)
 		subcharacterize()
 		noexcept -> T &
 		{

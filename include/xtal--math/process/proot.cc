@@ -12,7 +12,7 @@ namespace xtal::process::math::_test::XTAL_NUM
 /////////////////////////////////////////////////////////////////////////////////
 using namespace xtal::process::math::_test;
 
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 check_proot_f(unsigned const n_prime, unsigned r_prime)
 noexcept -> bool
 {

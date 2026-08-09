@@ -20,7 +20,7 @@ template <int M_dir=0>
 using nearest_t = process::confined_t<nearest<M_dir>>;
 
 template <int M_dir=0>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 nearest_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
@@ -39,7 +39,7 @@ struct nearest
 	protected:
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method_default(auto &&z)
 		noexcept -> auto
 		{
@@ -49,7 +49,7 @@ struct nearest
 			XTAL_0IF (M_dir ==  1) {return ceil  (XTAL_REF_(z));}
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method_default(real_variable_q auto &&z)
 		noexcept -> auto
 		requires (0x04 == sizeof(z))
@@ -61,7 +61,7 @@ struct nearest
 			XTAL_0IF (M_dir ==  1) {return ceilf (XTAL_REF_(z));}
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method_default(real_variable_q auto &&z)
 		noexcept -> auto
 		requires (0x10 == sizeof(z))
@@ -77,7 +77,7 @@ struct nearest
 		using S::S;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&z)
 		const noexcept -> auto
 		{
@@ -102,14 +102,14 @@ struct nearest
 			}
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(complex_field_q auto &&z)
 		const noexcept -> decltype(auto)
 		{
 			return complexion_f(method<Ns...>(z.real()), method<Ns...>(z.imag()));
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(atom::quantify_q auto &&z)
 		const noexcept -> decltype(auto)
 		{

@@ -48,7 +48,7 @@ struct coefficient<M>
 				using R_::R_;
 
 				template <auto ...Ns>
-				XTAL_DEF_(inline,let)
+				XTAL_VAL_(inline,let)
 				method(auto &&...oo)
 				const noexcept -> auto
 				{
@@ -86,7 +86,7 @@ struct coefficient<>
 				using R_::R_;
 
 				template <auto ...Ns>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				method(auto &&o, auto &&...oo)
 				const noexcept -> auto
 				{

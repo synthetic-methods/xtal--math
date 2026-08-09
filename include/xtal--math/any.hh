@@ -24,11 +24,11 @@ template <class   ...Ts>	using   eigenvalue_t =	common_t<typename Eigen::interna
 template <class   ...Ts>	concept eigenclass_q =	complete_q<eigenclass_t<Ts>...>;
 template <class   ...Ts>	concept eigenvalue_q =	complete_q<eigenvalue_t<Ts>...>;//TODO: Restrict to `Array`-derived.
 
-template <auto f> XTAL_DEF_(return,inline,let) operative_f(eigenvalue_q auto &&x, auto &&...xs) noexcept requires (0 == sizeof...(xs)) {return XTAL_REF_(x).  unaryExpr(XTAL_REF_(xs)..., f);}
-template <auto f> XTAL_DEF_(return,inline,let) operative_f(eigenvalue_q auto &&x, auto &&...xs) noexcept requires (1 == sizeof...(xs)) {return XTAL_REF_(x). binaryExpr(XTAL_REF_(xs)..., f);}
-template <auto f> XTAL_DEF_(return,inline,let) operative_f(eigenvalue_q auto &&x, auto &&...xs) noexcept requires (2 == sizeof...(xs)) {return XTAL_REF_(x).ternaryExpr(XTAL_REF_(xs)..., f);}
+template <auto f> XTAL_VAL_(return,inline,let) operative_f(eigenvalue_q auto &&x, auto &&...xs) noexcept requires (0 == sizeof...(xs)) {return XTAL_REF_(x).  unaryExpr(XTAL_REF_(xs)..., f);}
+template <auto f> XTAL_VAL_(return,inline,let) operative_f(eigenvalue_q auto &&x, auto &&...xs) noexcept requires (1 == sizeof...(xs)) {return XTAL_REF_(x). binaryExpr(XTAL_REF_(xs)..., f);}
+template <auto f> XTAL_VAL_(return,inline,let) operative_f(eigenvalue_q auto &&x, auto &&...xs) noexcept requires (2 == sizeof...(xs)) {return XTAL_REF_(x).ternaryExpr(XTAL_REF_(xs)..., f);}
 
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 objective_f(eigenvalue_q auto &&o)
 noexcept -> decltype(auto)
 {
@@ -36,7 +36,7 @@ noexcept -> decltype(auto)
 }
 
 template <template <class> class Y, eigenvalue_q ...Xs>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 construxion_f(Xs &&...xs)
 noexcept -> auto
 {
@@ -44,7 +44,7 @@ noexcept -> auto
 	return operative_f<bond::operate<Y<W>>{}>(XTAL_REF_(xs)...);
 }
 /**/
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 complexion_f(eigenvalue_q auto &&...xs)
 noexcept -> auto
 {
@@ -63,7 +63,7 @@ noexcept -> auto
 #if __has_include(<Eigen/Dense>)
 namespace std
 {
-XTAL_DEF_(return,inline)
+XTAL_VAL_(return,inline)
 auto conj(xtal::eigenclass_q auto &&x)
 {
 	using X = XTAL_ALL_(x);

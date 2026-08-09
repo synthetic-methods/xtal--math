@@ -31,14 +31,14 @@ struct  exponential
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(auto x)
 		noexcept -> auto
 		{
 			return one;
 		}
 		template <auto ...>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		method(cardinal_variable_q auto x, auto &&...oo)
 		noexcept -> auto
 		{
@@ -62,7 +62,7 @@ template <auto ...Ms>
 XTAL_TYP_(let) exponential_t = process::confined_t<exponential<Ms...>>;
 
 template <auto ...Ms>
-XTAL_DEF_(let) exponential_f = [] XTAL_1FN_(call) (exponential_t<Ms...>::method);
+XTAL_VAL_(let) exponential_f = [] XTAL_1FN_(call) (exponential_t<Ms...>::method);
 
 
 ///////////////////////////////////////////////////////////////////////////////

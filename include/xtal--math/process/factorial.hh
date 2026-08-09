@@ -14,7 +14,7 @@ namespace xtal::process::math
 ////////////////////////////////////////////////////////////////////////////////
 
 template <integral_variable_q U>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 factorial_f(U upper, U lower)
 noexcept -> auto
 {
@@ -22,14 +22,14 @@ noexcept -> auto
 	for (U u{upper}; lower < u; --u) n *= u; return n;
 }
 template <integral_variable_q U>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 factorial_f(U upper)
 noexcept -> auto
 {
 	return factorial_f(upper, U{});
 }
 template <auto N>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 factorial_f()
 noexcept -> auto
 {
@@ -43,7 +43,7 @@ noexcept -> auto
 	XTAL_0IF (2 <= N) {return N*factorial_f<N - 1>();}
 }
 template <integral_constant_q U>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 factorial_f(U o)
 noexcept -> auto
 {
@@ -72,14 +72,14 @@ struct  factorial
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(integral_variable_q auto &&o)
 		const noexcept -> decltype(auto)
 		{
 			return factorial_f(XTAL_REF_(o));
 		}
 		template <auto ...>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(real_variable_q auto &&o)
 		const noexcept -> decltype(auto)
 		{

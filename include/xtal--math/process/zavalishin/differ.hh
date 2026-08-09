@@ -45,20 +45,20 @@ struct differ
 		using S_::S_;
 	
 	private:
-		XTAL_DEF_(set) M_ord = 0 + data_type::size();
-		XTAL_DEF_(set) M_lim = 1 + data_type::size();
+		XTAL_VAL_(set) M_ord = 0 + data_type::size();
+		XTAL_VAL_(set) M_lim = 1 + data_type::size();
 
 	public:// FUNC*
 
 		template <int N_ord=M_ord, int N_sub=0> requires un_v<N_ord, 1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto const &x, auto &&...oo)
 		const noexcept -> auto
 		{
 			return x;
 		}
 		template <int N_ord=M_ord, int N_sub=0> requires in_v<N_ord, 1> and (1 == data_type::size())
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto x)
 		const noexcept -> auto
 		{
@@ -79,7 +79,7 @@ struct differ
 			}
 		}
 		template <int N_ord=M_ord, int N_sub=0> requires in_v<N_ord, 1> and (2 == data_type::size())
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto x)
 		const noexcept -> XTAL_ALL_(x)
 		{
@@ -94,14 +94,14 @@ struct differ
 			return u*y1;
 		}
 		template <int N_ord=M_ord, int N_sub=0> requires in_v<N_ord, 1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto x, atom::math::phason_q auto const &t_)
 		const noexcept -> auto
 		{
 			return method<N_ord, N_sub>(XTAL_MOV_(x))*root_f<-1>(t_(1));
 		}
 		template <int N_ord=M_ord, int N_sub=0> requires in_v<N_ord, 1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto x, auto y, atom::math::phason_q auto const &t_)
 		const noexcept -> auto
 		{
@@ -125,7 +125,7 @@ struct differ
 
 	protected:
 		template <class U_fit, int N_ord=M_ord, int N_sub=0> requires in_v<N_ord, 1>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		warped_f()
 		noexcept -> auto
 		{
@@ -133,7 +133,7 @@ struct differ
 			return (two*u)/(one + u);
 		}
 		template <class U_fit, int N_ord=M_ord, int N_sub=0>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		warp_f()
 		noexcept -> auto
 		{

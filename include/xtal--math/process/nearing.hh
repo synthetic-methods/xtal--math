@@ -33,7 +33,7 @@ struct nearing
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto const &u)
 		const noexcept -> XTAL_ALL_(u)
 		{
@@ -50,7 +50,7 @@ template <int ...Ms>
 using   nearing_t = process::confined_t<nearing<Ms...>>;
 
 template <auto ...Ns>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 nearing_f(auto &&...oo)
 noexcept -> decltype(auto)
 {

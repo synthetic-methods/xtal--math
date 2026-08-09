@@ -15,7 +15,7 @@ template <class   ..._s>	XTAL_TYP_(new) series;
 template <class   ..._s>	XTAL_TYP_(let) series_t = typename series<_s...>::type;
 template <class   ...Ts>	XTAL_TYP_(ask) series_q = bond::tag_inner_p<series_t, Ts...>;
 
-XTAL_DEF_(let) series_f = [] XTAL_1FN_(call) (_detail::factory<series_t>::make);
+XTAL_VAL_(let) series_f = [] XTAL_1FN_(call) (_detail::factory<series_t>::make);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -23,7 +23,7 @@ XTAL_DEF_(let) series_f = [] XTAL_1FN_(call) (_detail::factory<series_t>::make);
 template <class T> XTAL_TYP_(let) serious_t = typename std::remove_cvref_t<T>::transverse::type;
 template <class T> XTAL_TYP_(ask) serious_q = requires {typename serious_t<T>;};
 
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 serious_f(serious_q auto &&t)
 noexcept -> decltype(auto)
 {
@@ -31,7 +31,7 @@ noexcept -> decltype(auto)
 	using F = xtd::qualify_cvref_t<T, serious_t<T>>;
 	return reinterpret_cast<F>(XTAL_REF_(t));
 };
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 serious_f(auto &&t)
 noexcept -> decltype(auto)
 {
@@ -84,8 +84,8 @@ public:
 		/*!
 		\brief   Generates a section of the complex sinusoid determined by `std::pow(2, n)`.
 		*/
-		XTAL_DEF_(inline)
-		XTAL_NEW_(explicit)
+		XTAL_VAL_(inline)
+		XTAL_VAL_(new,explicit)
 		homotype(constant_q auto const n, auto &&...oo)
 		noexcept
 		{
@@ -95,7 +95,7 @@ public:
 		\brief   Generates a section of the complex sinusoid determined by `std::pow(2, n)`.
 		*/
 		template <auto ...Ns>
-		XTAL_DEF_(let)
+		XTAL_VAL_(let)
 		generate(constant_q auto const n, auto &&...oo)
 		noexcept -> T &
 		{
@@ -107,7 +107,7 @@ public:
 		\returns `this`.
 		*/
 		template <int N_dex=0, int N_ind=0, int N_step=1, int N_size=size>
-		XTAL_DEF_(inline,let)
+		XTAL_VAL_(inline,let)
 		generate(value_type const &u)
 		noexcept -> T &
 		{
@@ -167,7 +167,7 @@ public:
 		\tparam  `N_shift >= -3`
 		*/
 		template <int N_shift=0> requires complex_field_q<value_type>
-		XTAL_DEF_(let)
+		XTAL_VAL_(let)
 		generate()
 		noexcept -> T &
 		{
@@ -203,7 +203,7 @@ public:
 		\note    Around 10% to 20% faster than Eigen's default (based on KISSFFT).
 		*/
 		template <int N_dir=1> requires in_v<N_dir, 1, -1> and complex_field_q<value_type>
-		XTAL_DEF_(let)
+		XTAL_VAL_(let)
 		transform(isomorphic_q<T> auto &source)
 		const noexcept -> decltype(auto)
 		{
@@ -238,7 +238,7 @@ public:
 			return serious_f(XTAL_REF_(source));
 		}
 		template <int N_dir=1> requires in_v<N_dir, 1, -1> and complex_field_q<value_type>
-		XTAL_DEF_(let)
+		XTAL_VAL_(let)
 		transform(isomorphic_q<T> auto &&source)
 		const noexcept -> decltype(auto)
 		{
@@ -250,7 +250,7 @@ public:
 		using `this` as the Fourier basis.
 		*/
 		template <int N_dir=1> requires in_v<N_dir, 1, -1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		transformation(isomorphic_q<T> auto source)
 		const noexcept -> auto
 		{
@@ -260,7 +260,7 @@ public:
 		/*!
 		\returns `lhs` convolved with `rhs`, using `this` as the Fourier basis.
 		*/
-		XTAL_DEF_(let)
+		XTAL_VAL_(let)
 		convolve(isomorphic_q<T> auto &&y0, auto y1)
 		const noexcept -> decltype(auto)
 		{
@@ -271,7 +271,7 @@ public:
 		\returns A new `series` representing the convolution of `y0` with `y1`,
 		using `this` as the Fourier basis.
 		*/
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		convolution(isomorphic_q<T> auto y0, auto const &y1)
 		const noexcept -> auto
 		{
@@ -284,10 +284,10 @@ public:
 		*/
 		using S_::operator*=;
 
-		XTAL_DEF_(return,inline,let)  operator * (auto const &                      w) const noexcept -> auto   {return twin() *=   w ;}
-		XTAL_DEF_(inline,let)         operator *=(std::initializer_list<value_type> w)       noexcept -> auto & {return self() *= T(w);}
+		XTAL_VAL_(return,inline,let)  operator * (auto const &                      w) const noexcept -> auto   {return twin() *=   w ;}
+		XTAL_VAL_(inline,let)         operator *=(std::initializer_list<value_type> w)       noexcept -> auto & {return self() *= T(w);}
 
-		XTAL_DEF_(let)
+		XTAL_VAL_(let)
 		operator *=(T const &t)
 		noexcept -> T &
 		{

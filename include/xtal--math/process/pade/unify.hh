@@ -33,7 +33,7 @@ struct unify<M_ism>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&o)
 		const noexcept -> decltype(auto)
 		{
@@ -54,7 +54,7 @@ struct unify<M_ism>
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(complex_field_q auto const &o)
 		const noexcept -> decltype(auto)
 		{
@@ -84,7 +84,7 @@ template <int M_ism=1>
 using unify_t = process::confined_t<unify<M_ism>>;
 
 template <int M_ism=1, int ...Ns>
-XTAL_DEF_(let)
+XTAL_VAL_(let)
 unify_f = [] XTAL_1FN_(call) (unify_t<M_ism>{}.template method<Ns...>);
 
 

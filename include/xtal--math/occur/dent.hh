@@ -54,7 +54,7 @@ struct dent<Ns...>
 
 		\todo    Use strong-`value_type`s to map between fractional and floating-point values?
 		*/
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		inject_f(auto &&u)
 		noexcept -> auto
 		{
@@ -79,12 +79,12 @@ struct dent<Ns...>
 
 		\todo    Use strong-`value_type`s to map between fractional and floating-point values?
 		*/
-		XTAL_NEW_(explicit)
+		XTAL_VAL_(new,explicit)
 		subtype(U_ u)
 		noexcept requires infungible_q<S_, U_>
 		:	S_{inject_f(XTAL_MOV_(u))}
 		{}
-		XTAL_NEW_(implicit)
+		XTAL_VAL_(new,implicit)
 		subtype(std::initializer_list<U_> u_)
 		noexcept requires make_p<S_, std::initializer_list<U_>>
 		:	S_{u_}
@@ -112,7 +112,7 @@ struct dent<Ns...>
 				\brief   Forwards the message upstream.
 				*/
 				template <signed N_ion>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				fuse(auto &&o)
 				noexcept -> signed
 				{
@@ -122,7 +122,7 @@ struct dent<Ns...>
 				\brief   Updates the internal state at the given path.
 				*/
 				template <signed N_ion>// requires in_v<N_ion, +1>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				fuse(dent_q<S> auto &&o)
 				noexcept -> signed
 				{

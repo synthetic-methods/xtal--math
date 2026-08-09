@@ -33,7 +33,7 @@ struct sine<M_ism, -0>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&o)
 		const noexcept -> decltype(auto)
 		{
@@ -62,7 +62,7 @@ struct sine<M_ism, -1>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&o)
 		const noexcept -> XTAL_ALL_(o)
 		{
@@ -94,7 +94,7 @@ struct sine<M_ism, -2>
 
 	public:
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&w)
 		const noexcept -> XTAL_ALL_(w)
 		{
@@ -114,7 +114,7 @@ struct sine<M_ism, -2>
 
 	protected:
 		template <int N_lim>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		methox(auto &&w)
 		const noexcept -> auto
 		{

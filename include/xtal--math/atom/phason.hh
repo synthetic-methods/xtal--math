@@ -33,7 +33,7 @@ template <class   ...Ts>	concept simplex_phason_q =                             
 template <class   ...Ts>	concept complex_phason_q = complex_variable_q<Ts...> and phason_simplex_q<typename destruct<Ts>::value_type...>;
 template <class   ...Ts>	concept quantex_phason_q =         quantity_q<Ts...> and phason_simplex_q<typename destruct<Ts>::value_type...>;//TODO: Accommodate heterogeneous...
 
-XTAL_DEF_(let) phason_f = [] XTAL_1FN_(call) (_detail::factory<phason_t>::make);
+XTAL_VAL_(let) phason_f = [] XTAL_1FN_(call) (_detail::factory<phason_t>::make);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -110,16 +110,16 @@ public:
 
 	public:// CONSTRUCT
 	//	using S_::S_;
-		XTAL_NEW_(else) (homotype, noexcept:S_)
+		XTAL_VAL_(reduce) (homotype, noexcept:S_)
 
-		XTAL_NEW_(implicit)
+		XTAL_VAL_(new,implicit)
 		homotype(std::initializer_list<W> o)
 		noexcept
 		:	S_(variable{count_f(o)})
 		{
 			operator>>=(XTAL_MOV_(o));
 		}
-		XTAL_NEW_(explicit)
+		XTAL_VAL_(new,explicit)
 		homotype(iterable_q auto &&o)
 		noexcept
 		:	S_(variable{count_f(o)})
@@ -127,7 +127,7 @@ public:
 			operator>>=(XTAL_REF_(o));
 		}
 		/*/
-		XTAL_DEF_(return,inline,explicit)
+		XTAL_VAL_(return,inline,explicit)
 		operator revalue_type() const
 		requires in_v<sizeof(T), sizeof(revalue_type)>
 		{
@@ -139,7 +139,7 @@ public:
 	protected:// RECONSTRUCT
 
 		template <int N_pos=0>
-		XTAL_DEF_(mutate,inline,let)
+		XTAL_VAL_(mutate,inline,let)
 		place(iterable_q auto &&o)
 		noexcept -> auto &
 		{
@@ -150,17 +150,17 @@ public:
 		}
 
 	public:// RECONSTRUCT
-		XTAL_DEF_(mutate,inline,let) operator >>=(iterable_q        auto &&o) noexcept -> auto & {return place<0>(XTAL_REF_(o));}
-		XTAL_DEF_(mutate,inline,let) operator <<=(iterable_q        auto &&o) noexcept -> auto & {return place<1>(XTAL_REF_(o));}
-		XTAL_DEF_(mutate,inline,let) operator >>=(std::initializer_list<W> o) noexcept -> auto & {return place<0>(XTAL_MOV_(o));}
-		XTAL_DEF_(mutate,inline,let) operator <<=(std::initializer_list<W> o) noexcept -> auto & {return place<1>(XTAL_MOV_(o));}
+		XTAL_VAL_(mutate,inline,let) operator >>=(iterable_q        auto &&o) noexcept -> auto & {return place<0>(XTAL_REF_(o));}
+		XTAL_VAL_(mutate,inline,let) operator <<=(iterable_q        auto &&o) noexcept -> auto & {return place<1>(XTAL_REF_(o));}
+		XTAL_VAL_(mutate,inline,let) operator >>=(std::initializer_list<W> o) noexcept -> auto & {return place<0>(XTAL_MOV_(o));}
+		XTAL_VAL_(mutate,inline,let) operator <<=(std::initializer_list<W> o) noexcept -> auto & {return place<1>(XTAL_MOV_(o));}
 
 
 	public:// OPERATE
 	//	using S_::operator >>=;
 	//	using S_::operator <<=;
 
-		XTAL_DEF_(mutate,inline,let)
+		XTAL_VAL_(mutate,inline,let)
 		operator <<=(integral_q auto const i)
 		noexcept ->  auto &
 		{
@@ -168,7 +168,7 @@ public:
 			head <<= i;
 			return self();
 		}
-		XTAL_DEF_(mutate,inline,let)
+		XTAL_VAL_(mutate,inline,let)
 		operator >>=(integral_q auto const i)
 		noexcept ->  auto &
 		{
@@ -177,12 +177,12 @@ public:
 			return self();
 		}
 
-		XTAL_DEF_(return,inline,met)
+		XTAL_VAL_(return,inline,met)
 		operator >> (T const &t, integral_q auto const i)
 		noexcept -> auto {
 			return t.twin() >>= i;
 		}
-		XTAL_DEF_(return,inline,met)
+		XTAL_VAL_(return,inline,met)
 		operator << (T const &t, integral_q auto const i)
 		noexcept -> auto {
 			return t.twin() <<= i;
@@ -191,19 +191,19 @@ public:
 		/*!
 		\brief   Scales all elements.
 		*/
-		XTAL_DEF_(mutate,inline,let)
+		XTAL_VAL_(mutate,inline,let)
 		operator /=(auto &&x)
 		noexcept -> auto &
 		requires un_v<requires (W u) {u /= x;}>
 		and      XTAL_TRY_(to) (S_::operator/=(XTAL_REF_(x)))
 
-		XTAL_DEF_(mutate,inline,let)
+		XTAL_VAL_(mutate,inline,let)
 		operator *=(auto &&x)
 		noexcept -> auto &
 		requires un_v<requires (W u) {u *= x;}>
 		and      XTAL_TRY_(to) (S_::operator*=(XTAL_REF_(x)))
 
-		XTAL_DEF_(mutate,inline,let)
+		XTAL_VAL_(mutate,inline,let)
 		operator /=(auto &&x)
 		noexcept -> auto &
 		requires in_v<requires (W u) {u *= x;}>
@@ -212,7 +212,7 @@ public:
 			using X_fit = bond::fit<X>;
 			return operator*=(X_fit::alpha_1/XTAL_REF_(x));
 		}
-		XTAL_DEF_(mutate,inline,let)
+		XTAL_VAL_(mutate,inline,let)
 		operator *=(auto &&x)
 		noexcept -> auto &
 		requires in_v<requires (W u) {u *= x;}>
@@ -246,7 +246,7 @@ public:
 			}
 			return self();
 		}
-		XTAL_DEF_(return,inline,met)
+		XTAL_VAL_(return,inline,met)
 		operator * (simplex_variable_q auto const &x, T const &t)
 		noexcept -> auto {
 			return t.twin() *= x;
@@ -255,14 +255,14 @@ public:
 		/*!
 		\brief   Offsets the first element.
 		*/		
-	//	XTAL_DEF_(mutate,inline,let) operator +=(std::initializer_list<W> o) noexcept -> auto & {return S_::operator+=(T(o));}
-	//	XTAL_DEF_(mutate,inline,let) operator -=(std::initializer_list<W> o) noexcept -> auto & {return S_::operator-=(T(o));}
+	//	XTAL_VAL_(mutate,inline,let) operator +=(std::initializer_list<W> o) noexcept -> auto & {return S_::operator+=(T(o));}
+	//	XTAL_VAL_(mutate,inline,let) operator -=(std::initializer_list<W> o) noexcept -> auto & {return S_::operator-=(T(o));}
 
-		XTAL_DEF_(mutate,inline,get) operator -= (auto &&x) noexcept {return S_::operator-=(XTAL_REF_(x));}
-		XTAL_DEF_(mutate,inline,get) operator += (auto &&x) noexcept {return S_::operator+=(XTAL_REF_(x));}
+		XTAL_VAL_(mutate,inline,get) operator -= (auto &&x) noexcept {return S_::operator-=(XTAL_REF_(x));}
+		XTAL_VAL_(mutate,inline,get) operator += (auto &&x) noexcept {return S_::operator+=(XTAL_REF_(x));}
 
 		template <class X> requires additive_group_p<1, W, X>
-		XTAL_DEF_(mutate,inline,let)
+		XTAL_VAL_(mutate,inline,let)
 		operator -= (X &&x)
 		noexcept -> auto &
 		{
@@ -277,7 +277,7 @@ public:
 			return s;
 		}
 		template <class X> requires additive_group_p<1, W, X>
-		XTAL_DEF_(mutate,inline,let)
+		XTAL_VAL_(mutate,inline,let)
 		operator += (X &&x)
 		noexcept -> auto &
 		{
@@ -297,21 +297,21 @@ public:
 		using S_::operator--;
 
 		template <int N> requires in_v<size, 2>
-		XTAL_DEF_(mutate,inline,let)
+		XTAL_VAL_(mutate,inline,let)
 		operator++(int)
 		noexcept -> auto &
 		{
 			auto t = twin(); operator++<N>(); return t;
 		}
 		template <int N> requires in_v<size, 2>
-		XTAL_DEF_(mutate,inline,let)
+		XTAL_VAL_(mutate,inline,let)
 		operator--(int)
 		noexcept -> auto &
 		{
 			auto t = twin(); operator--<N>(); return t;
 		}
 		template <int N> requires in_v<size, 2>
-		XTAL_DEF_(mutate,inline,let)
+		XTAL_VAL_(mutate,inline,let)
 		operator++()
 		noexcept -> auto &
 		{
@@ -322,7 +322,7 @@ public:
 			return s;
 		}
 		template <int N> requires in_v<size, 2>
-		XTAL_DEF_(mutate,inline,let)
+		XTAL_VAL_(mutate,inline,let)
 		operator--()
 		noexcept -> auto &
 		{
@@ -334,7 +334,7 @@ public:
 		}
 
 	public:
-		XTAL_DEF_(inline,let)
+		XTAL_VAL_(inline,let)
 		scale(W u, W w=one)
 		noexcept -> auto &
 		{
@@ -342,7 +342,7 @@ public:
 				XTAL_0FN_(do) (get<I{}>(self()) = T::devalue_f(got<I{}>(self())*(w *= u))));
 			return self();
 		}
-		XTAL_DEF_(inline,let)
+		XTAL_VAL_(inline,let)
 		scaled(W u, W w=one)
 		const noexcept -> auto
 		{
@@ -356,7 +356,7 @@ public:
 		\returns `0` if the current position is continuous, `~0` otherwise.
 		*/
 		template <class Y=devalue_type>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		continuity()
 		noexcept -> Y
 		{

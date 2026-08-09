@@ -45,7 +45,7 @@ struct per<M_att>
 			public:// OPERATE
 
 				template <auto ...Ns> requires un_v<M_arg, 0>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				method(auto ...oo)
 				const noexcept -> decltype(auto)
 				{
@@ -53,7 +53,7 @@ struct per<M_att>
 					return R_::template method<Ns...>(XTAL_MOV_(oo)...);
 				}
 				template <auto ...Ns> requires in_v<M_arg, 0>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				method(auto &&o, auto &&...oo)
 				const noexcept -> decltype(auto)
 				{
@@ -62,7 +62,7 @@ struct per<M_att>
 
 			private:// OPERATE
 
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				period()
 				const noexcept -> decltype(auto)
 				{

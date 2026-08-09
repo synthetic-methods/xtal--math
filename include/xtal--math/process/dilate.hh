@@ -16,7 +16,7 @@ namespace xtal::process::math
 template <auto M_val=1>	struct  dilate;
 template <auto M_val=1>	using   dilate_t = process::confined_t<dilate<M_val>>;
 template <auto M_val=1>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 dilate_f(auto &&o)
 noexcept -> decltype(auto)
 {
@@ -29,7 +29,7 @@ noexcept -> decltype(auto)
 template <auto M_val>
 struct dilate
 {
-	XTAL_DEF_(return,inline,set)
+	XTAL_VAL_(return,inline,set)
 	after_f(auto &&o)
 	noexcept -> decltype(auto)
 	{
@@ -49,7 +49,7 @@ struct dilate
 		using S_::S_;
 
 		template <auto ...>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&o)
 		const noexcept -> auto
 		{
@@ -75,7 +75,7 @@ struct dilate
 				using R_::R_;
 
 				template <auto ...Ns>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				method(auto &&o)
 				const noexcept -> decltype(auto)
 				requires
@@ -88,7 +88,7 @@ struct dilate
 					return R_::template method<Ns...>(XTAL_REF_(o)*root_f<-I>(u))*root_f<I>(u);
 				}
 				template <auto ...Ns>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				method(auto &&o)
 				noexcept -> decltype(auto)
 				requires

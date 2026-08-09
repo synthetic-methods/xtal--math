@@ -51,7 +51,7 @@ struct filter
 		using T_ = typename S_::self_type;
 
 		template <int N_ism=0, int N_car=0, auto ...Ns>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		f_distort(auto &&x, auto &&...oo)
 		noexcept -> auto
 		{
@@ -73,14 +73,14 @@ struct filter
 		```
 		*/
 		template <int N_ord, int N_ind, int N_dex=1> requires (0 == N_ord)
-		XTAL_DEF_(inline,set)
+		XTAL_VAL_(inline,set)
 		f_consort()
 		noexcept -> int
 		{
 			return 0;
 		}
 		template <int N_ord, int N_ind, int N_dex=1> requires (1 <= N_ord)
-		XTAL_DEF_(inline,set)
+		XTAL_VAL_(inline,set)
 		f_consort()
 		noexcept -> int
 		{
@@ -106,7 +106,7 @@ struct filter
 			}
 		}
 		template <int ...Ns>
-		XTAL_DEF_(set)
+		XTAL_VAL_(set)
 		co_v = bond::operate_v<f_consort<Ns...>()>();
 
 
@@ -118,19 +118,19 @@ struct filter
 		using order_attribute = typename S_::order_attribute;
 
 	private:
-		XTAL_DEF_(set) M_ord = 0 + data_type::size();
-		XTAL_DEF_(set) M_lim = 1 + data_type::size();
+		XTAL_VAL_(set) M_ord = 0 + data_type::size();
+		XTAL_VAL_(set) M_lim = 1 + data_type::size();
 
 	public:// FUSE
 		template <signed N_ion>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		fuse(auto &&o)
 		noexcept -> signed
 		{
 			return S_::template fuse<N_ion>(XTAL_REF_(o));
 		}
 		template <signed N_ion> requires in_v<N_ion, -1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		fuse(occur::stage_q auto &&o)
 		noexcept -> signed
 		{
@@ -150,7 +150,7 @@ struct filter
 		using S_::self;
 
 		template <int N_ord=M_ord, auto ...Ns> requires (0 == N_ord)
-		XTAL_DEF_(inline,let)
+		XTAL_VAL_(inline,let)
 		method_impl(auto &&x
 		,	auto &&...
 		)	const
@@ -159,7 +159,7 @@ struct filter
 			return {XTAL_REF_(x)};
 		}
 		template <int N_ord=M_ord, auto ...Ns> requires (1 <= N_ord)
-		XTAL_DEF_(inline,let)
+		XTAL_VAL_(inline,let)
 		method_impl(auto &&x
 		,	unstruct_t<decltype(x)> u_warp
 		,	atom::couple_q<null_type[N_ord]> auto const &coeffs
@@ -244,7 +244,7 @@ struct filter
 
 	public:// OPERATE
 		template <int N_ord=M_ord, auto ...Ns>
-		XTAL_DEF_(inline,let)
+		XTAL_VAL_(inline,let)
 		method(auto const &x
 		,	atom::math::dot_q auto &&o
 		,	auto &&...oo
@@ -256,7 +256,7 @@ struct filter
 		}
 
 		template <int N_ord=M_ord, auto ...Ns>
-		XTAL_DEF_(inline,let)
+		XTAL_VAL_(inline,let)
 		method(auto const &x
 		,	unstruct_t<decltype(x)> u_warp
 		,	atom::couple_q<null_type[N_ord + 0]> auto &&coeffs_
@@ -270,7 +270,7 @@ struct filter
 		}
 
 		template <int N_ord=M_ord, auto ...Ns>
-		XTAL_DEF_(inline,let)
+		XTAL_VAL_(inline,let)
 		method(auto const &x
 		,	unstruct_t<decltype(x)> u_warp
 		,	atom::couple_q auto &&coeffs
@@ -292,7 +292,7 @@ struct filter
 	//	TODO: Move some of the specializations into `play`?
 
 		template <int N_ord=M_ord, auto ...Ns>
-		XTAL_DEF_(inline,let)
+		XTAL_VAL_(inline,let)
 		method(auto const &x
 		,	unstruct_t<decltype(x)> u_warp
 		,	atom::couple_q auto &&coeffs
@@ -303,7 +303,7 @@ struct filter
 			return method<N_ord, Ns...>(x, u_warp, XTAL_REF_(coeffs), unstruct_t<X>{one});
 		}
 		template <int N_ord=M_ord, auto ...Ns>
-		XTAL_DEF_(inline,let)
+		XTAL_VAL_(inline,let)
 		method(auto &&x
 		,	unstruct_t<decltype(x)> u_warp
 		,	unstruct_t<decltype(x)> u_damp
@@ -330,7 +330,7 @@ struct filter
 		Requires `1 <= Abs@s && Re@s <= 0 && 0 <= Im@s`.
 		*/
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&x, atom::math::phason_q auto &&t_
 		,	atom::quantity_multiplies_q auto &&s_
 		,	auto &&...oo
@@ -344,7 +344,7 @@ struct filter
 			return method<Ns...>(XTAL_REF_(x), u_warp, u_damp, XTAL_REF_(oo)...);
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(atom::math::phason_q auto &&t_, auto &&x
 		,	atom::quantity_multiplies_q auto &&s_
 		,	auto &&...oo

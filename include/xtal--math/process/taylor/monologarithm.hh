@@ -45,7 +45,7 @@ struct monologarithm<M_ism, -0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&o)
 		const noexcept -> auto
 		{
@@ -85,7 +85,7 @@ struct monologarithm<M_ism, -0>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&o)
 		const noexcept -> auto
 		{
@@ -126,7 +126,7 @@ struct monologarithm<M_ism, -1>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&o)
 		const noexcept -> auto
 		{
@@ -159,7 +159,7 @@ struct monologarithm<M_ism, -1>
 		using S_::S_;
 
 		template <int N_lim=0>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&o)
 		const noexcept -> auto
 		{
@@ -177,7 +177,7 @@ struct monologarithm<M_ism, -1>
 ////////////////////////////////////////////////////////////////////////////////
 
 template <auto N>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 monologarithm_f(auto &&...oo)
 noexcept -> decltype(auto)
 {

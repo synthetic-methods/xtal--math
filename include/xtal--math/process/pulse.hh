@@ -26,14 +26,14 @@ struct pulse<M>
 {
 private:// OPERATE
 
-	XTAL_DEF_(return,inline,set)
+	XTAL_VAL_(return,inline,set)
 	per_f(real_q auto &&o)
 	noexcept -> decltype(auto)
 	{
 		using  U_fit = bond::fit<decltype(o)>;
 		return U_fit::template patio_f<-1>(2)/XTAL_REF_(o);
 	}
-	XTAL_DEF_(return,inline,set)
+	XTAL_VAL_(return,inline,set)
 	per_f(atom::math::phason_q auto &&o)
 	noexcept -> decltype(auto)
 	{
@@ -46,7 +46,7 @@ public:
 	{
 		using S_ = bond::compose_s<S>;
 		XTAL_TYP_(set) U_stage = XTAL_ALL_(M);
-		XTAL_DEF_(set) N_stage = M.head();
+		XTAL_VAL_(set) N_stage = M.head();
 
 	public:
 		template <int M_arg=0>
@@ -69,7 +69,7 @@ public:
 				\brief   Generates a gate or `HeavisidePi[# - 1/2] &`.
 				*/
 				template <auto ...Ns> requires un_v<N_stage, 0>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				method(auto &&o, auto &&...oo)
 				const noexcept -> decltype(auto)
 				{
@@ -87,7 +87,7 @@ public:
 				\param   o Frequency scaling.
 				*/
 				template <auto ...Ns> requires in_v<N_stage, 0>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				method(auto &&o, auto &&...oo)
 				const noexcept -> decltype(auto)
 				{

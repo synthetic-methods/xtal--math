@@ -38,7 +38,7 @@ struct tangy<M_ism,-0>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,let)
+		XTAL_VAL_(return,let)
 		method(auto &&o)
 		const noexcept -> auto
 		{
@@ -63,7 +63,7 @@ struct tangy<M_ism,-0>
 
 	protected:
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,set)
+		XTAL_VAL_(return,inline,set)
 		domain_f(auto &&o)
 		noexcept -> auto
 		{
@@ -102,7 +102,7 @@ struct tangy<M_ism, 1>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&o)
 		const noexcept -> auto
 		{
@@ -138,21 +138,21 @@ struct tangy<M_ism, 1>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(simplex_field_q auto &&t)
 		const noexcept -> decltype(auto)
 		{
 			return method<N_lim>(XTAL_REF_(t), unstruct_t<decltype(t)>{one});
 		}
 		template <int N_lim=-1> requires in_v<M_ism, -1, -2>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(complex_field_q auto &&o)
 		const noexcept -> decltype(auto)
 		{
 			return method<N_lim>(o.imag(), o.real());
 		}
 		template <int N_lim=-1>
-		XTAL_DEF_(return,let)
+		XTAL_VAL_(return,let)
 		method(simplex_field_q auto &&v, simplex_field_q auto &&u)
 		const noexcept -> decltype(auto)
 		{
@@ -190,21 +190,21 @@ struct tangy<M_ism,-0>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&o)
 		const noexcept -> decltype(auto)
 		{
 			return S_::template method<N_lim>(XTAL_REF_(o));
 		}
 		template <int N_lim=-1> requires in_v<M_ism, -1, -2>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(complex_field_q auto &&o)
 		const noexcept -> decltype(auto)
 		{
 			return method<N_lim>(o.imag(), o.real());
 		}
 		template <int N_lim=-1> requires in_v<M_ism, -1, -2>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(simplex_field_q auto &&v, simplex_field_q auto &&u)
 		const noexcept -> decltype(auto)
 		{
@@ -232,7 +232,7 @@ struct tangy<M_ism,-2>
 		using S_::S_;
 
 		template <int N_lim=-1>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&o)
 		const noexcept -> decltype(auto)
 		{
@@ -260,7 +260,7 @@ struct tangy<M_, _s...>
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,let)
+		XTAL_VAL_(return,let)
 		method(auto &&...oo)
 		const noexcept -> auto
 		{
@@ -282,7 +282,7 @@ struct tangy<> : tangy<0>
 ///////////////////////////////////////////////////////////////////////////////
 
 template <int M_ism=1, int M_car=1, int N_lim=2>
-XTAL_DEF_(let) tangy_f = [] XTAL_1FN_(call) (tangy_t<M_ism, M_car>{}.template method<N_lim>);
+XTAL_VAL_(let) tangy_f = [] XTAL_1FN_(call) (tangy_t<M_ism, M_car>{}.template method<N_lim>);
 
 
 ///////////////////////////////////////////////////////////////////////////////

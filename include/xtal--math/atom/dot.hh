@@ -25,7 +25,7 @@ template <class ..._s>	struct  dot;
 template <class ..._s>	using   dot_t = typename dot<_s...>::type;
 template <class ..._s>	concept dot_q = bond::tag_inner_fixed_p<dot_t, _s...>;
 
-XTAL_DEF_(let) dot_f = [] XTAL_1FN_(call) (_detail::factory<dot_t>::make);
+XTAL_VAL_(let) dot_f = [] XTAL_1FN_(call) (_detail::factory<dot_t>::make);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -73,7 +73,7 @@ public:
 	public:// OPERATE
 		using S_::product;
 
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		product()
 		const noexcept -> auto
 		{
@@ -82,17 +82,17 @@ public:
 			return get<0>(s) * get<1>(s);
 		}
 
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		operator() () const noexcept {product();}
 
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		operator * (auto const &t)
 		const noexcept -> auto
 		requires XTAL_TRY_(to_unless) (t.size())
 		{
 			return S_::operator*(t);
 		}
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		operator * (auto const &t)
 		const noexcept -> auto
 		requires XTAL_TRY_(to_if) (t.size()) and XTAL_TRY_(to_if)     (t.capacity())
@@ -106,7 +106,7 @@ public:
 			}
 			return u;
 		}
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		operator * (auto const &t)
 		const noexcept -> auto
 		requires XTAL_TRY_(to_if) (t.size()) and XTAL_TRY_(to_unless) (t.capacity())
@@ -120,7 +120,7 @@ public:
 			return u;
 		}
 		template <class U>
-		XTAL_DEF_(return,inline,met)
+		XTAL_VAL_(return,inline,met)
 		operator * (U const &u, homotype const &s)
 		noexcept
 		requires un_v<std::derived_from<U, homotype>>

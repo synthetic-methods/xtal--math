@@ -26,7 +26,7 @@ template <int M_alt=1> requires in_v<M_alt, 0, 1,-1>
 using   dot_t = process::confined_t<dot<M_alt>>;
 
 template <int M_alt=1>
-XTAL_DEF_(return,inline,let)
+XTAL_VAL_(return,inline,let)
 dot_f(auto &&...oo)
 noexcept -> decltype(auto)
 requires XTAL_TRY_(to)
@@ -55,7 +55,7 @@ struct dot
 		using S_::S_;
 
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&x)
 		const noexcept -> auto
 		requires un_v<fixed_shaped_q<decltype(x)>>
@@ -66,7 +66,7 @@ struct dot
 			XTAL_0IF_(to) (square_f(abs(x)))
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&x)
 		const noexcept -> auto
 		requires in_v<fixed_shaped_q<decltype(x)>>
@@ -98,7 +98,7 @@ struct dot
 			}
 		}
 		template <auto ...Ns>
-		XTAL_DEF_(return,inline,let)
+		XTAL_VAL_(return,inline,let)
 		method(auto &&x, auto &&y)
 		const noexcept -> auto
 		requires in_v<fixed_shaped_q<decltype(x), decltype(y)>>

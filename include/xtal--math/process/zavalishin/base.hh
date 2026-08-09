@@ -35,7 +35,7 @@ struct occurrence<process::math::zavalishin::base<A, _s...>>
 {
 private:
 	static_assert(incomplete_q<_s...>);
-	XTAL_DEF_(set) N_pole =           fixed<A>::extent();
+	XTAL_VAL_(set) N_pole =           fixed<A>::extent();
 	XTAL_TYP_(set) U_pole = typename  fixed<A>::value_type;
 	XTAL_TYP_(set) V_pole = unstruct_t<A>;
 

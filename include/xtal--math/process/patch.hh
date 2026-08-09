@@ -34,8 +34,8 @@ struct patch<U_mat>
 
 		XTAL_TYP_(set) matrix_type = U_mat;
 		XTAL_TYP_(set) vector_type = typename fixed<U_mat>::value_type;
-		XTAL_DEF_(set) matrix_size = bond::pack_size<matrix_type>{};
-		XTAL_DEF_(set) vector_size = bond::pack_size<vector_type>{};
+		XTAL_VAL_(set) matrix_size = bond::pack_size<matrix_type>{};
+		XTAL_VAL_(set) vector_size = bond::pack_size<vector_type>{};
 
 		template <extent_type N_mask=1>
 		struct attach
@@ -55,7 +55,7 @@ struct patch<U_mat>
 				using R_::self;
 				using R_::head;
 
-				XTAL_FN1_(go) (XTAL_DEF_(return,inline,get) coefficients, [] (auto &&o, auto &&...oo)
+				XTAL_FN1_(go) (XTAL_VAL_(return,inline,get) coefficients, [] (auto &&o, auto &&...oo)
 				XTAL_0FN_(to) (XTAL_REF_(o).head(XTAL_REF_(oo)...)))
 
 			};
@@ -86,7 +86,7 @@ struct patch<U_mat>
 			public:// OPERATE
 			
 				template <auto ...Ns>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				method(auto &&...oo)
 				const noexcept -> auto
 				{
@@ -123,14 +123,14 @@ struct patch<U_mat>
 			public:// FLOW
 			
 				template <int N_ion>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				flux(auto &&...oo)
 				noexcept -> signed
 				{
 					return R_::template flux<N_ion>(XTAL_REF_(oo)...);
 				}
 				template <int N_ion, class X_>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				flux(X_ &&x_)
 				noexcept -> signed
 				requires same_v<vector_size, bond::pack_size_v<X_>>
@@ -155,8 +155,8 @@ struct patch<U_mat>
 		struct fix
 		{
 		private:
-			XTAL_DEF_(set) _N = sizeof...(_s);
-			XTAL_DEF_(set) _M = vector_size;
+			XTAL_VAL_(set) _N = sizeof...(_s);
+			XTAL_VAL_(set) _M = vector_size;
 			static_assert(1 <= _N);
 			using U = bond::seek_front_t<_s...>;
 
@@ -172,7 +172,7 @@ struct patch<U_mat>
 			public:// FLOW
 			
 				template <auto ...Ns>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				method(auto &&...oo)
 				const noexcept -> auto
 				{
@@ -187,8 +187,8 @@ struct patch<U_mat>
 		struct fit
 		{
 		private:
-			XTAL_DEF_(set) _N = sizeof...(_s);
-			XTAL_DEF_(set) _M = vector_size;
+			XTAL_VAL_(set) _N = sizeof...(_s);
+			XTAL_VAL_(set) _M = vector_size;
 			static_assert(1 <= _N);
 			using U = bond::seek_front_t<_s...>;
 
@@ -204,14 +204,14 @@ struct patch<U_mat>
 			public:// FLOW
 			
 				template <int N_ion>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				flux(auto &&...oo)
 				noexcept -> auto
 				{
 					return R_::template flux<N_ion>(XTAL_REF_(oo)...);
 				}
 				template <int N_ion>
-				XTAL_DEF_(return,inline,let)
+				XTAL_VAL_(return,inline,let)
 				flux(occur::math::dash_q<U_mat> auto &&o_)
 				noexcept -> signed
 				requires same_v<vector_size, bond::pack_size_v<decltype(o_)>>
