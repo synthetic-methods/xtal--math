@@ -121,31 +121,6 @@ struct filter
 		XTAL_VAL_(set) M_ord = 0 + data_type::size();
 		XTAL_VAL_(set) M_lim = 1 + data_type::size();
 
-	public:// FUSE
-		template <signed N_ion>
-		XTAL_VAL_(return,inline,let)
-		fuse(auto &&o)
-		noexcept -> signed
-		{
-			return S_::template fuse<N_ion>(XTAL_REF_(o));
-		}
-		template <signed N_ion> requires in_v<N_ion, -1>
-		XTAL_VAL_(return,inline,let)
-		fuse(occur::stage_q auto &&o)
-		noexcept -> signed
-		{
-			using rewind_type = occur::rewind_t<XTAL_ALL_(o)>;
-			using rewind_node = typename S_::template head_t<rewind_type>;
-			XTAL_IF0
-			XTAL_0IF (complete_q<rewind_node>) {
-				auto const &q = self().template head<rewind_type>().wind();
-				if (1 != q and q == o) {
-					S_::stash(constant_t<>{});
-				}
-			}
-			return S_::template fuse<N_ion>(XTAL_REF_(o));
-		}
-
 	protected:// OPERATE
 		using S_::self;
 
@@ -168,19 +143,23 @@ struct filter
 		)	const
 		noexcept -> atom::couple_t<XTAL_ALL_(x)[M_lim]>
 		{
-			using  X        = XTAL_ALL_(x);
-			using  X_fit    = bond::fit<X>;
-			using  X_valued = atom::couple_t<X[M_lim]>;
-			using  X_values = atom::couple_t<X[N_ord]>;
-			using  X_slopes = atom::couple_t<X[N_ord]>;
-			using  X_states = atom::couple_t<X[N_ord]>;
+			static_assert(N_ord < M_lim);
+			using X        = XTAL_ALL_(x);
+			using X_fit    = bond::fit<X>;
+			using X_lim    = atom::couple_t<X   [M_lim]>;
+			using X_ord    = atom::couple_t<X   [N_ord]>;
+			using X_ord_   = atom::couple_t<X(&)[N_ord]>;
+			using X_valued = X_lim;
+			using X_values = X_ord;
+			using X_slopes = X_ord;
+			using X_states = X_ord;
 			auto constexpr U_cut_ = cut_e<[] XTAL_1FN_(to) (-X_fit::ratio_f(1, 3))>;
 			auto constexpr X_cut_ = cut_e<[] XTAL_1FN_(to) (-X_fit::diplo_f(0x10))>;
 			auto constexpr X_cut  = cut_f<[] XTAL_1FN_(to) (-X_fit::diplo_f(0x10))>;
 		//	TODO: Using `X_cut_` fails under `clang/RELEASE`.
 
 			X_valued valued;
-			auto     values = valued.self(cardinal_constant_t<N_ord>{});// NOTE: `span`-based!
+			auto     values = valued.self(cardinal_constant_t<N_ord>{});// Spanned...
 			auto     stash  = S_::template stash<X_states, X_slopes>();
 			auto    &states = get<0>(stash);
 			auto    &slopes = get<1>(stash);
@@ -353,6 +332,31 @@ struct filter
 		requires un_v<atom::math::phason_q<decltype(x)>>
 		{
 			return method<Ns...>(XTAL_REF_(x), XTAL_REF_(t_), XTAL_REF_(s_), XTAL_REF_(oo)...);
+		}
+
+	public:// FUSE
+		template <signed N_ion>
+		XTAL_VAL_(return,inline,let)
+		fuse(auto &&o)
+		noexcept -> signed
+		{
+			return S_::template fuse<N_ion>(XTAL_REF_(o));
+		}
+		template <signed N_ion> requires in_v<N_ion, -1>
+		XTAL_VAL_(return,inline,let)
+		fuse(occur::stage_q auto &&o)
+		noexcept -> signed
+		{
+			using rewind_type = occur::rewind_t<XTAL_ALL_(o)>;
+			using rewind_node = typename S_::template head_t<rewind_type>;
+			XTAL_IF0
+			XTAL_0IF (complete_q<rewind_node>) {
+				auto const &q = self().template head<rewind_type>().wind();
+				if (1 != q and q == o) {
+					S_::stash(constant_t<>{});
+				}
+			}
+			return S_::template fuse<N_ion>(XTAL_REF_(o));
 		}
 
 	};
