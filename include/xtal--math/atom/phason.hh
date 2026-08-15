@@ -190,6 +190,7 @@ public:
 
 		/*!
 		\brief   Scales all elements.
+		\note    When `|x| < 1`, preserves near-zero discontinuity only.
 		*/
 		XTAL_VAL_(mutate,inline,let)
 		operator /=(auto &&x)

@@ -33,8 +33,8 @@ TAG_("filter")
 	using W_alpha = atom::math::dot_t<U_alpha[2]>;
 	using Z_slice = schedule::slicer_t<scheme::spooled<extent_constant_t<0x10>>>;
 
-	using U_resample = occur::resample_t<>;
-	using U_rewind   = occur::rewind_t<occur::stage_t<>>;
+	using U_quartz = occur::quartz_t<>;
+	using U_rewind = occur::rewind_t<occur::stage_t<>>;
 
 
 	using U_coeff  = atom::math::dot_t<U_alpha[2]>;
@@ -49,7 +49,7 @@ TAG_("filter")
 		using R_def = filter<>;
 		using R_etc = process::occurrence_t<R_def>;
 		using R_prx = confined_t<void
-		,	per_t<U_resample>          ::   refix <1>
+		,	per_t<U_quartz>          ::   refix <1>
 		,	U_rewind                   ::   attach <>
 		,	coefficient_t<X_coeff>     ::   attach <>
 	//	,	reuse< 0>
@@ -69,7 +69,7 @@ TAG_("filter")
 	//	auto constexpr K1_growth_rate  =  pade::tangy_f<1>(U_fit::ratio_f(1, 4) - N1_filter_rate);
 		auto constexpr K1_growth_rate  =  (one - K1_filter_rate)/(one + K1_filter_rate);
 
-		svf <<= occur::resample_f(N0_sample_rate);
+		svf <<= occur::quartz_f(N0_sample_rate);
 		svf <<= typename R_etc::order_attribute{1};
 		svf <<= X_coeff{1, 0};
 	
@@ -121,7 +121,7 @@ TAG_("filter")
 		using R_def = filter<>;
 		using R_etc = process::occurrence_t<R_def>;
 		using R_prx = confined_t<void
-		,	per_t<U_resample>          ::   refix <1>
+		,	per_t<U_quartz>            ::   refix <1>
 		,	U_rewind                   ::   attach <>
 		,	coefficient_t<X_coeff>     ::   attach <>
 	//	,	reuse< 0>
@@ -141,7 +141,7 @@ TAG_("filter")
 	//	auto constexpr K1_growth_rate  =  pade::tangy_f<1>(U_fit::ratio_f(1, 4) - N1_filter_rate);
 		auto constexpr K1_growth_rate  =  (one - K1_filter_rate)/(one + K1_filter_rate);
 
-		svf <<= occur::resample_f(N0_sample_rate);
+		svf <<= occur::quartz_f(N0_sample_rate);
 		svf <<= typename R_etc::order_attribute{2};
 		svf <<= X_coeff{1, 1};
 	
@@ -191,13 +191,13 @@ TAG_("filter")
 	TRY_("filter parameterization")
 	{
 		using Y_ramp = confined_t<void
-		,	typename per_t<U_resample>::template refix<1>
+		,	typename per_t<U_quartz>::template refix<1>
 		//\
 		,	filter<union RAMP>
 		,	filter<U_alpha[2], union RAMP>
 		>;
 		using Y_ring = confined_t<void
-		,	typename per_t<U_resample>::template refix<1>
+		,	typename per_t<U_quartz>::template refix<1>
 		//\
 		,	filter<union RING>
 		,	filter<U_alpha[2], union RING>
@@ -216,9 +216,9 @@ TAG_("filter-ring")
 	using T_aphex = typename bond::fit<>::aphex_type;
 	using Z_slice = schedule::slicer_t<scheme::spooled<extent_constant_t<0x10>>>;
 
-	using U_resample = occur::resample_t<>;
+	using U_quartz = occur::quartz_t<>;
 	using U_rewind = occur::rewind_t<>;
-	using U_stage    = occur::stage_t<>;
+	using U_stage  = occur::stage_t<>;
 
 	using U_coeff  = atom::math::dot_t<U_alpha[2]>;
 	using X_coeff  = occur::inferred_t<U_coeff, union COEFF>;
@@ -237,7 +237,7 @@ TAG_("filter-ring")
 		using R_etc = process::occurrence_t<R_def>;
 		using R_eve = flow::packet_t<U_stage, typename R_etc::damp_parameter>;
 		using R_prx = confined_t<void
-		,	per_t<U_resample>::refix<0>
+		,	per_t<U_quartz>::refix<0>
 		//\
 		,	reuse<0, -1>
 		,	reuse<   -1>
@@ -258,7 +258,7 @@ TAG_("filter-ring")
 		U_alpha constexpr r_omega = 2*2*2*3*5*5*7;
 		auto z_resize = occur::resize_t<>(0x020);
 		auto z_cursor = occur::cursor_t<>(0x020);
-		auto z_sample = occur::resample_f(44100);
+		auto z_sample = occur::quartz_f  (44100);
 
 		auto z = R_pxr::bind_f(processor::let_f(r_omega));
 		z <<= typename R_etc::order_attribute{2};
@@ -306,7 +306,7 @@ TAG_("filter-ring")
 		using R_prx = confined_t<void
 	//	,	reuse<0, -1>
 		,	reuse<   -1>
-		,	per_t<U_resample>      ::   refix <0>
+		,	per_t<U_quartz>        ::   refix <0>
 		,	coefficient_t<X_coeff> ::   attach <>
 		,	U_rewind               ::   attach <>
 		,	Y_gate                 ::   infix  <>
@@ -325,7 +325,7 @@ TAG_("filter-ring")
 		U_alpha constexpr r_omega = 59*61;
 		auto z_resize = occur::resize_t<>(0x020);
 		auto z_cursor = occur::cursor_t<>(0x020);
-		auto z_sample = occur::resample_f(44100);
+		auto z_sample = occur::quartz_f  (44100);
 
 		auto z = R_pxy::bind_f(processor::let_f(r_omega));
 		z <<= typename R_etc::order_attribute{2};
@@ -384,19 +384,19 @@ TAG_("filter-ring")
 
 TAG_("vectrol")
 {
-	using U_alpha = typename bond::fit<>::alpha_type;
-	using W_alpha = atom::math::dot_t<U_alpha[2]>;
-	using Z_slice = schedule::slicer_t<scheme::spooled<extent_constant_t<0x10>>>;
+	using U_alpha  = typename bond::fit<>::alpha_type;
+	using W_alpha  = atom::math::dot_t<U_alpha[2]>;
+	using Z_slice  = schedule::slicer_t<scheme::spooled<extent_constant_t<0x10>>>;
 
-	using U_resample = occur::resample_t<>;
-	using U_stage = occur::stage_t<>;
+	using U_quartz = occur::quartz_t<>;
+	using U_stage  = occur::stage_t<>;
 
-	using U_coeff = atom::math::dot_t<U_alpha[2]>;
-	using X_coeff = occur::inferred_t<U_coeff, union COEFF>;
+	using U_coeff  = atom::math::dot_t<U_alpha[2]>;
+	using X_coeff  = occur::inferred_t<U_coeff, union COEFF>;
 
-	using Y_trig  = pulse_t< 0>;
-	using Y_gate  = pulse_t< 1>;
-	using Y_hold  = pulse_t<-1>;
+	using Y_trig   = pulse_t< 0>;
+	using Y_gate   = pulse_t< 1>;
+	using Y_hold   = pulse_t<-1>;
 
 	using _0 = ordinal_constant_t<0>;
 	using _1 = ordinal_constant_t<1>;
@@ -419,12 +419,12 @@ TAG_("vectrol")
 		using S_process = confined_t<void
 		,	reuse<0, -1>
 		,	coefficient_t<X_coeff> ::   attach <>
-		,	per_t<U_resample>      ::   refix <0>
+		,	per_t<U_quartz>        ::   refix <0>
 		,	Y_trig                 ::   infix  <>
 		,	S_damp_                ::   affix  <>
 	//	,	S_damp                 ::   affix  <>
-		,	S_meta                ::   attach <>
-		,	S_meta                :: dispatch <>
+		,	S_meta                 ::   attach <>
+		,	S_meta                 :: dispatch <>
 		,	S_content
 		>;
 		using S_processor = processor::monomer_t<S_process
@@ -436,7 +436,7 @@ TAG_("vectrol")
 		U_alpha constexpr e_omega = 2*2*3*3*5*5;
 		auto z_resize = occur::resize_t<>(0x020);
 		auto z_cursor = occur::cursor_t<>(0x020);
-		auto z_sample = occur::resample_f(44100);
+		auto z_sample = occur::quartz_f  (44100);
 
 		auto z = S_processor::bind_f(processor::let_f(e_omega));
 		z <<= S_order{2};
@@ -479,7 +479,7 @@ TAG_("vectrol")
 		using S_process = confined_t<void
 		,	reuse< 0, -1>
 	//	,	process::lift<W_alpha>
-		,	typename per_t<U_resample> ::   refix <0>
+		,	typename per_t<U_quartz> ::   refix <0>
 		,	typename Y_trig            ::   infix <>
 		,	typename S_damp_           ::   affix <>
 		,	typename S_meta           ::   attach <>
@@ -504,9 +504,9 @@ TAG_("vectrol")
 		using T_dummy   =  occur::inferred_t<U_alpha, union DUMMY>;
 
 		//\
-		using X_vector  =  atom::bracket_t<U_alpha, W_alpha>;
+		using X_vector  =  atom::bucket_t<U_alpha, W_alpha>;
 		using X_vector  =  flow::packed_t<U_alpha, W_alpha, union SHLEEM>;
-		using X_matrix  =  atom::bracket_t<X_vector[2]>;
+		using X_matrix  =  atom::bucket_t<X_vector[2]>;
 		using X_patch   =  patch_t<X_matrix>;
 
 		using X_process = confined_t<void
@@ -516,7 +516,7 @@ TAG_("vectrol")
 		,	reuse< 0>
 		,	coefficient_t<X_coeff>    ::   attach <>
 		,	coefficient_t<>           ::   unfix  <>
-		,	per_t<U_resample>         ::   refix <0>
+		,	per_t<U_quartz>           ::   refix <0>
 		,	Y_gate                    ::   infix  <>
 	//	,	T_damp_                   ::   affix  <>
 		,	T_damp                    ::   affix  <>
@@ -536,7 +536,7 @@ TAG_("vectrol")
 		U_alpha constexpr e_omega = 2*2*3*3*5*5;
 		auto z_resize = occur::resize_t<>(0x020);
 		auto z_cursor = occur::cursor_t<>(0x020);
-		auto z_sample = occur::resample_f(44100);
+		auto z_sample = occur::quartz_f  (44100);
 
 		auto _1 = processor::let_f(U_alpha{one});
 		auto _e = processor::let_f(e_omega);

@@ -225,7 +225,7 @@ noexcept -> bool
 	using U = XTAL_ALL_(u);
 	using V = XTAL_ALL_(v);
 	XTAL_IF0
-	XTAL_0IF (not  atom::bucket_q<U, V>) {
+	XTAL_0IF (not atom::bucket_q<U, V>) {
 		return bond::math::bit_trim_f<N_ind>(u) == bond::math::bit_trim_f<N_ind>(v)
 		or     bond::math::bit_trim_f<N_ind>(u - v) == zero;
 	}

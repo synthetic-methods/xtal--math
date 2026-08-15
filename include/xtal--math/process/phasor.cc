@@ -34,8 +34,8 @@ TAG_("phasor trials")
 	using namespace Eigen;
 	
 	using A_stored = scheme::stored<unit_type[0x100]>;
-	using A_sample = occur::resample_t<>::template attach<>;
-	using U_sample = occur::resample_t<>;
+	using A_sample = occur::quartz_t<>::template attach<>;
+	using U_sample = occur::quartz_t<>;
 
 	using U_fit = bond::fit<>;
 	using U_sigma = typename U_fit::sigma_type;
@@ -188,8 +188,8 @@ TAG_("phasor")
 	using namespace Eigen;
 	
 	using A_stored   = scheme::stored<unit_type[0x100]>;
-	using A_sample   = occur::resample_t<>::template attach<>;
-	using U_resynced = occur::rewind_t  <>::template attach<>;
+	using A_sample   = occur::quartz_t<>::template attach<>;
+	using U_resynced = occur::rewind_t<>::template attach<>;
 
 	using U_fit   = bond::fit<>;
 	using U_sigma = typename U_fit::sigma_type;

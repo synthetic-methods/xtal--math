@@ -68,8 +68,8 @@ struct per<M_att>
 				{
 					auto const &m = R_::template head<M_att>();
 					XTAL_IF0
-					XTAL_0IF (occur::resample_q<M_att>) {return     m.period();}
-					XTAL_0IF_(else)                     {return one/m.  head();}
+					XTAL_0IF (occur::quartz_q<M_att>) {return     m.period();}
+					XTAL_0IF_(else)                   {return one/m.  head();}
 				}
 
 			};

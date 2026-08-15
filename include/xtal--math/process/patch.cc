@@ -42,7 +42,7 @@ TAG_("route", "process")
 	{
 		using namespace xtd::ranges::views;
 
-		using U_matrix = atom::bracket_t<int[3][2]>;
+		using U_matrix = atom::bucket_t<int[3][2]>;
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template refix<>
 		,	sum
@@ -65,7 +65,7 @@ TAG_("route", "processor")
 	TRY_("shape with matrix")
 	{
 		using namespace xtd::ranges::views;
-		using U_matrix = atom::bracket_t<int[3][2]>;// 3-outputs, 2-inputs
+		using U_matrix = atom::bucket_t<int[3][2]>;// 3-outputs, 2-inputs
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template refix<>
 		,	sum
@@ -98,9 +98,9 @@ TAG_("route", "processor")
 	{
 		using namespace xtd::ranges::views;
 		//\
-		using U_vector = atom::bracket_t<int[2]>;
+		using U_vector = atom::bucket_t<int[2]>;
 		using U_vector = bond::pack_t<int, int>;
-		using U_matrix = atom::bracket_t<U_vector[3]>;
+		using U_matrix = atom::bucket_t<U_vector[3]>;
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template refix<>
 		,	sum
@@ -124,8 +124,8 @@ TAG_("route", "processor")
 	{
 		using namespace xtd::ranges::views;
 		//\
-		using U_matrix = atom::bracket_t<int[3][2]>;
-		using U_matrix = atom::bracket_t<bond::pack_t<int, int>[3]>;
+		using U_matrix = atom::bucket_t<int[3][2]>;
+		using U_matrix = atom::bucket_t<bond::pack_t<int, int>[3]>;
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template refix<>
 		,	sum
@@ -152,8 +152,8 @@ TAG_("route", "processor")
 	{
 		using namespace xtd::ranges::views;
 		//\
-		using U_matrix = atom::bracket_t<int[3][2]>;
-		using U_matrix = atom::bracket_t<bond::pack_t<int, int>[3]>;
+		using U_matrix = atom::bucket_t<int[3][2]>;
+		using U_matrix = atom::bucket_t<bond::pack_t<int, int>[3]>;
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template refix<>
 		,	sum
@@ -179,7 +179,7 @@ TAG_("route", "processor")
 	/***/
 	TRY_("shape with column dent")
 	{
-		using M   = atom::bracket_t<bond::pack_t<int, int, int>[3]>;
+		using M   = atom::bucket_t<bond::pack_t<int, int, int>[3]>;
 		using W   = occur::math::dent_s<M>;
 		using W1  = occur::math::dent_s<M, 1>;
 		using W12 = occur::math::dent_s<M, 1, 2>;

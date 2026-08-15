@@ -99,7 +99,7 @@ struct phasor<A, As...>
 		}
 
 	public:// OPERATE
-	//	TODO: Use `occur::resample` to manage downsampling via integer multiplication.
+	//	TODO: Use `occur::quartz` to manage downsampling via integer multiplication.
 
 		/*!
 		\brief   Evaluation by succession.
@@ -110,9 +110,9 @@ struct phasor<A, As...>
 		method()
 		noexcept -> decltype(auto)
 		{
-			using resample_type = occur::resample_t<>;
-			if constexpr (complete_q<typename S_::template head_t<resample_type>>) {
-				auto const rate = S_::template head<resample_type>().rate();
+			using quartz_type = occur::quartz_t<>;
+			if constexpr (complete_q<typename S_::template head_t<quartz_type>>) {
+				auto const rate = S_::template head<quartz_type>().rate();
 				auto &phi = ingress();
 				auto  psi = phi.scaled(rate);
 				return egress(psi.template apply<[] XTAL_1FN_(call) (bond::pack_f)>());
@@ -141,9 +141,9 @@ struct phasor<A, As...>
 		method(revalue_type omega)
 		noexcept -> auto
 		{
-			using resample_type = occur::resample_t<>;
-			if constexpr (complete_q<typename S_::template head_t<resample_type>>) {
-				omega *= S_::template head<resample_type>().period();
+			using quartz_type = occur::quartz_t<>;
+			if constexpr (complete_q<typename S_::template head_t<quartz_type>>) {
+				omega *= S_::template head<quartz_type>().period();
 			}
 			auto &u_phi = head();
 			u_phi[1] = U_phason::devalue_f(omega); return ++u_phi;

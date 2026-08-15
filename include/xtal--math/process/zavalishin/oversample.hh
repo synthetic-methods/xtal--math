@@ -109,37 +109,41 @@ public:
 		)	const
 		noexcept -> auto
 		{
-			int constexpr K_div =   two << N_sup;
-			int constexpr K_len =   one << N_sup;
-			int constexpr K_end =   K_len -  one;
+			int constexpr K_div = two << N_sup;
+			int constexpr K_len = one << N_sup;
+			int constexpr K_end = K_len -  one;
 			using U  = XTAL_ALL_(u);
 			using X  = XTAL_ALL_(x);
 			using Y  = XTAL_ALL_(XTAL_ANY_(S_).template method<Ns...>(x, a, u, oo...));
 			using X_ = atom::quantity_plus_multiplies_t<X[K_len]>;
 			using Y_ = atom::quantity_plus_multiplies_t<Y[K_len]>;
 
+		//	TODO: Interpolate controls?
+		//	TODO: Detect mutability/immutability for parallelization?
+		//	TODO: Replace by signalling difference upstream,
+		//		maybe with `occur::quartz_t<signed>(N_sup)`?
 			u *= root_f<-1>((U) K_len);
 
 			auto constexpr z_up = F_men<K_len, 1>(root_f<-1>((U) K_div));
 			auto constexpr z_dn = F_lop(z_up);
 
-			auto         & y_dn = get<0>(S_::template stash<Y_>());
-			auto         & x_dn = get<0>(S_::template stash<X >());
-
-			auto           x_up = x*U(K_div - one);
+		//	Upsampling
+			auto const     x_up = x*U(K_div - one);
+			auto const     x_dn = S_::stash1(x_up);
 			auto           x_   = [&]<auto ...I> (bond::seek_in_t<I...>)
 				XTAL_0FN_(to) (X_{(get<I>(z_up)*(x_up) + get<I>(z_dn)*(x_dn))...})
 					(bond::seek_to_t<K_len>{});
 
+		//	Mapping/Downsampling:
+			auto & y_dn  = S_::template stash1<Y_>();
 			auto   y_up  = y_dn;
-			get<0>(y_up) = zero;
-			bond::seek_to_e<K_len>([&, this] (auto const I)
+			get<0>(y_up) = S_::template method<Ns...>(get<0>(x_), a, u, oo...);
+			bond::seek_to_e<K_len - 1, 1>([&, this] (auto I)
 			XTAL_0FN {
 				get<I>(y_up) +=
 				get<I>(y_dn)  = S_::template method<Ns...>(get<I>(x_), a, u, oo...);
 			});
-			auto const y = dot_f(z_up, y_up); x_dn = x_up;
-			return y;
+			return dot_f(z_up, y_up);
 		}
 
 	};
