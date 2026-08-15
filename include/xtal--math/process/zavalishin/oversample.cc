@@ -5,7 +5,7 @@
 
 
 
-#include "./upsample.hh"
+#include "./oversample.hh"
 XTAL_ENV_(push)
 namespace xtal::process::math::zavalishin::_test
 {/////////////////////////////////////////////////////////////////////////////////
@@ -13,7 +13,7 @@ namespace xtal::process::math::zavalishin::_test
 
 ////////////////////////////////////////////////////////////////////////////////
 
-TAG_("upsample")
+TAG_("oversample")
 {
 	using U_fit   = bond::fit<>;
 	using U_sigma = U_fit::sigma_type;
@@ -43,7 +43,7 @@ TAG_("upsample")
 	using _1 = ordinal_constant_t<1>;
 
 	/*/
-	TRY_("upsample: check")
+	TRY_("oversample: check")
 	{
 		TRUE_(true);
 
