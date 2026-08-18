@@ -71,7 +71,7 @@ struct patch<U_mat>
 			};
 		};
 		template <extent_type N_mask=1>
-		struct refix
+		struct rewire
 		{
 			using superkind = attach<N_mask>;
 
@@ -108,7 +108,7 @@ struct patch<U_mat>
 			};
 		};
 		template <extent_type N_mask=1>
-		struct refit
+		struct reflux
 		{
 			using superkind = attach<N_mask>;
 
@@ -152,7 +152,7 @@ struct patch<U_mat>
 		};
 
 		template <class ..._s>
-		struct fix
+		struct prewire
 		{
 		private:
 			XTAL_VAL_(set) _N = sizeof...(_s);
@@ -184,7 +184,7 @@ struct patch<U_mat>
 			};
 		};
 		template <class ..._s>
-		struct fit
+		struct preflux
 		{
 		private:
 			XTAL_VAL_(set) _N = sizeof...(_s);
@@ -244,18 +244,18 @@ struct patch<U_mat, _s...>
 		using S_::S_;
 
 		template <extent_type N_mask=1>
-		struct refix
+		struct rewire
 		:	bond::compose<void
-			,	typename S_::template refix<N_mask>
-			,	typename S_::template   fix<_s... >
+			,	typename S_::template  rewire<N_mask>
+			,	typename S_::template prewire<_s... >
 			>
 		{
 		};
 		template <extent_type N_mask=1>
-		struct refit
+		struct reflux
 		:	bond::compose<void
-			,	typename S_::template refit<N_mask>
-			,	typename S_::template   fit<_s... >
+			,	typename S_::template  reflux<N_mask>
+			,	typename S_::template preflux<_s... >
 			>
 		{
 		};

@@ -3,7 +3,7 @@
 
 #include "./root.hh"
 #include "./part.hh"
-#include "./identity.hh"
+
 
 
 XTAL_ENV_(push)
@@ -62,43 +62,47 @@ struct dilate
 		\todo    Incorporate `M_arg`.
 		*/
 		template <int M_arg=0>
-		struct infix
+		struct transfix
 		{
-			using superkind = typename identity_t<>::template infix<M_arg>;
+			static_assert(M_arg == 0);// For now...
 
 			template <class R>
-			class subtype : public bond::compose_s<R, superkind>
+			class subtype : public bond::compose_s<R>
 			{
-				using R_ = bond::compose_s<R, superkind>;
+				using R_ = bond::compose_s<R>;
 
 			public:
 				using R_::R_;
 
 				template <auto ...Ns>
 				XTAL_VAL_(return,inline,let)
-				method(auto &&o)
-				const noexcept -> decltype(auto)
-				requires
-				requires (R_ const &r_) {r_ .template method<Ns...>(XTAL_REF_(o));}
-				{
-					using U = typename    bond::fit<decltype(o)>::alpha_type;
-					U    constexpr n =    bond::operate_v<M_val>;
-					U    constexpr u =       part_f<unsigned>(n);
-					auto constexpr I = (int) part_f<  signed>(n);
-					return R_::template method<Ns...>(XTAL_REF_(o)*root_f<-I>(u))*root_f<I>(u);
-				}
-				template <auto ...Ns>
-				XTAL_VAL_(return,inline,let)
-				method(auto &&o)
+				method(auto &&...oo) const
 				noexcept -> decltype(auto)
 				requires
-				requires (R_       &r_) {r_ .template method<Ns...>(XTAL_REF_(o));}
+				requires (R_ const &r_)
+				{r_.template method  <Ns...>(       XTAL_REF_(oo)...);}
+				{return      method_f<Ns...>(*this, XTAL_REF_(oo)...);}
+
+				template <auto ...Ns>
+				XTAL_VAL_(return,inline,let)
+				method(auto &&...oo)
+				noexcept -> decltype(auto)
+				requires
+				requires (R_       &r_)
+				{r_.template method  <Ns...>(       XTAL_REF_(oo)...);}
+				{return      method_f<Ns...>(*this, XTAL_REF_(oo)...);}
+
+			private:
+				template <auto ...Ns>
+				XTAL_VAL_(return,inline,set)
+				method_f(auto &&_, auto &&o)
+				noexcept -> decltype(auto)
 				{
 					using U = typename    bond::fit<decltype(o)>::alpha_type;
 					U    constexpr n =    bond::operate_v<M_val>;
 					U    constexpr u =       part_f<unsigned>(n);
 					auto constexpr I = (int) part_f<  signed>(n);
-					return R_::template method<Ns...>(XTAL_REF_(o)*root_f<-I>(u))*root_f<I>(u);
+					return qualify_f<R_>(XTAL_REF_(_)).template method<Ns...>(XTAL_REF_(o)*root_f<-I>(u))*root_f<I>(u);
 				}
 
 			};

@@ -2,5 +2,6 @@
 #include "./base.cc"
 #include "./differ.cc"
 #include "./filter.cc"
+#include "./reuse.cc"
 #include "./oversample.cc"
 #include "./vactrol.cc"

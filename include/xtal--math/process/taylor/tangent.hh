@@ -57,15 +57,15 @@ struct tangent<M_ism, -0>
 		method(auto &&o)
 		const noexcept -> decltype(auto)
 		{
-			auto const o_sgn = part_f<signed>(o);
+			auto const o_sig = part_f<signed>(o);
 			auto x = objective_f(XTAL_REF_(o));
 			XTAL_IF0
 			XTAL_0IF (0 < M_ism) {
 				x *= sine_t<M_ism, -1>{}.template method<N_lim>(x);
-				x *= root_f<-2>(term_f(one,  cosign_v<M_ism>, square_f(x)));
+				x *= root_f<-2>(term_f(one,  sigpar_v<M_ism>, square_f(x)));
 			}
 			XTAL_0IF (M_ism < 0) {
-				x *= root_f<-2>(term_f(one, -cosign_v<M_ism>, square_f(x)));
+				x *= root_f<-2>(term_f(one, -sigpar_v<M_ism>, square_f(x)));
 				x *= sine_t<M_ism, -1>{}.template method<N_lim>(x);
 			}
 			return x;

@@ -20,8 +20,49 @@ diagonalizing the result by `(1 + I)*#&`.
 template <class ...Ms>	struct  codeficient;
 template <class ...Ms>	using   codeficient_t = process::confined_t<codeficient<Ms...>>;
 
+
 ////////////////////////////////////////////////////////////////////////////////
 
+template <occur::any_q M>
+struct codeficient<M>
+{
+	template <class S>
+	class subtype : public bond::compose_s<S>
+	{
+		using S_ = bond::compose_s<S>;
+
+	public:
+		using S_::S_;
+
+		template <extent_type M_mask=1>
+		struct attach
+		{
+			using superkind = typename M::template attach<M_mask>;
+
+			template <class R>
+			class subtype : public bond::compose_s<R, superkind>
+			{
+				using R_ = bond::compose_s<R, superkind>;
+
+			public:
+				using R_::R_;
+
+				template <auto ...Ns>
+				XTAL_VAL_(inline,let)
+				method(auto &&...oo)
+				const noexcept -> auto
+				{
+					auto const z = R_ ::template method<Ns...>(XTAL_REF_(oo)...);
+					auto const y = std::imag(z)*R_::headed();
+					auto const x = std::real(z);
+					return std::pair{x - y, x + y};
+				}
+
+			};
+		};
+
+	};
+};
 template <>
 struct codeficient<>
 {
@@ -63,46 +104,6 @@ struct codeficient<>
 				{
 					auto const z = R_ ::template method<Ns...>(XTAL_REF_(oo)...);
 					auto const y = std::imag(z)*XTAL_REF_(o);
-					auto const x = std::real(z);
-					return std::pair{x - y, x + y};
-				}
-
-			};
-		};
-
-	};
-};
-template <occur::any_q M>
-struct codeficient<M>
-{
-	template <class S>
-	class subtype : public bond::compose_s<S>
-	{
-		using S_ = bond::compose_s<S>;
-
-	public:
-		using S_::S_;
-
-		template <extent_type M_mask=1>
-		struct attach
-		{
-			using superkind = typename M::template attach<M_mask>;
-
-			template <class R>
-			class subtype : public bond::compose_s<R, superkind>
-			{
-				using R_ = bond::compose_s<R, superkind>;
-
-			public:
-				using R_::R_;
-
-				template <auto ...Ns>
-				XTAL_VAL_(inline,let)
-				method(auto &&...oo)
-				const noexcept -> auto
-				{
-					auto const z = R_ ::template method<Ns...>(XTAL_REF_(oo)...);
-					auto const y = std::imag(z)*R_::headed();
 					auto const x = std::real(z);
 					return std::pair{x - y, x + y};
 				}

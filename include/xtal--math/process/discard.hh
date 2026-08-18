@@ -36,8 +36,8 @@ struct discard
 
 		template <int N_car=0>
 		XTAL_VAL_(return,inline,let)
-		method(auto const &x)
-		const noexcept -> auto
+		method(auto const &x) const
+		noexcept -> auto
 		{
 			auto constexpr m_car = M_car&1;
 			auto constexpr n_car = N_car&1;
@@ -48,8 +48,8 @@ struct discard
 		}
 		template <int N_car=0>
 		XTAL_VAL_(return,inline,let)
-		method(auto const &x, auto const &z)
-		const noexcept -> XTAL_ALL_(x)
+		method(auto const &x, auto const &z) const
+		noexcept -> XTAL_ALL_(x)
 		{
 			auto constexpr m_car = M_car&1;
 			auto constexpr n_car = N_car&1;
@@ -73,12 +73,12 @@ struct discard<0, M_aux>
 		using S_::S_;
 
 		template <int M_arg=0>
-		struct infix
+		struct transfix
 		{
-			using superkind = typename identity_t<>::template infix<M_arg>;
+		//	using superkind = typename identity_t<>::template infix<M_arg>;
 			
 			template <class R>
-			using subtype = bond::compose_s<R, superkind>;
+			using subtype = bond::compose_s<R>;
 
 		};
 
@@ -96,47 +96,63 @@ struct discard<1, M_aux>
 		using S_::S_;
 
 		template <int M_arg=0>
-		struct infix
+		struct transfix
 		{
-			static int constexpr M_pow = sign_v<M_aux, 1>;
+			static int constexpr M_pow = signum_v<M_aux, 1>;
 
-			using superkind = typename identity_t<>::template infix<M_arg>;
+		//	using superkind = typename identity_t<>::template infix<M_arg>;
 			
 			template <class R>
-			class subtype : public bond::compose_s<R, superkind>
+			class subtype : public bond::compose_s<R>
 			{
-				using R_ = bond::compose_s<R, superkind>;
+				using R_ = bond::compose_s<R>;
 
 			public:
 				using R_::R_;
 
 				template <auto ...Ns>
 				XTAL_VAL_(return,inline,let)
-				method(auto &&u, auto &&...oo)
-				const noexcept -> decltype(auto)
-				requires
-				requires (R_ const &r_) {r_ .template method<Ns...>(XTAL_REF_(u));}
-				{
-					auto  v = R_::template method<Ns...>(u, XTAL_REF_(oo)...);
-					using V = XTAL_ALL_(v);
-					using U = XTAL_ALL_(u);
-					static_assert(same_q<U, V>);
-
-					return v*root_f<M_pow, 1>(XTAL_REF_(u));
-				}
-				template <auto ...Ns>
-				XTAL_VAL_(return,inline,let)
-				method(auto &&u, auto &&...oo)
+				method(auto &&...oo) const
 				noexcept -> decltype(auto)
 				requires
-				requires (R_       &r_) {r_ .template method<Ns...>(XTAL_REF_(u));}
-				{
-					auto  v = R_::template method<Ns...>(u, XTAL_REF_(oo)...);
-					using V = XTAL_ALL_(v);
-					using U = XTAL_ALL_(u);
-					static_assert(same_q<U, V>);
+				requires (R_ const &r_)
+				{r_.template method  <Ns...>(       XTAL_REF_(oo)...);}
+				{return      method_f<Ns...>(*this, XTAL_REF_(oo)...);}
 
+				template <auto ...Ns>
+				XTAL_VAL_(return,inline,let)
+				method(auto &&...oo)
+				noexcept -> decltype(auto)
+				requires
+				requires (R_       &r_)
+				{r_.template method  <Ns...>(       XTAL_REF_(oo)...);}
+				{return      method_f<Ns...>(*this, XTAL_REF_(oo)...);}
+
+			private:
+				template <auto ...Ns> requires (0 == M_arg)
+				XTAL_VAL_(return,inline,set)
+				method_f(auto &&_, auto &&u, auto &&...oo)
+				noexcept -> decltype(auto)
+				{
+					auto &r_ = qualify_f<R_>(XTAL_REF_(_));
+					auto  v  = r_.template method<Ns...>(u, XTAL_REF_(oo)...);
+					using V  = XTAL_ALL_(v);
+					using U  = XTAL_ALL_(u);
+					static_assert(same_q<U, V>);
 					return v*root_f<M_pow, 1>(XTAL_REF_(u));
+				}
+				template <auto ...Ns> requires (0 != M_arg)
+				XTAL_VAL_(return,inline,set)
+				method_f(auto &&_,           auto &&...ou)
+				noexcept -> decltype(auto)
+				{
+					auto &r_ = qualify_f<R_>(XTAL_REF_(_));
+					auto  u  = bond::seek_argument_f<M_arg>(ou...);
+					auto  v  = r_.template method<Ns...>(   XTAL_MOV_(ou)...);
+					using U  = XTAL_ALL_(u);
+					using V  = XTAL_ALL_(v);
+					static_assert(same_q<U, V>);
+					return v*root_f<M_pow, 1>(XTAL_MOV_(u));
 				}
 
 			};
@@ -156,29 +172,46 @@ struct discard<1>
 		using S_::S_;
 
 		template <int M_arg=0>
-		struct infix
+		struct transfix
 		{
-			using superkind = typename identity_t<>::template infix<M_arg>;
+		//	using superkind = typename identity_t<>::template infix<M_arg>;
 			
 			template <class R>
-			class subtype : public bond::compose_s<R, superkind>
+			class subtype : public bond::compose_s<R>
 			{
-				using R_ = bond::compose_s<R, superkind>;
+				using R_ = bond::compose_s<R>;
 
 			public:
 				using R_::R_;
 
 				template <auto ...Ns>
 				XTAL_VAL_(return,inline,let)
-				method(auto &&u, auto &&...oo)
-				const noexcept -> decltype(auto)
+				method(auto &&...oo) const
+				noexcept -> decltype(auto)
 				requires
-				requires (R_ const &r_) {r_ .template method<Ns...>(XTAL_REF_(u));}
-				{
-					auto  v = R_::template method<Ns...>(u, XTAL_REF_(oo)...);
-					using V = XTAL_ALL_(v);
-					using U = XTAL_ALL_(u);
+				requires (R_ const &r_)
+				{r_.template method  <Ns...>(       XTAL_REF_(oo)...);}
+				{return      method_f<Ns...>(*this, XTAL_REF_(oo)...);}
 
+				template <auto ...Ns>
+				XTAL_VAL_(return,inline,let)
+				method(auto &&...oo)
+				noexcept -> decltype(auto)
+				requires
+				requires (R_       &r_)
+				{r_.template method  <Ns...>(       XTAL_REF_(oo)...);}
+				{return      method_f<Ns...>(*this, XTAL_REF_(oo)...);}
+			
+			private:
+				template <auto ...Ns> requires (0 == M_arg)
+				XTAL_VAL_(return,inline,set)
+				method_f(auto &&_, auto &&u, auto &&...oo)
+				noexcept -> auto
+				{
+					auto &r_ = qualify_f<R_>(XTAL_REF_(_));
+					auto  v  = r_.template method<Ns...>(u, XTAL_REF_(oo)...);
+					using V  = XTAL_ALL_(v);
+					using U  = XTAL_ALL_(u);
 					XTAL_IF0
 					XTAL_0IF (same_q<U, V>) {
 						return v*XTAL_REF_(u);
@@ -188,38 +221,39 @@ struct discard<1>
 							return V{v.real(), v.imag()*XTAL_REF_(u)};
 						}
 						XTAL_0IF_(else) {
-							destruct_f(v)[1] *= XTAL_REF_(u); return v;
+							destruct_f<1>(v) *= XTAL_REF_(u);
+							return v;
 						}
 					}
 					XTAL_0IF (complex_field_q<V>) {
 						return complexion_f(v.real(), v.imag()*XTAL_REF_(u));
 					}
 				}
-				template <auto ...Ns>
-				XTAL_VAL_(return,inline,let)
-				method(auto &&u, auto &&...oo)
-				noexcept -> decltype(auto)
-				requires
-				requires (R_       &r_) {r_ .template method<Ns...>(XTAL_REF_(u));}
+				template <auto ...Ns> requires (0 != M_arg)
+				XTAL_VAL_(return,inline,set)
+				method_f(auto &&_, auto ...ou)
+				noexcept -> auto
 				{
-					auto  v = R_::template method<Ns...>(u, XTAL_REF_(oo)...);
-					using V = XTAL_ALL_(v);
-					using U = XTAL_ALL_(u);
-
+					auto &r_ = qualify_f<R_>(XTAL_REF_(_));
+					auto  u  = bond::seek_argument_f<M_arg>(ou...);
+					auto  v  = r_.template method<Ns...>(   XTAL_MOV_(ou)...);
+					using U  = XTAL_ALL_(u);
+					using V  = XTAL_ALL_(v);
 					XTAL_IF0
 					XTAL_0IF (same_q<U, V>) {
-						return v*XTAL_REF_(u);
+						return v*XTAL_MOV_(u);
 					}
 					XTAL_0IF (complex_variable_q<V>) {
 						XTAL_IF1_(consteval) {
-							return V{v.real(), v.imag()*XTAL_REF_(u)};
+							return V{v.real(), v.imag()*XTAL_MOV_(u)};
 						}
 						XTAL_0IF_(else) {
-							destruct_f(v)[1] *= XTAL_REF_(u); return v;
+							destruct_f<1>(v) *= XTAL_MOV_(u);
+							return v;
 						}
 					}
 					XTAL_0IF (complex_field_q<V>) {
-						return complexion_f(v.real(), v.imag()*XTAL_REF_(u));
+						return complexion_f(v.real(), v.imag()*XTAL_MOV_(u));
 					}
 				}
 
@@ -231,6 +265,10 @@ struct discard<1>
 template <int M_aux>
 struct discard<2, M_aux>
 {
+private:
+	XTAL_VAL_(set) I_aux = sigpar_v<M_aux>;
+
+public:
 	template <class S>
 	class subtype : public bond::compose_s<S>
 	{
@@ -240,37 +278,57 @@ struct discard<2, M_aux>
 		using S_::S_;
 
 		template <int M_arg=0>
-		struct infix
+		struct transfix
 		{
-			using superkind = typename identity_t<>::template infix<M_arg>;
+		//	using superkind = typename identity_t<>::template infix<M_arg>;
 			
 			template <class R>
-			class subtype : public bond::compose_s<R, superkind>
+			class subtype : public bond::compose_s<R>
 			{
-				using R_ = bond::compose_s<R, superkind>;
+				using R_ = bond::compose_s<R>;
 
 			public:
 				using R_::R_;
 
 				template <auto ...Ns>
 				XTAL_VAL_(return,inline,let)
-				method(auto &&u, auto &&...oo)
-				const noexcept -> decltype(auto)
-				requires
-				requires (R_ const &r_) {r_ .template method<Ns...>(XTAL_REF_(u));}
-				{
-					unstruct_t<decltype(u)> constexpr v = cosign_v<M_aux>;
-					return R_::template method<Ns...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
-				}
-				template <auto ...Ns>
-				XTAL_VAL_(return,inline,let)
-				method(auto &&u, auto &&...oo)
+				method(auto &&...oo) const
 				noexcept -> decltype(auto)
 				requires
-				requires (R_       &r_) {r_ .template method<Ns...>(XTAL_REF_(u));}
+				requires (R_ const &r_)
+				{r_.template method  <Ns...>(       XTAL_REF_(oo)...);}
+				{return      method_f<Ns...>(*this, XTAL_REF_(oo)...);}
+
+				template <auto ...Ns>
+				XTAL_VAL_(return,inline,let)
+				method(auto &&...oo)
+				noexcept -> decltype(auto)
+				requires
+				requires (R_       &r_)
+				{r_.template method  <Ns...>(       XTAL_REF_(oo)...);}
+				{return      method_f<Ns...>(*this, XTAL_REF_(oo)...);}
+
+			private:
+				template <auto ...Ns> requires (0 == M_arg)
+				XTAL_VAL_(return,inline,set)
+				method_f(auto &&_, auto &&u, auto &&...oo)
+				noexcept -> decltype(auto)
 				{
-					unstruct_t<decltype(u)> constexpr v = cosign_v<M_aux>;
-					return R_::template method<Ns...>(v*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
+					auto constexpr i = unstruct_t<decltype(u)>(I_aux);
+					return qualify_f<R_>(XTAL_REF_(_)).
+						template method<Ns...>(i*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
+				}
+				template <auto ...Ns> requires (0 != M_arg)
+				XTAL_VAL_(return,inline,set)
+				method_f(auto &&_,             auto ...ou)
+				noexcept -> decltype(auto)
+				{
+					auto         & u = bond::seek_argument_f<M_arg>(ou...);
+					auto constexpr i = unstruct_t<decltype(u)>(I_aux);
+					u *= u;
+					u *= i;
+					return qualify_f<R_>(XTAL_REF_(_)).
+						template method<Ns...>(XTAL_MOV_(ou)...);
 				}
 
 			};

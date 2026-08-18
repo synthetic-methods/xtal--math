@@ -11,7 +11,7 @@ namespace xtal::process::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 /*!
-\brief   Divides the sample indexed by `M_arg` by
+\brief   Divides the argument indexed by `M_arg` by
          the attached `M_att`.
 */
 template <class ..._s> XTAL_TYP_(new) per;
@@ -31,7 +31,7 @@ struct per<M_att>
 
 	public:
 		template <int M_arg=0>
-		struct refix
+		struct transfix
 		{
 			template <class R>
 			class subtype : public bond::compose_s<R>
@@ -49,7 +49,7 @@ struct per<M_att>
 				method(auto ...oo)
 				const noexcept -> decltype(auto)
 				{
-					auto &o = get<M_arg>(std::tie(oo...)); o *= period();
+					bond::seek_argument_f<M_arg>(oo...) *= period();
 					return R_::template method<Ns...>(XTAL_MOV_(oo)...);
 				}
 				template <auto ...Ns> requires in_v<M_arg, 0>
@@ -76,7 +76,7 @@ struct per<M_att>
 			template <class R> requires incomplete_q<typename R::template head_t<M_att>>
 			class subtype<R> : public bond::compose_s<R
 			,	typename M_att::template attach<>
-			,	refix<M_arg>
+			,	transfix<M_arg>
 			>
 			{
 			};

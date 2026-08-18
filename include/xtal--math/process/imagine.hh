@@ -43,7 +43,7 @@ struct imagine
 		const noexcept -> decltype(auto)
 		requires complex_variable_q<decltype(get<0>(z))> and atom::couple_q<decltype(get<1>(z))>
 		{
-			return z.form(method(z.signum()), z.magnum());
+			return z.reform(method(z.signum()), z.magnum());
 		};
 		template <auto ...>
 		XTAL_VAL_(return,inline,let)

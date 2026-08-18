@@ -32,9 +32,9 @@ template <applicable_q auto M_app>
 struct cut<M_app>
 {
 	static auto constexpr M_val = M_app();
-	static auto constexpr M_abs = part_f<unsigned>(M_val);
-	static auto constexpr M_sgn = part_f<  signed>(M_val);
-	static auto constexpr M_dir = (int) part_f<signed>(nearing_f(M_abs)*(M_sgn));
+	static auto constexpr M_mag = part_f<unsigned>(M_val);
+	static auto constexpr M_sig = part_f<  signed>(M_val);
+	static auto constexpr M_dir = (int) part_f<signed>(nearing_f(M_mag)*(M_sig));
 	static auto constexpr M_opp = [] XTAL_1FN_(to) (-one/M_val);
 
 	template <class S>
@@ -55,7 +55,7 @@ struct cut<M_app>
 			using U_sigma = typename U_fit::sigma_type;
 			using U_alpha = typename U_fit::alpha_type;
 
-			auto constexpr o_stop =   static_cast<U_alpha>(M_abs);
+			auto constexpr o_stop =   static_cast<U_alpha>(M_mag);
 			auto constexpr N_side =   static_cast<U_delta>(M_dir);
 			auto constexpr K_stop = xtd::bit_cast<U_sigma>(o_stop);
 			auto constexpr K_side = xtd::bit_cast<U_sigma>(-N_side >> U_fit::sign.shift);

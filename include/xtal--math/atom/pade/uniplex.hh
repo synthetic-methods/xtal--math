@@ -13,9 +13,9 @@ namespace xtal::atom::math::pade
 /*!
 \brief   Represents a complex reciprocal-pair via the sign and reciprocal magnitudes.
 */
-template <class   ..._s>	struct  uniplex;
-template <class   ..._s>	using   uniplex_t = typename uniplex<_s...>::type;
-template <class   ...Ts>	concept uniplex_q = bond::tag_inner_p<uniplex_t, Ts...>;
+template <class   ..._s>	XTAL_TYP_(new) uniplex;
+template <class   ..._s>	XTAL_TYP_(let) uniplex_t = typename uniplex<_s...>::type;
+template <class   ...Ts>	XTAL_TYP_(ask) uniplex_q = bond::tag_inner_p<uniplex_t, Ts...>;
 
 namespace _detail
 {///////////////////////////////////////////////////////////////////////////////
@@ -273,7 +273,7 @@ public:
 		{
 			auto const &o  = signum();
 			auto const &q_ = magnum();
-			return S_::form(complex_type{o.real(), w*o.imag()}, q_.flipped(w));
+			return S_::reform(complex_type{o.real(), w*o.imag()}, q_.flipped(w));
 		}
 		XTAL_VAL_(return,inline,let)
 		flipped()
@@ -281,7 +281,7 @@ public:
 		{
 			auto const &o  = signum();
 			auto const &q_ = magnum();
-			return S_::form(conj(o), q_.flipped());
+			return S_::reform(conj(o), q_.flipped());
 		}
 		XTAL_VAL_(return,inline,let)
 		operator ~ ()

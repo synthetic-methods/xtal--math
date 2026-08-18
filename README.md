@@ -59,7 +59,7 @@ struct unit
       template <auto ...Ns>
       auto method(auto ...xs) -> noexcept decltype(auto)
       {
-      // ...   
+      // ...
       }
    };
 };
@@ -128,14 +128,14 @@ using A_reuse   = occur::math::zavalishin::reuse_t<0, -1>::template affect<>;
 
 // Process composition...
 using T_process = process::confined_t<void             // Wrap the process.
-,	typename per_t<U_quartz>::template refix< 0>      // Apply s-plane frequency-prewarping to the first argument.
-,  typename pulse_t< 1>::template infix< 0>            // Fulfil first argument with gate-signal controlled by `stage`.
-,  typename U_stage   ::template   assignment<P_damp>  // Creates a table associating `stage` with damping.
-,  typename P_damp    ::template   affix <>            // Attach/append damping to the arguments-list.
-,  typename P_fade    ::template   affix <>            // Attach/append  fading to the arguments-list.
+,	typename per_t<U_quartz>::template transfix<0>      // Apply s-plane frequency-prewarping to the first argument.
+,  typename pulse_t<1> ::template     prefix<>         // Fulfil first argument with gate-signal controlled by `stage`.
+,  typename U_stage    ::template assignment<P_damp>   // Creates a table associating `stage` with damping.
+,  typename P_damp     ::template     suffix<>         // Attach/append damping to the arguments-list.
+,  typename P_fade     ::template     suffix<>         // Attach/append  fading to the arguments-list.
 ,  typename A_reuse                                    // Behaves as a polyphonic voice.
-,  typename T_meta ::template   attach<>               // Attach the remaining   object properties.
-,  typename T_meta ::template dispatch<>               // Attach the remaining template parameters.
+,  typename T_meta     ::template     attach<>         // Attach the remaining   object properties.
+,  typename T_meta     ::template   dispatch<>         // Attach the remaining template parameters.
 ,  T_content
 >;
 
@@ -145,13 +145,13 @@ using T_scheduler = schedule::slicer_t<scheme::spooled<extent_constant_t<0x10>>>
 
 using T_processor = processor::polymer_t<T_process     // Map the process while applying with polyphony.
 ,  T_scheduler::template suspend<U_event>              // Moderate control via buffer-slicing scheduler.
-,  scheme::stored <null_type[0x100]>                // Use `std::vector`-based buffering.
-,  scheme::spooled<null_type[0x100]>                // Use `std::vector`-based event-spooliing.
+,  scheme::stored <null_type[0x100]>                   // Use `std::vector`-based buffering.
+,  scheme::spooled<null_type[0x100]>                   // Use `std::vector`-based event-spooliing.
 >;
 
 auto z_resize =   occur::resize_t<>(0x020);            // Let buffer-length equal `16`.
 auto z_cursor =   occur::cursor_t<>(0x020);            // Let window-length equal `16`.
-auto z_sample =   occur::quartz_f(2*2*3*3*5*5*7*7);  // Let sampling-rate    equal `44100 Hz`.
+auto z_sample =   occur::quartz_f(2*2*3*3*5*5*7*7);    // Let sampling-rate    equal `44100 Hz`.
 auto z_omega  =   processor::let_f(59*61);             // Let filter-frequency equal `3599  Hz`.
 auto z        = T_processor::bind_f(z_omega);
 

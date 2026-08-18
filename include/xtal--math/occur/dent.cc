@@ -29,6 +29,11 @@ TAG_("dent")
 		using D22_0 = dent_s<X_matrix, 0>;
 		using D22_1 = dent_s<X_matrix, 1>;
 
+	//	TRUE_(same_q<ordinal_constant_t<0>, typename D22_0           ::head_type>);
+	//	TRUE_(same_q<ordinal_constant_t<1>, typename D22_1           ::head_type>);
+	//	TRUE_(same_q<X_vector             , typename D22_0::tail_type::head_type>);
+	//	TRUE_(same_q<X_vector             , typename D22_1::tail_type::head_type>);
+
 	//	using E22_1 = typename D22_1::data_type;
 
 	//	static_assert(         fungible_q<typename D22_1::data_type, X_matrix>);

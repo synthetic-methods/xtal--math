@@ -166,7 +166,7 @@ struct part<signed>
 		method(real_variable_q auto &o)
 		noexcept -> XTAL_ALL_(o)
 		{
-			auto const o_sgn = method(o); o *= o_sgn; return o_sgn;
+			auto const o_sig = method(o); o *= o_sig; return o_sig;
 		}
 		template <std::in_place_t>
 		XTAL_VAL_(return,inline,set)
@@ -175,10 +175,10 @@ struct part<signed>
 		{
 			using U_fit = bond::fit<decltype(o)>;
 			auto [u, v] = roots_f<2>(dot_f(o));
-			auto const o_sgn = o*v;
-			auto const o_mgn = XTAL_ALL_(o){u};
-			o =    o_mgn;
-			return o_sgn;
+			auto const o_sig = o*v;
+			auto const o_mag = XTAL_ALL_(o){u};
+			o =    o_mag;
+			return o_sig;
 		}
 
 	};
@@ -242,10 +242,10 @@ struct part<unsigned>
 		noexcept -> auto
 		{
 			using U_fit = bond::fit<decltype(o)>;
-			auto const o_sgn = xtd::copysign(U_fit::alpha_1, o);
-			auto const o_mgn = o*o_sgn;
-			o =    o_sgn;
-			return o_mgn;
+			auto const o_sig = xtd::copysign(U_fit::alpha_1, o);
+			auto const o_mag = o*o_sig;
+			o =    o_sig;
+			return o_mag;
 		}
 		template <std::in_place_t>
 		XTAL_VAL_(return,inline,set)

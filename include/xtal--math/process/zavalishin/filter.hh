@@ -84,7 +84,7 @@ struct filter
 		f_consort()
 		noexcept -> int
 		{
-			auto constexpr I_ind = modulo_v<N_ord, N_ind*sign_v<N_ord|1 - N_ind*2>>;
+			auto constexpr I_ind = modulo_v<N_ord, N_ind*signum_v<N_ord|1 - N_ind*2>>;
 			auto constexpr I_ord = N_ord - 3;
 			XTAL_IF0
 			XTAL_0IF (0 == N_dex) {

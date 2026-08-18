@@ -52,6 +52,7 @@ struct phasor<A, As...>
 	{
 		static_assert(any_q<S>);
 		using S_ = bond::compose_s<S, superkind>;
+		using T_ = typename S_::self_type;
 		using U_ = typename S_::head_type;
 
 	public:// CONSTRUCT
@@ -194,7 +195,36 @@ struct phasor<A, As...>
 			XTAL_0IF (0 == bias()) {return (void) ++head(), XTAL_REF_(y);}
 			XTAL_0IF_(else)        {return                  XTAL_REF_(y);}
 		};
-		
+
+	public:
+		template <extent_type N_mask=1>
+		struct prefix
+		{
+			using superkind = defer<T_>;
+
+			template <class R>
+			class subtype : public bond::compose_s<R, superkind>
+			{
+				using R_ = bond::compose_s<R, superkind>;
+
+			public:// CONSTRUCT
+				using R_::R_;
+
+			public:// OPERATE
+				template <auto ...Ns>
+				XTAL_VAL_(return,inline,let)
+				method(auto &&...oo) const
+				noexcept -> decltype(auto)
+				{
+				//	TODO: Filter against `N_mask`!
+				//	NOTE: Must use indentation to update frequency!
+					auto &phi_ = S_::head();
+					return R_::template method<Ns...>(phi_(), XTAL_REF_(oo)...);
+				}
+
+			};
+		};
+
 	};
 	template <class S> requires phasor_q<bond::compose_s<S, semikind>>
 	class subtype<S> : public bond::compose_s<S, semikind>
@@ -207,10 +237,6 @@ struct phasor<A, As...>
 		using S_::S_;
 		using S_::self;
 		using S_::head;
-
-	//	NOTE:	Defined in-case `refine_head` is bypassed...
-		XTAL_FN0_(go) (XTAL_VAL_(return,inline,implicit) operator U_,
-			[] (auto &&o) XTAL_0FN_(to) (XTAL_REF_(o).head()))
 
 	public:// OPERATE
 		/*!
@@ -236,6 +262,10 @@ struct phasor<A, As...>
 
 			return v_phi;
 		}
+
+	//	NOTE:	Defined in-case `refine_head` is bypassed...
+		XTAL_FN0_(go) (XTAL_VAL_(return,inline,implicit)
+			operator U_, [] XTAL_1FN_(dot) (head()))
 
 	};
 };

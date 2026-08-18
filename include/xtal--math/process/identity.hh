@@ -53,46 +53,6 @@ struct identity
 
 	public:// CLASS
 
-		template <int M_arg=0>
-		struct infix
-		{
-			template <class R>
-			class subtype : public bond::compose_s<R>
-			{
-				using R_ = bond::compose_s<R>;
-
-			public:
-				using R_::R_;
-
-			};
-			template <class R> requires in_v<M_arg, 1>
-			class subtype<R> : public bond::compose_s<R>
-			{
-				using R_ = bond::compose_s<R>;
-
-			public:
-				using R_::R_;
-
-				template <auto ...Ns>
-				XTAL_VAL_(return,inline,let)
-				method(auto &&o, auto &&...oo)
-				const noexcept -> decltype(auto)
-				requires
-				requires (R_ const &r_) {r_ .template method<Ns...>(XTAL_REF_(oo)..., XTAL_REF_(o));}
-				{	return                R_::template method<Ns...>(XTAL_REF_(oo)..., XTAL_REF_(o));
-				};
-				template <auto ...Ns>
-				XTAL_VAL_(return,inline,let)
-				method(auto &&o, auto &&...oo)
-				noexcept -> decltype(auto)
-				requires
-				requires (R_       &r_) {r_ .template method<Ns...>(XTAL_REF_(oo)..., XTAL_REF_(o));}
-				{	return                R_::template method<Ns...>(XTAL_REF_(oo)..., XTAL_REF_(o));
-				};
-
-			};
-		};
-
 	};
 };
 

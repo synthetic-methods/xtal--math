@@ -43,7 +43,7 @@ struct probe<U>
 		using S_::S_;
 		
 		template <extent_type N_mask=1>
-		struct affix
+		struct suffix
 		{
 			using superkind = typename S_::template attach<N_mask>;
 

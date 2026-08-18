@@ -27,8 +27,8 @@ template <>
 struct reuse<>
 {
 };
-template <int M_ind>
-struct reuse<M_ind>
+template <int M_evt>
+struct reuse<M_evt>
 {
 	using superkind = bond::tab<reuse<>>;
 
@@ -51,9 +51,9 @@ struct reuse<M_ind>
 		}
 		/*!
 		\brief   Resets the filter state on `stage`-onset.
-		\note    Active only when `M_ind == -0`.
+		\note    Active only when `M_evt == -0`.
 		*/
-		template <signed N_ion> requires in_v<M_ind, -0> and in_v<N_ion, -1>
+		template <signed N_ion> requires in_v<M_evt, -0> and in_v<N_ion, -1>
 		XTAL_VAL_(return,inline,let)
 		fuse(occur::stage_q auto &&o)
 		noexcept -> signed
@@ -65,11 +65,11 @@ struct reuse<M_ind>
 		}
 		/*!
 		\brief   Reports the `state` of the filter via `stage` event, with `-1` indicating "off".
-		\note    Active only when `M_ind == -1`.
+		\note    Active only when `M_evt == -1`.
 		\todo    Threshold is currently fixed at `2^-16`, or around `-48dBFS`, but should be configurable.
 		\returns `1` if the state is under threshold, `0` otherwise.
 		*/
-		template <signed N_ion> requires in_v<M_ind, -1> and in_v<N_ion, +1>
+		template <signed N_ion> requires in_v<M_evt, -1> and in_v<N_ion, +1>
 		XTAL_VAL_(return,inline,let)
 		fuse(occur::stage_q auto &&o)
 		noexcept -> signed

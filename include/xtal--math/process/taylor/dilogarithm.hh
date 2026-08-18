@@ -50,7 +50,7 @@ struct dilogarithm<1, M_car>
 				auto z   = q*o.real();
 
 				bond::seek_to_e<-K_lim>([&] (auto const I) XTAL_0FN -> void {
-					auto constexpr _K = U_fit::ratio_f(cosign_v<1 + I>, square_f(2 + I));
+					auto constexpr _K = U_fit::ratio_f(sigpar_v<1 + I>, square_f(2 + I));
 					z = term_f(XTAL_MOV_(z), (q_i *= q), (o_i *= o).real(), _K);
 				});
 				return -two*z;

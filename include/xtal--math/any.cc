@@ -56,8 +56,8 @@ struct complexion
 	requires un_v<requires {t.real(); t.imag();}>
 	{
 		auto const [s_re, s_im] = dinormalize_f(s);
-		auto const s_abs = t/(s_re*s_re + s_im*s_im);
-		return {s_abs*s_re, -s_abs*s_im};
+		auto const        s_mag = t/(s_re*s_re + s_im*s_im);
+		return {s_mag*s_re, -s_mag*s_im};
 	}
 	XTAL_VAL_(return,inline,friend,let)
 	operator/ (source_type const &s, source_type const &t)
@@ -243,8 +243,8 @@ XTAL_VAL_(return,let)
 check_f(auto const &u, auto const &v)
 noexcept -> int
 {
-	auto constexpr Z_ind = sign_v<N_ind>;
-	auto constexpr Z_lim = sign_v<N_lim>;
+	auto constexpr Z_ind = signum_v<N_ind>;
+	auto constexpr Z_lim = signum_v<N_lim>;
 	static_assert(Z_ind == Z_lim);
 
 	XTAL_IF0
@@ -308,6 +308,7 @@ void echo_plot_(int line, auto item, integral_q auto ...markers)
 		else if (m <  w - 1 and n != -1 or  u == 0) std::cout <<   uZERO ;//    ...
 		else if (m == w - 1 and          line == 0) std::cout << "\u2574";// -  BOX DRAWINGS LIGHT LEFT
 		else if (n <  u)                            std::cout << "\u0020";//    SPACE
+		else if (u < -N and n == -N)                std::cout << "\u251D";// == BOX DRAWINGS HEAVY RIGHT AND LIGHT VERTICAL
 		else if (u <  n)                            std::cout << "\u2501";// == BOX DRAWINGS HEAVY HORIZONTAL
 		else if (w <  m)                            std::cout << "\u257A";//  = BOX DRAWINGS HEAVY RIGHT
 		else                                        std::cout << "\u0020";//    SPACE
@@ -319,6 +320,7 @@ void echo_plot_(int line, auto item, integral_q auto ...markers)
 		else if (w <  m - 1 and n != +1 or  u == 0) std::cout <<   uZERO ;//    ...
 		else if (w == m - 1 and          line == 0) std::cout << "\u2576";//  - BOX DRAWINGS LIGHT RIGHT
 		else if (u <  n - 0)                        std::cout << "\u0020";//    SPACE
+		else if (N <  u and n == +N)                std::cout << "\u2525";// == BOX DRAWINGS HEAVY LEFT  AND LIGHT VERTICAL
 		else if (n <  u)                            std::cout << "\u2501";// == BOX DRAWINGS HEAVY HORIZONTAL
 		else if (m <  w)                            std::cout << "\u2578";// =  BOX DRAWINGS HEAVY LEFT
 		else                                        std::cout << "\u0020";//    SPACE

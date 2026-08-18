@@ -46,8 +46,8 @@ struct dot
 private:
 	template <class T>
 	//\
-	using endotype = typename quantity_plus<_s...>::template homotype<T>;
 	using endotype = typename quantity<qualify_s<_s, std::plus>...>::template homotype<T>;
+	using endotype = typename quantity_plus<_s...>::template homotype<T>;
 
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<dot_t>>;
@@ -74,10 +74,10 @@ public:
 		using S_::product;
 
 		XTAL_VAL_(return,inline,let)
-		product()
-		const noexcept -> auto
+		product() const
+		noexcept -> auto
+		requires dot_q<value_type> and in_v<size, 2>
 		{
-			static_assert(dot_q<value_type> and size == 2);
 			auto &s = self();
 			return get<0>(s) * get<1>(s);
 		}
@@ -86,15 +86,15 @@ public:
 		operator() () const noexcept {product();}
 
 		XTAL_VAL_(return,inline,let)
-		operator * (auto const &t)
-		const noexcept -> auto
+		operator * (auto const &t) const
+		noexcept -> auto
 		requires XTAL_TRY_(to_unless) (t.size())
 		{
 			return S_::operator*(t);
 		}
 		XTAL_VAL_(return,inline,let)
-		operator * (auto const &t)
-		const noexcept -> auto
+		operator * (auto const &t) const
+		noexcept -> auto
 		requires XTAL_TRY_(to_if) (t.size()) and XTAL_TRY_(to_if)     (t.capacity())
 		{
 			auto &s = self();
@@ -107,8 +107,8 @@ public:
 			return u;
 		}
 		XTAL_VAL_(return,inline,let)
-		operator * (auto const &t)
-		const noexcept -> auto
+		operator * (auto const &t) const
+		noexcept -> auto
 		requires XTAL_TRY_(to_if) (t.size()) and XTAL_TRY_(to_unless) (t.capacity())
 		{
 			auto &s = self();

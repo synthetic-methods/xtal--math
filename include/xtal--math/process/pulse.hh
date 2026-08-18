@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-#include "./identity.hh"
+#include "./rate.hh"
 
 
 
@@ -24,23 +24,6 @@ template <class ..._s> XTAL_TYP_(ask) pulse_q = bond::tab_inner_p<pulse<>, _s...
 template <occur::stage_q auto M>
 struct pulse<M>
 {
-private:// OPERATE
-
-	XTAL_VAL_(return,inline,set)
-	per_f(real_q auto &&o)
-	noexcept -> decltype(auto)
-	{
-		using  U_fit = bond::fit<decltype(o)>;
-		return U_fit::template patio_f<-1>(2)/XTAL_REF_(o);
-	}
-	XTAL_VAL_(return,inline,set)
-	per_f(atom::math::phason_q auto &&o)
-	noexcept -> decltype(auto)
-	{
-		return per_f(XTAL_REF_(o) (1));
-	}
-
-public:
 	template <class S>
 	class subtype : public bond::compose_s<S>
 	{
@@ -50,60 +33,56 @@ public:
 
 	public:
 		template <int M_arg=0>
-		struct infix
+		struct transfix
 		{
-			using superkind = identity_t<>::template infix<M_arg>;
+			static_assert(M_arg == 0);// For now...
 
 			template <class R>
-			class subtype : public bond::compose_s<R, superkind>
+			class subtype : public bond::compose_s<R>
 			{
-				using R_ = bond::compose_s<R, superkind>;
+				using R_ = bond::compose_s<R>;
 
 			public:// CONSTRUCT
 				using R_::R_;
-				using typename R_::data_type;
 
 			public:// OPERATE
 
 				/*!
-				\brief   Generates a gate or `HeavisidePi[# - 1/2] &`.
+				\brief   Scales the input `x` with a gate or `HeavisidePi[# - 1/2] &`.
 				*/
-				template <auto ...Ns> requires un_v<N_stage, 0>
+				template <auto ...Ns> requires (N_stage != 0)
 				XTAL_VAL_(return,inline,let)
-				method(auto &&o, auto &&...oo)
-				const noexcept -> decltype(auto)
+				method(auto x, auto &&...oo) const
+				noexcept -> decltype(auto)
 				{
-					using X = XTAL_ALL_(per_f(o));
-					auto const    &u = R_::self().template head<U_stage>();
-					auto const    &v = u.head();
-					auto const     i = xtd::unsigned_cast((signed) v);
-					auto constexpr I = xtd::unsigned_cast((N_stage));
-					auto const     x = static_cast<X>(i < I);
-					return two*R_::template method<Ns...>(half*x, XTAL_REF_(o), XTAL_REF_(oo)...);
+					auto const     &a = R_::self().template head<U_stage>();
+					auto const      i = xtd::unsigned_cast(a.head());
+					auto constexpr  I = xtd::unsigned_cast(N_stage);
+					x *= static_cast<XTAL_ALL_(x)>(i < I);
+					return R_::template method<Ns...>(x, XTAL_REF_(oo)...);
 				}
 				/*!
-				\brief   Generates an impulse or `DiracDelta`,
+				\brief   Scales the input `x` with an impulse or `DiracDelta`,
 							with magnitude inversely proportional to the provided frequency.
-				\param   o Frequency scaling.
 				*/
-				template <auto ...Ns> requires in_v<N_stage, 0>
+				template <auto ...Ns> requires (N_stage == 0)
 				XTAL_VAL_(return,inline,let)
-				method(auto &&o, auto &&...oo)
-				const noexcept -> decltype(auto)
+				method(auto x, auto &&...oo) const
+				noexcept -> decltype(auto)
 				{
-					auto  &u =  R_::template head<U_stage>();
-					auto  &v =  u.head();
-					signed n = !v;
-					auto   x =  n*per_f(o);
-					const_cast<U_stage &>(u) |= n;
-					return R_::template method<Ns...>(x, XTAL_REF_(o), XTAL_REF_(oo)...);
+					auto           &a = const_cast<U_stage &>(R_::template head<U_stage>());
+					auto const      n = (signed) !a.head();
+				//	x *= rate_f<-1>(u, bond::fit<X>::patio_f(2));
+					x *= n;
+					a |= n;
+					return R_::template method<Ns...>(x, XTAL_REF_(oo)...);
 				}
 
 			};
 			template <class R> requires incomplete_q<typename R::template head<M>>
 			class subtype<R> : public bond::compose_s<R
 			,	typename R::stage_type::template attach<>
-			,	typename pulse_t<typename R::stage_type{M}>::template infix<M_arg>
+			,	typename pulse_t<typename R::stage_type(M)>::template transfix<M_arg>
 			>
 			{
 			};
@@ -121,18 +100,18 @@ struct pulse<M>
 
 	public:
 		template <int M_arg=0>
-		struct infix
+		struct transfix
 		{
 			template <class R>
 			class subtype : public bond::compose_s<R
 			,	typename occur::stage_t<>::template attach<>
-			,	typename pulse_t<     occur::stage_t<> {M}>::template infix<M_arg>
+			,	typename pulse_t<     occur::stage_t<> (M)>::template transfix<M_arg>
 			>
 			{
 			};
 			template <class R> requires requires {requires occur::stage_q<typename R::stage_type>;}
 			class subtype<R> : public bond::compose_s<R
-			,	typename pulse_t<typename R::stage_type{M}>::template infix<M_arg>
+			,	typename pulse_t<typename R::stage_type(M)>::template transfix<M_arg>
 			>
 			{
 			};

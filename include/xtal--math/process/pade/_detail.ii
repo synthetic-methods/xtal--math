@@ -21,14 +21,14 @@ template <int M_ism=1, int M_car=0>	using   impunity_t = process::confined_t<imp
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <int M_ism> struct impunity<M_ism,-0>: bond::compose<typename discard_t<1       >::template infix<>, impunity<M_ism,-1>> {};
-template <int M_ism> struct impunity<M_ism,-1>: bond::compose<typename discard_t<2, M_ism>::template infix<>, impunity<2    ,-2>> {};
+template <int M_ism> struct impunity<M_ism,-0>: bond::compose<typename discard_t<1       >::template transfix<0>, impunity<M_ism,-1>> {};
+template <int M_ism> struct impunity<M_ism,-1>: bond::compose<typename discard_t<2, M_ism>::template transfix<0>, impunity<2    ,-2>> {};
 template <int M_ism> requires in_v<M_ism, 1, 2>
 struct impunity<M_ism,-2>
 {
 	//\
-	static constexpr int I_sgn = cosign_v<M_ism>;
-	static constexpr int I_sgn = 1;
+	static constexpr int M_ism_alt = sigpar_v<M_ism>;
+	static constexpr int M_ism_alt = 1;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
