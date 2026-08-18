@@ -16,13 +16,14 @@ template <int M_ism=1, int N_car=0>	using   sine_t = process::confined_t<sine<M_
 
 template <int M_ism>
 struct sine<M_ism, +1>
-:	bond::compose<typename dilate_t<[] XTAL_1FN_(to) (-bond::fit<>::patio_2)>::template infix<>, sine<M_ism, -0>>
+:	bond::compose<typename dilate_t<[] XTAL_1FN_(to)
+		(-bond::fit<>::patio_2)>::template transfix<0>, sine<M_ism, -0>>
 {
 };
 template <int M_ism>
 struct sine<M_ism, -0>
 {
-	using superkind = bond::compose<typename discard_t<1>::template infix<>, sine<M_ism, -1>>;
+	using superkind = bond::compose<typename discard_t<1>::template transfix<0>, sine<M_ism, -1>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -34,8 +35,8 @@ struct sine<M_ism, -0>
 
 		template <int N_lim=-1>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&o)
-		const noexcept -> decltype(auto)
+		method(auto &&o) const
+		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
 			XTAL_0IF_(consteval)   {return S_::template method<   ~0>(XTAL_REF_(o));}
@@ -51,7 +52,7 @@ struct sine<M_ism, -0>
 template <int M_ism>
 struct sine<M_ism, -1>
 {
-	using superkind = bond::compose<typename discard_t<2, M_ism>::template infix<>, sine<M_ism, -2>>;
+	using superkind = bond::compose<typename discard_t<2, M_ism>::template transfix<0>, sine<M_ism, -2>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -63,8 +64,8 @@ struct sine<M_ism, -1>
 
 		template <int N_lim=-1>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&o)
-		const noexcept -> XTAL_ALL_(o)
+		method(auto &&o) const
+		noexcept -> XTAL_ALL_(o)
 		{
 			XTAL_IF0
 			XTAL_0IF_(consteval)   {return S_::template method<   ~0>(XTAL_REF_(o));}
@@ -95,8 +96,8 @@ struct sine<M_ism, -2>
 	public:
 		template <int N_lim=-1>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&w)
-		const noexcept -> XTAL_ALL_(w)
+		method(auto &&w) const
+		noexcept -> XTAL_ALL_(w)
 		{
 			XTAL_IF0
 			XTAL_0IF (0 == N_lim)  {return XTAL_ALL_(w) {one};}
@@ -115,8 +116,8 @@ struct sine<M_ism, -2>
 	protected:
 		template <int N_lim>
 		XTAL_VAL_(return,inline,let)
-		methox(auto &&w)
-		const noexcept -> auto
+		methox(auto &&w) const
+		noexcept -> auto
 		{
 			static_assert(-1 <= N_lim);
 			int constexpr N = term_f(1, 2, N_lim&0b1111);

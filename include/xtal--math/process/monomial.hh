@@ -130,8 +130,8 @@ struct  monomial
 
 		template <int ...Ns>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&...oo)
-		const noexcept -> auto
+		method(auto &&...oo) const
+		noexcept -> auto
 		{
 			XTAL_IF0
 			XTAL_0IF (0 == sizeof...(Ms)) {return monomial_f<Ns...>(XTAL_REF_(oo)...);}

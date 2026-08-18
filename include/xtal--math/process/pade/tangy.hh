@@ -39,8 +39,8 @@ struct tangy<M_ism,-0>
 
 		template <int N_lim=-1>
 		XTAL_VAL_(return,let)
-		method(auto &&o)
-		const noexcept -> auto
+		method(auto &&o) const
+		noexcept -> auto
 		{
 			using U_fit = bond::fit<decltype(o)>;
 			XTAL_IF0
@@ -55,7 +55,7 @@ struct tangy<M_ism,-0>
 
 				auto const x1 =  w1.real();
 				auto const y1 =  w1.imag();
-				auto const x2 =  term_f(square_f(x1), square_f(y1), U_fit::alpha_f(cosign_v<M_ism>));
+				auto const x2 =  term_f(square_f(x1), square_f(y1), U_fit::alpha_f(sigpar_v<M_ism>));
 				auto const y2 = U_fit::diplo_1*x1*y1;
 				return y2*root_f<-1, 1>(x2);
 			}
@@ -103,8 +103,8 @@ struct tangy<M_ism, 1>
 
 		template <int N_lim=-1>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&o)
-		const noexcept -> auto
+		method(auto &&o) const
+		noexcept -> auto
 		{
 			using U_fit = bond::fit<decltype(o)>;
 			
@@ -139,39 +139,39 @@ struct tangy<M_ism, 1>
 
 		template <int N_lim=-1>
 		XTAL_VAL_(return,inline,let)
-		method(simplex_field_q auto &&t)
-		const noexcept -> decltype(auto)
+		method(simplex_field_q auto &&t) const
+		noexcept -> decltype(auto)
 		{
 			return method<N_lim>(XTAL_REF_(t), unstruct_t<decltype(t)>{one});
 		}
 		template <int N_lim=-1> requires in_v<M_ism, -1, -2>
 		XTAL_VAL_(return,inline,let)
-		method(complex_field_q auto &&o)
-		const noexcept -> decltype(auto)
+		method(complex_field_q auto &&o) const
+		noexcept -> decltype(auto)
 		{
 			return method<N_lim>(o.imag(), o.real());
 		}
 		template <int N_lim=-1>
 		XTAL_VAL_(return,let)
-		method(simplex_field_q auto &&v, simplex_field_q auto &&u)
-		const noexcept -> decltype(auto)
+		method(simplex_field_q auto &&v, simplex_field_q auto &&u) const
+		noexcept -> decltype(auto)
 		{
 			using U_fit = bond::fit<decltype(v), decltype(u)>;
 			using U_aphex = typename U_fit::aphex_type;
 			using U_alpha = typename U_fit::alpha_type;
 			using W_alpha = atom::couple_t<U_alpha[2]>;
 
-			auto u_abs = u, u_sgn = part_e<signed>(u_abs);
-			auto v_abs = v, v_sgn = part_e<signed>(v_abs);// v_sgn *= *U_fit::haplo_1;
+			auto u_mag = u, u_sig = part_e<signed>(u_mag);
+			auto v_mag = v, v_sig = part_e<signed>(v_mag);// v_sig *= *U_fit::haplo_1;
 
-			W_alpha co{v_abs < u_abs, std::in_place};
-			W_alpha up{v, u_abs}; up *= co;
-			W_alpha dn{u_abs,-v}; dn *= co;
+			W_alpha co{v_mag < u_mag, std::in_place};
+			W_alpha up{v, u_mag}; up *= co;
+			W_alpha dn{u_mag,-v}; dn *= co;
 
 			auto const &[co_0, co_1]  = co;
-			auto const u_flp = U_fit::haplo_1 - U_fit::haplo_1*co_0*u_sgn;
+			auto const u_flp = U_fit::haplo_1 - U_fit::haplo_1*co_0*u_sig;
 
-			return term_f(u_flp*v_sgn, u_sgn, S_::template method<N_lim>(up.sum()/dn.sum()));
+			return term_f(u_flp*v_sig, u_sig, S_::template method<N_lim>(up.sum()/dn.sum()));
 		}
 
 	};
@@ -179,7 +179,7 @@ struct tangy<M_ism, 1>
 template <int M_ism>
 struct tangy<M_ism,-0>
 {
-	using superkind = bond::compose<typename discard_t<1>::template infix<>, tangy<M_ism,-1>>;
+	using superkind = bond::compose<typename discard_t<1>::template transfix<0>, tangy<M_ism,-1>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -191,22 +191,22 @@ struct tangy<M_ism,-0>
 
 		template <int N_lim=-1>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&o)
-		const noexcept -> decltype(auto)
+		method(auto &&o) const
+		noexcept -> decltype(auto)
 		{
 			return S_::template method<N_lim>(XTAL_REF_(o));
 		}
 		template <int N_lim=-1> requires in_v<M_ism, -1, -2>
 		XTAL_VAL_(return,inline,let)
-		method(complex_field_q auto &&o)
-		const noexcept -> decltype(auto)
+		method(complex_field_q auto &&o) const
+		noexcept -> decltype(auto)
 		{
 			return method<N_lim>(o.imag(), o.real());
 		}
 		template <int N_lim=-1> requires in_v<M_ism, -1, -2>
 		XTAL_VAL_(return,inline,let)
-		method(simplex_field_q auto &&v, simplex_field_q auto &&u)
-		const noexcept -> decltype(auto)
+		method(simplex_field_q auto &&v, simplex_field_q auto &&u) const
+		noexcept -> decltype(auto)
 		{
 			return method<N_lim>(XTAL_REF_(v)/XTAL_REF_(u));
 		}
@@ -215,13 +215,13 @@ struct tangy<M_ism,-0>
 };
 template <int M_ism>
 struct tangy<M_ism,-1>
-:	bond::compose<typename discard_t<2>::template infix<>, tangy<M_ism,-2>>
+:	bond::compose<typename discard_t<2>::template transfix<0>, tangy<M_ism,-2>>
 {
 };
 template <int M_ism>// requires in_v<M_ism,-1>
 struct tangy<M_ism,-2>
 {
-	static constexpr int I_sgn = cosign_v<M_ism>;
+	static constexpr int M_ism_alt = sigpar_v<M_ism>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -233,8 +233,8 @@ struct tangy<M_ism,-2>
 
 		template <int N_lim=-1>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&o)
-		const noexcept -> decltype(auto)
+		method(auto &&o) const
+		noexcept -> decltype(auto)
 		{
 			auto const [t_re, t_im] = destruct_f(_detail::impunity_t<M_ism,-2>{}.template method<N_lim>(XTAL_REF_(o)));
 			return t_im*root_f<-1, 1>(t_re);
@@ -261,8 +261,8 @@ struct tangy<M_, _s...>
 
 		template <auto ...Ns>
 		XTAL_VAL_(return,let)
-		method(auto &&...oo)
-		const noexcept -> auto
+		method(auto &&...oo) const
+		noexcept -> auto
 		{
 			return S_::template method<_s..., Ns...>(XTAL_REF_(oo)...);
 		}

@@ -16,7 +16,7 @@ namespace xtal::process::math
 template <auto ...Ms>	struct  square;
 template <auto ...Ms>	using   square_t = process::confined_t<square<Ms...>>;
 
-template <int N_alt=1, int N_sgn=1, int N_sqr=1>
+template <int N_alt=1, int N_sig=1, int N_sqr=1>
 XTAL_VAL_(return,inline,let)
 square_f(auto const &x, auto &&...xs)
 noexcept -> auto
@@ -25,20 +25,20 @@ noexcept -> auto
 
 	XTAL_IF0
 	XTAL_0IF (2 <= N_sqr) {
-		return square_f<N_alt, N_sgn, N_sqr - 1>(square_f<N_alt, N_sgn>(x, XTAL_REF_(xs)...));
+		return square_f<N_alt, N_sig, N_sqr - 1>(square_f<N_alt, N_sig>(x, XTAL_REF_(xs)...));
 	}
 	XTAL_0IF (1 == N_sqr) {
 		XTAL_IF0
 		XTAL_0IF (1 <= sizeof...(xs)) {
 			using W = unstruct_t<X>;
-			auto constexpr K_sgn = N_alt*N_sgn;
-			auto constexpr k_sgn =   (W) K_sgn;
-			return xtd::plus_multiplies{} (k_sgn*square_f<N_alt, K_sgn>(XTAL_REF_(xs)...), x, x);
+			auto constexpr K_sig = N_alt*N_sig;
+			auto constexpr k_sig =   (W) K_sig;
+			return xtd::plus_multiplies{} (k_sig*square_f<N_alt, K_sig>(XTAL_REF_(xs)...), x, x);
 		}
 		XTAL_0IF (complex_field_q<X>) {
 			using W = unstruct_t<X>;
-			auto constexpr K_sgn = N_alt*N_sgn;
-			auto constexpr k_sgn =   (W) K_sgn;
+			auto constexpr K_sig = N_alt*N_sig;
+			auto constexpr k_sig =   (W) K_sig;
 		//	auto const &[x_re, x_im] = destruct_f(x);
 			auto const x_re = x.real();
 			auto const x_im = x.imag();
@@ -67,8 +67,8 @@ struct square
 
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&...xs)
-		const noexcept -> decltype(auto)
+		method(auto &&...xs) const
+		noexcept -> decltype(auto)
 		{
 			return square_f<Ns...>(XTAL_REF_(xs)...);
 		}

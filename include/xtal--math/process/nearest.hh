@@ -78,8 +78,8 @@ struct nearest
 
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&z)
-		const noexcept -> auto
+		method(auto &&z) const
+		noexcept -> auto
 		{
 			using Z = XTAL_ALL_(z);
 			using Z_fit = bond::fit<Z>;
@@ -103,15 +103,15 @@ struct nearest
 		}
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,let)
-		method(complex_field_q auto &&z)
-		const noexcept -> decltype(auto)
+		method(complex_field_q auto &&z) const
+		noexcept -> decltype(auto)
 		{
 			return complexion_f(method<Ns...>(z.real()), method<Ns...>(z.imag()));
 		}
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,let)
-		method(atom::quantify_q auto &&z)
-		const noexcept -> decltype(auto)
+		method(atom::quantify_q auto &&z) const
+		noexcept -> decltype(auto)
 		{
 			return XTAL_ALL_(z)::template zip_from<[] XTAL_1FN_(call) (subtype{}.template method<Ns...>)>(z);
 		}

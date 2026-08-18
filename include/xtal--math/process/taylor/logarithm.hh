@@ -34,7 +34,7 @@ struct logarithm< 1, 0>
 	XTAL_VAL_(set) sinh_aexp_ = [] (auto &&u)
 		XTAL_0FN_(to) (roots_f<2>(XTAL_REF_(u)).template sum<-1>());
 	
-	using superprocess = process::confined_t<typename dilate_t<2>::template infix<>, taylor::sine<-2>>;
+	using superprocess = process::confined_t<typename dilate_t<2>::template transfix<0>, taylor::sine<-2>>;
 	
 	template <class S>
 	class subtype : public bond::compose_s<S>

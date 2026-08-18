@@ -32,8 +32,8 @@ template <int M_exp, int M_cut>
 struct root
 {
 	using M_fit = bond::fit<decltype(M_exp)>;
-	static int constexpr M_exp_sgn = sign_v<M_exp>;
-	static int constexpr M_exp_mag = M_exp*M_exp_sgn;
+	static int constexpr M_exp_sig = signum_v<M_exp>;
+	static int constexpr M_exp_mag = magnum_v<M_exp>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -165,11 +165,11 @@ struct root
 				y_re *= root_t<-M_exp_mag, 1>::template method<I_lim>(v_re);
 				y_im *= root_t<-M_exp_mag, 1>::template method<I_lim>(v_im);
 
-				auto const y_im_sgn = M_exp_sgn*xtd::copysign(Z_fit::alpha_1, x_im);
-				return {y_re, y_im*y_im_sgn};
+				auto const y_im_sig = M_exp_sig*xtd::copysign(Z_fit::alpha_1, x_im);
+				return {y_re, y_im*y_im_sig};
 			}
 			XTAL_0IF_(else) {
-				return root_f<M_exp_sgn, M_cut>(sqrt(z));
+				return root_f<M_exp_sig, M_cut>(sqrt(z));
 			}
 		}
 		template <int I_lim> requires in_v<M_exp_mag, 2, 3, 5, 7>
@@ -190,7 +190,7 @@ struct root
 				return z_sig*approximate<I_lim>(z);
 			}
 			XTAL_0IF (M_exp_mag == 2) {
-				return z_sig*root_f<M_exp_sgn, M_cut>(sqrt(z));
+				return z_sig*root_f<M_exp_sig, M_cut>(sqrt(z));
 			}
 		}
 

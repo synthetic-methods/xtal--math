@@ -34,8 +34,8 @@ struct unify<M_ism>
 
 		template <auto ...>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&o)
-		const noexcept -> decltype(auto)
+		method(auto &&o) const
+		noexcept -> decltype(auto)
 		{
 			return XTAL_REF_(o);
 		}
@@ -45,6 +45,10 @@ struct unify<M_ism>
 template <int M_ism> requires in_v<M_ism, 1, 2>
 struct unify<M_ism>
 {
+private:
+	XTAL_VAL_(set) M_ism_alt = sigpar_v<M_ism>;
+
+public:
 	template <class S>
 	class subtype : public bond::compose_s<S>
 	{
@@ -55,21 +59,20 @@ struct unify<M_ism>
 
 		template <auto ...>
 		XTAL_VAL_(return,inline,let)
-		method(complex_field_q auto const &o)
-		const noexcept -> decltype(auto)
+		method(complex_field_q auto const &o) const
+		noexcept -> decltype(auto)
 		{
 			using U    = XTAL_ALL_(o);
 			using U_fit = bond::fit<U>;
 
-			auto constexpr N_sgn = U_fit::alpha_f(cosign_v<M_ism>);
-
+			auto constexpr m_ism_alt = U_fit::alpha_f(M_ism_alt);
 			auto y = o.imag();
 			auto x = o.real();
 			auto const xx = x*x;
 			auto const yy = y*y;
 			auto const y_ = two*x*y;
-			auto const x_ = term_f(xx, yy, +N_sgn);
-			auto const w_ = term_f(xx, yy, -N_sgn);
+			auto const x_ = term_f(xx, yy, +m_ism_alt);
+			auto const w_ = term_f(xx, yy, -m_ism_alt);
 			auto const m_ = root_f<-1>(w_);
 			return complexion_f(x_, y_)*(m_);
 		}

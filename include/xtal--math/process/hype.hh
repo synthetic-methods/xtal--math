@@ -59,7 +59,7 @@ template <int M_ism=1, int M_car=0>	using    hype_t = process::confined_t<hype<M
 template <int M_ism, int M_car>
 struct hype
 {
-	static constexpr int N_ism = sign_v<M_ism>*M_ism;
+	static constexpr int M_ism_mag = magnum_v<M_ism>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -73,8 +73,8 @@ struct hype
 
 		template <int N_lim=0, int N_adj=0>
 		XTAL_VAL_(return,inline,let)
-		method(auto const &u)
-		const noexcept -> auto
+		method(auto const &u) const
+		noexcept -> auto
 		{
 			using V = unstruct_t<decltype(u)>;
 			V constexpr I = root_f<-2>(2.);
@@ -85,8 +85,8 @@ struct hype
 		}
 		template <int N_lim=0, int N_adj=0>
 		XTAL_VAL_(return,inline,let)
-		method(auto const &u, simplex_field_q auto const &v)
-		const noexcept -> auto
+		method(auto const &u, simplex_field_q auto const &v) const
+		noexcept -> auto
 		{
 			using  U     = XTAL_ALL_(u);
 			using  U_fit = bond::fit<U>;
@@ -106,8 +106,8 @@ struct hype
 
 		template <int N_lim=0, int N_adj=0>
 		XTAL_VAL_(return,inline,let)
-		method(auto const &u, complex_field_q auto const &z)
-		const noexcept -> auto
+		method(auto const &u, complex_field_q auto const &z) const
+		noexcept -> auto
 		{
 			auto const o = objective_f(u);
 			using      O =   XTAL_ALL_(o);
@@ -140,7 +140,7 @@ struct hype
 					u = log(XTAL_MOV_(u));
 				}
 				else {
-					auto constexpr N_ord = monomial_f<N_lim>(N_ism);
+					auto constexpr N_ord = monomial_f<N_lim>(M_ism_mag);
 					u = U_fit::ratio_f(N_ord, 2)*roots_f<N_ord>(XTAL_MOV_(u)).template sum<-1>();
 				}
 			}
@@ -149,7 +149,7 @@ struct hype
 					u  = exp(XTAL_MOV_(u));
 				}
 				else {
-					auto constexpr N_ord = monomial_f<N_lim>(N_ism);
+					auto constexpr N_ord = monomial_f<N_lim>(M_ism_mag);
 					u *= root_f<-1>(N_ord);
 					u += root_f< 2>(term_f<1, 2>(one, u));
 					u  = monomial_f<N_ord>(XTAL_MOV_(u));
@@ -225,9 +225,9 @@ XTAL_VAL_(return,inline,let)
 hype_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
-	auto constexpr N_sgn =   sign_v<N>;
-	auto constexpr N_abs = N*sign_v<N>;
-	return hype_t<3*N_sgn>{}.template method<N_abs>(XTAL_REF_(oo)...);
+	auto constexpr N_sig = signum_v<N>;
+	auto constexpr N_mag = magnum_v<N>;
+	return hype_t<3*N_sig>{}.template method<N_mag>(XTAL_REF_(oo)...);
 }
 
 

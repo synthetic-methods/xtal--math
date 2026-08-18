@@ -20,9 +20,9 @@ starting from the kernel `a[N_limit]`. \
 \note    Co/domain scaling can be effected by multiplying `a`/`b`, respectively.
 \note    Not to be confused with the Dijkstra's function `Binomial[n + 1, 2]`.
 */
-template <int M_sgn=1, int M_pow=1>	struct  termial;
-template <int M_sgn=1, int M_pow=1>	using   termial_t = process::confined_t<termial<M_sgn, M_pow>>;
-template <int M_sgn=1, int M_pow=1>
+template <int M_sig=1, int M_pow=1>	struct  termial;
+template <int M_sig=1, int M_pow=1>	using   termial_t = process::confined_t<termial<M_sig, M_pow>>;
+template <int M_sig=1, int M_pow=1>
 XTAL_VAL_(return,inline,let)
 termial_f(auto &&x, auto const &k, auto const &...ks)
 noexcept -> auto
@@ -32,20 +32,20 @@ noexcept -> auto
 		return XTAL_REF_(k);
 	}
 	XTAL_0IF (1 == M_pow) {
-		return term_f<1, M_sgn>(k, x, termial_f<M_sgn>(x, ks...));
+		return term_f<1, M_sig>(k, x, termial_f<M_sig>(x, ks...));
 	}
 	XTAL_0IF (2 == M_pow) {
-		return termial_f<M_sgn>(square_f(XTAL_REF_(x)), k, ks...);
+		return termial_f<M_sig>(square_f(XTAL_REF_(x)), k, ks...);
 	}
 	XTAL_0IF_(void)
 };
 
 
 ////////////////////////////////////////////////////////////////////////////////
-template <int M_sgn, int M_pow>
+template <int M_sig, int M_pow>
 struct termial
 {
-//	static_assert(in_v<M_sgn, 1,-1>);
+//	static_assert(in_v<M_sig, 1,-1>);
 
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -57,10 +57,10 @@ struct termial
 
 		template <auto ...>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&...oo)
-		const noexcept -> decltype(auto)
+		method(auto &&...oo) const
+		noexcept -> decltype(auto)
 		{
-			return termial_f<M_sgn, M_pow>(XTAL_REF_(oo)...);
+			return termial_f<M_sig, M_pow>(XTAL_REF_(oo)...);
 		}
 
 	};

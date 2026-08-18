@@ -71,7 +71,7 @@ struct patch<U_mat>
 			};
 		};
 		template <extent_type N_mask=1>
-		struct refix
+		struct rewire
 		{
 			using superkind = attach<N_mask>;
 
@@ -87,8 +87,8 @@ struct patch<U_mat>
 			
 				template <auto ...Ns>
 				XTAL_VAL_(return,inline,let)
-				method(auto &&...oo)
-				const noexcept -> auto
+				method(auto &&...oo) const
+				noexcept -> auto
 				{
 					/**/
 					return [this, o_=std::tuple{XTAL_REF_(oo)...}]<auto ...I>(bond::seek_in_t<I...>)
@@ -108,7 +108,7 @@ struct patch<U_mat>
 			};
 		};
 		template <extent_type N_mask=1>
-		struct refit
+		struct reflux
 		{
 			using superkind = attach<N_mask>;
 
@@ -152,7 +152,7 @@ struct patch<U_mat>
 		};
 
 		template <class ..._s>
-		struct fix
+		struct prewire
 		{
 		private:
 			XTAL_VAL_(set) _N = sizeof...(_s);
@@ -173,8 +173,8 @@ struct patch<U_mat>
 			
 				template <auto ...Ns>
 				XTAL_VAL_(return,inline,let)
-				method(auto &&...oo)
-				const noexcept -> auto
+				method(auto &&...oo) const
+				noexcept -> auto
 				{
 					XTAL_IF0
 					XTAL_0IF (_N == _M) {return R_::template method<Ns...>(bond::operate<_s>{}(XTAL_REF_(oo))...);}
@@ -184,7 +184,7 @@ struct patch<U_mat>
 			};
 		};
 		template <class ..._s>
-		struct fit
+		struct preflux
 		{
 		private:
 			XTAL_VAL_(set) _N = sizeof...(_s);
@@ -244,18 +244,18 @@ struct patch<U_mat, _s...>
 		using S_::S_;
 
 		template <extent_type N_mask=1>
-		struct refix
+		struct rewire
 		:	bond::compose<void
-			,	typename S_::template refix<N_mask>
-			,	typename S_::template   fix<_s... >
+			,	typename S_::template  rewire<N_mask>
+			,	typename S_::template prewire<_s... >
 			>
 		{
 		};
 		template <extent_type N_mask=1>
-		struct refit
+		struct reflux
 		:	bond::compose<void
-			,	typename S_::template refit<N_mask>
-			,	typename S_::template   fit<_s... >
+			,	typename S_::template  reflux<N_mask>
+			,	typename S_::template preflux<_s... >
 			>
 		{
 		};

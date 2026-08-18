@@ -39,16 +39,16 @@ struct imagine
 		XTAL_VAL_(return,inline,let)
 		//\
 		method(atom::math::pade::uniplex_q auto &&z) const
-		method(atom::couple_q auto &&z)
-		const noexcept -> decltype(auto)
+		method(atom::couple_q auto &&z) const
+		noexcept -> decltype(auto)
 		requires complex_variable_q<decltype(get<0>(z))> and atom::couple_q<decltype(get<1>(z))>
 		{
-			return z.form(method(z.signum()), z.magnum());
+			return z.reform(method(z.signum()), z.magnum());
 		};
 		template <auto ...>
 		XTAL_VAL_(return,inline,let)
-		method(complex_field_q auto &&z)
-		const noexcept -> decltype(auto)
+		method(complex_field_q auto &&z) const
+		noexcept -> decltype(auto)
 		{
 			if constexpr (complex_variable_q<decltype(z)>) {
 				if constexpr (N_rot&1) {
@@ -72,15 +72,15 @@ struct imagine
 		};
 		template <auto ...>
 		XTAL_VAL_(return,inline,let)
-		method(simplex_field_q auto &&x)
-		const noexcept -> decltype(auto)
+		method(simplex_field_q auto &&x) const
+		noexcept -> decltype(auto)
 		{
 			return method(XTAL_REF_(x), XTAL_ALL_(x){});
 		};
 		template <auto ...>
 		XTAL_VAL_(return,inline,let)
-		method(simplex_field_q auto &&x, simplex_field_q auto &&y)
-		const noexcept -> decltype(auto)
+		method(simplex_field_q auto &&x, simplex_field_q auto &&y) const
+		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
 

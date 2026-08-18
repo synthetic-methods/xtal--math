@@ -61,7 +61,7 @@ TAG_("monologarithm")
 	TRY_("mapping")
 	{
 		U_alpha zoom = U_fit::patio_f(1, 2);
-		U_alpha s_abs = 0.88;
+		U_alpha s_mag = 0.88;
 		U_alpha s_arg = 0.11;
 
 		//\
@@ -69,7 +69,7 @@ TAG_("monologarithm")
 		//\
 		U_aphex w = lift_t<pade::unity<1>, dilate<-2>>{}.template method<1>(s_arg);
 		U_aphex w = link_t<pade::unity<1>, dilate<-2>>{}.template method<1>(s_arg);
-		U_alpha u = one/s_abs;
+		U_alpha u = one/s_mag;
 		
 		w *=      taylor::monologarithm_t<-1, 0>{}.template method<0>(u*zoom);
 		w  = zoom/taylor::monologarithm_t<+1, 0>{}.template method<0>(w);

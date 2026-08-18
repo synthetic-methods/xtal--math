@@ -34,8 +34,8 @@ struct nearing
 
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,let)
-		method(auto const &u)
-		const noexcept -> XTAL_ALL_(u)
+		method(auto const &u) const
+		noexcept -> XTAL_ALL_(u)
 		{
 			return u - S_::template method<Ns...>(u);
 		}

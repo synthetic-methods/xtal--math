@@ -56,8 +56,8 @@ struct dot
 
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&x)
-		const noexcept -> auto
+		method(auto &&x) const
+		noexcept -> auto
 		requires un_v<fixed_shaped_q<decltype(x)>>
 		{
 			using std::norm;// In case...
@@ -67,8 +67,8 @@ struct dot
 		}
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&x)
-		const noexcept -> auto
+		method(auto &&x) const
+		noexcept -> auto
 		requires in_v<fixed_shaped_q<decltype(x)>>
 		{
 			using std::norm;// In case...
@@ -92,15 +92,15 @@ struct dot
 				bond::seek_to_e<N>([&]<constant_q I> (I) XTAL_0FN -> void {
 					XTAL_IF0
 					XTAL_0IF (0 < M_alt) {w = term_f<1, 2              >(XTAL_MOV_(w), get<I{}>(x));}
-					XTAL_0IF (M_alt < 0) {w = term_f<1, 2*cosign_v<I{}>>(XTAL_MOV_(w), get<I{}>(x));}
+					XTAL_0IF (M_alt < 0) {w = term_f<1, 2*sigpar_v<I{}>>(XTAL_MOV_(w), get<I{}>(x));}
 				});
 				return w;
 			}
 		}
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&x, auto &&y)
-		const noexcept -> auto
+		method(auto &&x, auto &&y) const
+		noexcept -> auto
 		requires in_v<fixed_shaped_q<decltype(x), decltype(y)>>
 		{
 			using X = XTAL_ALL_(x);
@@ -123,7 +123,7 @@ struct dot
 				bond::seek_to_e<N>([&]<constant_q I> (I) XTAL_0FN -> void {
 					XTAL_IF0
 					XTAL_0IF (0 < M_alt) {w = term_f<1, 1              >(XTAL_MOV_(w), get<I{}>(x), get<I{}>(y));}
-					XTAL_0IF (M_alt < 0) {w = term_f<1, 1*cosign_v<I{}>>(XTAL_MOV_(w), get<I{}>(x), get<I{}>(y));}
+					XTAL_0IF (M_alt < 0) {w = term_f<1, 1*sigpar_v<I{}>>(XTAL_MOV_(w), get<I{}>(x), get<I{}>(y));}
 				});
 				return w;
 			}

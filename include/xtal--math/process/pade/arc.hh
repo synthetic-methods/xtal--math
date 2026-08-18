@@ -212,17 +212,17 @@ struct arc<-0, 1>
 			using U_alpha = typename L::alpha_type;
 			using W_alpha = atom::couple_t<U_alpha[2]>;
 
-			auto u_abs = u, u_sgn = part_e<signed>(u_abs);
-			auto v_abs = v, v_sgn = part_e<signed>(v_abs);// v_sgn *= *L::haplo_1;
+			auto u_mag = u, u_sig = part_e<signed>(u_mag);
+			auto v_mag = v, v_sig = part_e<signed>(v_mag);// v_sig *= *L::haplo_1;
 
-			W_alpha co{v_abs < u_abs, std::in_place};
-			W_alpha up{v, u_abs}; up *= co;
-			W_alpha dn{u_abs,-v}; dn *= co;
+			W_alpha co{v_mag < u_mag, std::in_place};
+			W_alpha up{v, u_mag}; up *= co;
+			W_alpha dn{u_mag,-v}; dn *= co;
 
 			auto const &[co_0, co_1]  = co;
-			auto const u_flp = L::haplo_1 - L::haplo_1*co_0*u_sgn;
+			auto const u_flp = L::haplo_1 - L::haplo_1*co_0*u_sig;
 
-			return term_f(u_flp*v_sgn, u_sgn, S_::template method<N_lim, N_par>(up.sum(), dn.sum()));
+			return term_f(u_flp*v_sig, u_sig, S_::template method<N_lim, N_par>(up.sum(), dn.sum()));
 		}
 
 	};

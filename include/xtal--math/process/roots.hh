@@ -38,16 +38,16 @@ struct roots
 
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&w)
-		const noexcept -> auto
+		method(auto &&w) const
+		noexcept -> auto
 		requires different_q<decltype(w), decltype(objective_f(w))>
 		{
 			return method(objective_f(XTAL_REF_(w)));
 		}
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&w)
-		const noexcept -> auto
+		method(auto &&w) const
+		noexcept -> auto
 		requires      same_q<decltype(w), decltype(objective_f(w))>
 		{
 			using W0 = XTAL_ALL_(w);

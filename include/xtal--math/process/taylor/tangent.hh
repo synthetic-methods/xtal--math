@@ -43,8 +43,8 @@ struct tangent<M_ism, -0>
 
 		template <int N_lim=0> requires (N_lim <  0)
 		XTAL_VAL_(return,inline,let)
-		method(auto &&o)
-		const noexcept -> decltype(auto)
+		method(auto &&o) const
+		noexcept -> decltype(auto)
 		{
 			XTAL_IF0
 			XTAL_0IF (M_ism ==  2) {return  tanh(XTAL_REF_(o));}
@@ -54,18 +54,18 @@ struct tangent<M_ism, -0>
 		}
 		template <int N_lim=0> requires (0 <= N_lim)
 		XTAL_VAL_(return,inline,let)
-		method(auto &&o)
-		const noexcept -> decltype(auto)
+		method(auto &&o) const
+		noexcept -> decltype(auto)
 		{
-			auto const o_sgn = part_f<signed>(o);
+			auto const o_sig = part_f<signed>(o);
 			auto x = objective_f(XTAL_REF_(o));
 			XTAL_IF0
 			XTAL_0IF (0 < M_ism) {
 				x *= sine_t<M_ism, -1>{}.template method<N_lim>(x);
-				x *= root_f<-2>(term_f(one,  cosign_v<M_ism>, square_f(x)));
+				x *= root_f<-2>(term_f(one,  sigpar_v<M_ism>, square_f(x)));
 			}
 			XTAL_0IF (M_ism < 0) {
-				x *= root_f<-2>(term_f(one, -cosign_v<M_ism>, square_f(x)));
+				x *= root_f<-2>(term_f(one, -sigpar_v<M_ism>, square_f(x)));
 				x *= sine_t<M_ism, -1>{}.template method<N_lim>(x);
 			}
 			return x;
@@ -88,8 +88,8 @@ struct tangent<M_ism, -1>
 
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,let)
-		method(auto const &o)
-		const noexcept -> decltype(auto)
+		method(auto const &o) const
+		noexcept -> decltype(auto)
 		{
 			return S_{}.template method<Ns...>(o)*root_f<-1, 1>(o);
 		}

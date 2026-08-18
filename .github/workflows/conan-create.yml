@@ -16,7 +16,7 @@ jobs:
         bt: [Debug,         Release]
         os: [macOS, Ubuntu         ]
       # os: [macOS, Ubuntu, Windows]
-    
+
     runs-on: ${{matrix.os}}-latest
 
     steps:
@@ -34,7 +34,7 @@ jobs:
       if:   ${{ matrix.os != 'macOS' }}
 
     - run:  conan remote update conancenter   --url="https://center2.conan.io"
-    - run:  conan config install ${{github.workspace}}/.conan2               
+    - run:  conan config install ${{github.workspace}}/.conan2
     - run:  conan export         ${{github.workspace}}/test_dependencies/xtal
     - run:  conan create         ${{github.workspace}}        --build=missing -s build_type=${{matrix.bt}} --profile:all=${{matrix.os}}
       if:   ${{ matrix.bt != 'Release' }}

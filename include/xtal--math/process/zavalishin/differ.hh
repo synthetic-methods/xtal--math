@@ -52,15 +52,15 @@ struct differ
 
 		template <int N_ord=M_ord, int N_sub=0> requires un_v<N_ord, 1>
 		XTAL_VAL_(return,inline,let)
-		method(auto const &x, auto &&...oo)
-		const noexcept -> auto
+		method(auto const &x, auto &&...oo) const
+		noexcept -> auto
 		{
 			return x;
 		}
 		template <int N_ord=M_ord, int N_sub=0> requires in_v<N_ord, 1> and (1 == data_type::size())
 		XTAL_VAL_(return,inline,let)
-		method(auto x)
-		const noexcept -> auto
+		method(auto x) const
+		noexcept -> auto
 		{
 			using X = XTAL_ALL_(x);
 			using U_fit = bond::fit<X>;
@@ -80,8 +80,8 @@ struct differ
 		}
 		template <int N_ord=M_ord, int N_sub=0> requires in_v<N_ord, 1> and (2 == data_type::size())
 		XTAL_VAL_(return,inline,let)
-		method(auto x)
-		const noexcept -> XTAL_ALL_(x)
+		method(auto x) const
+		noexcept -> XTAL_ALL_(x)
 		{
 			using X = XTAL_ALL_(x);
 			using U_fit = bond::fit<X>;
@@ -95,15 +95,15 @@ struct differ
 		}
 		template <int N_ord=M_ord, int N_sub=0> requires in_v<N_ord, 1>
 		XTAL_VAL_(return,inline,let)
-		method(auto x, atom::math::phason_q auto const &t_)
-		const noexcept -> auto
+		method(auto x, atom::math::phason_q auto const &t_) const
+		noexcept -> auto
 		{
 			return method<N_ord, N_sub>(XTAL_MOV_(x))*root_f<-1>(t_(1));
 		}
 		template <int N_ord=M_ord, int N_sub=0> requires in_v<N_ord, 1>
 		XTAL_VAL_(return,inline,let)
-		method(auto x, auto y, atom::math::phason_q auto const &t_)
-		const noexcept -> auto
+		method(auto x, auto y, atom::math::phason_q auto const &t_) const
+		noexcept -> auto
 		{
 			using X = XTAL_ALL_(x);
 			using Y = XTAL_ALL_(y);

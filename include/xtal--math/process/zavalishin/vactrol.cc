@@ -33,11 +33,13 @@ TAG_("vactrol")
 
 	using X_shape  = occur::reinferred_t<U_shape, union SHAPE>;
 	using X_coeff  = occur::reinferred_t<U_coeff, union COEFF>;
+	using X_gain   = occur::reinferred_t<U_alpha, union GAIN >;
 
 	using X_stage  = occur::stage_t<>;
 	using Y_trig   = pulse_t< 0>;
 	using Y_gate   = pulse_t< 1>;
 	using Y_hold   = pulse_t<-1>;
+	using X_one    = occur::let_t<decltype([] XTAL_1FN_(to) (U_alpha(1)))>;
 
 	using _0 = ordinal_constant_t<0>;
 	using _1 = ordinal_constant_t<1>;
@@ -52,11 +54,12 @@ TAG_("vactrol")
 		using K_env = flow::packet_t<X_stage, X_shape>;
 		using Y_env = confined_t<void
 		,	reuse< 0, -1>
-		,	coefficient_t<X_coeff> ::   attach <>
-		,	Y_gate                 ::   infix  <>
-		,	X_shape                ::   affix  <>
-		,	P_env                  ::   attach <>
-		,	P_env                  :: dispatch <>
+		,	coefficient_t<X_coeff> ::   attach< >
+		,	X_gain                 ::   prefix< >
+		,	Y_gate                 :: transfix<0>
+		,	X_shape                ::   suffix< >
+		,	P_env                  ::   attach< >
+		,	P_env                  :: dispatch< >
 	//	,	occur::inferred_t<union ORDER, constant_t<2>>::dispatch<>
 		,	vactrol<1>
 		,	F_env
@@ -78,6 +81,7 @@ TAG_("vactrol")
 		auto z_sample = occur::quartz_f(44100);
 
 		auto z = Z_env::bind_f(Z_phi::bind_f(processor::let_f(e_omega)));
+		z <<= X_gain(0.50);
 		z <<= typename P_env::order_attribute{2};
 		z <<= X_coeff{1, 0};
 		z >>= X_stage{  -1};
@@ -111,12 +115,13 @@ TAG_("vactrol")
 		using K_env = flow::packet_t<X_stage, X_shape>;
 		using Y_env = confined_t<void
 		,	reuse< 0, -1>
-		,	coefficient_t<X_coeff> ::   attach <>
-		,	Y_trig                 ::   infix  <>
-		,	X_shape                ::   affix  <>
-		,	X_stage                ::   attach <>
-		,	P_env                  ::   attach <>
-		,	P_env                  :: dispatch <>
+		,	coefficient_t<X_coeff> ::   attach< >
+		,	X_gain                 ::   prefix< >
+		,	Y_trig                 :: transfix<0>
+		,	X_shape                ::   suffix< >
+		,	X_stage                ::   attach< >
+		,	P_env                  ::   attach< >
+		,	P_env                  :: dispatch< >
 		,	vactrol<0>
 		,	F_env
 		,	scheme::math::zavalishin::distorted<identity>
@@ -137,14 +142,15 @@ TAG_("vactrol")
 		auto z_sample = occur::quartz_f(44100);
 
 		auto z = Z_env::bind_f(Z_phi::bind_f(processor::let_f(e_omega)));
+		z <<= X_gain(0.99);
 		z <<= typename P_env::order_attribute{2};
 		z <<= X_coeff{1, 0};
 		z >>= X_stage{  -1};
 		z <<= z_sample;
 		z <<= z_resize;
 
-		z >>= flow::cue_f(0x08).then(K_env{ X_stage{0}, X_shape{ 0.50,  0.50}});
-	//	z >>= flow::cue_f(0x18).then(K_env{ X_stage{1}, X_shape{1.000, -0.00}});
+		z >>= flow::cue_f(0x08).then(K_env{ X_stage{0}, X_shape{0.99,  0.99}});
+	//	z >>= flow::cue_f(0x18).then(K_env{ X_stage{1}, X_shape{0.99, -0.00}});
 
 		echo_("\nvactrol: monophonic trigger");
 	//	echo_rule_<28>("\u2500");

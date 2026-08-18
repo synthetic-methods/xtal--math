@@ -25,8 +25,8 @@ struct distortion
 
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&...oo)
-		const noexcept -> decltype(auto)
+		method(auto &&...oo) const
+		noexcept -> decltype(auto)
 		{
 			return S::template method<Ns...>(XTAL_REF_(oo)...);
 		};

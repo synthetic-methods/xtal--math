@@ -43,7 +43,7 @@ struct probe<U>
 		using S_::S_;
 		
 		template <extent_type N_mask=1>
-		struct affix
+		struct suffix
 		{
 			using superkind = typename S_::template attach<N_mask>;
 
@@ -59,8 +59,8 @@ struct probe<U>
 
 				template <auto ...Ns>
 				XTAL_VAL_(return,inline,let)
-				method(auto &&...oo)
-				const noexcept -> decltype(auto)
+				method(auto &&...oo) const
+				noexcept -> decltype(auto)
 				{
 					auto const &[s_state_] = R_::template stash<typename R_::data_type>();
 					auto const & s_shape_  = R_::template head<T_>().template head<U_>();

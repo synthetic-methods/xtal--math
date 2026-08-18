@@ -73,15 +73,15 @@ struct  factorial
 
 		template <auto ...>
 		XTAL_VAL_(return,inline,let)
-		method(integral_variable_q auto &&o)
-		const noexcept -> decltype(auto)
+		method(integral_variable_q auto &&o) const
+		noexcept -> decltype(auto)
 		{
 			return factorial_f(XTAL_REF_(o));
 		}
 		template <auto ...>
 		XTAL_VAL_(return,inline,let)
-		method(real_variable_q auto &&o)
-		const noexcept -> decltype(auto)
+		method(real_variable_q auto &&o) const
+		noexcept -> decltype(auto)
 		{
 			using U_fit = bond::fit<decltype(o)>;
 			using U_sigma = typename U_fit::sigma_type;

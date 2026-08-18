@@ -1,9 +1,9 @@
 #pragma once
 #include "./any.cc"
-
 #include "../../occur/all.hh"
 #include "../../scheme/all.hh"
 #include "./reuse.hh"
+#include "./vactrol.hh"
 
 #include "./filter.hh"
 XTAL_ENV_(push)
@@ -49,12 +49,12 @@ TAG_("filter")
 		using R_def = filter<>;
 		using R_etc = process::occurrence_t<R_def>;
 		using R_prx = confined_t<void
-		,	per_t<U_quartz>          ::   refix <1>
-		,	U_rewind                   ::   attach <>
-		,	coefficient_t<X_coeff>     ::   attach <>
+		,	per_t<U_quartz>            :: transfix<1>
+		,	U_rewind                   ::   attach< >
+		,	coefficient_t<X_coeff>     ::   attach< >
 	//	,	reuse< 0>
-		,	R_etc                      ::   attach <>
-		,	R_etc                      :: dispatch <>
+		,	R_etc                      ::   attach< >
+		,	R_etc                      :: dispatch< >
 		,	R_def
 		,	scheme::math::zavalishin::distorted<identity>
 		>;
@@ -121,12 +121,12 @@ TAG_("filter")
 		using R_def = filter<>;
 		using R_etc = process::occurrence_t<R_def>;
 		using R_prx = confined_t<void
-		,	per_t<U_quartz>            ::   refix <1>
-		,	U_rewind                   ::   attach <>
-		,	coefficient_t<X_coeff>     ::   attach <>
+		,	per_t<U_quartz>            :: transfix<1>
+		,	U_rewind                   ::   attach< >
+		,	coefficient_t<X_coeff>     ::   attach< >
 	//	,	reuse< 0>
-		,	R_etc                      ::   attach <>
-		,	R_etc                      :: dispatch <>
+		,	R_etc                      ::   attach< >
+		,	R_etc                      :: dispatch< >
 		,	R_def
 		,	scheme::math::zavalishin::distorted<identity>
 		>;
@@ -191,13 +191,13 @@ TAG_("filter")
 	TRY_("filter parameterization")
 	{
 		using Y_ramp = confined_t<void
-		,	typename per_t<U_quartz>::template refix<1>
+		,	typename per_t<U_quartz>::template transfix<1>
 		//\
 		,	filter<union RAMP>
 		,	filter<U_alpha[2], union RAMP>
 		>;
 		using Y_ring = confined_t<void
-		,	typename per_t<U_quartz>::template refix<1>
+		,	typename per_t<U_quartz>::template transfix<1>
 		//\
 		,	filter<union RING>
 		,	filter<U_alpha[2], union RING>
@@ -221,7 +221,8 @@ TAG_("filter-ring")
 	using U_stage  = occur::stage_t<>;
 
 	using U_coeff  = atom::math::dot_t<U_alpha[2]>;
-	using X_coeff  = occur::inferred_t<U_coeff, union COEFF>;
+	using X_coeff  = occur::  inferred_t<U_coeff, union COEFF>;
+	using X_gain   = occur::reinferred_t<U_alpha, union GAIN >;
 
 	using Y_trig  = pulse_t< 0>;
 	using Y_gate  = pulse_t< 1>;
@@ -237,16 +238,19 @@ TAG_("filter-ring")
 		using R_etc = process::occurrence_t<R_def>;
 		using R_eve = flow::packet_t<U_stage, typename R_etc::damp_parameter>;
 		using R_prx = confined_t<void
-		,	per_t<U_quartz>::refix<0>
+		,	per_t<U_quartz>::transfix<0>
 		//\
 		,	reuse<0, -1>
 		,	reuse<   -1>
-		,	U_rewind               ::   attach <>
-		,	coefficient_t<X_coeff> ::   attach <>
-		,	Y_hold                 ::   infix  <>
-		,	R_etc::damp_parameter  ::   affix  <>
-		,	R_etc::                     attach <>
-		,	R_etc::                   dispatch <>
+		,	U_rewind               ::   attach< >
+		,	coefficient_t<X_coeff> ::   attach< >
+	//	,	Y_hold                 ::   prefix< >
+		,	X_gain                 ::   prefix< >
+		,	  pulse_t<-1>          :: transfix<0>
+		,	vactrol_t<-1>          :: transfix<0>
+		,	R_etc::damp_parameter  ::   suffix< >
+		,	R_etc::                     attach< >
+		,	R_etc::                   dispatch< >
 		,	R_def
 		>;
 		using R_pxr = processor::monomer_t<R_prx
@@ -264,6 +268,7 @@ TAG_("filter-ring")
 		z <<= typename R_etc::order_attribute{2};
 		z <<= typename R_etc:: damp_parameter{1};
 		z <<= X_coeff{0, 1};
+		z <<= X_gain {1};
 
 		z <<= typename occur::rewind_t<>{0};
 
@@ -306,14 +311,17 @@ TAG_("filter-ring")
 		using R_prx = confined_t<void
 	//	,	reuse<0, -1>
 		,	reuse<   -1>
-		,	per_t<U_quartz>        ::   refix <0>
-		,	coefficient_t<X_coeff> ::   attach <>
-		,	U_rewind               ::   attach <>
-		,	Y_gate                 ::   infix  <>
+		,	per_t<U_quartz>        :: transfix<0>
+		,	coefficient_t<X_coeff> ::   attach< >
+		,	U_rewind               ::   attach< >
+	//	,	Y_gate                 ::   prefix< >
+		,	X_gain                 ::   prefix< >
+		,	  pulse_t< 1>          :: transfix< >
+		,	vactrol_t< 1>          :: transfix< >
 		,	U_stage::template assignment<typename R_etc::damp_parameter>
-		,	R_etc::damp_parameter  ::   affix  <>
-		,	R_etc                  ::   attach <>
-		,	R_etc                  :: dispatch <>
+		,	R_etc::damp_parameter  ::   suffix< >
+		,	R_etc                  ::   attach< >
+		,	R_etc                  :: dispatch< >
 		,	R_def
 		>;
 		using R_pxy = processor::polymer_t<R_prx
@@ -331,18 +339,20 @@ TAG_("filter-ring")
 		z <<= typename R_etc::order_attribute{2};
 		z <<= typename R_etc:: damp_parameter{1};
 		z <<= X_coeff{0, 1};
+		z <<= X_gain{0.707};
 		z <<= typename occur::rewind_t<>{0};
 
-		z <<= flow::assign_f(U_stage{ 0}) << typename R_etc::damp_parameter{0.000F};
-		z <<= flow::assign_f(U_stage{ 1}) << typename R_etc::damp_parameter{0.060F};
-		z <<= flow::assign_f(U_stage{-1}) << typename R_etc::damp_parameter{0.707F};
+		z <<= flow::assign_f(U_stage{ 0}) << typename R_etc::damp_parameter{0.0000F};
+		z <<= flow::assign_f(U_stage{ 1}) << typename R_etc::damp_parameter{0.0625F};
+		z <<= flow::assign_f(U_stage{-1}) << typename R_etc::damp_parameter{0.5000F};
 
 		z <<= z_sample;
 		z <<= z_resize;
 
 		z.lead() >>= U_stage{-1};
 
-		z >>= flow::cue_f(0x08).then(R_eve{69, 0});
+		z >>= flow::cue_f(0x04).then(R_eve{69, 0});
+		z >>= flow::cue_f(0x10).then(R_eve{69, 1});
 		z >>= flow::cue_f(0x18).then(R_eve{69, 0});
 		z >>= flow::cue_f(0x28).then(R_eve{69, 1});
 	//	z >>= flow::cue_f(0x38).then(R_eve{69,-1});
@@ -355,7 +365,7 @@ TAG_("filter-ring")
 
 		TRUE_(0 == z.efflux(z_cursor++));
 		TRUE_(2 == z.ensemble().size());// Still decaying!
-		echo_plot_<28>(z.store(), 0x08, 0x18);
+		echo_plot_<28>(z.store(), 0x04, 0x10, 0x18);
 
 	//	z >>= flow::cue_f(0x08).then(R_eve{69, 1});// Inlined below...
 		z >>= flow::cue_f(0x20).then(R_eve{69,-1});// Inlined from above...
@@ -392,7 +402,9 @@ TAG_("vectrol")
 	using U_stage  = occur::stage_t<>;
 
 	using U_coeff  = atom::math::dot_t<U_alpha[2]>;
-	using X_coeff  = occur::inferred_t<U_coeff, union COEFF>;
+	using X_coeff  = occur::  inferred_t<U_coeff, union COEFF>;
+	using X_gain   = occur::reinferred_t<U_alpha, union GAIN >;
+	using X_amph   = occur::reinferred_t<U_alpha, union AMPH >;
 
 	using Y_trig   = pulse_t< 0>;
 	using Y_gate   = pulse_t< 1>;
@@ -418,13 +430,16 @@ TAG_("vectrol")
 
 		using S_process = confined_t<void
 		,	reuse<0, -1>
-		,	coefficient_t<X_coeff> ::   attach <>
-		,	per_t<U_quartz>        ::   refix <0>
-		,	Y_trig                 ::   infix  <>
-		,	S_damp_                ::   affix  <>
-	//	,	S_damp                 ::   affix  <>
-		,	S_meta                 ::   attach <>
-		,	S_meta                 :: dispatch <>
+		,	coefficient_t<X_coeff> ::   attach< >
+		,	per_t<U_quartz>        :: transfix<0>
+	//	,	Y_trig                 ::   prefix< >
+		,	X_gain                 ::   prefix< >
+		,	  pulse_t< 0>          :: transfix< >
+		,	vactrol_t< 0>          :: transfix< >
+		,	S_damp_                ::   suffix< >
+	//	,	S_damp                 ::   suffix< >
+		,	S_meta                 ::   attach< >
+		,	S_meta                 :: dispatch< >
 		,	S_content
 		>;
 		using S_processor = processor::monomer_t<S_process
@@ -440,6 +455,7 @@ TAG_("vectrol")
 
 		auto z = S_processor::bind_f(processor::let_f(e_omega));
 		z <<= S_order{2};
+		z <<= X_gain{1};
 		z <<= S_damp_{one - 0.0, zero - 1.0};
 		z <<= X_coeff{1, 1};
 
@@ -479,11 +495,14 @@ TAG_("vectrol")
 		using S_process = confined_t<void
 		,	reuse< 0, -1>
 	//	,	process::lift<W_alpha>
-		,	typename per_t<U_quartz> ::   refix <0>
-		,	typename Y_trig            ::   infix <>
-		,	typename S_damp_           ::   affix <>
-		,	typename S_meta           ::   attach <>
-		,	typename S_meta           :: dispatch <>
+		,	typename per_t<U_quartz> :: transfix<0>
+	//	,	Y_trig                   ::   prefix< >
+		,	X_gain                   ::   prefix< >
+		,	  pulse_t< 0>            :: transfix< >
+		,	vactrol_t< 0>            :: transfix< >
+		,	typename S_damp_         ::   suffix< >
+		,	typename S_meta          ::   attach< >
+		,	typename S_meta          :: dispatch< >
 		,	S_content
 		>;
 		//\
@@ -510,18 +529,21 @@ TAG_("vectrol")
 		using X_patch   =  patch_t<X_matrix>;
 
 		using X_process = confined_t<void
-		,	X_patch                   ::   refix  <>
-		,	X_patch                   ::   refit  <>
-		,	X_patch                   ::     fit  <T_dummy, T_dummy>
+		,	X_patch                   ::   rewire< >
+		,	X_patch                   ::   reflux< >
+		,	X_patch                   ::  preflux<T_dummy, T_dummy>
 		,	reuse< 0>
-		,	coefficient_t<X_coeff>    ::   attach <>
-		,	coefficient_t<>           ::   unfix  <>
-		,	per_t<U_quartz>           ::   refix <0>
-		,	Y_gate                    ::   infix  <>
-	//	,	T_damp_                   ::   affix  <>
-		,	T_damp                    ::   affix  <>
-		,	T_meta                    ::   attach <>
-		,	T_meta                    :: dispatch <>
+		,	coefficient_t<X_coeff>    ::   attach< >
+		,	coefficient_t<>           ::    unfix< >
+		,	per_t<U_quartz>           :: transfix<0>
+	//	,	Y_gate                    ::   prefix< >
+		,	X_amph                    ::   prefix< >
+		,	  pulse_t< 0>             :: transfix< >
+		,	vactrol_t< 0>             :: transfix< >
+	//	,	T_damp_                   ::   suffix< >
+		,	T_damp                    ::   suffix< >
+		,	T_meta                    ::   attach< >
+		,	T_meta                    :: dispatch< >
 		,	T_content
 		>;
 		using X_processor = processor::monomer_t<X_process
@@ -549,13 +571,15 @@ TAG_("vectrol")
 		_y <<= occur::math::dent_s<X_matrix, 1>(X_vector{r_omega, W_alpha{1111, 1111}});
 		_y <<= occur::math::dent_s<X_matrix, 0>(X_vector{0.0    , W_alpha{1.00, 1.00}});
 
-		_y <<= S_order{2};
-		_y <<= S_damp_{one - 0.0, zero - 1.0};
-	//	_y <<= S_damp {1.0};
+		_y <<= S_order {2};
+		_y <<= X_gain  (1);
+		_y <<= X_amph  (1);
+		_y <<= S_damp_ {one - 0.0, zero - 1.0};
+	//	_y <<= S_damp  {1.0};
 
-		_y <<= T_order{2};
-	//	_y <<= T_damp_{1};
-		_y <<= T_damp {1};
+		_y <<= T_order {2};
+	//	_y <<= T_damp_ {1};
+		_y <<= T_damp  {1};
 		_y <<= X_coeff {0, 1};
 
 		_y <<= z_sample;

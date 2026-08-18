@@ -18,12 +18,8 @@ template <auto ...Ms>
 using prime_t = process::confined_t<prime<Ms...>>;
 
 template <auto ...Ms>
-XTAL_VAL_(return,inline,let)
-prime_f(auto &&...xs)
-noexcept -> decltype(auto)
-{
-	return prime_t<Ms...>::method(XTAL_REF_(xs)...);
-};
+XTAL_VAL_(let)
+prime_f = [] XTAL_1FN_(call) (prime_t<Ms...>::method);
 
 
 namespace _detail
@@ -78,7 +74,7 @@ struct prime< 1>
 		template <int ...Ns_pow>
 		XTAL_VAL_(return,inline,set)
 		method(integral_q auto &&...is)
-		noexcept -> auto
+		noexcept -> extent_type
 		{
 			XTAL_IF0
 			XTAL_0IF (0 == sizeof...(Ns_pow)) {return (one *...* method<1>(XTAL_REF_(is)));}
@@ -86,28 +82,33 @@ struct prime< 1>
 		}
 		template <int N_pow=1>
 		XTAL_VAL_(return,inline,set)
-		method(integral_variable_q auto i)
-		noexcept -> auto
+		method(int i)
+		noexcept -> extent_type
 		{
-			auto constexpr K_size = sizeof(_detail::U8_PRIME_HALF_SUBDEX) << 0;
-			auto constexpr K_mask = K_size - one;
+			int constexpr K_size = sizeof(_detail::U8_PRIME_HALF_SUBDEX);
+			int constexpr K_mask = K_size - one;
 
-			assert(i < K_size);
-			auto      o  = bond::math::bit_sign_f(i);
-			i  &= ~o; o += 0 < i;
-			i  &=  K_mask;
+			assert(-1 <= i and i < K_size);
+			auto             o  = bond::math::bit_sign_f(i);
+			i  &= ~o&K_mask; o += 0 != i;
 			i  += _detail::U8_PRIME_HALF_SUBDEX[i];
 			i <<=  1;
 			i  +=  o;
 			return monomial_f<N_pow>(i);
 		}
-
+		template <int N_pow=1>
+		XTAL_VAL_(return,inline,set)
+		method(integral_variable_q auto i)
+		noexcept -> extent_type
+		{
+			return method<N_pow>((int) i);
+		}
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,set)
 		method(integral_constant_q auto i)
-		noexcept -> auto
+		noexcept -> extent_type
 		{
-			return constant_t<method<Ns...>(i())>{};
+			return constant_t<method<Ns...>((int) i())>{};
 		}
 
 	};
@@ -127,7 +128,7 @@ struct prime<-1>
 
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,set)
-		method(integral_variable_q auto n)
+		method(extent_type n)
 		noexcept -> auto
 		requires un_v<fixed_shaped_q<decltype(Ns)...>>
 		{
@@ -138,7 +139,7 @@ struct prime<-1>
 				[] (unsigned char const &x, extent_type const &y)
 				XTAL_0FN_(to) (y > prime_f<1>(&x - i0)));
 
-			return static_cast<XTAL_ALL_(n)>(i_ - i0);
+			return static_cast<int>(i_ - i0 - (n == 1));
 		}
 
 		template <auto ...Ns>

@@ -56,7 +56,7 @@ struct cosy<M_ism, +2>
 template <int M_ism> requires (0 < M_ism)
 struct cosy<M_ism, -0>
 {
-	using superkind = bond::compose<typename discard_t<2>::template infix<>, cosy<M_ism, -2>>;
+	using superkind = bond::compose<typename discard_t<2>::template transfix<0>, cosy<M_ism, -2>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
@@ -120,7 +120,7 @@ struct cosy<M_ism, -2>
 			static_assert(-1 <= N_lim);
 			using W = XTAL_ALL_(w);
 			using U = unstruct_t<W>;
-			W const w0 = U(4*cosign_v<M_ism>)*XTAL_REF_(w);
+			W const w0 = U(4*sigpar_v<M_ism>)*XTAL_REF_(w);
 			W const w1 = U(1) + w0;
 			W m(one);
 			switch (N_lim&0b11) {

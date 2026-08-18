@@ -115,14 +115,14 @@ public:
 		XTAL_VAL_(new,implicit)
 		homotype(std::initializer_list<W> o)
 		noexcept
-		:	S_(variable{count_f(o)})
+		:	S_(std::variant<size_type>{count_f(o)})
 		{
 			operator>>=(XTAL_MOV_(o));
 		}
 		XTAL_VAL_(new,explicit)
 		homotype(iterable_q auto &&o)
 		noexcept
-		:	S_(variable{count_f(o)})
+		:	S_(std::variant<size_type>{count_f(o)})
 		{
 			operator>>=(XTAL_REF_(o));
 		}
@@ -344,8 +344,8 @@ public:
 			return self();
 		}
 		XTAL_VAL_(inline,let)
-		scaled(W u, W w=one)
-		const noexcept -> auto
+		scaled(W u, W w=one) const
+		noexcept -> auto
 		{
 			using T_ = XTAL_ALL_(twin());
 			return [&, this]<auto ...I> (bond::seek_in_t<I...>)

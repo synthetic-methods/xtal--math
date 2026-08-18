@@ -33,8 +33,8 @@ struct near
 		/*/
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,let)
-		method(integral_variable_q auto n)
-		const noexcept -> XTAL_ALL_(n)
+		method(integral_variable_q auto n) const
+		noexcept -> XTAL_ALL_(n)
 		{
 			using U = XTAL_ALL_(n);
 			using U_fit = bond::fit<U>;
@@ -47,8 +47,8 @@ struct near
 		/***/
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,let)
-		method(real_variable_q auto u)
-		const noexcept -> XTAL_ALL_(u)
+		method(real_variable_q auto u) const
+		noexcept -> XTAL_ALL_(u)
 		{
 			using U = XTAL_ALL_(u);
 			using U_fit = bond::fit<U>;
@@ -61,8 +61,8 @@ struct near
 		}
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,let)
-		method(complex_variable_q auto const &u)
-		const noexcept -> XTAL_ALL_(u)
+		method(complex_variable_q auto const &u) const
+		noexcept -> XTAL_ALL_(u)
 		{
 			return {method<Ns...>(u.real()), method<Ns...>(u.imag())};
 		}

@@ -49,8 +49,8 @@ struct unity<M_ism, M_car>
 
 		template <int N_lim=-1, class U>
 		XTAL_VAL_(return,inline,let)
-		method(std::initializer_list<U> o)
-		const noexcept -> decltype(auto)
+		method(std::initializer_list<U> o) const
+		noexcept -> decltype(auto)
 		{
 			std::complex<U> w; auto &m = destruct_f(w);
 			std::copy_n(point_f(o), 2, m);
@@ -58,15 +58,15 @@ struct unity<M_ism, M_car>
 		}
 		template <int N_lim=-1>
 		XTAL_VAL_(return,inline,let)
-		method(complex_field_q auto const &u)
-		const noexcept -> decltype(auto)
+		method(complex_field_q auto const &u) const
+		noexcept -> decltype(auto)
 		{
 			return method<N_lim>(u.real(), u.imag());
 		}
 		template <int N_lim=-1>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&t_re, simplex_field_q auto &&t_im)
-		const noexcept -> decltype(auto)
+		method(auto &&t_re, simplex_field_q auto &&t_im) const
+		noexcept -> decltype(auto)
 		{
 			auto constexpr _exp_2pi = [] XTAL_1FN_(call) (taylor::octarithm_t<-1>{}.template method<2>);
 			return method<N_lim>(XTAL_REF_(t_re))*_exp_2pi(XTAL_REF_(t_im));
@@ -74,8 +74,8 @@ struct unity<M_ism, M_car>
 
 		template <int N_lim=-1>
 		XTAL_VAL_(return,inline,let)
-		method(simplex_field_q auto const &t)
-		const noexcept -> decltype(auto)
+		method(simplex_field_q auto const &t) const
+		noexcept -> decltype(auto)
 		{
 			static_assert(-1 <= N_lim);
 			using U       = XTAL_ALL_(t);
@@ -107,8 +107,8 @@ struct unity<M_ism, M_car>
 		}
 		template <int N_lim=-1>
 		XTAL_VAL_(return,inline,let)
-		method(atom::math::phason_q auto const &t_)
-		const noexcept -> decltype(auto)
+		method(atom::math::phason_q auto const &t_) const
+		noexcept -> decltype(auto)
 		{
 			using T_      = XTAL_ALL_(t_);
 			using T_fit   = bond::fit<decltype(t_[0])>;// Underlying...
@@ -146,8 +146,8 @@ struct unity<M_ism, M_car>
 
 		template <int N_lim=-1>
 		XTAL_VAL_(return,inline,let)
-		method(complex_field_q auto &&u)
-		const noexcept -> decltype(auto)
+		method(complex_field_q auto &&u) const
+		noexcept -> decltype(auto)
 		{
 		//	TODO: Handle `M_car == 1`?
 			auto const   x_re = u.real();

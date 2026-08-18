@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-
+#include <initializer_list>
 
 
 
@@ -42,10 +42,10 @@ struct dent<Ns...>
 	class subtype : public bond::compose_s<S, superkind>
 	{
 		static_assert(bond::pack_q<S>);
-		using S_ = bond::compose_s<S, superkind>;
-		using W_ =     indicated_s<S >;
-		using U_ =   initializer_t<W_>;
-		using T_ = typename S_::self_type;
+		using S_ =        bond::compose_s   <S, superkind>;
+		using W_ =            indicated_s   <S >;
+		using U_ =          initializer_t   <W_>;
+		using U_list = std::initializer_list<U_>;
 
 	protected:
 		/*!
@@ -81,13 +81,15 @@ struct dent<Ns...>
 		*/
 		XTAL_VAL_(new,explicit)
 		subtype(U_ u)
-		noexcept requires infungible_q<S_, U_>
-		:	S_{inject_f(XTAL_MOV_(u))}
+		noexcept
+		requires infungible_q<S_, U_>
+		:	S_(inject_f(XTAL_MOV_(u)))
 		{}
 		XTAL_VAL_(new,implicit)
-		subtype(std::initializer_list<U_> u_)
-		noexcept requires make_p<S_, std::initializer_list<U_>>
-		:	S_{u_}
+		subtype(U_list u_list)
+		noexcept
+		requires infungible_q<S_, U_> and make_p<S_, U_list>
+		:	S_(u_list)
 		{}
 
 		template <extent_type N_mask=1>

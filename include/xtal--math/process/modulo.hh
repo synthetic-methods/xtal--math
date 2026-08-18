@@ -38,8 +38,8 @@ struct modulo<M_mod>
 
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&z)
-		const noexcept -> auto
+		method(auto &&z) const
+		noexcept -> auto
 		requires un_v<atom::math::phason_q<decltype(z)>>
 		{
 			using bond::math::bit_count_f;
@@ -86,8 +86,8 @@ struct modulo<M_mod>
 
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&z)
-		const noexcept -> auto
+		method(auto &&z) const
+		noexcept -> auto
 		requires un_v<atom::math::phason_q<decltype(z)>>
 		{
 			using bond::math::bit_count_f;
@@ -118,8 +118,8 @@ struct modulo<M_mod>
 		}
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&z)
-		const noexcept -> auto
+		method(auto &&z) const
+		noexcept -> auto
 		requires in_v<atom::math::phason_q<decltype(z)>>
 		{
 			using Z     = XTAL_ALL_(z);
@@ -149,8 +149,8 @@ struct modulo<0, 0>
 
 		template <int N_re=0, int N_im=0>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&x)
-		const noexcept -> decltype(auto)
+		method(auto &&x) const
+		noexcept -> decltype(auto)
 		{
 			using X = XTAL_ALL_(x);
 

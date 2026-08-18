@@ -21,6 +21,7 @@ equivalent to `(Re@# + I Im@#*-co &)/*(#*(1 + I) &)`.
 template <class ...Ms>	struct  coefficient;
 template <class ...Ms>	using   coefficient_t = process::confined_t<coefficient<Ms...>>;
 
+
 ////////////////////////////////////////////////////////////////////////////////
 
 template <occur::any_q M>
@@ -49,11 +50,35 @@ struct coefficient<M>
 
 				template <auto ...Ns>
 				XTAL_VAL_(inline,let)
-				method(auto &&...oo)
-				const noexcept -> auto
+				method(auto &&...oo) const
+				noexcept -> auto
 				{
 					return R_::headed()*
 						R_::template method<Ns...>(XTAL_REF_(oo)...);
+				}
+
+			};
+		};
+		template <extent_type M_mask=1>
+		struct affix
+		{
+			using superkind = typename M::template attach<M_mask>;
+
+			template <class R>
+			class subtype : public bond::compose_s<R, superkind>
+			{
+				using R_ = bond::compose_s<R, superkind>;
+
+			public:
+				using R_::R_;
+
+				template <auto ...Ns>
+				XTAL_VAL_(inline,let)
+				method(auto &&o, auto &&...oo) const
+				noexcept -> auto
+				{
+					return R_::template method<Ns...>
+						(R_::headed()*XTAL_REF_(o), XTAL_REF_(oo)...);
 				}
 
 			};
@@ -87,8 +112,8 @@ struct coefficient<>
 
 				template <auto ...Ns>
 				XTAL_VAL_(return,inline,let)
-				method(auto &&o, auto &&...oo)
-				const noexcept -> auto
+				method(auto &&o, auto &&...oo) const
+				noexcept -> auto
 				{
 					return XTAL_REF_(o)*
 						R_::template method<Ns...>(XTAL_REF_(oo)...);

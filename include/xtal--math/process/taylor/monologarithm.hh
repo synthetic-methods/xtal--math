@@ -33,8 +33,8 @@ struct monologarithm<M_ism, -0>
 	//\
 	using superprocess = process::lift_t<void
 	using superprocess = process::link_t<void
-	,	bond::compose<typename dilate_t <2>::template infix<>, taylor::sine<-2>>
-	,	bond::compose<typename discard_t<1>::template infix<>, monologarithm<M_ism, -1>>
+	,	bond::compose<typename dilate_t <2>::template transfix<0>, taylor::sine<-2>>
+	,	bond::compose<typename discard_t<1>::template transfix<0>, monologarithm<M_ism, -1>>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -46,11 +46,11 @@ struct monologarithm<M_ism, -0>
 
 		template <int N_lim=0>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&o)
-		const noexcept -> auto
+		method(auto &&o) const
+		noexcept -> auto
 		{
 			using U_fit = bond::fit<decltype(o)>;
-			auto constexpr k = U_fit::alpha_f(sign_v<I_ism, -1>);
+			auto constexpr k = U_fit::alpha_f(signum_v<I_ism, -1>);
 			XTAL_IF0
 			XTAL_0IF (0 <= N_lim) {return  superprocess{}.template method<N_lim>(XTAL_REF_(o));}
 			XTAL_0IF (0 == I_ism) {return -log(one - XTAL_REF_(o));}
@@ -73,8 +73,8 @@ struct monologarithm<M_ism, -0>
 	//\
 	using superprocess = process::lift_t<void
 	using superprocess = process::link_t<void
-	,	bond::compose<typename discard_t<1>::template infix<>, monologarithm<M_ism, -1>>
-	,	bond::compose<typename dilate_t <2>::template infix<>, taylor::sine<+2>>
+	,	bond::compose<typename discard_t<1>::template transfix<0>, monologarithm<M_ism, -1>>
+	,	bond::compose<typename dilate_t <2>::template transfix<0>, taylor::sine<+2>>
 	>;
 	template <class S>
 	class subtype : public bond::compose_s<S>
@@ -86,8 +86,8 @@ struct monologarithm<M_ism, -0>
 
 		template <int N_lim=0>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&o)
-		const noexcept -> auto
+		method(auto &&o) const
+		noexcept -> auto
 		{
 			using U = XTAL_ALL_(o);
 			XTAL_IF0
@@ -127,8 +127,8 @@ struct monologarithm<M_ism, -1>
 
 		template <int N_lim=0>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&o)
-		const noexcept -> auto
+		method(auto &&o) const
+		noexcept -> auto
 		{
 			XTAL_IF0
 			XTAL_0IF (N_lim <  0) {return S0{}.template method<-0, N_lim>(o)/o;}
@@ -160,8 +160,8 @@ struct monologarithm<M_ism, -1>
 
 		template <int N_lim=0>
 		XTAL_VAL_(return,inline,let)
-		method(auto &&o)
-		const noexcept -> auto
+		method(auto &&o) const
+		noexcept -> auto
 		{
 			auto const u = half*XTAL_REF_(o);
 			XTAL_IF0
@@ -181,9 +181,9 @@ XTAL_VAL_(return,inline,let)
 monologarithm_f(auto &&...oo)
 noexcept -> decltype(auto)
 {
-	auto constexpr N_sgn =   sign_v<N>;
-	auto constexpr N_abs = N*sign_v<N>;
-	return monologarithm_t<1*N_sgn>{}.template method<N_abs>(XTAL_REF_(oo)...);
+	auto constexpr N_sig = signum_v<N>;
+	auto constexpr N_mag = magnum_v<N>;
+	return monologarithm_t<1*N_sig>{}.template method<N_mag>(XTAL_REF_(oo)...);
 }
 
 

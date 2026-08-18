@@ -29,17 +29,17 @@ TAG_("part")
 		U_alpha alpha{-0.123};
 		U_aphex aphex{-0.123, 0.456};
 
-		U_alpha const alpha_sgn{-1    };
-		U_alpha const alpha_mgn{ 0.123};
+		U_alpha const alpha_sig{-1    };
+		U_alpha const alpha_mag{ 0.123};
 
-		U_aphex const aphex_sgn{-0.2604290310426322085923800386808580e0L, 0.9654929931336608817105116031598300e0L};
-		U_aphex const aphex_mgn{ 0.4722975756871932162539451383054256e0L, 0.0000000000000000000000000000000000e0L};
+		U_aphex const aphex_sig{-0.2604290310426322085923800386808580e0L, 0.9654929931336608817105116031598300e0L};
+		U_aphex const aphex_mag{ 0.4722975756871932162539451383054256e0L, 0.0000000000000000000000000000000000e0L};
 
-		TRUE_(check_f<-1>(part_t<unsigned>::template method<std::in_place>(alpha), alpha_mgn));
-		TRUE_(check_f<-1>(part_t<unsigned>::template method<std::in_place>(aphex), aphex_mgn));
+		TRUE_(check_f<-1>(part_t<unsigned>::template method<std::in_place>(alpha), alpha_mag));
+		TRUE_(check_f<-1>(part_t<unsigned>::template method<std::in_place>(aphex), aphex_mag));
 
-		TRUE_(check_f<-1>(alpha, alpha_sgn));
-		TRUE_(check_f<-1>(aphex, aphex_sgn));
+		TRUE_(check_f<-1>(alpha, alpha_sig));
+		TRUE_(check_f<-1>(aphex, aphex_sig));
 
 		TRUE_(same_q<float, typename bond::fit<float>::alpha_type>);
 		TRUE_(same_q<float, typename bond::fit<float>::alpha_type>);
@@ -62,17 +62,17 @@ TAG_("part")
 		U_alpha alpha{-0.123};
 		U_aphex aphex{-0.123, 0.456};
 
-		U_alpha const alpha_sgn{-1    };
-		U_alpha const alpha_mgn{ 0.123};
+		U_alpha const alpha_sig{-1    };
+		U_alpha const alpha_mag{ 0.123};
 
-		U_aphex const aphex_sgn{-0.2604290310426322085923800386808580e0L, 0.9654929931336608817105116031598300e0L};
-		U_aphex const aphex_mgn{ 0.4722975756871932162539451383054256e0L, 0.0000000000000000000000000000000000e0L};
+		U_aphex const aphex_sig{-0.2604290310426322085923800386808580e0L, 0.9654929931336608817105116031598300e0L};
+		U_aphex const aphex_mag{ 0.4722975756871932162539451383054256e0L, 0.0000000000000000000000000000000000e0L};
 
-		TRUE_(check_f<-1>(part_t<signed>::template method<std::in_place>(alpha), alpha_sgn));
-		TRUE_(check_f<-1>(part_t<signed>::template method<std::in_place>(aphex), aphex_sgn));
+		TRUE_(check_f<-1>(part_t<signed>::template method<std::in_place>(alpha), alpha_sig));
+		TRUE_(check_f<-1>(part_t<signed>::template method<std::in_place>(aphex), aphex_sig));
 
-		TRUE_(check_f<-1>(alpha, alpha_mgn));
-		TRUE_(check_f<-1>(aphex, aphex_mgn));
+		TRUE_(check_f<-1>(alpha, alpha_mag));
+		TRUE_(check_f<-1>(aphex, aphex_mag));
 
 	};
 	TRY_("assigned_f( 1)")

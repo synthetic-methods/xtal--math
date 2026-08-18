@@ -204,8 +204,8 @@ public:
 		*/
 		template <int N_dir=1> requires in_v<N_dir, 1, -1> and complex_field_q<value_type>
 		XTAL_VAL_(let)
-		transform(isomorphic_q<T> auto &source)
-		const noexcept -> decltype(auto)
+		transform(isomorphic_q<T> auto &source) const
+		noexcept -> decltype(auto)
 		{
 			using process::math::imagine_f;
 			using    bond::math::bit_shift_f;
@@ -239,8 +239,8 @@ public:
 		}
 		template <int N_dir=1> requires in_v<N_dir, 1, -1> and complex_field_q<value_type>
 		XTAL_VAL_(let)
-		transform(isomorphic_q<T> auto &&source)
-		const noexcept -> decltype(auto)
+		transform(isomorphic_q<T> auto &&source) const
+		noexcept -> decltype(auto)
 		{
 			(void) transform<N_dir>(source);
 			return serious_f(XTAL_MOV_(source));
@@ -251,8 +251,8 @@ public:
 		*/
 		template <int N_dir=1> requires in_v<N_dir, 1, -1>
 		XTAL_VAL_(return,inline,let)
-		transformation(isomorphic_q<T> auto source)
-		const noexcept -> auto
+		transformation(isomorphic_q<T> auto source) const
+		noexcept -> auto
 		{
 			return transform<N_dir>(XTAL_MOV_(source));
 		}
@@ -261,8 +261,8 @@ public:
 		\returns `lhs` convolved with `rhs`, using `this` as the Fourier basis.
 		*/
 		XTAL_VAL_(let)
-		convolve(isomorphic_q<T> auto &&y0, auto y1)
-		const noexcept -> decltype(auto)
+		convolve(isomorphic_q<T> auto &&y0, auto y1) const
+		noexcept -> decltype(auto)
 		{
 			static_assert(same_q<decltype(y0), decltype(y1)>);
 			return transform<-1>(transform<1>(XTAL_REF_(y0)) *= transform<1>(y1));
@@ -272,8 +272,8 @@ public:
 		using `this` as the Fourier basis.
 		*/
 		XTAL_VAL_(return,inline,let)
-		convolution(isomorphic_q<T> auto y0, auto const &y1)
-		const noexcept -> auto
+		convolution(isomorphic_q<T> auto y0, auto const &y1) const
+		noexcept -> auto
 		{
 			static_assert(same_q<decltype(y0), decltype(y1)>);
 			return convolve(XTAL_MOV_(y0), y1);
