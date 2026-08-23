@@ -43,12 +43,7 @@ noexcept -> decltype(auto)
 /*!
 \brief   Extends `serial` with multiplication via circular convolution.
 */
-template <scalar_array_q ..._s> requires same_q<_s...>
-struct series<_s ...>
-:	series<common_t<_s...>[sizeof...(_s)]>
-{
-};
-template <vector_array_q A>
+template <extra_vector_q A>
 struct series<A>
 {
 private:
@@ -312,9 +307,7 @@ public:
 		struct transverse
 		{
 			template <class Y>
-			//\
-			using holotype = typename quantity_multiplies<A>::template homotype<T>;
-			using holotype = typename quantity<qualify_s<A, std::multiplies>>::template homotype<Y>;
+			using holotype = typename quantity_multiplies<A>::template homotype<Y>;
 
 			template <class Y>
 			class homotype : public holotype<homotype<Y>>
@@ -334,6 +327,9 @@ public:
 	using type = bond::derive_t<homotype>;
 
 };
+template <class ...Us> requires un_v<bond::devise_condensed_p<Us...>>
+struct series<Us ...> : bond::devise_condensed_s<series, Us...>
+{};
 
 
 ///////////////////////////////////////////////////////////////////////////////

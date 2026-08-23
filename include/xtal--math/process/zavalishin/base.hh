@@ -30,7 +30,7 @@ namespace xtal::process
 {////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
-template <vector_array_q A, class ..._s>
+template <extra_vector_q A, class ..._s>
 struct occurrence<process::math::zavalishin::base<A, _s...>>
 {
 private:
@@ -60,7 +60,7 @@ public:
 	};
 };
 
-template <scalar_array_q A>
+template <extra_scalar_q A>
 struct occurrence<process::math::zavalishin::base<A>>
 :	occurrence<process::math::zavalishin::base<A[2]>>
 {

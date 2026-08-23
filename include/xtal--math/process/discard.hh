@@ -134,7 +134,7 @@ struct discard<1, M_aux>
 				method_f(auto &&_, auto &&u, auto &&...oo)
 				noexcept -> decltype(auto)
 				{
-					auto &r_ = qualify_f<R_>(XTAL_REF_(_));
+					auto &r_ = xtd::qualify_cast<R_>(XTAL_REF_(_));
 					auto  v  = r_.template method<Ns...>(u, XTAL_REF_(oo)...);
 					using V  = XTAL_ALL_(v);
 					using U  = XTAL_ALL_(u);
@@ -146,7 +146,7 @@ struct discard<1, M_aux>
 				method_f(auto &&_,           auto &&...ou)
 				noexcept -> decltype(auto)
 				{
-					auto &r_ = qualify_f<R_>(XTAL_REF_(_));
+					auto &r_ = xtd::qualify_cast<R_>(XTAL_REF_(_));
 					auto  u  = bond::seek_argument_f<M_arg>(ou...);
 					auto  v  = r_.template method<Ns...>(   XTAL_MOV_(ou)...);
 					using U  = XTAL_ALL_(u);
@@ -208,7 +208,7 @@ struct discard<1>
 				method_f(auto &&_, auto &&u, auto &&...oo)
 				noexcept -> auto
 				{
-					auto &r_ = qualify_f<R_>(XTAL_REF_(_));
+					auto &r_ = xtd::qualify_cast<R_>(XTAL_REF_(_));
 					auto  v  = r_.template method<Ns...>(u, XTAL_REF_(oo)...);
 					using V  = XTAL_ALL_(v);
 					using U  = XTAL_ALL_(u);
@@ -234,7 +234,7 @@ struct discard<1>
 				method_f(auto &&_, auto ...ou)
 				noexcept -> auto
 				{
-					auto &r_ = qualify_f<R_>(XTAL_REF_(_));
+					auto &r_ = xtd::qualify_cast<R_>(XTAL_REF_(_));
 					auto  u  = bond::seek_argument_f<M_arg>(ou...);
 					auto  v  = r_.template method<Ns...>(   XTAL_MOV_(ou)...);
 					using U  = XTAL_ALL_(u);
@@ -315,7 +315,7 @@ public:
 				noexcept -> decltype(auto)
 				{
 					auto constexpr i = unstruct_t<decltype(u)>(I_aux);
-					return qualify_f<R_>(XTAL_REF_(_)).
+					return xtd::qualify_cast<R_>(XTAL_REF_(_)).
 						template method<Ns...>(i*square_f(XTAL_REF_(u)), XTAL_REF_(oo)...);
 				}
 				template <auto ...Ns> requires (0 != M_arg)
@@ -327,7 +327,7 @@ public:
 					auto constexpr i = unstruct_t<decltype(u)>(I_aux);
 					u *= u;
 					u *= i;
-					return qualify_f<R_>(XTAL_REF_(_)).
+					return xtd::qualify_cast<R_>(XTAL_REF_(_)).
 						template method<Ns...>(XTAL_MOV_(ou)...);
 				}
 

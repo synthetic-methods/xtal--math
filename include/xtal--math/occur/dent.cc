@@ -36,7 +36,7 @@ TAG_("dent")
 
 	//	using E22_1 = typename D22_1::data_type;
 
-	//	static_assert(         fungible_q<typename D22_1::data_type, X_matrix>);
+	//	static_assert( xtd::fungible_with<typename D22_1::data_type, X_matrix>);
 	//	static_assert(occur::math::dent_q<         D22_1           , X_matrix>);
 
 	}

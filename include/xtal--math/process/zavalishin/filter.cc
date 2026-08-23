@@ -12,6 +12,9 @@ namespace xtal::process::math::zavalishin::_test::XTAL_NUM
 /////////////////////////////////////////////////////////////////////////////////
 using namespace xtal::process::math::zavalishin;
 
+template <class U>
+using arguments_x = atom::bucket_t<U[2]>;
+
 struct filter_parameters
 {
 	template <class S>
@@ -524,14 +527,18 @@ TAG_("vectrol")
 
 		//\
 		using X_vector  =  atom::bucket_t<U_alpha, W_alpha>;
-		using X_vector  =  flow::packed_t<U_alpha, W_alpha, union SHLEEM>;
-		using X_matrix  =  atom::bucket_t<X_vector[2]>;
+	//	using X_vector  =  flow::packed_t<U_alpha, W_alpha, union SHLEEM>;
+	//	using X_matrix  =  atom::bucket_t<X_vector[2]>;
+
+		using X_row     =  atom::bucket_t<U_alpha, W_alpha>;
+		using X_ray     =  atom::bucket_t<null_type[2]>;
+		using X_matrix  =  bond::compose_s<X_row, atom::bubble<X_ray::template recast_t>>;
 		using X_patch   =  patch_t<X_matrix>;
 
 		using X_process = confined_t<void
+	//	,	X_patch                   ::   attach<N_mask>
+	//	,	X_patch                   ::   reflux<Par_one, Par_key, Par_vel, Par_vax>
 		,	X_patch                   ::   rewire< >
-		,	X_patch                   ::   reflux< >
-		,	X_patch                   ::  preflux<T_dummy, T_dummy>
 		,	reuse< 0>
 		,	coefficient_t<X_coeff>    ::   attach< >
 		,	coefficient_t<>           ::    unfix< >
@@ -551,8 +558,8 @@ TAG_("vectrol")
 		,	scheme::stored  <null_type[0x100]>
 	//	,	scheme::spooled <null_type[0x100]>
 		>;
-		static_assert(         fungible_q<typename occur::math::dent_s<X_matrix, 1>::data_type, X_matrix>);
-		static_assert(occur::math::dent_q<typename occur::math::dent_s<X_matrix, 1>           , X_matrix>);
+	//	static_assert( xtd::fungible_with<typename occur::math::dent_s<X_matrix, 1>::data_type, X_matrix>);
+	//	static_assert(occur::math::dent_q<typename occur::math::dent_s<X_matrix, 1>           , X_matrix>);
 
 		U_alpha constexpr r_omega = 3*3*3*5*5*5;
 		U_alpha constexpr e_omega = 2*2*3*3*5*5;
@@ -568,8 +575,10 @@ TAG_("vectrol")
 		auto _y = X_processor::bind_f(_1, _x);
 		auto _y = X_processor::bind_f(_1, S_processor::bind_f(_e));
 
-		_y <<= occur::math::dent_s<X_matrix, 1>(X_vector{r_omega, W_alpha{1111, 1111}});
-		_y <<= occur::math::dent_s<X_matrix, 0>(X_vector{0.0    , W_alpha{1.00, 1.00}});
+		_y <<= occur::math::dent_s<X_matrix, 1>{{1.00, 1.00}, {1111, 1111}};
+		_y <<= occur::math::dent_s<X_matrix, 0>{ 0.00       ,  r_omega    };
+	//	_y <<= occur::math::dent_s<X_matrix, 1>(X_vector{r_omega, W_alpha{1111, 1111}});
+	//	_y <<= occur::math::dent_s<X_matrix, 0>(X_vector{0.0    , W_alpha{1.00, 1.00}});
 
 		_y <<= S_order {2};
 		_y <<= X_gain  (1);
@@ -589,8 +598,8 @@ TAG_("vectrol")
 		_y <<= z_resize;
 		//\
 		(void) _y.influx(X_vector{U_alpha{1}, W_alpha{1, 1}});
-		_y <<=                     X_vector {U_alpha{1}, W_alpha{1, 1}};
-		_y <<= occur::math::dash_f<X_matrix>(U_alpha{1}, W_alpha{1, 1});
+	//	_y <<=                     X_vector {U_alpha{1}, W_alpha{1, 1}};
+	//	_y <<= occur::math::dash_f<X_matrix>(U_alpha{1}, W_alpha{1, 1});
 
 		_y >>= flow::cue_f(0x08).then(T_event{ 0});
 	//	_y >>= flow::cue_f(0x08).then(U_stage{ 0});

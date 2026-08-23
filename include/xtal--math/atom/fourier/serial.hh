@@ -23,19 +23,14 @@ XTAL_VAL_(let) serial_f = [] XTAL_1FN_(call) (_detail::factory<serial_t>::make);
 /*!
 \brief   Extends `differential` with multiplication via linear convolution.
 */
-template <scalar_array_q ..._s> requires same_q<_s...>
-struct serial<_s ...>
-:	serial<common_t<_s...>[sizeof...(_s)]>
-{
-};
-template <vector_array_q A>
+template <extra_vector_q A>
 struct serial<A>
 {
 private:
 	using U_fit = bond::fit<A>;
 	
 	template <class T>
-	using endotype = typename differential<atom::qualify_s<A, std::plus>>::template homotype<T>;
+	using endotype = typename differential_plus<A>::template homotype<T>;
 
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<serial_t>>;
@@ -89,6 +84,9 @@ public:
 	using type = bond::derive_t<homotype>;
 
 };
+template <class ...Us> requires un_v<bond::devise_condensed_p<Us...>>
+struct serial<Us ...> : bond::devise_condensed_s<serial, Us...>
+{};
 
 
 ///////////////////////////////////////////////////////////////////////////////

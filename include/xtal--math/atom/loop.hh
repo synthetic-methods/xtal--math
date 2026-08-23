@@ -22,12 +22,7 @@ XTAL_VAL_(let) loop_f = [] XTAL_1FN_(call) (_detail::factory<loop_t>::make);
 /*!
 \brief   Extends `quantity_plus` with Dirichlet characterization and modulo access.
 */
-template <scalar_array_q ..._s> requires same_q<_s...>
-struct loop<_s ...>
-:	loop<common_t<_s...>[sizeof...(_s)]>
-{
-};
-template <vector_array_q A>
+template <extra_vector_q A>
 struct loop<A>
 {
 private:
@@ -103,7 +98,7 @@ public:
 		element_f(auto &&o, index_type i)
 		noexcept -> decltype(auto)
 		{
-			i += qualify_f<homotype>(o).m_index;
+			i += xtd::qualify_cast<homotype>(o).m_index;
 			return S_::element_f(XTAL_REF_(o), wrap_f(XTAL_MOV_(i)));
 		}
 
@@ -175,6 +170,10 @@ public:
 	using type = bond::derive_t<homotype>;
 
 };
+template <class ...Us> requires un_v<bond::devise_condensed_p<Us...>>
+struct loop<Us ...> : bond::devise_condensed_s<loop, Us...>
+{};
+
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////

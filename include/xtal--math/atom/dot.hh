@@ -30,23 +30,11 @@ XTAL_VAL_(let) dot_f = [] XTAL_1FN_(call) (_detail::factory<dot_t>::make);
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <scalar_array_q ..._s> requires same_q<_s...>
-struct dot<_s ...>
-:	dot<common_t<_s...>[sizeof...(_s)]>
-{
-};
-template <matrix_array_q A>
-struct dot<A>
-:	dot<dot_t<typename fixed<A>::value_type>[fixed<A>::extent()]>
-{
-};
 template <class ..._s>
 struct dot
 {
 private:
 	template <class T>
-	//\
-	using endotype = typename quantity<qualify_s<_s, std::plus>...>::template homotype<T>;
 	using endotype = typename quantity_plus<_s...>::template homotype<T>;
 
 	template <class T>
@@ -64,6 +52,14 @@ public:
 		using typename S_::revalue_type;
 		using typename S_::  value_type;
 		using typename S_::  scale_type;
+
+		XTAL_VAL_(new,implicit)
+		homotype(std::initializer_list<value_type> xs)
+		noexcept
+		requires complete_q<value_type>
+		:	S_(xs)
+		{
+		}
 
 	public:// ACCESS
 		using S_::size;
@@ -132,11 +128,19 @@ public:
 	using type = bond::derive_t<homotype>;
 
 };
-template <scalar_array_q U>
+template <extra_matrix_q A>
+struct dot<A>
+:	dot<dot_t<typename fixed<A>::value_type>[fixed<A>::extent()]>
+{
+};
+template <extra_scalar_q U>
 struct dot<U>
 :	dot<U[2]>
 {
 };
+template <class ...Us> requires un_v<bond::devise_condensed_p<Us...>>
+struct dot<Us ...> : bond::devise_condensed_s<dot, Us...>
+{};
 
 
 ////////////////////////////////////////////////////////////////////////////////

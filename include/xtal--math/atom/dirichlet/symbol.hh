@@ -22,19 +22,12 @@ XTAL_VAL_(let) symbol_f = [] XTAL_1FN_(call) (_detail::factory<symbol_t>::make);
 /*!
 \brief   Extends `couple` with Dirichlet characterization and modulo access.
 */
-template <scalar_array_q ..._s> requires same_q<_s...>
-struct symbol<_s ...>
-:	symbol<common_t<_s...>[sizeof...(_s)]>
-{
-};
-template <vector_array_q A>
-struct symbol<A>
+template <class ...Us>
+struct symbol
 {
 private:
-	using U_fit = bond::fit<A>;
-	
 	template <class T>
-	using endotype = typename couple<A>::template homotype<T>;
+	using endotype = typename couple<Us...>::template homotype<T>;
 
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<symbol_t>>;
@@ -84,6 +77,7 @@ public:
 		noexcept -> T &
 		{
 			using namespace process::math;
+			using U_fit = bond::fit<value_type>;
 			extent_type constexpr N = size;
 			extent_type constexpr M = size - 1;
 			extent_type constexpr K = M >> 1U;
@@ -121,6 +115,7 @@ public:
 		noexcept -> T &
 		{
 			using namespace process::math;
+			using U_fit = bond::fit<value_type>;
 			extent_type constexpr N = size*2 + 1;
 			extent_type constexpr M = size*2 + 0;
 			extent_type constexpr K = size;
@@ -167,6 +162,10 @@ public:
 	using type = bond::derive_t<homotype>;
 
 };
+template <class ...Us> requires un_v<bond::devise_condensed_p<Us...>>
+struct symbol<Us ...> : bond::devise_condensed_s<symbol, Us...>
+{};
+
 
 ///////////////////////////////////////////////////////////////////////////////
 }/////////////////////////////////////////////////////////////////////////////

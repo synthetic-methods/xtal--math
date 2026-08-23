@@ -67,7 +67,7 @@ struct box<M_f>
 				method_f(auto &&_, auto &&...oo)
 				noexcept -> auto
 				{
-					auto  &r_ = qualify_f<R_>(XTAL_REF_(_));
+					auto  &r_ = xtd::qualify_cast<R_>(XTAL_REF_(_));
 					using  Y  = XTAL_ALL_(r_.template method<Ns...>(XTAL_REF_(oo)...));
 					return bond::operate<M_f>{}(Y(Ys)..., r_.template method<Ns...>(XTAL_REF_(oo)...));
 				}

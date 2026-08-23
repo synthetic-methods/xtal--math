@@ -21,7 +21,7 @@ template <             typename ..._s> XTAL_TYP_(new) dent;
 template <             typename ..._s> XTAL_TYP_(new) dented;
 template <             typename ...Ts> XTAL_TYP_(ask) dented_q = bond::tag_inner_p<dent, Ts...>;
 template <class T                    > XTAL_TYP_(set) dented_t = typename dented<based_t<T>>::type;
-template <             typename ...Ts> XTAL_TYP_(ask) dent_q = in_v<true, dented_q<Ts>...> and fungible_q<dented_t<Ts>...>;
+template <             typename ...Ts> XTAL_TYP_(ask) dent_q = in_v<true, dented_q<Ts>...> and xtd::fungible_with<dented_t<Ts>...>;
 template <class S,     int      ...Ns> XTAL_TYP_(set) dent_s = bond::compose_s<S, dent<ordinal_constant_t<Ns>...>>;
 
 template <                    class T> XTAL_TYP_(new) dented<T> {using type =          T           ;};
@@ -42,34 +42,11 @@ struct dent<Ns...>
 	class subtype : public bond::compose_s<S, superkind>
 	{
 		static_assert(bond::pack_q<S>);
-		using S_ =        bond::compose_s   <S, superkind>;
-		using W_ =            indicated_s   <S >;
-		using U_ =          initializer_t   <W_>;
-		using U_list = std::initializer_list<U_>;
-
-	protected:
-		/*!
-		\brief   Converts the argument to an element Constructs a scalar fragment for `u`,
-		         handling element conversion if supported by the container.
-
-		\todo    Use strong-`value_type`s to map between fractional and floating-point values?
-		*/
-		XTAL_VAL_(return,inline,let)
-		inject_f(auto &&u)
-		noexcept -> auto
-		{
-			if constexpr      (requires{W_::devalue_f(XTAL_REF_(u));}
-				and different_q<decltype(W_::devalue_f), std::identity>
-			)	{
-				return W_::devalue_f(XTAL_REF_(u));
-			}
-			else {
-				return XTAL_REF_(u);
-			}
-		}
+		using S_ = bond::compose_s<S, superkind>;
+		using H_ =     indicated_s<S >;
 
 	public:
-		using S_::S_;//NOTE: Inherited and respecialized!
+		using S_::S_;
 
 		using data_type = S;
 
@@ -80,16 +57,11 @@ struct dent<Ns...>
 		\todo    Use strong-`value_type`s to map between fractional and floating-point values?
 		*/
 		XTAL_VAL_(new,explicit)
-		subtype(U_ u)
+		subtype(initializer_t<H_> u)
 		noexcept
-		requires infungible_q<S_, U_>
-		:	S_(inject_f(XTAL_MOV_(u)))
-		{}
-		XTAL_VAL_(new,implicit)
-		subtype(U_list u_list)
-		noexcept
-		requires infungible_q<S_, U_> and make_p<S_, U_list>
-		:	S_(u_list)
+		requires initializer_q<H_> and
+		requires {{H_::devalue_f} -> different_q<std::identity>;} 
+		:	S_(H_::devalue_f(XTAL_MOV_(u)))
 		{}
 
 		template <extent_type N_mask=1>

@@ -20,9 +20,10 @@ template <class ..._s>	using   patch_t = confined_t<patch<_s...>>;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <fixed_q U_mat>
+template <fixed_shaped_q U_mat>
 struct patch<U_mat>
 {
+public:
 	template <class S>
 	class subtype : public bond::compose_s<S>
 	{
@@ -33,9 +34,8 @@ struct patch<U_mat>
 		using S_::S_;
 
 		XTAL_TYP_(set) matrix_type = U_mat;
-		XTAL_TYP_(set) vector_type = typename fixed<U_mat>::value_type;
-		XTAL_VAL_(set) matrix_size = bond::pack_size<matrix_type>{};
-		XTAL_VAL_(set) vector_size = bond::pack_size<vector_type>{};
+		XTAL_VAL_(set) outer_count = bond::pack_size<bond::pack_item_t<U_mat, 0>>{};
+		XTAL_VAL_(set) inner_count = bond::pack_size<                  U_mat    >{};
 
 		template <extent_type N_mask=1>
 		struct attach
@@ -57,6 +57,22 @@ struct patch<U_mat>
 
 				XTAL_FN1_(go) (XTAL_VAL_(return,inline,get) coefficients, [] (auto &&o, auto &&...oo)
 				XTAL_0FN_(to) (XTAL_REF_(o).head(XTAL_REF_(oo)...)))
+
+			protected:
+				XTAL_VAL_(return,inline,let)
+				dot(auto &&f_, bond::pack_q auto &&x_) const
+				noexcept -> decltype(auto)
+				{
+					auto const &y_ = coefficients();
+					return\
+						([&]<auto ...O>(bond::seek_in_t<O...>)         XTAL_0FN_(to) (f_((
+						([&]<auto ...I>(bond::seek_in_t<I...>, auto o) XTAL_0FN_(to)
+							//\
+							(zero +...+ (bond::pack_item_f<o, I>(y_)*get<I>(x_)))
+							(zero +...+ (bond::pack_item_f<I, o>(y_)*get<I>(x_)))
+							(bond::seek_to_t<inner_count> {}, constant_t<O>{})))...))
+							(bond::seek_to_t<outer_count> {}));
+				}
 
 			};
 			template <class R> requires complete_q<typename R::template head_t<U_mat>>
@@ -90,21 +106,11 @@ struct patch<U_mat>
 				method(auto &&...oo) const
 				noexcept -> auto
 				{
-					/**/
-					return [this, o_=std::tuple{XTAL_REF_(oo)...}]<auto ...I>(bond::seek_in_t<I...>)
-					XTAL_0FN_(to) (R_::template method<Ns...>(dot_f(get<I>(R_::coefficients()), o_)...))
-						(bond::seek_to_t<matrix_size> {});
-					/*/
-					auto const o_ = std::tuple{XTAL_REF_(oo)...};
-					return\
-						([&, this]<auto ...I>(bond::seek_in_t<I...>)          XTAL_0FN_(to) (R_::template method<Ns...>((
-						([&, this]<auto ...J>(bond::seek_in_t<J...>, auto _I) XTAL_0FN_(to)
-							(zero +...+ (bond::pack_item_f<XTAL_ALL_(_I){}, J>(R_::coefficients())*get<J>(o_)))
-							(bond::seek_to_t<vector_size> {}, constant_t<I>{})))...))
-							(bond::seek_to_t<matrix_size> {}));
-					/***/
+					return R_::dot([&, this]
+						XTAL_1FN_(call) (R_::template method<Ns...>),
+						bond::pack_f(XTAL_REF_(oo)...));
 				}
-
+				
 			};
 		};
 		template <extent_type N_mask=1>
@@ -133,20 +139,27 @@ struct patch<U_mat>
 				XTAL_VAL_(return,inline,let)
 				flux(X_ &&x_)
 				noexcept -> signed
-				requires same_v<vector_size, bond::pack_size_v<X_>>
+				requires same_v<inner_count, bond::pack_size_v<X_>>
 				and in_v<1
-				,	                same_q<vector_type, X_>
-				,	bond::tab_compatible_q<vector_type, X_>
 				,	bond::tab_compatible_q<matrix_type, X_>
 				,	   occur::math::dash_p<matrix_type, X_>
 				>
 				{
-					using occur::math::dash_f;
-					return [this, x_=XTAL_REF_(x_)]<auto ...I>(bond::seek_in_t<I...>)
-						XTAL_0FN_(to) (R_::template flux<N_ion>(
-							dash_f<U_mat>(dot_f(get<I>(R_::coefficients()), XTAL_MOV_(x_))...)))
-					(bond::seek_to_t<matrix_size> {});
+					return R_::dot([&, this]
+						XTAL_1FN_(call) (flux_dash<N_ion>),
+						XTAL_REF_(x_));
 				}
+
+			protected:
+				template <int N_ion>
+				XTAL_VAL_(return,inline,let)
+				flux_dash(auto &&...oo)
+				noexcept -> signed
+				{
+					using occur::math::dash_f;
+					return R_::template flux<N_ion>(dash_f<U_mat>(XTAL_REF_(oo)...));
+				}
+
 
 			};
 		};
@@ -156,7 +169,7 @@ struct patch<U_mat>
 		{
 		private:
 			XTAL_VAL_(set) _N = sizeof...(_s);
-			XTAL_VAL_(set) _M = vector_size;
+			XTAL_VAL_(set) _M = inner_count;
 			static_assert(1 <= _N);
 			using U = bond::seek_front_t<_s...>;
 
@@ -188,7 +201,7 @@ struct patch<U_mat>
 		{
 		private:
 			XTAL_VAL_(set) _N = sizeof...(_s);
-			XTAL_VAL_(set) _M = vector_size;
+			XTAL_VAL_(set) _M = inner_count;
 			static_assert(1 <= _N);
 			using U = bond::seek_front_t<_s...>;
 
@@ -214,7 +227,7 @@ struct patch<U_mat>
 				XTAL_VAL_(return,inline,let)
 				flux(occur::math::dash_q<U_mat> auto &&o_)
 				noexcept -> signed
-				requires same_v<vector_size, bond::pack_size_v<decltype(o_)>>
+				requires same_v<inner_count, bond::pack_size_v<decltype(o_)>>
 				{
 					return XTAL_REF_(o_).apply([this] (auto &&...oo)
 					XTAL_0FN -> signed {

@@ -63,7 +63,7 @@ struct uniplex<A>
 :	uniplex<typename fixed<A>::value_type>
 {
 };
-template <scalar_array_q A> requires simplex_field_q<A>
+template <extra_scalar_q A> requires simplex_field_q<A>
 struct uniplex<A>
 {
 	using simplex_type =  A;
@@ -149,13 +149,13 @@ public:
 		magnum_f(auto &&o)
 		noexcept -> decltype(auto)
 		{
-			return qualify_f<T>(XTAL_REF_(o)).template element<1>();
+			return xtd::qualify_cast<T>(XTAL_REF_(o)).template element<1>();
 		}
 		XTAL_VAL_(return,inline,set)
 		signum_f(auto &&o)
 		noexcept -> decltype(auto)
 		{
-			return qualify_f<T>(XTAL_REF_(o)).template element<0>();
+			return xtd::qualify_cast<T>(XTAL_REF_(o)).template element<0>();
 		}
 		
 		template <int N_pow>
@@ -190,7 +190,7 @@ public:
 		resolution_f(auto &&that)
 		noexcept -> auto
 		{
-			auto &&[o, q_] = qualify_f<T>(XTAL_REF_(that));
+			auto &&[o, q_] = xtd::qualify_cast<T>(XTAL_REF_(that));
 			auto const q_up = get<0>(q_);
 			auto const q_dn = get<1>(q_);
 			XTAL_IF0
@@ -213,7 +213,7 @@ public:
 		noexcept -> complex_type
 		{
 			using process::math::term_f;
-			auto &&[o, q_] = qualify_f<T>(XTAL_REF_(that));
+			auto &&[o, q_] = xtd::qualify_cast<T>(XTAL_REF_(that));
 			XTAL_IF0
 			XTAL_0IF (same_q<decltype(zero), decltype(plus)>) {return {
 				o.real()*q_.template sum<+N_dir>()
@@ -234,7 +234,7 @@ public:
 		noexcept -> couplex_type
 		{
 			using process::math::term_f;
-			auto &&[o, q_] = qualify_f<T>(XTAL_REF_(that));
+			auto &&[o, q_] = xtd::qualify_cast<T>(XTAL_REF_(that));
 			auto const q_up = q_.template sum<+1>();
 			auto const q_dn = q_.template sum<-1>();
 			XTAL_IF0
@@ -257,7 +257,7 @@ public:
 		noexcept -> auto
 		requires (1 <= sizeof...(times_))
 		{
-			auto &&[o, q_] = qualify_f<T>(XTAL_REF_(that));
+			auto &&[o, q_] = xtd::qualify_cast<T>(XTAL_REF_(that));
 			return reflection_f<N_dir>(T{XTAL_REF_(o), XTAL_REF_(q_)*(times_ *...* one)}, XTAL_REF_(plus));
 		}
 
@@ -273,7 +273,7 @@ public:
 		{
 			auto const &o  = signum();
 			auto const &q_ = magnum();
-			return S_::reform(complex_type{o.real(), w*o.imag()}, q_.flipped(w));
+			return S_::form_f(complex_type{o.real(), w*o.imag()}, q_.flipped(w));
 		}
 		XTAL_VAL_(return,inline,let)
 		flipped() const
@@ -281,7 +281,7 @@ public:
 		{
 			auto const &o  = signum();
 			auto const &q_ = magnum();
-			return S_::reform(conj(o), q_.flipped());
+			return S_::form_f(conj(o), q_.flipped());
 		}
 		XTAL_VAL_(return,inline,let)
 		operator ~ () const

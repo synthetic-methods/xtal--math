@@ -102,7 +102,7 @@ struct dilate
 					U    constexpr n =    bond::operate_v<M_val>;
 					U    constexpr u =       part_f<unsigned>(n);
 					auto constexpr I = (int) part_f<  signed>(n);
-					return qualify_f<R_>(XTAL_REF_(_)).template method<Ns...>(XTAL_REF_(o)*root_f<-I>(u))*root_f<I>(u);
+					return xtd::qualify_cast<R_>(XTAL_REF_(_)).template method<Ns...>(XTAL_REF_(o)*root_f<-I>(u))*root_f<I>(u);
 				}
 
 			};

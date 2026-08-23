@@ -23,8 +23,8 @@ struct sum
 		using S_::S_;
 
 		XTAL_VAL_(return,inline,let)
-		method(auto &&...xs)
-		const noexcept -> auto
+		method(auto &&...xs) const
+		noexcept -> auto
 		{
 			return (XTAL_REF_(xs) +...+ zero);
 		}
@@ -38,22 +38,24 @@ using Y_process = process::confined_t<sum>;
 
 TAG_("route", "process")
 {
+	/**/
 	TRY_("shape with matrix")
 	{
 		using namespace xtd::ranges::views;
 
-		using U_matrix = atom::bucket_t<int[3][2]>;
+		using U_matrix = atom::bucket_t<int[2][3]>;
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template rewire<>
 		,	sum
 		>;
 
 		auto io = Y_routed();
-		io <<= U_matrix {{1, 2}, {3, 4}, {5, 6}};
+		io <<= U_matrix {{1, 3, 5}, {2, 4, 6}};
 		TRUE_(io(10, 100) == 1290);
 	//	(1*10 + 2*100) + (3*10 + 4*100) + (5*10 + 6*100)
 
 	}
+	/***/
 }
 
 
@@ -65,10 +67,10 @@ TAG_("route", "processor")
 	TRY_("shape with matrix")
 	{
 		using namespace xtd::ranges::views;
-		using U_vector = atom::bucket_t<int[2]>;// 2-inputs
+		using U_vector = atom::bucket_t<int[3]>;// 3-outputs
 		//\
-		using U_matrix = atom::bucket_t<int[3][2]>;// 3-outputs, 2-inputs
-		using U_matrix = atom::bucket_t<U_vector[3]>;// 3-outputs
+		using U_matrix = atom::bucket_t<int[2][3]>;// 2-inputs, 3-outputs
+		using U_matrix = atom::bucket_t<U_vector[2]>;// 2-inputs
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template rewire<>
 		,	sum
@@ -81,19 +83,16 @@ TAG_("route", "processor")
 		auto _n = processor::let_f(iota(0, 10));
 	//
 		auto io = Z_router::bind_f(_1, _n);
+		//\
 		io <<= U_matrix {{1, 2}, {3, 4}, {5, 6}};
+		io <<= U_matrix {{1, 3, 5}, {2, 4, 6}};
 		io <<= occur::resize_t<>(3);
 		io >>= occur::cursor_t<>(3);
 
 		TRUE_(equal_f(io, std::vector { 9, 21, 33}));
-	//	(1*1 + 2*0) + (3*1 + 4*0) + (5*1 + 6*0)
-	//	(1*1 + 2*1) + (3*1 + 4*1) + (5*1 + 6*1)
-	//	(1*1 + 2*2) + (3*1 + 4*2) + (5*1 + 6*2)
-
-	//	{{1,2}, {3,4}, {5,6}}.{1,0} // Total
-	//	{{1,2}, {3,4}, {5,6}}.{1,1} // Total
-	//	{{1,2}, {3,4}, {5,6}}.{1,2} // Total
-
+	//	Total[{1, 0} . {{1, 3, 5}, {2, 4, 6}}]
+	//	Total[{1, 1} . {{1, 3, 5}, {2, 4, 6}}]
+	//	Total[{1, 2} . {{1, 3, 5}, {2, 4, 6}}]
 	}
 	/***/
 	/**/
@@ -101,9 +100,9 @@ TAG_("route", "processor")
 	{
 		using namespace xtd::ranges::views;
 		//\
-		using U_vector = atom::bucket_t<int[2]>;
-		using U_vector = bond::pack_t<int, int>;
-		using U_matrix = atom::bucket_t<U_vector[3]>;
+		using U_vector = atom::bucket_t<int[3]>;
+		using U_vector = bond::pack_t<int, int, int>;
+		using U_matrix = atom::bucket_t<U_vector[2]>;
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template rewire<>
 		,	sum
@@ -114,7 +113,7 @@ TAG_("route", "processor")
 		auto _n = processor::let_f(iota(0, 10));
 	//
 		auto io = Z_router::bind_f(_1, _n);
-		io <<= occur::math::dent_s<U_matrix>({{1, 2}, {3, 4}, {5, 6}});
+		io <<= occur::math::dent_s<U_matrix>({{1, 3, 5}, {2, 4, 6}});
 		io <<= occur::resize_t<>(3);
 		io >>= occur::cursor_t<>(3);
 
@@ -129,8 +128,8 @@ TAG_("route", "processor")
 		using U_scalar = int;
 		//\
 		using U_vector = bond::pack_t<U_scalar, U_scalar>;
-		using U_vector = atom::bucket_t<U_scalar[2]>;
-		using U_matrix = atom::bucket_t<U_vector[3]>;
+		using U_vector = atom::bucket_t<U_scalar[3]>;
+		using U_matrix = atom::bucket_t<U_vector[2]>;
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template rewire<>
 		,	sum
@@ -142,12 +141,8 @@ TAG_("route", "processor")
 	//
 		auto io = Z_router::bind_f(_1, _n);
 
-		auto foo = U_vector{1, 2};
-		auto bar = occur::math::dent_s<U_matrix, 0>(foo);
-
-		io <<= occur::math::dent_s<U_matrix, 0>{1, 2};
-		io <<= occur::math::dent_s<U_matrix, 1>{3, 4};
-		io <<= occur::math::dent_s<U_matrix, 2>{5, 6};
+		io <<= occur::math::dent_s<U_matrix, 0>{1, 3, 5};
+		io <<= occur::math::dent_s<U_matrix, 1>{2, 4, 6};
 		io <<= occur::resize_t<>(3);
 		io >>= occur::cursor_t<>(3);
 
@@ -161,7 +156,7 @@ TAG_("route", "processor")
 		using namespace xtd::ranges::views;
 		//\
 		using U_matrix = atom::bucket_t<int[3][2]>;
-		using U_matrix = atom::bucket_t<bond::pack_t<int, int>[3]>;
+		using U_matrix = atom::bucket_t<bond::pack_t<int, int, int>[2]>;
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template rewire<>
 		,	sum
@@ -173,11 +168,11 @@ TAG_("route", "processor")
 	//
 		auto io = Z_router::bind_f(_1, _n);
 		io <<= occur::math::dent_s<U_matrix, 0, 0>(1);
-		io <<= occur::math::dent_s<U_matrix, 0, 1>(2);
-		io <<= occur::math::dent_s<U_matrix, 1, 0>(3);
+		io <<= occur::math::dent_s<U_matrix, 0, 1>(3);
+		io <<= occur::math::dent_s<U_matrix, 0, 2>(5);
+		io <<= occur::math::dent_s<U_matrix, 1, 0>(2);
 		io <<= occur::math::dent_s<U_matrix, 1, 1>(4);
-		io <<= occur::math::dent_s<U_matrix, 2, 0>(5);
-		io <<= occur::math::dent_s<U_matrix, 2, 1>(6);
+		io <<= occur::math::dent_s<U_matrix, 1, 2>(6);
 		io <<= occur::resize_t<>(3);
 		io >>= occur::cursor_t<>(3);
 
@@ -185,6 +180,7 @@ TAG_("route", "processor")
 
 	}
 	/***/
+	/*/
 	TRY_("shape with column dent")
 	{
 		using M   = atom::bucket_t<bond::pack_t<int, int, int>[3]>;
@@ -197,6 +193,7 @@ TAG_("route", "processor")
 		TRUE_(same_q<M, typename W12::data_type>);
 
 	}
+	/***/
 }
 
 ///////////////////////////////////////////////////////////////////////////////
