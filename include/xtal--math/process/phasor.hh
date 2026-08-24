@@ -39,7 +39,9 @@ struct phasor<A, As...>
 	using semikind = bond::compose<void
 	//\
 	,	refer<U_phason>
-	,	cell::_detail::refer_multiplicative_group<U_phason>
+	,	cell::_detail::refer_implicit_conversion  <U_phason>
+	,	cell::_detail::refer_equality             <U_phason>
+	,	cell::_detail::refer_multiplicative_group <U_phason>
 	,	typename occur::math::dent_s<U_phason>::template attach<>
 	,	As...
 	>;
@@ -105,7 +107,7 @@ struct phasor<A, As...>
 		/*!
 		\brief   Evaluation by succession.
 		\todo    Override constructors to apply fractional `bias`.
-		*/		
+		*/
 		template <auto ...Ns> requires (0 == sizeof...(Ns))
 		XTAL_VAL_(return,inline,let)
 		method()
@@ -124,7 +126,7 @@ struct phasor<A, As...>
 		}
 	//	/*!
 	//	\brief   Evaluation by (possibly dented) replacement then succession.
-	//	*/		
+	//	*/
 	//	template <auto ...Ns> requires (0 == sizeof...(Ns))
 	//	XTAL_VAL_(return,inline,let)
 	//	method(fixed_shaped_q auto &&a)
@@ -177,7 +179,7 @@ struct phasor<A, As...>
 	protected:
 		/*!
 		\brief   Evaluation by succession.
-		*/		
+		*/
 		XTAL_VAL_(return,inline,let)
 		ingress()
 		noexcept -> decltype(auto)
@@ -289,7 +291,7 @@ struct occurrence<process::math::phasor<_s...>>
 	{
 		using S_ = bond::compose_s<S, superkind>;
 		using T_ = typename S_::self_type;
-	
+
 	public:
 		using S_::S_;
 

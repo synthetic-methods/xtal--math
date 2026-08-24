@@ -97,7 +97,7 @@ struct hype
 			auto constexpr y0 = U_fit::alpha_f( 0.7847868925780568831422785033794470e0L);
 			auto constexpr y1 = U_fit::alpha_f(-0.0776801113915093587414341412745980e0L);
 		//	Approximates the `1/8`th-period sinusoid `I^(#/2)&`, identical at `{0, 1/2, 1}`...
-			
+
 			auto const w = v*v;
 			auto const x = termial_f(w, x0, x1, x2);
 			auto const y = termial_f(w, y0, y1)*v;

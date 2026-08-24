@@ -305,7 +305,7 @@ struct filter
 		/*!
 		\brief   Produces the `gain` and `damp` parameters from
 		         the supplied `phason` and the `complex_field_q` `s`.
-		
+
 		Requires `1 <= Abs@s && Re@s <= 0 && 0 <= Im@s`.
 		*/
 		template <auto ...Ns>

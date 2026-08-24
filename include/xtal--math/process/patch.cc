@@ -46,6 +46,7 @@ TAG_("route", "process")
 		using U_matrix = atom::bucket_t<int[2][3]>;
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template rewire<>
+		,	patch_t<U_matrix>::template attach<>
 		,	sum
 		>;
 
@@ -73,6 +74,7 @@ TAG_("route", "processor")
 		using U_matrix = atom::bucket_t<U_vector[2]>;// 2-inputs
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template rewire<>
+		,	patch_t<U_matrix>::template attach<>
 		,	sum
 		>;
 		using Z_router = processor::monomer_t<Y_routed, scheme::stored<>>;
@@ -105,6 +107,7 @@ TAG_("route", "processor")
 		using U_matrix = atom::bucket_t<U_vector[2]>;
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template rewire<>
+		,	patch_t<U_matrix>::template attach<>
 		,	sum
 		>;
 		using Z_router = processor::monomer_t<Y_routed, scheme::stored<>>;
@@ -132,6 +135,7 @@ TAG_("route", "processor")
 		using U_matrix = atom::bucket_t<U_vector[2]>;
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template rewire<>
+		,	patch_t<U_matrix>::template attach<>
 		,	sum
 		>;
 		using Z_router = processor::monomer_t<Y_routed, scheme::stored<>>;
@@ -159,6 +163,7 @@ TAG_("route", "processor")
 		using U_matrix = atom::bucket_t<bond::pack_t<int, int, int>[2]>;
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template rewire<>
+		,	patch_t<U_matrix>::template attach<>
 		,	sum
 		>;
 		using Z_router = processor::monomer_t<Y_routed, scheme::stored<>>;

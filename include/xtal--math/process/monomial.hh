@@ -137,7 +137,6 @@ struct  monomial
 			XTAL_0IF (0 == sizeof...(Ms)) {return monomial_f<Ns...>(XTAL_REF_(oo)...);}
 			XTAL_0IF (0 == sizeof...(Ns)) {return monomial_f<Ms...>(XTAL_REF_(oo)...);}
 			XTAL_0IF_(else)               {return one;}
-			
 		}
 
 	};

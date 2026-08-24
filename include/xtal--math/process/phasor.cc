@@ -32,7 +32,7 @@ noexcept
 TAG_("phasor trials")
 {
 	using namespace Eigen;
-	
+
 	using A_stored = scheme::stored<unit_type[0x100]>;
 	using A_sample = occur::quartz_t<>::template attach<>;
 	using U_sample = occur::quartz_t<>;
@@ -41,7 +41,7 @@ TAG_("phasor trials")
 	using U_sigma = typename U_fit::sigma_type;
 	using U_delta = typename U_fit::delta_type;
 	using U_alpha = typename U_fit::alpha_type;
-	
+
 	using T_cell = U_alpha;
 	using T_eigencolumns = Array<T_cell, Dynamic, 2, ColMajor>;
 	using T_eigenrows    = Array<T_cell, Dynamic, 2, RowMajor>;
@@ -51,7 +51,7 @@ TAG_("phasor trials")
 	using  _phi = T_cell[2];
 	using W_phi = bond::repack_t<_phi>;
 	using X_phi = atom::math::phason_t<_phi>;
-	
+
 	//\
 	using Y_chi = process::conveyor_t<phasor<_phi, A_sample>>;
 	//\
@@ -79,7 +79,7 @@ TAG_("phasor trials")
 
 	/**/
 	static constexpr U_alpha x_delta  = Z_fit::ratio_f(7);
-	
+
 	//\
 	U_sigma constexpr N_data = 0x60;
 	U_sigma constexpr N_data = 0x1000;
@@ -96,10 +96,10 @@ TAG_("phasor trials")
 	//\
 	auto e_data  = Map<T_eigencolumns>(*z_data, N_data, 2).rowwise();
 	auto e_data  = ConvertToEigenMatrix<2>(y_data, N_data).rowwise();
-	
+
 	auto x_phi = X_phi{}; x_phi <<=                              {Z_fit::ratio_f(7)};
 	auto y_phi = Y_phi{}; y_phi <<= occur::math::dent_s<X_phi, 1>{Z_fit::ratio_f(7)}; y_phi <<= occur::resize_t<>(N_data);
-	
+
 	auto z_chi = Z_chi::bind_f(); z_chi <<= occur::math::dent_s<X_phi, 1>{Z_fit::ratio_f(7)}; z_chi <<= occur::resize_t<>(N_data);
 	auto z_phi = Z_phi::bind_f(); z_phi <<= occur::math::dent_s<X_phi, 1>{Z_fit::ratio_f(7)}; z_phi <<= occur::resize_t<>(N_data);
 	auto z_psi = Z_psi::bind_f(); z_psi <<= occur::math::dent_s<X_phi, 1>{Z_fit::ratio_f(7)}; z_psi <<= occur::resize_t<>(N_data);
@@ -110,12 +110,12 @@ TAG_("phasor trials")
 
 	occur::cursor_t<>            z_cursor(N_data);
 	occur::math::dent_s<X_phi, 1> z_dent{x_delta};
-	
+
 	z_chi <<= occur::math::dent_s<X_phi, 0>{0}; z_chi <<= occur::math::dent_s<X_phi, 1>{7};
 	z_psi <<= occur::math::dent_s<X_phi, 0>{0}; z_psi <<= occur::math::dent_s<X_phi, 1>{7};
 	//\
 	y_phi <<= occur::math::dent_s<X_phi, 1>{Z_fit::haplo_f(7)};
-	
+
 	z_phi <<= occur::math::dent_s<X_phi, 0>{0}; z_phi <<= occur::math::dent_s<X_phi, 1>{7};
 	y_phi <<= occur::math::dent_s<X_phi, 0>{0}; y_phi <<= occur::math::dent_s<X_phi, 1>{7};
 //	z_eig <<= z_dent;
@@ -186,7 +186,7 @@ TAG_("phasor trials")
 TAG_("phasor")
 {
 	using namespace Eigen;
-	
+
 	using A_stored   = scheme::stored<unit_type[0x100]>;
 	using A_sample   = occur::quartz_t<>::template attach<>;
 	using U_resynced = occur::rewind_t<>::template attach<>;
@@ -195,7 +195,7 @@ TAG_("phasor")
 	using U_sigma = typename U_fit::sigma_type;
 	using U_delta = typename U_fit::delta_type;
 	using U_alpha = typename U_fit::alpha_type;
-	
+
 	using T_cell = U_alpha;
 	using T_eigencolumns = Array<T_cell, Dynamic, 2, ColMajor>;
 	using T_eigenrows    = Array<T_cell, Dynamic, 2, RowMajor>;
@@ -205,7 +205,7 @@ TAG_("phasor")
 	using  _phi = T_cell[2];
 	using W_phi = bond::repack_t<_phi>;
 	using X_phi = atom::math::phason_t<_phi>;
-	
+
 	using Y_chi = process::conveyor_t<phasor<_phi, A_sample, U_resynced>>;
 //	using Y_chi = process::conveyor_t<phasor<_phi>>;
 	using Y_phi = phasor_t<_phi>;
@@ -232,7 +232,7 @@ TAG_("phasor")
 		TRUE_(sizeof(X_phi) == sizeof(Y_phi));
 
 		static constexpr U_alpha x_delta = Z_fit::ratio_f(7);
-		
+
 		U_sigma constexpr N_data = 0x1000;
 		U_alpha   z_data[2][N_data]{};
 		U_alpha  *y_data   [N_data]{z_data[0], z_data[1]};
@@ -246,10 +246,10 @@ TAG_("phasor")
 		//\
 		auto e_data  = Map<T_eigencolumns>(*z_data, N_data, 2).rowwise();
 		auto e_data  = ConvertToEigenMatrix<2>(y_data, N_data).rowwise();
-		
+
 		auto x_phi = X_phi{}; x_phi <<=                              {Z_fit::ratio_f(7)};
 		auto y_phi = Y_phi{}; y_phi <<= occur::math::dent_s<X_phi, 1>{Z_fit::ratio_f(7)}; y_phi <<= occur::resize_t<>(N_data);
-		
+
 		auto z_chi = Z_chi::bind_f(); z_chi <<= occur::math::dent_s<X_phi, 1>{Z_fit::ratio_f(7)}; z_chi <<= occur::resize_t<>(N_data);
 		auto z_phi = Z_phi::bind_f(); z_phi <<= occur::math::dent_s<X_phi, 1>{Z_fit::ratio_f(7)}; z_phi <<= occur::resize_t<>(N_data);
 		auto z_psi = Z_psi::bind_f(); z_psi <<= occur::math::dent_s<X_phi, 1>{Z_fit::ratio_f(7)}; z_psi <<= occur::resize_t<>(N_data);
@@ -259,7 +259,7 @@ TAG_("phasor")
 
 		occur::cursor_t<>               z_cursor(N_data);
 		occur::math::dent_s<X_phi, 1> z_dent{x_delta};
-		
+
 		z_phi <<= z_dent;
 		z_psi <<= z_dent;
 	//	z_eig <<= z_dent;
@@ -297,7 +297,7 @@ TAG_("phasor")
 
 		Y_source y_source{0, Z_fit::haplo_f(5)}; X_phi x_source;
 		Y_target y_target{0, Z_fit::haplo_f(4)}; X_phi x_target;
-		
+
 		x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-1>(2.0*x_source(0), x_target(0)));
 		x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-1>(2.0*x_source(0), x_target(0)));
 		x_source = y_source(); x_target = y_target(x_source, 2.0); TRUE_(check_f<-1>(2.0*x_source(0), x_target(0)));
@@ -356,7 +356,7 @@ TAG_("phasor")
 
 		z_psi <<= occur::math::dent_s<X_phi, 1>{x_d4};
 		z_psi <<= z_req;
-		
+
 		//\
 		(void) z_psi.efflux(z_rev, z_ren++);
 		z_psi >>= z_ren++ >> z_rev;
@@ -419,13 +419,13 @@ TAG_("phasor")
 		TRUE_(z_out[5] == bond::pack_f( 6*x_d4, x_d4));
 		TRUE_(z_out[6] == bond::pack_f( 7*x_d4, x_d4));
 		TRUE_(z_out[7] == bond::pack_f(-8*x_d4, x_d4));
-		
+
 		z_phi <<= occur::math::dent_s<X_phi, 1>{x_d3};
 		z_phi >>= z_ren++;
 		//\
 		xtd::ranges::copy(z_phi|z_fit, z_out.begin());
 		xtd::ranges::copy(z_phi|z_fit, z_out.begin());
-		
+
 		TRUE_(z_out[0] == bond::pack_f(-3*x_d3, x_d3));
 		TRUE_(z_out[1] == bond::pack_f(-2*x_d3, x_d3));
 		TRUE_(z_out[2] == bond::pack_f(-1*x_d3, x_d3));
@@ -444,11 +444,11 @@ TAG_("phasor")
 		U_alpha y =  5.55;
 		U_alpha z =  x*y;
 
-		Y_phi y_phi{x, x_d4};
+		Y_phi  y_phi{x, x_d4};
+		X_phi &x_phi = y_phi.head();
 
 	//	TRUE_(Y_phi{x, x_d4} == y_phi);
-		TRUE_(Y_phi{x, x_d4} == y_phi.head());
-		TRUE_(X_phi{x, x_d4} == y_phi.head());
+		TRUE_(X_phi{x, x_d4} == x_phi);
 		TRUE_(check_f<6>(x, y_phi.head() (0)));
 
 		y_phi *= y;

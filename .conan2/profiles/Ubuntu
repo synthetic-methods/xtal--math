@@ -3,7 +3,7 @@ os=Linux
 arch=x86_64
 compiler=gcc
 compiler.cppstd=20
-compiler.version=12
+compiler.version=14
 compiler.libcxx=libstdc++
 
 [buildenv]

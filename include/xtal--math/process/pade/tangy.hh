@@ -92,7 +92,7 @@ template <int M_ism> requires in_v<M_ism, 1, 2>
 struct tangy<M_ism, 1>
 {
 	using superprocess = tangy_t<M_ism, 0>;
-	
+
 	template <class S>
 	class subtype : public bond::compose_s<S>
 	{
@@ -107,7 +107,7 @@ struct tangy<M_ism, 1>
 		noexcept -> auto
 		{
 			using U_fit = bond::fit<decltype(o)>;
-			
+
 			XTAL_IF0
 			//\
 			XTAL_0IF (M_ism == 2 and N_lim%2 == 0) {

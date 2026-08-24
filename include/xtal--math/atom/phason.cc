@@ -24,7 +24,7 @@ TAG_("phason")
 {
 	using V_fit = bond::fit<int>;
 	using W_fit = bond::fit<double>;
-	
+
 	using V_delta = typename V_fit::delta_type;
 	using W_delta = typename W_fit::delta_type;
 	using V_sigma = typename V_fit::sigma_type;
@@ -51,7 +51,7 @@ TAG_("phason")
 	using D2 = phason_t<W_alpha[2]>;
 	using D3 = phason_t<W_alpha[3]>;
 	using D4 = phason_t<W_alpha[4]>;
-	
+
 	TRY_("phason scaling")
 	{
 		U_phi u_phi{0.2, 0.1}, v_phi = u_phi.scaled(0.3);
@@ -162,7 +162,7 @@ TAG_("phason")
 		y_d2 = D2{0.333, 0.500};
 		TRUE_(check_f<8>((2.0*y_d2)(0), -0.334));
 		TRUE_(check_f<8>((2.0*y_d2)(1),  0.000));
-		
+
 		TRUE_(a_d2 == D2{0.250, 0.250});
 
 		a_d2 = b_d2;
@@ -270,7 +270,7 @@ TAG_("phason trials")
 	using D2 = phason_t<W_alpha[2]>;
 	using D3 = phason_t<W_alpha[3]>;
 	using D4 = phason_t<W_alpha[4]>;
-	
+
 	EST_("atom::phason_t\n   #1*#2&\n   (*fixed-point*)")
 	{
 		W_alpha x = 0.33, x_dt = W_fit::haplo_f(4);

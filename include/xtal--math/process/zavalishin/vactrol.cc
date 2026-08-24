@@ -60,7 +60,7 @@ TAG_("vactrol")
 		,	X_shape                ::   suffix< >
 		,	P_env                  ::   attach< >
 		,	P_env                  :: dispatch< >
-	//	,	occur::inferred_t<union ORDER, constant_t<2>>::dispatch<>
+	//	,	occur::reinferred_t<union ORDER, constant_t<2>>::dispatch<>
 		,	vactrol<1>
 		,	F_env
 		,	scheme::math::zavalishin::distorted<identity>

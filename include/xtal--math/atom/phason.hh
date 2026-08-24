@@ -73,17 +73,24 @@ private:
 	using invalue_type = V;
 	using devalue_type = U;
 
+	template <class Y, class X> XTAL_TYP_(new) opposing_                 {using type = Y;};
+	template <class Y         > XTAL_TYP_(new) opposing_<Y, Y>           {using type = W;};
+	template <         class X> XTAL_TYP_(set) opposing_t = typename opposing_<U, X>::type;
+	template <         class X> XTAL_VAL_(set) opposing_f = [] (X x)
+		XTAL_0FN_(to) (bond::math::bit_fraction_f<opposing_t<X>>(XTAL_MOV_(x)));
+
 	static_assert(std::numeric_limits<unstruct_t<U>>::is_modulo);// D'oh!
 
 	template <class T>
-	using holotype = bond::compose_s<typename differential<std::plus<U>[M_data]>::template homotype<T>, bond::tag<phason_t>>;
-
+	using holotype = bond::compose_s<typename
+		differential<std::plus<U>[M_data]>::template homotype<T>
+	,	bond::tag<phason_t>
+	>;
 public:
 	template <class T>
 	class homotype : public holotype<T>
 	{
 		using S_ = holotype<T>;
-
 
 	public:// TYPE
 		using typename S_::value_type;
@@ -93,19 +100,17 @@ public:
 		using invalue_type = V;
 		using devalue_type = U;
 
-
 	public:// ACCESS
 		using S_::size;
 		using S_::self;
 		using S_::twin;
 
-		static auto constexpr devalue_f = [] XTAL_1FN_(call) (bond::math::bit_fraction_f<U>);
-		static auto constexpr revalue_f = [] XTAL_1FN_(call) (bond::math::bit_fraction_f<W>);
-
+		XTAL_VAL_(set) devalue_f = opposing_f<W>;
+		XTAL_VAL_(set) revalue_f = opposing_f<U>;
 
 	public:// CONSTRUCT
 	//	using S_::S_;
-		XTAL_VAL_(reduce) (homotype, noexcept:S_)
+		XTAL_VAL_(reduce) (homotype, noexcept,S_)
 
 		XTAL_VAL_(new,implicit)
 		homotype(std::initializer_list<W> o)
@@ -250,7 +255,7 @@ public:
 
 		/*!
 		\brief   Offsets the first element.
-		*/		
+		*/
 	//	XTAL_VAL_(mutate,inline,let) operator +=(std::initializer_list<W> o) noexcept -> auto & {return S_::operator+=(T(o));}
 	//	XTAL_VAL_(mutate,inline,let) operator -=(std::initializer_list<W> o) noexcept -> auto & {return S_::operator-=(T(o));}
 

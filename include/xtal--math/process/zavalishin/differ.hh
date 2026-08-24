@@ -43,7 +43,7 @@ struct differ
 
 	public:// CONSTRUCT
 		using S_::S_;
-	
+
 	private:
 		XTAL_VAL_(set) M_ord = 0 + data_type::size();
 		XTAL_VAL_(set) M_lim = 1 + data_type::size();

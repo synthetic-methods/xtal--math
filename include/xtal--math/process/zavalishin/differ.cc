@@ -24,7 +24,7 @@ struct reparameterized
 	public:
 		using S_::S_;
 
-		using order_attribute = occur::inferred_t<union ORDER,
+		using order_attribute = occur::reinferred_t<union ORDER,
 			bond::seek_to_t<1 + S_::data_type::size()>>;
 
 	};
@@ -37,7 +37,7 @@ struct reparameterized
 TAG_("differ")
 {
 	using U_fit = bond::fit<>;
-	
+
 	using          U_pole = typename U_fit::alpha_type;
 	auto constexpr N_pole = fixed<U_pole[1]>::extent();
 
@@ -56,7 +56,7 @@ TAG_("differ")
 	,	D2
 	>;
 
-	using U0_order = occur::inferred_t<union ORDER, bond::seek_to_t<1 + N_pole>>;
+	using U0_order = occur::reinferred_t<union ORDER, bond::seek_to_t<1 + N_pole>>;
 	using U1_order = typename D1_etc::order_attribute;
 	using U2_order = typename D2_etc::order_attribute;
 //	static_assert(same_q<U1_order, typename D1_prx::order_attribute>);

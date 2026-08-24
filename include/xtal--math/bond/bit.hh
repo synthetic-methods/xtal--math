@@ -507,72 +507,60 @@ noexcept -> auto
 /*!
 \returns The fractional portion of `x` as a full-width `delta_type`.
 */
-template <class T_return=void>
+template <class Y=void, class X=Y>
 XTAL_VAL_(return,inline,let)
 bit_fraction_f()
 noexcept -> auto
 {
-	using Y     = T_return;
+	using X_fit = bond::fit<X>;
 	using Y_fit = bond::fit<Y>;
-
 	XTAL_IF0
-	XTAL_0IF (integral_q<Y>) {return Y_fit::diplo_f(Y_fit::full.depth);}
-	XTAL_0IF (    real_q<Y>) {return Y_fit::haplo_f(Y_fit::full.depth);}
+	XTAL_0IF (integral_q<Y>) {return Y_fit::diplo_f(X_fit::full.depth);}
+	XTAL_0IF (    real_q<Y>) {return Y_fit::haplo_f(X_fit::full.depth);}
 	XTAL_0IF_(void)
 }
-template <class Y_return=void>
+template <class Y=void, integral_variable_q X>
 XTAL_VAL_(return,inline,let)
-bit_fraction_f(integral_variable_q auto x)
+bit_fraction_f(X x)
 noexcept -> auto
 {
-	using X       =              XTAL_ALL_(x);
-	using X_fit   =          bond::fit<X>;
-	using X_alpha = typename X_fit::alpha_type;
-	using X_sigma = typename X_fit::sigma_type;
-	using X_delta = typename X_fit::delta_type;
-
-	using Y       = complete_t<Y_return, X_alpha>;
-	using Y_fit   = bond::fit<Y>;
-	using Y_alpha = typename Y_fit::alpha_type;
-	using Y_sigma = typename Y_fit::sigma_type;
-	using Y_delta = typename Y_fit::delta_type;
-
+	using X_fit = bond::fit<X>;
+	using Y_fit = bond::fit<Y>;
 	XTAL_IF0
-	XTAL_0IF (cardinal_q<Y>) {
+	XTAL_0IF (incomplete_q<Y>) {
+		using X_alpha = typename X_fit::alpha_type;
+		return bit_fraction_f<X_alpha>(XTAL_MOV_(x));
+	}
+	XTAL_0IF (  cardinal_q<Y>) {
 		return Y_fit::sigma_f(x);
 	}
-	XTAL_0IF ( ordinal_q<Y>) {
+	XTAL_0IF (   ordinal_q<Y>) {
 		return Y_fit::delta_f(x);
 	}
-	XTAL_0IF (    real_q<Y>) {
-		//\
-		return Y_fit::alpha_f(x)*Y_fit::haplo_f(X_fit::full.depth);
-		return Y_fit::alpha_f(static_cast<X_delta>(x))*Y_fit::haplo_f(X_fit::full.depth);
+	XTAL_0IF (      real_q<Y>) {
+		return bit_fraction_f<Y, X>()*
+			Y_fit::alpha_f(xtd::bit_cast<typename X_fit::delta_type>(x));
 	}
 	XTAL_0IF_(void)
 }
-template <class Y_return=void>
+template <class Y=void, real_variable_q X>
 XTAL_VAL_(return,inline,let)
-bit_fraction_f(real_variable_q auto x)
+bit_fraction_f(X x)
 noexcept -> auto
 {
-	using X       =              XTAL_ALL_(x);
-	using X_fit   =          bond::fit<X>;
-	using X_alpha = typename X_fit::alpha_type;
-	using X_sigma = typename X_fit::sigma_type;
+	using X_fit = bond::fit<X>;
+	using Y_fit = bond::fit<Y>;
 	using X_delta = typename X_fit::delta_type;
-
-	using Y       = complete_t<Y_return, X>;
-	using Y_fit   = bond::fit<Y>;
-	using Y_alpha = typename Y_fit::alpha_type;
-	using Y_sigma = typename Y_fit::sigma_type;
 	using Y_delta = typename Y_fit::delta_type;
-
 	XTAL_IF0
+	XTAL_0IF (incomplete_q<Y>) {
+		return bit_fraction_f<X>(XTAL_MOV_(x));
+	}
 	XTAL_0IF_(consteval) {
 		XTAL_IF0
 		XTAL_0IF (     real_q<Y>) {
-			return static_cast<Y>(bit_fraction_f<Y_delta>(x))*bit_fraction_f<Y_alpha>();
+			return bit_fraction_f<Y, Y>()*
+				static_cast<Y>(bit_fraction_f<Y_delta>(x));
 		}
 		XTAL_0IF (  ordinal_q<Y>) {
 			X_delta constexpr I_one = X_fit::unit.mark + X_fit::unit.shift - Y_fit::full.depth;
@@ -601,13 +589,15 @@ noexcept -> auto
 	}
 	XTAL_0IF_(else) {
 		x -= round(x);
-		if constexpr (integral_q<Y>) {
-			x *= bit_fraction_f<Y_delta>();
+		XTAL_IF0
+		XTAL_0IF (integral_q<Y>) {
+			x *= bit_fraction_f<X_delta, Y_delta>();
 		}
-		if constexpr (cardinal_q<Y>) {
+		XTAL_IF0
+		XTAL_0IF (cardinal_q<Y>) {
 			return xtd::bit_cast<Y>(static_cast<Y_delta>(x));
 		}
-		else {
+		XTAL_0IF_(else) {
 			return static_cast<Y>(x);
 		}
 	}

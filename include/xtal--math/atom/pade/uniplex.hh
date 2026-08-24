@@ -98,8 +98,8 @@ public:
 		XTAL_VAL_(create) (homotype, noexcept=default)
 		XTAL_VAL_(move)   (homotype, noexcept=default)
 		XTAL_VAL_(copy)   (homotype, noexcept=default)
-		XTAL_VAL_(induce) (homotype, noexcept:homotype)
-		XTAL_VAL_(reduce) (homotype, noexcept:S_)
+		XTAL_VAL_(induce) (homotype, noexcept,homotype)
+		XTAL_VAL_(reduce) (homotype, noexcept,S_)
 
 		XTAL_VAL_(inline)
 		XTAL_VAL_(new,explicit)
@@ -157,7 +157,7 @@ public:
 		{
 			return xtd::qualify_cast<T>(XTAL_REF_(o)).template element<0>();
 		}
-		
+
 		template <int N_pow>
 		XTAL_VAL_(return,inline,set)
 		magnum_f(auto &&o)
@@ -178,7 +178,7 @@ public:
 			XTAL_0IF (N_pow ==  1) {return        (signum_f(XTAL_REF_(o)));}
 			XTAL_0IF (N_pow == -1) {return    conj(signum_f(XTAL_REF_(o)));}
 		}
-		
+
 		XTAL_FN1_(go) (template <auto ...Ns> XTAL_VAL_(return,inline,get) magnum, magnum_f<Ns...>)
 		XTAL_FN1_(go) (template <auto ...Ns> XTAL_VAL_(return,inline,get) signum, signum_f<Ns...>)
 

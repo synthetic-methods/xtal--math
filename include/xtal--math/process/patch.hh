@@ -2,8 +2,8 @@
 #include "./any.hh"
 
 #include "../occur/dent.hh"
-#include "../occur/dash.hh"
 #include "./dot.hh"
+
 
 
 XTAL_ENV_(push)
@@ -12,16 +12,16 @@ namespace xtal::process::math
 /////////////////////////////////////////////////////////////////////////////////
 /*!
 \brief   Rewires the interface to the superprocess
-         via the routing/coefficient matrix `U_mat`.
+         via the routing/coefficient matrix `U_mtx`.
 */
-template <class ..._s>	struct  patch;
-template <class ..._s>	using   patch_t = confined_t<patch<_s...>>;
+template <class ..._s>	XTAL_TYP_(new) patch;
+template <class ..._s>	XTAL_TYP_(let) patch_t = confined_t<patch<_s...>>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <fixed_shaped_q U_mat>
-struct patch<U_mat>
+template <fixed_shaped_q U_mtx>
+struct patch<U_mtx>
 {
 public:
 	template <class S>
@@ -30,27 +30,30 @@ public:
 		static_assert(any_q<S>);
 		using S_ = bond::compose_s<S>;
 
+	protected:
+		XTAL_VAL_(set)  outer_size = std::tuple_size<std::tuple_element_t<0, U_mtx>>{};
+		XTAL_VAL_(set)  inner_size = std::tuple_size<                        U_mtx >{};
+
 	public:// CONSTRUCT
 		using S_::S_;
-
-		XTAL_TYP_(set) matrix_type = U_mat;
-		XTAL_VAL_(set) outer_count = bond::pack_size<bond::pack_item_t<U_mat, 0>>{};
-		XTAL_VAL_(set) inner_count = bond::pack_size<                  U_mat    >{};
 
 		template <extent_type N_mask=1>
 		struct attach
 		{
-			using superkind = typename occur::math::dent_s<matrix_type>::template attach<N_mask>;
-
+			template <class T>
+			using endokind = bond::compose<void
+			,	process::_detail::navigate<T, U_mtx>
+			,	typename occur::math::dent_s<U_mtx>::template attach<N_mask>
+			>;
 			template <class R>
-			class subtype : public bond::compose_s<R, superkind>
+			class subtype : public bond::compose_s<R, endokind<subtype<R>>>
 			{
 				static_assert(process::any_q<R>);
-				using R_ = bond::compose_s<R, superkind>;
-				
+				using R_ = bond::compose_s<R, endokind<subtype<R>>>;
+
 			public:// CONSTRUCT
 				using R_::R_;
-			
+
 			public:// ACCESS
 				using R_::self;
 				using R_::head;
@@ -60,74 +63,71 @@ public:
 
 			protected:
 				XTAL_VAL_(return,inline,let)
-				dot(auto &&f_, bond::pack_q auto &&x_) const
+				dot     (bond::pack_q auto &&x_) const
 				noexcept -> decltype(auto)
 				{
-					auto const &y_ = coefficients();
+					return dot_then(                XTAL_REF_(x_), bond::pack_f);
+				}
+				XTAL_VAL_(return,inline,let)
+				dot_then(bond::pack_q auto &&x_, auto &&f_) const
+				noexcept -> decltype(auto)
+				{
+					return dot_then(coefficients(), XTAL_REF_(x_), XTAL_REF_(f_));
+				}
+
+				XTAL_VAL_(return,inline,set)
+				dot     (bond::pack_q auto const &y_, bond::pack_q auto &&x_)
+				noexcept -> decltype(auto)
+				{
+					return dot_then( XTAL_REF_(y_), XTAL_REF_(x_), bond::pack_f);
+				}
+				XTAL_VAL_(return,inline,set)
+				dot_then(bond::pack_q auto const &y_, bond::pack_q auto &&x_, auto &&f_)
+				noexcept -> decltype(auto)
+				{
 					return\
 						([&]<auto ...O>(bond::seek_in_t<O...>)         XTAL_0FN_(to) (f_((
 						([&]<auto ...I>(bond::seek_in_t<I...>, auto o) XTAL_0FN_(to)
 							//\
 							(zero +...+ (bond::pack_item_f<o, I>(y_)*get<I>(x_)))
 							(zero +...+ (bond::pack_item_f<I, o>(y_)*get<I>(x_)))
-							(bond::seek_to_t<inner_count> {}, constant_t<O>{})))...))
-							(bond::seek_to_t<outer_count> {}));
+							(bond::seek_to_t<inner_size> {}, constant_t<O>{})))...))
+							(bond::seek_to_t<outer_size> {}));
 				}
 
 			};
-			template <class R> requires complete_q<typename R::template head_t<U_mat>>
+			template <class R> requires complete_q<typename R::template head_t<U_mtx>>
 			class subtype<R> : public bond::compose_s<R>
 			{
 				static_assert(process::any_q<R>);
 				using R_ = bond::compose_s<R>;
-				
+
 			public:// CONSTRUCT
 				using R_::R_;
 
 			};
 		};
-		template <extent_type N_mask=1>
-		struct rewire
-		{
-			using superkind = attach<N_mask>;
+		template <class ...Xs> XTAL_TYP_(let) deflux_t = atom::bucket_t<Xs..., union DEFLUX>;
+		template <class ...Xs> XTAL_TYP_(let) reflux_t = bond::compose_s<occur::conferred_t<decltype(one)>, bond::tab<Xs..., union REFLUX>>;
+		template <class ..._s> XTAL_TYP_(new) deflow;
+		template <class ..._s> XTAL_TYP_(new) reflow;
+		template <class ..._s> XTAL_TYP_(new) rewire;
 
+		template <bond::pack_q X_> requires in_v<inner_size, bond::pack_size_v<X_>>
+		struct deflow<X_>
+		{
+			using superkind = bond::tag<deflow>;
 			template <class R>
 			class subtype : public bond::compose_s<R, superkind>
 			{
 				using R_ = bond::compose_s<R, superkind>;
-				
+				using H_ = R_::template head_s<U_mtx>;
+
 			public:// CONSTRUCT
 				using R_::R_;
-			
+
 			public:// OPERATE
-			
-				template <auto ...Ns>
-				XTAL_VAL_(return,inline,let)
-				method(auto &&...oo) const
-				noexcept -> auto
-				{
-					return R_::dot([&, this]
-						XTAL_1FN_(call) (R_::template method<Ns...>),
-						bond::pack_f(XTAL_REF_(oo)...));
-				}
-				
-			};
-		};
-		template <extent_type N_mask=1>
-		struct reflux
-		{
-			using superkind = attach<N_mask>;
 
-			template <class R>
-			class subtype : public bond::compose_s<R, superkind>
-			{
-				using R_ = bond::compose_s<R, superkind>;
-
-			public:// CONSTRUCT
-				using R_::R_;
-			
-			public:// FLOW
-			
 				template <int N_ion>
 				XTAL_VAL_(return,inline,let)
 				flux(auto &&...oo)
@@ -135,45 +135,55 @@ public:
 				{
 					return R_::template flux<N_ion>(XTAL_REF_(oo)...);
 				}
-				template <int N_ion, class X_>
-				XTAL_VAL_(return,inline,let)
-				flux(X_ &&x_)
-				noexcept -> signed
-				requires same_v<inner_count, bond::pack_size_v<X_>>
-				and in_v<1
-				,	bond::tab_compatible_q<matrix_type, X_>
-				,	   occur::math::dash_p<matrix_type, X_>
-				>
-				{
-					return R_::dot([&, this]
-						XTAL_1FN_(call) (flux_dash<N_ion>),
-						XTAL_REF_(x_));
-				}
-
-			protected:
 				template <int N_ion>
 				XTAL_VAL_(return,inline,let)
-				flux_dash(auto &&...oo)
+				flux(X_ x_)
 				noexcept -> signed
 				{
-					using occur::math::dash_f;
-					return R_::template flux<N_ion>(dash_f<U_mat>(XTAL_REF_(oo)...));
+					return H_::dot_then(XTAL_MOV_(x_), [&, this]
+						(auto &&...oo) XTAL_0FN_(to)
+							(R_::template flux<N_ion>(reflux_t<>{}, XTAL_REF_(oo)...)));
 				}
 
+			};
+		};
+		template <class ...Xs> requires in_v<inner_size == sizeof...(Xs)>
+		struct deflow<Xs...>
+		{
+			using superkind = deflow<deflux_t<Xs...>>;
+
+			template <class R>
+			class subtype : public bond::compose_s<R, superkind>
+			{
+				using R_ = bond::compose_s<R, superkind>;
+
+			public:// CONSTRUCT
+				using R_::R_;
+
+			public:// FLOW
+
+				template <int N_ion>
+				XTAL_VAL_(return,inline,let)
+				flux(auto &&...oo)
+				noexcept -> signed
+				{
+					return R_::template flux<N_ion>(XTAL_REF_(oo)...);
+				}
+				template <int N_ion>
+				XTAL_VAL_(return,inline,let)
+				flux(Xs ...xs)
+				noexcept -> signed
+				requires (inner_size == sizeof...(xs))
+				{
+					return R_::template flux<N_ion>(deflux_t<Xs...>{XTAL_MOV_(xs)...});
+				}
 
 			};
 		};
 
-		template <class ..._s>
-		struct prewire
+		template <class Y_> requires in_v<outer_size, std::tuple_size_v<Y_>>
+		struct reflow<Y_>
 		{
-		private:
-			XTAL_VAL_(set) _N = sizeof...(_s);
-			XTAL_VAL_(set) _M = inner_count;
-			static_assert(1 <= _N);
-			using U = bond::seek_front_t<_s...>;
-
-		public:
 			template <class R>
 			class subtype : public bond::compose_s<R>
 			{
@@ -181,98 +191,90 @@ public:
 
 			public:// CONSTRUCT
 				using R_::R_;
-			
+
 			public:// FLOW
-			
-				template <auto ...Ns>
+
+				template <int N_ion>
 				XTAL_VAL_(return,inline,let)
-				method(auto &&...oo) const
-				noexcept -> auto
+				flux(auto &&...oo)
+				noexcept -> signed
+				{
+					return R_::template flux<N_ion>(XTAL_REF_(oo)...);
+				}
+				template <int N_ion>
+				XTAL_VAL_(return,inline,let)
+				flux(reflux_t<>, auto &&...oo)
+				noexcept -> signed
+				{
+					return R_::template flux<N_ion>(bond::operate<Y_>{}(XTAL_REF_(oo)...));
+				}
+
+			};
+		};
+		template <class ...Ys>
+		struct reflow
+		{
+			template <class R>
+			class subtype : public bond::compose_s<R>
+			{
+				using R_ = bond::compose_s<R>;
+
+			public:// CONSTRUCT
+				using R_::R_;
+
+			public:// FLOW
+
+				template <int N_ion>
+				XTAL_VAL_(return,inline,let)
+				flux(auto &&...oo)
+				noexcept -> signed
+				{
+					return R_::template flux<N_ion>(XTAL_REF_(oo)...);
+				}
+				template <int N_ion>
+				XTAL_VAL_(return,inline,let)
+				flux(reflux_t<>, auto &&...oo)
+				noexcept -> signed
 				{
 					XTAL_IF0
-					XTAL_0IF (_N == _M) {return R_::template method<Ns...>(bond::operate<_s>{}(XTAL_REF_(oo))...);}
-					XTAL_0IF (_N ==  1) {return R_::template method<Ns...>(bond::operate<U >{}(XTAL_REF_(oo))...);}
+					XTAL_0IF (in_v<outer_size, sizeof...(Ys)>) {
+						return R_::template flux<N_ion>(bond::operate<Ys>{}(XTAL_REF_(oo))...);
+					}
+					XTAL_0IF (in_v<      zero, sizeof...(Ys)>) {
+						return R_::template flux<N_ion>(                    XTAL_REF_(oo) ...);
+					}
 				}
 
 			};
 		};
-		template <class ..._s>
-		struct preflux
-		{
-		private:
-			XTAL_VAL_(set) _N = sizeof...(_s);
-			XTAL_VAL_(set) _M = inner_count;
-			static_assert(1 <= _N);
-			using U = bond::seek_front_t<_s...>;
 
-		public:
+		template <class ...Xs>
+		struct rewire
+		{
+			static_assert(0 == sizeof...(Xs));// For now...
+
 			template <class R>
 			class subtype : public bond::compose_s<R>
 			{
 				using R_ = bond::compose_s<R>;
+				using H_ = R_::template head_s<U_mtx>;
 
 			public:// CONSTRUCT
 				using R_::R_;
-			
-			public:// FLOW
-			
-				template <int N_ion>
+
+			public:// OPERATE
+
+				template <auto ...Ns>
 				XTAL_VAL_(return,inline,let)
-				flux(auto &&...oo)
+				method(auto &&...oo) const
 				noexcept -> auto
 				{
-					return R_::template flux<N_ion>(XTAL_REF_(oo)...);
-				}
-				template <int N_ion>
-				XTAL_VAL_(return,inline,let)
-				flux(occur::math::dash_q<U_mat> auto &&o_)
-				noexcept -> signed
-				requires same_v<inner_count, bond::pack_size_v<decltype(o_)>>
-				{
-					return XTAL_REF_(o_).apply([this] (auto &&...oo)
-					XTAL_0FN -> signed {
-						XTAL_IF0
-						XTAL_0IF (_N == _M) {return R_::template flux<N_ion>(bond::operate<_s>{}(XTAL_REF_(oo))...);}
-						XTAL_0IF (_N ==  1) {return R_::template flux<N_ion>(bond::operate<U >{}(XTAL_REF_(oo))...);}
-					});
+					return H_::dot_then(bond::pack_f(XTAL_REF_(oo)...), [&, this]
+						XTAL_1FN_(call) (R_::template method<Ns...>));
 				}
 
 			};
 		};
-
-	};
-};
-template <fixed_q U_mat, class ..._s>
-struct patch<U_mat, _s...>
-{
-	using superkind = patch<U_mat>;
-
-	template <class S>
-	class subtype : public bond::compose_s<S, superkind>
-	{
-		static_assert(any_q<S>);
-		using S_ = bond::compose_s<S, superkind>;
-
-	public:// CONSTRUCT
-		using S_::S_;
-
-		template <extent_type N_mask=1>
-		struct rewire
-		:	bond::compose<void
-			,	typename S_::template  rewire<N_mask>
-			,	typename S_::template prewire<_s... >
-			>
-		{
-		};
-		template <extent_type N_mask=1>
-		struct reflux
-		:	bond::compose<void
-			,	typename S_::template  reflux<N_mask>
-			,	typename S_::template preflux<_s... >
-			>
-		{
-		};
-	//	TODO: Remove `fi[tx]`?
 
 	};
 };

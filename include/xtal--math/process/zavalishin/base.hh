@@ -35,8 +35,8 @@ struct occurrence<process::math::zavalishin::base<A, _s...>>
 {
 private:
 	static_assert(incomplete_q<_s...>);
-	XTAL_VAL_(set) N_pole =           fixed<A>::extent();
-	XTAL_TYP_(set) U_pole = typename  fixed<A>::value_type;
+	XTAL_VAL_(set) N_pole =          fixed<A>::extent();
+	XTAL_TYP_(set) U_pole = typename fixed<A>::value_type;
 	XTAL_TYP_(set) V_pole = unstruct_t<A>;
 
 public:
@@ -55,7 +55,7 @@ public:
 		using codata_type = atom::math::dot_t<V_pole[N_pole]>;
 
 	public:// DISPATCH
-		using  order_attribute = occur::inferred_t<_s..., union ORDER, bond::seek_to_t<1 + N_pole>>;
+		using  order_attribute = occur::reinferred_t<_s..., union ORDER, bond::seek_to_t<1 + N_pole>>;
 
 	};
 };

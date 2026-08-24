@@ -104,7 +104,7 @@ TAG_("hype")
 		TRUE_(check_f< 8>(0.4438171626239681,  hype_t< 3,  0>{}.template method< 2>( 0.5, 0.5)));
 		TRUE_(check_f< 7>(0.4438171626239681,  hype_t< 3,  0>{}.template method< 1>( 0.5, 0.5)));
 		TRUE_(check_f< 2>(0.4438171626239681,  hype_t< 3,  0>{}.template method< 0>( 0.5, 0.5)));
-	
+
 		TRUE_(check_f<20>(0.5739597111931870, -hype_t<-3,  0>{}.template method<~0>(-0.5, -0.5)));
 		TRUE_(check_f<20>(0.5739597111931870, -hype_t<-3,  0>{}.template method< 9>(-0.5, -0.5)));
 		TRUE_(check_f<13>(0.5739597111931870, -hype_t<-3,  0>{}.template method< 2>(-0.5, -0.5)));
