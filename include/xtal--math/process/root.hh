@@ -76,15 +76,14 @@ struct root
 		noexcept -> auto
 		requires in_v<atom::quantify_q<XTAL_ALL_(z)>>
 		{
-			using Z = XTAL_ALL_(z);
-			using Z_fit = bond::fit<Z>;
-
+			XTAL_TYP_(let) Z     = XTAL_ALL_(z);
+			XTAL_TYP_(let) Z_fit = bond::fit<Z>;
 			XTAL_IF0
 			XTAL_0IF (M_exp ==  1) {
 				return XTAL_REF_(z);
 			}
 			XTAL_0IF (M_exp == -1) {
-				return Z_fit::alpha_1/XTAL_REF_(z);
+				return one/XTAL_REF_(z);
 			}
 			XTAL_0IF_(else) {
 			//	TODO: Approximate collectively?
@@ -109,12 +108,8 @@ struct root
 		{
 			using bond::math::bit_zoom_f;
 			using bond::math::bit_exchange_f;
-			using Z     = XTAL_ALL_(z);
-			using Z_fit = bond::fit<Z>;
-			
-			auto constexpr _1      = Z_fit::alpha_1;
-			auto constexpr  Z_exp  = Z_fit::exponent.mask;
-
+			XTAL_TYP_(let) Z     = XTAL_ALL_(z);
+			XTAL_TYP_(let) Z_fit = bond::fit<Z>;
 			XTAL_IF0
 			XTAL_0IF (1 == M_exp) {
 				return XTAL_REF_(z);
@@ -122,7 +117,7 @@ struct root
 			XTAL_0IF (   real_variable_q<Z> and 1 <= M_cut) {
 				auto constexpr Z_cut =  Z_fit::minilon_f(M_cut);
 				auto const     z_cut =    xtd::copysign(Z_cut, z);
-				return _1/(XTAL_REF_(z) + z_cut);
+				return one/(XTAL_REF_(z) + z_cut);
 			}
 			XTAL_0IF (   complex_field_q<Z> and 1 <= M_cut) {
 				auto constexpr u = Z_fit::haplo_f(M_cut*Z_fit::full.width);
@@ -136,7 +131,7 @@ struct root
 				return imagine_f<0, 1>(z)*(XTAL_MOV_(w)/dot_f(XTAL_MOV_(u)*z));
 			}
 			XTAL_0IF_(else) {
-				return _1/XTAL_REF_(z);
+				return one/XTAL_REF_(z);
 			}
 		}
 
@@ -177,11 +172,10 @@ struct root
 		evaluate(real_variable_q auto z)
 		noexcept -> objective_t<XTAL_ALL_(z)>
 		{
-			using Z = XTAL_ALL_(z);
-			using Z_fit = bond::fit<Z>;
-
-			auto constexpr z_one = Z{1};
-			auto const     z_sig = xtd::copysign(z_one, z); z *= z_sig;
+			XTAL_TYP_(let) Z     = XTAL_ALL_(z);
+			XTAL_TYP_(let) Z_fit = bond::fit<Z>;
+			XTAL_VAL_(let) Z_one = Z(one);
+			auto const     z_sig = xtd::copysign(Z_one, z); z *= z_sig;
 			XTAL_IF0
 			XTAL_0IF_(consteval) {
 				return z_sig*approximate<I_lim>(z);
@@ -239,7 +233,7 @@ struct root
 			U_alpha constexpr  h     =         half;
 
 			auto y = xtd::bit_cast<U_alpha>(K_ + xtd::bit_cast<U_delta>(z)/N);
-			
+
 			XTAL_IF0
 			XTAL_0IF_(consteval) {
 				auto v = z;

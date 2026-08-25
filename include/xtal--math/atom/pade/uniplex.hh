@@ -2,7 +2,7 @@
 #include "./any.hh"
 
 
-
+#include "../../process/roots.hh"
 #include "../../process/pade/unity.hh"
 #include "../../process/taylor/octarithm.hh"
 
@@ -66,10 +66,13 @@ struct uniplex<A>
 template <extra_scalar_q A> requires simplex_field_q<A>
 struct uniplex<A>
 {
-	using simplex_type =  A;
-	using complex_type = std::complex<simplex_type>;
+	using simplex_type = A;
+	using complex_type = std::complex <simplex_type   >;
 	using couplex_type =      couple_t<complex_type[2]>;
 	using  duplex_type =      couple_t<simplex_type[2]>;
+//	using couplex_type = XTAL_ALL_(process::math::roots_f<1>(XTAL_ANY_(complex_type)));
+//	using  duplex_type = XTAL_ALL_(process::math::roots_f<1>(XTAL_ANY_(simplex_type)));
+
 
 private:
 	XTAL_VAL_(set) sig_f = process::math::  pade::    unity_f<+1>;

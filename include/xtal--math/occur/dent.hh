@@ -62,11 +62,10 @@ struct dent<Ns...>
 		/***/
 		using data_type = S;
 
-		XTAL_VAL_(new,explicit)
-		subtype(X_ x_)
-		noexcept
-		:	S_(XTAL_MOV_(x_))
-		{}
+		XTAL_VAL_(new,explicit) subtype(X_ const  &x_) noexcept : S_{XTAL_REF_(x_)} {}
+		XTAL_VAL_(new,explicit) subtype(X_        &x_) noexcept : S_{XTAL_REF_(x_)} {}
+		XTAL_VAL_(new,explicit) subtype(X_ const &&x_) noexcept : S_{XTAL_REF_(x_)} {}
+		XTAL_VAL_(new,explicit) subtype(X_       &&x_) noexcept : S_{XTAL_REF_(x_)} {}
 		/*!
 		\brief   Constructs a fragment, using conversion as supported by the container.
 		\todo    Use strong-`value_type`s to map between fractional and floating-point values?
