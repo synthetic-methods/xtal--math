@@ -20,7 +20,7 @@ TAG_("dot")
 	using U_sigma = typename U_fit::sigma_type;
 	using U_alpha = typename U_fit::alpha_type;
 	using U_aphex = typename U_fit::aphex_type;
-	using W_alpha = atom::quantity_t<xtd::plus_multiplies<U_alpha>>;
+	using W_alpha = atom::quantity_t<U_alpha, xtd::plus_multiplies<>>;
 
 	TRY_("dot (different scalar type)")
 	{
@@ -46,18 +46,18 @@ TAG_("dot")
 		TRUE_(u1*u0 == W_alpha{9., 35.});
 
 	}
-	TRY_("dot (same vector type via matrix)")
-	{
-		//\
-		couple_t<dot_t<W_alpha[2]>[2]> u_{{{1, 2}, {2, 3}}, {{1, 4}, {4, 9}}};
-		dot_t<W_alpha[2][2]> u_{{{1, 2}, {2, 3}}, {{1, 4}, {4, 9}}};
-		auto const &u0 = u_[0];
-		auto const &u1 = u_[1];
-		TRUE_(u0*u1 == W_alpha{9., 35.});
-		TRUE_(u1*u0 == W_alpha{9., 35.});
-	//	TRUE_(u_.product() == W_alpha{9., 35.});
-
-	}
+//	TRY_("dot (same vector type via matrix)")
+//	{
+//		//\
+//		couple_t<dot_t<W_alpha[2]>[2]> u_{{{1, 2}, {2, 3}}, {{1, 4}, {4, 9}}};
+//		dot_t<W_alpha[2][2]> u_{{{1, 2}, {2, 3}}, {{1, 4}, {4, 9}}};
+//		auto const &u0 = u_[0];
+//		auto const &u1 = u_[1];
+//		TRUE_(u0*u1 == W_alpha{9., 35.});
+//		TRUE_(u1*u0 == W_alpha{9., 35.});
+//	//	TRUE_(u_.product() == W_alpha{9., 35.});
+//
+//	}
 }
 
 

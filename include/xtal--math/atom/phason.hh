@@ -23,7 +23,7 @@ and addition (affecting only the initial element).
 */
 template <class   ..._s>	struct          phason;
 template <class   ..._s>	using           phason_t = typename phason<_s...>::type;
-template <class   ...Ts>	concept         phason_q = bond::tag_inner_fixed_p<phason_t, Ts...>;
+template <class   ...Ts>	concept         phason_q = bond::classify_fixed_tag_p<phason_t, Ts...>;
 
 template <class   ...Ts>	concept phason_simplex_q = phason_q<Ts...> and simplex_field_q<initializer_t<Ts>...>;
 template <class   ...Ts>	concept phason_complex_q = phason_q<Ts...> and complex_field_q<initializer_t<Ts>...>;
@@ -31,25 +31,25 @@ template <class   ...Ts>	concept phason_complex_q = phason_q<Ts...> and complex_
 template <class   ...Ts>	concept simplex_phason_q =                               phason_simplex_q<                  Ts             ...>;
 //mplate <class   ...Ts>	concept simplex_phason_q = simplex_variable_q<Ts...> and phason_simplex_q<typename destruct<Ts>::value_type...>;
 template <class   ...Ts>	concept complex_phason_q = complex_variable_q<Ts...> and phason_simplex_q<typename destruct<Ts>::value_type...>;
-template <class   ...Ts>	concept quantex_phason_q =         quantity_q<Ts...> and phason_simplex_q<typename destruct<Ts>::value_type...>;//TODO: Accommodate heterogeneous...
 
-XTAL_VAL_(let) phason_f = [] XTAL_1FN_(call) (_detail::factory<phason_t>::make);
+XTAL_VAL_(let) phason_f = []
+XTAL_1FN_(call) (_detail::factory<phason_t>::make);
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
+template <class ...Us> requires un_v<bond::devise_condensed_p<        Us...>>
+struct phason<Us ...> :              bond::devise_condensed_s<phason, Us...>
+{};
+template <class ...Us> requires in_v<bond::devise_condensed_p<Us...>> and un_q<xtd::plus<>, Us...>
+struct phason<Us...> : phason<Us..., xtd::plus<>>
+{};
 template <extra_vector_q A> requires integral_variable_q<unstruct_t<A>>
-struct phason<A>
-:	differential<A>
-{
-};
-template <extra_vector_q A, extra_scalar_q ..._s>
-struct phason<A, _s...>
-:	couple_t<phason_t<A>, _s...>
-{
-};
+struct phason  <A, xtd::plus<>>
+:	differential<A, xtd::plus<>>
+{};
 template <extra_vector_q A> requires     real_variable_q<unstruct_t<A>>
-struct phason<A>
+struct phason<A, xtd::plus<>>
 {
 private:
 	static auto constexpr M_data = xtd::extent_v<based_t<A>>;
@@ -83,7 +83,7 @@ private:
 
 	template <class T>
 	using holotype = bond::compose_s<typename
-		differential<std::plus<U>[M_data]>::template homotype<T>
+		differential<U[M_data], xtd::plus<>>::template homotype<T>
 	,	bond::tag<phason_t>
 	>;
 public:
@@ -135,7 +135,6 @@ public:
 		}
 		/***/
 
-
 	protected:// RECONSTRUCT
 
 		template <int N_pos=0>
@@ -154,7 +153,6 @@ public:
 		XTAL_VAL_(mutate,inline,let) operator <<=(iterable_q        auto &&o) noexcept -> auto & {return place<1>(XTAL_REF_(o));}
 		XTAL_VAL_(mutate,inline,let) operator >>=(std::initializer_list<W> o) noexcept -> auto & {return place<0>(XTAL_MOV_(o));}
 		XTAL_VAL_(mutate,inline,let) operator <<=(std::initializer_list<W> o) noexcept -> auto & {return place<1>(XTAL_MOV_(o));}
-
 
 	public:// OPERATE
 	//	using S_::operator >>=;
@@ -373,9 +371,6 @@ public:
 	using type = bond::derive_t<homotype>;
 
 };
-template <class ...Us> requires un_v<bond::devise_condensed_p<Us...>>
-struct phason<Us ...> : bond::devise_condensed_s<phason, Us...>
-{};
 
 
 ///////////////////////////////////////////////////////////////////////////////

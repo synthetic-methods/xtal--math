@@ -13,43 +13,45 @@ namespace xtal::atom::math
 
 template <class   ..._s>	struct  loop;
 template <class   ..._s>	using   loop_t = typename loop<_s...>::type;
-template <class   ...Ts>	concept loop_q = bond::tag_inner_p<loop_t, Ts...>;
+template <class   ...Ts>	concept loop_q = bond::classify_tag_p<loop_t, Ts...>;
 
 XTAL_VAL_(let) loop_f = [] XTAL_1FN_(call) (_detail::factory<loop_t>::make);
 
 
 ////////////////////////////////////////////////////////////////////////////////
 /*!
-\brief   Extends `quantity_plus` with Dirichlet characterization and modulo access.
+\brief   Extends `quantity<xtd::plus>` with Dirichlet characterization and modulo access.
 */
-template <extra_vector_q A>
-struct loop<A>
+template <class ...Us> requires un_v<bond::devise_condensed_p<      Us...>>
+struct loop<Us...> :                 bond::devise_condensed_s<loop, Us...>
+{};
+template <class ...Us> requires in_v<bond::devise_condensed_p<Us...>> and un_q<xtd::plus<>, Us...>
+struct loop<Us...> : loop<Us..., xtd::plus<>>
+{};
+template <class ...Us> requires in_v<bond::devise_condensed_p<Us...>> and in_q<xtd::plus<>, Us...>
+struct loop<Us...>
 {
-private:
-	using U_fit = bond::fit<A>;
-	
 	template <class T>
-	using endotype = typename quantity_plus<A>::template homotype<T>;
+	using endotype = typename quantity<Us...>::template homotype<T>;
 
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<loop_t>>;
 
-public:
 	template <class T>
 	class homotype : public holotype<T>
 	{
 		using S_ = holotype<T>;
-
-	public:// TYPE
-		using typename S_::value_type;
-		using typename S_::scale_type;
-		using typename S_::index_type;
-
+		using A_ = typename S_:: archetype;
+		using I_ = typename S_::index_type;
+		using U_ = typename S_::value_type;
+		using V_ = typename S_::scale_type;
+		using V_fit = bond::fit<V_>;
+		static_assert(fixed_q<A_>);
 	//\
 	public:// ACCESS
 	protected:// ACCESS
-		typename S_::index_type m_index{};
-		typename S_::index_type m_limit{};
+		I_ m_index{};
+		I_ m_limit{};
 
 	public:// ACCESS
 	//	using S_::element_f;
@@ -59,9 +61,9 @@ public:
 		using S_::twin;
 
 	protected:
-		template <index_type I=0>
+		template <I_ I=0>
 		XTAL_VAL_(inline,set)
-		wrap_e(index_type &i)
+		wrap_e(I_ &i)
 		noexcept -> void
 		{
 			i += I;
@@ -75,9 +77,9 @@ public:
 				i %= size;
 			}
 		}
-		template <index_type I=0>
+		template <I_ I=0>
 		XTAL_VAL_(return,inline,set)
-		wrap_f(index_type  i)
+		wrap_f(I_  i)
 		noexcept -> decltype(auto)
 		{
 			(void) wrap_e<I>(i); return i;
@@ -86,37 +88,37 @@ public:
 	public:
 		XTAL_VAL_(set) mask = size_constant_t<size - 1>{};
 
-		template <index_type I=0>
+		template <I_ I=0>
 		XTAL_VAL_(return,inline,set)
 		element_f(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			return T ::element_f(XTAL_REF_(o), I);
 		}
-		template <index_type I=0>
+		template <I_ I=0>
 		XTAL_VAL_(return,inline,set)
-		element_f(auto &&o, index_type i)
+		element_f(auto &&o, I_ i)
 		noexcept -> decltype(auto)
 		{
 			i += xtd::qualify_cast<homotype>(o).m_index;
 			return S_::element_f(XTAL_REF_(o), wrap_f(XTAL_MOV_(i)));
 		}
 
-		template <index_type I=0>
+		template <I_ I=0>
 		XTAL_VAL_(return,inline,set)
 		coelement_f(auto &&o)
 		noexcept -> decltype(auto)
 		{
 			return S_::template coelement_f<I>(XTAL_REF_(o));
 		}
-		template <index_type I=0>
+		template <I_ I=0>
 		XTAL_VAL_(return,inline,set)
 		coelement_f(auto &&o, integral_q auto &&i)
 		noexcept -> decltype(auto)
 		{
 			return S_::template coelement_f<I>(XTAL_REF_(o), XTAL_REF_(i));
 		}
-		template <index_type I=0>
+		template <I_ I=0>
 		XTAL_VAL_(return,inline,set)
 		coelement_f(auto &&o, real_q auto h)
 		noexcept -> decltype(auto)
@@ -134,8 +136,8 @@ public:
 
 			auto const k_dn = nearest_f<-1>(h), t_dn = k_dn - h;
 			auto const k_up =       k_dn + one, t_up = h - k_up;
-			auto const i_dn = static_cast<index_type>(k_dn);
-			auto const i_up = static_cast<index_type>(k_up);
+			auto const i_dn = static_cast<I_>(k_dn);
+			auto const i_up = static_cast<I_>(k_up);
 			auto const u_dn = element_f<I>(o, i_dn), w_dn = element_f<I>(o, i_dn - 1);
 			auto const u_up = element_f<I>(o, i_up), w_up = element_f<I>(o, i_up + 1);
 			auto const v_dn = term_f(u_up, term_f(u_up, u_dn - w_up, quarter), term_f(two, two, t_dn))*square_f(t_dn);
@@ -170,9 +172,6 @@ public:
 	using type = bond::derive_t<homotype>;
 
 };
-template <class ...Us> requires un_v<bond::devise_condensed_p<Us...>>
-struct loop<Us ...> : bond::devise_condensed_s<loop, Us...>
-{};
 
 
 ///////////////////////////////////////////////////////////////////////////////

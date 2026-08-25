@@ -13,7 +13,7 @@ namespace xtal::atom::math::fourier
 
 template <class   ..._s>	XTAL_TYP_(new) series;
 template <class   ..._s>	XTAL_TYP_(let) series_t = typename series<_s...>::type;
-template <class   ...Ts>	XTAL_TYP_(ask) series_q = bond::tag_inner_p<series_t, Ts...>;
+template <class   ...Ts>	XTAL_TYP_(ask) series_q = bond::classify_tag_p<series_t, Ts...>;
 
 XTAL_VAL_(let) series_f = [] XTAL_1FN_(call) (_detail::factory<series_t>::make);
 
@@ -43,30 +43,31 @@ noexcept -> decltype(auto)
 /*!
 \brief   Extends `serial` with multiplication via circular convolution.
 */
-template <extra_vector_q A>
-struct series<A>
+template <class ...Us> requires un_v<bond::devise_condensed_p<        Us...>>
+struct series<Us...> :               bond::devise_condensed_s<series, Us...>
+{};
+template <class ...Us> requires in_v<bond::devise_condensed_p<Us...>> and un_q<xtd::plus<>, Us...>
+struct series<Us...> : series<Us..., xtd::plus<>>
+{};
+template <class ...Us> requires in_v<bond::devise_condensed_p<Us...>> and in_q<xtd::plus<>, Us...>
+struct series<Us...>
 {
-private:
-	using U0 = xtd::remove_extent_t<A>;
-	using U1 = typename destruct<U0>::value_type;
-	using U2 = typename destruct<U1>::value_type;
-
-	using U_fit = bond::fit<A>;
-	
 	template <class T>
-	using endotype = typename serial<A>::template homotype<T>;
+	using endotype = typename serial<Us...>::template homotype<T>;
 
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<series_t>>;
 
-public:
 	template <class T>
 	class homotype : public holotype<T>
 	{
-		using S_ = holotype<T>;
-
-	public:// TYPE
-		using typename S_::value_type;
+		using S_    = holotype<T>;
+		using A_    = typename S_:: archetype;
+		using I_    = typename S_::index_type;
+		using U_    = typename S_::value_type;
+		using V_    = typename S_::scale_type;
+		using V_fit = bond::fit<V_>;
+		static_assert(fixed_q<A_>);
 
 	public:// ACCESS
 		using S_::size;
@@ -103,7 +104,7 @@ public:
 		*/
 		template <int N_dex=0, int N_ind=0, int N_step=1, int N_size=size>
 		XTAL_VAL_(inline,let)
-		generate(value_type const &u)
+		generate(U_ const &u)
 		noexcept -> T &
 		{
 			using process::math::cut_f;
@@ -141,7 +142,7 @@ public:
 					XTAL_0FN -> void {
 						auto constexpr UM = I0 + _1*M;
 						auto constexpr WM = J0 + _2*M;
-						
+
 						auto const w = monomial_f<2>(cut_f<-3>(get<UM>(s)));
 						get<WM + _0>(s) =   w;
 						get<WM + _1>(s) = u*w;
@@ -161,7 +162,7 @@ public:
 		\returns `this`.
 		\tparam  `N_shift >= -3`
 		*/
-		template <int N_shift=0> requires complex_field_q<value_type>
+		template <int N_shift=0> requires complex_field_q<U_>
 		XTAL_VAL_(let)
 		generate()
 		noexcept -> T &
@@ -173,31 +174,31 @@ public:
 		//	Initialize the forwards and backwards iterators:
 			auto const i = S_::begin();
 			auto const j = S_::rend() - 1;
-			
+
 		//	Compute the fractional sinusoid for this `size`:
-			auto constexpr y = process::math::pade::unity_f<(+1)>(U_fit::ratio_f(-1, size << 1));
+			auto constexpr y = process::math::pade::unity_f<(+1)>(V_fit::ratio_f(-1, size << 1));
 
 		//	Compute the initial `1/8`th then mirror the remaining segments:
 			typename S_::difference_type constexpr M = size >> 2U;// `1/8`th
 			static_assert(-4 <  N_shift);
 			generate<0, 0, 1, M + (-3 <  N_shift)>(y);
-			if constexpr (-2 <= N_shift) _detail::copy_to<[] (value_type const &v) XTAL_0FN_(to) (value_type{-v.imag(), -v.real()})>(prev(j, 2*M), span(i, next(i, 1*M)));
-			if constexpr (-1 <= N_shift) _detail::copy_to<[] (value_type const &v) XTAL_0FN_(to) (value_type{ v.imag(), -v.real()})>(next(i, 2*M), span(i, next(i, 2*M)));
-			if constexpr (-0 <= N_shift) _detail::copy_to<[] (value_type const &v) XTAL_0FN_(to) (value_type{-v.real(), -v.imag()})>(next(i, 4*M), span(i, next(i, 4*M)));
+			if constexpr (-2 <= N_shift) _detail::copy_to<[] (U_ const &v) XTAL_0FN_(to) (U_{-v.imag(), -v.real()})>(prev(j, 2*M), span(i, next(i, 1*M)));
+			if constexpr (-1 <= N_shift) _detail::copy_to<[] (U_ const &v) XTAL_0FN_(to) (U_{ v.imag(), -v.real()})>(next(i, 2*M), span(i, next(i, 2*M)));
+			if constexpr (-0 <= N_shift) _detail::copy_to<[] (U_ const &v) XTAL_0FN_(to) (U_{-v.real(), -v.imag()})>(next(i, 4*M), span(i, next(i, 4*M)));
 			static_assert( 0 >= N_shift);// TODO: Extend to allow multiple copies using `bond::seek`.
-			
+
 			return self();
 		}
 		/*!
 		\brief   Transforms `source` using the FFT, with `this` as the Fourier basis.
 		\returns `source`.
-		
+
 		\note    The size of both `this` and `source` must be expressible as an integral power-of-two,
 		         and `1 < source.size() <= this->size()`.
 
 		\note    Around 10% to 20% faster than Eigen's default (based on KISSFFT).
 		*/
-		template <int N_dir=1> requires in_v<N_dir, 1, -1> and complex_field_q<value_type>
+		template <int N_dir=1> requires in_v<N_dir, 1, -1> and complex_field_q<U_>
 		XTAL_VAL_(let)
 		transform(isomorphic_q<T> auto &source) const
 		noexcept -> decltype(auto)
@@ -227,12 +228,12 @@ public:
 			}
 		//	Conjugate and scale the output if computing the inverse transform of the codomain:
 			if constexpr (N_conj) {
-				source /= U_fit::alpha_f(n_size);
+				source /= V_fit::alpha_f(n_size);
 			}
 		//	Cast the output to the transformed domain:
 			return serious_f(XTAL_REF_(source));
 		}
-		template <int N_dir=1> requires in_v<N_dir, 1, -1> and complex_field_q<value_type>
+		template <int N_dir=1> requires in_v<N_dir, 1, -1> and complex_field_q<U_>
 		XTAL_VAL_(let)
 		transform(isomorphic_q<T> auto &&source) const
 		noexcept -> decltype(auto)
@@ -279,19 +280,19 @@ public:
 		*/
 		using S_::operator*=;
 
-		XTAL_VAL_(return,inline,let)  operator * (auto const &                      w) const noexcept -> auto   {return twin() *=   w ;}
-		XTAL_VAL_(inline,let)         operator *=(std::initializer_list<value_type> w)       noexcept -> auto & {return self() *= T(w);}
+		XTAL_VAL_(return,inline,let)  operator * (auto const &              w) const noexcept -> auto   {return twin() *=   w ;}
+		XTAL_VAL_(inline,let)         operator *=(std::initializer_list<U_> w)       noexcept -> auto & {return self() *= T(w);}
 
 		XTAL_VAL_(let)
 		operator *=(T const &t)
 		noexcept -> T &
 		{
 			auto &s = self();
-			if constexpr (complex_field_q<value_type>) {
+			if constexpr (complex_field_q<U_>) {
 				T(constant_t<-1>{}).convolve(s, t);
 			}
 			else {
-				using X = typename U_fit::aphex_type;
+				using X = typename V_fit::aphex_type;
 				using Y = typename series<X[size]>::type;
 				Y s_(s);
 				Y t_(t);
@@ -303,20 +304,20 @@ public:
 
 		/*!
 		\brief   The dual of `T`, defined by `hadamard::series`.
-		*/		
+		*/
 		struct transverse
 		{
 			template <class Y>
-			using holotype = typename quantity_multiplies<A>::template homotype<Y>;
+			using holotype = typename quantity<U_[size], xtd::multiplies<>>::template homotype<Y>;
 
 			template <class Y>
 			class homotype : public holotype<homotype<Y>>
 			{
 				using R_ = holotype<homotype<Y>>;
-			
+
 			public:
 				using R_::R_;
-				
+
 				struct transverse {using type = T;};
 
 			};
@@ -327,9 +328,6 @@ public:
 	using type = bond::derive_t<homotype>;
 
 };
-template <class ...Us> requires un_v<bond::devise_condensed_p<Us...>>
-struct series<Us ...> : bond::devise_condensed_s<series, Us...>
-{};
 
 
 ///////////////////////////////////////////////////////////////////////////////

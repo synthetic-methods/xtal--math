@@ -46,14 +46,14 @@ public:
 		template <auto ...Ns> requires (M_evt == 1)
 		XTAL_VAL_(return,inline,let)
 		method(
-			auto x                                 // <- gate
-		,	auto u                                 // <- clock
-		,	atom::quantity_q<null_type[2]> auto f_ // <- note head/body
+			auto x                   // <- gate
+		,	auto u                   // <- clock
+		,	atom::quantity_q auto f_ // <- note head/body
 		,	auto &&...oo
 		)	const
 		noexcept -> decltype(auto)
 		{
-			static_assert(S_::data_type::size() == two);
+			static_assert(S_::data_type::size() == bond::pack_size_v<decltype(f_)>);
 			using X = XTAL_ALL_(x);
 			using U = unstruct_t<X>;
 
@@ -80,14 +80,14 @@ public:
 		template <auto ...Ns> requires (M_evt == 0)
 		XTAL_VAL_(return,inline,let)
 		method(
-			auto x                                 // <- trigger
-		,	auto u                                 // <- clock
-		,	atom::quantity_q<null_type[2]> auto f_ // <- note head/body
+			auto x                   // <- trigger
+		,	auto u                   // <- clock
+		,	atom::quantity_q auto f_ // <- note head/body
 		,	auto &&...oo
 		)	const
 		noexcept -> decltype(auto)
 		{
-			static_assert(S_::data_type::size() == two);
+			static_assert(S_::data_type::size() == bond::pack_size_v<decltype(f_)>);
 			using X0 = XTAL_ALL_(x);
 			using X2 = atom::couple_t<X0[2]>;
 			X2    y_;
@@ -137,7 +137,7 @@ public:
 			return method<Ns...>(XTAL_REF_(x), XTAL_REF_(u),
 				atom::couple_f(XTAL_MOV_(f_head), XTAL_MOV_(f_tail)), XTAL_REF_(oo)...);
 		}
-		
+
 		template <int M_arg=0>
 		struct transfix
 		{

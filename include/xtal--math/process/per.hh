@@ -16,7 +16,7 @@ namespace xtal::process::math
 */
 template <class ..._s> XTAL_TYP_(new) per;
 template <class ..._s> XTAL_TYP_(set) per_t = confined_t<per<_s...>, bond::tab<per<>>>;
-template <class ..._s> XTAL_TYP_(ask) per_q = bond::tab_inner_p<per<>, _s...>;
+template <class ..._s> XTAL_TYP_(ask) per_q = bond::classify_tab_p<per<>, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////

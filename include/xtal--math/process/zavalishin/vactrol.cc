@@ -27,9 +27,9 @@ TAG_("vactrol")
 	using X_quartz = occur::quartz_t<>;
 	using A_quartz = typename X_quartz::template attach<>;
 	//\
-	using U_shape  = atom::                   couple_t<U_alpha[2]>;
-	using U_shape  = atom:: quantity_plus_multiplies_t<U_alpha[2]>;
-	using U_coeff  = atom::math::                dot_t<U_alpha[2]>;
+	using U_shape  = atom::                          couple_t<U_alpha[2]>;
+	using U_shape  = atom:: quantity_t<U_alpha[2], xtd::plus_multiplies<>>;
+	using U_coeff  = atom::math::dot_t<U_alpha[2]>;
 
 	using X_shape  = occur::reinferred_t<U_shape, union SHAPE>;
 	using X_coeff  = occur::reinferred_t<U_coeff, union COEFF>;

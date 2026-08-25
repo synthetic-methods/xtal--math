@@ -29,7 +29,7 @@ For example, with base-types of `double` and `std::complex<double>` respectively
 the storage required is `16` and `32` bytes-per-pole.
 */
 template <class ..._s>	struct  filter;
-template <class ..._s>	concept filter_q = bond::tag_inner_p<filter, _s...>;
+template <class ..._s>	concept filter_q = bond::classify_tag_p<filter, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -137,11 +137,12 @@ struct filter
 		XTAL_VAL_(inline,let)
 		method_impl(auto &&x
 		,	unstruct_t<decltype(x)> u_warp
-		,	atom::couple_q<null_type[N_ord]> auto const &coeffs
-	//	,	atom::couple_q<null_type[N_ord]> auto &&coeffs
+		,	atom::couple_q auto const &coeffs
+	//	,	atom::couple_q auto &&coeffs
 		,	auto &&...oo
 		)	const
 		noexcept -> atom::couple_t<XTAL_ALL_(x)[M_lim]>
+		requires in_v<N_ord + 0, XTAL_ALL_(coeffs)::size()>
 		{
 			static_assert(N_ord < M_lim);
 			using X        = XTAL_ALL_(x);
@@ -238,7 +239,7 @@ struct filter
 		XTAL_VAL_(inline,let)
 		method(auto const &x
 		,	unstruct_t<decltype(x)> u_warp
-		,	atom::couple_q<null_type[N_ord + 0]> auto &&coeffs_
+		,	atom::couple_q auto &&coeffs_
 		,	auto &&...oo
 		)	const
 		noexcept -> decltype(auto)
@@ -311,7 +312,7 @@ struct filter
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,let)
 		method(auto &&x, atom::math::phason_q auto &&t_
-		,	atom::quantity_multiplies_q auto &&s_
+		,	atom::quantity_q auto &&s_
 		,	auto &&...oo
 		)	const
 		noexcept -> decltype(auto)
@@ -325,7 +326,7 @@ struct filter
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,let)
 		method(atom::math::phason_q auto &&t_, auto &&x
-		,	atom::quantity_multiplies_q auto &&s_
+		,	atom::quantity_q auto &&s_
 		,	auto &&...oo
 		)	const
 		noexcept -> decltype(auto)
@@ -385,7 +386,7 @@ struct occurrence<process::math::zavalishin::filter<_s...>>
 		using T_ = typename S_::self_type;
 		using U_ = typename S_::data_type;
 		using V_ = unstruct_t<U_>;
-	
+
 	public:
 		using S_::S_;
 

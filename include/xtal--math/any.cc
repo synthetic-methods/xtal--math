@@ -12,7 +12,7 @@ namespace xtal
 /////////////////////////////////////////////////////////////////////////////////
 
 template <class U, class V=U>	struct  complexion;
-template <class        ...Ts>	concept complexion_q = bond::tag_inner_p<complexion, Ts...>;
+template <class        ...Ts>	concept complexion_q = bond::classify_tag_p<complexion, Ts...>;
 
 XTAL_VAL_(return,inline,let)
 objective_f(complexion_q auto &&o)
@@ -48,7 +48,7 @@ struct complexion
 	XTAL_VAL_(return,inline) auto real(auto &&...oo) const noexcept -> value_type const & {return re = value_type{XTAL_REF_(oo)...};}
 	XTAL_VAL_(return,inline) auto imag(auto &&...oo) const noexcept -> value_type const & {return im = value_type{XTAL_REF_(oo)...};}
 
-	
+
 	template <class T> requires un_v<isotropic_q<T, source_type>> and un_v<isotropic_q<T, target_type>>
 	XTAL_VAL_(return,inline,friend,let)
 	operator/ (T const &t, source_type const &s)
@@ -78,7 +78,7 @@ struct complexion
 	{
 		return s*(one/t);
 	}
-	
+
 //	Complex multiplication:
 	XTAL_VAL_(return,inline,friend,let)
 	operator* (source_type const &s, source_type const &t)
@@ -360,7 +360,7 @@ TAG_("any")
 
 	using Y_alpha =     ArrayXd ;
 	using X_alpha = Map<ArrayXd>;
-	
+
 	using Y_aphex = std::complex<Y_alpha>;
 	using X_aphex = std::complex<X_alpha>;
 

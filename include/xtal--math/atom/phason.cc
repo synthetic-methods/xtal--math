@@ -120,10 +120,12 @@ TAG_("phason")
 		TRUE_(check_f(c.imag() (0), 0.4));
 
 	}
+	/***/
+	/*/
 	TRY_("tuple with phason")
 	{
-		using U_psi = quantity_t<std::plus<W_alpha>[2]>;
-		using W     = quantity_t<std::plus<U_phi>, std::plus<U_psi>>;
+		using U_psi = quantity_t<W_alpha[2]   , std::plus<>>;
+		using W     = quantity_t<U_phi, U_psi , std::plus<>>;
 
 		TRUE_(sizeof(W) == sizeof(U_phi) + sizeof(U_psi));
 

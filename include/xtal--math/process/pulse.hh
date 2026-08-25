@@ -16,7 +16,7 @@ namespace xtal::process::math
 */
 template <auto  ..._s> XTAL_TYP_(new) pulse;
 template <auto  ..._s> XTAL_TYP_(set) pulse_t = confined_t<pulse<_s...>, bond::tab<pulse<>>>;
-template <class ..._s> XTAL_TYP_(ask) pulse_q = bond::tab_inner_p<pulse<>, _s...>;
+template <class ..._s> XTAL_TYP_(ask) pulse_q = bond::classify_tab_p<pulse<>, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////

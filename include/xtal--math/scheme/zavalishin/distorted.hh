@@ -39,7 +39,7 @@ struct distortion
 
 template <template <auto ...> class A_=_detail::distortion>	XTAL_TYP_(new) distorted;
 template <template <auto ...> class A_=_detail::distortion>	XTAL_TYP_(let) distorted_t = confined_t<distorted<A_>>;
-template <                                     class ..._s>	XTAL_TYP_(ask) distorted_q = bond::tab_inner_p<distorted<>, _s...>;
+template <                                     class ..._s>	XTAL_TYP_(ask) distorted_q = bond::classify_tab_p<distorted<>, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -50,15 +50,15 @@ template <template <auto ...> class A_>
 struct distorted
 {
 	using superkind = bond::tab<distorted<>>;
-	
+
 	template <class S>
 	class subtype : public bond::compose_s<S, superkind>
 	{
 		using S_ = bond::compose_s<S, superkind>;
-		
+
 	public:
 		using S_::S_;
-		
+
 		template <auto ...Ms>
 		using distortion_t = process::confined_t<A_<Ms...>>;
 

@@ -100,7 +100,7 @@ struct cut<M_app>
 			XTAL_0IF (1 == N_) {
 				(void) method<std::in_place>(get<0>(o));
 			}
-			XTAL_0IF (2 == N_ and atom::quantity_multiplies_q<W_>) {
+			XTAL_0IF (2 == N_ and atom::quantity_q<W_, xtd::multiplies<>>) {
 				auto &x = get<0>(o); using X = XTAL_ALL_(x);
 				auto &y = get<1>(o); using Y = XTAL_ALL_(y);
 				XTAL_IF0
@@ -176,7 +176,7 @@ struct cut<M_dir>
 
 	};
 };
-template <fixed_shaped_q<null_type[2]> auto M_range>
+template <fixed_shaped_q auto M_range>// requires in_v<2, fixed<decltype(M_range)>::extent()>
 struct cut<M_range>
 {
 	static auto constexpr M_dn = get<0>(M_range);

@@ -85,7 +85,7 @@ public:
 		noexcept -> auto
 		{
 			using   U  = XTAL_ALL_(u);
-			using   U_ = atom::quantity_plus_multiplies_t<U[N_len]>;
+			using   U_ = atom::quantity_t<U[N_len], xtd::plus_multiplies<>>;
 			return [u=XTAL_REF_(u)]<auto ...I> (bond::seek_in_t<I...>)
 				XTAL_0FN_(to) (U_{(F_man(I + N_off, u)*u)...})
 					(bond::seek_to_t<-N_len>{});
@@ -115,8 +115,8 @@ public:
 			using U  = XTAL_ALL_(u);
 			using X  = XTAL_ALL_(x);
 			using Y  = XTAL_ALL_(XTAL_ANY_(S_).template method<Ns...>(x, a, u, oo...));
-			using X_ = atom::quantity_plus_multiplies_t<X[K_len]>;
-			using Y_ = atom::quantity_plus_multiplies_t<Y[K_len]>;
+			using X_ = atom::quantity_t<X[K_len], xtd::plus_multiplies<>>;
+			using Y_ = atom::quantity_t<Y[K_len], xtd::plus_multiplies<>>;
 
 		//	TODO: Interpolate controls?
 		//	TODO: Detect mutability/immutability for parallelization?

@@ -32,7 +32,7 @@ TAG_("atom", "serial")
 	using D2 = serial_t<int[2]>;
 	using D3 = serial_t<int[3]>;
 	using D4 = serial_t<int[4]>;
-	
+
 	TRY_("partial construction")
 	{
 		D4 d4{1000};

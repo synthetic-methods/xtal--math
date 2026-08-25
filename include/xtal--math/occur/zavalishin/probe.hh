@@ -18,7 +18,7 @@ namespace xtal::occur::math::zavalishin
 */
 template <class ..._s> XTAL_TYP_(new) probe;
 template <class ..._s> XTAL_TYP_(set) probe_t = confined_t<probe<_s...>, bond::tag<probe>>;
-template <class ..._s> XTAL_TYP_(ask) probe_q = bond::tag_inner_p<probe, _s...>;
+template <class ..._s> XTAL_TYP_(ask) probe_q = bond::classify_tag_p<probe, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -35,13 +35,13 @@ struct probe<U>
 		using S_ = bond::compose_s<S, superkind>;
 		using T_ = typename S_::self_type;
 		using U_ = U;
-		
+
 		XTAL_VAL_(set) dot_f = [] XTAL_1FN_(call) (process::math::dot_f);
 		XTAL_VAL_(set) exp_f = [] XTAL_1FN_(call) (process::math::taylor::logarithm_t<-1>{}.template method<3>);
 
 	public:
 		using S_::S_;
-		
+
 		template <extent_type N_mask=1>
 		struct suffix
 		{

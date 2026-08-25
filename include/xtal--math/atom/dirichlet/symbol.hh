@@ -13,7 +13,7 @@ namespace xtal::atom::math::dirichlet
 
 template <class   ..._s>	struct  symbol;
 template <class   ..._s>	using   symbol_t = typename symbol<_s...>::type;
-template <class   ...Ts>	concept symbol_q = bond::tag_inner_p<symbol_t, Ts...>;
+template <class   ...Ts>	concept symbol_q = bond::classify_tag_p<symbol_t, Ts...>;
 
 XTAL_VAL_(let) symbol_f = [] XTAL_1FN_(call) (_detail::factory<symbol_t>::make);
 
@@ -22,8 +22,14 @@ XTAL_VAL_(let) symbol_f = [] XTAL_1FN_(call) (_detail::factory<symbol_t>::make);
 /*!
 \brief   Extends `couple` with Dirichlet characterization and modulo access.
 */
-template <class ...Us>
-struct symbol
+template <class ...Us> requires un_v<bond::devise_condensed_p<        Us...>>
+struct symbol<Us...> :               bond::devise_condensed_s<symbol, Us...>
+{};
+template <class ...Us> requires in_v<bond::devise_condensed_p<Us...>> and un_q<xtd::multiplies<>, Us...>
+struct symbol<Us...> : symbol<Us..., xtd::multiplies<>>
+{};
+template <class ...Us> requires in_v<bond::devise_condensed_p<Us...>> and in_q<xtd::multiplies<>, Us...>
+struct symbol<Us...>
 {
 private:
 	template <class T>
@@ -97,7 +103,7 @@ public:
 				value_type w =  1;
 				value_type u = -1;
 				if constexpr (complex_field_q<value_type>) {
-					u = pade::unity_f<1>(U_fit::ratio_f(1, 2*K));
+					u = process::math::pade::unity_f<1>(U_fit::ratio_f(1, 2*K));
 				}
 				bond::seek_to_e<K>([&, this] (auto i) XTAL_0FN -> void  {
 					auto const o = k%N;
@@ -137,7 +143,7 @@ public:
 			else {
 				value_type w, u;
 				if constexpr (complex_field_q<value_type>) {
-					u = pade::unity_f<1>(U_fit::ratio_f(1, 2*K));
+					u = process::math::pade::unity_f<1>(U_fit::ratio_f(1, 2*K));
 				}
 				else {
 					u = 1;
@@ -162,9 +168,6 @@ public:
 	using type = bond::derive_t<homotype>;
 
 };
-template <class ...Us> requires un_v<bond::devise_condensed_p<Us...>>
-struct symbol<Us ...> : bond::devise_condensed_s<symbol, Us...>
-{};
 
 
 ///////////////////////////////////////////////////////////////////////////////

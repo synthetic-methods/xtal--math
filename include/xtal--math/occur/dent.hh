@@ -19,9 +19,9 @@ Wrapper used to tunnel an existing type using `std::tuple`-based traversal.
 
 template <             typename ..._s> XTAL_TYP_(new)    dent;
 template <class T                    > XTAL_TYP_(new) in_dent    {using type =          T           ;};
-template <bond::tag_inner_q<dent>  T > XTAL_TYP_(new) in_dent<T> {using type = typename T::data_type;};
+template <bond::classify_tag_q<dent>  T > XTAL_TYP_(new) in_dent<T> {using type = typename T::data_type;};
 template <class T                    > XTAL_TYP_(set) in_dent_t = typename in_dent<based_t<T>>::type;
-template <             typename ...Ts> XTAL_TYP_(ask) in_dent_q = bond::tag_inner_p<dent, Ts...>;
+template <             typename ...Ts> XTAL_TYP_(ask) in_dent_q = bond::classify_tag_p<dent, Ts...>;
 template <             typename ...Ts> XTAL_TYP_(ask)    dent_q = in_v<true, in_dent_q<Ts>...> and xtd::fungible_with<in_dent_t<Ts>...>;
 template <class S,     int      ...Ns> XTAL_TYP_(set)    dent_s = bond::compose_s<S, dent<ordinal_constant_t<Ns>...>>;
 

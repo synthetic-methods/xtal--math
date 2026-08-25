@@ -23,19 +23,26 @@ or create a similar complex sentinel with multiplication/projection.
 
 template <class ..._s>	struct  dot;
 template <class ..._s>	using   dot_t = typename dot<_s...>::type;
-template <class ..._s>	concept dot_q = bond::tag_inner_fixed_p<dot_t, _s...>;
+template <class ..._s>	concept dot_q = bond::classify_fixed_tag_p<dot_t, _s...>;
 
 XTAL_VAL_(let) dot_f = [] XTAL_1FN_(call) (_detail::factory<dot_t>::make);
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <class ..._s>
-struct dot
+template <class ...Us> requires un_v<bond::devise_condensed_p<     Us...>>
+struct dot<Us...> :                  bond::devise_condensed_s<dot, Us...>
+{};
+template <class ...Us> requires in_v<bond::devise_condensed_p<Us...>> and un_q<xtd::plus<>, Us...>
+struct dot<Us...> : dot<Us..., xtd::plus<>>
+{};
+template <class ...Us> requires in_v<bond::devise_condensed_p<Us...>> and in_q<xtd::plus<>, Us...>
+and un_v<true, extra_matrix_q<Us>...>
+struct dot<Us...>
 {
 private:
 	template <class T>
-	using endotype = typename quantity_plus<_s...>::template homotype<T>;
+	using endotype = typename quantity<Us...>::template homotype<T>;
 
 	template <class T>
 	using holotype = bond::compose_s<endotype<T>, bond::tag<dot_t>>;
@@ -44,19 +51,21 @@ public:
 	template <class T>
 	class homotype : public holotype<T>
 	{
-		using S_ = holotype<T>;
+		using S_    = holotype<T>;
+		using A_    = typename S_:: archetype;
+		using I_    = typename S_::index_type;
+		using U_    = typename S_::value_type;
+		using V_    = typename S_::scale_type;
+		using V_fit = bond::fit<V_>;
+		static_assert(fixed_q<A_>);
 
 	public:// CONSTRUCT
 		using S_::S_;
 
-		using typename S_::revalue_type;
-		using typename S_::  value_type;
-		using typename S_::  scale_type;
-
 		XTAL_VAL_(new,implicit)
-		homotype(std::initializer_list<value_type> xs)
+		homotype(std::initializer_list<U_> xs)
 		noexcept
-		requires complete_q<value_type>
+		requires complete_q<U_>
 		:	S_(xs)
 		{
 		}
@@ -72,7 +81,7 @@ public:
 		XTAL_VAL_(return,inline,let)
 		product() const
 		noexcept -> auto
-		requires dot_q<value_type> and in_v<size, 2>
+		requires dot_q<U_> and in_v<size, 2>
 		{
 			auto &s = self();
 			return get<0>(s) * get<1>(s);
@@ -128,19 +137,6 @@ public:
 	using type = bond::derive_t<homotype>;
 
 };
-template <extra_matrix_q A>
-struct dot<A>
-:	dot<dot_t<typename fixed<A>::value_type>[fixed<A>::extent()]>
-{
-};
-template <extra_scalar_q U>
-struct dot<U>
-:	dot<U[2]>
-{
-};
-template <class ...Us> requires un_v<bond::devise_condensed_p<Us...>>
-struct dot<Us ...> : bond::devise_condensed_s<dot, Us...>
-{};
 
 
 ////////////////////////////////////////////////////////////////////////////////
