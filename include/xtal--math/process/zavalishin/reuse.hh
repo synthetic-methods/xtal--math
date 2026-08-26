@@ -16,7 +16,7 @@ namespace xtal::process::math::zavalishin
 */
 template <auto  ..._s>	XTAL_TYP_(new) reuse   : bond::compose<reuse<_s>...> {};
 template <auto  ..._s>	XTAL_TYP_(set) reuse_t = confined_t<reuse<_s...>>;
-template <class ..._s>	XTAL_TYP_(ask) reuse_q = bond::classify_tab_p<reuse<>, _s...>;
+template <class ..._s>	XTAL_TYP_(ask) reuse_q = bond::tabbed_as_p<reuse<>, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////

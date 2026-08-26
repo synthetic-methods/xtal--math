@@ -39,7 +39,7 @@ struct distortion
 
 template <template <auto ...> class A_=_detail::distortion>	XTAL_TYP_(new) distorted;
 template <template <auto ...> class A_=_detail::distortion>	XTAL_TYP_(let) distorted_t = confined_t<distorted<A_>>;
-template <                                     class ..._s>	XTAL_TYP_(ask) distorted_q = bond::classify_tab_p<distorted<>, _s...>;
+template <                                     class ..._s>	XTAL_TYP_(ask) distorted_q = bond::tabbed_as_p<distorted<>, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////

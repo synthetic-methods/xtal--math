@@ -18,7 +18,7 @@ namespace xtal::occur::math::zavalishin
 */
 template <class ..._s> XTAL_TYP_(new) probe;
 template <class ..._s> XTAL_TYP_(set) probe_t = confined_t<probe<_s...>, bond::tag<probe>>;
-template <class ..._s> XTAL_TYP_(ask) probe_q = bond::classify_tag_p<probe, _s...>;
+template <class ..._s> XTAL_TYP_(ask) probe_q = bond::tagged_as_p<probe, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////

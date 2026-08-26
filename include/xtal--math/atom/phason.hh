@@ -21,12 +21,13 @@ and addition (affecting only the initial element).
 
 \todo    Rework `operator`s to accommodate `std::complex`.
 */
-template <class   ..._s>	struct          phason;
-template <class   ..._s>	using           phason_t = typename phason<_s...>::type;
-template <class   ...Ts>	concept         phason_q = bond::classify_fixed_tag_p<phason_t, Ts...>;
+template <class          ..._s>	XTAL_TYP_(new) phason;
+template <class          ..._s>	XTAL_TYP_(let) phason_t = typename phason<_s...>::type;
+template <class T, class ...Ks>	XTAL_TYP_(ask) phason_q = bond::tagged_as_p<phason_t, T    > and bond::tabbed_as_q<T, Ks...>;
+template <class K, class ...Ts>	XTAL_TYP_(ask) phason_p = bond::tagged_as_p<phason_t, Ts...> and bond::tabbed_as_p<K, Ts...>;
 
-template <class   ...Ts>	concept phason_simplex_q = phason_q<Ts...> and simplex_field_q<initializer_t<Ts>...>;
-template <class   ...Ts>	concept phason_complex_q = phason_q<Ts...> and complex_field_q<initializer_t<Ts>...>;
+template <class   ...Ts>	concept phason_simplex_q = (phason_q<Ts> and...and simplex_field_q<initializer_t<Ts>...>);
+template <class   ...Ts>	concept phason_complex_q = (phason_q<Ts> and...and complex_field_q<initializer_t<Ts>...>);
 
 template <class   ...Ts>	concept simplex_phason_q =                               phason_simplex_q<                  Ts             ...>;
 //mplate <class   ...Ts>	concept simplex_phason_q = simplex_variable_q<Ts...> and phason_simplex_q<typename destruct<Ts>::value_type...>;

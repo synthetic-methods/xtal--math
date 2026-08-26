@@ -13,7 +13,7 @@ namespace xtal::atom::math::fourier
 
 template <class   ..._s>	XTAL_TYP_(new) series;
 template <class   ..._s>	XTAL_TYP_(let) series_t = typename series<_s...>::type;
-template <class   ...Ts>	XTAL_TYP_(ask) series_q = bond::classify_tag_p<series_t, Ts...>;
+template <class   ...Ts>	XTAL_TYP_(ask) series_q = bond::tagged_as_p<series_t, Ts...>;
 
 XTAL_VAL_(let) series_f = [] XTAL_1FN_(call) (_detail::factory<series_t>::make);
 

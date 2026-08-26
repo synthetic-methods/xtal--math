@@ -21,9 +21,10 @@ or create a similar complex sentinel with multiplication/projection.
 \todo    Specialize `plus_multiplies` or `fma`?
 */
 
-template <class ..._s>	struct  dot;
-template <class ..._s>	using   dot_t = typename dot<_s...>::type;
-template <class ..._s>	concept dot_q = bond::classify_fixed_tag_p<dot_t, _s...>;
+template <class          ..._s>	XTAL_TYP_(new) dot;
+template <class          ..._s>	XTAL_TYP_(let) dot_t = typename dot<_s...>::type;
+template <class T, class ...Ks>	XTAL_TYP_(ask) dot_q = bond::tagged_as_p<dot_t, T    > and bond::tabbed_as_q<T, Ks...>;
+template <class K, class ...Ts>	XTAL_TYP_(ask) dot_p = bond::tagged_as_p<dot_t, Ts...> and bond::tabbed_as_p<K, Ts...>;
 
 XTAL_VAL_(let) dot_f = [] XTAL_1FN_(call) (_detail::factory<dot_t>::make);
 

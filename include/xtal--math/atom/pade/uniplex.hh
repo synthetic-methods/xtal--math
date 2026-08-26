@@ -15,7 +15,7 @@ namespace xtal::atom::math::pade
 */
 template <class   ..._s>	XTAL_TYP_(new) uniplex;
 template <class   ..._s>	XTAL_TYP_(let) uniplex_t = typename uniplex<_s...>::type;
-template <class   ...Ts>	XTAL_TYP_(ask) uniplex_q = bond::classify_tag_p<uniplex_t, Ts...>;
+template <class   ...Ts>	XTAL_TYP_(ask) uniplex_q = bond::tagged_as_p<uniplex_t, Ts...>;
 
 namespace _detail
 {///////////////////////////////////////////////////////////////////////////////

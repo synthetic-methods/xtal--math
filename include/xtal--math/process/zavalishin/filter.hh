@@ -29,7 +29,7 @@ For example, with base-types of `double` and `std::complex<double>` respectively
 the storage required is `16` and `32` bytes-per-pole.
 */
 template <class ..._s>	struct  filter;
-template <class ..._s>	concept filter_q = bond::classify_tag_p<filter, _s...>;
+template <class ..._s>	concept filter_q = bond::tagged_as_p<filter, _s...>;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -137,12 +137,10 @@ struct filter
 		XTAL_VAL_(inline,let)
 		method_impl(auto &&x
 		,	unstruct_t<decltype(x)> u_warp
-		,	atom::couple_q auto const &coeffs
-	//	,	atom::couple_q auto &&coeffs
+		,	atom::quantity_q<null_type[N_ord]> auto const &coeffs
 		,	auto &&...oo
 		)	const
 		noexcept -> atom::couple_t<XTAL_ALL_(x)[M_lim]>
-		requires in_v<N_ord + 0, XTAL_ALL_(coeffs)::size()>
 		{
 			static_assert(N_ord < M_lim);
 			using X        = XTAL_ALL_(x);
@@ -239,25 +237,24 @@ struct filter
 		XTAL_VAL_(inline,let)
 		method(auto const &x
 		,	unstruct_t<decltype(x)> u_warp
-		,	atom::couple_q auto &&coeffs_
+		,	atom::quantity_q<null_type[N_ord + 0]> auto &&coeffs
 		,	auto &&...oo
 		)	const
 		noexcept -> decltype(auto)
-		requires in_v<N_ord + 0, XTAL_ALL_(coeffs_)::size()>
+		requires in_v<N_ord + 0, XTAL_ALL_(coeffs)::size()>
 		{
 			return method_impl<N_ord, Ns...>(XTAL_REF_(x),
-				u_warp, XTAL_REF_(coeffs_), XTAL_REF_(oo)...);
+				u_warp, XTAL_REF_(coeffs), XTAL_REF_(oo)...);
 		}
 
 		template <int N_ord=M_ord, auto ...Ns>
 		XTAL_VAL_(inline,let)
 		method(auto const &x
 		,	unstruct_t<decltype(x)> u_warp
-		,	atom::couple_q auto &&coeffs
+		,	atom::quantity_q<null_type[N_ord + 1]> auto &&coeffs
 		,	auto &&...oo
 		)	const
 		noexcept -> decltype(auto)
-		requires in_v<N_ord + 1, XTAL_ALL_(coeffs)::size()>
 		{
 			using X = XTAL_ALL_(x);
 			using F = atom::math::fourier::series_t<X[N_ord]>;

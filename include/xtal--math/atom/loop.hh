@@ -13,7 +13,7 @@ namespace xtal::atom::math
 
 template <class   ..._s>	struct  loop;
 template <class   ..._s>	using   loop_t = typename loop<_s...>::type;
-template <class   ...Ts>	concept loop_q = bond::classify_tag_p<loop_t, Ts...>;
+template <class   ...Ts>	concept loop_q = bond::tagged_as_p<loop_t, Ts...>;
 
 XTAL_VAL_(let) loop_f = [] XTAL_1FN_(call) (_detail::factory<loop_t>::make);
 

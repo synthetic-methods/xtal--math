@@ -12,7 +12,7 @@ namespace xtal
 /////////////////////////////////////////////////////////////////////////////////
 
 template <class U, class V=U>	struct  complexion;
-template <class        ...Ts>	concept complexion_q = bond::classify_tag_p<complexion, Ts...>;
+template <class        ...Ts>	concept complexion_q = bond::tagged_as_p<complexion, Ts...>;
 
 XTAL_VAL_(return,inline,let)
 objective_f(complexion_q auto &&o)
