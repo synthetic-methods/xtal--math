@@ -13,7 +13,7 @@ namespace xtal::process::math::zavalishin::_test::XTAL_NUM
 using namespace xtal::process::math::zavalishin;
 
 template <class U>
-using arguments_x = atom::bucket_t<U[2]>;
+using arguments_x = atom::bundle_t<U[2]>;
 
 struct filter_parameters
 {
@@ -527,12 +527,12 @@ TAG_("vectrol")
 		using T_dummy   =  occur::inferred_t<U_alpha, union DUMMY>;
 
 		//\
-		using X_vector  =  atom::bucket_t<U_alpha, W_alpha>;
+		using X_vector  =  atom::bundle_t<U_alpha, W_alpha>;
 	//	using X_vector  =  flow::packed_t<U_alpha, W_alpha, union SHLEEM>;
-	//	using X_matrix  =  atom::bucket_t<X_vector[2]>;
+	//	using X_matrix  =  atom::bundle_t<X_vector[2]>;
 
-		using X_row     =  atom::bucket_t<U_alpha, W_alpha>;
-		using X_ray     =  atom::bucket_t<null_type[2]>;
+		using X_row     =  atom::bundle_t<U_alpha, W_alpha>;
+		using X_ray     =  atom::bundle_t<null_type[2]>;
 		using X_matrix  =  bond::compose_s<X_row, atom::bubble<X_ray::template recast_t>>;
 		using X_patch   =  patch_t<X_matrix>;
 
@@ -544,14 +544,14 @@ TAG_("vectrol")
 		using Var_dyn     =  float;
 
 		using Vec_dyn     =  flow::packed_t<Var_pulse, Var_pitch, Var_head, Var_tail, union DYN>;
-		using Vtx_dyn     =  atom::bucket_t<Var_dyn[4], union DYN>;
+		using Vtx_dyn     =  atom::bundle_t<Var_dyn[4], union DYN>;
 		//\
 		using Vxx_dyn     =                 Vtx_dyn;
 		using Vxx_dyn     =                 Vec_dyn;
-		using Mxx_dyn     =  atom::bucket_t<Vxx_dyn[4]>;
+		using Mxx_dyn     =  atom::bundle_t<Vxx_dyn[4]>;
 		using Pxx_dyn     =         patch_t<Mxx_dyn>;
 
-		using Evt_dyn     =  atom::bucket_t<float[4], union DYN>;// one, key, vel, vax
+		using Evt_dyn     =  atom::bundle_t<float[4], union DYN>;// one, key, vel, vax
 	//	TODO: Fix autoconversion issue when underlying is mismatched.
 
 		using X_process = confined_t<void
@@ -595,18 +595,18 @@ TAG_("vectrol")
 		auto _y = X_processor::bind_f(_1, _x);
 		auto _y = X_processor::bind_f(_1, S_processor::bind_f(_e));
 		//\
-		auto _w = occur::math::dent_s<Mxx_dyn, 0>({0x0, 0x1, 0x2, 0x3});// Vtx
-		auto _w = occur::math::dent_s<Mxx_dyn, 0> {0x0, 0x1, 0x2, 0x3} ;// Vec
-		auto _v = occur::math::dent_s<Vec_dyn   > {0x0, 0x1, 0x2, 0x3};
+		auto _w = flow::math::dent_s<Mxx_dyn, 0>({0x0, 0x1, 0x2, 0x3});// Vtx
+		auto _w = flow::math::dent_s<Mxx_dyn, 0> {0x0, 0x1, 0x2, 0x3} ;// Vec
+		auto _v = flow::math::dent_s<Vec_dyn   > {0x0, 0x1, 0x2, 0x3};
 
-		_y <<= occur::math::dent_s<Mxx_dyn , 0>{ 0.f,  1.f,  2.f,  3.f};
-		_y <<= occur::math::dent_s<Mxx_dyn , 1>{ 4.f,  5.f,  6.f,  7.f};
-		_y <<= occur::math::dent_s<Mxx_dyn , 2>{ 8.f,  9.f, 10.f, 11.f};
-		_y <<= occur::math::dent_s<Mxx_dyn , 3>{12.f, 13.f, 14.f, 15.f};
+		_y <<= flow::math::dent_s<Mxx_dyn , 0>{ 0.f,  1.f,  2.f,  3.f};
+		_y <<= flow::math::dent_s<Mxx_dyn , 1>{ 4.f,  5.f,  6.f,  7.f};
+		_y <<= flow::math::dent_s<Mxx_dyn , 2>{ 8.f,  9.f, 10.f, 11.f};
+		_y <<= flow::math::dent_s<Mxx_dyn , 3>{12.f, 13.f, 14.f, 15.f};
 		_y <<= Evt_dyn{0.88, 0.66, 0.44, 0.22};
 
-		_y <<= occur::math::dent_s<X_matrix, 1>({{1.00, 1.00}, {1111, 1111}});
-		_y <<= occur::math::dent_s<X_matrix, 0> { 0.00       ,  r_omega    } ;
+		_y <<= flow::math::dent_s<X_matrix, 1>({{1.00, 1.00}, {1111, 1111}});
+		_y <<= flow::math::dent_s<X_matrix, 0> { 0.00       ,  r_omega    } ;
 
 		_y <<= S_order {2};
 		_y <<= X_gain  (1);

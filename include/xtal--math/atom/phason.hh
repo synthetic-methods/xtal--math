@@ -113,14 +113,14 @@ public:
 	//	using S_::S_;
 		XTAL_VAL_(reduce) (homotype, noexcept,S_)
 
-		XTAL_VAL_(new,implicit)
+		XTAL_VAL_(new,inline,implicit)
 		homotype(std::initializer_list<W> o)
 		noexcept
 		:	S_(std::variant<size_type>{count_f(o)})
 		{
 			operator>>=(XTAL_MOV_(o));
 		}
-		XTAL_VAL_(new,explicit)
+		XTAL_VAL_(new,inline,explicit)
 		homotype(iterable_q auto &&o)
 		noexcept
 		:	S_(std::variant<size_type>{count_f(o)})

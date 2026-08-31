@@ -105,14 +105,14 @@ public:
 		XTAL_VAL_(reduce) (homotype, noexcept,S_)
 
 		XTAL_VAL_(inline)
-		XTAL_VAL_(new,explicit)
+		XTAL_VAL_(new,inline,explicit)
 		homotype(signum_type &&o, magnum_type &&q)
 		noexcept
 		:	S_{XTAL_MOV_(o), XTAL_MOV_(q)}
 		{
 		}
 		XTAL_VAL_(inline)
-		XTAL_VAL_(new,explicit)
+		XTAL_VAL_(new,inline,explicit)
 		homotype(complex_variable_q auto &&x)
 		noexcept
 		:	homotype{
@@ -122,7 +122,7 @@ public:
 		{
 		}
 		XTAL_VAL_(inline)
-		XTAL_VAL_(new,explicit)
+		XTAL_VAL_(new,inline,explicit)
 		homotype(simplex_variable_q auto &&x)
 		noexcept
 		:	homotype{
@@ -132,7 +132,7 @@ public:
 		{
 		}
 		XTAL_VAL_(inline)
-		XTAL_VAL_(new,explicit)
+		XTAL_VAL_(new,inline,explicit)
 		homotype(decltype(one))
 		noexcept
 		:	homotype{
@@ -182,8 +182,8 @@ public:
 			XTAL_0IF (N_pow == -1) {return    conj(signum_f(XTAL_REF_(o)));}
 		}
 
-		XTAL_FN1_(this) (T, template <auto ...Ns> XTAL_VAL_(return,inline,get) magnum, magnum_f<Ns...>)
-		XTAL_FN1_(this) (T, template <auto ...Ns> XTAL_VAL_(return,inline,get) signum, signum_f<Ns...>)
+		XTAL_FN4_(this) (T, template <auto ...Ns> XTAL_VAL_(return,inline,get) magnum, magnum_f<Ns...>)
+		XTAL_FN4_(this) (T, template <auto ...Ns> XTAL_VAL_(return,inline,get) signum, signum_f<Ns...>)
 
 	public:// RECONSTRUCT
 
@@ -262,9 +262,9 @@ public:
 			return reflection_f<N_dir>(T{XTAL_REF_(o), XTAL_REF_(q_)*(times_ *...* one)}, XTAL_REF_(plus));
 		}
 
-		XTAL_FN1_(this) (T, template <int N_dir=0> XTAL_VAL_(return,inline,get) resolution, resolution_f<N_dir>)
-		XTAL_FN1_(this) (T, template <int N_dir=0> XTAL_VAL_(return,inline,get) reflection, reflection_f<N_dir>)
-		XTAL_FN1_(this) (T, template <int N_dir=1> XTAL_VAL_(return,inline,get)        sum, reflection_f<N_dir>)
+		XTAL_FN4_(this) (T, template <int N_dir=0> XTAL_VAL_(return,inline,get) resolution, resolution_f<N_dir>)
+		XTAL_FN4_(this) (T, template <int N_dir=0> XTAL_VAL_(return,inline,get) reflection, reflection_f<N_dir>)
+		XTAL_FN4_(this) (T, template <int N_dir=1> XTAL_VAL_(return,inline,get)        sum, reflection_f<N_dir>)
 
 	public:// OPERATE
 

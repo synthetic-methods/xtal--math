@@ -33,7 +33,7 @@ struct differ
 	using data_type = typename cotype::data_type;
 
 	using superkind = bond::compose<bond::tag<differ_t>
-	,	scheme::stashed<data_type[2]>
+	,	scheme::memorized<data_type[2]>
 	,	base<_s...>
 	>;
 	template <class S>
@@ -66,12 +66,12 @@ struct differ
 			using U_fit = bond::fit<X>;
 			XTAL_IF0
 			XTAL_0IF (N_sub == 0) {
-				auto  [x_] = S_::stash(x);
+				auto  [x_] = S_::memory(x);
 				return x - x_;
 			}
 			XTAL_0IF (N_sub != 0) {
 				auto constexpr m = warped_f<U_fit, N_ord, N_sub>();
-				auto  [x_] = S_::template stash<X>();
+				auto  [x_] = S_::template memory<X>();
 				x  -=  x_;
 				x  *=  m ;
 				x_ +=  x ;
@@ -88,7 +88,7 @@ struct differ
 			auto constexpr u = warp_f<U_fit, N_ord, N_sub>();
 			auto constexpr m = two/term_f(one, u, u + root_f<2>(U_fit::alpha_f(2)));
 
-			auto [s0, s1] = S_::template stash<X, X>();
+			auto [s0, s1] = S_::template memory<X, X>();
 			auto const y1 = m*term_f(s1, x - s0, u); s1 = y1 - XTAL_MOV_(s1);
 			auto const y0 =   term_f(s0*two, y1, u); s0 = y0 - XTAL_MOV_(s0);
 			return u*y1;
@@ -110,12 +110,12 @@ struct differ
 			using U_fit = bond::fit<X, Y>;
 			XTAL_IF0
 			XTAL_0IF (N_sub == 0) {
-				auto   [x_, y_] = S_::stash(x, y);
+				auto   [x_, y_] = S_::memory(x, y);
 				return (x - x_)*root_f<-1>(t_(1) + (y - y_));
 			}
 			XTAL_0IF (N_sub != 0) {
 				auto constexpr m = warped_f<U_fit, N_ord, N_sub>();
-				auto [x_, y_] =  S_::template stash<X, Y>();
+				auto [x_, y_] =  S_::template memory<X, Y>();
 				x  -= x_; y  -=  y_;
 				x  *= m ; y  *=  m ;
 				x_ += x ; y_ +=  y ;

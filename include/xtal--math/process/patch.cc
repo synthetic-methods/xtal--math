@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.cc"
 
-
+#include "../flow/dent.hh"
 
 
 
@@ -43,7 +43,7 @@ TAG_("route", "process")
 	{
 		using namespace xtd::ranges::views;
 
-		using U_matrix = atom::bucket_t<int[2][3]>;
+		using U_matrix = atom::bundle_t<int[2][3]>;
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template rewire<>
 		,	patch_t<U_matrix>::template attach<>
@@ -68,10 +68,10 @@ TAG_("route", "processor")
 	TRY_("shape with matrix")
 	{
 		using namespace xtd::ranges::views;
-		using U_vector = atom::bucket_t<int[3]>;// 3-outputs
+		using U_vector = atom::bundle_t<int[3]>;// 3-outputs
 		//\
-		using U_matrix = atom::bucket_t<int[2][3]>;// 2-inputs, 3-outputs
-		using U_matrix = atom::bucket_t<U_vector[2]>;// 2-inputs
+		using U_matrix = atom::bundle_t<int[2][3]>;// 2-inputs, 3-outputs
+		using U_matrix = atom::bundle_t<U_vector[2]>;// 2-inputs
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template rewire<>
 		,	patch_t<U_matrix>::template attach<>
@@ -102,9 +102,9 @@ TAG_("route", "processor")
 	{
 		using namespace xtd::ranges::views;
 		//\
-		using U_vector = atom::bucket_t<int[3]>;
+		using U_vector = atom::bundle_t<int[3]>;
 		using U_vector = bond::pack_t<int, int, int>;
-		using U_matrix = atom::bucket_t<U_vector[2]>;
+		using U_matrix = atom::bundle_t<U_vector[2]>;
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template rewire<>
 		,	patch_t<U_matrix>::template attach<>
@@ -116,7 +116,7 @@ TAG_("route", "processor")
 		auto _n = processor::let_f(iota(0, 10));
 	//
 		auto io = Z_router::bind_f(_1, _n);
-		io <<= occur::math::dent_s<U_matrix>({{1, 3, 5}, {2, 4, 6}});
+		io <<= flow::math::dent_s<U_matrix>({{1, 3, 5}, {2, 4, 6}});
 		io <<= occur::resize_t<>(3);
 		io >>= occur::cursor_t<>(3);
 
@@ -131,8 +131,8 @@ TAG_("route", "processor")
 		using U_scalar = int;
 		//\
 		using U_vector = bond::pack_t<U_scalar, U_scalar>;
-		using U_vector = atom::bucket_t<U_scalar[3]>;
-		using U_matrix = atom::bucket_t<U_vector[2]>;
+		using U_vector = atom::bundle_t<U_scalar[3]>;
+		using U_matrix = atom::bundle_t<U_vector[2]>;
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template rewire<>
 		,	patch_t<U_matrix>::template attach<>
@@ -145,8 +145,8 @@ TAG_("route", "processor")
 	//
 		auto io = Z_router::bind_f(_1, _n);
 
-		io <<= occur::math::dent_s<U_matrix, 0>{1, 3, 5};
-		io <<= occur::math::dent_s<U_matrix, 1>{2, 4, 6};
+		io <<= flow::math::dent_s<U_matrix, 0>{1, 3, 5};
+		io <<= flow::math::dent_s<U_matrix, 1>{2, 4, 6};
 		io <<= occur::resize_t<>(3);
 		io >>= occur::cursor_t<>(3);
 
@@ -159,8 +159,8 @@ TAG_("route", "processor")
 	{
 		using namespace xtd::ranges::views;
 		//\
-		using U_matrix = atom::bucket_t<int[3][2]>;
-		using U_matrix = atom::bucket_t<bond::pack_t<int, int, int>[2]>;
+		using U_matrix = atom::bundle_t<int[3][2]>;
+		using U_matrix = atom::bundle_t<bond::pack_t<int, int, int>[2]>;
 		using Y_routed = process::confined_t<void
 		,	patch_t<U_matrix>::template rewire<>
 		,	patch_t<U_matrix>::template attach<>
@@ -172,12 +172,12 @@ TAG_("route", "processor")
 		auto _n = processor::let_f(iota(0, 10));
 	//
 		auto io = Z_router::bind_f(_1, _n);
-		io <<= occur::math::dent_s<U_matrix, 0, 0>(1);
-		io <<= occur::math::dent_s<U_matrix, 0, 1>(3);
-		io <<= occur::math::dent_s<U_matrix, 0, 2>(5);
-		io <<= occur::math::dent_s<U_matrix, 1, 0>(2);
-		io <<= occur::math::dent_s<U_matrix, 1, 1>(4);
-		io <<= occur::math::dent_s<U_matrix, 1, 2>(6);
+		io <<= flow::math::dent_s<U_matrix, 0, 0>(1);
+		io <<= flow::math::dent_s<U_matrix, 0, 1>(3);
+		io <<= flow::math::dent_s<U_matrix, 0, 2>(5);
+		io <<= flow::math::dent_s<U_matrix, 1, 0>(2);
+		io <<= flow::math::dent_s<U_matrix, 1, 1>(4);
+		io <<= flow::math::dent_s<U_matrix, 1, 2>(6);
 		io <<= occur::resize_t<>(3);
 		io >>= occur::cursor_t<>(3);
 
@@ -188,10 +188,10 @@ TAG_("route", "processor")
 	/*/
 	TRY_("shape with column dent")
 	{
-		using M   = atom::bucket_t<bond::pack_t<int, int, int>[3]>;
-		using W   = occur::math::dent_s<M>;
-		using W1  = occur::math::dent_s<M, 1>;
-		using W12 = occur::math::dent_s<M, 1, 2>;
+		using M   = atom::bundle_t<bond::pack_t<int, int, int>[3]>;
+		using W   = flow::math::dent_s<M>;
+		using W1  = flow::math::dent_s<M, 1>;
+		using W12 = flow::math::dent_s<M, 1, 2>;
 
 		TRUE_(same_q<M, typename W  ::data_type>);
 		TRUE_(same_q<M, typename W1 ::data_type>);

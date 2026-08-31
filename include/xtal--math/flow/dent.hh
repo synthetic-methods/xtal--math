@@ -1,13 +1,13 @@
 #pragma once
 #include "./any.hh"
 
-#include <initializer_list>
+
 
 
 
 
 XTAL_ENV_(push)
-namespace xtal::occur::math
+namespace xtal::flow::math
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 /*!
@@ -41,9 +41,10 @@ struct dent<Ns...>
 	class subtype : public bond::compose_s<S, superkind>
 	{
 		static_assert(bond::pack_q<S>);
-		using S_ = bond::compose_s<S, superkind>;
-		using C_ =     indicated_s<S >;
-		using X_ =     indicated_t<S >;
+		XTAL_TYP_(set) S_ = bond::compose_s<S, superkind>;
+		XTAL_TYP_(set) C_ =     indicated_s<S >;
+		XTAL_TYP_(set) X_ =     indicated_t<S >;
+		XTAL_VAL_(set) _N = bond::seek_back_t<constant_t<0>, Ns...>{};
 
 		XTAL_VAL_(set) use_devalue = requires {
 			{C_::devalue_f} -> different_q<std::identity>;
@@ -62,27 +63,26 @@ struct dent<Ns...>
 		/***/
 		using data_type = S;
 
-		XTAL_VAL_(new,explicit) subtype(X_ const  &x_) noexcept : S_{XTAL_REF_(x_)} {}
-		XTAL_VAL_(new,explicit) subtype(X_        &x_) noexcept : S_{XTAL_REF_(x_)} {}
-		XTAL_VAL_(new,explicit) subtype(X_ const &&x_) noexcept : S_{XTAL_REF_(x_)} {}
-		XTAL_VAL_(new,explicit) subtype(X_       &&x_) noexcept : S_{XTAL_REF_(x_)} {}
+		XTAL_VAL_(new,inline,explicit) subtype(X_ const  &x_) noexcept : S_{XTAL_REF_(x_)} {}
+		XTAL_VAL_(new,inline,explicit) subtype(X_        &x_) noexcept : S_{XTAL_REF_(x_)} {}
+		XTAL_VAL_(new,inline,explicit) subtype(X_ const &&x_) noexcept : S_{XTAL_REF_(x_)} {}
+		XTAL_VAL_(new,inline,explicit) subtype(X_       &&x_) noexcept : S_{XTAL_REF_(x_)} {}
 		/*!
 		\brief   Constructs a fragment, using conversion as supported by the container.
-		\todo    Use strong-`value_type`s to map between fractional and floating-point values?
 		*/
-		XTAL_VAL_(new,explicit)
+		XTAL_VAL_(new,inline,explicit)
 		subtype(auto &&...oo)
 		noexcept
-		requires un_v<use_devalue> and requires  {X_{              XTAL_REF_(oo) ...};} and
-		requires {X_{              XTAL_REF_(oo) ...};}
-		:	    S_(X_{              XTAL_REF_(oo) ...} )
+		requires
+		requires {X_{XTAL_REF_(oo) ...};}
+		:	    S_(X_{XTAL_REF_(oo) ...} )
 		{}
-		XTAL_VAL_(new,explicit)
-		subtype(auto &&...oo)
+		XTAL_VAL_(new,inline,explicit)
+		subtype(auto &&    o)
 		noexcept
-		requires in_v<use_devalue> and requires  {X_{C_::devalue_f(XTAL_REF_(oo))...};} and
-		requires {X_{C_::devalue_f(XTAL_REF_(oo))...};}
-		:	    S_(X_{C_::devalue_f(XTAL_REF_(oo))...} )
+		requires different_q<decltype(o), X_> and numeric_q<X_> and
+		requires         {C_{std::in_place_index<_N>, XTAL_REF_(o)};}
+		:	    S_(get<_N>(C_(std::in_place_index<_N>, XTAL_REF_(o))))
 		{}
 
 		template <extent_type N_mask=1>

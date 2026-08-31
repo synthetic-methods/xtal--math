@@ -90,14 +90,14 @@ TAG_("unity")
 	/**/
 	TRY_("couple evaluation")
 	{
-		atom::couple_t<U_alpha[2]> x{0.123, 0.456};
+		atom::quantity_t<U_alpha[2], xtd::plus_multiplies<>> x{0.123, 0.456};
 		//\
 		auto const v =        one/x;
 		auto const v = U_alpha{1}/x;
 		auto const y = unity_t<1>{}.template method<1>(x);
 
-		TRUE_(check_f<8>(y.real(), atom::couple_t<U_alpha[2]>{ 0.715936483022, -0.962027671586}));
-		TRUE_(check_f<8>(y.imag(), atom::couple_t<U_alpha[2]>{ 0.698165418993,  0.272951935517}));
+		TRUE_(check_f<8>(y.real(), atom::quantity_t<U_alpha[2], xtd::plus_multiplies<>>{ 0.715936483022, -0.962027671586}));
+		TRUE_(check_f<8>(y.imag(), atom::quantity_t<U_alpha[2], xtd::plus_multiplies<>>{ 0.698165418993,  0.272951935517}));
 
 	}
 	/*/

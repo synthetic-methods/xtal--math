@@ -218,10 +218,10 @@ struct series<Us...>
 			}
 		//	Compute the transform of `source` using the precomputed half-period sinusoid in `this`:
 			for (unsigned u_step{size}, n_step{1}; n_step < n_size;) {auto u = S_::data();
-				for (unsigned m{   }; m < n_step;        u += u_step) {auto o = imagine_f<0, N_conj>(*u);
-				for (unsigned n{m++}; n < n_size;        n += n_step) {
+				for (unsigned m{   }; m < n_step;   u += u_step) {auto o = imagine_f<0, N_conj>(*u);
+				for (unsigned n{m++}; n < n_size;   n += n_step) {
 					auto &x = source[n], &y = source[n += n_step]; y *= o;
-					auto _x = x; x += y;  y = _x - XTAL_MOV_(y);
+					auto  x_y = x - y; x += y; y = XTAL_MOV_(x_y);
 				}}
 				u_step >>= 1;
 				n_step <<= 1;

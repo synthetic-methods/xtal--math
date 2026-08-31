@@ -77,9 +77,67 @@ TAG_("root")
 }
 /***/
 /**/
+TAG_("root<-2> real trials")
+{
+	using U_fit     = bond::fit<float>;
+	using U_sigma   = typename U_fit::sigma_type;
+	using U_delta   = typename U_fit::delta_type;
+	using U_alpha   = typename U_fit::alpha_type;
+	using U_aphex   = typename U_fit::aphex_type;
+	auto  mt19937_o = typename U_fit::MT19937{}; mt19937_o.seed(Catch::rngSeed());
+	auto  mt19937_f = [&] XTAL_1FN_(to) (U_fit::mantissa_f(mt19937_o));
+
+	EST_("=\troot<-2;-1>(flt)")
+	{
+		double w{1};
+		for (int i = 0x60; ~--i;) {
+			w *= one/sqrt(mt19937_f() + one);
+		}
+		return w;
+
+	};
+	EST_("~\troot<-2; 3>(flt)")
+	{
+		double w{1};
+		for (int i = 0x60; ~--i;) {
+			w *= root_t<-2>{}.template method<3>(mt19937_f() + one);
+		}
+		return w;
+
+	};
+	EST_("~\troot<-2; 2>(flt)")
+	{
+		double w{1};
+		for (int i = 0x60; ~--i;) {
+			w *= root_t<-2>{}.template method<2>(mt19937_f() + one);
+		}
+		return w;
+
+	};
+	EST_("~\troot<-2; 1>(flt)")
+	{
+		double w{1};
+		for (int i = 0x60; ~--i;) {
+			w *= root_t<-2>{}.template method<1>(mt19937_f() + one);
+		}
+		return w;
+
+	};
+	EST_("~\troot<-2; 0>(flt)")
+	{
+		double w{1};
+		for (int i = 0x60; ~--i;) {
+			w *= root_t<-2>{}.template method<0>(mt19937_f() + one);
+		}
+		return w;
+
+	};
+};
+/***/
+/**/
 TAG_("root<-3> real trials")
 {
-	using U_fit     = bond::fit<>;
+	using U_fit     = bond::fit<float>;
 	using U_sigma   = typename U_fit::sigma_type;
 	using U_delta   = typename U_fit::delta_type;
 	using U_alpha   = typename U_fit::alpha_type;
@@ -132,65 +190,6 @@ TAG_("root<-3> real trials")
 		return w;
 
 	};
-};
-/***/
-/**/
-TAG_("root<-3> real trials")
-{
-	using U_fit     = bond::fit<>;
-	using U_sigma   = typename U_fit::sigma_type;
-	using U_delta   = typename U_fit::delta_type;
-	using U_alpha   = typename U_fit::alpha_type;
-	using U_aphex   = typename U_fit::aphex_type;
-	auto  mt19937_o = typename U_fit::MT19937{}; mt19937_o.seed(Catch::rngSeed());
-	auto  mt19937_f = [&] XTAL_1FN_(to) (U_fit::mantissa_f(mt19937_o));
-
-	EST_("=\troot<-3;-1>(clx)")
-	{
-		U_aphex w{1};
-		for (int i = 0x60; ~--i;) {
-			w *= root_f<-1, -1>(U_aphex{mt19937_f(), mt19937_f()});
-		}
-		return w;
-
-	};
-	EST_("~\troot<-3; 3>(clx)")
-	{
-		U_aphex w{1};
-		for (int i = 0x60; ~--i;) {
-			w *= root_f<-1,  3>(U_aphex{mt19937_f(), mt19937_f()});
-		}
-		return w;
-
-	};
-	EST_("~\troot<-3; 2>(clx)")
-	{
-		U_aphex w{1};
-		for (int i = 0x60; ~--i;) {
-			w *= root_f<-1,  2>(U_aphex{mt19937_f(), mt19937_f()});
-		}
-		return w;
-
-	};
-	EST_("~\troot<-3; 1>(clx)")
-	{
-		U_aphex w{1};
-		for (int i = 0x60; ~--i;) {
-			w *= root_f<-1,  1>(U_aphex{mt19937_f(), mt19937_f()});
-		}
-		return w;
-
-	};
-	EST_("~\troot<-3; 0>(clx)")
-	{
-		U_aphex w{1};
-		for (int i = 0x60; ~--i;) {
-			w *= root_f<-1,  0>(U_aphex{mt19937_f(), mt19937_f()});
-		}
-		return w;
-
-	};
-
 };
 /***/
 

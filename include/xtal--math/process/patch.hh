@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-#include "../occur/dent.hh"
+#include "../flow/dent.hh"
 #include "./dot.hh"
 
 
@@ -43,7 +43,7 @@ public:
 			template <class T>
 			using endokind = bond::compose<void
 			,	process::_detail::navigate<T, U_mtx>
-			,	typename occur::math::dent_s<U_mtx>::template attach<N_mask>
+			,	typename flow::math::dent_s<U_mtx>::template attach<N_mask>
 			>;
 			template <class R>
 			class subtype : public bond::compose_s<R, endokind<subtype<R>>>
@@ -58,7 +58,7 @@ public:
 				using R_::self;
 				using R_::head;
 
-				XTAL_FN1_(go) (XTAL_VAL_(return,inline,get) coefficients, [] (auto &&o, auto &&...oo)
+				XTAL_FN4_(then) (subtype, XTAL_VAL_(return,inline,get) coefficients, [] (auto &&o, auto &&...oo)
 				XTAL_0FN_(to) (XTAL_REF_(o).head(XTAL_REF_(oo)...)))
 
 			protected:
@@ -107,7 +107,7 @@ public:
 
 			};
 		};
-		template <class ...Xs> XTAL_TYP_(let) deflux_t = atom::bucket_t<Xs..., union DEFLUX>;
+		template <class ...Xs> XTAL_TYP_(let) deflux_t = atom::bundle_t<Xs..., union DEFLUX>;
 		template <class ...Xs> XTAL_TYP_(let) reflux_t = bond::compose_s<occur::conferred_t<decltype(one)>, bond::tab<Xs..., union REFLUX>>;
 		template <class ..._s> XTAL_TYP_(new) deflow;
 		template <class ..._s> XTAL_TYP_(new) reflow;

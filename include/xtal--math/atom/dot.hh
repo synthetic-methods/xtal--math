@@ -38,7 +38,7 @@ template <class ...Us> requires in_v<bond::devise_condensed_p<Us...>> and un_q<x
 struct dot<Us...> : dot<Us..., xtd::plus<>>
 {};
 template <class ...Us> requires in_v<bond::devise_condensed_p<Us...>> and in_q<xtd::plus<>, Us...>
-and un_v<true, extra_matrix_q<Us>...>
+//and un_v<true, extra_matrix_q<Us>...>
 struct dot<Us...>
 {
 private:
@@ -63,14 +63,6 @@ public:
 	public:// CONSTRUCT
 		using S_::S_;
 
-		XTAL_VAL_(new,implicit)
-		homotype(std::initializer_list<U_> xs)
-		noexcept
-		requires complete_q<U_>
-		:	S_(xs)
-		{
-		}
-
 	public:// ACCESS
 		using S_::size;
 		using S_::self;
@@ -94,14 +86,14 @@ public:
 		XTAL_VAL_(return,inline,let)
 		operator * (auto const &t) const
 		noexcept -> auto
-		requires XTAL_TRY_(to_unless) (t.size())
+		requires un_v<fluid_q<decltype(t)>> and un_v<fixed_q<decltype(t)>> 
 		{
 			return S_::operator*(t);
 		}
 		XTAL_VAL_(return,inline,let)
 		operator * (auto const &t) const
 		noexcept -> auto
-		requires XTAL_TRY_(to_if) (t.size()) and XTAL_TRY_(to_if)     (t.capacity())
+		requires in_v<fluid_q<decltype(t)>> and un_v<fixed_q<decltype(t)>> 
 		{
 			auto &s = self();
 			using U = XTAL_ALL_(s[0]*t[0]);
@@ -115,7 +107,7 @@ public:
 		XTAL_VAL_(return,inline,let)
 		operator * (auto const &t) const
 		noexcept -> auto
-		requires XTAL_TRY_(to_if) (t.size()) and XTAL_TRY_(to_unless) (t.capacity())
+		requires in_v<fixed_q<decltype(t)>>
 		{
 			auto &s = self();
 			using U = XTAL_ALL_(get<0>(s)*get<0>(t));

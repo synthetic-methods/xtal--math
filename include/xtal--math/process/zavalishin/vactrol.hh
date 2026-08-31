@@ -58,7 +58,7 @@ public:
 			using U = unstruct_t<X>;
 
 			x *= half;
-			auto const [s_]    = S_::template stash<typename S_::data_type>();
+			auto const [s_]    = S_::template memory<typename S_::data_type>();
 			auto        u_damp = U(1);
 			auto        u_warp = oct_f(-term_f(f_[0], f_[1] - U(1), x - s_[1]));
 			u_warp *= rate_f<1>(XTAL_MOV_(u));
@@ -91,7 +91,7 @@ public:
 			using X0 = XTAL_ALL_(x);
 			using X2 = atom::couple_t<X0[2]>;
 			X2    y_;
-			auto [s_] = S_::template stash<typename S_::data_type>();
+			auto [s_] = S_::template memory<typename S_::data_type>();
 
 			auto constexpr  N_1pi   = std::numbers::pi_v<unstruct_t<X0>>;
 			auto constexpr  N_1pi_  = one/N_1pi;

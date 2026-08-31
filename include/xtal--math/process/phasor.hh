@@ -1,7 +1,7 @@
 #pragma once
 #include "./any.hh"
 
-#include "../occur/dent.hh"
+#include "../flow/dent.hh"
 #include "../atom/phason.hh"
 
 
@@ -42,7 +42,7 @@ struct phasor<A, As...>
 	,	cell::_detail::refer_implicit_conversion  <U_phason>
 	,	cell::_detail::refer_equality             <U_phason>
 	,	cell::_detail::refer_multiplicative_group <U_phason>
-	,	typename occur::math::dent_s<U_phason>::template attach<>
+	,	typename flow::math::dent_s<U_phason>::template attach<>
 	,	As...
 	>;
 	using superkind = bond::compose<bond::tag<phasor>
@@ -65,7 +65,7 @@ struct phasor<A, As...>
 		using S_::head;
 
 	//	NOTE: Defined in-case `refine_head` is bypassed...
-		XTAL_FN0_(go) (XTAL_VAL_(return,inline,explicit) operator U_,
+		XTAL_FN4_(that) (S_, XTAL_VAL_(return,inline,explicit) operator U_,
 			[] (auto &&that) XTAL_0FN_(to) (XTAL_REF_(that).head()))
 
 		XTAL_VAL_(return,inline,set)
@@ -162,7 +162,7 @@ struct phasor<A, As...>
 		noexcept -> auto
 		//	requires same_q<U_phason, typename S_::template head_t<ordinal_constant_t<1>>>
 		{
-		//	TODO: Use `stash`ed `head`.
+		//	TODO: Use `memorized` `head`.
 			auto &u_phi = head();
 			phi *= co; u_phi[1] = phi[1]; return ++u_phi;
 		}
@@ -266,7 +266,7 @@ struct phasor<A, As...>
 		}
 
 	//	NOTE:	Defined in-case `refine_head` is bypassed...
-		XTAL_FN0_(go) (XTAL_VAL_(return,inline,implicit)
+		XTAL_FN4_(that) (S_, XTAL_VAL_(return,inline,implicit)
 			operator U_, [] XTAL_1FN_(dot) (head()))
 
 	};

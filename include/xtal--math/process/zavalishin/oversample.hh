@@ -30,10 +30,10 @@ public:
 	using ectotype = typename S::data_type::value_type;
 
 	template <class S>
-	using endotype = atom::bucket_t<ectotype<S>[M_len]>;
+	using endotype = atom::bundle_t<ectotype<S>[M_len]>;
 
 	template <class S>
-	using endokind = scheme::stashed<endotype<S>>;
+	using endokind = scheme::memorized<endotype<S>>;
 
 	template <class S>
 	class subtype : public bond::compose_s<S, endokind<S>>
@@ -129,13 +129,13 @@ public:
 
 		//	Upsampling
 			auto const     x_up = x*U(K_div - one);
-			auto const     x_dn = S_::stash1(x_up);
+			auto const     x_dn = S_::memory1(x_up);
 			auto           x_   = [&]<auto ...I> (bond::seek_in_t<I...>)
 				XTAL_0FN_(to) (X_{(get<I>(z_up)*(x_up) + get<I>(z_dn)*(x_dn))...})
 					(bond::seek_to_t<K_len>{});
 
 		//	Mapping/Downsampling:
-			auto & y_dn  = S_::template stash1<Y_>();
+			auto & y_dn  = S_::template memory1<Y_>();
 			auto   y_up  = y_dn;
 			get<0>(y_up) = S_::template method<Ns...>(get<0>(x_), a, u, oo...);
 			bond::seek_to_e<K_len - 1, 1>([&, this] (auto I)

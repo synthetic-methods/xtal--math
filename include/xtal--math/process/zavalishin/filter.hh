@@ -41,7 +41,7 @@ struct filter
 	using data_type = typename cotype::data_type;
 
 	using superkind = bond::compose<bond::tag<filter>
-	,	scheme::stashed<data_type[2]>
+	,	scheme::memorized<data_type[2]>
 	,	base<_s...>
 	>;
 	template <class S>
@@ -159,9 +159,9 @@ struct filter
 
 			X_valued valued;
 			auto     values = valued.self(cardinal_constant_t<N_ord>{});// Spanned...
-			auto     stash  = S_::template stash<X_states, X_slopes>();
-			auto    &states = get<0>(stash);
-			auto    &slopes = get<1>(stash);
+			auto     memory = S_::template memory<X_states, X_slopes>();
+			auto    &states = get<0>(memory);
+			auto    &slopes = get<1>(memory);
 
 			U_cut_(u_warp);
 			u_warp *= pade::tangy_f< 1,-1>(u_warp);
@@ -315,10 +315,12 @@ struct filter
 		noexcept -> decltype(auto)
 		requires un_v<atom::math::phason_q<decltype(x)>>
 		{
-		//	auto &&[s_sig, s_mag] = XTAL_REF_(s_);
-			auto const u_damp = std::imag(s_.signum());
-			auto const u_warp = std::real(XTAL_REF_(t_)(1))*s_.template magnum<1>();
-			return method<Ns...>(XTAL_REF_(x), u_warp, u_damp, XTAL_REF_(oo)...);
+			auto &&[s_sig, s_mag] = XTAL_REF_(s_);
+			return method<Ns...>(XTAL_REF_(x)
+			,	     rate(XTAL_REF_(t_))*XTAL_REF_(s_mag).element()
+			,	std::imag(XTAL_REF_(s_sig))
+			,	XTAL_REF_(oo)...
+			);
 		}
 		template <auto ...Ns>
 		XTAL_VAL_(return,inline,let)
@@ -351,7 +353,7 @@ struct filter
 			XTAL_0IF (complete_q<rewind_node>) {
 				auto const &q = self().template head<rewind_type>().wind();
 				if (1 != q and q == o) {
-					S_::stash(constant_t<>{});
+					S_::memory(constant_t<>{});
 				}
 			}
 			return S_::template fuse<N_ion>(XTAL_REF_(o));

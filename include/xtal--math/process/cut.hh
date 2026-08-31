@@ -113,7 +113,7 @@ struct cut<M_app>
 				}
 			}
 			XTAL_0IF_(else) {
-			//	TODO: Accommodate returning materialized `atom::bucket` from `span`s...
+			//	TODO: Accommodate returning materialized `atom::bundle` from `span`s...
 				[&]<auto ...I> (bond::seek_in_t<I...>)
 				XTAL_0FN_(do) (W_(method<std::in_place>(get<I>(o))...))
 					(bond::seek_to_t<-N_>{});

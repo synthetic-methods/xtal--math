@@ -7,7 +7,7 @@
 
 #include "./dent.hh"
 XTAL_ENV_(push)
-namespace xtal::occur::math::_test
+namespace xtal::flow::math::_test
 {/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -22,8 +22,8 @@ TAG_("dent")
 
 	TRY_("task")
 	{
-		using X_vector = atom::bucket_t<U_alpha, W_alpha>;
-		using X_matrix = atom::bucket_t<X_vector[2]>;
+		using X_vector = atom::bundle_t<U_alpha, W_alpha>;
+		using X_matrix = atom::bundle_t<X_vector[2]>;
 
 		using D22   = X_matrix;
 		using D22_0 = dent_s<X_matrix, 0>;
@@ -37,7 +37,7 @@ TAG_("dent")
 	//	using E22_1 = typename D22_1::data_type;
 
 	//	static_assert( xtd::fungible_with<typename D22_1::data_type, X_matrix>);
-	//	static_assert(occur::math::dent_q<         D22_1           , X_matrix>);
+	//	static_assert(flow::math::dent_q<         D22_1           , X_matrix>);
 
 	}
 }
